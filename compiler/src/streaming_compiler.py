@@ -63,6 +63,16 @@ class StringLiteral(Instruction):
         indentStr = "\t"*indent
         return indentStr + "StringLiteral { \n"+self.s +"\n" + indentStr + "}"
 
+class NumberLiteral(Instruction):
+    def __init__(self, num: float):
+        super(NumberLiteral, self).__init__()
+        self.num = num
+    def compile_JS(self, out: StringIO):
+        out.write(str(self.num))
+    def indented(self, indent) -> str:
+        indentStr = "\t"*indent
+        return indentStr + "NumberLiteral "+str(self.num)+";"
+
 class FunctionCall(Instruction):
     def __init__(self, fn: BuiltinDefinition):
         super(FunctionCall, self).__init__()
@@ -91,9 +101,19 @@ class LocalVariable(Instruction):
         #  but that will require more complex code that will have to inspect identifiers to figure out
         #  if it's a function or a field.
         out.write("let "+self.name+" = (function(set) {if (set !== undefined) {this.value=set;} else {return this.value;} }).bind({value: null})")
+        if len(self.children) > 0:
+            out.write("\n")
+            fn = FunctionCall(BuiltinDefinition(self.name).JS(self.name))
+            fn.children = self.children
+            fn.compile_JS(out)
     def indented(self, indent) -> str:
         indentStr = "\t"*indent
-        return indentStr + "LocalVariable "+self.name+";"
+        rv =  indentStr + "LocalVariable "+self.name
+        if len(self.children) > 0:
+            rv += " {\n"+ "\n".join([c.indented(indent+1) for c in self.children]) + "\n" + indentStr + "}";
+        else:
+            rv += ";"
+        return rv
 
 class StreamingCompiler:
     def __init__(self):
@@ -175,6 +195,16 @@ class StreamingCompiler:
                 args = args.removesuffix("\n").removesuffix(eof)
                 self.__pending.append(StringLiteral(args))
                 break
+            if instr == "int":
+                args = args.removesuffix("\n")
+                args = int(args)
+                self.__pending.append(NumberLiteral(args))
+                break
+
+            if instr == "do":
+                # TODO - must check previous sibling is "while" and such
+                self.__pending.append(CodeBlock(""))
+                break
 
             if instr == "then":
                 # TODO - must check previous sibling is "if"
@@ -196,7 +226,9 @@ class StreamingCompiler:
                 # TODO - these ought to be static code instead of function calls...
                 "concat": BuiltinDefinition("concat").JS("indentinfire.concat"),
                 "either": BuiltinDefinition("either").JS("indentinfire.either"),
-                "eq": BuiltinDefinition("either").JS("indentinfire.eq")
+                "eq": BuiltinDefinition("either").JS("indentinfire.eq"),
+                "asc": BuiltinDefinition("either").JS("indentinfire.asc"),
+                "add": BuiltinDefinition("either").JS("indentinfire.add")
             }
             if instr in builtins:
                 self.__pending.append(FunctionCall(builtins[instr]))

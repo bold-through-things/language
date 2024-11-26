@@ -20,3 +20,20 @@ if (typeof window === "undefined") {
         return rv;
     }
 }
+
+
+;(async () => {
+let n = (function(set) {if (set !== undefined) {this.value=set;} else {return this.value;} }).bind({value: null})
+n(await prompt("sum all numbers from 1 to "))
+let sum = (function(set) {if (set !== undefined) {this.value=set;} else {return this.value;} }).bind({value: null})
+sum(0)
+let i = (function(set) {if (set !== undefined) {this.value=set;} else {return this.value;} }).bind({value: null})
+i(1)
+while(indentinfire.asc(i(), n()))
+{
+console.log(indentinfire.concat("i= ", i(), ", sum= ", sum()))
+sum(indentinfire.add(sum(), i()))
+i(indentinfire.add(i(), 1))
+}
+console.log(indentinfire.concat("sum= ", sum()))
+})();

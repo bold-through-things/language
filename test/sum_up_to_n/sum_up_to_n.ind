@@ -1,0 +1,32 @@
+local n
+n
+	prompt
+		string EOF sum all numbers from 1 to EOF
+
+local sum
+	int 0
+local i
+	int 1
+while
+	asc
+		i
+		n
+do
+	print
+		concat
+			string EOF i= EOF
+			i
+			string EOF , sum= EOF
+			sum
+	sum
+		add
+			sum
+			i
+	i
+		add
+			i
+			int 1
+print
+	concat
+		string EOF sum= EOF
+		sum

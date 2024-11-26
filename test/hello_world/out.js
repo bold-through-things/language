@@ -1,9 +1,9 @@
 indentinfire = {
-    concat: (...arr) => arr.reduce((sum, a) => sum+a, ""),
-    eq: (...arr) => arr.every(v => v===a),
-    either: (...arr) => arr.reduce((sum, a) => sum||a, false),
+    concat: (a, b) => a + b,
+    eq: (a, b) => a == b,
+    either: (a, b) => a || b,
     asc: (...arr) => arr.every((v, i, a) => !i || a[i-1] <= v), // who let bro cook? https://stackoverflow.com/a/53833620
-    add: (...arr) => arr.reduce((sum, a) => sum+a, 0),
+    add: (a, b) => a + b,
 }
 
 if (typeof window === "undefined") { 
@@ -20,3 +20,8 @@ if (typeof window === "undefined") {
         return rv;
     }
 }
+
+
+;(async () => {
+console.log("hello world")
+})();
