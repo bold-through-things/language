@@ -29,8 +29,6 @@ class Instruction:
     def __init__(self):
         self.children:list["Instruction"]=[]
     def add_child(self, i: "Instruction"):
-        if self == i:
-            raise "wtf"
         self.children.append(i)
     def compile_JS(self, out: StringIO):
         for child in self.children:
@@ -39,6 +37,20 @@ class Instruction:
     def indented(self, indent) -> str:
         indentStr = "\t"*indent
         return indentStr + "Instruction {\n"+ "\n".join([c.indented(indent+1) for c in self.children]) + "\n" + indentStr + "}"
+    
+class CodeBlock(Instruction):
+    def __init__(self, name: str):
+        super(CodeBlock, self).__init__()
+        self.name = name
+    def compile_JS(self, out: StringIO):
+        out.write(self.name + "{\n")
+        for child in self.children:
+            child.compile_JS(out)
+            out.write("\n")
+        out.write("}")
+    def indented(self, indent) -> str:
+        indentStr = "\t"*indent
+        return indentStr + "CodeBlock "+self.name+" {\n"+ "\n".join([c.indented(indent+1) for c in self.children]) + "\n" + indentStr + "}"
 
 class StringLiteral(Instruction):
     def __init__(self, s: str):
@@ -137,7 +149,7 @@ class StreamingCompiler:
             # snip off the pushed instructions so they don't get pushed again
             self.__pending = self.__pending[:indent]
 
-            if len(line) <= 0:
+            if len(line.removesuffix("\n")) <= 0:
                 # skip empty/indentation-only lines
                 break
 
@@ -158,6 +170,21 @@ class StreamingCompiler:
                 self.__pending.append(LocalVariable(name))
                 break
 
+            if instr == "string":
+                eof, args = cut(args, " ")
+                args = args.removesuffix("\n").removesuffix(eof)
+                self.__pending.append(StringLiteral(args))
+                break
+
+            if instr == "then":
+                # TODO - must check previous sibling is "if"
+                self.__pending.append(CodeBlock(""))
+                break
+            if instr == "else":
+                # TODO - must check previous sibling is "then"
+                self.__pending.append(CodeBlock("else"))
+                break
+
             builtins = {
                 "print": BuiltinDefinition("print").JS("console.log"),
                 # TODO. this is awaited because NodeJS fucking sucks and doesn't give us a proper, 
@@ -166,7 +193,10 @@ class StreamingCompiler:
                 #  then again, considering this is almost guaranteed to only be used for debugging...
                 #  does it matter?
                 "prompt": BuiltinDefinition("prompt").JS("await prompt"),
-                "concat": BuiltinDefinition("concat").JS("indentinfire.concat")
+                # TODO - these ought to be static code instead of function calls...
+                "concat": BuiltinDefinition("concat").JS("indentinfire.concat"),
+                "either": BuiltinDefinition("either").JS("indentinfire.either"),
+                "eq": BuiltinDefinition("either").JS("indentinfire.eq")
             }
             if instr in builtins:
                 self.__pending.append(FunctionCall(builtins[instr]))

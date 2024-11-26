@@ -18,3 +18,16 @@ if (typeof window === "undefined") {
         return rv;
     }
 }
+
+
+;(async () => {
+let name = (function(set) {if (set !== undefined) {this.value=set;} else {return this.value;} }).bind({value: null})
+name(await prompt("hi what is ur name? "))
+if(indentinfire.either(indentinfire.eq(name(), "Alice"), indentinfire.eq(name(), "Bob")))
+{
+console.log(indentinfire.concat("hello ", name()))
+}
+else{
+console.log("who the fuck are you? ")
+}
+})();
