@@ -1,0 +1,85 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "INDENTIFIRE",
+	"patterns": [
+		{
+			"include": "#instruction"
+		}
+	],
+	"repository": {
+		"instruction": {
+			"patterns": [
+                {
+                    "include": "#heredoc"
+                },
+                {
+                    "include": "#string"
+                },
+                {
+                    "include": "#keyword"
+                },
+                {
+                    "include": "#other"
+                },
+				{
+					"include": "#operator"
+				},
+				{
+					"include": "#identifier"
+				}
+            ]
+		},
+		"keyword": {
+			"patterns": [
+                {
+                    "name": "keyword.control.indentifire",
+                    "match": "(?:\\s|^)(if|then|else|while|do)\\s"
+                }
+            ]
+		},
+		"other": {
+			"patterns": [
+                {
+                    "name": "keyword.other.indentifire",
+                    "match": "(?:\\s|^)(local)\\s"
+                }
+            ]
+		},
+		"operator": {
+			"patterns": [
+                {
+                    "name": "keyword.operator.indentifire",
+                    "match": "(?:\\s|^)(either|eq|concat|add)\\s"
+                }
+            ]
+		},
+		"heredoc": {
+			"name": "keyword.control.indentifire",
+			"begin": "(?:\\s|^)heredoc\\s+(.*)$",
+			"end": "(\\1)",
+			"captures": {
+				"1": {
+					"name": "keyword.other.indentifire"
+				}
+			},
+			"contentName": "string.unquoted.heredoc.indentifire",
+			"patterns": []
+		},
+		"string": {
+			"name": "keyword.control.indentifire",
+			"begin": "(?:\\s|^)string\\s",
+			"end": "\n",
+			"contentName": "string.unquoted.heredoc.indentifire",
+			"patterns": []
+		},
+		"identifier": {
+			"patterns": [
+                {
+                    "name": "entity.name.function.indentifire",
+                    "match": "(?:\\s|^)([^\\s]*)(?=\\s)"
+                }
+            ]
+		}
+	},
+	"scopeName": "source.indentifire"
+}

@@ -1,21 +1,21 @@
 local name
 name
 	prompt
-		string EOF hi what is ur name? EOF
+		string hi what is ur name? 
 
 if
 	either
 		eq
 			name
-			string EOF AliceEOF
+			string Alice
 		eq
 			name
-			string EOF BobEOF
+			string Bob
 then
 	print
 		concat
-			string EOF hello EOF
+			string hello 
 			name
 else
 	print
-		string EOF who the fuck are you? EOF
+		string who the fuck are you?

@@ -1,7 +1,7 @@
 local n
 n
 	prompt
-		string EOF sum all numbers from 1 to EOF
+		string sum all numbers from 1 to 
 
 local sum
 	int 0
@@ -14,9 +14,9 @@ while
 do
 	print
 		concat
-			string EOF i= EOF
+			string i= 
 			i
-			string EOF , sum= EOF
+			string , sum= 
 			sum
 	sum
 		add
@@ -28,5 +28,5 @@ do
 			int 1
 print
 	concat
-		string EOF sum= EOF
+		string sum= 
 		sum

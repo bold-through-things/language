@@ -177,6 +177,9 @@ class StreamingCompiler:
             instr = instr.removesuffix("\n")
 
             if instr == "heredoc":
+                # TODO - this should probably support escape sequences nevertheless
+                #  not as important for newlines, but would be needed for control characters
+                #  and other unprintable crap
                 eof = args.removesuffix("\n")
                 heredoc = self.__consume_heredoc(eof, lines)
                 self.__pending.append(StringLiteral(heredoc))
@@ -191,8 +194,9 @@ class StreamingCompiler:
                 break
 
             if instr == "string":
-                eof, args = cut(args, " ")
-                args = args.removesuffix("\n").removesuffix(eof)
+                # TODO - this should support multiline strings (via \ newline escape)
+                #  also should support escapes
+                args = args.removesuffix("\n")
                 self.__pending.append(StringLiteral(args))
                 break
             if instr == "int":
@@ -224,11 +228,11 @@ class StreamingCompiler:
                 #  does it matter?
                 "prompt": BuiltinDefinition("prompt").JS("await prompt"),
                 # TODO - these ought to be static code instead of function calls...
-                "concat": BuiltinDefinition("concat").JS("indentinfire.concat"),
-                "either": BuiltinDefinition("either").JS("indentinfire.either"),
-                "eq": BuiltinDefinition("either").JS("indentinfire.eq"),
-                "asc": BuiltinDefinition("either").JS("indentinfire.asc"),
-                "add": BuiltinDefinition("either").JS("indentinfire.add")
+                "concat": BuiltinDefinition("concat").JS("indentifire.concat"),
+                "either": BuiltinDefinition("either").JS("indentifire.either"),
+                "eq": BuiltinDefinition("either").JS("indentifire.eq"),
+                "asc": BuiltinDefinition("either").JS("indentifire.asc"),
+                "add": BuiltinDefinition("either").JS("indentifire.add")
             }
             if instr in builtins:
                 self.__pending.append(FunctionCall(builtins[instr]))
