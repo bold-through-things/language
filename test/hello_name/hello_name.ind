@@ -1,0 +1,10 @@
+local name
+name
+	prompt
+		heredoc EOF
+hi what is ur name? EOF
+print
+	concat
+		heredoc EOF
+hello EOF
+		name

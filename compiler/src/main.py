@@ -7,6 +7,7 @@ import streaming_compiler
 
 parser = argparse.ArgumentParser()
 parser.add_argument('input_dir')
+parser.add_argument('output_file')
 
 args = parser.parse_args()
 
@@ -23,4 +24,5 @@ def read_file_lines():
 
 lines = read_file_lines()
 streaming.consume_all(lines)
-streaming.compile()
+compiled = streaming.compile()
+open(args.output_file, "w").write(compiled)
