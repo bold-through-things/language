@@ -27,7 +27,7 @@ let name = (function(set) {if (set !== undefined) {this.value=set;} else {return
 name(await prompt("hi what is ur name? "))
 if(indentifire.either(indentifire.eq(name(), "Alice"), indentifire.eq(name(), "Bob")))
 {
-console.log(indentifire.concat("hello ", name()))
+console.log("hello ", name())
 }
 else{
 console.log("who the fuck are you?")

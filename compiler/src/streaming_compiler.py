@@ -155,6 +155,10 @@ class StreamingCompiler:
             line, indent = extract_indent(line)
             # print(self.__pending[0].indented(0))
 
+            if not line.endswith("\n"):
+                # likely the last line. parsing further down expects lines to end with \n, so make it so
+                line += "\n"
+
             # simplifies code. all the top-level lines are indent-1, belonging to a fake top-level Instruction
             # which is at indent-0
             indent += 1
@@ -189,14 +193,23 @@ class StreamingCompiler:
                 name, mustBeEmpty = cut(args, " ")
                 name = name.removesuffix("\n")
                 if len(mustBeEmpty) > 0:
-                    raise "invalid local variable definition"
+                    raise Exception("invalid local variable definition")
                 self.__pending.append(LocalVariable(name))
                 break
 
             if instr == "string":
                 # TODO - this should support multiline strings (via \ newline escape)
                 #  also should support escapes
+                start_char = args[0]
                 args = args.removesuffix("\n")
+                if start_char == '\\':
+                    raise Exception("cannot start a string with \\ (such a string cannot be terminated)")
+                if not len(args) >= 2:
+                    raise Exception("invalid string (only one delimiter present?)")
+                if not args.endswith(start_char):
+                    raise Exception("string started with "+start_char+", must end with "+start_char+" (to ensure trailing whitespace is visible)")
+                args = args.removeprefix(start_char).removesuffix(start_char)
+
                 self.__pending.append(StringLiteral(args))
                 break
             if instr == "int":
