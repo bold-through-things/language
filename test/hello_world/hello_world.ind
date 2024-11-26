@@ -1,0 +1,3 @@
+print
+	heredoc EOF
+hello worldEOF
