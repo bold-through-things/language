@@ -115,13 +115,25 @@ class LocalVariable(Instruction):
             rv += ";"
         return rv
 
+class Code(Instruction):
+    def __init__(self):
+        super(Code, self).__init__()
+    def JS(self, code):
+        self.js = code
+        return self
+    def compile_JS(self, out: StringIO):
+        out.write(self.js)
+    def indented(self, indent) -> str:
+        indentStr = "\t"*indent
+        return indentStr + "Code "+self.js+";"
+
 class StreamingCompiler:
     def __init__(self):
         self.__pending = [Instruction()]
 
     def compile(self):
-        # consume one fake empty 0-indent line in order to push whatever instructions are still pending
-        self.consume_one(iter([""]))
+        # we still have a few pending instructions that we need to push
+        self.__push_pending(1)
 
         out = StringIO()
         print(self.__pending[0].indented(0))
@@ -144,6 +156,16 @@ class StreamingCompiler:
             except StopIteration:
                 break
 
+    def __push_pending(self, indent):
+        # push all pending instructions on this or higher indent levels into their parents
+        for i, instr in reversed(list(enumerate(self.__pending))):
+            if i < indent:
+                break
+            parent = self.__pending[i-1]
+            parent.add_child(instr)
+
+        # snip off the pushed instructions so they don't get pushed again
+        self.__pending = self.__pending[:indent]
     
     def consume_one(self, lines: Iterator[str]):
         """
@@ -159,26 +181,20 @@ class StreamingCompiler:
                 # likely the last line. parsing further down expects lines to end with \n, so make it so
                 line += "\n"
 
+            if line.isspace():
+                # skip empty/indentation-only lines
+                break
+
             # simplifies code. all the top-level lines are indent-1, belonging to a fake top-level Instruction
             # which is at indent-0
             indent += 1
 
-            # push all pending instructions on this or higher indent levels into their parents
-            for i, instr in reversed(list(enumerate(self.__pending))):
-                if i < indent:
-                    break
-                parent = self.__pending[i-1]
-                parent.add_child(instr)
-
-            # snip off the pushed instructions so they don't get pushed again
-            self.__pending = self.__pending[:indent]
-
-            if len(line.removesuffix("\n")) <= 0:
-                # skip empty/indentation-only lines
-                break
+            self.__push_pending(indent)
 
             instr, args = cut(line, " ")
             instr = instr.removesuffix("\n")
+
+            print(instr)
 
             if instr == "heredoc":
                 # TODO - this should probably support escape sequences nevertheless
@@ -230,6 +246,18 @@ class StreamingCompiler:
             if instr == "else":
                 # TODO - must check previous sibling is "then"
                 self.__pending.append(CodeBlock("else"))
+                break
+
+            if instr == "break":
+                # TODO - must check we're inside a loop
+                self.__pending.append(Code().JS("\nbreak;"))
+                break
+
+            if instr == "true":
+                self.__pending.append(Code().JS(" true "))
+                break
+            if instr == "false":
+                self.__pending.append(Code().JS(" false "))
                 break
 
             builtins = {

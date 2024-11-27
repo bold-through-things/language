@@ -15,6 +15,13 @@
             "language": "indentifire",
             "scopeName": "source.indentifire",
             "path": "./syntaxes/main.indentifire.tmLanguage.json"
-        }]
+        }],
+        "configurationDefaults": {
+			"[indentifire]": {
+				"editor.insertSpaces": false,
+				"editor.tabSize": 2,
+				"editor.detectIndentation": false
+			}
+		}
     }
 }
