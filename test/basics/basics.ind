@@ -15,7 +15,7 @@ do
 		heredoc EOF
 hello world!
 	<- include tabs
-		<- or spaces
+    <- or spaces
 must be unindented of course it's very literal
 heredoc string!
 TODO needs escape sequences lmao
@@ -23,9 +23,9 @@ this one ends without a newline!EOF
 
 	print
 		string $this is an inline string, it's got a slighly different syntax.$
-		string !you can use any character to delimit the string!!
+		string !you can use any non whitespace character to delimit the string!!
 		string :this is mostly so that trailing whitespace is obvious      :
-		string ;but i can envision people using these characters as markers for what the string represents, perhaps...;
+		string `but i can envision people using these characters as markers for what the string represents, perhaps...`
 		string ~uwu~
 
 while

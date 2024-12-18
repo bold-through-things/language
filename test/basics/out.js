@@ -28,7 +28,7 @@ if (typeof window === "undefined") {
 "many of microprograms here are implementations of tasks at https://adriann.github.io/programming_problems.html\n"
 {
 console.log("hello world!\n	<- include tabs\n		<- or spaces\nmust be unindented of course it's very literal\nheredoc string!\nTODO needs escape sequences lmao\nthis one ends without a newline!")
-console.log("this is an inline string, it's got a slighly different syntax.", "you can use any character to delimit the string!", "this is mostly so that trailing whitespace is obvious      ", "but i can envision people using these characters as markers for what the string represents, perhaps...", "uwu")
+console.log("this is an inline string, it's got a slighly different syntax.", "you can use any non whitespace character to delimit the string!", "this is mostly so that trailing whitespace is obvious      ", "but i can envision people using these characters as markers for what the string represents, perhaps...", "uwu")
 }
 while( true )
 {
