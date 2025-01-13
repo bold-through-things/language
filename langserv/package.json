@@ -1,0 +1,33 @@
+{
+    "name": "indentifire_lsp",
+    "displayName": "INDENTIFIRE Language Server",
+    "description": "a better language.",
+    "publisher": "u1tmt",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "activationEvents": [
+        "onLanguage:indentifire"
+    ],
+    "main": "./client/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "indentifire",
+                "aliases": [
+                    "INDENTIFIRE"
+                ],
+                "extensions": [
+                    ".ind"
+                ]
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^8.1.0"
+    }
+}

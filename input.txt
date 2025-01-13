@@ -1,0 +1,24 @@
+
+print
+	add
+		twice
+			int 0
+			int 0
+
+print
+	string "as as such,"
+	twice
+		string "words shall be printed..."
+		heredoc EOF
+Does the Black Moon howl?
+Only at the fact of light.EOF
+		string "and the words shall be read."
+	heredoc ###
+and these words shall define our future.
+###
+
+print
+	add
+		twice
+			int 1
+			int 1

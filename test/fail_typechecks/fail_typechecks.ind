@@ -1,0 +1,12 @@
+heredoc ###
+this should fail due to string != int
+###
+
+local name
+name
+	int 0
+
+print
+	eq
+		name
+		string ""

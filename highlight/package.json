@@ -1,5 +1,7 @@
 {
-    "name": "indentifire",
+    "name": "indentifire_syntax_highlight",
+    "displayName": "INDENTIFIRE Syntax Highlighting",
+    "description": "can you see it now?",
     "version": "0.0.1",
     "engines": {
         "vscode": ">=0.9.0-pre.1"
