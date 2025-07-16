@@ -53,18 +53,6 @@
                 }
             ]
 		},
-		"heredoc": {
-			"name": "keyword.control.indentifire",
-			"begin": "(?:\\s|^)heredoc\\s+(.*)$",
-			"end": "(\\1)",
-			"captures": {
-				"1": {
-					"name": "keyword.other.indentifire"
-				}
-			},
-			"contentName": "string.unquoted.heredoc.indentifire",
-			"patterns": []
-		},
 		"string": {
 			"name": "keyword.control.indentifire",
 			"begin": "(?:\\s|^)string\\s+([^\\s])",

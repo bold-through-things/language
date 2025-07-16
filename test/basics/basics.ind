@@ -1,25 +1,24 @@
-heredoc ###
-this is a multiline comment.
-same as in python, you can use a string in a statement context
-to write your comments.
-in this language though, this is THE correct way to do it (at least at level azero)
-###
+string
+	this is a multiline comment.
+	same as in python, you can use a string in a statement context
+	to write your comments.
+	in this language though, this is THE correct way to do it (at least at level azero)
 string #or use an inline string if you prefer#
 
-heredoc ###
-many of microprograms here are implementations of tasks at https://adriann.github.io/programming_problems.html
-###
+string 
+	many of microprograms here are implementations of tasks at https://adriann.github.io/programming_problems.html
 
 do
 	print
-		heredoc EOF
-hello world!
-	<- include tabs
-    <- or spaces
-must be unindented of course it's very literal
-heredoc string!
-TODO needs escape sequences lmao
-this one ends without a newline!EOF
+		string
+			hello world!
+				<- include tabs
+			    <- or spaces
+			must be indented just like in YAML!
+		string 
+			string!
+			TODO needs escape sequences lmao
+			this one ends without a newline!
 
 	print
 		string $this is an inline string, it's got a slighly different syntax.$
@@ -31,14 +30,13 @@ this one ends without a newline!EOF
 while
 	true
 do
-	local name
-	name
+	local .name
 		prompt
 			string "hi what is ur name? "
 
 	if
 		eq
-			name
+			.name
 			string ""
 	then
 		break
@@ -46,15 +44,15 @@ do
 	if
 		either
 			eq
-				name
+				.name
 				string "Alice"
 			eq
-				name
+				.name
 				string "Bob"
 	then
 		print
 			string "hello "
-			name
+			.name
 	else
 		print
 			string !who the fuck are you?!
@@ -62,42 +60,113 @@ do
 while
 	true
 do
-	local n
-	n
+	local .n
 		prompt
 			string "sum all numbers from 1 to "
 
 	if
 		eq
-			n
+			.n
 			string ""
 	then
 		break
 
-	local sum
+	local .sum
 		int 0
-	local i
+	local .i
 		int 1
 	while
 		asc
-			i
-			n
+			.i
+			.n
 	do
 		print
 			concat
 				string "i= "
-				i
+				.i
 				string ", sum= "
-				sum
-		sum
+				.sum
+		.sum
 			add
-				sum
-				i
-		i
+				.sum
+				.i
+		.i
 			add
-				i
+				.i
 				int 1
 	print
 		concat
 			string "sum= "
-			sum
+			.sum
+
+
+while
+	true
+do
+	local .fizz_divisor
+		prompt
+			string "fizz? "
+	
+	local .buzz_divisor
+		prompt
+			string "buzz? "
+	
+	local .n
+		prompt
+			string "n? "
+	
+	if
+		eq
+			.n
+			string ""
+	then
+		break
+
+	local .i
+	while
+		asc
+			.i
+			.n
+	do
+		local .out
+			string ""
+		
+		if
+			eq
+				mod
+					.i
+					.fizz_divisor
+				int 0
+		then
+			.out
+				concat
+					.out
+					string "fizz"
+
+		if
+			eq
+				mod
+					.i
+					.buzz_divisor
+				int 0
+		then
+			.out
+				concat
+					.out
+					string "buzz"
+		
+		if
+			eq
+				.out
+				string ""
+		then
+			.out
+				.i
+
+		print
+			.out
+		
+		.i
+			add
+				.i
+				int 1

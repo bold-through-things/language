@@ -3,7 +3,8 @@
 from pathlib import Path
 import argparse
 import os
-import streaming_compiler
+from tree_parser import TreeParser
+from processor import Compiler
 
 parser = argparse.ArgumentParser()
 parser.add_argument('input_dir')
@@ -13,16 +14,14 @@ args = parser.parse_args()
 
 os.chdir(args.input_dir)
 result = list(Path(".").rglob("*.ind"))
-streaming = streaming_compiler.StreamingCompiler()
+compiler = Compiler()
 
-def read_file_lines():
-    for filename in result:
-        with open(filename) as file:
-            for line in file:
-                yield line
-            return
+parser = TreeParser()
+for filename in result:
+    with open(filename) as file:
+        node = parser.parse_tree(file.read())
+        compiler.register(node)
+        print(repr(node))
 
-lines = read_file_lines()
-streaming.consume_all(lines)
-compiled = streaming.compile()
+compiled = compiler.compile_JS()
 open(args.output_file, "w").write(compiled)
