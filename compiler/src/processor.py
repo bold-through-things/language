@@ -1,27 +1,29 @@
 from typing import Iterator
 from io import StringIO
 from pathlib import Path
-from node import Node
-from strutil import cut, extract_indent
+from node import Args, Associated_code_block, Indexers, Inject_code_start, Macro, Node, Parent
+from strutil import cut, extract_indent, join_nested
 from typing import Callable, Type, Dict, List, Optional
 
 js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
 
 builtins = {
-    "print": "console.log",
+    "print": "log",
     # TODO. this is awaited because NodeJS fucking sucks and doesn't give us a proper, 
     #  blocking prompt function. in future should probably write such a function
     #  and remove unnecessary await.
     #  then again, considering this is almost guaranteed to only be used for debugging...
     #  does it matter?
-    "prompt": "await prompt",
+    "prompt": "prompt",
+    "stdin": "stdin",
+    "is_tty": "is_tty",
     # TODO - these ought to be static code instead of function calls...
-    "concat": "indentifire.concat",
-    "either": "indentifire.either",
-    "eq": "indentifire.eq",
-    "asc": "indentifire.asc",
-    "add": "indentifire.add",
-    "mod": "indentifire.mod"
+    "concat": "concat",
+    "either": "either",
+    "eq": "eq",
+    "asc": "asc",
+    "add": "add",
+    "mod": "mod"
 }
 
 from typing import Optional
@@ -70,6 +72,8 @@ class IndentedStringIO:
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.dedent()
 
+ACCESS_MACRO = {"a", "an", "access"}
+
 class Compiler:
     def __init__(self):
         self.nodes: list[Node] = []
@@ -78,16 +82,21 @@ class Compiler:
         self.nodes.append(node)
 
     def compile_JS(self):
+        for node in self.nodes:
+            self.__discover_macros(node, None)
+            self.__preprocess_annotations(node)
 
         out = IndentedStringIO()
         out.write(js_lib + "\n\n")
         # need to wrap this crap in async because NodeJS is GARBAGE
         out.write("void (async () => {\n")
         with out:
+            out.write("'use strict';\n")
+            out.write("const scope = globalThis;\n")
             for node in self.nodes:
                 assert node.content == "do" # root
                 self.__compile_JS(node, out)
-        out.write("})();")
+        out.write("\n})();")
         print("compiled:")
         print(out.getvalue())
         return out.getvalue()
@@ -95,38 +104,147 @@ class Compiler:
     def __recover_string(self, node: Node) -> str:
         return node.content + "\n" + "\n".join(["\t"+child.content for child in node.children])
     
-    def __compile_JS_function_call(self, name, args: list[Node], out:IndentedStringIO):
-        out.write(f"{name}(")
-        first = True
+    def __resolve_JS_access(self, node: Node) -> str:
+        access, path = cut(node.content, " ")
+        assert access in ACCESS_MACRO
+        access = ["scope"]
+        steps = path.split(" ")
+        indexers = node.metadata.maybe(Indexers)
+        # print(f"{(indexers.mapping if indexers else None)=}")
+        def resolve_index(step):
+            if indexers and step in indexers.mapping:
+                out = IndentedStringIO()
+                child = indexers.mapping[step]
+                self.__compile_JS(child, out)
+                return out.getvalue()
+            else:
+                return f"'{step}'"
+
+        for step in steps[:-1]:
+            access = ["await indentifire.get_or_call(\n", access, ",\n", resolve_index(step), "\n)"]
+        
+        access.append(",")
+        access.append(resolve_index(steps[-1:][0]))
+        return join_nested(access)
+
+    def __discover_macros(self, node: Node, parent: Node):
+        # TODO lstring macros should perhaps get special handling here...
+        macro, args = cut(node.content, " ")
+        node.metadata[Parent] = parent
+        node.metadata[Macro] = macro
+        node.metadata[Args] = args
+        for child in node.children:
+            self.__discover_macros(child, node)
+
+    def __preprocess_annotations(self, node: Node):
+        # probably want to process children first, i reckon...
+        for child in node.children:
+            self.__preprocess_annotations(child)
+
+        macro, args = str(node.metadata[Macro]), str(node.metadata[Args])
+        parent = node.metadata[Parent]
+
+        # preprocess indexers, storing them in the metadata
+        # indexers are special annotations that must appear at the start (TODO - might remove this restriction in future...)
+        if macro == "substituting":
+            assert len(node.children) == 1
+            assert args.find(" ") == -1 # no space == single arg
+            parent.metadata[Indexers].mapping[args] = node.children[0]
+        
+        # associate code blocks with relevant headers
+        CODE_BLOCK_HEADERS = {
+            "if": "then",
+            "while": "do",
+            "for": "do"
+        }
+        for i in range(len(node.children)):
+            current = node.children[i]
+            next = node.children[i+1] if i+1 < len(node.children) else None
+
+            macro, args = str(current.metadata[Macro]), str(current.metadata[Args])
+            if macro in CODE_BLOCK_HEADERS:
+                expected_next = CODE_BLOCK_HEADERS[macro]
+                macro, args = str(next.metadata[Macro]), str(next.metadata[Args])
+                if macro == expected_next:
+                    current.metadata[Associated_code_block] = Associated_code_block(next)
+                else:
+                    ValueError(f"for {macro} expected a following {expected_next}")
+                
+
+    def __compile_JS_function_call(self, access: str, node: Node, args: list[Node], out:IndentedStringIO):
+        args_compiled = []
+        for arg in args:
+            arg_out = IndentedStringIO()
+            self.__compile_JS(arg, arg_out)
+            arg_out = arg_out.getvalue()
+            if arg_out:
+                args_compiled.append(arg_out)
+        fn = "get_or_call" if len(args_compiled) == 0 else "call_or_set"
+        out.write(f"await indentifire.{fn}(\n")
+        args_compiled.insert(0, access)
         with out:
-            for arg in args:
-                if not first:
-                    out.write(", ")
-                first = False
-                self.__compile_JS(arg, out)
-        out.write(")")
+            out.write(", ".join(args_compiled))
+        out.write("\n)")
 
     def __compile_JS(self, node: Node, out: IndentedStringIO):
         macro, args = cut(node.content, " ")
+
+        literally = {
+            "true": "true",
+            "false": "false",
+            "break": "break",
+            "continue": "continue",
+            "dict": "{}",
+            "list": "[]",
+        }
         
         if macro in ["if", "while"]:
             # WTF ? xddxddd
             out.write("\n")
-            self.__compile_JS_function_call(macro, node.children, out)
+            out.write(f"{macro} (")
+            with out:
+                assert len(node.children) == 1
+                self.__compile_JS(node.children[0], out)
+            out.write(")")
+        elif macro in ["for"]:
+            split = node.content.split(" ")
+            assert len(split) == 3
+            # assert split[0] == "for" # inherent per semantics
+            name = split[1]
+            assert split[2] == "in"
+            out.write("\n")
+            out.write(f"for (const iter of ")
+            assert len(node.children) == 1
+            self.__compile_JS(node.children[0], out)
+            out.write(")")
+            next = node.metadata[Associated_code_block].block
+            inject = Inject_code_start()
+            inject.code.append(f"scope.{name} = iter")
+            next.metadata[Inject_code_start] = inject
+
         elif macro in ["do", "then", "else"]:
             if macro in ["else"]:
                 out.write(f"{macro} ")
-            out.write("{\n")
-            
-            with out:
-                for child in node.children:
-                    self.__compile_JS(child, out)
-                    out.write("\n")
 
+            out.write("{\n")
+            with out:
+                out.write("const parent_scope = scope\n")
+                out.write("{\n")
+                with out:
+                    out.write("const scope = indentifire.scope(parent_scope)\n")
+                    inject = node.metadata.maybe(Inject_code_start)
+                    if inject:
+                        for code in inject.code:
+                            out.write(code)
+                            out.write("\n")
+                    for child in node.children:
+                        self.__compile_JS(child, out)
+                        out.write("\n")
+                out.write("}\n")
             out.write("} ")
         elif macro in builtins:
-            fn = builtins[macro]
-            self.__compile_JS_function_call(fn, node.children, out)
+            name = f"indentifire, '{builtins[macro]}'"
+            self.__compile_JS_function_call(name, node, node.children, out)
         elif macro in ["string"]:
             s = args
             if len(s) == 0:
@@ -142,20 +260,21 @@ class Compiler:
             out.write(f'"{s}"')
         elif macro in ["int"]:
             out.write(str(args))
-        elif macro in ["true", "false", "break", "continue"]:
-            out.write(macro)
+        elif macro in literally:
+            out.write(literally[macro])
         elif macro in ["local"]:
             name, _ = cut(args, " ")
-            assert name.startswith(".")
-            name = name.removeprefix(".")
-            out.write(f"let {name}")
-            out.write(" = (function(set) {if (set !== undefined) {this.value=set;} else {return this.value;} }).bind({value: null})")
+            out.write(f"scope.{name} = indentifire.store()")
             if len(node.children) > 0:
                 out.write("\n")
-                self.__compile_JS_function_call(name, node.children, out)
-        elif macro.startswith("."):
-            fn = macro.removeprefix(".")
-            self.__compile_JS_function_call(fn, node.children, out)
+                self.__compile_JS_function_call(f"scope, '{name}'", node, node.children, out)
+        elif macro in ACCESS_MACRO:
+            access = self.__resolve_JS_access(node)
+            self.__compile_JS_function_call(access, node, node.children, out)
+        elif macro in {"noop", "substituting"}:
+            pass # does not compile into code itself
+        elif macro in {"#", "//", "/*", "--", "note"}:
+            pass # comments are ignored. TODO - we could and perhaps should transfer comments to output?
         else:
             raise ValueError(f"TODO. unknown macro {macro}")
 

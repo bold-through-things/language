@@ -102,3 +102,67 @@ if (typeof window === "undefined") {
 
     indentifire.is_tty = () => process.stdin.isTTY
 }
+
+
+void (async () => {
+    'use strict';
+    const scope = globalThis;
+    {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+            scope.input = indentifire.store()
+            await indentifire.call_or_set(
+                scope, 'input', await indentifire.get_or_call(
+                    indentifire, 'stdin'
+                )
+            )
+            scope.words = indentifire.store()
+            await indentifire.call_or_set(
+                scope, 'words', await indentifire.call_or_set(
+                    await indentifire.get_or_call(
+                       scope ,
+                     'input' 
+                    ) , 'split', "\n"
+                )
+            )
+            scope.count = indentifire.store()
+            await indentifire.call_or_set(
+                scope, 'count', {}
+            )
+
+            for (const iter of await indentifire.get_or_call(
+                scope , 'words'
+            ))
+            {
+                const parent_scope = scope
+                {
+                    const scope = indentifire.scope(parent_scope)
+                    scope.word = iter
+                    await indentifire.call_or_set(
+                        await indentifire.get_or_call(
+                           scope ,
+                         'count' 
+                        ) , await indentifire.get_or_call(
+                            scope , 'word'
+                        ), await indentifire.call_or_set(
+                            indentifire, 'add', 1, await indentifire.get_or_call(
+                                await indentifire.get_or_call(
+                                   scope ,
+                                 'count' 
+                                ) , await indentifire.get_or_call(
+                                    scope , 'word'
+                                )
+                            )
+                        )
+                    )
+                }
+            } 
+            await indentifire.call_or_set(
+                indentifire, 'log', await indentifire.get_or_call(
+                    scope , 'count'
+                )
+            )
+        }
+    } 
+})();

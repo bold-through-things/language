@@ -1,0 +1,89 @@
+local fizz_divisor
+local buzz_divisor
+local n
+
+if
+	is_tty
+then
+	access fizz_divisor
+		prompt
+			string "fizz? "
+	access buzz_divisor
+		prompt
+			string "buzz? "
+	access n
+		prompt
+			string "n? "
+else
+	local input
+		stdin
+	
+	access input
+		access input split
+			string "\n"
+	
+	# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
+
+	a fizz_divisor
+		an input key
+			substituting key
+				int 0
+
+	a buzz_divisor
+		an input key
+			substituting key
+				int 1
+
+	an n
+		an input key
+			substituting key
+				int 2
+
+local i
+while
+	asc
+		access i
+		access n
+do
+	local out
+		string ""
+	
+	if
+		eq
+			mod
+				access i
+				access fizz_divisor
+			int 0
+	then
+		access out
+			concat
+				access out
+				string "fizz"
+
+	if
+		eq
+			mod
+				access i
+				access buzz_divisor
+			int 0
+	then
+		access out
+			concat
+				access out
+				string "buzz"
+	
+	if
+		eq
+			access out
+			string ""
+	then
+		access out
+			access i
+
+	print
+		access out
+	
+	access i
+		add
+			access i
+			int 1
