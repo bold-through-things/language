@@ -1,0 +1,5 @@
+main   :   parser   db
+  parser :   lexer
+db :
+lexer :
+utils : parser   

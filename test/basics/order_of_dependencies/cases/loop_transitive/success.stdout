@@ -1,0 +1,2 @@
+ERROR: there are dependency loops.
+a → b → c → a

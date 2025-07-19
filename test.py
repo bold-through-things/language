@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from dataclasses import dataclass
+import json
 import threading
 import time
 import unittest
@@ -60,17 +62,48 @@ def run_with_input(exec_cmd: List[str], stdin: str, line_delayed: bool = True) -
 
     return proc.returncode, "".join(output_lines), "".join(error_lines)
 
-def discover_tests() -> list[Path]:
-    tests = []
-    for dirpath, _, filenames in os.walk(TEST_ROOT):
-        files = set(filenames)
-        if any(x in files for x in ("success.stdout", "compile.stderr", "runtime.stderr")):
-            tests.append(Path(dirpath))
+@dataclass
+class TestCase:
+    case: Path
+    code: Path
+
+import json
+from pathlib import Path
+from typing import TypeAlias
+from itertools import product
+
+def discover_tests() -> list[TestCase]:
+    def resolve(pattern: str, base: Path) -> list[Path]:
+        if not pattern:
+            raise ValueError(f"Empty pattern in {base}")
+        return list(base.glob(pattern)) if "*" in pattern else [base / pattern]
+
+    tests: list[TestCase] = []
+
+    for tests_json_path in TEST_ROOT.rglob("tests.json"):
+        with open(tests_json_path, "r") as f:
+            # TODO - instead of JSON leverage our own format
+            entries = json.load(f)
+
+        base_dir = tests_json_path.parent
+
+        for entry in entries:
+            code_glob = entry["code"]
+            case_glob = entry["case"]
+
+            code_paths = resolve(code_glob, base_dir)
+            case_paths = resolve(case_glob, base_dir)
+
+            for code_path, case_path in product(code_paths, case_paths):
+                tests.append(TestCase(case=case_path, code=code_path))
+
     return tests
 
-def make_test_method(case_dir: Path):
+def make_test_method(tc: TestCase):
     def test(self: unittest.TestCase) -> None:
-        print(f"running test for {case_dir}")
+        case_dir = tc.case
+        code_dir = tc.code
+        print(f"running test for {tc}")
         expected_compile_err = read_file(case_dir / "compile.stderr")
         expected_runtime_err = read_file(case_dir / "runtime.stderr")
         expected_stdout = read_file(case_dir / "success.stdout")
@@ -80,7 +113,8 @@ def make_test_method(case_dir: Path):
 
         with tempfile.TemporaryDirectory() as tmpdir_str:
             tmpdir = Path(tmpdir_str)
-            out_path = case_dir / EXECUTABLE
+            out_path = code_dir / EXECUTABLE
+            shutil.copytree(code_dir, tmpdir, dirs_exist_ok=True)
             shutil.copytree(case_dir, tmpdir, dirs_exist_ok=True)
 
             compiler_path = Path("compiler/src/main.py")
@@ -125,10 +159,11 @@ def make_test_method(case_dir: Path):
 # Dynamically create test methods
 class MyLangTestCase(unittest.TestCase): pass
 
-for case_dir in discover_tests():
-    parts = case_dir.relative_to(TEST_ROOT).parts
-    name = "test_" + "_".join(parts)
-    setattr(MyLangTestCase, name, make_test_method(case_dir))
+for tc in discover_tests():
+    code_parts = tc.code.relative_to(TEST_ROOT).parts
+    case_parts = tc.case.relative_to(TEST_ROOT).parts
+    name = "test_" + "_".join(code_parts + case_parts)
+    setattr(MyLangTestCase, name, make_test_method(tc))
 
 if __name__ == "__main__":
     unittest.main()

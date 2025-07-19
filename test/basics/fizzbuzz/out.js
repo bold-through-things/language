@@ -5,7 +5,25 @@ indentifire = {
     asc: (...arr) => arr.every((v, i, a) => !i || a[i - 1] <= v), // who let bro cook? https://stackoverflow.com/a/53833620
     add: (...arr) => arr.reduce((sum, a) => sum + (a ?? 0), 0),
     mod: (...arr) => arr[0] % arr[1], // TODO - shouldn't be a binary operation (how?) TODO - ensure we're not ignoring inputs silently
+    none: (...arr) => arr.every(v => !v),
+    exists_inside: (inside, ...arr) => {
+        if (Array.isArray(inside)) {
+            // array
+            return arr.every(v => inside.includes(v))
+        } else {
+            // assume dict
+            return arr.every(v => v in inside)
+        }
+    },
+    zip: (...arrays) => {
+        const maxLength = Math.max(...arrays.map(x => x.length));
+        return Array.from({ length: maxLength }).map((_, i) => {
+          return arrays.map(array => array[i]);
+        });
+    },
 
+    keys: Object.keys.bind(Object),
+    values: Object.values.bind(Object),
     log: console.log.bind(console),
 
     store() {
@@ -151,7 +169,7 @@ void (async () => {
                     )
                     await indentifire.call_or_set(
                         scope , 'input', await indentifire.call_or_set(
-                            await indentifire.get_or_call(
+                            await indentifire. get_or_call (
                                scope ,
                              'input' 
                             ) , 'split', "\n"
@@ -160,7 +178,7 @@ void (async () => {
 
                     await indentifire.call_or_set(
                         scope , 'fizz_divisor', await indentifire.get_or_call(
-                            await indentifire.get_or_call(
+                            await indentifire. get_or_call (
                                scope ,
                              'input' 
                             ) , 0
@@ -168,7 +186,7 @@ void (async () => {
                     )
                     await indentifire.call_or_set(
                         scope , 'buzz_divisor', await indentifire.get_or_call(
-                            await indentifire.get_or_call(
+                            await indentifire. get_or_call (
                                scope ,
                              'input' 
                             ) , 1
@@ -176,7 +194,7 @@ void (async () => {
                     )
                     await indentifire.call_or_set(
                         scope , 'n', await indentifire.get_or_call(
-                            await indentifire.get_or_call(
+                            await indentifire. get_or_call (
                                scope ,
                              'input' 
                             ) , 2

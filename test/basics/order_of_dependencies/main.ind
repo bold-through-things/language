@@ -1,0 +1,141 @@
+local lines
+	stdin
+
+a lines
+	a lines split
+		string "\n"
+
+local modules
+	dict
+for line in
+	a lines
+do
+	local module
+		dict
+
+	local kv
+		a line split
+			string ":"
+			int 2
+	
+	a module id
+		a kv 0 trim
+	
+	a module deps
+		a kv 1 trim split
+			regex /\s+/
+	
+	# TODO - this ought to be a macro.
+	if
+		eq
+			a kv 1 trim
+			string ""
+	then
+		a module deps
+			list
+	
+	a modules id
+		substituting id
+			a module id
+		a module
+
+# print
+	string "modules"
+	a modules
+
+# TODO - support set initializers
+# TODO - support a  way to convert a dict keys to a set cleanly
+# (old code removed)
+
+local build_order
+	list
+
+local dep_loops
+	list
+
+fn visit
+	param module
+	# chain of dependencies currently being inspected - used to detect loops
+	param chain
+do
+	if 
+		a module visited
+	then
+		return
+	a module visited
+		true
+
+	# TODO - this shouldn't be using slice. we need a dedicated copy command
+	local next_chain
+		a chain slice
+	a next_chain push
+		a module id
+
+	for dep_id in
+		a module deps
+	do
+		if
+			exists
+				a dep_id
+				inside
+					a next_chain
+		then
+			local dep_loop
+				list
+			a dep_loop push
+				a dep_id
+			for chain_dep_id in
+				a next_chain slice reverse
+			do
+				a dep_loop push
+					a chain_dep_id
+				if
+					eq
+						a chain_dep_id
+						a dep_id
+				then
+					break
+
+			a dep_loop reverse
+
+			a dep_loops push
+				a dep_loop join
+					string " → "
+		else
+			local dep
+				a modules id
+					substituting id
+						a dep_id
+			if
+				none
+					a dep visited
+			then
+				a visit
+					a dep
+					a next_chain
+
+	a build_order push
+		a module id
+
+for module in
+	values
+		a modules
+do
+	a visit
+		a module
+		list
+
+if
+	asc
+		int 1
+		a dep_loops length
+then
+	print
+		concat
+			string "ERROR: there are dependency loops.\n"
+			a dep_loops join
+				string "\n"
+else
+	print
+		a build_order join
+			string "\n"

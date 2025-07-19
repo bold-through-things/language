@@ -26,3 +26,20 @@ def join_nested(data: A, indent: int = 2, level: int = 0) -> str:
     s = " ".join([stringify(item) for item in data])
     lines = [(' ' * indent * level) + line for line in s.split("\n")]
     return '\n'.join(lines)
+
+from typing import TextIO
+
+class Joiner:
+    def __init__(self, out: TextIO, sep: str) -> None:
+        self.out = out
+        self.sep = sep
+        self._first = True
+
+    def __enter__(self) -> None:
+        if self._first:
+            self._first = False
+        else:
+            self.out.write(self.sep)
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        pass

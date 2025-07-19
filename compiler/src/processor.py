@@ -1,8 +1,8 @@
 from typing import Iterator
 from io import StringIO
 from pathlib import Path
-from node import Args, Associated_code_block, Indexers, Inject_code_start, Macro, Node, Parent
-from strutil import cut, extract_indent, join_nested
+from node import Args, Associated_code_block, Callers, Indexers, Inject_code_start, Macro, Node, Params, Parent, Target
+from strutil import Joiner, cut, extract_indent, join_nested
 from typing import Callable, Type, Dict, List, Optional
 
 js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
@@ -23,7 +23,13 @@ builtins = {
     "eq": "eq",
     "asc": "asc",
     "add": "add",
-    "mod": "mod"
+    "mod": "mod",
+    "none": "none",
+    # Object.values TODO i am not happy about this being a builtin. really it ought to be a method on the maps, 
+    # which should explicitly be types. same for keys...
+    "values": "values",
+    "keys": "keys",
+    "zip": "zip",    
 }
 
 from typing import Optional
@@ -109,19 +115,31 @@ class Compiler:
         assert access in ACCESS_MACRO
         access = ["scope"]
         steps = path.split(" ")
-        indexers = node.metadata.maybe(Indexers)
+        indexers = getattr(node.metadata.maybe(Indexers), "mapping", {})
+        callers = getattr(node.metadata.maybe(Callers), "mapping", {})
+        subs = indexers | callers
         # print(f"{(indexers.mapping if indexers else None)=}")
         def resolve_index(step):
-            if indexers and step in indexers.mapping:
+            if step in subs:
                 out = IndentedStringIO()
-                child = indexers.mapping[step]
-                self.__compile_JS(child, out)
+                sub = subs[step]
+                if isinstance(sub, Node): # TODO - could remove this by always ensuring it's a list on the writing side?
+                    sub = [sub]
+                
+                joiner = Joiner(out, ",\n")
+                if step in callers:
+                    with joiner:
+                        out.write(f"'{step}'")
+                for child in sub:
+                    with joiner:
+                        self.__compile_JS(child, out)                    
                 return out.getvalue()
             else:
                 return f"'{step}'"
 
         for step in steps[:-1]:
-            access = ["await indentifire.get_or_call(\n", access, ",\n", resolve_index(step), "\n)"]
+            mode = "call_or_set" if step in callers else "get_or_call"
+            access = ["await indentifire.", mode, "(\n", access, ",\n", resolve_index(step), "\n)"]
         
         access.append(",")
         access.append(resolve_index(steps[-1:][0]))
@@ -147,15 +165,39 @@ class Compiler:
         # preprocess indexers, storing them in the metadata
         # indexers are special annotations that must appear at the start (TODO - might remove this restriction in future...)
         if macro == "substituting":
+            assert len(node.children) <= 1
+            assert args.find(" ") == -1 # no space == single arg
+            if len(node.children) == 1:
+                parent.metadata[Indexers].mapping[args] = node.children[0]
+            else:
+                # shortcut for when the substitution is literal (i.e. most cases)
+                parent.metadata[Indexers].mapping[args] = Node(f"a {args}") # fake accessor node
+
+        if macro == "calling":
             assert len(node.children) == 1
             assert args.find(" ") == -1 # no space == single arg
-            parent.metadata[Indexers].mapping[args] = node.children[0]
+            parent.metadata[Callers].mapping[args] = node.children
+
+        # exists inside
+        if macro == "inside":
+            assert len(node.children) == 1
+            assert args.strip() == ""
+            assert parent.metadata[Macro] == "exists"
+            parent.metadata[Target] = node.children[0]
+    
+        # function param
+        if macro == "param":
+            assert len(node.children) == 0 # TODO - default value ? TODO - annotations ?
+            assert args.find(" ") == -1 # no space == single arg. name only
+            assert parent.metadata[Macro] == "fn" # TODO
+            parent.metadata[Params].mapping[args] = True # TODO for now. probably a metadata object in the future
         
         # associate code blocks with relevant headers
         CODE_BLOCK_HEADERS = {
             "if": "then",
             "while": "do",
-            "for": "do"
+            "for": "do",
+            "fn": "do"
         }
         for i in range(len(node.children)):
             current = node.children[i]
@@ -196,6 +238,7 @@ class Compiler:
             "continue": "continue",
             "dict": "{}",
             "list": "[]",
+            "return": "return"
         }
         
         if macro in ["if", "while"]:
@@ -219,7 +262,7 @@ class Compiler:
             out.write(")")
             next = node.metadata[Associated_code_block].block
             inject = Inject_code_start()
-            inject.code.append(f"scope.{name} = iter")
+            inject.code.append(f"scope.{name} = iter\n")
             next.metadata[Inject_code_start] = inject
 
         elif macro in ["do", "then", "else"]:
@@ -236,7 +279,6 @@ class Compiler:
                     if inject:
                         for code in inject.code:
                             out.write(code)
-                            out.write("\n")
                     for child in node.children:
                         self.__compile_JS(child, out)
                         out.write("\n")
@@ -245,7 +287,10 @@ class Compiler:
         elif macro in builtins:
             name = f"indentifire, '{builtins[macro]}'"
             self.__compile_JS_function_call(name, node, node.children, out)
-        elif macro in ["string"]:
+        elif macro in ["exists"]:
+            name = f"indentifire, 'exists_inside'"
+            self.__compile_JS_function_call(name, node, [node.metadata[Target]] + node.children, out)
+        elif macro in ["string", "regex"]:
             s = args
             if len(s) == 0:
                 for child in node.children:
@@ -257,7 +302,8 @@ class Compiler:
                 s = s.removeprefix(delim).removesuffix(delim)
             s = s.replace("\n", "\\n")
             # TODO escape quotes as well...
-            out.write(f'"{s}"')
+            sep = '"' if macro == "string" else "/"
+            out.write(f'{sep}{s}{sep}')
         elif macro in ["int"]:
             out.write(str(args))
         elif macro in literally:
@@ -271,7 +317,27 @@ class Compiler:
         elif macro in ACCESS_MACRO:
             access = self.__resolve_JS_access(node)
             self.__compile_JS_function_call(access, node, node.children, out)
-        elif macro in {"noop", "substituting"}:
+        elif macro in {"fn"}:
+            assert args.find(" ") == -1 # no space == single param
+            out.write(f"scope.{args} = async function (")
+            joiner = Joiner(out, ", \n")
+            params = node.metadata[Params].mapping.items()
+            if len(params) > 0:
+                out.write("\n")
+            with out:
+                for k, v in params:
+                    with joiner:
+                        # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
+                        out.write(k)
+            if len(params) > 0:
+                out.write("\n")
+            out.write(") ")
+            next = node.metadata[Associated_code_block].block
+            inject = Inject_code_start()
+            for k, v in params:
+                inject.code.append(f"scope.{k} = {k}\n")
+            next.metadata[Inject_code_start] = inject
+        elif macro in {"noop", "substituting", "calling", "inside", "param"}:
             pass # does not compile into code itself
         elif macro in {"#", "//", "/*", "--", "note"}:
             pass # comments are ignored. TODO - we could and perhaps should transfer comments to output?

@@ -61,6 +61,20 @@ class Indexers:
 @TypeMap.register(Indexers)      
 def __indexers(): return Indexers()
 
+class Callers:
+    def __init__(self):
+        self.mapping = {}
+
+@TypeMap.register(Callers)      
+def __callers(): return Callers()
+
+class Params:
+    def __init__(self):
+        self.mapping = {}
+
+@TypeMap.register(Params)      
+def __params(): return Params()
+
 class Inject_code_start:
     def __init__(self):
         self.code: list[str] = []
@@ -70,5 +84,8 @@ class Associated_code_block:
         self.block = block
 
 class Parent(Node): pass
+# generic Target for cases where a node needs another node to do its job
+# TODO - might remove Associated_code_block in favor of this ?
+class Target(Node): pass 
 class Macro(str): pass
 class Args(str): pass

@@ -1,0 +1,48 @@
+local input
+	stdin
+
+local words
+	an input split
+		string "\n"
+
+local groups
+	dict
+
+for word in
+	access words
+do
+	local key
+		a word split sort join
+			calling split
+				string ""
+			calling join
+				string ""
+	
+	# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?
+	#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)
+	#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
+	if
+		none
+			exists
+				a key
+				inside
+					a groups
+	then
+		a groups key
+			substituting key
+			list
+
+	a groups key push
+		substituting key
+		a word
+
+for group in
+	values
+		access groups
+do
+	print
+		a group join
+			string " "
+
+
+
