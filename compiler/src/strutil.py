@@ -43,3 +43,48 @@ class Joiner:
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         pass
+
+
+class IndentedStringIO:
+    def __init__(self, indent: str = '    ') -> None:
+        self._buf: list[str] = []
+        self._indent_str = indent
+        self._indent_level = 0
+        self._at_line_start = True
+
+    def write(self, s: str) -> None:
+        for line in s.splitlines(True):  # keep line endings
+            if self._at_line_start and line.strip():
+                self._buf.append(self._indent_str * self._indent_level)
+            self._buf.append(line)
+            self._at_line_start = line.endswith('\n')
+
+    def writeline(self, s: str = '') -> None:
+        if self._at_line_start:
+            self._buf.append(self._indent_str * self._indent_level)
+        self._buf.append(s + '\n')
+        self._at_line_start = True
+
+    def indent(self, levels: int = 1) -> None:
+        self._indent_level += levels
+
+    def dedent(self, levels: int = 1) -> None:
+        self._indent_level = max(0, self._indent_level - levels)
+
+    def getvalue(self) -> str:
+        return ''.join(self._buf)
+
+    def reset(self) -> None:
+        self._buf.clear()
+        self._indent_level = 0
+        self._at_line_start = True
+
+    def __str__(self) -> str:
+        return self.getvalue()
+
+    def __enter__(self) -> 'IndentedStringIO':
+        self.indent()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        self.dedent()

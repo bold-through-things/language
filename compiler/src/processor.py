@@ -1,9 +1,11 @@
-from typing import Iterator
+from dataclasses import replace
+from typing import Iterator, Protocol, TypeVar, Union, cast
 from io import StringIO
 from pathlib import Path
 from node import Args, Associated_code_block, Callers, Indexers, Inject_code_start, Macro, Node, Params, Parent, Target
-from strutil import Joiner, cut, extract_indent, join_nested
+from strutil import IndentedStringIO, Joiner, cut, extract_indent, join_nested
 from typing import Callable, Type, Dict, List, Optional
+from utils import *
 
 js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
 
@@ -32,53 +34,151 @@ builtins = {
     "zip": "zip",    
 }
 
-from typing import Optional
-
-class IndentedStringIO:
-    def __init__(self, indent: str = '    ') -> None:
-        self._buf: list[str] = []
-        self._indent_str = indent
-        self._indent_level = 0
-        self._at_line_start = True
-
-    def write(self, s: str) -> None:
-        for line in s.splitlines(True):  # keep line endings
-            if self._at_line_start and line.strip():
-                self._buf.append(self._indent_str * self._indent_level)
-            self._buf.append(line)
-            self._at_line_start = line.endswith('\n')
-
-    def writeline(self, s: str = '') -> None:
-        if self._at_line_start:
-            self._buf.append(self._indent_str * self._indent_level)
-        self._buf.append(s + '\n')
-        self._at_line_start = True
-
-    def indent(self, levels: int = 1) -> None:
-        self._indent_level += levels
-
-    def dedent(self, levels: int = 1) -> None:
-        self._indent_level = max(0, self._indent_level - levels)
-
-    def getvalue(self) -> str:
-        return ''.join(self._buf)
-
-    def reset(self) -> None:
-        self._buf.clear()
-        self._indent_level = 0
-        self._at_line_start = True
-
-    def __str__(self) -> str:
-        return self.getvalue()
-
-    def __enter__(self) -> 'IndentedStringIO':
-        self.indent()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
-        self.dedent()
-
 ACCESS_MACRO = {"a", "an", "access"}
+
+from macro_registry import MacroContext, MacroRegistry
+macros = MacroRegistry()
+
+@macros.add("noop", "substituting", "calling", "inside", "param")
+def does_not_compile(ctx):
+    # does not compile into code itself - nothing to do
+    pass
+
+@macros.add("#", "//", "/*", "--", "note")
+def does_not_compile(ctx):
+    # comments are ignored. TODO - we could and perhaps should transfer comments to output?
+    pass
+
+@macros.add("fn")
+def fn(ctx: MacroContext):
+    assert ctx.args.find(" ") == -1 # no space == single param
+    ctx.out.write(f"scope.{ctx.args} = async function (")
+    joiner = Joiner(ctx.out, ", \n")
+    params = ctx.node.metadata[Params].mapping.items()
+    if len(params) > 0:
+        ctx.out.write("\n")
+    with ctx.out:
+        for k, v in params:
+            with joiner:
+                # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
+                ctx.out.write(k)
+    if len(params) > 0:
+        ctx.out.write("\n")
+    ctx.out.write(") ")
+    next = ctx.node.metadata[Associated_code_block].block
+    inject = Inject_code_start()
+    for k, v in params:
+        inject.code.append(f"scope.{k} = {k}\n")
+    next.metadata[Inject_code_start] = inject
+
+@macros.add(*[a for a in ACCESS_MACRO])
+def access(ctx: MacroContext):
+    access = ctx.resolve_JS_access(ctx)
+    ctx.compile_fn_call(access, ctx.node, ctx.node.children, ctx.out)
+
+@macros.add("local")
+def local(ctx: MacroContext):
+    name, _ = cut(ctx.args, " ")
+    ctx.out.write(f"scope.{name} = indentifire.store()")
+    if len(ctx.node.children) > 0:
+        ctx.out.write("\n")
+        ctx.compile_fn_call(f"scope, '{name}'", ctx.node, ctx.node.children, ctx.out)
+
+@macros.add("int")
+def int_macro(ctx: MacroContext):
+    ctx.out.write(str(ctx.args))
+
+@macros.add("string", "regex")
+def str_macro(ctx: MacroContext):
+    s = ctx.args
+    if len(s) == 0:
+        for child in ctx.node.children:
+            s += ctx.recover_string(child)
+    else:
+        delim = s[0]
+        assert s.startswith(delim)
+        assert s.endswith(delim)
+        s = s.removeprefix(delim).removesuffix(delim)
+    s = s.replace("\n", "\\n")
+    # TODO escape quotes as well...
+    sep = '"' if ctx.macro == "string" else "/"
+    ctx.out.write(f'{sep}{s}{sep}')
+
+with scope:
+    literally = {
+        "true": "true",
+        "false": "false",
+        "break": "break",
+        "continue": "continue",
+        "dict": "{}",
+        "list": "[]",
+        "return": "return"
+    }
+    @macros.add(*[k for k in literally.keys()])
+    def literally_macro(ctx: MacroContext):
+        ctx.out.write(literally[ctx.macro])
+
+@macros.add("exists")
+def exists_inside(ctx: MacroContext):
+    name = f"indentifire, 'exists_inside'"
+    ctx.compile_fn_call(name, ctx.node, [ctx.node.metadata[Target]] + ctx.node.children, ctx.out)
+
+@macros.add(*[b for b in builtins.keys()])
+def builtin(ctx: MacroContext):
+    name = f"indentifire, '{builtins[ctx.macro]}'"
+    ctx.compile_fn_call(name, ctx.node, ctx.node.children, ctx.out)
+
+@macros.add("do", "then", "else")
+def block(ctx: MacroContext):
+    if ctx.macro in ["else"]:
+        ctx.out.write(f"{ctx.macro} ")
+
+    ctx.out.write("{\n")
+    with ctx.out:
+        ctx.out.write("const parent_scope = scope\n")
+        ctx.out.write("{\n")
+        with ctx.out:
+            ctx.out.write("const scope = indentifire.scope(parent_scope)\n")
+            inject = ctx.node.metadata.maybe(Inject_code_start)
+            if inject:
+                for code in inject.code:
+                    ctx.out.write(code)
+            for child in ctx.node.children:
+                child_ctx = replace(ctx, macro=child.metadata[Macro], args=child.metadata[Args], node=child)
+                child_ctx.compile(child_ctx)
+                ctx.out.write("\n")
+        ctx.out.write("}\n")
+    ctx.out.write("} ")
+
+@macros.add("for")
+def for_macro(ctx: MacroContext):
+    split = ctx.node.content.split(" ")
+    assert len(split) == 3
+    # assert split[0] == "for" # inherent per semantics
+    name = split[1]
+    assert split[2] == "in"
+    ctx.out.write("\n")
+    ctx.out.write(f"for (const iter of ")
+    assert len(ctx.node.children) == 1
+    child = ctx.node.children[0]
+    child_ctx = replace(ctx, macro=child.metadata[Macro], args=child.metadata[Args], node=child)
+    ctx.compile(child_ctx)
+    ctx.out.write(")")
+    next = ctx.node.metadata[Associated_code_block].block
+    inject = Inject_code_start()
+    inject.code.append(f"scope.{name} = iter\n")
+    next.metadata[Inject_code_start] = inject
+
+@macros.add("if", "while")
+def block_header(ctx: MacroContext):
+    ctx.out.write("\n")
+    ctx.out.write(f"{ctx.macro} (")
+    with ctx.out:
+        assert len(ctx.node.children) == 1
+        child = ctx.node.children[0]
+        child_ctx = replace(ctx, macro=child.metadata[Macro], args=child.metadata[Args], node=child)
+        child_ctx.compile(child_ctx)
+    ctx.out.write(")")
 
 class Compiler:
     def __init__(self):
@@ -101,16 +201,24 @@ class Compiler:
             out.write("const scope = globalThis;\n")
             for node in self.nodes:
                 assert node.content == "do" # root
-                self.__compile_JS(node, out)
+                ctx=MacroContext(
+                    macro="do$root", # TODO ROOT_NODE_PSEUDOMACRO = 
+                    args="",
+                    out=out,
+                    node=node,
+
+                    compile=self.__compile_JS,
+                    resolve_JS_access=self.__resolve_JS_access,
+                    compile_fn_call=self.__compile_JS_function_call
+                )
+                self.__compile_JS(ctx)
         out.write("\n})();")
         print("compiled:")
         print(out.getvalue())
         return out.getvalue()
     
-    def __recover_string(self, node: Node) -> str:
-        return node.content + "\n" + "\n".join(["\t"+child.content for child in node.children])
-    
-    def __resolve_JS_access(self, node: Node) -> str:
+    def __resolve_JS_access(self, ctx: MacroContext) -> str:
+        node = ctx.node
         access, path = cut(node.content, " ")
         assert access in ACCESS_MACRO
         access = ["scope"]
@@ -132,7 +240,8 @@ class Compiler:
                         out.write(f"'{step}'")
                 for child in sub:
                     with joiner:
-                        self.__compile_JS(child, out)                    
+                        child_ctx = replace(ctx, macro=child.metadata[Macro], args=child.metadata[Args], node=child, out=out)
+                        self.__compile_JS(child_ctx)                 
                 return out.getvalue()
             else:
                 return f"'{step}'"
@@ -171,7 +280,9 @@ class Compiler:
                 parent.metadata[Indexers].mapping[args] = node.children[0]
             else:
                 # shortcut for when the substitution is literal (i.e. most cases)
-                parent.metadata[Indexers].mapping[args] = Node(f"a {args}") # fake accessor node
+                access = Node(f"a {args}") # fake accessor node
+                self.__discover_macros(access, None) # populate the metadata... TODO - awkward!
+                parent.metadata[Indexers].mapping[args] = access
 
         if macro == "calling":
             assert len(node.children) == 1
@@ -217,7 +328,16 @@ class Compiler:
         args_compiled = []
         for arg in args:
             arg_out = IndentedStringIO()
-            self.__compile_JS(arg, arg_out)
+            ctx = MacroContext(
+                macro=arg.metadata[Macro],
+                args=arg.metadata[Args],
+                out=arg_out,
+                node=arg,
+                compile=self.__compile_JS,
+                resolve_JS_access=self.__resolve_JS_access,
+                compile_fn_call=self.__compile_JS_function_call
+            )
+            self.__compile_JS(ctx)
             arg_out = arg_out.getvalue()
             if arg_out:
                 args_compiled.append(arg_out)
@@ -228,119 +348,23 @@ class Compiler:
             out.write(", ".join(args_compiled))
         out.write("\n)")
 
-    def __compile_JS(self, node: Node, out: IndentedStringIO):
-        macro, args = cut(node.content, " ")
+    def __compile_JS(self, ctx: MacroContext):
+        macro, args = cut(ctx.node.content, " ")
 
-        literally = {
-            "true": "true",
-            "false": "false",
-            "break": "break",
-            "continue": "continue",
-            "dict": "{}",
-            "list": "[]",
-            "return": "return"
-        }
+        all_macros = macros.all() # cache it
+        macro_ctx = MacroContext(
+            macro=macro,
+            args=args,
+            out=ctx.out,
+            node=ctx.node,
+
+            compile=self.__compile_JS,
+            resolve_JS_access=self.__resolve_JS_access,
+            compile_fn_call=self.__compile_JS_function_call
+        )
         
-        if macro in ["if", "while"]:
-            # WTF ? xddxddd
-            out.write("\n")
-            out.write(f"{macro} (")
-            with out:
-                assert len(node.children) == 1
-                self.__compile_JS(node.children[0], out)
-            out.write(")")
-        elif macro in ["for"]:
-            split = node.content.split(" ")
-            assert len(split) == 3
-            # assert split[0] == "for" # inherent per semantics
-            name = split[1]
-            assert split[2] == "in"
-            out.write("\n")
-            out.write(f"for (const iter of ")
-            assert len(node.children) == 1
-            self.__compile_JS(node.children[0], out)
-            out.write(")")
-            next = node.metadata[Associated_code_block].block
-            inject = Inject_code_start()
-            inject.code.append(f"scope.{name} = iter\n")
-            next.metadata[Inject_code_start] = inject
-
-        elif macro in ["do", "then", "else"]:
-            if macro in ["else"]:
-                out.write(f"{macro} ")
-
-            out.write("{\n")
-            with out:
-                out.write("const parent_scope = scope\n")
-                out.write("{\n")
-                with out:
-                    out.write("const scope = indentifire.scope(parent_scope)\n")
-                    inject = node.metadata.maybe(Inject_code_start)
-                    if inject:
-                        for code in inject.code:
-                            out.write(code)
-                    for child in node.children:
-                        self.__compile_JS(child, out)
-                        out.write("\n")
-                out.write("}\n")
-            out.write("} ")
-        elif macro in builtins:
-            name = f"indentifire, '{builtins[macro]}'"
-            self.__compile_JS_function_call(name, node, node.children, out)
-        elif macro in ["exists"]:
-            name = f"indentifire, 'exists_inside'"
-            self.__compile_JS_function_call(name, node, [node.metadata[Target]] + node.children, out)
-        elif macro in ["string", "regex"]:
-            s = args
-            if len(s) == 0:
-                for child in node.children:
-                    s += self.__recover_string(child)
-            else:
-                delim = s[0]
-                assert s.startswith(delim)
-                assert s.endswith(delim)
-                s = s.removeprefix(delim).removesuffix(delim)
-            s = s.replace("\n", "\\n")
-            # TODO escape quotes as well...
-            sep = '"' if macro == "string" else "/"
-            out.write(f'{sep}{s}{sep}')
-        elif macro in ["int"]:
-            out.write(str(args))
-        elif macro in literally:
-            out.write(literally[macro])
-        elif macro in ["local"]:
-            name, _ = cut(args, " ")
-            out.write(f"scope.{name} = indentifire.store()")
-            if len(node.children) > 0:
-                out.write("\n")
-                self.__compile_JS_function_call(f"scope, '{name}'", node, node.children, out)
-        elif macro in ACCESS_MACRO:
-            access = self.__resolve_JS_access(node)
-            self.__compile_JS_function_call(access, node, node.children, out)
-        elif macro in {"fn"}:
-            assert args.find(" ") == -1 # no space == single param
-            out.write(f"scope.{args} = async function (")
-            joiner = Joiner(out, ", \n")
-            params = node.metadata[Params].mapping.items()
-            if len(params) > 0:
-                out.write("\n")
-            with out:
-                for k, v in params:
-                    with joiner:
-                        # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
-                        out.write(k)
-            if len(params) > 0:
-                out.write("\n")
-            out.write(") ")
-            next = node.metadata[Associated_code_block].block
-            inject = Inject_code_start()
-            for k, v in params:
-                inject.code.append(f"scope.{k} = {k}\n")
-            next.metadata[Inject_code_start] = inject
-        elif macro in {"noop", "substituting", "calling", "inside", "param"}:
-            pass # does not compile into code itself
-        elif macro in {"#", "//", "/*", "--", "note"}:
-            pass # comments are ignored. TODO - we could and perhaps should transfer comments to output?
+        if macro in all_macros:
+            all_macros[macro](macro_ctx)
         else:
             raise ValueError(f"TODO. unknown macro {macro}")
 

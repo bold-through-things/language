@@ -89,3 +89,9 @@ class Parent(Node): pass
 class Target(Node): pass 
 class Macro(str): pass
 class Args(str): pass
+
+
+# TODO. i don't know where to stuff this one. it doesn't belong into Node directly as that would polute the pretty
+#  and clean parser-specific class with irrelevant macro-specific garbage such as this.
+def recover_string(node: Node) -> str:
+    return node.content + "\n" + "\n".join(["\t"+recover_string(child) for child in node.children])
