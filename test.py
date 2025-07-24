@@ -24,6 +24,7 @@ from typing import List
 
 TEST_ROOT = Path("test")
 EXECUTABLE = "out.js"
+DENO_PATH = Path(".deno/bin/deno")
 
 def read_file(path: Path) -> Optional[str]:
     return path.read_text(encoding="utf-8") if path.exists() else None
@@ -160,7 +161,8 @@ def make_test_method(tc: TestCase, args):
 
             if args.run:
                 fuck_you_python = lambda arg, if_cond: arg if if_cond else None
-                exec_cmd = ["node", fuck_you_python("--inspect-brk=9229", args.debug), out_path.absolute()]
+                
+                exec_cmd = [DENO_PATH.absolute(), "run", fuck_you_python("--inspect-brk=9229", args.debug), out_path.absolute()]
                 exec_cmd = list(filter(None, exec_cmd))
                 print(f"{case_dir}: running... {exec_cmd}")
                 returncode, stdout, stderr = run_with_input(exec_cmd, stdin=stdin_text, line_delayed=False)
@@ -208,6 +210,13 @@ if __name__ == "__main__":
         # default behavior
         args.run = True
         args.compile = True
+
+    if args.run:
+        if not DENO_PATH.is_file():
+            raise ValueError(
+                "run with what? Deno pls.\n"
+                "curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
+            )
     
     for tc in discover_tests(args):
         def_parts = tc.def_path.relative_to(TEST_ROOT).parts

@@ -1,4 +1,4 @@
-indentifire = {
+globalThis.indentifire = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
     either: (...arr) => arr.reduce((sum, a) => sum || a, false),
@@ -95,30 +95,41 @@ indentifire = {
 }
 
 if (typeof window === "undefined") {
-    require("readline")
-    const readline = require('readline');
+    // Deno environment
 
     indentifire.prompt = async function (msg) {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-        let rv = await new Promise(resolve => rl.question(msg, resolve))
-        rl.close();
-        return rv;
-    }
+        await Deno.stdout.write(new TextEncoder().encode(msg));
+        const buf = new Uint8Array(1024);
+        const n = await Deno.stdin.read(buf);
+        if (n === null) return "";
+        return new TextDecoder().decode(buf.subarray(0, n)).trim();
+    };
 
-    const fs = require("fs")
-    let stdin_cached = null
-    // TODO. this builtin really just for "hello world" debugging. in future we should have a full scale pipes API.
+    let stdin_cached = null;
+
     indentifire.stdin = async function () {
-        if (stdin_cached == null) {
-            stdin_cached = await new Promise((resolve, reject) => fs.readFile(0, 'utf-8', (err, data) => err ? reject(err) : resolve(data)))
+        if (stdin_cached === null) {
+            const reader = Deno.stdin.readable.getReader();
+            const chunks = [];
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                chunks.push(value);
+            }
+            reader.releaseLock();
+            const size = chunks.reduce((n, c) => n + c.length, 0);
+            const all = new Uint8Array(size);
+            let offset = 0;
+            for (const chunk of chunks) {
+                all.set(chunk, offset);
+                offset += chunk.length;
+            }
+            stdin_cached = new TextDecoder().decode(all);
         }
         return stdin_cached;
-    }
+    };
 
-    indentifire.is_tty = () => process.stdin.isTTY
+    indentifire.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
 
 
