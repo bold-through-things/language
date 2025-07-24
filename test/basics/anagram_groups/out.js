@@ -28,7 +28,7 @@ indentifire = {
 
     store() {
         const obj = { value: null }
-        const fn = (function (set) { if (set !== undefined) { this.value = set; } else { return this.value; } }).bind(obj)
+        const fn = (function (set) { if (set !== undefined) { this.value = set; return set; } else { return this.value; } }).bind(obj)
         return fn
     },
 
@@ -54,7 +54,7 @@ indentifire = {
                 throw new TypeError(`Setter for '${String(field)}' expects exactly 1 argument, got ${values.length}`);
             }
             obj[field] = values[0];
-            return;
+            return values[0];
         }
 
         const member = obj[field];
@@ -66,7 +66,7 @@ indentifire = {
                 throw new TypeError(`Assignment to '${String(field)}' expects exactly 1 value, got ${values.length}`);
             }
             obj[field] = values[0];
-            return;
+            return values[0];
         }
     },
 
@@ -130,113 +130,106 @@ void (async () => {
         {
             const scope = indentifire.scope(parent_scope)
             scope.input = indentifire.store()
-            await indentifire.call_or_set(
-                scope, 'input', await indentifire.get_or_call(
-                    indentifire, 'stdin'
-                )
-            )
+            const _0x0 = await indentifire.stdin()
+            const _0x1 = await indentifire.call_or_set(scope, 'input', _0x0)
+            _0x1
             scope.words = indentifire.store()
-            await indentifire.call_or_set(
-                scope, 'words', await indentifire.call_or_set(
-                    await indentifire. get_or_call (
-                       scope ,
-                     'input' 
-                    ) , 'split', "\n"
-                )
-            )
+            /*input call=False index=False args=["'input'"]*/
+            const _0x2_input = await indentifire.get_or_call(scope, 'input')
+            /*split call=True index=False args=["'split'", '"\\n"']*/
+            const _0x3_split = await indentifire.call_or_set(_0x2_input, 'split', "\n")
+            const _0x4 = await indentifire.call_or_set(scope, 'words', _0x3_split)
+            _0x4
             scope.groups = indentifire.store()
-            await indentifire.call_or_set(
-                scope, 'groups', {}
-            )
+            const _0x5 = await indentifire.call_or_set(scope, 'groups', {})
+            _0x5
+            /*words call=False index=False args=["'words'"]*/
+            const _0x6_words = await indentifire.get_or_call(scope, 'words')
 
-            for (const iter of await indentifire.get_or_call(
-                scope , 'words'
-            ))
-            {
-                const parent_scope = scope
+            const _0x7 = _0x6_words[Symbol.iterator]();
+            while (true) {
                 {
-                    const scope = indentifire.scope(parent_scope)
-                    scope.word = iter
-                    scope.key = indentifire.store()
-                    await indentifire.call_or_set(
-                        scope, 'key', await indentifire.get_or_call(
-                            await indentifire. get_or_call (
-                               await indentifire. call_or_set (
-                                   await indentifire. get_or_call (
-                                         scope ,
-                                   'word' 
-                                  ) ,
-                               'split',
-                              "" 
-                              ) ,
-                             'sort' 
-                            ) , 'join',
-                            ""
-                        )
-                    )
-
-
-
-
-                    if (await indentifire.call_or_set(
-                            indentifire, 'none', await indentifire.call_or_set(
-                                indentifire, 'exists_inside', await indentifire.get_or_call(
-                                    scope , 'groups'
-                                ), await indentifire.get_or_call(
-                                    scope , 'key'
-                                )
-                            )
-                        ))
+                    const { value, done } = _0x7.next();
+                    if (done) break;
+                    scope.word = value;
+                }
+                {
+                    const parent_scope = scope
                     {
-                        const parent_scope = scope
-                        {
-                            const scope = indentifire.scope(parent_scope)
-                            await indentifire.call_or_set(
-                                await indentifire. get_or_call (
-                                   scope ,
-                                 'groups' 
-                                ) , await indentifire.get_or_call(
-                                    scope , 'key'
-                                ), []
-                            )
-                        }
-                    } 
-                    await indentifire.call_or_set(
-                        await indentifire. get_or_call (
-                           await indentifire. get_or_call (
-                               scope ,
-                           'groups' 
-                          ) ,
-                         await indentifire.get_or_call(
-                            scope , 'key'
-                        ) 
-                        ) , 'push', await indentifire.get_or_call(
-                            scope , 'word'
-                        )
-                    )
-                }
-            } 
+                        const scope = indentifire.scope(parent_scope)
+                        scope.key = indentifire.store()
+                        /*word call=False index=False args=["'word'"]*/
+                        const _0x8_word = await indentifire.get_or_call(scope, 'word')
+                        /*split call=True index=False args=["'split'", '""']*/
+                        const _0x9_split = await indentifire.call_or_set(_0x8_word, 'split', "")
+                        /*sort call=False index=False args=["'sort'"]*/
+                        const _0xa_sort = await indentifire.get_or_call(_0x9_split, 'sort')
+                        /*join call=True index=False args=["'join'", '""']*/
+                        const _0xb_join = await indentifire.call_or_set(_0xa_sort, 'join', "")
+                        const _0xc = await indentifire.call_or_set(scope, 'key', _0xb_join)
+                        _0xc
 
-            for (const iter of await indentifire.call_or_set(
-                indentifire, 'values', await indentifire.get_or_call(
-                    scope , 'groups'
-                )
-            ))
-            {
-                const parent_scope = scope
+
+
+                        /*groups call=False index=False args=["'groups'"]*/
+                        const _0xd_groups = await indentifire.get_or_call(scope, 'groups')
+                        /*key call=False index=False args=["'key'"]*/
+                        const _0xe_key = await indentifire.get_or_call(scope, 'key')
+                        const _0xf = await indentifire.exists_inside(_0xd_groups, _0xe_key)
+                        const _0x10 = await indentifire.none(_0xf)
+                        if (_0x10)
+                        {{
+                                const parent_scope = scope
+                                {
+                                    const scope = indentifire.scope(parent_scope)
+                                    /*key call=False index=False args=["'key'"]*/
+                                    const _0x11_key = await indentifire.get_or_call(scope, 'key')
+                                    /*groups call=False index=False args=["'groups'"]*/
+                                    const _0x12_groups = await indentifire.get_or_call(scope, 'groups')
+                                    /*key call=True index=True args=['_0x11_key', '[]']*/
+                                    const _0x13_key = await indentifire.call_or_set(_0x12_groups, _0x11_key, [])
+                                    _0x13_key
+                                }
+                            } }
+
+                        /*key call=False index=False args=["'key'"]*/
+                        const _0x14_key = await indentifire.get_or_call(scope, 'key')
+                        /*groups call=False index=False args=["'groups'"]*/
+                        const _0x15_groups = await indentifire.get_or_call(scope, 'groups')
+                        /*key call=False index=True args=['_0x14_key']*/
+                        const _0x16_key = await indentifire.get_or_call(_0x15_groups, _0x14_key)
+                        /*word call=False index=False args=["'word'"]*/
+                        const _0x17_word = await indentifire.get_or_call(scope, 'word')
+                        /*push call=True index=False args=["'push'", '_0x17_word']*/
+                        const _0x18_push = await indentifire.call_or_set(_0x16_key, 'push', _0x17_word)
+                        _0x18_push
+                    }
+                } }
+
+            /*groups call=False index=False args=["'groups'"]*/
+            const _0x19_groups = await indentifire.get_or_call(scope, 'groups')
+            const _0x1a = await indentifire.values(_0x19_groups)
+
+            const _0x1b = _0x1a[Symbol.iterator]();
+            while (true) {
                 {
-                    const scope = indentifire.scope(parent_scope)
-                    scope.group = iter
-                    await indentifire.call_or_set(
-                        indentifire, 'log', await indentifire.call_or_set(
-                            await indentifire. get_or_call (
-                               scope ,
-                             'group' 
-                            ) , 'join', " "
-                        )
-                    )
+                    const { value, done } = _0x1b.next();
+                    if (done) break;
+                    scope.group = value;
                 }
-            } 
+                {
+                    const parent_scope = scope
+                    {
+                        const scope = indentifire.scope(parent_scope)
+                        /*group call=False index=False args=["'group'"]*/
+                        const _0x1c_group = await indentifire.get_or_call(scope, 'group')
+                        /*join call=True index=False args=["'join'", '" "']*/
+                        const _0x1d_join = await indentifire.call_or_set(_0x1c_group, 'join', " ")
+                        const _0x1e = await indentifire.log(_0x1d_join)
+                        _0x1e
+                    }
+                } }
+
         }
     } 
 })();

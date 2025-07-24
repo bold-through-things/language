@@ -3,3 +3,7 @@ __pycache__
 node_modules
 
 fucking_around_with_bash/output.txt
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json

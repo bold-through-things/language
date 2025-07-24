@@ -121,7 +121,7 @@ def make_test_method(tc: TestCase, args):
         code_dir = tc.code_path
         print(tc.name)
         print(f"running test for {tc}")
-        expected_compile_err = read_file(case_dir / "compile.stderr")
+        expected_compile_err = read_file(code_dir / "compile.stderr")
         expected_runtime_err = read_file(case_dir / "runtime.stderr")
         expected_stdout = read_file(case_dir / "success.stdout")
         if args.stdin:
@@ -131,6 +131,7 @@ def make_test_method(tc: TestCase, args):
 
         with tempfile.TemporaryDirectory() as tmpdir_str:
             tmpdir = Path(tmpdir_str)
+            compile_err_actual = code_dir / "compile.stderr.actual"
             out_path = code_dir / EXECUTABLE
 
             # TODO - is this obsolete? what are we gaining from this copy ?
@@ -140,14 +141,16 @@ def make_test_method(tc: TestCase, args):
             if args.compile:
                 compiler_path = Path("compiler/src/main.py")
                 print(f"{case_dir}: compiling...")
-                compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute()]
+                compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
                 compile_proc = subprocess.run(compile_cmd, cwd=tmpdir, capture_output=True, text=True)
-                print(f"{case_dir}: done compiling.")
+                print(f"{case_dir}: done compiling. {compile_proc.returncode=}")
+                print(compile_proc.stdout)
+                print(compile_proc.stderr)
 
                 if expected_compile_err is not None:
                     self.assertEqual(
-                        compile_proc.stderr.strip(),
-                        expected_compile_err.strip(),
+                        read_file(compile_err_actual),
+                        expected_compile_err,
                         msg="Compile stderr mismatch"
                     )
                     self.assertNotEqual(compile_proc.returncode, 0, msg="Expected compile to fail")
@@ -156,8 +159,10 @@ def make_test_method(tc: TestCase, args):
                 self.assertEqual(compile_proc.returncode, 0, msg=f"Compile failed unexpectedly\n{compile_proc.stderr}")
 
             if args.run:
-                exec_cmd = ["node", out_path.absolute()]
-                print(f"{case_dir}: running...")
+                fuck_you_python = lambda arg, if_cond: arg if if_cond else None
+                exec_cmd = ["node", fuck_you_python("--inspect-brk=9229", args.debug), out_path.absolute()]
+                exec_cmd = list(filter(None, exec_cmd))
+                print(f"{case_dir}: running... {exec_cmd}")
                 returncode, stdout, stderr = run_with_input(exec_cmd, stdin=stdin_text, line_delayed=False)
                 print(f"{case_dir}: complete.")
                 print(stdout)
@@ -165,6 +170,8 @@ def make_test_method(tc: TestCase, args):
                 if args.stdin:
                     pass # custom input? don't assert.
                 else:
+                    print(stdout.strip())
+                    print(stderr.strip())
                     if expected_runtime_err is not None:
                         self.assertEqual(
                             stderr.strip(),
@@ -191,6 +198,7 @@ if __name__ == "__main__":
     parser.add_argument("-g", "--glob", help="Only run tests matching glob")
     parser.add_argument("-s", "--stdin", action='store_true', help="Pass the Python stdin to each test")
     parser.add_argument("-c", "--compile", action='store_true', help="Only check compilation of target tests")
+    parser.add_argument("-d", "--debug", action='store_true', help="Execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="Skip compilation. Assume the tests are already compiled, and only run the existing output")
 
     args, remaining = parser.parse_known_args()

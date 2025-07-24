@@ -28,7 +28,7 @@ indentifire = {
 
     store() {
         const obj = { value: null }
-        const fn = (function (set) { if (set !== undefined) { this.value = set; } else { return this.value; } }).bind(obj)
+        const fn = (function (set) { if (set !== undefined) { this.value = set; return set; } else { return this.value; } }).bind(obj)
         return fn
     },
 
@@ -54,7 +54,7 @@ indentifire = {
                 throw new TypeError(`Setter for '${String(field)}' expects exactly 1 argument, got ${values.length}`);
             }
             obj[field] = values[0];
-            return;
+            return values[0];
         }
 
         const member = obj[field];
@@ -66,7 +66,7 @@ indentifire = {
                 throw new TypeError(`Assignment to '${String(field)}' expects exactly 1 value, got ${values.length}`);
             }
             obj[field] = values[0];
-            return;
+            return values[0];
         }
     },
 
@@ -132,170 +132,149 @@ void (async () => {
             scope.fizz_divisor = indentifire.store()
             scope.buzz_divisor = indentifire.store()
             scope.n = indentifire.store()
+            const _0x0 = await indentifire.is_tty()
+            if (_0x0)
+            {{
+                    const parent_scope = scope
+                    {
+                        const scope = indentifire.scope(parent_scope)
+                        const _0x1 = await indentifire.prompt("fizz? ")
+                        /*fizz_divisor call=True index=False args=["'fizz_divisor'", '_0x1']*/
+                        const _0x2_fizz_divisor = await indentifire.call_or_set(scope, 'fizz_divisor', _0x1)
+                        _0x2_fizz_divisor
+                        const _0x3 = await indentifire.prompt("buzz? ")
+                        /*buzz_divisor call=True index=False args=["'buzz_divisor'", '_0x3']*/
+                        const _0x4_buzz_divisor = await indentifire.call_or_set(scope, 'buzz_divisor', _0x3)
+                        _0x4_buzz_divisor
+                        const _0x5 = await indentifire.prompt("n? ")
+                        /*n call=True index=False args=["'n'", '_0x5']*/
+                        const _0x6_n = await indentifire.call_or_set(scope, 'n', _0x5)
+                        _0x6_n
+                    }
+                } }
 
-            if (await indentifire.get_or_call(
-                    indentifire, 'is_tty'
-                ))
-            {
-                const parent_scope = scope
-                {
-                    const scope = indentifire.scope(parent_scope)
-                    await indentifire.call_or_set(
-                        scope , 'fizz_divisor', await indentifire.call_or_set(
-                            indentifire, 'prompt', "fizz? "
-                        )
-                    )
-                    await indentifire.call_or_set(
-                        scope , 'buzz_divisor', await indentifire.call_or_set(
-                            indentifire, 'prompt', "buzz? "
-                        )
-                    )
-                    await indentifire.call_or_set(
-                        scope , 'n', await indentifire.call_or_set(
-                            indentifire, 'prompt', "n? "
-                        )
-                    )
-                }
-            } 
             else {
                 const parent_scope = scope
                 {
                     const scope = indentifire.scope(parent_scope)
                     scope.input = indentifire.store()
-                    await indentifire.call_or_set(
-                        scope, 'input', await indentifire.get_or_call(
-                            indentifire, 'stdin'
-                        )
-                    )
-                    await indentifire.call_or_set(
-                        scope , 'input', await indentifire.call_or_set(
-                            await indentifire. get_or_call (
-                               scope ,
-                             'input' 
-                            ) , 'split', "\n"
-                        )
-                    )
+                    const _0x7 = await indentifire.stdin()
+                    const _0x8 = await indentifire.call_or_set(scope, 'input', _0x7)
+                    _0x8
+                    /*input call=False index=False args=["'input'"]*/
+                    const _0x9_input = await indentifire.get_or_call(scope, 'input')
+                    /*split call=True index=False args=["'split'", '"\\n"']*/
+                    const _0xa_split = await indentifire.call_or_set(_0x9_input, 'split', "\n")
+                    /*input call=True index=False args=["'input'", '_0xa_split']*/
+                    const _0xb_input = await indentifire.call_or_set(scope, 'input', _0xa_split)
+                    _0xb_input
 
-                    await indentifire.call_or_set(
-                        scope , 'fizz_divisor', await indentifire.get_or_call(
-                            await indentifire. get_or_call (
-                               scope ,
-                             'input' 
-                            ) , 0
-                        )
-                    )
-                    await indentifire.call_or_set(
-                        scope , 'buzz_divisor', await indentifire.get_or_call(
-                            await indentifire. get_or_call (
-                               scope ,
-                             'input' 
-                            ) , 1
-                        )
-                    )
-                    await indentifire.call_or_set(
-                        scope , 'n', await indentifire.get_or_call(
-                            await indentifire. get_or_call (
-                               scope ,
-                             'input' 
-                            ) , 2
-                        )
-                    )
+                    /*input call=False index=False args=["'input'"]*/
+                    const _0xc_input = await indentifire.get_or_call(scope, 'input')
+                    /*key call=True index=True args=['0']*/
+                    const _0xd_key = await indentifire.get_or_call(_0xc_input, 0)
+                    /*fizz_divisor call=True index=False args=["'fizz_divisor'", '_0xd_key']*/
+                    const _0xe_fizz_divisor = await indentifire.call_or_set(scope, 'fizz_divisor', _0xd_key)
+                    _0xe_fizz_divisor
+                    /*input call=False index=False args=["'input'"]*/
+                    const _0xf_input = await indentifire.get_or_call(scope, 'input')
+                    /*key call=True index=True args=['1']*/
+                    const _0x10_key = await indentifire.get_or_call(_0xf_input, 1)
+                    /*buzz_divisor call=True index=False args=["'buzz_divisor'", '_0x10_key']*/
+                    const _0x11_buzz_divisor = await indentifire.call_or_set(scope, 'buzz_divisor', _0x10_key)
+                    _0x11_buzz_divisor
+                    /*input call=False index=False args=["'input'"]*/
+                    const _0x12_input = await indentifire.get_or_call(scope, 'input')
+                    /*key call=True index=True args=['2']*/
+                    const _0x13_key = await indentifire.get_or_call(_0x12_input, 2)
+                    /*n call=True index=False args=["'n'", '_0x13_key']*/
+                    const _0x14_n = await indentifire.call_or_set(scope, 'n', _0x13_key)
+                    _0x14_n
                 }
             } 
             scope.i = indentifire.store()
-
-            while (await indentifire.call_or_set(
-                    indentifire, 'asc', await indentifire.get_or_call(
-                        scope , 'i'
-                    ), await indentifire.get_or_call(
-                        scope , 'n'
-                    )
-                ))
-            {
-                const parent_scope = scope
+            while(true) {/*i call=False index=False args=["'i'"]*/
+                const _0x15_i = await indentifire.get_or_call(scope, 'i')
+                /*n call=False index=False args=["'n'"]*/
+                const _0x16_n = await indentifire.get_or_call(scope, 'n')
+                const _0x17 = await indentifire.asc(_0x15_i, _0x16_n)
+                if (!_0x17) { break; }
                 {
-                    const scope = indentifire.scope(parent_scope)
-                    scope.out = indentifire.store()
-                    await indentifire.call_or_set(
-                        scope, 'out', ""
-                    )
-
-                    if (await indentifire.call_or_set(
-                            indentifire, 'eq', await indentifire.call_or_set(
-                                indentifire, 'mod', await indentifire.get_or_call(
-                                    scope , 'i'
-                                ), await indentifire.get_or_call(
-                                    scope , 'fizz_divisor'
-                                )
-                            ), 0
-                        ))
+                    const parent_scope = scope
                     {
-                        const parent_scope = scope
-                        {
-                            const scope = indentifire.scope(parent_scope)
-                            await indentifire.call_or_set(
-                                scope , 'out', await indentifire.call_or_set(
-                                    indentifire, 'concat', await indentifire.get_or_call(
-                                        scope , 'out'
-                                    ), "fizz"
-                                )
-                            )
-                        }
-                    } 
+                        const scope = indentifire.scope(parent_scope)
+                        scope.out = indentifire.store()
+                        const _0x18 = await indentifire.call_or_set(scope, 'out', "")
+                        _0x18
+                        /*i call=False index=False args=["'i'"]*/
+                        const _0x19_i = await indentifire.get_or_call(scope, 'i')
+                        /*fizz_divisor call=False index=False args=["'fizz_divisor'"]*/
+                        const _0x1a_fizz_divisor = await indentifire.get_or_call(scope, 'fizz_divisor')
+                        const _0x1b = await indentifire.mod(_0x19_i, _0x1a_fizz_divisor)
+                        const _0x1c = await indentifire.eq(_0x1b, 0)
+                        if (_0x1c)
+                        {{
+                                const parent_scope = scope
+                                {
+                                    const scope = indentifire.scope(parent_scope)
+                                    /*out call=False index=False args=["'out'"]*/
+                                    const _0x1d_out = await indentifire.get_or_call(scope, 'out')
+                                    const _0x1e = await indentifire.concat(_0x1d_out, "fizz")
+                                    /*out call=True index=False args=["'out'", '_0x1e']*/
+                                    const _0x1f_out = await indentifire.call_or_set(scope, 'out', _0x1e)
+                                    _0x1f_out
+                                }
+                            } }
 
-                    if (await indentifire.call_or_set(
-                            indentifire, 'eq', await indentifire.call_or_set(
-                                indentifire, 'mod', await indentifire.get_or_call(
-                                    scope , 'i'
-                                ), await indentifire.get_or_call(
-                                    scope , 'buzz_divisor'
-                                )
-                            ), 0
-                        ))
-                    {
-                        const parent_scope = scope
-                        {
-                            const scope = indentifire.scope(parent_scope)
-                            await indentifire.call_or_set(
-                                scope , 'out', await indentifire.call_or_set(
-                                    indentifire, 'concat', await indentifire.get_or_call(
-                                        scope , 'out'
-                                    ), "buzz"
-                                )
-                            )
-                        }
-                    } 
+                        /*i call=False index=False args=["'i'"]*/
+                        const _0x20_i = await indentifire.get_or_call(scope, 'i')
+                        /*buzz_divisor call=False index=False args=["'buzz_divisor'"]*/
+                        const _0x21_buzz_divisor = await indentifire.get_or_call(scope, 'buzz_divisor')
+                        const _0x22 = await indentifire.mod(_0x20_i, _0x21_buzz_divisor)
+                        const _0x23 = await indentifire.eq(_0x22, 0)
+                        if (_0x23)
+                        {{
+                                const parent_scope = scope
+                                {
+                                    const scope = indentifire.scope(parent_scope)
+                                    /*out call=False index=False args=["'out'"]*/
+                                    const _0x24_out = await indentifire.get_or_call(scope, 'out')
+                                    const _0x25 = await indentifire.concat(_0x24_out, "buzz")
+                                    /*out call=True index=False args=["'out'", '_0x25']*/
+                                    const _0x26_out = await indentifire.call_or_set(scope, 'out', _0x25)
+                                    _0x26_out
+                                }
+                            } }
 
-                    if (await indentifire.call_or_set(
-                            indentifire, 'eq', await indentifire.get_or_call(
-                                scope , 'out'
-                            ), ""
-                        ))
-                    {
-                        const parent_scope = scope
-                        {
-                            const scope = indentifire.scope(parent_scope)
-                            await indentifire.call_or_set(
-                                scope , 'out', await indentifire.get_or_call(
-                                    scope , 'i'
-                                )
-                            )
-                        }
-                    } 
-                    await indentifire.call_or_set(
-                        indentifire, 'log', await indentifire.get_or_call(
-                            scope , 'out'
-                        )
-                    )
-                    await indentifire.call_or_set(
-                        scope , 'i', await indentifire.call_or_set(
-                            indentifire, 'add', await indentifire.get_or_call(
-                                scope , 'i'
-                            ), 1
-                        )
-                    )
-                }
-            } 
+                        /*out call=False index=False args=["'out'"]*/
+                        const _0x27_out = await indentifire.get_or_call(scope, 'out')
+                        const _0x28 = await indentifire.eq(_0x27_out, "")
+                        if (_0x28)
+                        {{
+                                const parent_scope = scope
+                                {
+                                    const scope = indentifire.scope(parent_scope)
+                                    /*i call=False index=False args=["'i'"]*/
+                                    const _0x29_i = await indentifire.get_or_call(scope, 'i')
+                                    /*out call=True index=False args=["'out'", '_0x29_i']*/
+                                    const _0x2a_out = await indentifire.call_or_set(scope, 'out', _0x29_i)
+                                    _0x2a_out
+                                }
+                            } }
+
+                        /*out call=False index=False args=["'out'"]*/
+                        const _0x2b_out = await indentifire.get_or_call(scope, 'out')
+                        const _0x2c = await indentifire.log(_0x2b_out)
+                        _0x2c
+                        /*i call=False index=False args=["'i'"]*/
+                        const _0x2d_i = await indentifire.get_or_call(scope, 'i')
+                        const _0x2e = await indentifire.add(_0x2d_i, 1)
+                        /*i call=True index=False args=["'i'", '_0x2e']*/
+                        const _0x2f_i = await indentifire.call_or_set(scope, 'i', _0x2e)
+                        _0x2f_i
+                    }
+                } }
+
         }
     } 
 })();

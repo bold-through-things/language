@@ -28,7 +28,7 @@ indentifire = {
 
     store() {
         const obj = { value: null }
-        const fn = (function (set) { if (set !== undefined) { this.value = set; } else { return this.value; } }).bind(obj)
+        const fn = (function (set) { if (set !== undefined) { this.value = set; return set; } else { return this.value; } }).bind(obj)
         return fn
     },
 
@@ -54,7 +54,7 @@ indentifire = {
                 throw new TypeError(`Setter for '${String(field)}' expects exactly 1 argument, got ${values.length}`);
             }
             obj[field] = values[0];
-            return;
+            return values[0];
         }
 
         const member = obj[field];
@@ -66,7 +66,7 @@ indentifire = {
                 throw new TypeError(`Assignment to '${String(field)}' expects exactly 1 value, got ${values.length}`);
             }
             obj[field] = values[0];
-            return;
+            return values[0];
         }
     },
 

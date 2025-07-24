@@ -1,20 +1,20 @@
-from dataclasses import dataclass
-from typing import Callable, TextIO, Union, TypeVar, Protocol, cast, Any
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Callable, TextIO, Union, TypeVar, Protocol, cast, Any
 
 from node import Node
 from strutil import IndentedStringIO
 
+if TYPE_CHECKING:
+    from processor import Compiler
+
 # TODO - this shouldn't be here, probably...
-@dataclass
+@dataclass(kw_only=True)
 class MacroContext:
-    macro: str
-    args: str
-    out: IndentedStringIO
+    statement_out: IndentedStringIO
+    expression_out: IndentedStringIO
     node: Node
 
-    resolve_JS_access: Callable[["MacroContext"], None]
-    compile: Callable[["MacroContext"], None]
-    compile_fn_call: Callable[[str, Node, list[Node], IndentedStringIO], None] # TODO - need a context object here...
+    compiler: "Compiler"
 
 class Macro(Protocol):
     def __call__(self, ctx: MacroContext) -> str: ...

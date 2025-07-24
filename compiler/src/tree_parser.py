@@ -2,7 +2,7 @@ from typing import Iterator
 from io import StringIO
 from pathlib import Path
 from strutil import cut, extract_indent
-from node import Node
+from node import Node, Position
 from typing import Generic, List, TypeVar
 
 T = TypeVar("T")
@@ -41,9 +41,11 @@ class TreeParser:
         code = f"\n{code}\n"
 
         scope: TrimStack[Node] = TrimStack()
-        root = Node("do")
+        root = Node("do", Position(0))
         scope[0] = root
+        line_num = 0
         for line in code.split("\n"):
+            line_num += 1 # at the start - assumes above \n{code}\n
             line, indent = extract_indent(line)
 
             # simplifies code. all the top-level lines are indent-1, belonging to a fake top-level Node
@@ -54,7 +56,7 @@ class TreeParser:
                 # skip empty/indentation-only lines
                 continue
 
-            node = Node(line)
+            node = Node(line, Position(line_num))
             scope[indent - 1].children.append(node)
             scope[indent] = node
             scope.trim(indent)

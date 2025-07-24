@@ -1,0 +1,13 @@
+do
+	local test
+		type int
+		string "test"
+
+do
+	local test_str
+		type str
+		string "test"
+	# TODO - this shit does not work. we need scoping... UGH!
+		local test_int
+			type int
+			a test_str
