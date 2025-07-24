@@ -176,7 +176,7 @@ void (async () => {
                         const _0xa_word = await indentifire.get_or_call(scope, 'word')
                         /*count call=False index=False args=["'count'"]*/
                         const _0xb_count = await indentifire.get_or_call(scope, 'count')
-                        /*key call=True index=True args=['_0xa_word']*/
+                        /*key call=False index=True args=['_0xa_word']*/
                         const _0xc_key = await indentifire.get_or_call(_0xb_count, _0xa_word)
                         const _0xd = await indentifire.add(1, _0xc_key)
                         /*key call=True index=True args=['_0x8_word', '_0xd']*/
@@ -184,7 +184,6 @@ void (async () => {
                         _0xe_key
                     }
                 } }
-
             /*count call=False index=False args=["'count'"]*/
             const _0xf_count = await indentifire.get_or_call(scope, 'count')
             const _0x10 = await indentifire.log(_0xf_count)

@@ -5,5 +5,26 @@
     "char": 0,
     "content": "local test",
     "error": "failed to assert: field demands int but is given str"
+  },
+  {
+    "recoverable": false,
+    "line": 8,
+    "char": 0,
+    "content": "local test_str",
+    "error": "failed to assert: field demands str but is given None"
+  },
+  {
+    "recoverable": false,
+    "line": 12,
+    "char": 0,
+    "content": "local test_int",
+    "error": "failed to assert: field demands int but is given str"
+  },
+  {
+    "recoverable": false,
+    "line": 16,
+    "char": 0,
+    "content": "a test_int",
+    "error": "failed to assert: field demands int but is given str"
   }
 ]

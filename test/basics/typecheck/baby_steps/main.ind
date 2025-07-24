@@ -6,8 +6,11 @@ do
 do
 	local test_str
 		type str
-		string "test"
-	# TODO - this shit does not work. we need scoping... UGH!
-		local test_int
-			type int
-			a test_str
+		# TODO - since we do not null by default - this should here also error!
+		
+	local test_int
+		type int
+		a test_str
+
+	a test_int
+		a test_str

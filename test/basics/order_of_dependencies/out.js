@@ -222,7 +222,6 @@ void (async () => {
                                     _0x1c_deps
                                 }
                             } }
-
                         /*module call=False index=False args=["'module'"]*/
                         const _0x1d_module = await indentifire.get_or_call(scope, 'module')
                         /*id call=False index=False args=["'id'"]*/
@@ -236,7 +235,6 @@ void (async () => {
                         _0x21_id
                     }
                 } }
-
 
 
 
@@ -268,7 +266,6 @@ void (async () => {
                                     return
                                 }
                             } }
-
                         /*module call=False index=False args=["'module'"]*/
                         const _0x26_module = await indentifire.get_or_call(scope, 'module')
                         /*visited call=True index=False args=["'visited'", 'true']*/
@@ -365,10 +362,8 @@ void (async () => {
                                                                         break
                                                                     }
                                                                 } }
-
                                                         }
                                                     } }
-
                                                 /*dep_loop call=False index=False args=["'dep_loop'"]*/
                                                 const _0x43_dep_loop = await indentifire.get_or_call(scope, 'dep_loop')
                                                 /*reverse call=False index=False args=["'reverse'"]*/
@@ -385,7 +380,6 @@ void (async () => {
                                                 _0x48_push
                                             }
                                         } }
-
                                     else {
                                         const parent_scope = scope
                                         {
@@ -395,7 +389,7 @@ void (async () => {
                                             const _0x49_dep_id = await indentifire.get_or_call(scope, 'dep_id')
                                             /*modules call=False index=False args=["'modules'"]*/
                                             const _0x4a_modules = await indentifire.get_or_call(scope, 'modules')
-                                            /*id call=True index=True args=['_0x49_dep_id']*/
+                                            /*id call=False index=True args=['_0x49_dep_id']*/
                                             const _0x4b_id = await indentifire.get_or_call(_0x4a_modules, _0x49_dep_id)
                                             const _0x4c = await indentifire.call_or_set(scope, 'dep', _0x4b_id)
                                             _0x4c
@@ -418,12 +412,10 @@ void (async () => {
                                                         _0x52_visit
                                                     }
                                                 } }
-
                                         }
                                     } 
                                 }
                             } }
-
                         /*build_order call=False index=False args=["'build_order'"]*/
                         const _0x53_build_order = await indentifire.get_or_call(scope, 'build_order')
                         /*module call=False index=False args=["'module'"]*/
@@ -435,7 +427,6 @@ void (async () => {
                         _0x56_push
                     }
                 } }
-
             /*modules call=False index=False args=["'modules'"]*/
             const _0x57_modules = await indentifire.get_or_call(scope, 'modules')
             const _0x58 = await indentifire.values(_0x57_modules)
@@ -458,7 +449,6 @@ void (async () => {
                         _0x5b_visit
                     }
                 } }
-
             /*dep_loops call=False index=False args=["'dep_loops'"]*/
             const _0x5c_dep_loops = await indentifire.get_or_call(scope, 'dep_loops')
             /*length call=False index=False args=["'length'"]*/
@@ -478,7 +468,6 @@ void (async () => {
                         _0x62
                     }
                 } }
-
             else {
                 const parent_scope = scope
                 {

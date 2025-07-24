@@ -192,7 +192,6 @@ void (async () => {
                                     _0xe_header
                                 }
                             } }
-
                         else {
                             const parent_scope = scope
                             {
@@ -239,7 +238,6 @@ void (async () => {
                                             _0x1c_key
                                         }
                                     } }
-
                                 /*rows call=False index=False args=["'rows'"]*/
                                 const _0x1d_rows = await indentifire.get_or_call(scope, 'rows')
                                 /*row call=False index=False args=["'row'"]*/
@@ -257,7 +255,6 @@ void (async () => {
                         _0x22_i
                     }
                 } }
-
             /*rows call=False index=False args=["'rows'"]*/
             const _0x23_rows = await indentifire.get_or_call(scope, 'rows')
 
@@ -280,7 +277,6 @@ void (async () => {
                         _0x27
                     }
                 } }
-
             scope.age_over_30 = indentifire.store()
             const _0x28 = await indentifire.call_or_set(scope, 'age_over_30', 0)
             _0x28
@@ -316,10 +312,8 @@ void (async () => {
                                     _0x30_age_over_30
                                 }
                             } }
-
                     }
                 } }
-
             /*age_over_30 call=False index=False args=["'age_over_30'"]*/
             const _0x31_age_over_30 = await indentifire.get_or_call(scope, 'age_over_30')
             const _0x32 = await indentifire.log(_0x31_age_over_30)

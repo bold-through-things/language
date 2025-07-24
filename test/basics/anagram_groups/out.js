@@ -202,7 +202,6 @@ void (async () => {
                                     _0x13_key
                                 }
                             } }
-
                         /*key call=False index=False args=["'key'"]*/
                         const _0x14_key = await indentifire.get_or_call(scope, 'key')
                         /*groups call=False index=False args=["'groups'"]*/
@@ -216,7 +215,6 @@ void (async () => {
                         _0x18_push
                     }
                 } }
-
             /*groups call=False index=False args=["'groups'"]*/
             const _0x19_groups = await indentifire.get_or_call(scope, 'groups')
             const _0x1a = await indentifire.values(_0x19_groups)
@@ -240,7 +238,6 @@ void (async () => {
                         _0x1e
                     }
                 } }
-
         }
     } 
 })();

@@ -2,22 +2,21 @@ from dataclasses import replace
 from typing import Iterator, Protocol, TextIO, TypeVar, Union, cast
 from io import StringIO
 from pathlib import Path
-from node import Args, Associated_code_block, Callers, Indexers, Inject_code_start, Macro, Node, Params, Parent, Position, Target, FieldDemandType
+from node import Args, Associated_code_block, Callers, Indexers, Inject_code_start, Macro, Node, Params, Parent, Position, Scope, Target, FieldDemandType
 from strutil import IndentedStringIO, Joiner, cut, extract_indent, join_nested
 from typing import Callable, Type, Dict, List, Optional
 from utils import *
 
-ERASED_NODE = Node(None, None)
+ERASED_NODE = Node(None, None, children=None)
 ERASED_NODE.metadata[Macro] = None
 ERASED_NODE.metadata[Args] = ""
 
-def erase_node(parent: Node, child: Node):
-    for i in range(len(parent.children)):
-        if parent.children[i] == child:
-            parent.children[i] = ERASED_NODE
-            return
-    
-    raise ValueError("no node found to erase")
+def seek_parent_scope(n: Node) -> Scope | None:
+    while n:
+        scope = n.metadata.maybe(Scope)
+        if scope:
+            return scope
+        n = n.parent
 
 js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
 
@@ -147,6 +146,7 @@ def regex_typecheck(ctx: MacroContext):
 
 @typecheck.add("local")
 def local_typecheck(ctx: MacroContext):
+    name, _ = cut(ctx.node.metadata[Args], " ")
     if not ctx.node.metadata.maybe(FieldDemandType):
         # TODO. this should be mandatory.
         return
@@ -155,6 +155,32 @@ def local_typecheck(ctx: MacroContext):
     received = ctx.compiler.typecheck(replace(ctx, node=children[0]))
     demanded = ctx.node.metadata[FieldDemandType]
     ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}")
+
+    scope = seek_parent_scope(ctx.node)
+    assert scope is not None # internal assert
+    scope.mapping[name] = demanded
+
+@typecheck.add("a")
+def access_typecheck(ctx: MacroContext):
+    first, extra = cut(ctx.node.metadata[Args], " ")
+    if extra:
+        # TODO. not implemented. quite complex...
+        pass
+
+    types = [ctx.compiler.typecheck(replace(ctx, node=child)) for child in ctx.node.children]
+    types = list(filter(None, types))
+
+    scope = seek_parent_scope(ctx.node)
+    assert scope is not None # internal assert
+    name = first
+    if name in scope.mapping:
+        demanded = scope.mapping[name]
+        if len(types) > 0:
+            # TODO - support multiple arguments
+            ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
+            received = types[0]
+            ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}")
+        return demanded
 
 with scope:
     literally = {
@@ -179,7 +205,8 @@ def exists_inside(ctx: MacroContext):
 def builtin(ctx: MacroContext):
     ctx.compiler.compile_fn_call(ctx, f"await indentifire.{builtins[ctx.node.metadata[Macro]]}(", ctx.node.children)
 
-@macros.add("do", "then", "else")
+SCOPE_MACRO = ["do", "then", "else"]
+@macros.add(*SCOPE_MACRO)
 def block(ctx: MacroContext):
     if ctx.node.metadata[Macro] in ["else"]:
         ctx.statement_out.write(f"{ctx.node.metadata[Macro]} ")
@@ -200,6 +227,13 @@ def block(ctx: MacroContext):
                 ctx.statement_out.write("\n")
         ctx.statement_out.write("}\n")
     ctx.statement_out.write("} ")
+
+@typecheck.add(*SCOPE_MACRO)
+def scope_macro(ctx: MacroContext):
+    parent = seek_parent_scope(ctx.node)
+    ctx.node.metadata[Scope] = Scope(parent=parent)
+    for child in ctx.node.children:
+        ctx.compiler.typecheck(replace(ctx, node=child))
 
 @macros.add("for")
 def for_macro(ctx: MacroContext):
@@ -418,16 +452,16 @@ class Compiler:
                 parent.metadata[Indexers].mapping[args] = node.children[0]
             else:
                 # shortcut for when the substitution is literal (i.e. most cases)
-                access = Node(f"a {args}", node.pos) # fake accessor node
+                access = Node(f"a {args}", node.pos, children=None) # fake accessor node
                 self.__discover_macros(access, None) # populate the metadata... TODO - awkward!
                 parent.metadata[Indexers].mapping[args] = access
-            erase_node(parent, node)
+            parent.replace_child(node, None)
 
         if macro == "calling":
             self.assert_(len(node.children) == 1, node, "call must have one child")
             self.assert_(args.find(" ") == -1, node, "call must have one argument")
             parent.metadata[Callers].mapping[args] = node.children
-            erase_node(parent, node)
+            parent.replace_child(node, None)
 
         # exists inside
         if macro == "inside":
@@ -435,7 +469,7 @@ class Compiler:
             self.assert_(args.strip() == "", node, "inside must have no arguments")
             self.assert_(parent.metadata[Macro] == "exists", node, "inside must be inside exists") # TODO. wow, easy to understand!
             parent.metadata[Target] = node.children[0]
-            erase_node(parent, node)
+            parent.replace_child(node, None)
     
         # function param
         if macro == "param":
@@ -449,7 +483,7 @@ class Compiler:
             self.assert_(args.find(" ") == -1, node, "param must have one argument - the type identifier")
             self.assert_(parent.metadata[Macro] == "local", node, "type must be inside local") # TODO
             parent.metadata[FieldDemandType] = args
-            erase_node(parent, node)
+            parent.replace_child(node, None)        
         
         # associate code blocks with relevant headers
         CODE_BLOCK_HEADERS = {
@@ -458,9 +492,12 @@ class Compiler:
             "for": "do",
             "fn": "do"
         }
-        for i in range(len(node.children)):
-            current = node.children[i]
-            next = node.children[i+1] if i+1 < len(node.children) else None
+
+        children = node.children
+        parent = node
+        for i in range(len(children)):
+            current = children[i]
+            next = children[i+1] if i+1 < len(children) else None
 
             if not current or not next:
                 continue
@@ -471,7 +508,7 @@ class Compiler:
                 macro, args = str(next.metadata[Macro]), str(next.metadata[Args])
                 if macro == expected_next:
                     current.metadata[Associated_code_block] = next
-                    erase_node(node, next)
+                    parent.replace_child(next, None)
                 else:
                     ValueError(f"for {macro} expected a following {expected_next}")               
 

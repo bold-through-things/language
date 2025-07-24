@@ -1,9 +1,10 @@
-
+from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Union
+from typing import Sequence, Union
 
 from utils import TypeMap
+
 
 @dataclass
 class Position:
@@ -11,18 +12,51 @@ class Position:
     char: int = 0
 
 class Node:
-    def __init__(self, content: str, pos: Position) -> None:
+    def __init__(self, content: str, pos: Position, children: list["Node"] | None) -> None:
         self.content = content
-        self.children: list[Node] = []
+        self._children: list[Node] = children or []
+        self.parent: Node | None = None
+        for child in self._children:
+            child.parent = self
         self.metadata = TypeMap()
         self.pos = pos
 
-    def __repr__(self):
+    @property
+    def children(self) -> Sequence["Node"]:
+        return list(self._children)
+
+    def replace_child(self, target: "Node", new: Union["Node", list["Node"], None]) -> None:
+        matches = [i for i, child in enumerate(self._children) if child is target]
+        if not matches:
+            raise ValueError("target child not found")
+        if len(matches) > 1:
+            raise ValueError("target child appears multiple times")
+
+        index = matches[0]
+        # detach old
+        target.parent = None
+
+        # prepare new children
+        if new is None:
+            replacement = []
+        elif isinstance(new, Node):
+            replacement = [new]
+        else:
+            replacement = list(new)
+
+        for child in replacement:
+            child.parent = self
+
+        self._children[index:index + 1] = replacement
+
+    def __repr__(self) -> str:
         return self.indented_repr()
-        
-    def indented_repr(self, indent=""):
-        next_indent = "\t"+indent
-        return f"{indent}`{self.content}`:\n{"\n".join([node.indented_repr(next_indent) for node in self.children])}"
+
+    def indented_repr(self, indent: str = "") -> str:
+        next_indent = "\t" + indent
+        return f"{indent}`{self.content}`:\n" + "\n".join(
+            child.indented_repr(next_indent) for child in self._children
+        )
     
 class Runtime_scope:
     def __init__(self, parent: Union["Runtime_scope", None] = None):
@@ -66,6 +100,11 @@ class Args(str): pass
 
 @dataclass
 class FieldDemandType(str): pass
+
+@dataclass
+class Scope:
+    parent: Scope | None
+    mapping: dict[str, FieldDemandType] = field(default_factory=dict)
 
 # TODO. i don't know where to stuff this one. it doesn't belong into Node directly as that would polute the pretty
 #  and clean parser-specific class with irrelevant macro-specific garbage such as this.

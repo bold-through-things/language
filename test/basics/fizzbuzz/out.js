@@ -163,7 +163,6 @@ void (async () => {
                         _0x6_n
                     }
                 } }
-
             else {
                 const parent_scope = scope
                 {
@@ -182,21 +181,21 @@ void (async () => {
 
                     /*input call=False index=False args=["'input'"]*/
                     const _0xc_input = await indentifire.get_or_call(scope, 'input')
-                    /*key call=True index=True args=['0']*/
+                    /*key call=False index=True args=['0']*/
                     const _0xd_key = await indentifire.get_or_call(_0xc_input, 0)
                     /*fizz_divisor call=True index=False args=["'fizz_divisor'", '_0xd_key']*/
                     const _0xe_fizz_divisor = await indentifire.call_or_set(scope, 'fizz_divisor', _0xd_key)
                     _0xe_fizz_divisor
                     /*input call=False index=False args=["'input'"]*/
                     const _0xf_input = await indentifire.get_or_call(scope, 'input')
-                    /*key call=True index=True args=['1']*/
+                    /*key call=False index=True args=['1']*/
                     const _0x10_key = await indentifire.get_or_call(_0xf_input, 1)
                     /*buzz_divisor call=True index=False args=["'buzz_divisor'", '_0x10_key']*/
                     const _0x11_buzz_divisor = await indentifire.call_or_set(scope, 'buzz_divisor', _0x10_key)
                     _0x11_buzz_divisor
                     /*input call=False index=False args=["'input'"]*/
                     const _0x12_input = await indentifire.get_or_call(scope, 'input')
-                    /*key call=True index=True args=['2']*/
+                    /*key call=False index=True args=['2']*/
                     const _0x13_key = await indentifire.get_or_call(_0x12_input, 2)
                     /*n call=True index=False args=["'n'", '_0x13_key']*/
                     const _0x14_n = await indentifire.call_or_set(scope, 'n', _0x13_key)
@@ -236,7 +235,6 @@ void (async () => {
                                     _0x1f_out
                                 }
                             } }
-
                         /*i call=False index=False args=["'i'"]*/
                         const _0x20_i = await indentifire.get_or_call(scope, 'i')
                         /*buzz_divisor call=False index=False args=["'buzz_divisor'"]*/
@@ -256,7 +254,6 @@ void (async () => {
                                     _0x26_out
                                 }
                             } }
-
                         /*out call=False index=False args=["'out'"]*/
                         const _0x27_out = await indentifire.get_or_call(scope, 'out')
                         const _0x28 = await indentifire.eq(_0x27_out, "")
@@ -272,7 +269,6 @@ void (async () => {
                                     _0x2a_out
                                 }
                             } }
-
                         /*out call=False index=False args=["'out'"]*/
                         const _0x2b_out = await indentifire.get_or_call(scope, 'out')
                         const _0x2c = await indentifire.log(_0x2b_out)
@@ -285,7 +281,6 @@ void (async () => {
                         _0x2f_i
                     }
                 } }
-
         }
     } 
 })();

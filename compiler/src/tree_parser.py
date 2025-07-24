@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from dataclasses import dataclass, field
 from typing import Iterator
 from io import StringIO
 from pathlib import Path
@@ -40,8 +43,16 @@ class TreeParser:
         # TODO - although this will fuck over line numbers, so might actually be a bad idea?
         code = f"\n{code}\n"
 
-        scope: TrimStack[Node] = TrimStack()
-        root = Node("do", Position(0))
+        @dataclass
+        class ParsingNode:
+            content: str
+            position: Position
+            children: list[ParsingNode] = field(default_factory=list)            
+            def toNode(self):
+                return Node(content=self.content, pos=self.position, children=[child.toNode() for child in self.children])
+
+        scope: TrimStack[ParsingNode] = TrimStack()
+        root = ParsingNode("do", Position(0))
         scope[0] = root
         line_num = 0
         for line in code.split("\n"):
@@ -56,10 +67,10 @@ class TreeParser:
                 # skip empty/indentation-only lines
                 continue
 
-            node = Node(line, Position(line_num))
+            node = ParsingNode(line, Position(line_num))
             scope[indent - 1].children.append(node)
             scope[indent] = node
             scope.trim(indent)
         
-        return root
+        return root.toNode()
         
