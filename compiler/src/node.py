@@ -105,6 +105,9 @@ class FieldDemandType(str): pass
 class Scope:
     parent: Scope | None
     mapping: dict[str, FieldDemandType] = field(default_factory=dict)
+    def resolve(self, name: str):
+        # hahahahahaha what the hell are you doing Python
+        return self.mapping[name] if name in self.mapping else self.parent.resolve(name) if self.parent else None
 
 # TODO. i don't know where to stuff this one. it doesn't belong into Node directly as that would polute the pretty
 #  and clean parser-specific class with irrelevant macro-specific garbage such as this.

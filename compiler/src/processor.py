@@ -173,8 +173,9 @@ def access_typecheck(ctx: MacroContext):
     scope = seek_parent_scope(ctx.node)
     assert scope is not None # internal assert
     name = first
-    if name in scope.mapping:
-        demanded = scope.mapping[name]
+    resolved_field = scope.resolve(name)
+    if resolved_field:
+        demanded = resolved_field
         if len(types) > 0:
             # TODO - support multiple arguments
             ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")

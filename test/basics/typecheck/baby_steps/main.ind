@@ -1,3 +1,25 @@
+# these are expected to pass
+do
+	local test
+		type int
+		int 0
+
+	local test_1
+		type int
+		a test
+
+	a test
+		a test_1
+
+	do
+		local test_1
+			type int
+			a test
+
+		a test
+			a test_1
+
+# these are expected to fail
 do
 	local test
 		type int
@@ -14,3 +36,11 @@ do
 
 	a test_int
 		a test_str
+
+	do
+		a test_str
+			int 0
+
+		local test_bool
+			type bool
+			a test_str
