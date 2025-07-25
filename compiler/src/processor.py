@@ -110,7 +110,7 @@ def local(ctx: MacroContext):
     ctx.statement_out.write(f"scope.{name} = indentifire.store()")
     if len(ctx.node.children) > 0:
         ctx.statement_out.write("\n")
-        ctx.compiler.compile_fn_call(ctx, f"await indentifire.call_or_set(scope, '{name}', ", ctx.node.children)
+        ctx.compiler.compile_fn_call(ctx, f"await indentifire.access(scope, '{name}', ", ctx.node.children)
         
 
 @macros.add("int")
@@ -404,12 +404,11 @@ class Compiler:
                 args += compile_args(node.children)
 
             index = step in indexers
-            mode = "call_or_set" if len(args) > 1 else "get_or_call"
             ctx.statement_out.writeline(f"/*{step} {call=} {index=} {args=}*/")
             ident = ctx.compiler.get_new_ident() + to_valid_js_ident(step)
             args = ", ".join([arg for arg in args if arg])
             # ctx.statement_out.write(f"/*{step} resolved to {params}*/\n")
-            ctx.statement_out.write(f"const {ident} = await indentifire.{mode}({last_ident}, {args})\n")
+            ctx.statement_out.write(f"const {ident} = await indentifire.access({last_ident}, {args})\n")
             last_ident = ident
         
         ctx.expression_out.write(last_ident)

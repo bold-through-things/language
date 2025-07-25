@@ -45,7 +45,17 @@ globalThis.indentifire = {
      * @returns {Promise<unknown>} The result of the method call, or `undefined` if assigning.
      * @throws {TypeError} If the number of arguments is invalid for the setter or assignment.
      */
-    async call_or_set(obj, field, ...values) {
+    async access(obj, field, ...values) {
+        if (values.length == 0) { 
+            const value = obj[field];
+
+            if (typeof value === 'function') {
+                return await value.call(obj);
+            } else {
+                return value;
+            }
+        }
+        
         const proto = Object.getPrototypeOf(obj);
         const desc = proto ? Object.getOwnPropertyDescriptor(proto, field) : undefined;
 
@@ -67,24 +77,6 @@ globalThis.indentifire = {
             }
             obj[field] = values[0];
             return values[0];
-        }
-    },
-
-    /**
-     * Gets a value from an object by field. If it's a function, calls it with `obj` as `this` and returns the result.
-     * Supports `async` methods.
-     *
-     * @param {object} obj - The target object.
-     * @param {string|symbol} field - The field name or symbol to access.
-     * @returns {Promise<unknown>} The result of the method call or the field value.
-     */
-    async get_or_call(obj, field) {
-        const value = obj[field];
-
-        if (typeof value === 'function') {
-            return await value.call(obj);
-        } else {
-            return value;
         }
     },
 
@@ -142,20 +134,20 @@ void (async () => {
             const scope = indentifire.scope(parent_scope)
             scope.input = indentifire.store()
             const _0x0 = await indentifire.stdin()
-            const _0x1 = await indentifire.call_or_set(scope, 'input', _0x0)
+            const _0x1 = await indentifire.access(scope, 'input', _0x0)
             _0x1
             scope.words = indentifire.store()
             /*input call=False index=False args=["'input'"]*/
-            const _0x2_input = await indentifire.get_or_call(scope, 'input')
+            const _0x2_input = await indentifire.access(scope, 'input')
             /*split call=True index=False args=["'split'", '"\\n"']*/
-            const _0x3_split = await indentifire.call_or_set(_0x2_input, 'split', "\n")
-            const _0x4 = await indentifire.call_or_set(scope, 'words', _0x3_split)
+            const _0x3_split = await indentifire.access(_0x2_input, 'split', "\n")
+            const _0x4 = await indentifire.access(scope, 'words', _0x3_split)
             _0x4
             scope.count = indentifire.store()
-            const _0x5 = await indentifire.call_or_set(scope, 'count', {})
+            const _0x5 = await indentifire.access(scope, 'count', {})
             _0x5
             /*words call=False index=False args=["'words'"]*/
-            const _0x6_words = await indentifire.get_or_call(scope, 'words')
+            const _0x6_words = await indentifire.access(scope, 'words')
 
             const _0x7 = _0x6_words[Symbol.iterator]();
             while (true) {
@@ -169,23 +161,23 @@ void (async () => {
                     {
                         const scope = indentifire.scope(parent_scope)
                         /*word call=False index=False args=["'word'"]*/
-                        const _0x8_word = await indentifire.get_or_call(scope, 'word')
+                        const _0x8_word = await indentifire.access(scope, 'word')
                         /*count call=False index=False args=["'count'"]*/
-                        const _0x9_count = await indentifire.get_or_call(scope, 'count')
+                        const _0x9_count = await indentifire.access(scope, 'count')
                         /*word call=False index=False args=["'word'"]*/
-                        const _0xa_word = await indentifire.get_or_call(scope, 'word')
+                        const _0xa_word = await indentifire.access(scope, 'word')
                         /*count call=False index=False args=["'count'"]*/
-                        const _0xb_count = await indentifire.get_or_call(scope, 'count')
+                        const _0xb_count = await indentifire.access(scope, 'count')
                         /*key call=False index=True args=['_0xa_word']*/
-                        const _0xc_key = await indentifire.get_or_call(_0xb_count, _0xa_word)
+                        const _0xc_key = await indentifire.access(_0xb_count, _0xa_word)
                         const _0xd = await indentifire.add(1, _0xc_key)
                         /*key call=True index=True args=['_0x8_word', '_0xd']*/
-                        const _0xe_key = await indentifire.call_or_set(_0x9_count, _0x8_word, _0xd)
+                        const _0xe_key = await indentifire.access(_0x9_count, _0x8_word, _0xd)
                         _0xe_key
                     }
                 } }
             /*count call=False index=False args=["'count'"]*/
-            const _0xf_count = await indentifire.get_or_call(scope, 'count')
+            const _0xf_count = await indentifire.access(scope, 'count')
             const _0x10 = await indentifire.log(_0xf_count)
             _0x10
         }

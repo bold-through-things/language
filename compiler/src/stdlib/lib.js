@@ -45,7 +45,17 @@ globalThis.indentifire = {
      * @returns {Promise<unknown>} The result of the method call, or `undefined` if assigning.
      * @throws {TypeError} If the number of arguments is invalid for the setter or assignment.
      */
-    async call_or_set(obj, field, ...values) {
+    async access(obj, field, ...values) {
+        if (values.length == 0) { 
+            const value = obj[field];
+
+            if (typeof value === 'function') {
+                return await value.call(obj);
+            } else {
+                return value;
+            }
+        }
+        
         const proto = Object.getPrototypeOf(obj);
         const desc = proto ? Object.getOwnPropertyDescriptor(proto, field) : undefined;
 
@@ -67,24 +77,6 @@ globalThis.indentifire = {
             }
             obj[field] = values[0];
             return values[0];
-        }
-    },
-
-    /**
-     * Gets a value from an object by field. If it's a function, calls it with `obj` as `this` and returns the result.
-     * Supports `async` methods.
-     *
-     * @param {object} obj - The target object.
-     * @param {string|symbol} field - The field name or symbol to access.
-     * @returns {Promise<unknown>} The result of the method call or the field value.
-     */
-    async get_or_call(obj, field) {
-        const value = obj[field];
-
-        if (typeof value === 'function') {
-            return await value.call(obj);
-        } else {
-            return value;
         }
     },
 
