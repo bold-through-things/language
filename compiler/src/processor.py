@@ -155,10 +155,6 @@ def fn(ctx: MacroContext):
         ctx.compiler.compile_ctx(inner_ctx)
     ctx.statement_out.write("}")
 
-# @macros.add(*[a for a in ACCESS_MACRO])
-def access(ctx: MacroContext):
-    ctx.compiler.unroll_chain(ctx)
-
 @macros.add("PIL:access_field")
 def read_field(ctx: MacroContext):
     args = ctx.node.metadata[Args].split(" ")
@@ -443,7 +439,6 @@ def for_macro(ctx: MacroContext):
         args.append(e.getvalue())
     args = list(filter(None, args))
 
-    print("args", ctx.node.content, args)
     ctx.compiler.assert_(len(args) == 1, ctx.node, "must have a single argument, the list provider")
 
     iter_ident = ctx.compiler.get_new_ident("iter")
@@ -455,7 +450,6 @@ while (true) {{
     let {name} = value;
 """)
     with ctx.statement_out:
-        # print(f"{[c.content for c in ctx.node.parent.children]}")
         node = seek_child_macro(ctx.node, "do")
         ctx.compiler.assert_(node != None, ctx.node, "must have a `do` block")
         inner_ctx = replace(ctx, node=node)
@@ -581,11 +575,7 @@ class Compiler:
         out.write("\n})();")
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
-        print("compiled:")
-        print(out.getvalue())
         return out.getvalue()
-    
-    def unroll_chain(self, ctx: MacroContext):
         node = ctx.node
         access, path = cut(node.content, " ")
         assert access in ACCESS_MACRO # internal assert
@@ -594,7 +584,6 @@ class Compiler:
         indexers = getattr(node.metadata.maybe(Indexers), "mapping", {})
         callers = getattr(node.metadata.maybe(Callers), "mapping", {})
         subs = indexers | callers
-        # print(f"{(indexers.mapping if indexers else None)=}")
 
         def compile_args(args: list[Node]):
             args_rv = []
@@ -645,7 +634,6 @@ class Compiler:
             self.__discover_macros(child)
 
     def typecheck(self, ctx: MacroContext):
-        print("typecheck", ctx.node.content)
         macro = ctx.node.metadata[Macro]
         all_macros = typecheck.all()
         
@@ -778,13 +766,8 @@ class Compiler:
                 expected_next = CODE_BLOCK_HEADERS[macro]
                 macro, args = str(next.metadata[Macro]), str(next.metadata[Args])
                 if macro == expected_next:
-                    # print(f"{[c.content for c in unroll_parent_chain(current)]=} {type(current)=} {current.content=} {id(next)=} {next.content=} {type(next)=}")
-                    # print(f"parent before replace {[c.content for c in parent.children]}")
-                    # print(f"current before replace {[c.content for c in current.children]}")
                     parent.replace_child(next, None)
-                    # print(f"parent after replace {[c.content for c in parent.children]}")
                     current.append_child(next)
-                    # print(f"current after replace {[c.content for c in current.children]}")
                 else:
                     ValueError(f"for {macro} expected a following {expected_next}")
 

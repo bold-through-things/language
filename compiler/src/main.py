@@ -38,7 +38,6 @@ for filename in result:
     with open(filename) as file:
         node = parser.parse_tree(file.read())
         compiler.register(node)
-        print(repr(node))
 
 error = False
 compiled = None
