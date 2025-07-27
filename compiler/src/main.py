@@ -40,15 +40,29 @@ for filename in result:
         compiler.register(node)
         print(repr(node))
 
-compiled = compiler.compile()
-open(args.output_file, "w").write(compiled)
+error = False
+compiled = None
+try:
+    compiled = compiler.compile()
+except:
+    error = True
+if compiled:
+    with open(args.output_file, "w") as f:
+        f.write(compiled)
+expanded_file = Path(args.output_file).parent / ".ind.expanded"
+print(f"expanded into {expanded_file}")
+with open(expanded_file, "w") as f:
+    for node in compiler.nodes:
+        f.write(repr(node))
+        f.write("\n\n")
 print("refactor confidently when the flame flickers.")
 
-if len(compiler.compile_errors) != 0:
-    if args.errors_file:
-        with open(args.errors_file, 'w') as f:
-            write_json(compiler.compile_errors, f)
-    else:
-        human_readable(compiler.compile_errors)
+if len(compiler.compile_errors) != 0 or error:
+    if len(compiler.compile_errors) != 0:
+        if args.errors_file:
+            with open(args.errors_file, 'w') as f:
+                write_json(compiler.compile_errors, f)
+        else:
+            human_readable(compiler.compile_errors)
     
     exit(1)

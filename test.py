@@ -94,9 +94,6 @@ def discover_tests(args) -> list[TestCase]:
     tests: list[TestCase] = []
 
     for tests_json_path in TEST_ROOT.rglob("tests.json"):
-        if not glob(str(tests_json_path)):
-            print(f"ignoring `{tests_json_path}` per midglob `{args.glob}`")
-            continue
 
         with open(tests_json_path, "r") as f:
             # TODO - instead of JSON leverage our own format
@@ -112,7 +109,14 @@ def discover_tests(args) -> list[TestCase]:
             case_paths = resolve(case_glob, base_dir)
 
             for code_path, case_path in product(code_paths, case_paths):
-                tests.append(TestCase(def_path=base_dir, case_path=case_path, code_path=code_path))
+                def_parts = base_dir.relative_to(TEST_ROOT).parts
+                code_parts = code_path.relative_to(base_dir).parts
+                case_parts = case_path.relative_to(base_dir).parts
+                name = "test_" + "_".join(def_parts + code_parts + case_parts)
+                if not glob(str(name)):
+                    print(f"ignoring `{name}` per midglob `{args.glob}`")
+                    continue
+                tests.append(TestCase(def_path=base_dir, case_path=case_path, code_path=code_path, name=name))
 
     return tests
 
@@ -133,6 +137,8 @@ def make_test_method(tc: TestCase, args):
         with tempfile.TemporaryDirectory() as tmpdir_str:
             tmpdir = Path(tmpdir_str)
             compile_err_actual = code_dir / "compile.stderr.actual"
+            if compile_err_actual.exists():
+                os.remove(compile_err_actual)
             out_path = code_dir / EXECUTABLE
 
             # TODO - is this obsolete? what are we gaining from this copy ?
@@ -162,7 +168,7 @@ def make_test_method(tc: TestCase, args):
             if args.run:
                 fuck_you_python = lambda arg, if_cond: arg if if_cond else None
                 
-                exec_cmd = [DENO_PATH.absolute(), "run", fuck_you_python("--inspect-brk=9229", args.debug), out_path.absolute()]
+                exec_cmd = [DENO_PATH.absolute(), "run", fuck_you_python("--inspect-brk=127.0.0.1:9229", args.debug), out_path.absolute()]
                 exec_cmd = list(filter(None, exec_cmd))
                 print(f"{case_dir}: running... {exec_cmd}")
                 returncode, stdout, stderr = run_with_input(exec_cmd, stdin=stdin_text, line_delayed=False)
@@ -219,10 +225,6 @@ if __name__ == "__main__":
             )
     
     for tc in discover_tests(args):
-        def_parts = tc.def_path.relative_to(TEST_ROOT).parts
-        code_parts = tc.code_path.relative_to(tc.def_path).parts
-        case_parts = tc.case_path.relative_to(tc.def_path).parts
-        tc.name = "test_" + "_".join(def_parts + code_parts + case_parts)
         setattr(MyLangTestCase, tc.name, make_test_method(tc, args))
     
     unittest.main()

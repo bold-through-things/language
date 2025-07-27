@@ -18,7 +18,7 @@ globalThis.indentifire = {
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
-          return arrays.map(array => array[i]);
+            return arrays.map(array => array[i]);
         });
     },
 
@@ -46,7 +46,7 @@ globalThis.indentifire = {
      * @throws {TypeError} If the number of arguments is invalid for the setter or assignment.
      */
     async access(obj, field, ...values) {
-        if (values.length == 0) { 
+        if (values.length == 0) {
             const value = obj[field];
 
             if (typeof value === 'function') {
@@ -55,7 +55,7 @@ globalThis.indentifire = {
                 return value;
             }
         }
-        
+
         const proto = Object.getPrototypeOf(obj);
         const desc = proto ? Object.getOwnPropertyDescriptor(proto, field) : undefined;
 
@@ -132,145 +132,155 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-            scope.fizz_divisor = indentifire.store()
-            scope.buzz_divisor = indentifire.store()
-            scope.n = indentifire.store()
-            const _0x0 = await indentifire.is_tty()
-            if (_0x0)
-            {{
+            let fizz_divisor
+            fizz_divisor
+            let buzz_divisor
+            buzz_divisor
+            let n
+            n
+            const _0x1f__await_indentifire_0x2e_is_tty_0x28_ = await indentifire.is_tty()
+            if (_0x1f__await_indentifire_0x2e_is_tty_0x28_) {{
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        const _0x1 = await indentifire.prompt("fizz? ")
-                        /*fizz_divisor call=True index=False args=["'fizz_divisor'", '_0x1']*/
-                        const _0x2_fizz_divisor = await indentifire.access(scope, 'fizz_divisor', _0x1)
-                        _0x2_fizz_divisor
-                        const _0x3 = await indentifire.prompt("buzz? ")
-                        /*buzz_divisor call=True index=False args=["'buzz_divisor'", '_0x3']*/
-                        const _0x4_buzz_divisor = await indentifire.access(scope, 'buzz_divisor', _0x3)
-                        _0x4_buzz_divisor
-                        const _0x5 = await indentifire.prompt("n? ")
-                        /*n call=True index=False args=["'n'", '_0x5']*/
-                        const _0x6_n = await indentifire.access(scope, 'n', _0x5)
-                        _0x6_n
+                        const _0x21__await_indentifire_0x2e_prompt_0x28_ = await indentifire.prompt("fizz? ")
+                        fizz_divisor = _0x21__await_indentifire_0x2e_prompt_0x28_
+                        const _0x20__fizz_divisor = await fizz_divisor
+                        let _0x0__fizz_divisor = _0x20__fizz_divisor
+                        _0x0__fizz_divisor
+                        const _0x23__await_indentifire_0x2e_prompt_0x28_ = await indentifire.prompt("buzz? ")
+                        buzz_divisor = _0x23__await_indentifire_0x2e_prompt_0x28_
+                        const _0x22__buzz_divisor = await buzz_divisor
+                        let _0x1__buzz_divisor = _0x22__buzz_divisor
+                        _0x1__buzz_divisor
+                        const _0x25__await_indentifire_0x2e_prompt_0x28_ = await indentifire.prompt("n? ")
+                        n = _0x25__await_indentifire_0x2e_prompt_0x28_
+                        const _0x24__n = await n
+                        let _0x2__n = _0x24__n
+                        _0x2__n
                     }
                 } }
             else {
                 const parent_scope = scope
                 {
                     const scope = indentifire.scope(parent_scope)
-                    scope.input = indentifire.store()
-                    const _0x7 = await indentifire.stdin()
-                    const _0x8 = await indentifire.access(scope, 'input', _0x7)
-                    _0x8
-                    /*input call=False index=False args=["'input'"]*/
-                    const _0x9_input = await indentifire.access(scope, 'input')
-                    /*split call=True index=False args=["'split'", '"\\n"']*/
-                    const _0xa_split = await indentifire.access(_0x9_input, 'split', "\n")
-                    /*input call=True index=False args=["'input'", '_0xa_split']*/
-                    const _0xb_input = await indentifire.access(scope, 'input', _0xa_split)
-                    _0xb_input
+                    const _0x26__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
+                    let input = _0x26__await_indentifire_0x2e_stdin_0x28_
+                    input
+                    const _0x28__input = await input
+                    let _0x3__input = _0x28__input
+                    const _0x2a___0x3__input = await _0x3__input
+                    const _0x29__split = await String.prototype.split.call(_0x2a___0x3__input, "\n")
+                    let _0x4__split = _0x29__split
+                    input = _0x4__split
+                    const _0x27__input = await input
+                    let _0x5__input = _0x27__input
+                    _0x5__input
 
-                    /*input call=False index=False args=["'input'"]*/
-                    const _0xc_input = await indentifire.access(scope, 'input')
-                    /*key call=False index=True args=['0']*/
-                    const _0xd_key = await indentifire.access(_0xc_input, 0)
-                    /*fizz_divisor call=True index=False args=["'fizz_divisor'", '_0xd_key']*/
-                    const _0xe_fizz_divisor = await indentifire.access(scope, 'fizz_divisor', _0xd_key)
-                    _0xe_fizz_divisor
-                    /*input call=False index=False args=["'input'"]*/
-                    const _0xf_input = await indentifire.access(scope, 'input')
-                    /*key call=False index=True args=['1']*/
-                    const _0x10_key = await indentifire.access(_0xf_input, 1)
-                    /*buzz_divisor call=True index=False args=["'buzz_divisor'", '_0x10_key']*/
-                    const _0x11_buzz_divisor = await indentifire.access(scope, 'buzz_divisor', _0x10_key)
-                    _0x11_buzz_divisor
-                    /*input call=False index=False args=["'input'"]*/
-                    const _0x12_input = await indentifire.access(scope, 'input')
-                    /*key call=False index=True args=['2']*/
-                    const _0x13_key = await indentifire.access(_0x12_input, 2)
-                    /*n call=True index=False args=["'n'", '_0x13_key']*/
-                    const _0x14_n = await indentifire.access(scope, 'n', _0x13_key)
-                    _0x14_n
+                    const _0x2c__input = await input
+                    let _0x6__input = _0x2c__input
+                    const _0x2d___0x6__input = await _0x6__input[0]
+                    let _0x7__key = _0x2d___0x6__input
+                    fizz_divisor = _0x7__key
+                    const _0x2b__fizz_divisor = await fizz_divisor
+                    let _0x8__fizz_divisor = _0x2b__fizz_divisor
+                    _0x8__fizz_divisor
+                    const _0x2f__input = await input
+                    let _0x9__input = _0x2f__input
+                    const _0x30___0x9__input = await _0x9__input[1]
+                    let _0xa__key = _0x30___0x9__input
+                    buzz_divisor = _0xa__key
+                    const _0x2e__buzz_divisor = await buzz_divisor
+                    let _0xb__buzz_divisor = _0x2e__buzz_divisor
+                    _0xb__buzz_divisor
+                    const _0x32__input = await input
+                    let _0xc__input = _0x32__input
+                    const _0x33___0xc__input = await _0xc__input[2]
+                    let _0xd__key = _0x33___0xc__input
+                    n = _0xd__key
+                    const _0x31__n = await n
+                    let _0xe__n = _0x31__n
+                    _0xe__n
                 }
             } 
-            scope.i = indentifire.store()
-            while(true) {/*i call=False index=False args=["'i'"]*/
-                const _0x15_i = await indentifire.access(scope, 'i')
-                /*n call=False index=False args=["'n'"]*/
-                const _0x16_n = await indentifire.access(scope, 'n')
-                const _0x17 = await indentifire.asc(_0x15_i, _0x16_n)
-                if (!_0x17) { break; }
+            let i = 0
+            i
+            while(true) {const _0x34__i = await i
+                let _0xf__i = _0x34__i
+                const _0x35__n = await n
+                let _0x10__n = _0x35__n
+                const _0x36__await_indentifire_0x2e_asc_0x28_ = await indentifire.asc(_0xf__i, _0x10__n)
+                if (!_0x36__await_indentifire_0x2e_asc_0x28_) { break; }
                 {
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        scope.out = indentifire.store()
-                        const _0x18 = await indentifire.access(scope, 'out', "")
-                        _0x18
-                        /*i call=False index=False args=["'i'"]*/
-                        const _0x19_i = await indentifire.access(scope, 'i')
-                        /*fizz_divisor call=False index=False args=["'fizz_divisor'"]*/
-                        const _0x1a_fizz_divisor = await indentifire.access(scope, 'fizz_divisor')
-                        const _0x1b = await indentifire.mod(_0x19_i, _0x1a_fizz_divisor)
-                        const _0x1c = await indentifire.eq(_0x1b, 0)
-                        if (_0x1c)
-                        {{
+                        let out = ""
+                        out
+                        const _0x37__i = await i
+                        let _0x11__i = _0x37__i
+                        const _0x38__fizz_divisor = await fizz_divisor
+                        let _0x12__fizz_divisor = _0x38__fizz_divisor
+                        const _0x39__await_indentifire_0x2e_mod_0x28_ = await indentifire.mod(_0x11__i, _0x12__fizz_divisor)
+                        const _0x3a__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x39__await_indentifire_0x2e_mod_0x28_, 0)
+                        if (_0x3a__await_indentifire_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
-                                    /*out call=False index=False args=["'out'"]*/
-                                    const _0x1d_out = await indentifire.access(scope, 'out')
-                                    const _0x1e = await indentifire.concat(_0x1d_out, "fizz")
-                                    /*out call=True index=False args=["'out'", '_0x1e']*/
-                                    const _0x1f_out = await indentifire.access(scope, 'out', _0x1e)
-                                    _0x1f_out
+                                    const _0x3c__out = await out
+                                    let _0x13__out = _0x3c__out
+                                    const _0x3d__await_indentifire_0x2e_concat_0x28_ = await indentifire.concat(_0x13__out, "fizz")
+                                    out = _0x3d__await_indentifire_0x2e_concat_0x28_
+                                    const _0x3b__out = await out
+                                    let _0x14__out = _0x3b__out
+                                    _0x14__out
                                 }
                             } }
-                        /*i call=False index=False args=["'i'"]*/
-                        const _0x20_i = await indentifire.access(scope, 'i')
-                        /*buzz_divisor call=False index=False args=["'buzz_divisor'"]*/
-                        const _0x21_buzz_divisor = await indentifire.access(scope, 'buzz_divisor')
-                        const _0x22 = await indentifire.mod(_0x20_i, _0x21_buzz_divisor)
-                        const _0x23 = await indentifire.eq(_0x22, 0)
-                        if (_0x23)
-                        {{
+                        const _0x3e__i = await i
+                        let _0x15__i = _0x3e__i
+                        const _0x3f__buzz_divisor = await buzz_divisor
+                        let _0x16__buzz_divisor = _0x3f__buzz_divisor
+                        const _0x40__await_indentifire_0x2e_mod_0x28_ = await indentifire.mod(_0x15__i, _0x16__buzz_divisor)
+                        const _0x41__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x40__await_indentifire_0x2e_mod_0x28_, 0)
+                        if (_0x41__await_indentifire_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
-                                    /*out call=False index=False args=["'out'"]*/
-                                    const _0x24_out = await indentifire.access(scope, 'out')
-                                    const _0x25 = await indentifire.concat(_0x24_out, "buzz")
-                                    /*out call=True index=False args=["'out'", '_0x25']*/
-                                    const _0x26_out = await indentifire.access(scope, 'out', _0x25)
-                                    _0x26_out
+                                    const _0x43__out = await out
+                                    let _0x17__out = _0x43__out
+                                    const _0x44__await_indentifire_0x2e_concat_0x28_ = await indentifire.concat(_0x17__out, "buzz")
+                                    out = _0x44__await_indentifire_0x2e_concat_0x28_
+                                    const _0x42__out = await out
+                                    let _0x18__out = _0x42__out
+                                    _0x18__out
                                 }
                             } }
-                        /*out call=False index=False args=["'out'"]*/
-                        const _0x27_out = await indentifire.access(scope, 'out')
-                        const _0x28 = await indentifire.eq(_0x27_out, "")
-                        if (_0x28)
-                        {{
+                        const _0x45__out = await out
+                        let _0x19__out = _0x45__out
+                        const _0x46__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x19__out, "")
+                        if (_0x46__await_indentifire_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
-                                    /*i call=False index=False args=["'i'"]*/
-                                    const _0x29_i = await indentifire.access(scope, 'i')
-                                    /*out call=True index=False args=["'out'", '_0x29_i']*/
-                                    const _0x2a_out = await indentifire.access(scope, 'out', _0x29_i)
-                                    _0x2a_out
+                                    const _0x48__i = await i
+                                    let _0x1a__i = _0x48__i
+                                    out = _0x1a__i
+                                    const _0x47__out = await out
+                                    let _0x1b__out = _0x47__out
+                                    _0x1b__out
                                 }
                             } }
-                        /*out call=False index=False args=["'out'"]*/
-                        const _0x2b_out = await indentifire.access(scope, 'out')
-                        const _0x2c = await indentifire.log(_0x2b_out)
-                        _0x2c
-                        /*i call=False index=False args=["'i'"]*/
-                        const _0x2d_i = await indentifire.access(scope, 'i')
-                        const _0x2e = await indentifire.add(_0x2d_i, 1)
-                        /*i call=True index=False args=["'i'", '_0x2e']*/
-                        const _0x2f_i = await indentifire.access(scope, 'i', _0x2e)
-                        _0x2f_i
+                        const _0x49__out = await out
+                        let _0x1c__out = _0x49__out
+                        const _0x4a__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1c__out)
+                        _0x4a__await_indentifire_0x2e_log_0x28_
+                        const _0x4c__i = await i
+                        let _0x1d__i = _0x4c__i
+                        const _0x4d__await_indentifire_0x2e_add_0x28_ = await indentifire.add(_0x1d__i, 1)
+                        i = _0x4d__await_indentifire_0x2e_add_0x28_
+                        const _0x4b__i = await i
+                        let _0x1e__i = _0x4b__i
+                        _0x1e__i
                     }
                 } }
         }

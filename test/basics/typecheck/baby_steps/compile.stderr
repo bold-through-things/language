@@ -24,14 +24,14 @@
     "recoverable": false,
     "line": 38,
     "char": 0,
-    "content": "a test_int",
+    "content": "PIL:access_local test_int",
     "error": "failed to assert: field demands int but is given str"
   },
   {
     "recoverable": false,
     "line": 42,
     "char": 0,
-    "content": "a test_str",
+    "content": "PIL:access_local test_str",
     "error": "failed to assert: field demands str but is given int"
   },
   {

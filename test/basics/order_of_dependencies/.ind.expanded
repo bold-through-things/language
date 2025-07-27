@@ -1,0 +1,380 @@
+PIL:file
+	local lines
+		stdin
+
+	local _0x2__lines
+		PIL:access_local lines
+			noscope
+				local _0x0__lines
+					PIL:access_local lines
+
+			local _0x1__split
+				PIL:call split
+					PIL:access_local _0x0__lines
+
+					string "\n"
+
+	local modules
+		dict
+
+	for line in
+		local _0x3__lines
+			PIL:access_local lines
+
+		do
+			local module
+				dict
+
+			local kv
+				noscope
+					local _0x4__line
+						PIL:access_local line
+
+				local _0x5__split
+					PIL:call split
+						PIL:access_local _0x4__line
+
+						string ":"
+
+						int 2
+
+			noscope
+				local _0x9__module
+					PIL:access_local module
+
+			local _0xa__id
+				PIL:access_field _0x9__module id
+					noscope
+						local _0x6__kv
+							PIL:access_local kv
+
+						local _0x7__0
+							PIL:access_field _0x6__kv 0
+
+					local _0x8__trim
+						PIL:call trim
+							PIL:access_local _0x7__0
+
+			noscope
+				local _0xf__module
+					PIL:access_local module
+
+			local _0x10__deps
+				PIL:access_field _0xf__module deps
+					noscope
+						local _0xb__kv
+							PIL:access_local kv
+
+						local _0xc__1
+							PIL:access_field _0xb__kv 1
+
+						local _0xd__trim
+							PIL:call trim
+								PIL:access_local _0xc__1
+
+					local _0xe__split
+						PIL:call split
+							PIL:access_local _0xd__trim
+
+							regex /\s+/
+
+			# TODO - this ought to be a macro.
+
+			if
+				eq
+					noscope
+						local _0x11__kv
+							PIL:access_local kv
+
+						local _0x12__1
+							PIL:access_field _0x11__kv 1
+
+					local _0x13__trim
+						PIL:call trim
+							PIL:access_local _0x12__1
+
+					string ""
+
+				then
+					noscope
+						local _0x14__module
+							PIL:access_local module
+
+					local _0x15__deps
+						PIL:access_field _0x14__module deps
+							list
+
+			noscope
+				local _0x19__modules
+					PIL:access_local modules
+
+			local _0x1a__id
+				PIL:access_index _0x19__modules
+					noscope
+						local _0x16__module
+							PIL:access_local module
+
+					local _0x17__id
+						PIL:access_field _0x16__module id
+
+					local _0x18__module
+						PIL:access_local module
+
+	# print
+		string "modules"
+
+		local _0x1b__modules
+			PIL:access_local modules
+
+	# TODO - support set initializers
+
+	# TODO - support a  way to convert a dict keys to a set cleanly
+
+	# (old code removed)
+
+	local build_order
+		list
+
+	local dep_loops
+		list
+
+	fn visit
+		param module
+
+		# chain of dependencies currently being inspected - used to detect loops
+
+		param chain
+
+		do
+			if 
+				noscope
+					local _0x1c__module
+						PIL:access_local module
+
+				local _0x1d__visited
+					PIL:access_field _0x1c__module visited
+
+				then
+					return
+
+			noscope
+				local _0x1e__module
+					PIL:access_local module
+
+			local _0x1f__visited
+				PIL:access_field _0x1e__module visited
+					true
+
+			# TODO - this shouldn't be using slice. we need a dedicated copy command
+
+			local next_chain
+				noscope
+					local _0x20__chain
+						PIL:access_local chain
+
+				local _0x21__slice
+					PIL:call slice
+						PIL:access_local _0x20__chain
+
+			noscope
+				local _0x24__next_chain
+					PIL:access_local next_chain
+
+			local _0x25__push
+				PIL:call push
+					PIL:access_local _0x24__next_chain
+
+					noscope
+						local _0x22__module
+							PIL:access_local module
+
+					local _0x23__id
+						PIL:access_field _0x22__module id
+
+			for dep_id in
+				noscope
+					local _0x26__module
+						PIL:access_local module
+
+				local _0x27__deps
+					PIL:access_field _0x26__module deps
+
+				do
+					if
+						exists
+							local _0x28__dep_id
+								PIL:access_local dep_id
+
+						then
+							local dep_loop
+								list
+
+							noscope
+								local _0x2b__dep_loop
+									PIL:access_local dep_loop
+
+							local _0x2c__push
+								PIL:call push
+									PIL:access_local _0x2b__dep_loop
+
+									local _0x2a__dep_id
+										PIL:access_local dep_id
+
+							for chain_dep_id in
+								noscope
+									local _0x2d__next_chain
+										PIL:access_local next_chain
+
+									local _0x2e__slice
+										PIL:call slice
+											PIL:access_local _0x2d__next_chain
+
+								local _0x2f__reverse
+									PIL:call reverse
+										PIL:access_local _0x2e__slice
+
+								do
+									noscope
+										local _0x31__dep_loop
+											PIL:access_local dep_loop
+
+									local _0x32__push
+										PIL:call push
+											PIL:access_local _0x31__dep_loop
+
+											local _0x30__chain_dep_id
+												PIL:access_local chain_dep_id
+
+									if
+										eq
+											local _0x33__chain_dep_id
+												PIL:access_local chain_dep_id
+
+											local _0x34__dep_id
+												PIL:access_local dep_id
+
+										then
+											break
+
+							noscope
+								local _0x35__dep_loop
+									PIL:access_local dep_loop
+
+							local _0x36__reverse
+								PIL:call reverse
+									PIL:access_local _0x35__dep_loop
+
+							noscope
+								local _0x39__dep_loops
+									PIL:access_local dep_loops
+
+							local _0x3a__push
+								PIL:call push
+									PIL:access_local _0x39__dep_loops
+
+									noscope
+										local _0x37__dep_loop
+											PIL:access_local dep_loop
+
+									local _0x38__join
+										PIL:call join
+											PIL:access_local _0x37__dep_loop
+
+											string " → "
+
+					else
+						local dep
+							noscope
+								local _0x3c__modules
+									PIL:access_local modules
+
+							local _0x3d__id
+								PIL:access_index _0x3c__modules
+									local _0x3b__dep_id
+										PIL:access_local dep_id
+
+						if
+							none
+								noscope
+									local _0x3e__dep
+										PIL:access_local dep
+
+								local _0x3f__visited
+									PIL:access_field _0x3e__dep visited
+
+							then
+								local _0x42__visit
+									PIL:call visit
+										local _0x40__dep
+											PIL:access_local dep
+
+										local _0x41__next_chain
+											PIL:access_local next_chain
+
+			noscope
+				local _0x45__build_order
+					PIL:access_local build_order
+
+			local _0x46__push
+				PIL:call push
+					PIL:access_local _0x45__build_order
+
+					noscope
+						local _0x43__module
+							PIL:access_local module
+
+					local _0x44__id
+						PIL:access_field _0x43__module id
+
+	for module in
+		values
+			local _0x47__modules
+				PIL:access_local modules
+
+		do
+			local _0x49__visit
+				PIL:call visit
+					local _0x48__module
+						PIL:access_local module
+
+					list
+
+	if
+		asc
+			int 1
+
+			noscope
+				local _0x4a__dep_loops
+					PIL:access_local dep_loops
+
+			local _0x4b__length
+				PIL:access_field _0x4a__dep_loops length
+
+		then
+			print
+				concat
+					string "ERROR: there are dependency loops.\n"
+
+					noscope
+						local _0x4c__dep_loops
+							PIL:access_local dep_loops
+
+					local _0x4d__join
+						PIL:call join
+							PIL:access_local _0x4c__dep_loops
+
+							string "\n"
+
+	else
+		print
+			noscope
+				local _0x4e__build_order
+					PIL:access_local build_order
+
+			local _0x4f__join
+				PIL:call join
+					PIL:access_local _0x4e__build_order
+
+					string "\n"
+
+

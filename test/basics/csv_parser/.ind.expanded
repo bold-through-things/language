@@ -1,0 +1,174 @@
+PIL:file
+	note the task given
+		Read a newline-separated list of strings (simulate lines of a CSV file).
+
+		Assume the first line is a comma-separated list of headers.
+
+		Parse each subsequent line into a “row object” (i.e. a map from header → value).
+
+		Store all rows in a list, and then:
+
+		Print each row’s "name" field (or whatever is in column 0, if you don’t want to special-case).
+
+		Count how many rows have "age" > 30, assuming one of the columns is age.
+
+	local lines
+		stdin
+
+		# okay i am seeing a reason to stop treating builtins as special, or at the very least to expose them in the scope object
+
+	local _0x2__lines
+		PIL:access_local lines
+			noscope
+				local _0x0__lines
+					PIL:access_local lines
+
+			local _0x1__split
+				PIL:call split
+					PIL:access_local _0x0__lines
+
+					string "\n"
+
+	local i
+		int 0
+
+	local header
+		list
+
+	local rows
+		list
+
+	for line in
+		local _0x3__lines
+			PIL:access_local lines
+
+		do
+			if
+				eq
+					local _0x4__i
+						PIL:access_local i
+
+					int 0
+
+				then
+					local _0x7__header
+						PIL:access_local header
+							noscope
+								local _0x5__line
+									PIL:access_local line
+
+							local _0x6__split
+								PIL:call split
+									PIL:access_local _0x5__line
+
+									string ","
+
+			else
+				local zip
+					zip
+						local _0x8__header
+							PIL:access_local header
+
+						noscope
+							local _0x9__line
+								PIL:access_local line
+
+						local _0xa__split
+							PIL:call split
+								PIL:access_local _0x9__line
+
+								string ","
+
+				local row
+					dict
+
+				for kv in
+					local _0xb__zip
+						PIL:access_local zip
+
+					do
+						noscope
+							local _0x10__row
+								PIL:access_local row
+
+						local _0x11__key
+							PIL:access_index _0x10__row
+								noscope
+									local _0xc__kv
+										PIL:access_local kv
+
+								local _0xd__0
+									PIL:access_field _0xc__kv 0
+
+								noscope
+									local _0xe__kv
+										PIL:access_local kv
+
+								local _0xf__1
+									PIL:access_field _0xe__kv 1
+
+				noscope
+					local _0x13__rows
+						PIL:access_local rows
+
+				local _0x14__push
+					PIL:call push
+						PIL:access_local _0x13__rows
+
+						local _0x12__row
+							PIL:access_local row
+
+			local _0x16__i
+				PIL:access_local i
+					add
+						local _0x15__i
+							PIL:access_local i
+
+						int 1
+
+	for row in
+		local _0x17__rows
+			PIL:access_local rows
+
+		do
+			print
+				noscope
+					local _0x18__row
+						PIL:access_local row
+
+				local _0x19__name
+					PIL:access_field _0x18__row name
+
+	local age_over_30
+		int 0
+
+	for row in
+		local _0x1a__rows
+			PIL:access_local rows
+
+		do
+			if
+				asc
+					noscope
+						local _0x1b__row
+							PIL:access_local row
+
+					local _0x1c__age
+						PIL:access_field _0x1b__row age
+
+					int 30
+
+				then
+					local _0x1e__age_over_30
+						PIL:access_local age_over_30
+							add
+								local _0x1d__age_over_30
+									PIL:access_local age_over_30
+
+								int 1
+
+	print
+		local _0x1f__age_over_30
+			PIL:access_local age_over_30
+
+

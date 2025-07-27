@@ -1,0 +1,155 @@
+PIL:file
+	local fizz_divisor
+
+	local buzz_divisor
+
+	local n
+
+	if
+		is_tty
+
+		then
+			local _0x0__fizz_divisor
+				PIL:access_local fizz_divisor
+					prompt
+						string "fizz? "
+
+			local _0x1__buzz_divisor
+				PIL:access_local buzz_divisor
+					prompt
+						string "buzz? "
+
+			local _0x2__n
+				PIL:access_local n
+					prompt
+						string "n? "
+
+	else
+		local input
+			stdin
+
+		local _0x5__input
+			PIL:access_local input
+				noscope
+					local _0x3__input
+						PIL:access_local input
+
+				local _0x4__split
+					PIL:call split
+						PIL:access_local _0x3__input
+
+						string "\n"
+
+		# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
+
+		local _0x8__fizz_divisor
+			PIL:access_local fizz_divisor
+				noscope
+					local _0x6__input
+						PIL:access_local input
+
+				local _0x7__key
+					PIL:access_index _0x6__input
+						int 0
+
+		local _0xb__buzz_divisor
+			PIL:access_local buzz_divisor
+				noscope
+					local _0x9__input
+						PIL:access_local input
+
+				local _0xa__key
+					PIL:access_index _0x9__input
+						int 1
+
+		local _0xe__n
+			PIL:access_local n
+				noscope
+					local _0xc__input
+						PIL:access_local input
+
+				local _0xd__key
+					PIL:access_index _0xc__input
+						int 2
+
+	local i
+		int 0
+
+	while
+		asc
+			local _0xf__i
+				PIL:access_local i
+
+			local _0x10__n
+				PIL:access_local n
+
+		do
+			local out
+				string ""
+
+			if
+				eq
+					mod
+						local _0x11__i
+							PIL:access_local i
+
+						local _0x12__fizz_divisor
+							PIL:access_local fizz_divisor
+
+					int 0
+
+				then
+					local _0x14__out
+						PIL:access_local out
+							concat
+								local _0x13__out
+									PIL:access_local out
+
+								string "fizz"
+
+			if
+				eq
+					mod
+						local _0x15__i
+							PIL:access_local i
+
+						local _0x16__buzz_divisor
+							PIL:access_local buzz_divisor
+
+					int 0
+
+				then
+					local _0x18__out
+						PIL:access_local out
+							concat
+								local _0x17__out
+									PIL:access_local out
+
+								string "buzz"
+
+			if
+				eq
+					local _0x19__out
+						PIL:access_local out
+
+					string ""
+
+				then
+					local _0x1b__out
+						PIL:access_local out
+							local _0x1a__i
+								PIL:access_local i
+
+			print
+				local _0x1c__out
+					PIL:access_local out
+
+			local _0x1e__i
+				PIL:access_local i
+					add
+						local _0x1d__i
+							PIL:access_local i
+
+						int 1
+
+

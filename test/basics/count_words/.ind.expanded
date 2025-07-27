@@ -1,0 +1,49 @@
+PIL:file
+	local input
+		stdin
+
+	local words
+		noscope
+			local _0x0__input
+				PIL:access_local input
+
+		local _0x1__split
+			PIL:call split
+				PIL:access_local _0x0__input
+
+				string "\n"
+
+	local count
+		dict
+
+	for word in
+		local _0x2__words
+			PIL:access_local words
+
+		do
+			noscope
+				local _0x7__count
+					PIL:access_local count
+
+			local _0x8__key
+				PIL:access_index _0x7__count
+					local _0x3__word
+						PIL:access_local word
+
+					add
+						int 1
+
+						noscope
+							local _0x5__count
+								PIL:access_local count
+
+						local _0x6__key
+							PIL:access_index _0x5__count
+								local _0x4__word
+									PIL:access_local word
+
+	print
+		local _0x9__count
+			PIL:access_local count
+
+

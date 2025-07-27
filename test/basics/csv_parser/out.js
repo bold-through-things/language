@@ -18,7 +18,7 @@ globalThis.indentifire = {
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
-          return arrays.map(array => array[i]);
+            return arrays.map(array => array[i]);
         });
     },
 
@@ -46,7 +46,7 @@ globalThis.indentifire = {
      * @throws {TypeError} If the number of arguments is invalid for the setter or assignment.
      */
     async access(obj, field, ...values) {
-        if (values.length == 0) { 
+        if (values.length == 0) {
             const value = obj[field];
 
             if (typeof value === 'function') {
@@ -55,7 +55,7 @@ globalThis.indentifire = {
                 return value;
             }
         }
-        
+
         const proto = Object.getPrototypeOf(obj);
         const desc = proto ? Object.getOwnPropertyDescriptor(proto, field) : undefined;
 
@@ -133,183 +133,177 @@ void (async () => {
         {
             const scope = indentifire.scope(parent_scope)
 
-            scope.lines = indentifire.store()
-            const _0x0 = await indentifire.stdin()
-            const _0x1 = await indentifire.access(scope, 'lines', _0x0)
-            _0x1
-            /*lines call=False index=False args=["'lines'"]*/
-            const _0x2_lines = await indentifire.access(scope, 'lines')
-            /*split call=True index=False args=["'split'", '"\\n"']*/
-            const _0x3_split = await indentifire.access(_0x2_lines, 'split', "\n")
-            /*lines call=True index=False args=["'lines'", '_0x3_split']*/
-            const _0x4_lines = await indentifire.access(scope, 'lines', _0x3_split)
-            _0x4_lines
-            scope.i = indentifire.store()
-            const _0x5 = await indentifire.access(scope, 'i', 0)
-            _0x5
-            scope.header = indentifire.store()
-            const _0x6 = await indentifire.access(scope, 'header', [])
-            _0x6
-            scope.rows = indentifire.store()
-            const _0x7 = await indentifire.access(scope, 'rows', [])
-            _0x7
-            /*lines call=False index=False args=["'lines'"]*/
-            const _0x8_lines = await indentifire.access(scope, 'lines')
+            const _0x20__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
+            let lines = _0x20__await_indentifire_0x2e_stdin_0x28_
+            lines
+            const _0x22__lines = await lines
+            let _0x0__lines = _0x22__lines
+            const _0x24___0x0__lines = await _0x0__lines
+            const _0x23__split = await String.prototype.split.call(_0x24___0x0__lines, "\n")
+            let _0x1__split = _0x23__split
+            lines = _0x1__split
+            const _0x21__lines = await lines
+            let _0x2__lines = _0x21__lines
+            _0x2__lines
+            let i = 0
+            i
+            let header = []
+            header
+            let rows = []
+            rows
+            const _0x25__lines = await lines
+            let _0x3__lines = _0x25__lines
 
-            const _0x9 = _0x8_lines[Symbol.iterator]();
+            const _0x26__iter = _0x3__lines[Symbol.iterator]();
             while (true) {
-                {
-                    const { value, done } = _0x9.next();
-                    if (done) break;
-                    scope.line = value;
-                }
+                const { value, done } = _0x26__iter.next();
+                if (done) { break; }
+                let line = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        /*i call=False index=False args=["'i'"]*/
-                        const _0xa_i = await indentifire.access(scope, 'i')
-                        const _0xb = await indentifire.eq(_0xa_i, 0)
-                        if (_0xb)
-                        {{
+                        const _0x27__i = await i
+                        let _0x4__i = _0x27__i
+                        const _0x28__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x4__i, 0)
+                        if (_0x28__await_indentifire_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
-                                    /*line call=False index=False args=["'line'"]*/
-                                    const _0xc_line = await indentifire.access(scope, 'line')
-                                    /*split call=True index=False args=["'split'", '","']*/
-                                    const _0xd_split = await indentifire.access(_0xc_line, 'split', ",")
-                                    /*header call=True index=False args=["'header'", '_0xd_split']*/
-                                    const _0xe_header = await indentifire.access(scope, 'header', _0xd_split)
-                                    _0xe_header
+                                    const _0x2a__line = await line
+                                    let _0x5__line = _0x2a__line
+                                    const _0x2c___0x5__line = await _0x5__line
+                                    const _0x2b__split = await String.prototype.split.call(_0x2c___0x5__line, ",")
+                                    let _0x6__split = _0x2b__split
+                                    header = _0x6__split
+                                    const _0x29__header = await header
+                                    let _0x7__header = _0x29__header
+                                    _0x7__header
                                 }
                             } }
                         else {
                             const parent_scope = scope
                             {
                                 const scope = indentifire.scope(parent_scope)
-                                scope.zip = indentifire.store()
-                                /*header call=False index=False args=["'header'"]*/
-                                const _0xf_header = await indentifire.access(scope, 'header')
-                                /*line call=False index=False args=["'line'"]*/
-                                const _0x10_line = await indentifire.access(scope, 'line')
-                                /*split call=True index=False args=["'split'", '","']*/
-                                const _0x11_split = await indentifire.access(_0x10_line, 'split', ",")
-                                const _0x12 = await indentifire.zip(_0xf_header, _0x11_split)
-                                const _0x13 = await indentifire.access(scope, 'zip', _0x12)
-                                _0x13
-                                scope.row = indentifire.store()
-                                const _0x14 = await indentifire.access(scope, 'row', {})
-                                _0x14
-                                /*zip call=False index=False args=["'zip'"]*/
-                                const _0x15_zip = await indentifire.access(scope, 'zip')
+                                const _0x2d__header = await header
+                                let _0x8__header = _0x2d__header
+                                const _0x2e__line = await line
+                                let _0x9__line = _0x2e__line
+                                const _0x30___0x9__line = await _0x9__line
+                                const _0x2f__split = await String.prototype.split.call(_0x30___0x9__line, ",")
+                                let _0xa__split = _0x2f__split
+                                const _0x31__await_indentifire_0x2e_zip_0x28_ = await indentifire.zip(_0x8__header, _0xa__split)
+                                let zip = _0x31__await_indentifire_0x2e_zip_0x28_
+                                zip
+                                let row = {}
+                                row
+                                const _0x32__zip = await zip
+                                let _0xb__zip = _0x32__zip
 
-                                const _0x16 = _0x15_zip[Symbol.iterator]();
+                                const _0x33__iter = _0xb__zip[Symbol.iterator]();
                                 while (true) {
-                                    {
-                                        const { value, done } = _0x16.next();
-                                        if (done) break;
-                                        scope.kv = value;
-                                    }
+                                    const { value, done } = _0x33__iter.next();
+                                    if (done) { break; }
+                                    let kv = value;
                                     {
                                         const parent_scope = scope
                                         {
                                             const scope = indentifire.scope(parent_scope)
-                                            /*kv call=False index=False args=["'kv'"]*/
-                                            const _0x17_kv = await indentifire.access(scope, 'kv')
-                                            /*0 call=False index=False args=["'0'"]*/
-                                            const _0x18_0 = await indentifire.access(_0x17_kv, '0')
-                                            /*row call=False index=False args=["'row'"]*/
-                                            const _0x19_row = await indentifire.access(scope, 'row')
-                                            /*kv call=False index=False args=["'kv'"]*/
-                                            const _0x1a_kv = await indentifire.access(scope, 'kv')
-                                            /*1 call=False index=False args=["'1'"]*/
-                                            const _0x1b_1 = await indentifire.access(_0x1a_kv, '1')
-                                            /*key call=True index=True args=['_0x18_0', '_0x1b_1']*/
-                                            const _0x1c_key = await indentifire.access(_0x19_row, _0x18_0, _0x1b_1)
-                                            _0x1c_key
+                                            const _0x34__row = await row
+                                            let _0x10__row = _0x34__row
+
+                                            const _0x36__kv = await kv
+                                            let _0xc__kv = _0x36__kv
+                                            const _0x37___0xc__kv_0 = await _0xc__kv["0"]
+                                            let _0xd__0 = _0x37___0xc__kv_0
+                                            const _0x38__kv = await kv
+                                            let _0xe__kv = _0x38__kv
+                                            const _0x39___0xe__kv_1 = await _0xe__kv["1"]
+                                            let _0xf__1 = _0x39___0xe__kv_1
+                                            _0x10__row[_0xd__0] = _0xf__1
+                                            const _0x35___0x10__row = await _0x10__row[_0xd__0]
+                                            let _0x11__key = _0x35___0x10__row
+                                            _0x11__key
                                         }
                                     } }
-                                /*rows call=False index=False args=["'rows'"]*/
-                                const _0x1d_rows = await indentifire.access(scope, 'rows')
-                                /*row call=False index=False args=["'row'"]*/
-                                const _0x1e_row = await indentifire.access(scope, 'row')
-                                /*push call=True index=False args=["'push'", '_0x1e_row']*/
-                                const _0x1f_push = await indentifire.access(_0x1d_rows, 'push', _0x1e_row)
-                                _0x1f_push
+                                const _0x3a__rows = await rows
+                                let _0x13__rows = _0x3a__rows
+
+                                const _0x3c___0x13__rows = await _0x13__rows
+                                const _0x3d__row = await row
+                                let _0x12__row = _0x3d__row
+                                const _0x3b__push = await Array.prototype.push.call(_0x3c___0x13__rows, _0x12__row)
+                                let _0x14__push = _0x3b__push
+                                _0x14__push
                             }
                         } 
-                        /*i call=False index=False args=["'i'"]*/
-                        const _0x20_i = await indentifire.access(scope, 'i')
-                        const _0x21 = await indentifire.add(_0x20_i, 1)
-                        /*i call=True index=False args=["'i'", '_0x21']*/
-                        const _0x22_i = await indentifire.access(scope, 'i', _0x21)
-                        _0x22_i
+                        const _0x3f__i = await i
+                        let _0x15__i = _0x3f__i
+                        const _0x40__await_indentifire_0x2e_add_0x28_ = await indentifire.add(_0x15__i, 1)
+                        i = _0x40__await_indentifire_0x2e_add_0x28_
+                        const _0x3e__i = await i
+                        let _0x16__i = _0x3e__i
+                        _0x16__i
                     }
                 } }
-            /*rows call=False index=False args=["'rows'"]*/
-            const _0x23_rows = await indentifire.access(scope, 'rows')
+            const _0x41__rows = await rows
+            let _0x17__rows = _0x41__rows
 
-            const _0x24 = _0x23_rows[Symbol.iterator]();
+            const _0x42__iter = _0x17__rows[Symbol.iterator]();
             while (true) {
-                {
-                    const { value, done } = _0x24.next();
-                    if (done) break;
-                    scope.row = value;
-                }
+                const { value, done } = _0x42__iter.next();
+                if (done) { break; }
+                let row = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        /*row call=False index=False args=["'row'"]*/
-                        const _0x25_row = await indentifire.access(scope, 'row')
-                        /*name call=False index=False args=["'name'"]*/
-                        const _0x26_name = await indentifire.access(_0x25_row, 'name')
-                        const _0x27 = await indentifire.log(_0x26_name)
-                        _0x27
+                        const _0x43__row = await row
+                        let _0x18__row = _0x43__row
+                        const _0x44___0x18__row_name = await _0x18__row.name
+                        let _0x19__name = _0x44___0x18__row_name
+                        const _0x45__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x19__name)
+                        _0x45__await_indentifire_0x2e_log_0x28_
                     }
                 } }
-            scope.age_over_30 = indentifire.store()
-            const _0x28 = await indentifire.access(scope, 'age_over_30', 0)
-            _0x28
-            /*rows call=False index=False args=["'rows'"]*/
-            const _0x29_rows = await indentifire.access(scope, 'rows')
+            let age_over_30 = 0
+            age_over_30
+            const _0x46__rows = await rows
+            let _0x1a__rows = _0x46__rows
 
-            const _0x2a = _0x29_rows[Symbol.iterator]();
+            const _0x47__iter = _0x1a__rows[Symbol.iterator]();
             while (true) {
-                {
-                    const { value, done } = _0x2a.next();
-                    if (done) break;
-                    scope.row = value;
-                }
+                const { value, done } = _0x47__iter.next();
+                if (done) { break; }
+                let row = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        /*row call=False index=False args=["'row'"]*/
-                        const _0x2b_row = await indentifire.access(scope, 'row')
-                        /*age call=False index=False args=["'age'"]*/
-                        const _0x2c_age = await indentifire.access(_0x2b_row, 'age')
-                        const _0x2d = await indentifire.asc(_0x2c_age, 30)
-                        if (_0x2d)
-                        {{
+                        const _0x48__row = await row
+                        let _0x1b__row = _0x48__row
+                        const _0x49___0x1b__row_age = await _0x1b__row.age
+                        let _0x1c__age = _0x49___0x1b__row_age
+                        const _0x4a__await_indentifire_0x2e_asc_0x28_ = await indentifire.asc(_0x1c__age, 30)
+                        if (_0x4a__await_indentifire_0x2e_asc_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
-                                    /*age_over_30 call=False index=False args=["'age_over_30'"]*/
-                                    const _0x2e_age_over_30 = await indentifire.access(scope, 'age_over_30')
-                                    const _0x2f = await indentifire.add(_0x2e_age_over_30, 1)
-                                    /*age_over_30 call=True index=False args=["'age_over_30'", '_0x2f']*/
-                                    const _0x30_age_over_30 = await indentifire.access(scope, 'age_over_30', _0x2f)
-                                    _0x30_age_over_30
+                                    const _0x4c__age_over_30 = await age_over_30
+                                    let _0x1d__age_over_30 = _0x4c__age_over_30
+                                    const _0x4d__await_indentifire_0x2e_add_0x28_ = await indentifire.add(_0x1d__age_over_30, 1)
+                                    age_over_30 = _0x4d__await_indentifire_0x2e_add_0x28_
+                                    const _0x4b__age_over_30 = await age_over_30
+                                    let _0x1e__age_over_30 = _0x4b__age_over_30
+                                    _0x1e__age_over_30
                                 }
                             } }
                     }
                 } }
-            /*age_over_30 call=False index=False args=["'age_over_30'"]*/
-            const _0x31_age_over_30 = await indentifire.access(scope, 'age_over_30')
-            const _0x32 = await indentifire.log(_0x31_age_over_30)
-            _0x32
+            const _0x4e__age_over_30 = await age_over_30
+            let _0x1f__age_over_30 = _0x4e__age_over_30
+            const _0x4f__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1f__age_over_30)
+            _0x4f__await_indentifire_0x2e_log_0x28_
         }
     } 
 })();

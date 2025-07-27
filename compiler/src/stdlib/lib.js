@@ -18,7 +18,7 @@ globalThis.indentifire = {
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
-          return arrays.map(array => array[i]);
+            return arrays.map(array => array[i]);
         });
     },
 
@@ -46,7 +46,7 @@ globalThis.indentifire = {
      * @throws {TypeError} If the number of arguments is invalid for the setter or assignment.
      */
     async access(obj, field, ...values) {
-        if (values.length == 0) { 
+        if (values.length == 0) {
             const value = obj[field];
 
             if (typeof value === 'function') {
@@ -55,7 +55,7 @@ globalThis.indentifire = {
                 return value;
             }
         }
-        
+
         const proto = Object.getPrototypeOf(obj);
         const desc = proto ? Object.getOwnPropertyDescriptor(proto, field) : undefined;
 

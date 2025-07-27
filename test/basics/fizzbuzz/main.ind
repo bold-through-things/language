@@ -40,6 +40,7 @@ else
 				int 2
 
 local i
+	int 0
 while
 	asc
 		access i

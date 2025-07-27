@@ -35,7 +35,13 @@ class Node:
         index = matches[0]
         # detach old
         target.parent = None
+        self._children.remove(target)
+        self.__insert_child(index, new)
 
+    def append_child(self, new: Node | list[Node] | None):
+        self.__insert_child(len(self._children), new)
+
+    def __insert_child(self, index: int, new: Node | list[Node] | None):
         # prepare new children
         if new is None:
             replacement = []
@@ -44,17 +50,17 @@ class Node:
         else:
             replacement = list(new)
 
-        for child in replacement:
+        for child in reversed(replacement):
+            assert isinstance(child, Node) # internal assert
             child.parent = self
-
-        self._children[index:index + 1] = replacement
+            self._children.insert(index, child)
 
     def __repr__(self) -> str:
         return self.indented_repr()
 
     def indented_repr(self, indent: str = "") -> str:
         next_indent = "\t" + indent
-        return f"{indent}`{self.content}`:\n" + "\n".join(
+        return f"{indent}{self.content}\n" + "\n".join(
             child.indented_repr(next_indent) for child in self._children
         )
     
@@ -88,10 +94,6 @@ def __params(): return Params()
 class Inject_code_start:
     code: list[str] = field(default_factory=list)
 
-@dataclass
-class Associated_code_block(Node): pass
-
-class Parent(Node): pass
 # generic Target for cases where a node needs another node to do its job
 # TODO - might remove Associated_code_block in favor of this ?
 class Target(Node): pass 

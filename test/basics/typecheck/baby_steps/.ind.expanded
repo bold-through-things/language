@@ -1,0 +1,69 @@
+PIL:file
+	# these are expected to pass
+
+	do
+		local test
+			type int
+
+			int 0
+
+		local test_1
+			type int
+
+			local _0x0__test
+				PIL:access_local test
+
+		local _0x2__test
+			PIL:access_local test
+				local _0x1__test_1
+					PIL:access_local test_1
+
+		do
+			local test_1
+				type int
+
+				local _0x3__test
+					PIL:access_local test
+
+			local _0x5__test
+				PIL:access_local test
+					local _0x4__test_1
+						PIL:access_local test_1
+
+	# these are expected to fail
+
+	do
+		local test
+			type int
+
+			string "test"
+
+	do
+		local test_str
+			type str
+
+			# TODO - since we do not null by default - this should here also error!
+
+		local test_int
+			type int
+
+			local _0x6__test_str
+				PIL:access_local test_str
+
+		local _0x8__test_int
+			PIL:access_local test_int
+				local _0x7__test_str
+					PIL:access_local test_str
+
+		do
+			local _0x9__test_str
+				PIL:access_local test_str
+					int 0
+
+			local test_bool
+				type bool
+
+				local _0xa__test_str
+					PIL:access_local test_str
+
+

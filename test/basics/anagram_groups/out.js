@@ -18,7 +18,7 @@ globalThis.indentifire = {
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
-          return arrays.map(array => array[i]);
+            return arrays.map(array => array[i]);
         });
     },
 
@@ -46,7 +46,7 @@ globalThis.indentifire = {
      * @throws {TypeError} If the number of arguments is invalid for the setter or assignment.
      */
     async access(obj, field, ...values) {
-        if (values.length == 0) { 
+        if (values.length == 0) {
             const value = obj[field];
 
             if (typeof value === 'function') {
@@ -55,7 +55,7 @@ globalThis.indentifire = {
                 return value;
             }
         }
-        
+
         const proto = Object.getPrototypeOf(obj);
         const desc = proto ? Object.getOwnPropertyDescriptor(proto, field) : undefined;
 
@@ -132,102 +132,102 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-            scope.input = indentifire.store()
-            const _0x0 = await indentifire.stdin()
-            const _0x1 = await indentifire.access(scope, 'input', _0x0)
-            _0x1
-            scope.words = indentifire.store()
-            /*input call=False index=False args=["'input'"]*/
-            const _0x2_input = await indentifire.access(scope, 'input')
-            /*split call=True index=False args=["'split'", '"\\n"']*/
-            const _0x3_split = await indentifire.access(_0x2_input, 'split', "\n")
-            const _0x4 = await indentifire.access(scope, 'words', _0x3_split)
-            _0x4
-            scope.groups = indentifire.store()
-            const _0x5 = await indentifire.access(scope, 'groups', {})
-            _0x5
-            /*words call=False index=False args=["'words'"]*/
-            const _0x6_words = await indentifire.access(scope, 'words')
+            const _0x14__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
+            let input = _0x14__await_indentifire_0x2e_stdin_0x28_
+            input
+            const _0x15__input = await input
+            let _0x0__input = _0x15__input
+            const _0x17___0x0__input = await _0x0__input
+            const _0x16__split = await String.prototype.split.call(_0x17___0x0__input, "\n")
+            let _0x1__split = _0x16__split
+            let words = _0x1__split
+            words
+            let groups = {}
+            groups
+            const _0x18__words = await words
+            let _0x2__words = _0x18__words
 
-            const _0x7 = _0x6_words[Symbol.iterator]();
+            const _0x19__iter = _0x2__words[Symbol.iterator]();
             while (true) {
-                {
-                    const { value, done } = _0x7.next();
-                    if (done) break;
-                    scope.word = value;
-                }
+                const { value, done } = _0x19__iter.next();
+                if (done) { break; }
+                let word = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        scope.key = indentifire.store()
-                        /*word call=False index=False args=["'word'"]*/
-                        const _0x8_word = await indentifire.access(scope, 'word')
-                        /*split call=True index=False args=["'split'", '""']*/
-                        const _0x9_split = await indentifire.access(_0x8_word, 'split', "")
-                        /*sort call=False index=False args=["'sort'"]*/
-                        const _0xa_sort = await indentifire.access(_0x9_split, 'sort')
-                        /*join call=True index=False args=["'join'", '""']*/
-                        const _0xb_join = await indentifire.access(_0xa_sort, 'join', "")
-                        const _0xc = await indentifire.access(scope, 'key', _0xb_join)
-                        _0xc
+                        const _0x1a__word = await word
+                        let _0x3__word = _0x1a__word
+                        const _0x1c___0x3__word = await _0x3__word
+                        const _0x1b__split = await String.prototype.split.call(_0x1c___0x3__word, "")
+                        let _0x4__split = _0x1b__split
+                        const _0x1e___0x4__split = await _0x4__split
+                        const _0x1d__sort = await Array.prototype.sort.call(_0x1e___0x4__split)
+                        let _0x5__sort = _0x1d__sort
+                        const _0x20___0x5__sort = await _0x5__sort
+                        const _0x1f__join = await Array.prototype.join.call(_0x20___0x5__sort, "")
+                        let _0x6__join = _0x1f__join
+                        let key = _0x6__join
+                        key
 
 
 
-                        /*groups call=False index=False args=["'groups'"]*/
-                        const _0xd_groups = await indentifire.access(scope, 'groups')
-                        /*key call=False index=False args=["'key'"]*/
-                        const _0xe_key = await indentifire.access(scope, 'key')
-                        const _0xf = await indentifire.exists_inside(_0xd_groups, _0xe_key)
-                        const _0x10 = await indentifire.none(_0xf)
-                        if (_0x10)
-                        {{
+                        const _0x21__groups = await groups
+                        let _0x8__groups = _0x21__groups
+                        const _0x22__key = await key
+                        let _0x7__key = _0x22__key
+                        const _0x23__await_indentifire_0x2e_exists_inside_0x28_ = await indentifire.exists_inside(_0x8__groups, _0x7__key)
+                        const _0x24__await_indentifire_0x2e_none_0x28_ = await indentifire.none(_0x23__await_indentifire_0x2e_exists_inside_0x28_)
+                        if (_0x24__await_indentifire_0x2e_none_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
-                                    /*key call=False index=False args=["'key'"]*/
-                                    const _0x11_key = await indentifire.access(scope, 'key')
-                                    /*groups call=False index=False args=["'groups'"]*/
-                                    const _0x12_groups = await indentifire.access(scope, 'groups')
-                                    /*key call=True index=True args=['_0x11_key', '[]']*/
-                                    const _0x13_key = await indentifire.access(_0x12_groups, _0x11_key, [])
-                                    _0x13_key
+                                    const _0x25__groups = await groups
+                                    let _0x9__groups = _0x25__groups
+
+                                    const _0x27__key = await key
+                                    let _0xb__key = _0x27__key
+                                    _0x9__groups[_0xb__key] = []
+                                    const _0x26___0x9__groups = await _0x9__groups[_0xb__key]
+                                    let _0xa__key = _0x26___0x9__groups
+                                    _0xa__key
                                 }
                             } }
-                        /*key call=False index=False args=["'key'"]*/
-                        const _0x14_key = await indentifire.access(scope, 'key')
-                        /*groups call=False index=False args=["'groups'"]*/
-                        const _0x15_groups = await indentifire.access(scope, 'groups')
-                        /*key call=False index=True args=['_0x14_key']*/
-                        const _0x16_key = await indentifire.access(_0x15_groups, _0x14_key)
-                        /*word call=False index=False args=["'word'"]*/
-                        const _0x17_word = await indentifire.access(scope, 'word')
-                        /*push call=True index=False args=["'push'", '_0x17_word']*/
-                        const _0x18_push = await indentifire.access(_0x16_key, 'push', _0x17_word)
-                        _0x18_push
+                        const _0x28__groups = await groups
+                        let _0xd__groups = _0x28__groups
+                        const _0x2a__key = await key
+                        let _0xf__key = _0x2a__key
+                        const _0x29___0xd__groups = await _0xd__groups[_0xf__key]
+                        let _0xe__key = _0x29___0xd__groups
+
+                        const _0x2c___0xe__key = await _0xe__key
+                        const _0x2d__word = await word
+                        let _0xc__word = _0x2d__word
+                        const _0x2b__push = await Array.prototype.push.call(_0x2c___0xe__key, _0xc__word)
+                        let _0x10__push = _0x2b__push
+                        _0x10__push
                     }
                 } }
-            /*groups call=False index=False args=["'groups'"]*/
-            const _0x19_groups = await indentifire.access(scope, 'groups')
-            const _0x1a = await indentifire.values(_0x19_groups)
+            const _0x2e__groups = await groups
+            let _0x11__groups = _0x2e__groups
+            const _0x2f__await_indentifire_0x2e_values_0x28_ = await indentifire.values(_0x11__groups)
 
-            const _0x1b = _0x1a[Symbol.iterator]();
+            const _0x30__iter = _0x2f__await_indentifire_0x2e_values_0x28_[Symbol.iterator]();
             while (true) {
-                {
-                    const { value, done } = _0x1b.next();
-                    if (done) break;
-                    scope.group = value;
-                }
+                const { value, done } = _0x30__iter.next();
+                if (done) { break; }
+                let group = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        /*group call=False index=False args=["'group'"]*/
-                        const _0x1c_group = await indentifire.access(scope, 'group')
-                        /*join call=True index=False args=["'join'", '" "']*/
-                        const _0x1d_join = await indentifire.access(_0x1c_group, 'join', " ")
-                        const _0x1e = await indentifire.log(_0x1d_join)
-                        _0x1e
+                        const _0x31__group = await group
+                        let _0x12__group = _0x31__group
+                        const _0x33___0x12__group = await _0x12__group
+                        const _0x32__join = await Array.prototype.join.call(_0x33___0x12__group, " ")
+                        let _0x13__join = _0x32__join
+                        const _0x34__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x13__join)
+                        _0x34__await_indentifire_0x2e_log_0x28_
                     }
                 } }
         }
