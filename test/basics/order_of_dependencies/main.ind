@@ -22,7 +22,7 @@ do
 		a kv 0 trim
 	
 	a module deps
-		a kv 1 trim split
+		a kv 1 trim splitr
 			regex /\s+/
 	
 	# TODO - this ought to be a macro.

@@ -8,11 +8,17 @@ PIL:file
 				local _0x0__lines
 					PIL:access_local lines
 
+					PIL:auto_type
+
 			local _0x1__split
 				PIL:call split
 					PIL:access_local _0x0__lines
 
 					string "\n"
+
+				PIL:auto_type
+
+		PIL:auto_type
 
 	local modules
 		dict
@@ -20,6 +26,8 @@ PIL:file
 	for line in
 		local _0x3__lines
 			PIL:access_local lines
+
+			PIL:auto_type
 
 		do
 			local module
@@ -30,6 +38,8 @@ PIL:file
 					local _0x4__line
 						PIL:access_local line
 
+						PIL:auto_type
+
 				local _0x5__split
 					PIL:call split
 						PIL:access_local _0x4__line
@@ -38,9 +48,13 @@ PIL:file
 
 						int 2
 
+					PIL:auto_type
+
 			noscope
 				local _0x9__module
 					PIL:access_local module
+
+					PIL:auto_type
 
 			local _0xa__id
 				PIL:access_field _0x9__module id
@@ -48,16 +62,26 @@ PIL:file
 						local _0x6__kv
 							PIL:access_local kv
 
+							PIL:auto_type
+
 						local _0x7__0
 							PIL:access_field _0x6__kv 0
+
+							PIL:auto_type
 
 					local _0x8__trim
 						PIL:call trim
 							PIL:access_local _0x7__0
 
+						PIL:auto_type
+
+				PIL:auto_type
+
 			noscope
 				local _0xf__module
 					PIL:access_local module
+
+					PIL:auto_type
 
 			local _0x10__deps
 				PIL:access_field _0xf__module deps
@@ -65,18 +89,28 @@ PIL:file
 						local _0xb__kv
 							PIL:access_local kv
 
+							PIL:auto_type
+
 						local _0xc__1
 							PIL:access_field _0xb__kv 1
+
+							PIL:auto_type
 
 						local _0xd__trim
 							PIL:call trim
 								PIL:access_local _0xc__1
 
-					local _0xe__split
-						PIL:call split
+							PIL:auto_type
+
+					local _0xe__splitr
+						PIL:call splitr
 							PIL:access_local _0xd__trim
 
 							regex /\s+/
+
+						PIL:auto_type
+
+				PIL:auto_type
 
 			# TODO - this ought to be a macro.
 
@@ -86,12 +120,18 @@ PIL:file
 						local _0x11__kv
 							PIL:access_local kv
 
+							PIL:auto_type
+
 						local _0x12__1
 							PIL:access_field _0x11__kv 1
+
+							PIL:auto_type
 
 					local _0x13__trim
 						PIL:call trim
 							PIL:access_local _0x12__1
+
+						PIL:auto_type
 
 					string ""
 
@@ -100,13 +140,19 @@ PIL:file
 						local _0x14__module
 							PIL:access_local module
 
+							PIL:auto_type
+
 					local _0x15__deps
 						PIL:access_field _0x14__module deps
 							list
 
+						PIL:auto_type
+
 			noscope
 				local _0x19__modules
 					PIL:access_local modules
+
+					PIL:auto_type
 
 			local _0x1a__id
 				PIL:access_index _0x19__modules
@@ -114,17 +160,25 @@ PIL:file
 						local _0x16__module
 							PIL:access_local module
 
+							PIL:auto_type
+
 					local _0x17__id
 						PIL:access_field _0x16__module id
 
+						PIL:auto_type
+
 					local _0x18__module
 						PIL:access_local module
+
+						PIL:auto_type
 
 	# print
 		string "modules"
 
 		local _0x1b__modules
 			PIL:access_local modules
+
+			PIL:auto_type
 
 	# TODO - support set initializers
 
@@ -151,8 +205,12 @@ PIL:file
 					local _0x1c__module
 						PIL:access_local module
 
+						PIL:auto_type
+
 				local _0x1d__visited
 					PIL:access_field _0x1c__module visited
+
+					PIL:auto_type
 
 				then
 					return
@@ -161,9 +219,13 @@ PIL:file
 				local _0x1e__module
 					PIL:access_local module
 
+					PIL:auto_type
+
 			local _0x1f__visited
 				PIL:access_field _0x1e__module visited
 					true
+
+				PIL:auto_type
 
 			# TODO - this shouldn't be using slice. we need a dedicated copy command
 
@@ -172,13 +234,19 @@ PIL:file
 					local _0x20__chain
 						PIL:access_local chain
 
+						PIL:auto_type
+
 				local _0x21__slice
 					PIL:call slice
 						PIL:access_local _0x20__chain
 
+					PIL:auto_type
+
 			noscope
 				local _0x24__next_chain
 					PIL:access_local next_chain
+
+					PIL:auto_type
 
 			local _0x25__push
 				PIL:call push
@@ -188,22 +256,34 @@ PIL:file
 						local _0x22__module
 							PIL:access_local module
 
+							PIL:auto_type
+
 					local _0x23__id
 						PIL:access_field _0x22__module id
+
+						PIL:auto_type
+
+				PIL:auto_type
 
 			for dep_id in
 				noscope
 					local _0x26__module
 						PIL:access_local module
 
+						PIL:auto_type
+
 				local _0x27__deps
 					PIL:access_field _0x26__module deps
+
+					PIL:auto_type
 
 				do
 					if
 						exists
 							local _0x28__dep_id
 								PIL:access_local dep_id
+
+								PIL:auto_type
 
 						then
 							local dep_loop
@@ -213,6 +293,8 @@ PIL:file
 								local _0x2b__dep_loop
 									PIL:access_local dep_loop
 
+									PIL:auto_type
+
 							local _0x2c__push
 								PIL:call push
 									PIL:access_local _0x2b__dep_loop
@@ -220,23 +302,35 @@ PIL:file
 									local _0x2a__dep_id
 										PIL:access_local dep_id
 
+										PIL:auto_type
+
+								PIL:auto_type
+
 							for chain_dep_id in
 								noscope
 									local _0x2d__next_chain
 										PIL:access_local next_chain
 
+										PIL:auto_type
+
 									local _0x2e__slice
 										PIL:call slice
 											PIL:access_local _0x2d__next_chain
+
+										PIL:auto_type
 
 								local _0x2f__reverse
 									PIL:call reverse
 										PIL:access_local _0x2e__slice
 
+									PIL:auto_type
+
 								do
 									noscope
 										local _0x31__dep_loop
 											PIL:access_local dep_loop
+
+											PIL:auto_type
 
 									local _0x32__push
 										PIL:call push
@@ -245,13 +339,21 @@ PIL:file
 											local _0x30__chain_dep_id
 												PIL:access_local chain_dep_id
 
+												PIL:auto_type
+
+										PIL:auto_type
+
 									if
 										eq
 											local _0x33__chain_dep_id
 												PIL:access_local chain_dep_id
 
+												PIL:auto_type
+
 											local _0x34__dep_id
 												PIL:access_local dep_id
+
+												PIL:auto_type
 
 										then
 											break
@@ -260,13 +362,19 @@ PIL:file
 								local _0x35__dep_loop
 									PIL:access_local dep_loop
 
+									PIL:auto_type
+
 							local _0x36__reverse
 								PIL:call reverse
 									PIL:access_local _0x35__dep_loop
 
+								PIL:auto_type
+
 							noscope
 								local _0x39__dep_loops
 									PIL:access_local dep_loops
+
+									PIL:auto_type
 
 							local _0x3a__push
 								PIL:call push
@@ -276,11 +384,17 @@ PIL:file
 										local _0x37__dep_loop
 											PIL:access_local dep_loop
 
+											PIL:auto_type
+
 									local _0x38__join
 										PIL:call join
 											PIL:access_local _0x37__dep_loop
 
 											string " → "
+
+										PIL:auto_type
+
+								PIL:auto_type
 
 					else
 						local dep
@@ -288,10 +402,14 @@ PIL:file
 								local _0x3c__modules
 									PIL:access_local modules
 
+									PIL:auto_type
+
 							local _0x3d__id
 								PIL:access_index _0x3c__modules
 									local _0x3b__dep_id
 										PIL:access_local dep_id
+
+										PIL:auto_type
 
 						if
 							none
@@ -299,8 +417,12 @@ PIL:file
 									local _0x3e__dep
 										PIL:access_local dep
 
+										PIL:auto_type
+
 								local _0x3f__visited
 									PIL:access_field _0x3e__dep visited
+
+									PIL:auto_type
 
 							then
 								local _0x42__visit
@@ -308,12 +430,20 @@ PIL:file
 										local _0x40__dep
 											PIL:access_local dep
 
+											PIL:auto_type
+
 										local _0x41__next_chain
 											PIL:access_local next_chain
+
+											PIL:auto_type
+
+									PIL:auto_type
 
 			noscope
 				local _0x45__build_order
 					PIL:access_local build_order
+
+					PIL:auto_type
 
 			local _0x46__push
 				PIL:call push
@@ -323,13 +453,21 @@ PIL:file
 						local _0x43__module
 							PIL:access_local module
 
+							PIL:auto_type
+
 					local _0x44__id
 						PIL:access_field _0x43__module id
+
+						PIL:auto_type
+
+				PIL:auto_type
 
 	for module in
 		values
 			local _0x47__modules
 				PIL:access_local modules
+
+				PIL:auto_type
 
 		do
 			local _0x49__visit
@@ -337,7 +475,11 @@ PIL:file
 					local _0x48__module
 						PIL:access_local module
 
+						PIL:auto_type
+
 					list
+
+				PIL:auto_type
 
 	if
 		asc
@@ -347,8 +489,12 @@ PIL:file
 				local _0x4a__dep_loops
 					PIL:access_local dep_loops
 
+					PIL:auto_type
+
 			local _0x4b__length
 				PIL:access_field _0x4a__dep_loops length
+
+				PIL:auto_type
 
 		then
 			print
@@ -359,11 +505,15 @@ PIL:file
 						local _0x4c__dep_loops
 							PIL:access_local dep_loops
 
+							PIL:auto_type
+
 					local _0x4d__join
 						PIL:call join
 							PIL:access_local _0x4c__dep_loops
 
 							string "\n"
+
+						PIL:auto_type
 
 	else
 		print
@@ -371,10 +521,14 @@ PIL:file
 				local _0x4e__build_order
 					PIL:access_local build_order
 
+					PIL:auto_type
+
 			local _0x4f__join
 				PIL:call join
 					PIL:access_local _0x4e__build_order
 
 					string "\n"
+
+				PIL:auto_type
 
 

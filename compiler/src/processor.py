@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from dataclasses import replace
 import re
-from typing import Iterator, Protocol, TextIO, TypeVar, Union, cast
+from typing import Any, Iterator, Protocol, TextIO, TypeVar, Union, cast
 from io import StringIO
 from pathlib import Path
 from node import Args, Callers, Indexers, Inject_code_start, Macro, Node, Params, Position, Scope, Target
@@ -37,7 +37,7 @@ def js_field_access(s: str) -> str:
         return f'.{s}'
     return f'["{s}"]'
 
-TYPICAL_IGNORED_MACROS = {"type", "noscope"}
+TYPICAL_IGNORED_MACROS = {"type", "noscope", "PIL:auto_type"}
 def filter_child_macros(n: Node):
     def get_macro(n: Node): 
         macro, _ = cut(n.content, " ")
@@ -76,6 +76,8 @@ class PrototypeCall:
     """String.join.call(self, args...) type shit"""
     constructor: str
     fn: str
+    demands: list[str]
+    returns: str
     def compile(self, args: list[str]):
         return f"{self.constructor}.prototype.{self.fn}.call({", ".join(args)})"
     
@@ -84,6 +86,8 @@ class DirectCall:
     """just call it directly fn(args...)"""
     fn: str
     receiver: str | None
+    demands: list[str]
+    returns: str
     def compile(self, args: list[str]):
         receiver = ""
         if self.receiver:
@@ -91,13 +95,17 @@ class DirectCall:
         return f"{receiver}{self.fn}({", ".join(args)})"
 
 builtin_calls = {
-    "join": PrototypeCall(constructor="Array", fn="join"),
-    "sort": PrototypeCall(constructor="Array", fn="sort"),
-    "push": PrototypeCall(constructor="Array", fn="push"),
-    "reverse": PrototypeCall(constructor="Array", fn="reverse"),
-    "split": PrototypeCall(constructor="String", fn="split"),
-    "trim": PrototypeCall(constructor="String", fn="trim"),
-    "slice": PrototypeCall(constructor="Array", fn="slice"),
+    "join": PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str"),
+    "sort": PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list"),
+    "push": PrototypeCall(constructor="Array", fn="push", demands=["list", "*"], returns="list"), # TODO - does it actually return..?
+    "reverse": PrototypeCall(constructor="Array", fn="reverse", demands=["list"], returns="list"),
+    "split": PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
+
+     # TODO - NUKE ME the moment we get method overloading or union types!
+    "splitr": PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
+
+    "trim": PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str"),
+    "slice": PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list"),
 }
 
 def replace_chars(s: str, ok: set[str], map: dict[str, str]) -> str:
@@ -115,7 +123,7 @@ from macro_registry import MacroContext, MacroRegistry
 macros = MacroRegistry()
 typecheck = MacroRegistry()
 
-@macros.add("noop", "substituting", "calling", "inside", "param", "type")
+@macros.add("noop", "substituting", "calling", "inside", "param", "type", "PIL:auto_type")
 def does_not_compile(ctx):
     # does not compile into code itself - nothing to do
     pass
@@ -202,31 +210,66 @@ def read_field(ctx: MacroContext):
     ctx.statement_out.write(f"const {ident} = await {obj}[{key}]\n")
     ctx.expression_out.write(ident)
 
-@macros.add("PIL:call")
-def pil_call(ctx: MacroContext):
-    args = ctx.node.metadata[Args].split(" ")
-    ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the function to call")
-    
-    fn = args[0]
-    ident = ctx.compiler.get_new_ident("_".join(args))
+T = TypeVar("T")
 
-    convention = DirectCall(fn=fn, receiver=None)
-    if fn in builtin_calls:
-        convention = builtin_calls[fn]
-    if fn in builtins:
-        convention = DirectCall(fn=builtins[fn], receiver="indentifire")
+def singleton(cls: type[T]) -> T:
+    instance = cls()
+    return cast(Callable[..., Any], lambda *args, **kwargs: instance)
 
-    args = []
-    for child in ctx.node.children:
-        e = IndentedStringIO()
-        ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
-        args.append(e.getvalue())
+@singleton
+class PIL_call:
+    @classmethod
+    def resolve_convention(cls, ctx: MacroContext):
+        args = ctx.node.metadata[Args].split(" ")
+        ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the function to call")
+        
+        fn = args[0]
 
-    call = convention.compile([a for a in args if a])
+        convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
+        if fn in builtin_calls:
+            convention = builtin_calls[fn]
+        if fn in builtins:
+            convention = DirectCall(fn=builtins[fn], demands=None, receiver="indentifire", returns=None)
 
-    ctx.statement_out.write(f"const {ident} = await {call}\n")
-    ctx.expression_out.write(ident)
+        return convention
 
+    def __init__(self):
+        @typecheck.add("PIL:call")
+        def _(ctx: MacroContext):
+            convention = self.resolve_convention(ctx)
+
+            args = []
+            for child in ctx.node.children:
+                received = ctx.compiler.typecheck(replace(ctx, node=child))
+                args.append(received)
+            args = [a for a in args if a]
+
+            if convention.demands:
+                for received, demanded in zip(args, convention.demands):
+                    if "*" in {demanded, received}:
+                        # TODO. generics!
+                        continue
+                    print(f"{ctx.node.content} demanded {demanded} and was given {received}")
+                    # TODO - this should point to the child node that we received from, actually...
+                    ctx.compiler.assert_(received == demanded, ctx.node, f"argument demands {demanded} and is given {received}")
+
+            return convention.returns or "*"
+
+        @macros.add("PIL:call")
+        def _(ctx: MacroContext):
+            args = ctx.node.metadata[Args].split(" ")
+            ident = ctx.compiler.get_new_ident("_".join(args))
+            convention = self.resolve_convention(ctx)
+            args = []
+            for child in ctx.node.children:
+                e = IndentedStringIO()
+                ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+                args.append(e.getvalue())
+
+            call = convention.compile([a for a in args if a])
+
+            ctx.statement_out.write(f"const {ident} = await {call}\n")
+            ctx.expression_out.write(ident)
 
 @macros.add("PIL:access_local")
 def pil_access_local(ctx: MacroContext):
@@ -268,9 +311,10 @@ def access_local(ctx: MacroContext):
             # TODO - support multiple arguments
             ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
             received = types[0]
-            ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}")
+            ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}")
         print(f"{ctx.node.content} demanded {demanded}")
-        return demanded
+        return demanded or "*"
+    return "*"
 
 @macros.add("local")
 def local(ctx: MacroContext):
@@ -324,21 +368,24 @@ def regex_typecheck(ctx: MacroContext):
 def local_typecheck(ctx: MacroContext):
     name, _ = cut(ctx.node.metadata[Args], " ")
     type_node = seek_child_macro(ctx.node, "type")
+
+    received = None
+    for child in ctx.node.children:
+        received = ctx.compiler.typecheck(replace(ctx, node=child)) or received
+
     if not type_node:
         # TODO. this should be mandatory.
-        rv = None
-        for child in ctx.node.children:
-            rv = ctx.compiler.typecheck(replace(ctx, node=child)) or rv
-        return rv
-    children = list(filter(lambda x: x != type_node, ctx.node.children))
-    ctx.compiler.assert_(len(children) == 1, ctx.node, "must have a single child")
-    received = ctx.compiler.typecheck(replace(ctx, node=children[0]))
+        if not seek_child_macro(ctx.node, "PIL:auto_type") or not received:
+            return received
+        type_node = Node(f"type {received}", ctx.node.pos, [])
+    
     _, demanded = cut(type_node.content, " ")
+    print(f"{ctx.node.content} demanded {demanded} and was given {received}")
     scope = seek_parent_scope(ctx.node)
     assert scope is not None, f"{[n.content for n in unroll_parent_chain(ctx.node)]}" # internal assert
     scope.mapping[name] = demanded
     ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}")
-    return demanded or received
+    return demanded or received or "*"
 
 @typecheck.add("a")
 def access_typecheck(ctx: MacroContext):
@@ -576,54 +623,6 @@ class Compiler:
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
         return out.getvalue()
-        node = ctx.node
-        access, path = cut(node.content, " ")
-        assert access in ACCESS_MACRO # internal assert
-        access = []
-        steps = path.split(" ")
-        indexers = getattr(node.metadata.maybe(Indexers), "mapping", {})
-        callers = getattr(node.metadata.maybe(Callers), "mapping", {})
-        subs = indexers | callers
-
-        def compile_args(args: list[Node]):
-            args_rv = []
-            for child in args:
-                expression_out = IndentedStringIO()
-                child_ctx = replace(ctx, node=child, expression_out=expression_out)
-                ctx.compiler.compile_ctx(child_ctx)
-                args_rv.append(expression_out.getvalue())
-            return filter(None, args_rv)
-
-        subs_mapped = {}
-        for step, sub in subs.items():
-            if isinstance(sub, Node): # TODO - could remove this by always ensuring it's a list on the writing side?
-                sub = [sub]
-            subs_mapped[step] = compile_args(sub)
-
-        last_ident = "scope"
-        for step in steps:
-            is_last = step == steps[-1]
-
-            call = step in callers or (is_last and len(ctx.node.children) > 0)
-
-            args = []
-            if not step in indexers:
-                args.append(f"'{step}'")
-            if step in subs:
-                args += subs_mapped[step]
-            if is_last:
-                args += compile_args(node.children)
-
-            index = step in indexers
-            ctx.statement_out.writeline(f"/*{step} {call=} {index=} {args=}*/")
-            ident = ctx.compiler.get_new_ident(step)
-            args = ", ".join([arg for arg in args if arg])
-            # ctx.statement_out.write(f"/*{step} resolved to {params}*/\n")
-            ctx.statement_out.write(f"const {ident} = await indentifire.access({last_ident}, {args})\n")
-            last_ident = ident
-        
-        ctx.expression_out.write(last_ident)
-        return
 
     def __discover_macros(self, node: Node):
         # TODO lstring macros should perhaps get special handling here...
@@ -727,12 +726,14 @@ class Compiler:
                     if last_chain_ident:
                         self_arg = [ Node(f"PIL:access_local {last_chain_ident}", node.pos, []) ]
                     local.append(Node(f"PIL:call {step}", node.pos, self_arg + args))
+                    local.append(Node("PIL:auto_type", node.pos, []))
                     for arg in args:
                         self.__preprocess_annotations(arg)
                 else:
                     # static field
                     access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
                     local.append(Node(f"PIL:{access} {step}", node.pos, args))
+                    local.append(Node("PIL:auto_type", node.pos, []))
                     for arg in args:
                         self.__preprocess_annotations(arg)
 

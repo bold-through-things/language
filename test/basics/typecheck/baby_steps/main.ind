@@ -44,3 +44,10 @@ do
 		local test_bool
 			type bool
 			a test_str
+
+		a test_bool
+			a test_str split sort join
+
+		a test_bool split
+
+		a test_str split split split

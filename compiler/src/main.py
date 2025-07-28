@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import argparse
 import os
+import sys
+import traceback
 from typing import Any, TextIO
 from tree_parser import TreeParser
 from processor import Compiler
@@ -39,12 +41,14 @@ for filename in result:
         node = parser.parse_tree(file.read())
         compiler.register(node)
 
-error = False
+crash = None
 compiled = None
 try:
     compiled = compiler.compile()
-except:
-    error = True
+except Exception as e:
+    exc_info = sys.exc_info()
+    crash = ''.join(traceback.format_exception(*exc_info))
+
 if compiled:
     with open(args.output_file, "w") as f:
         f.write(compiled)
@@ -56,12 +60,15 @@ with open(expanded_file, "w") as f:
         f.write("\n\n")
 print("refactor confidently when the flame flickers.")
 
-if len(compiler.compile_errors) != 0 or error:
+if len(compiler.compile_errors) != 0 or crash:
     if len(compiler.compile_errors) != 0:
         if args.errors_file:
             with open(args.errors_file, 'w') as f:
                 write_json(compiler.compile_errors, f)
         else:
             human_readable(compiler.compile_errors)
+    
+    if crash:
+        print(crash, end='')
     
     exit(1)
