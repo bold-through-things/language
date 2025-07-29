@@ -131,11 +131,6 @@ class MacroProcessingStep(ABC):
     def process_node(self, node: Node, compiler: "Compiler") -> None:
         """Process a single node during this step"""
         pass
-    
-    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
-        """Default implementation processes each node individually"""
-        for node in nodes:
-            self.process_node(node, compiler)
 
 # Legacy registries - will be moved into steps
 macros = MacroRegistry()
@@ -530,18 +525,6 @@ class TypeCheckingStep(MacroProcessingStep):
             for child in node.children:
                 child_ctx = replace(ctx, node=child)
                 self.process_node(child, compiler)
-                
-    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
-        """Process all nodes during type checking step"""
-        for node in nodes:
-            if node.content == "PIL:solution":
-                # Process all child PIL:file nodes
-                for child in node.children:
-                    assert child.content == "PIL:file" # root # internal assert
-                    self.process_node(child, compiler)
-            else:
-                assert node.content == "PIL:file" # root # internal assert
-                self.process_node(node, compiler)
 
 class JavaScriptEmissionStep(MacroProcessingStep):
     """Handles JavaScript code emission"""
@@ -555,61 +538,46 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         """Process a single node for JavaScript emission"""
         macro = str(node.metadata[Macro])
         all_macros = self.macros.all()
-        
-        if macro in all_macros:
-            ctx = MacroContext(
-                statement_out=compiler._current_output,
-                expression_out=compiler._current_output,
-                node=node,
-                compiler=compiler,
-                current_step=self,
-            )
-            with compiler.safely:
-                all_macros[macro](ctx)
-        else:
-            raise ValueError(f"TODO. unknown macro {macro}")
-        
-    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
-        """Process all nodes during JavaScript emission step"""
-        out = IndentedStringIO()
-        
-        # Check if we have a PIL:solution wrapper
-        if len(nodes) == 1 and nodes[0].content == "PIL:solution":
-            # Emit JS wrapper for the entire solution
-            out.write(js_lib + "\n\n")
-            # need to wrap this crap in async because NodeJS is GARBAGE
-            out.write("void (async () => {\n")
-            with out:
-                out.write("'use strict';\n")
-                out.write("const scope = globalThis;\n")
-                
-                # Store output stream in compiler for macros to use
-                compiler._current_output = out
-                
-                # Process all PIL:file children
-                for child in nodes[0].children:
-                    assert child.content == "PIL:file" # root # internal assert
-                    self.process_node(child, compiler)
-                    
-            out.write("\n})();")
-        else:
-            # Fallback for backward compatibility
-            out.write(js_lib + "\n\n")
-            out.write("void (async () => {\n")
-            with out:
-                out.write("'use strict';\n")
-                out.write("const scope = globalThis;\n")
-                
-                compiler._current_output = out
-                
-                for node in nodes:
-                    assert node.content == "PIL:file" # root # internal assert
-                    self.process_node(node, compiler)
-                    
-            out.write("\n})();")
-        
-        # Store result in compiler for retrieval
-        compiler._js_output = out.getvalue()
+
+        # --- cursed Python begins ---
+
+        @contextmanager
+        def possibly_wrapped():
+            # no wrapping needed
+            yield
+
+        if node.content == "PIL:solution":
+            @contextmanager
+            def definitely_wrapped():
+                out = IndentedStringIO()
+                out.write(js_lib + "\n\n")
+                # need to wrap this crap in async because browsers are GARBAGE 
+                # (top level await only in modules? why?!)
+                out.write("void (async () => {\n")
+                with out:
+                    out.write("'use strict';\n")
+                    out.write("const scope = globalThis;\n")
+                    compiler._current_output = out
+                    yield
+                out.write("\n})();")
+                compiler._js_output = out.getvalue()
+            possibly_wrapped = definitely_wrapped
+
+        # --- cursed Python ends ---
+
+        with possibly_wrapped():
+            if macro in all_macros:
+                ctx = MacroContext(
+                    statement_out=compiler._current_output,
+                    expression_out=compiler._current_output,
+                    node=node,
+                    compiler=compiler,
+                    current_step=self,
+                )
+                with compiler.safely:
+                    all_macros[macro](ctx)
+            else:
+                raise ValueError(f"TODO. unknown macro {macro}")
 
 @macros.add("PIL:solution")
 def pil_solution(ctx: MacroContext):
@@ -916,7 +884,7 @@ class Compiler:
         self._current_output: IndentedStringIO | None = None
         
         # Initialize the processing pipeline
-        self.processing_steps = [
+        self.processing_steps: list[MacroProcessingStep] = [
             PreprocessingStep(),
             CodeBlockLinkingStep(), 
             TypeCheckingStep(),
@@ -974,14 +942,11 @@ class Compiler:
         for node in self.nodes:
             self.__discover_macros(node)
             
-        # Wrap all PIL:file nodes in a PIL:solution for easier processing
-        if self.nodes:
-            solution_node = self.make_node("PIL:solution", Position(0, 0), self.nodes.copy())
-            self.nodes = [solution_node]
+        solution_node = self.make_node("PIL:solution", Position(0, 0), self.nodes or [])
             
         # Execute the processing pipeline
         for step in self.processing_steps:
-            step.process_all_nodes(self.nodes, self)
+            step.process_node(solution_node, self)
         
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
