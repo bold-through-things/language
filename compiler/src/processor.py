@@ -388,8 +388,8 @@ class AccessMacro:
                     # index
                     local.append(ctx.compiler.make_node(f"PIL:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
                     for arg in args1:                        
-                        if isinstance(ctx.current_step, PreprocessingStep):
-                            ctx.current_step.process_node(replace(ctx, node=arg))
+                        assert isinstance(ctx.current_step, PreprocessingStep)
+                        ctx.current_step.process_node(replace(ctx, node=arg))
                 elif step_needs_call:
                     # call or set
                     self_arg = []
@@ -398,16 +398,16 @@ class AccessMacro:
                     local.append(ctx.compiler.make_node(f"PIL:call {step}", ctx.node.pos or p0, self_arg + args1))
                     local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        if isinstance(ctx.current_step, PreprocessingStep):
-                            ctx.current_step.process_node(replace(ctx, node=arg))
+                        assert isinstance(ctx.current_step, PreprocessingStep)
+                        ctx.current_step.process_node(replace(ctx, node=arg))
                 else:
                     # static field
                     access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
                     local.append(ctx.compiler.make_node(f"PIL:{access} {step}", ctx.node.pos or p0, args1))
                     local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        if isinstance(ctx.current_step, PreprocessingStep):
-                            ctx.current_step.process_node(replace(ctx, node=arg))
+                        assert isinstance(ctx.current_step, PreprocessingStep)
+                        ctx.current_step.process_node(replace(ctx, node=arg))
 
                 local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)
                 last_chain_ident = ident
