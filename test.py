@@ -238,8 +238,8 @@ if __name__ == "__main__":
         if not DENO_PATH.is_file():
             raise ValueError(
                 "run with what? Deno pls.\n"
-                "Install deno globally: curl -fsSL https://deno.land/install.sh | sh\n"
-                "Or locally: curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
+                "corrupt your innocent OS:\n curl -fsSL https://deno.land/install.sh | sh\n"
+                "contain the Deno daemons into this workspace:\n curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
             )
     
     for tc in discover_tests(args):

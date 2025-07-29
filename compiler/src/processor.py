@@ -214,6 +214,7 @@ def access_index(ctx: MacroContext):
 T = TypeVar("T")
 
 def singleton(cls: type[T]) -> T:
+    """converts the annotated class into a singleton, immediately instantiating it"""
     instance = cls()
     return cast(Callable[..., Any], lambda *args, **kwargs: instance)
 
@@ -394,7 +395,6 @@ class AccessMacro:
             replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
             parent.replace_child(ctx.node, replace_with)
 
-@singleton 
 class CodeBlockAssociator:
     def __init__(self):
         # This runs on every node type to check for code block associations
@@ -432,12 +432,6 @@ class CodeBlockAssociator:
                     current.append_child(next_child)
                 # Note: not raising error here to make it optional
 
-# Initialize all singleton preprocessor macros
-SubstitutingMacro()
-CallingMacro()
-InsideMacro()
-ParamMacro()
-AccessMacro()
 code_block_associator = CodeBlockAssociator()
 
 @macros.add("PIL:access_local")
