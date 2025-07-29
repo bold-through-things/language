@@ -11,6 +11,12 @@ from code_block_linking import CodeBlockLinkingStep
 from typecheck_macros import TypeCheckingStep
 from literal_macros import JavaScriptEmissionStep
 
+# Import all macro modules to ensure registrations happen
+import literal_macros
+import access_macros
+import control_flow_macros
+import typecheck_macros
+
 class Compiler:
     def __init__(self):
         self.nodes: list[Node] = []

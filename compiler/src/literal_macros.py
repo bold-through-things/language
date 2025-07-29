@@ -1,5 +1,5 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, builtins, js_lib
+from processor_base import MacroProcessingStep, builtins, js_lib, unified_macros, unified_typecheck
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, cut
 from contextlib import contextmanager
@@ -7,8 +7,8 @@ from utils import *
 from node import Macro, Args
 
 # Legacy registries - will be moved into steps
-macros = MacroRegistry()
-typecheck = MacroRegistry()
+macros = unified_macros  # Use unified registry
+typecheck = unified_typecheck  # Use unified registry
 
 @macros.add("noop", "type", "PIL:auto_type")
 def does_not_compile(_):
@@ -85,22 +85,8 @@ class JavaScriptEmissionStep(MacroProcessingStep):
     
     def __init__(self):
         super().__init__()
-        # Import all macro registries and merge them
-        from literal_macros import macros as literal_macros_registry
-        from access_macros import macros as access_macros_registry
-        from control_flow_macros import macros as control_flow_macros_registry
-        
-        self.macros = MacroRegistry()
-        
-        # Merge all macros
-        for name, handler in literal_macros_registry.all().items():
-            self.macros._registry[name] = handler
-            
-        for name, handler in access_macros_registry.all().items():
-            self.macros._registry[name] = handler
-            
-        for name, handler in control_flow_macros_registry.all().items():
-            self.macros._registry[name] = handler
+        # Use the unified macros registry
+        self.macros = unified_macros
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node for JavaScript emission"""

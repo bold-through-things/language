@@ -1,11 +1,11 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, seek_child_macro
+from processor_base import MacroProcessingStep, seek_child_macro, unified_macros
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO
 from node import Inject_code_start
 
 # Legacy registries - will be moved into steps
-macros = MacroRegistry()
+macros = unified_macros  # Use unified registry
 
 SCOPE_MACRO = ["do", "then", "else", "PIL:file"]
 @macros.add(*SCOPE_MACRO)

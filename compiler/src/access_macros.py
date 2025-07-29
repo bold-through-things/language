@@ -1,15 +1,16 @@
 from dataclasses import replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
-    builtins, builtin_calls, DirectCall, seek_child_macro, cut
+    builtins, builtin_calls, DirectCall, seek_child_macro, cut,
+    unified_macros, unified_typecheck
 )
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
 from node import Args, Macro, Params, Inject_code_start, Target
 
 # Legacy registries - will be moved into steps
-macros = MacroRegistry()
-typecheck = MacroRegistry()
+macros = unified_macros  # Use unified registry
+typecheck = unified_typecheck  # Use unified registry
 
 @macros.add("fn")
 def fn(ctx: MacroContext):

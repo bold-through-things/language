@@ -1,11 +1,11 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_scope
+from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_scope, unified_typecheck
 from macro_registry import MacroContext, MacroRegistry
 from strutil import cut
 from node import Node, Position, Scope, Args, Macro
 
 # Legacy registries - will be moved into steps
-typecheck = MacroRegistry()
+typecheck = unified_typecheck  # Use unified registry
 
 @typecheck.add("PIL:access_local")
 def access_local(ctx: MacroContext):
@@ -99,8 +99,8 @@ class TypeCheckingStep(MacroProcessingStep):
     
     def __init__(self):
         super().__init__()
-        # Move typecheck macros into this step
-        self.macros = typecheck
+        # Use the unified typecheck registry
+        self.macros = unified_typecheck
         
     def process_node(self, ctx: MacroContext) -> None:
         """Type check a single node"""
