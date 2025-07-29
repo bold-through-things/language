@@ -9,7 +9,7 @@ import sys
 import traceback
 from typing import Any, TextIO
 from tree_parser import TreeParser
-from processor import Compiler
+from compiler import Compiler
 
 def human_readable(inspections: list[dict[str, Any]]) -> None:
     for i, entry in enumerate(reversed(inspections), 1):
