@@ -6,7 +6,7 @@ from node import Node
 from strutil import IndentedStringIO
 
 if TYPE_CHECKING:
-    from processor import Compiler
+    from processor import Compiler, MacroProcessingStep
 
 # TODO - this shouldn't be here, probably...
 @dataclass(kw_only=True)
@@ -16,6 +16,7 @@ class MacroContext:
     node: Node
 
     compiler: "Compiler"
+    current_step: "MacroProcessingStep | None" = None
 
 class Macro(Protocol):
     def __call__(self, ctx: MacroContext) -> str: ...
