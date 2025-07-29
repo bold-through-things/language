@@ -117,14 +117,12 @@ def replace_chars(s: str, ok: str, map: dict[str, str]) -> str:
 def to_valid_js_ident(s: str) -> str:
     return "_" + replace_chars(s, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", {" ": "_"})
 
-ACCESS_MACRO = {"a", "an", "access"}
-
 from macro_registry import MacroContext, MacroRegistry
 macros = MacroRegistry()
 typecheck = MacroRegistry()
 preprocessor = MacroRegistry()
 
-@macros.add("noop", "substituting", "calling", "inside", "param", "type", "PIL:auto_type")
+@macros.add("noop", "type", "PIL:auto_type")
 def does_not_compile(_):
     # does not compile into code itself - nothing to do
     pass
@@ -727,7 +725,6 @@ raising this.
         self.message = message
         super().__init__(self.message) # Call the base Exception constructor
 
-orig_Node = Node
 class Compiler:
     def __init__(self):
         self.nodes: list[Node] = []
