@@ -777,8 +777,8 @@ def typecheck_scope_macro(ctx: MacroContext):
     parent = seek_parent_scope(ctx.node)
     ctx.node.metadata[Scope] = Scope(parent=parent)
     for child in ctx.node.children:
-        if isinstance(ctx.current_step, TypeCheckingStep):
-            ctx.current_step.process_node(replace(ctx, node=child))
+        assert isinstance(ctx.current_step, TypeCheckingStep)
+        ctx.current_step.process_node(replace(ctx, node=child))
 
 @macros.add("for")
 def for_macro(ctx: MacroContext):
