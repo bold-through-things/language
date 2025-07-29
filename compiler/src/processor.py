@@ -128,7 +128,7 @@ class MacroProcessingStep(ABC):
         self.macros = MacroRegistry()
         
     @abstractmethod
-    def process_node(self, node: Node, compiler: "Compiler") -> None:
+    def process_node(self, ctx: MacroContext) -> None:
         """Process a single node during this step"""
         pass
 
@@ -176,7 +176,7 @@ def fn(ctx: MacroContext):
         for k, _ in params:
             inject.code.append(f"{k} = {k}\n")
         inner_ctx = replace(ctx, node=next)
-        ctx.compiler.compile_ctx(inner_ctx)
+        ctx.current_step.process_node(inner_ctx)
     ctx.statement_out.write("}")
 
 @macros.add("PIL:access_field")
@@ -191,7 +191,7 @@ def access_field(ctx: MacroContext):
     args: list[str | None] = []
     for child in ctx.node.children:
         e = IndentedStringIO()
-        ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
         args.append(e.getvalue())
     args = list(filter(None, args))
 
@@ -212,7 +212,7 @@ def access_index(ctx: MacroContext):
     args: list[str] = []
     for child in ctx.node.children:
         e = IndentedStringIO()
-        ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
         args.append(e.getvalue())
     args = [a for a in args if a]
 
@@ -257,7 +257,12 @@ class PIL_call:
 
             args: list[str | None] = []
             for child in ctx.node.children:
-                received = ctx.compiler.typecheck(replace(ctx, node=child))
+                # Find the typecheck step to handle type checking
+                typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
+                if typecheck_step:
+                    received = typecheck_step.process_node(replace(ctx, node=child))
+                else:
+                    received = None
                 args.append(received)
             args = [a for a in args if a]
 
@@ -280,7 +285,7 @@ class PIL_call:
             args: list[str | None] = []
             for child in ctx.node.children:
                 e = IndentedStringIO()
-                ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+                ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
                 args.append(e.getvalue())
 
             call = convention.compile([a for a in args if a])
@@ -385,7 +390,8 @@ class AccessMacro:
                     # index
                     local.append(ctx.compiler.make_node(f"PIL:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
                     for arg in args1:                        
-                        ctx.compiler.preprocess_node(arg, ctx.current_step)
+                        if isinstance(ctx.current_step, PreprocessingStep):
+                            ctx.current_step.process_node(replace(ctx, node=arg))
                 elif step_needs_call:
                     # call or set
                     self_arg = []
@@ -394,14 +400,16 @@ class AccessMacro:
                     local.append(ctx.compiler.make_node(f"PIL:call {step}", ctx.node.pos or p0, self_arg + args1))
                     local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        ctx.compiler.preprocess_node(arg, ctx.current_step)
+                        if isinstance(ctx.current_step, PreprocessingStep):
+                            ctx.current_step.process_node(replace(ctx, node=arg))
                 else:
                     # static field
                     access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
                     local.append(ctx.compiler.make_node(f"PIL:{access} {step}", ctx.node.pos or p0, args1))
                     local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        ctx.compiler.preprocess_node(arg, ctx.current_step)
+                        if isinstance(ctx.current_step, PreprocessingStep):
+                            ctx.current_step.process_node(replace(ctx, node=arg))
 
                 local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)
                 last_chain_ident = ident
@@ -457,26 +465,20 @@ class PreprocessingStep(MacroProcessingStep):
         # Move preprocessor macros into this step
         self.macros = preprocessor
         
-    def process_node(self, node: Node, compiler: "Compiler") -> None:
+    def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""
         # Process children first
-        for child in node.children:
-            with compiler.safely:
-                self.process_node(child, compiler)
+        for child in ctx.node.children:
+            with ctx.compiler.safely:
+                child_ctx = replace(ctx, node=child)
+                self.process_node(child_ctx)
         
         # Process current node  
-        macro = str(node.metadata[Macro])
+        macro = str(ctx.node.metadata[Macro])
         all_preprocessors = self.macros.all()
         
         if macro in all_preprocessors:
-            with compiler.safely:
-                ctx = MacroContext(
-                    statement_out=StringIO(),  # null writes
-                    expression_out=StringIO(),
-                    node=node,
-                    compiler=compiler,
-                    current_step=self,
-                )
+            with ctx.compiler.safely:
                 all_preprocessors[macro](ctx)
 
 class CodeBlockLinkingStep(MacroProcessingStep):
@@ -486,16 +488,17 @@ class CodeBlockLinkingStep(MacroProcessingStep):
         super().__init__()
         self.associator = CodeBlockAssociator()
         
-    def process_node(self, node: Node, compiler: "Compiler") -> None:
+    def process_node(self, ctx: MacroContext) -> None:
         """Process code block associations for a node"""
         # Process children first
-        for child in node.children:
-            with compiler.safely:
-                self.process_node(child, compiler)
+        for child in ctx.node.children:
+            with ctx.compiler.safely:
+                child_ctx = replace(ctx, node=child)
+                self.process_node(child_ctx)
                 
         # Process current node
-        with compiler.safely:
-            self.associator.process_code_blocks(node)
+        with ctx.compiler.safely:
+            self.associator.process_code_blocks(ctx.node)
 
 class TypeCheckingStep(MacroProcessingStep):
     """Handles type checking"""
@@ -505,26 +508,18 @@ class TypeCheckingStep(MacroProcessingStep):
         # Move typecheck macros into this step
         self.macros = typecheck
         
-    def process_node(self, node: Node, compiler: "Compiler") -> None:
+    def process_node(self, ctx: MacroContext) -> None:
         """Type check a single node"""
-        macro = str(node.metadata[Macro])
+        macro = str(ctx.node.metadata[Macro])
         all_macros = self.macros.all()
         
-        ctx = MacroContext(
-            statement_out=StringIO(), # null writes
-            expression_out=StringIO(),
-            node=node,
-            compiler=compiler,
-            current_step=self,
-        )
-        
         if macro in all_macros:
-            with compiler.safely:
+            with ctx.compiler.safely:
                 return all_macros[macro](ctx)
         else:
-            for child in node.children:
+            for child in ctx.node.children:
                 child_ctx = replace(ctx, node=child)
-                self.process_node(child, compiler)
+                self.process_node(child_ctx)
 
 class JavaScriptEmissionStep(MacroProcessingStep):
     """Handles JavaScript code emission"""
@@ -534,9 +529,12 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         # Move macros into this step
         self.macros = macros
         
-    def process_node(self, node: Node, compiler: "Compiler") -> None:
+    def process_node(self, ctx: MacroContext) -> None:
         """Process a single node for JavaScript emission"""
-        macro = str(node.metadata[Macro])
+        if ctx.node == ERASED_NODE:
+            return
+            
+        macro = str(ctx.node.metadata[Macro])
         all_macros = self.macros.all()
 
         # --- cursed Python begins ---
@@ -546,7 +544,7 @@ class JavaScriptEmissionStep(MacroProcessingStep):
             # no wrapping needed
             yield
 
-        if node.content == "PIL:solution":
+        if ctx.node.content == "PIL:solution":
             @contextmanager
             def definitely_wrapped():
                 out = IndentedStringIO()
@@ -557,25 +555,22 @@ class JavaScriptEmissionStep(MacroProcessingStep):
                 with out:
                     out.write("'use strict';\n")
                     out.write("const scope = globalThis;\n")
-                    compiler._current_output = out
+                    ctx.compiler._current_output = out
                     yield
                 out.write("\n})();")
-                compiler._js_output = out.getvalue()
+                ctx.compiler._js_output = out.getvalue()
             possibly_wrapped = definitely_wrapped
 
         # --- cursed Python ends ---
 
         with possibly_wrapped():
             if macro in all_macros:
-                ctx = MacroContext(
-                    statement_out=compiler._current_output,
-                    expression_out=compiler._current_output,
-                    node=node,
-                    compiler=compiler,
-                    current_step=self,
+                final_ctx = replace(ctx, 
+                    statement_out=ctx.compiler._current_output,
+                    expression_out=ctx.compiler._current_output
                 )
-                with compiler.safely:
-                    all_macros[macro](ctx)
+                with ctx.compiler.safely:
+                    all_macros[macro](final_ctx)
             else:
                 raise ValueError(f"TODO. unknown macro {macro}")
 
@@ -584,7 +579,7 @@ def pil_solution(ctx: MacroContext):
     """Process all children of the solution node"""
     for child in ctx.node.children:
         child_ctx = replace(ctx, node=child)
-        ctx.compiler.compile_ctx(child_ctx)
+        ctx.current_step.process_node(child_ctx)
 
 @macros.add("PIL:access_local")
 def pil_access_local(ctx: MacroContext):
@@ -597,7 +592,7 @@ def pil_access_local(ctx: MacroContext):
     args: list[str | None] = []
     for child in ctx.node.children:
         e = IndentedStringIO()
-        ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
         args.append(e.getvalue())
     args = list(filter(None, args))
 
@@ -613,7 +608,10 @@ def access_local(ctx: MacroContext):
     first, extra = cut(ctx.node.metadata[Args], " ")
     ctx.compiler.assert_(extra == "", ctx.node, "single argument, the name of local")
 
-    types = [ctx.compiler.typecheck(replace(ctx, node=child)) for child in ctx.node.children]
+    typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
+    types = []
+    if typecheck_step:
+        types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
     types = list(filter(None, types))
 
     scope = seek_parent_scope(ctx.node)
@@ -639,7 +637,7 @@ def local(ctx: MacroContext):
         # ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "single child, the value") TODO!
         for child in ctx.node.children:
             e = IndentedStringIO()
-            ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+            ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
             args.append(e.getvalue())
     args = list(filter(None, args))
     ctx.statement_out.write(f"let {name}")
@@ -686,8 +684,10 @@ def local_typecheck(ctx: MacroContext):
     type_node = seek_child_macro(ctx.node, "type")
 
     received = None
+    typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
     for child in ctx.node.children:
-        received = ctx.compiler.typecheck(replace(ctx, node=child)) or received
+        if typecheck_step:
+            received = typecheck_step.process_node(replace(ctx, node=child)) or received
 
     if not type_node:
         # TODO. this should be mandatory.
@@ -710,7 +710,10 @@ def access_typecheck(ctx: MacroContext):
         # TODO. not implemented. quite complex...
         pass
 
-    types = [ctx.compiler.typecheck(replace(ctx, node=child)) for child in ctx.node.children]
+    typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
+    types = []
+    if typecheck_step:
+        types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
     types = list(filter(None, types))
 
     scope = seek_parent_scope(ctx.node)
@@ -767,7 +770,7 @@ def scope_macro(ctx: MacroContext):
                     ctx.statement_out.write(code)
             for child in ctx.node.children:
                 child_ctx = replace(ctx, node=child)
-                child_ctx.compiler.compile_ctx(child_ctx)
+                child_ctx.current_step.process_node(child_ctx)
                 ctx.statement_out.write("\n")
         ctx.statement_out.write("}\n")
     ctx.statement_out.write("} ")
@@ -776,14 +779,15 @@ def scope_macro(ctx: MacroContext):
 def block(ctx: MacroContext):
     for child in ctx.node.children:
         out = IndentedStringIO()
-        ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=out))
+        ctx.current_step.process_node(replace(ctx, node=child, expression_out=out))
 
 @typecheck.add(*SCOPE_MACRO)
 def typecheck_scope_macro(ctx: MacroContext):
     parent = seek_parent_scope(ctx.node)
     ctx.node.metadata[Scope] = Scope(parent=parent)
     for child in ctx.node.children:
-        ctx.compiler.typecheck(replace(ctx, node=child))
+        if isinstance(ctx.current_step, TypeCheckingStep):
+            ctx.current_step.process_node(replace(ctx, node=child))
 
 @macros.add("for")
 def for_macro(ctx: MacroContext):
@@ -798,7 +802,7 @@ def for_macro(ctx: MacroContext):
         if child.content.startswith("do"):
             continue
         e = IndentedStringIO()
-        ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
         args.append(e.getvalue())
     args = list(filter(None, args))
 
@@ -816,7 +820,7 @@ while (true) {{
         node = seek_child_macro(ctx.node, "do")
         ctx.compiler.assert_(node != None, ctx.node, "must have a `do` block")
         inner_ctx = replace(ctx, node=node)
-        ctx.compiler.compile_ctx(inner_ctx)
+        ctx.current_step.process_node(inner_ctx)
     ctx.statement_out.write("}")
 
 @macros.add("if")
@@ -828,7 +832,7 @@ def if_header(ctx: MacroContext):
             if child.content.startswith("then"): # TODO - ugly. bwah!
                 continue
             e = IndentedStringIO()
-            ctx.compiler.compile_ctx(replace(ctx, node=child, expression_out=e))
+            ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
             args.append(e.getvalue())
 
     ctx.statement_out.write(f"if ({args[-1]})")
@@ -837,7 +841,7 @@ def if_header(ctx: MacroContext):
         node = seek_child_macro(ctx.node, "then")
         ctx.compiler.assert_(node != None, ctx.node, "must have a `then` block")
         inner_ctx = replace(ctx, node=node)
-        ctx.compiler.compile_ctx(inner_ctx)
+        ctx.current_step.process_node(inner_ctx)
     ctx.statement_out.write("}")
 
 @macros.add("while")
@@ -848,7 +852,7 @@ def while_loop(ctx: MacroContext):
         node = ctx.node.children[0]
         out = IndentedStringIO()
         inner_ctx = replace(ctx, node=node, expression_out=out)
-        ctx.compiler.compile_ctx(inner_ctx)
+        ctx.current_step.process_node(inner_ctx)
 
         ctx.statement_out.write(f"if (!{out.getvalue()}) ")
         ctx.statement_out.write("{ break; }\n")
@@ -856,7 +860,7 @@ def while_loop(ctx: MacroContext):
         node = seek_child_macro(ctx.node, "do")
         ctx.compiler.assert_(node != None, ctx.node, "must have a `do` block")
         inner_ctx = replace(ctx, node=node)
-        ctx.compiler.compile_ctx(inner_ctx)
+        ctx.current_step.process_node(inner_ctx)
     ctx.statement_out.write("}")
 
 class MacroAssertFailed(Exception):
@@ -917,26 +921,6 @@ class Compiler:
         }
         self.compile_errors.append(entry)
 
-    def preprocess_node(self, node: Node, current_step: "MacroProcessingStep | None" = None):
-        """Legacy method for backward compatibility - delegates to current PreprocessingStep"""
-        if current_step and isinstance(current_step, PreprocessingStep):
-            current_step.process_node(node, self)
-        else:
-            # Fallback: find preprocessing step
-            preprocessing_step = next((step for step in self.processing_steps if isinstance(step, PreprocessingStep)), None)
-            if preprocessing_step:
-                preprocessing_step.process_node(node, self)
-    
-    def typecheck(self, ctx: MacroContext):
-        """Legacy method for backward compatibility - delegates to current TypeCheckingStep"""  
-        if ctx.current_step and isinstance(ctx.current_step, TypeCheckingStep):
-            return ctx.current_step.process_node(ctx.node, self)
-        else:
-            # Fallback: find typecheck step
-            typecheck_step = next((step for step in self.processing_steps if isinstance(step, TypeCheckingStep)), None)
-            if typecheck_step:
-                return typecheck_step.process_node(ctx.node, self)
-    
     def compile(self):
         # Discover macros first
         for node in self.nodes:
@@ -946,7 +930,14 @@ class Compiler:
             
         # Execute the processing pipeline
         for step in self.processing_steps:
-            step.process_node(solution_node, self)
+            ctx = MacroContext(
+                statement_out=StringIO(),  # dummy for non-emission steps
+                expression_out=StringIO(),
+                node=solution_node,
+                compiler=self,
+                current_step=step,
+            )
+            step.process_node(ctx)
         
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
@@ -971,7 +962,7 @@ class Compiler:
         for child in nodes:
             expression_out = IndentedStringIO()
             child_ctx = replace(ctx, node=child, expression_out=expression_out)
-            child_ctx.compiler.compile_ctx(child_ctx)
+            child_ctx.current_step.process_node(child_ctx)
             expression_out = expression_out.getvalue()
             if expression_out:
                 args.append(expression_out)
@@ -999,19 +990,4 @@ class Compiler:
                 pass
         return _safely()
 
-    def compile_ctx(self, ctx: MacroContext):
-        if ctx.node == ERASED_NODE:
-            return
-
-        # ctx.statement_out.write(f"/*from: \n {ctx.node}*/\n")
-        macro = ctx.node.metadata[Macro]
-        
-        # Always try global macros first for compatibility
-        all_macros = macros.all() # cache it
-        
-        if macro in all_macros:
-            with self.safely:
-                all_macros[macro](ctx)
-        else:
-            raise ValueError(f"TODO. unknown macro {macro}")
 
