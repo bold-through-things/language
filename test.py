@@ -24,7 +24,24 @@ from typing import List
 
 TEST_ROOT = Path("test")
 EXECUTABLE = "out.js"
-DENO_PATH = Path(".deno/bin/deno")
+
+def find_deno_executable() -> Path:
+    """Find Deno executable, checking local installation first, then global."""
+    # Check local installation first
+    local_deno = Path(".deno/bin/deno")
+    if local_deno.is_file():
+        return local_deno
+    
+    # Check global installation via which
+    import shutil
+    global_deno = shutil.which("deno")
+    if global_deno:
+        return Path(global_deno)
+    
+    # Return local path as fallback (for error messaging)
+    return local_deno
+
+DENO_PATH = find_deno_executable()
 
 def read_file(path: Path) -> Optional[str]:
     return path.read_text(encoding="utf-8") if path.exists() else None
@@ -221,7 +238,8 @@ if __name__ == "__main__":
         if not DENO_PATH.is_file():
             raise ValueError(
                 "run with what? Deno pls.\n"
-                "curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
+                "Install deno globally: curl -fsSL https://deno.land/install.sh | sh\n"
+                "Or locally: curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
             )
     
     for tc in discover_tests(args):
