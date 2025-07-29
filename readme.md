@@ -26,6 +26,10 @@ and most importantly, perhaps?
 
 **it's not snake oil, it's here now. the tests do all compile and run. you could build a webserver in it already if you so chose.**
 
+# how
+
+`./test.py` is the main entrypoint for you, at least for now. it runs all tests and also self documents the valid compiler usage and output execution.
+
 # license
 
 i will open source it all later, i haven't decided on the right license just yet
