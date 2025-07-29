@@ -102,17 +102,11 @@ do
 				a dep_loop join
 					string " → "
 		else
-			local dep
+			a visit
 				a modules id
 					substituting id
 						a dep_id
-			if
-				none
-					a dep visited
-			then
-				a visit
-					a dep
-					a next_chain
+				a next_chain
 
 	a build_order push
 		a module id

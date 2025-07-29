@@ -397,66 +397,46 @@ PIL:file
 								PIL:auto_type
 
 					else
-						local dep
-							noscope
-								local _0x3c__modules
-									PIL:access_local modules
-
-									PIL:auto_type
-
-							local _0x3d__id
-								PIL:access_index _0x3c__modules
-									local _0x3b__dep_id
-										PIL:access_local dep_id
-
-										PIL:auto_type
-
-						if
-							none
+						local _0x3f__visit
+							PIL:call visit
 								noscope
-									local _0x3e__dep
-										PIL:access_local dep
+									local _0x3c__modules
+										PIL:access_local modules
 
 										PIL:auto_type
 
-								local _0x3f__visited
-									PIL:access_field _0x3e__dep visited
-
-									PIL:auto_type
-
-							then
-								local _0x42__visit
-									PIL:call visit
-										local _0x40__dep
-											PIL:access_local dep
+								local _0x3d__id
+									PIL:access_index _0x3c__modules
+										local _0x3b__dep_id
+											PIL:access_local dep_id
 
 											PIL:auto_type
 
-										local _0x41__next_chain
-											PIL:access_local next_chain
-
-											PIL:auto_type
+								local _0x3e__next_chain
+									PIL:access_local next_chain
 
 									PIL:auto_type
+
+							PIL:auto_type
 
 			noscope
-				local _0x45__build_order
+				local _0x42__build_order
 					PIL:access_local build_order
 
 					PIL:auto_type
 
-			local _0x46__push
+			local _0x43__push
 				PIL:call push
-					PIL:access_local _0x45__build_order
+					PIL:access_local _0x42__build_order
 
 					noscope
-						local _0x43__module
+						local _0x40__module
 							PIL:access_local module
 
 							PIL:auto_type
 
-					local _0x44__id
-						PIL:access_field _0x43__module id
+					local _0x41__id
+						PIL:access_field _0x40__module id
 
 						PIL:auto_type
 
@@ -464,15 +444,15 @@ PIL:file
 
 	for module in
 		values
-			local _0x47__modules
+			local _0x44__modules
 				PIL:access_local modules
 
 				PIL:auto_type
 
 		do
-			local _0x49__visit
+			local _0x46__visit
 				PIL:call visit
-					local _0x48__module
+					local _0x45__module
 						PIL:access_local module
 
 						PIL:auto_type
@@ -486,13 +466,13 @@ PIL:file
 			int 1
 
 			noscope
-				local _0x4a__dep_loops
+				local _0x47__dep_loops
 					PIL:access_local dep_loops
 
 					PIL:auto_type
 
-			local _0x4b__length
-				PIL:access_field _0x4a__dep_loops length
+			local _0x48__length
+				PIL:access_field _0x47__dep_loops length
 
 				PIL:auto_type
 
@@ -502,14 +482,14 @@ PIL:file
 					string "ERROR: there are dependency loops.\n"
 
 					noscope
-						local _0x4c__dep_loops
+						local _0x49__dep_loops
 							PIL:access_local dep_loops
 
 							PIL:auto_type
 
-					local _0x4d__join
+					local _0x4a__join
 						PIL:call join
-							PIL:access_local _0x4c__dep_loops
+							PIL:access_local _0x49__dep_loops
 
 							string "\n"
 
@@ -518,14 +498,14 @@ PIL:file
 	else
 		print
 			noscope
-				local _0x4e__build_order
+				local _0x4b__build_order
 					PIL:access_local build_order
 
 					PIL:auto_type
 
-			local _0x4f__join
+			local _0x4c__join
 				PIL:call join
-					PIL:access_local _0x4e__build_order
+					PIL:access_local _0x4b__build_order
 
 					string "\n"
 

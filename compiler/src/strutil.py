@@ -11,7 +11,8 @@ def extract_indent(line: str) -> tuple[str, int]:
         line = line[1:]
     return line, indent
 
-from typing import Union, List
+from io import StringIO
+from typing import Any, Union, List
 
 A = List[Union[str, 'A']]
 
@@ -19,9 +20,7 @@ def join_nested(data: A, indent: int = 2, level: int = 0) -> str:
     def stringify(x: Union[str, A]) -> str:
         if isinstance(x, str):
             return x
-        if isinstance(x, list):
-            return join_nested(x, indent=indent, level=level + 1)
-        raise TypeError(f"Unsupported type: {type(x).__name__}")
+        return join_nested(x, indent=indent, level=level + 1)
 
     s = " ".join([stringify(item) for item in data])
     lines = [(' ' * indent * level) + line for line in s.split("\n")]
@@ -41,23 +40,24 @@ class Joiner:
         else:
             self.out.write(self.sep)
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    def __exit__(self, *args: Any) -> None:
         pass
 
 
-class IndentedStringIO:
+class IndentedStringIO(StringIO):
     def __init__(self, indent: str = '    ') -> None:
         self._buf: list[str] = []
         self._indent_str = indent
         self._indent_level = 0
         self._at_line_start = True
 
-    def write(self, s: str) -> None:
+    def write(self, s: str) -> int:
         for line in s.splitlines(True):  # keep line endings
             if self._at_line_start and line.strip():
                 self._buf.append(self._indent_str * self._indent_level)
             self._buf.append(line)
             self._at_line_start = line.endswith('\n')
+        return len(s)
 
     def writeline(self, s: str = '') -> None:
         if self._at_line_start:
@@ -86,5 +86,5 @@ class IndentedStringIO:
         self.indent()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    def __exit__(self, *args: Any) -> None:
         self.dedent()

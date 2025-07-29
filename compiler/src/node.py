@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Sequence, Union
+from typing import Any, Sequence, Union
 
 from utils import TypeMap
 
@@ -12,8 +12,8 @@ class Position:
     char: int = 0
 
 class Node:
-    def __init__(self, content: str, pos: Position, children: list["Node"] | None) -> None:
-        self.content = content
+    def __init__(self, content: str | None, pos: Position | None, children: list["Node"] | None) -> None:
+        self.content = content or ""
         self._children: list[Node] = children or []
         self.parent: Node | None = None
         for child in self._children:
@@ -71,21 +71,21 @@ class Runtime_scope:
 
 @dataclass
 class Indexers:
-    mapping: dict[str, any] = field(default_factory=dict)
+    mapping: dict[str, Any] = field(default_factory=dict)
 
 @TypeMap.register(Indexers)      
 def __indexers(): return Indexers()
 
 @dataclass
 class Callers:
-    mapping: dict[str, any] = field(default_factory=dict)
+    mapping: dict[str, Any] = field(default_factory=dict)
 
 @TypeMap.register(Callers)      
 def __callers(): return Callers()
 
 @dataclass
 class Params:
-    mapping: dict[str, any] = field(default_factory=dict)
+    mapping: dict[str, Any] = field(default_factory=dict)
 
 @TypeMap.register(Params)      
 def __params(): return Params()
@@ -107,11 +107,11 @@ class FieldDemandType(str): pass
 class Scope:
     parent: Scope | None
     mapping: dict[str, FieldDemandType] = field(default_factory=dict)
-    def resolve(self, name: str):
+    def resolve(self, name: str) -> FieldDemandType | None:
         # hahahahahaha what the hell are you doing Python
         return self.mapping[name] if name in self.mapping else self.parent.resolve(name) if self.parent else None
 
 # TODO. i don't know where to stuff this one. it doesn't belong into Node directly as that would polute the pretty
 #  and clean parser-specific class with irrelevant macro-specific garbage such as this.
 def recover_string(node: Node) -> str:
-    return node.content + "\n" + "\n".join(["\t"+recover_string(child) for child in node.children])
+    return (node.content or "") + "\n" + "\n".join(["\t"+recover_string(child) for child in node.children])

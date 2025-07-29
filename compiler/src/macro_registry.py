@@ -1,5 +1,6 @@
-from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Callable, TextIO, Union, TypeVar, Protocol, cast, Any
+from dataclasses import dataclass
+from io import StringIO
+from typing import TYPE_CHECKING, Callable, Union, TypeVar, Protocol, cast, Any
 
 from node import Node
 from strutil import IndentedStringIO
@@ -10,8 +11,8 @@ if TYPE_CHECKING:
 # TODO - this shouldn't be here, probably...
 @dataclass(kw_only=True)
 class MacroContext:
-    statement_out: IndentedStringIO
-    expression_out: IndentedStringIO
+    statement_out: IndentedStringIO | StringIO
+    expression_out: IndentedStringIO | StringIO
     node: Node
 
     compiler: "Compiler"
