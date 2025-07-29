@@ -23,6 +23,8 @@ remember to run the test suite to validate your changes: `./test.py`. it's a com
 
 the compiler shall emit no warnings. there are only errors that we can and those we cannot recover from. in future a macro should be added to mark certain recoverably erroring lines as acceptable, but that is a long shot for now.
 
+important request here specifically for my beloved Copilot! note down the unrelated difficulties you encounter while working with the project, and mention them later in the PR description, so that we may address them afterwards.
+
 ## vibe
 
 keep it all casual and unprofessional in text. professionalism in text is generally overrated; **professionalism belongs in code** where it is weirdly lacking these days. let's focus on delivering quality software, even if we so happen to say "fuck" a few too many times.
