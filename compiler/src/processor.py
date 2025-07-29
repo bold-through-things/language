@@ -8,6 +8,7 @@ from node import Args, Callers, Indexers, Inject_code_start, Macro, Node, Params
 from strutil import IndentedStringIO, Joiner, cut
 from typing import Callable
 from utils import *
+from abc import ABC, abstractmethod
 
 ERASED_NODE = Node(None, None, children=None)
 ERASED_NODE.metadata[Macro] = None
@@ -118,6 +119,25 @@ def to_valid_js_ident(s: str) -> str:
     return "_" + replace_chars(s, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", {" ": "_"})
 
 from macro_registry import MacroContext, MacroRegistry
+from abc import ABC, abstractmethod
+
+class MacroProcessingStep(ABC):
+    """Base class for macro processing steps in the compilation pipeline"""
+    
+    def __init__(self):
+        self.macros = MacroRegistry()
+        
+    @abstractmethod
+    def process_node(self, node: Node, compiler: "Compiler") -> None:
+        """Process a single node during this step"""
+        pass
+    
+    @abstractmethod  
+    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
+        """Process all nodes during this step"""
+        pass
+
+# Legacy registries - will be moved into steps
 macros = MacroRegistry()
 typecheck = MacroRegistry()
 preprocessor = MacroRegistry()
@@ -434,6 +454,132 @@ class CodeBlockAssociator:
 
 code_block_associator = CodeBlockAssociator()
 
+class PreprocessingStep(MacroProcessingStep):
+    """Handles preprocessing like access macro unrolling"""
+    
+    def __init__(self):
+        super().__init__()
+        # Move preprocessor macros into this step
+        self.macros = preprocessor
+        
+    def process_node(self, node: Node, compiler: "Compiler") -> None:
+        """Process a single node using the preprocessor registry"""
+        # Process children first
+        for child in node.children:
+            with compiler.safely:
+                self.process_node(child, compiler)
+        
+        # Process current node  
+        macro = str(node.metadata[Macro])
+        all_preprocessors = self.macros.all()
+        
+        if macro in all_preprocessors:
+            with compiler.safely:
+                ctx = MacroContext(
+                    statement_out=StringIO(),  # null writes
+                    expression_out=StringIO(),
+                    node=node,
+                    compiler=compiler,
+                )
+                all_preprocessors[macro](ctx)
+                
+    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
+        """Process all nodes during preprocessing step"""
+        for node in nodes:
+            self.process_node(node, compiler)
+
+class CodeBlockLinkingStep(MacroProcessingStep):
+    """Handles linking code blocks to headers (e.g. do -> for)"""
+    
+    def __init__(self):
+        super().__init__()
+        self.associator = CodeBlockAssociator()
+        
+    def process_node(self, node: Node, compiler: "Compiler") -> None:
+        """Process code block associations for a node"""
+        # Process children first
+        for child in node.children:
+            with compiler.safely:
+                self.process_node(child, compiler)
+                
+        # Process current node
+        with compiler.safely:
+            self.associator.process_code_blocks(node)
+            
+    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
+        """Process all nodes during code block linking step"""
+        for node in nodes:
+            self.process_node(node, compiler)
+
+class TypeCheckingStep(MacroProcessingStep):
+    """Handles type checking"""
+    
+    def __init__(self):
+        super().__init__()
+        # Move typecheck macros into this step
+        self.macros = typecheck
+        
+    def process_node(self, node: Node, compiler: "Compiler") -> None:
+        """Type check a single node"""
+        macro = str(node.metadata[Macro])
+        all_macros = self.macros.all()
+        
+        ctx = MacroContext(
+            statement_out=StringIO(), # null writes
+            expression_out=StringIO(),
+            node=node,
+            compiler=compiler,
+        )
+        
+        if macro in all_macros:
+            with compiler.safely:
+                return all_macros[macro](ctx)
+        else:
+            for child in node.children:
+                child_ctx = replace(ctx, node=child)
+                self.process_node(child, compiler)
+                
+    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
+        """Process all nodes during type checking step"""
+        for node in nodes:
+            assert node.content == "PIL:file" # root # internal assert
+            self.process_node(node, compiler)
+
+class JavaScriptEmissionStep(MacroProcessingStep):
+    """Handles JavaScript code emission"""
+    
+    def __init__(self):
+        super().__init__()
+        # Move macros into this step
+        self.macros = macros
+        
+    def process_node(self, node: Node, compiler: "Compiler") -> None:
+        """This method not used for JS emission - see process_all_nodes"""
+        pass
+        
+    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
+        """Process all nodes during JavaScript emission step"""
+        out = IndentedStringIO()
+        out.write(js_lib + "\n\n")
+        # need to wrap this crap in async because NodeJS is GARBAGE
+        out.write("void (async () => {\n")
+        with out:
+            out.write("'use strict';\n")
+            out.write("const scope = globalThis;\n")
+            for node in nodes:
+                assert node.content == "PIL:file" # root # internal assert
+                ctx=MacroContext(
+                    statement_out=out,
+                    expression_out=out,
+                    node=node,
+                    compiler=compiler,
+                )
+                compiler.compile_ctx(ctx)
+        out.write("\n})();")
+        
+        # Store result in compiler for retrieval
+        compiler._js_output = out.getvalue()
+
 @macros.add("PIL:access_local")
 def pil_access_local(ctx: MacroContext):
     args1 = ctx.node.metadata[Args].split(" ")
@@ -728,6 +874,15 @@ class Compiler:
         #  so that each block gets its own incremental. a bit harder, though.
         self.incremental_id = 0
         self.compile_errors: list[dict[str, Any]] = []
+        self._js_output: str = ""
+        
+        # Initialize the processing pipeline
+        self.processing_steps = [
+            PreprocessingStep(),
+            CodeBlockLinkingStep(), 
+            TypeCheckingStep(),
+            JavaScriptEmissionStep()
+        ]
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
@@ -756,63 +911,27 @@ class Compiler:
         self.compile_errors.append(entry)
 
     def preprocess_node(self, node: Node):
-        """Process a single node using the preprocessor registry"""
-        # Process children first
-        for child in node.children:
-            with self.safely:
-                self.preprocess_node(child)
-        
-        # Process current node  
-        macro = str(node.metadata[Macro])
-        all_preprocessors = preprocessor.all()
-        
-        if macro in all_preprocessors:
-            with self.safely:
-                ctx = MacroContext(
-                    statement_out=StringIO(),  # null writes
-                    expression_out=StringIO(),
-                    node=node,
-                    compiler=self,
-                )
-                all_preprocessors[macro](ctx)
-        
-        # Always process code block associations after other preprocessing
-        with self.safely:
-            code_block_associator.process_code_blocks(node)
+        """Legacy method for backward compatibility - delegates to PreprocessingStep"""
+        preprocessing_step = next(step for step in self.processing_steps if isinstance(step, PreprocessingStep))
+        preprocessing_step.process_node(node, self)
+    
+    def typecheck(self, ctx: MacroContext):
+        """Legacy method for backward compatibility - delegates to TypeCheckingStep"""  
+        typecheck_step = next(step for step in self.processing_steps if isinstance(step, TypeCheckingStep))
+        return typecheck_step.process_node(ctx.node, self)
     
     def compile(self):
+        # Discover macros first
         for node in self.nodes:
             self.__discover_macros(node)
-            self.preprocess_node(node)
-
-        out = IndentedStringIO()
-        out.write(js_lib + "\n\n")
-        # need to wrap this crap in async because NodeJS is GARBAGE
-        out.write("void (async () => {\n")
-        with out:
-            out.write("'use strict';\n")
-            out.write("const scope = globalThis;\n")
-            for node in self.nodes:
-                assert node.content == "PIL:file" # root # internal assert
-                ctx=MacroContext(
-                    statement_out=StringIO(), # TODO - null writes
-                    expression_out=StringIO(),
-                    node=node,
-                    compiler=self,
-                )
-                self.typecheck(ctx)
-
-                ctx=MacroContext(
-                    statement_out=out,
-                    expression_out=out,
-                    node=node,
-                    compiler=self,
-                )
-                self.compile_ctx(ctx)
-        out.write("\n})();")
+            
+        # Execute the processing pipeline
+        for step in self.processing_steps:
+            step.process_all_nodes(self.nodes, self)
+        
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
-        return out.getvalue()
+        return self._js_output
 
     def __discover_macros(self, node: Node):
         # TODO lstring macros should perhaps get special handling here...
@@ -821,18 +940,6 @@ class Compiler:
         node.metadata[Args] = args
         for child in node.children:
             self.__discover_macros(child)
-
-    def typecheck(self, ctx: MacroContext):
-        macro = ctx.node.metadata[Macro]
-        all_macros = typecheck.all()
-        
-        if macro in all_macros:
-            with self.safely:
-                return all_macros[macro](ctx)
-        else:
-            for child in ctx.node.children:
-                child_ctx = replace(ctx, node=child)
-                self.typecheck(child_ctx)
 
     def make_node(self, content: str, pos: Position, children: None | list[Node]) -> Node:
         n = Node(content, pos, children)
