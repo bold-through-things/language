@@ -37,12 +37,7 @@ def js_field_access(s: str) -> str:
         return f'.{s}'
     return f'["{s}"]'
 
-TYPICAL_IGNORED_MACROS = {"type", "noscope", "PIL:auto_type"}
-def filter_child_macros(n: Node):
-    def get_macro(n: Node): 
-        macro, _ = cut(n.content, " ")
-        return macro
-    return [c for c in n.children if get_macro(c) not in TYPICAL_IGNORED_MACROS]
+
 
 js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
 
