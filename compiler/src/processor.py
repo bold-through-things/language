@@ -117,13 +117,12 @@ def replace_chars(s: str, ok: str, map: dict[str, str]) -> str:
 def to_valid_js_ident(s: str) -> str:
     return "_" + replace_chars(s, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", {" ": "_"})
 
-ACCESS_MACRO = {"a", "an", "access"}
-
 from macro_registry import MacroContext, MacroRegistry
 macros = MacroRegistry()
 typecheck = MacroRegistry()
+preprocessor = MacroRegistry()
 
-@macros.add("noop", "substituting", "calling", "inside", "param", "type", "PIL:auto_type")
+@macros.add("noop", "type", "PIL:auto_type")
 def does_not_compile(_):
     # does not compile into code itself - nothing to do
     pass
@@ -215,6 +214,7 @@ def access_index(ctx: MacroContext):
 T = TypeVar("T")
 
 def singleton(cls: type[T]) -> T:
+    """converts the annotated class into a singleton, immediately instantiating it"""
     instance = cls()
     return cast(Callable[..., Any], lambda *args, **kwargs: instance)
 
@@ -272,6 +272,167 @@ class PIL_call:
 
             ctx.statement_out.write(f"const {ident} = await {call}\n")
             ctx.expression_out.write(ident)
+
+# Preprocessor macro handlers following PIL_call pattern
+@singleton  
+class SubstitutingMacro:
+    def __init__(self):
+        @preprocessor.add("substituting")
+        def _(ctx: MacroContext):
+            args = ctx.node.metadata[Args]
+            parent = ctx.node.parent
+            
+            assert parent != None
+            ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "sub must have one argument")
+            
+            if len(ctx.node.children) >= 1:
+                parent.metadata[Indexers].mapping[args] = ctx.node.children
+            else:
+                # shortcut for when the substitution is literal (i.e. most cases)
+                access = ctx.compiler.make_node(f"a {args}", ctx.node.pos or Position(0, 0), children=None)
+                parent.metadata[Indexers].mapping[args] = [access]
+            parent.replace_child(ctx.node, None)
+
+@singleton
+class CallingMacro:
+    def __init__(self):
+        @preprocessor.add("calling")
+        def _(ctx: MacroContext):
+            args = ctx.node.metadata[Args]
+            parent = ctx.node.parent
+            
+            assert parent != None
+            ctx.compiler.assert_(len(ctx.node.children) >= 1, ctx.node, "call must have at least one child")
+            ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "call must have one argument")
+            parent.metadata[Callers].mapping[args] = ctx.node.children
+            parent.replace_child(ctx.node, None)
+
+@singleton
+class InsideMacro:
+    def __init__(self):
+        @preprocessor.add("inside")
+        def _(ctx: MacroContext):
+            args = ctx.node.metadata[Args]
+            parent = ctx.node.parent
+            
+            assert parent != None
+            ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "inside must have one child")
+            ctx.compiler.assert_(args.strip() == "", ctx.node, "inside must have no arguments")
+            ctx.compiler.assert_(parent.metadata[Macro] == "exists", ctx.node, "inside must be inside exists")
+            parent.metadata[Target] = ctx.node.children[0]
+            parent.replace_child(ctx.node, None)
+
+@singleton
+class ParamMacro:
+    def __init__(self):
+        @preprocessor.add("param")
+        def _(ctx: MacroContext):
+            args = ctx.node.metadata[Args]
+            parent = ctx.node.parent
+            
+            assert parent != None
+            ctx.compiler.assert_(len(ctx.node.children) == 0, ctx.node, "param must have no children")
+            ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "param must have one argument - the name")
+            ctx.compiler.assert_(parent.metadata[Macro] == "fn", ctx.node, "params must be inside fn")
+            parent.metadata[Params].mapping[args] = True
+
+@singleton
+class AccessMacro:
+    def __init__(self):
+        @preprocessor.add("a", "an", "access")
+        def _(ctx: MacroContext):
+            args = ctx.node.metadata[Args]
+            parent = ctx.node.parent
+            
+            assert parent != None
+            # since children are preprocessed first, we already have Callers and Indexers!
+            steps: list[str] = args.split(" ")
+            indexers = getattr(ctx.node.metadata.maybe(Indexers), "mapping", {})
+            callers = getattr(ctx.node.metadata.maybe(Callers), "mapping", {})
+            subs = indexers | callers
+            last_chain_ident = None
+            replace_with: list[Node] = []
+            p0 = Position(0, 0)
+            
+            for step in steps:
+                ident = ctx.compiler.get_new_ident(step)
+                step_is_last = step == steps[-1]
+                children = list(filter(lambda n: not n.content.startswith("noscope"), ctx.node.children))
+                step_needs_call = step in builtin_calls or (step_is_last and len(children) > 1) or step in callers
+                args1: list[Node] = []
+                if step in subs:
+                    args1 = subs[step]
+                if step_is_last:
+                    args1 += ctx.node.children
+
+                local: list[Node] = []
+                if step in indexers:
+                    # index
+                    local.append(ctx.compiler.make_node(f"PIL:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
+                    for arg in args1:                        
+                        ctx.compiler.preprocess_node(arg)
+                elif step_needs_call:
+                    # call or set
+                    self_arg = []
+                    if last_chain_ident:
+                        self_arg = [ctx.compiler.make_node(f"PIL:access_local {last_chain_ident}", ctx.node.pos or p0, [])]
+                    local.append(ctx.compiler.make_node(f"PIL:call {step}", ctx.node.pos or p0, self_arg + args1))
+                    local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
+                    for arg in args1:
+                        ctx.compiler.preprocess_node(arg)
+                else:
+                    # static field
+                    access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
+                    local.append(ctx.compiler.make_node(f"PIL:{access} {step}", ctx.node.pos or p0, args1))
+                    local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
+                    for arg in args1:
+                        ctx.compiler.preprocess_node(arg)
+
+                local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)
+                last_chain_ident = ident
+                replace_with.append(local_node)
+                
+            replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
+            parent.replace_child(ctx.node, replace_with)
+
+class CodeBlockAssociator:
+    def __init__(self):
+        # This runs on every node type to check for code block associations
+        self.all_macros = set()
+        
+    def register_for_all_macros(self):
+        """Register this processor for all possible macro types"""
+        # We'll use a special approach - register as a fallback in preprocess_node
+        pass
+        
+    def process_code_blocks(self, node: Node):
+        """Process code block associations for a node"""
+        # associate code blocks with relevant headers
+        CODE_BLOCK_HEADERS = {
+            "if": "then",
+            "while": "do", 
+            "for": "do",
+            "fn": "do"
+        }
+        
+        children = node.children
+        for i in range(len(children)):
+            current = children[i]
+            next_child = children[i+1] if i+1 < len(children) else None
+
+            if not current or not next_child:
+                continue
+
+            current_macro = str(current.metadata[Macro])
+            if current_macro in CODE_BLOCK_HEADERS:
+                expected_next = CODE_BLOCK_HEADERS[current_macro]
+                next_macro = str(next_child.metadata[Macro])
+                if next_macro == expected_next:
+                    node.replace_child(next_child, None)
+                    current.append_child(next_child)
+                # Note: not raising error here to make it optional
+
+code_block_associator = CodeBlockAssociator()
 
 @macros.add("PIL:access_local")
 def pil_access_local(ctx: MacroContext):
@@ -558,7 +719,6 @@ raising this.
         self.message = message
         super().__init__(self.message) # Call the base Exception constructor
 
-orig_Node = Node
 class Compiler:
     def __init__(self):
         self.nodes: list[Node] = []
@@ -595,10 +755,35 @@ class Compiler:
         }
         self.compile_errors.append(entry)
 
+    def preprocess_node(self, node: Node):
+        """Process a single node using the preprocessor registry"""
+        # Process children first
+        for child in node.children:
+            with self.safely:
+                self.preprocess_node(child)
+        
+        # Process current node  
+        macro = str(node.metadata[Macro])
+        all_preprocessors = preprocessor.all()
+        
+        if macro in all_preprocessors:
+            with self.safely:
+                ctx = MacroContext(
+                    statement_out=StringIO(),  # null writes
+                    expression_out=StringIO(),
+                    node=node,
+                    compiler=self,
+                )
+                all_preprocessors[macro](ctx)
+        
+        # Always process code block associations after other preprocessing
+        with self.safely:
+            code_block_associator.process_code_blocks(node)
+    
     def compile(self):
         for node in self.nodes:
             self.__discover_macros(node)
-            self.__preprocess_annotations(node)
+            self.preprocess_node(node)
 
         out = IndentedStringIO()
         out.write(js_lib + "\n\n")
@@ -653,136 +838,6 @@ class Compiler:
         n = Node(content, pos, children)
         self.__discover_macros(n)
         return n
-
-    def __preprocess_annotations(self, node: Node):
-        # probably want to process children first, i reckon...
-        for child in node.children:
-            with self.safely:
-                self.__preprocess_annotations(child)
-
-        macro = str(node.metadata[Macro])
-        args = str(node.metadata[Args])
-        parent = node.parent
-
-        Node = self.make_node
-
-        # preprocess indexers, storing them in the metadata
-        # indexers are special annotations that must appear at the start (TODO - might remove this restriction in future...)
-        if macro == "substituting":
-            # and yes, i know how absurd the message sounds
-            # self.assert_(len(node.children) <= 1, node, "sub must have at most one child") TODO...
-            assert parent != None
-            self.assert_(args.find(" ") == -1, node, "sub must have one argument")
-            if len(node.children) >= 1:
-                parent.metadata[Indexers].mapping[args] = node.children
-            else:
-                # shortcut for when the substitution is literal (i.e. most cases)
-                access = Node(f"a {args}", node.pos or Position(0, 0), children=None) # fake accessor node
-                parent.metadata[Indexers].mapping[args] = [access]
-            parent.replace_child(node, None)
-
-        if macro == "calling":
-            assert parent != None
-            self.assert_(len(node.children) >= 1, node, "call must have at least one child")
-            self.assert_(args.find(" ") == -1, node, "call must have one argument")
-            parent.metadata[Callers].mapping[args] = node.children
-            parent.replace_child(node, None)
-
-        # exists inside
-        if macro == "inside":
-            assert parent != None
-            self.assert_(len(node.children) == 1, node, "inside must have one child")
-            self.assert_(args.strip() == "", node, "inside must have no arguments")
-            self.assert_(parent.metadata[Macro] == "exists", node, "inside must be inside exists") # TODO. wow, easy to understand!
-            parent.metadata[Target] = node.children[0]
-            parent.replace_child(node, None)
-    
-        # function param
-        if macro == "param":
-            assert parent != None
-            self.assert_(len(node.children) == 0, node, "param must have no children") # TODO - default value ? TODO - annotations ?
-            self.assert_(args.find(" ") == -1, node, "param must have one argument - the name")
-            self.assert_(parent.metadata[Macro] == "fn", node, "params must be inside fn")
-            parent.metadata[Params].mapping[args] = True # TODO for now. probably a metadata object in the future
-
-        if macro in ACCESS_MACRO:
-            assert parent != None
-            # since children are preprocessed first, we already have Callers and Indexers!
-            steps: list[str] = args.split(" ")
-            indexers = getattr(node.metadata.maybe(Indexers), "mapping", {})
-            callers = getattr(node.metadata.maybe(Callers), "mapping", {})
-            subs = indexers | callers
-            last_chain_ident = None
-            replace_with: list[orig_Node] = []
-            p0 = Position(0, 0)
-            for step in steps:
-                ident = self.get_new_ident(step)
-                step_is_last = step == steps[-1]
-                children = list(filter(lambda n: not n.content.startswith("noscope"), node.children))
-                step_needs_call = step in builtin_calls or (step_is_last and len(children) > 1) or step in callers
-                args1: list[orig_Node] = []
-                if step in subs:
-                    args1 = subs[step]
-                if step_is_last:
-                    args1 += node.children
-
-                local: list[orig_Node] = []
-                if step in indexers:
-                    # index
-                    local.append(Node(f"PIL:access_index {last_chain_ident}", node.pos or p0, args1))
-                    for arg in args1:                        
-                        self.__preprocess_annotations(arg)
-                elif step_needs_call:
-                    # call or set
-                    self_arg = []
-                    if last_chain_ident:
-                        self_arg = [ Node(f"PIL:access_local {last_chain_ident}", node.pos or p0, []) ]
-                    local.append(Node(f"PIL:call {step}", node.pos or p0, self_arg + args1))
-                    local.append(Node("PIL:auto_type", node.pos or p0, []))
-                    for arg in args1:
-                        self.__preprocess_annotations(arg)
-                else:
-                    # static field
-                    access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
-                    local.append(Node(f"PIL:{access} {step}", node.pos or p0, args1))
-                    local.append(Node("PIL:auto_type", node.pos or p0, []))
-                    for arg in args1:
-                        self.__preprocess_annotations(arg)
-
-                local_node = Node(f"local {ident}", node.pos or p0, children=local)
-                last_chain_ident = ident
-                replace_with.append(local_node)
-                
-            replace_with = list(filter(None, [Node("noscope", node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
-            parent.replace_child(node, replace_with)
-
-        
-        # associate code blocks with relevant headers
-        CODE_BLOCK_HEADERS = {
-            "if": "then",
-            "while": "do",
-            "for": "do",
-            "fn": "do"
-        }
-
-        children = node.children
-        parent = node
-        for i in range(len(children)):
-            current = children[i]
-            next = children[i+1] if i+1 < len(children) else None
-
-            if not current or not next:
-                continue
-
-            macro, args = str(current.metadata[Macro]), str(current.metadata[Args])
-            if macro in CODE_BLOCK_HEADERS:
-                expected_next = CODE_BLOCK_HEADERS[macro]
-                macro, args = str(next.metadata[Macro]), str(next.metadata[Args])
-                if macro == expected_next:
-                    parent.replace_child(next, None)
-                    current.append_child(next)
-                else:
-                    ValueError(f"for {macro} expected a following {expected_next}")
 
     # TODO - probably time to nuke this one...
     def compile_fn_call(self, ctx: MacroContext, call: str, nodes: Sequence[Node], ident:bool=True):
