@@ -425,7 +425,7 @@ class CodeBlockAssociator:
         
     def register_for_all_macros(self):
         """Register this processor for all possible macro types"""
-        # We'll use a special approach - register as a fallback in preprocess_node
+        # Code block association is handled by the CodeBlockLinkingStep
         pass
         
     def process_code_blocks(self, node: Node):
