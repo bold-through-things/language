@@ -540,13 +540,13 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         # --- cursed Python begins ---
 
         @contextmanager
-        def possibly_wrapped():
+        def possibly_wrapped(ctx: MacroContext):
             # no wrapping needed
-            yield
+            yield ctx
 
         if ctx.node.content == "PIL:solution":
             @contextmanager
-            def definitely_wrapped():
+            def definitely_wrapped(ctx: MacroContext):
                 out = IndentedStringIO()
                 out.write(js_lib + "\n\n")
                 # need to wrap this crap in async because browsers are GARBAGE 
@@ -555,22 +555,17 @@ class JavaScriptEmissionStep(MacroProcessingStep):
                 with out:
                     out.write("'use strict';\n")
                     out.write("const scope = globalThis;\n")
-                    ctx.compiler._current_output = out
-                    yield
+                    yield replace(ctx, statement_out=out, expression_out=out)
                 out.write("\n})();")
                 ctx.compiler._js_output = out.getvalue()
             possibly_wrapped = definitely_wrapped
 
         # --- cursed Python ends ---
 
-        with possibly_wrapped():
+        with possibly_wrapped(ctx) as ctx:
             if macro in all_macros:
-                final_ctx = replace(ctx, 
-                    statement_out=ctx.compiler._current_output,
-                    expression_out=ctx.compiler._current_output
-                )
                 with ctx.compiler.safely:
-                    all_macros[macro](final_ctx)
+                    all_macros[macro](ctx)
             else:
                 raise ValueError(f"TODO. unknown macro {macro}")
 
@@ -885,7 +880,6 @@ class Compiler:
         self.incremental_id = 0
         self.compile_errors: list[dict[str, Any]] = []
         self._js_output: str = ""
-        self._current_output: IndentedStringIO | None = None
         
         # Initialize the processing pipeline
         self.processing_steps: list[MacroProcessingStep] = [
