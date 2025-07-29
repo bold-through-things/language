@@ -258,11 +258,9 @@ class PIL_call:
             args: list[str | None] = []
             for child in ctx.node.children:
                 # Find the typecheck step to handle type checking
-                typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
-                if typecheck_step:
-                    received = typecheck_step.process_node(replace(ctx, node=child))
-                else:
-                    received = None
+                typecheck_step = ctx.current_step
+                assert isinstance(typecheck_step, TypeCheckingStep)
+                received = typecheck_step.process_node(replace(ctx, node=child))
                 args.append(received)
             args = [a for a in args if a]
 
@@ -603,10 +601,9 @@ def access_local(ctx: MacroContext):
     first, extra = cut(ctx.node.metadata[Args], " ")
     ctx.compiler.assert_(extra == "", ctx.node, "single argument, the name of local")
 
-    typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
-    types = []
-    if typecheck_step:
-        types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
+    typecheck_step = ctx.current_step
+    assert isinstance(typecheck_step, TypeCheckingStep)
+    types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
     types = list(filter(None, types))
 
     scope = seek_parent_scope(ctx.node)
@@ -679,10 +676,10 @@ def local_typecheck(ctx: MacroContext):
     type_node = seek_child_macro(ctx.node, "type")
 
     received = None
-    typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
+    typecheck_step = ctx.current_step
+    assert isinstance(typecheck_step, TypeCheckingStep)
     for child in ctx.node.children:
-        if typecheck_step:
-            received = typecheck_step.process_node(replace(ctx, node=child)) or received
+        received = typecheck_step.process_node(replace(ctx, node=child)) or received
 
     if not type_node:
         # TODO. this should be mandatory.
@@ -705,10 +702,9 @@ def access_typecheck(ctx: MacroContext):
         # TODO. not implemented. quite complex...
         pass
 
-    typecheck_step = next((step for step in ctx.compiler.processing_steps if isinstance(step, TypeCheckingStep)), None)
-    types = []
-    if typecheck_step:
-        types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
+    typecheck_step = ctx.current_step
+    assert isinstance(typecheck_step, TypeCheckingStep)
+    types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
     types = list(filter(None, types))
 
     scope = seek_parent_scope(ctx.node)
