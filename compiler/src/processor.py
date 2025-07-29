@@ -43,7 +43,7 @@ js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
 
 builtins = {
     "print": "log",
-    # TODO. this is awaited because NodeJS fucking sucks and doesn't give us a proper, 
+    # TODO. this is awaited because NodeJS fucking sucks and doesn't give us a proper,
     #  blocking prompt function. in future should probably write such a function
     #  and remove unnecessary await.
     #  then again, considering this is almost guaranteed to only be used for debugging...
@@ -59,11 +59,11 @@ builtins = {
     "add": "add",
     "mod": "mod",
     "none": "none",
-    # Object.values TODO i am not happy about this being a builtin. really it ought to be a method on the maps, 
+    # Object.values TODO i am not happy about this being a builtin. really it ought to be a method on the maps,
     # which should explicitly be types. same for keys...
     "values": "values",
     "keys": "keys",
-    "zip": "zip",    
+    "zip": "zip",
 }
 
 @dataclass
@@ -75,7 +75,7 @@ class PrototypeCall:
     returns: str
     def compile(self, args: list[str]):
         return f"{self.constructor}.prototype.{self.fn}.call({", ".join(args)})"
-    
+
 @dataclass
 class DirectCall:
     """just call it directly fn(args...)"""
@@ -185,7 +185,7 @@ def access_field(ctx: MacroContext):
 def access_index(ctx: MacroContext):
     args = ctx.node.metadata[Args].split(" ")
     ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the object into which we should index")
-    
+
     obj = args[0]
     ident = ctx.compiler.get_new_ident("_".join(args)) # TODO - pass index name too (doable...)
 
@@ -218,7 +218,7 @@ class PIL_call:
     def resolve_convention(cls, ctx: MacroContext):
         args = ctx.node.metadata[Args].split(" ")
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the function to call")
-        
+
         fn = args[0]
 
         convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
@@ -268,17 +268,17 @@ class PIL_call:
             ctx.expression_out.write(ident)
 
 # Preprocessor macro handlers following PIL_call pattern
-@singleton  
+@singleton
 class SubstitutingMacro:
     def __init__(self):
         @preprocessor.add("substituting")
         def _(ctx: MacroContext):
             args = ctx.node.metadata[Args]
             parent = ctx.node.parent
-            
+
             assert parent != None
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "sub must have one argument")
-            
+
             if len(ctx.node.children) >= 1:
                 parent.metadata[Indexers].mapping[args] = ctx.node.children
             else:
@@ -294,7 +294,7 @@ class CallingMacro:
         def _(ctx: MacroContext):
             args = ctx.node.metadata[Args]
             parent = ctx.node.parent
-            
+
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) >= 1, ctx.node, "call must have at least one child")
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "call must have one argument")
@@ -308,7 +308,7 @@ class InsideMacro:
         def _(ctx: MacroContext):
             args = ctx.node.metadata[Args]
             parent = ctx.node.parent
-            
+
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "inside must have one child")
             ctx.compiler.assert_(args.strip() == "", ctx.node, "inside must have no arguments")
@@ -323,7 +323,7 @@ class ParamMacro:
         def _(ctx: MacroContext):
             args = ctx.node.metadata[Args]
             parent = ctx.node.parent
-            
+
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) == 0, ctx.node, "param must have no children")
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "param must have one argument - the name")
@@ -337,7 +337,7 @@ class AccessMacro:
         def _(ctx: MacroContext):
             args = ctx.node.metadata[Args]
             parent = ctx.node.parent
-            
+
             assert parent != None
             # since children are preprocessed first, we already have Callers and Indexers!
             steps: list[str] = args.split(" ")
@@ -347,7 +347,7 @@ class AccessMacro:
             last_chain_ident = None
             replace_with: list[Node] = []
             p0 = Position(0, 0)
-            
+
             for step in steps:
                 ident = ctx.compiler.get_new_ident(step)
                 step_is_last = step == steps[-1]
@@ -363,7 +363,7 @@ class AccessMacro:
                 if step in indexers:
                     # index
                     local.append(ctx.compiler.make_node(f"PIL:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
-                    for arg in args1:                        
+                    for arg in args1:
                         ctx.compiler.preprocess_node(arg)
                 elif step_needs_call:
                     # call or set
@@ -385,31 +385,31 @@ class AccessMacro:
                 local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)
                 last_chain_ident = ident
                 replace_with.append(local_node)
-                
+
             replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
             parent.replace_child(ctx.node, replace_with)
 
-@singleton 
+@singleton
 class CodeBlockAssociator:
     def __init__(self):
         # This runs on every node type to check for code block associations
         self.all_macros = set()
-        
+
     def register_for_all_macros(self):
         """Register this processor for all possible macro types"""
         # We'll use a special approach - register as a fallback in preprocess_node
         pass
-        
+
     def process_code_blocks(self, node: Node):
         """Process code block associations for a node"""
         # associate code blocks with relevant headers
         CODE_BLOCK_HEADERS = {
             "if": "then",
-            "while": "do", 
+            "while": "do",
             "for": "do",
             "fn": "do"
         }
-        
+
         children = node.children
         for i in range(len(children)):
             current = children[i]
@@ -439,7 +439,7 @@ code_block_associator = CodeBlockAssociator()
 def pil_access_local(ctx: MacroContext):
     args1 = ctx.node.metadata[Args].split(" ")
     ctx.compiler.assert_(len(args1) == 1, ctx.node, "single argument, the object into which we should index")
-    
+
     local = args1[0]
     ident = ctx.compiler.get_new_ident("_".join(args1)) # TODO - pass index name too (doable...)
 
@@ -543,7 +543,7 @@ def local_typecheck(ctx: MacroContext):
         if not seek_child_macro(ctx.node, "PIL:auto_type") or not received:
             return received
         type_node = Node(f"type {received}", ctx.node.pos, [])
-    
+
     _, demanded = cut(type_node.content, " ")
     print(f"{ctx.node.content} demanded {demanded} and was given {received}")
     scope = seek_parent_scope(ctx.node)
@@ -640,7 +640,7 @@ def for_macro(ctx: MacroContext):
     ctx.compiler.assert_(len(split) == 3, ctx.node, "must have a syntax: for $ident in")
     # assert split[0] == "for" # inherent per semantics
     name = split[1]
-    ctx.compiler.assert_(split[2] == "in", ctx.node, "must have a syntax: for $ident in")    
+    ctx.compiler.assert_(split[2] == "in", ctx.node, "must have a syntax: for $ident in")
 
     args: list[str | None] = []
     for child in ctx.node.children:
@@ -762,11 +762,11 @@ class Compiler:
         for child in node.children:
             with self.safely:
                 self.preprocess_node(child)
-        
-        # Process current node  
+
+        # Process current node
         macro = str(node.metadata[Macro])
         all_preprocessors = preprocessor.all()
-        
+
         if macro in all_preprocessors:
             with self.safely:
                 ctx = MacroContext(
@@ -776,11 +776,11 @@ class Compiler:
                     compiler=self,
                 )
                 all_preprocessors[macro](ctx)
-        
+
         # Always process code block associations after other preprocessing
         with self.safely:
             code_block_associator.process_code_blocks(node)
-    
+
     def compile(self):
         for node in self.nodes:
             self.__discover_macros(node)
@@ -826,7 +826,7 @@ class Compiler:
     def typecheck(self, ctx: MacroContext):
         macro = ctx.node.metadata[Macro]
         all_macros = typecheck.all()
-        
+
         if macro in all_macros:
             with self.safely:
                 return all_macros[macro](ctx)
@@ -850,7 +850,7 @@ class Compiler:
             expression_out = expression_out.getvalue()
             if expression_out:
                 args.append(expression_out)
-            
+
         ident_value = ""
         if ident:
             ident_value = ctx.compiler.get_new_ident(call)
@@ -881,7 +881,7 @@ class Compiler:
         # ctx.statement_out.write(f"/*from: \n {ctx.node}*/\n")
         macro = ctx.node.metadata[Macro]
         all_macros = macros.all() # cache it
-        
+
         if macro in all_macros:
             with self.safely:
                 all_macros[macro](ctx)
