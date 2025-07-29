@@ -132,10 +132,10 @@ class MacroProcessingStep(ABC):
         """Process a single node during this step"""
         pass
     
-    @abstractmethod  
     def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
-        """Process all nodes during this step"""
-        pass
+        """Default implementation processes each node individually"""
+        for node in nodes:
+            self.process_node(node, compiler)
 
 # Legacy registries - will be moved into steps
 macros = MacroRegistry()
@@ -390,7 +390,7 @@ class AccessMacro:
                     # index
                     local.append(ctx.compiler.make_node(f"PIL:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
                     for arg in args1:                        
-                        ctx.compiler.preprocess_node(arg)
+                        ctx.compiler.preprocess_node(arg, ctx.current_step)
                 elif step_needs_call:
                     # call or set
                     self_arg = []
@@ -399,14 +399,14 @@ class AccessMacro:
                     local.append(ctx.compiler.make_node(f"PIL:call {step}", ctx.node.pos or p0, self_arg + args1))
                     local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        ctx.compiler.preprocess_node(arg)
+                        ctx.compiler.preprocess_node(arg, ctx.current_step)
                 else:
                     # static field
                     access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
                     local.append(ctx.compiler.make_node(f"PIL:{access} {step}", ctx.node.pos or p0, args1))
                     local.append(ctx.compiler.make_node("PIL:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        ctx.compiler.preprocess_node(arg)
+                        ctx.compiler.preprocess_node(arg, ctx.current_step)
 
                 local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)
                 last_chain_ident = ident
@@ -480,13 +480,9 @@ class PreprocessingStep(MacroProcessingStep):
                     expression_out=StringIO(),
                     node=node,
                     compiler=compiler,
+                    current_step=self,
                 )
                 all_preprocessors[macro](ctx)
-                
-    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
-        """Process all nodes during preprocessing step"""
-        for node in nodes:
-            self.process_node(node, compiler)
 
 class CodeBlockLinkingStep(MacroProcessingStep):
     """Handles linking code blocks to headers (e.g. do -> for)"""
@@ -505,11 +501,6 @@ class CodeBlockLinkingStep(MacroProcessingStep):
         # Process current node
         with compiler.safely:
             self.associator.process_code_blocks(node)
-            
-    def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
-        """Process all nodes during code block linking step"""
-        for node in nodes:
-            self.process_node(node, compiler)
 
 class TypeCheckingStep(MacroProcessingStep):
     """Handles type checking"""
@@ -529,6 +520,7 @@ class TypeCheckingStep(MacroProcessingStep):
             expression_out=StringIO(),
             node=node,
             compiler=compiler,
+            current_step=self,
         )
         
         if macro in all_macros:
@@ -542,8 +534,14 @@ class TypeCheckingStep(MacroProcessingStep):
     def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
         """Process all nodes during type checking step"""
         for node in nodes:
-            assert node.content == "PIL:file" # root # internal assert
-            self.process_node(node, compiler)
+            if node.content == "PIL:solution":
+                # Process all child PIL:file nodes
+                for child in node.children:
+                    assert child.content == "PIL:file" # root # internal assert
+                    self.process_node(child, compiler)
+            else:
+                assert node.content == "PIL:file" # root # internal assert
+                self.process_node(node, compiler)
 
 class JavaScriptEmissionStep(MacroProcessingStep):
     """Handles JavaScript code emission"""
@@ -554,31 +552,71 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         self.macros = macros
         
     def process_node(self, node: Node, compiler: "Compiler") -> None:
-        """This method not used for JS emission - see process_all_nodes"""
-        pass
+        """Process a single node for JavaScript emission"""
+        macro = str(node.metadata[Macro])
+        all_macros = self.macros.all()
+        
+        if macro in all_macros:
+            ctx = MacroContext(
+                statement_out=compiler._current_output,
+                expression_out=compiler._current_output,
+                node=node,
+                compiler=compiler,
+                current_step=self,
+            )
+            with compiler.safely:
+                all_macros[macro](ctx)
+        else:
+            raise ValueError(f"TODO. unknown macro {macro}")
         
     def process_all_nodes(self, nodes: list[Node], compiler: "Compiler") -> None:
         """Process all nodes during JavaScript emission step"""
         out = IndentedStringIO()
-        out.write(js_lib + "\n\n")
-        # need to wrap this crap in async because NodeJS is GARBAGE
-        out.write("void (async () => {\n")
-        with out:
-            out.write("'use strict';\n")
-            out.write("const scope = globalThis;\n")
-            for node in nodes:
-                assert node.content == "PIL:file" # root # internal assert
-                ctx=MacroContext(
-                    statement_out=out,
-                    expression_out=out,
-                    node=node,
-                    compiler=compiler,
-                )
-                compiler.compile_ctx(ctx)
-        out.write("\n})();")
+        
+        # Check if we have a PIL:solution wrapper
+        if len(nodes) == 1 and nodes[0].content == "PIL:solution":
+            # Emit JS wrapper for the entire solution
+            out.write(js_lib + "\n\n")
+            # need to wrap this crap in async because NodeJS is GARBAGE
+            out.write("void (async () => {\n")
+            with out:
+                out.write("'use strict';\n")
+                out.write("const scope = globalThis;\n")
+                
+                # Store output stream in compiler for macros to use
+                compiler._current_output = out
+                
+                # Process all PIL:file children
+                for child in nodes[0].children:
+                    assert child.content == "PIL:file" # root # internal assert
+                    self.process_node(child, compiler)
+                    
+            out.write("\n})();")
+        else:
+            # Fallback for backward compatibility
+            out.write(js_lib + "\n\n")
+            out.write("void (async () => {\n")
+            with out:
+                out.write("'use strict';\n")
+                out.write("const scope = globalThis;\n")
+                
+                compiler._current_output = out
+                
+                for node in nodes:
+                    assert node.content == "PIL:file" # root # internal assert
+                    self.process_node(node, compiler)
+                    
+            out.write("\n})();")
         
         # Store result in compiler for retrieval
         compiler._js_output = out.getvalue()
+
+@macros.add("PIL:solution")
+def pil_solution(ctx: MacroContext):
+    """Process all children of the solution node"""
+    for child in ctx.node.children:
+        child_ctx = replace(ctx, node=child)
+        ctx.compiler.compile_ctx(child_ctx)
 
 @macros.add("PIL:access_local")
 def pil_access_local(ctx: MacroContext):
@@ -875,6 +913,7 @@ class Compiler:
         self.incremental_id = 0
         self.compile_errors: list[dict[str, Any]] = []
         self._js_output: str = ""
+        self._current_output: IndentedStringIO | None = None
         
         # Initialize the processing pipeline
         self.processing_steps = [
@@ -910,20 +949,35 @@ class Compiler:
         }
         self.compile_errors.append(entry)
 
-    def preprocess_node(self, node: Node):
-        """Legacy method for backward compatibility - delegates to PreprocessingStep"""
-        preprocessing_step = next(step for step in self.processing_steps if isinstance(step, PreprocessingStep))
-        preprocessing_step.process_node(node, self)
+    def preprocess_node(self, node: Node, current_step: "MacroProcessingStep | None" = None):
+        """Legacy method for backward compatibility - delegates to current PreprocessingStep"""
+        if current_step and isinstance(current_step, PreprocessingStep):
+            current_step.process_node(node, self)
+        else:
+            # Fallback: find preprocessing step
+            preprocessing_step = next((step for step in self.processing_steps if isinstance(step, PreprocessingStep)), None)
+            if preprocessing_step:
+                preprocessing_step.process_node(node, self)
     
     def typecheck(self, ctx: MacroContext):
-        """Legacy method for backward compatibility - delegates to TypeCheckingStep"""  
-        typecheck_step = next(step for step in self.processing_steps if isinstance(step, TypeCheckingStep))
-        return typecheck_step.process_node(ctx.node, self)
+        """Legacy method for backward compatibility - delegates to current TypeCheckingStep"""  
+        if ctx.current_step and isinstance(ctx.current_step, TypeCheckingStep):
+            return ctx.current_step.process_node(ctx.node, self)
+        else:
+            # Fallback: find typecheck step
+            typecheck_step = next((step for step in self.processing_steps if isinstance(step, TypeCheckingStep)), None)
+            if typecheck_step:
+                return typecheck_step.process_node(ctx.node, self)
     
     def compile(self):
         # Discover macros first
         for node in self.nodes:
             self.__discover_macros(node)
+            
+        # Wrap all PIL:file nodes in a PIL:solution for easier processing
+        if self.nodes:
+            solution_node = self.make_node("PIL:solution", Position(0, 0), self.nodes.copy())
+            self.nodes = [solution_node]
             
         # Execute the processing pipeline
         for step in self.processing_steps:
@@ -986,6 +1040,8 @@ class Compiler:
 
         # ctx.statement_out.write(f"/*from: \n {ctx.node}*/\n")
         macro = ctx.node.metadata[Macro]
+        
+        # Always try global macros first for compatibility
         all_macros = macros.all() # cache it
         
         if macro in all_macros:

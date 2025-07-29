@@ -1,136 +1,137 @@
-PIL:file
-	local input
-		stdin
+PIL:solution
+	PIL:file
+		local input
+			stdin
 
-	local words
-		noscope
-			local _0x0__input
-				PIL:access_local input
+		local words
+			noscope
+				local _0x0__input
+					PIL:access_local input
+
+					PIL:auto_type
+
+			local _0x1__split
+				PIL:call split
+					PIL:access_local _0x0__input
+
+					string "\n"
 
 				PIL:auto_type
 
-		local _0x1__split
-			PIL:call split
-				PIL:access_local _0x0__input
+		local groups
+			dict
 
-				string "\n"
+		for word in
+			local _0x2__words
+				PIL:access_local words
 
-			PIL:auto_type
+				PIL:auto_type
 
-	local groups
-		dict
+			do
+				local key
+					noscope
+						local _0x3__word
+							PIL:access_local word
 
-	for word in
-		local _0x2__words
-			PIL:access_local words
+							PIL:auto_type
 
-			PIL:auto_type
+						local _0x4__split
+							PIL:call split
+								PIL:access_local _0x3__word
 
-		do
-			local key
-				noscope
-					local _0x3__word
-						PIL:access_local word
+								string ""
 
-						PIL:auto_type
+							PIL:auto_type
 
-					local _0x4__split
-						PIL:call split
-							PIL:access_local _0x3__word
+						local _0x5__sort
+							PIL:call sort
+								PIL:access_local _0x4__split
+
+							PIL:auto_type
+
+					local _0x6__join
+						PIL:call join
+							PIL:access_local _0x5__sort
 
 							string ""
 
 						PIL:auto_type
 
-					local _0x5__sort
-						PIL:call sort
-							PIL:access_local _0x4__split
+				# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?
 
-						PIL:auto_type
+				#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)
 
-				local _0x6__join
-					PIL:call join
-						PIL:access_local _0x5__sort
+				#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
 
-						string ""
-
-					PIL:auto_type
-
-			# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?
-
-			#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)
-
-			#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
-
-			if
-				none
-					exists
-						local _0x7__key
-							PIL:access_local key
-
-							PIL:auto_type
-
-				then
-					noscope
-						local _0x9__groups
-							PIL:access_local groups
-
-							PIL:auto_type
-
-					local _0xa__key
-						PIL:access_index _0x9__groups
-							local _0xb__key
+				if
+					none
+						exists
+							local _0x7__key
 								PIL:access_local key
 
 								PIL:auto_type
 
-							list
+					then
+						noscope
+							local _0x9__groups
+								PIL:access_local groups
 
-			noscope
-				local _0xd__groups
+								PIL:auto_type
+
+						local _0xa__key
+							PIL:access_index _0x9__groups
+								local _0xb__key
+									PIL:access_local key
+
+									PIL:auto_type
+
+								list
+
+				noscope
+					local _0xd__groups
+						PIL:access_local groups
+
+						PIL:auto_type
+
+					local _0xe__key
+						PIL:access_index _0xd__groups
+							local _0xf__key
+								PIL:access_local key
+
+								PIL:auto_type
+
+				local _0x10__push
+					PIL:call push
+						PIL:access_local _0xe__key
+
+						local _0xc__word
+							PIL:access_local word
+
+							PIL:auto_type
+
+					PIL:auto_type
+
+		for group in
+			values
+				local _0x11__groups
 					PIL:access_local groups
 
 					PIL:auto_type
 
-				local _0xe__key
-					PIL:access_index _0xd__groups
-						local _0xf__key
-							PIL:access_local key
+			do
+				print
+					noscope
+						local _0x12__group
+							PIL:access_local group
 
 							PIL:auto_type
 
-			local _0x10__push
-				PIL:call push
-					PIL:access_local _0xe__key
+					local _0x13__join
+						PIL:call join
+							PIL:access_local _0x12__group
 
-					local _0xc__word
-						PIL:access_local word
-
-						PIL:auto_type
-
-				PIL:auto_type
-
-	for group in
-		values
-			local _0x11__groups
-				PIL:access_local groups
-
-				PIL:auto_type
-
-		do
-			print
-				noscope
-					local _0x12__group
-						PIL:access_local group
+							string " "
 
 						PIL:auto_type
-
-				local _0x13__join
-					PIL:call join
-						PIL:access_local _0x12__group
-
-						string " "
-
-					PIL:auto_type
 
 

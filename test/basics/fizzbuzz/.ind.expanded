@@ -1,211 +1,212 @@
-PIL:file
-	local fizz_divisor
+PIL:solution
+	PIL:file
+		local fizz_divisor
 
-	local buzz_divisor
+		local buzz_divisor
 
-	local n
+		local n
 
-	if
-		is_tty
+		if
+			is_tty
 
-		then
-			local _0x0__fizz_divisor
-				PIL:access_local fizz_divisor
-					prompt
-						string "fizz? "
-
-				PIL:auto_type
-
-			local _0x1__buzz_divisor
-				PIL:access_local buzz_divisor
-					prompt
-						string "buzz? "
-
-				PIL:auto_type
-
-			local _0x2__n
-				PIL:access_local n
-					prompt
-						string "n? "
-
-				PIL:auto_type
-
-	else
-		local input
-			stdin
-
-		local _0x5__input
-			PIL:access_local input
-				noscope
-					local _0x3__input
-						PIL:access_local input
-
-						PIL:auto_type
-
-				local _0x4__split
-					PIL:call split
-						PIL:access_local _0x3__input
-
-						string "\n"
+			then
+				local _0x0__fizz_divisor
+					PIL:access_local fizz_divisor
+						prompt
+							string "fizz? "
 
 					PIL:auto_type
 
-			PIL:auto_type
+				local _0x1__buzz_divisor
+					PIL:access_local buzz_divisor
+						prompt
+							string "buzz? "
 
-		# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
+					PIL:auto_type
 
-		local _0x8__fizz_divisor
-			PIL:access_local fizz_divisor
-				noscope
-					local _0x6__input
-						PIL:access_local input
+				local _0x2__n
+					PIL:access_local n
+						prompt
+							string "n? "
 
-						PIL:auto_type
+					PIL:auto_type
 
-				local _0x7__key
-					PIL:access_index _0x6__input
-						int 0
+		else
+			local input
+				stdin
 
-			PIL:auto_type
+			local _0x5__input
+				PIL:access_local input
+					noscope
+						local _0x3__input
+							PIL:access_local input
 
-		local _0xb__buzz_divisor
-			PIL:access_local buzz_divisor
-				noscope
-					local _0x9__input
-						PIL:access_local input
+							PIL:auto_type
 
-						PIL:auto_type
+					local _0x4__split
+						PIL:call split
+							PIL:access_local _0x3__input
 
-				local _0xa__key
-					PIL:access_index _0x9__input
-						int 1
-
-			PIL:auto_type
-
-		local _0xe__n
-			PIL:access_local n
-				noscope
-					local _0xc__input
-						PIL:access_local input
+							string "\n"
 
 						PIL:auto_type
-
-				local _0xd__key
-					PIL:access_index _0xc__input
-						int 2
-
-			PIL:auto_type
-
-	local i
-		int 0
-
-	while
-		asc
-			local _0xf__i
-				PIL:access_local i
 
 				PIL:auto_type
 
-			local _0x10__n
+			# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
+
+			local _0x8__fizz_divisor
+				PIL:access_local fizz_divisor
+					noscope
+						local _0x6__input
+							PIL:access_local input
+
+							PIL:auto_type
+
+					local _0x7__key
+						PIL:access_index _0x6__input
+							int 0
+
+				PIL:auto_type
+
+			local _0xb__buzz_divisor
+				PIL:access_local buzz_divisor
+					noscope
+						local _0x9__input
+							PIL:access_local input
+
+							PIL:auto_type
+
+					local _0xa__key
+						PIL:access_index _0x9__input
+							int 1
+
+				PIL:auto_type
+
+			local _0xe__n
 				PIL:access_local n
+					noscope
+						local _0xc__input
+							PIL:access_local input
+
+							PIL:auto_type
+
+					local _0xd__key
+						PIL:access_index _0xc__input
+							int 2
 
 				PIL:auto_type
 
-		do
-			local out
-				string ""
+		local i
+			int 0
 
-			if
-				eq
-					mod
-						local _0x11__i
-							PIL:access_local i
+		while
+			asc
+				local _0xf__i
+					PIL:access_local i
 
-							PIL:auto_type
+					PIL:auto_type
 
-						local _0x12__fizz_divisor
-							PIL:access_local fizz_divisor
+				local _0x10__n
+					PIL:access_local n
 
-							PIL:auto_type
+					PIL:auto_type
 
-					int 0
-
-				then
-					local _0x14__out
-						PIL:access_local out
-							concat
-								local _0x13__out
-									PIL:access_local out
-
-									PIL:auto_type
-
-								string "fizz"
-
-						PIL:auto_type
-
-			if
-				eq
-					mod
-						local _0x15__i
-							PIL:access_local i
-
-							PIL:auto_type
-
-						local _0x16__buzz_divisor
-							PIL:access_local buzz_divisor
-
-							PIL:auto_type
-
-					int 0
-
-				then
-					local _0x18__out
-						PIL:access_local out
-							concat
-								local _0x17__out
-									PIL:access_local out
-
-									PIL:auto_type
-
-								string "buzz"
-
-						PIL:auto_type
-
-			if
-				eq
-					local _0x19__out
-						PIL:access_local out
-
-						PIL:auto_type
-
+			do
+				local out
 					string ""
 
-				then
-					local _0x1b__out
-						PIL:access_local out
-							local _0x1a__i
+				if
+					eq
+						mod
+							local _0x11__i
 								PIL:access_local i
 
 								PIL:auto_type
 
-						PIL:auto_type
+							local _0x12__fizz_divisor
+								PIL:access_local fizz_divisor
 
-			print
-				local _0x1c__out
-					PIL:access_local out
+								PIL:auto_type
 
-					PIL:auto_type
+						int 0
 
-			local _0x1e__i
-				PIL:access_local i
-					add
-						local _0x1d__i
-							PIL:access_local i
+					then
+						local _0x14__out
+							PIL:access_local out
+								concat
+									local _0x13__out
+										PIL:access_local out
+
+										PIL:auto_type
+
+									string "fizz"
 
 							PIL:auto_type
 
-						int 1
+				if
+					eq
+						mod
+							local _0x15__i
+								PIL:access_local i
 
-				PIL:auto_type
+								PIL:auto_type
+
+							local _0x16__buzz_divisor
+								PIL:access_local buzz_divisor
+
+								PIL:auto_type
+
+						int 0
+
+					then
+						local _0x18__out
+							PIL:access_local out
+								concat
+									local _0x17__out
+										PIL:access_local out
+
+										PIL:auto_type
+
+									string "buzz"
+
+							PIL:auto_type
+
+				if
+					eq
+						local _0x19__out
+							PIL:access_local out
+
+							PIL:auto_type
+
+						string ""
+
+					then
+						local _0x1b__out
+							PIL:access_local out
+								local _0x1a__i
+									PIL:access_local i
+
+									PIL:auto_type
+
+							PIL:auto_type
+
+				print
+					local _0x1c__out
+						PIL:access_local out
+
+						PIL:auto_type
+
+				local _0x1e__i
+					PIL:access_local i
+						add
+							local _0x1d__i
+								PIL:access_local i
+
+								PIL:auto_type
+
+							int 1
+
+					PIL:auto_type
 
 
