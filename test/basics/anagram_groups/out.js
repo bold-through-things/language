@@ -132,104 +132,165 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-            const _0x14__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
-            let input = _0x14__await_indentifire_0x2e_stdin_0x28_
-            input
-            const _0x15__input = await input
-            let _0x0__input = _0x15__input
-            const _0x17___0x0__input = await _0x0__input
-            const _0x16__split = await String.prototype.split.call(_0x17___0x0__input, "\n")
-            let _0x1__split = _0x16__split
-            let words = _0x1__split
-            words
-            let groups = {}
-            groups
-            const _0x18__words = await words
-            let _0x2__words = _0x18__words
-
-            const _0x19__iter = _0x2__words[Symbol.iterator]();
-            while (true) {
-                const { value, done } = _0x19__iter.next();
-                if (done) { break; }
-                let word = value;
+            {
+                const parent_scope = scope
                 {
-                    const parent_scope = scope
-                    {
-                        const scope = indentifire.scope(parent_scope)
-                        const _0x1a__word = await word
-                        let _0x3__word = _0x1a__word
-                        const _0x1c___0x3__word = await _0x3__word
-                        const _0x1b__split = await String.prototype.split.call(_0x1c___0x3__word, "")
-                        let _0x4__split = _0x1b__split
-                        const _0x1e___0x4__split = await _0x4__split
-                        const _0x1d__sort = await Array.prototype.sort.call(_0x1e___0x4__split)
-                        let _0x5__sort = _0x1d__sort
-                        const _0x20___0x5__sort = await _0x5__sort
-                        const _0x1f__join = await Array.prototype.join.call(_0x20___0x5__sort, "")
-                        let _0x6__join = _0x1f__join
-                        let key = _0x6__join
-                        key
+                    const scope = indentifire.scope(parent_scope)
+                    const _0x0__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
+                    let input = _0x0__await_indentifire_0x2e_stdin_0x28_
+                    input
+                }
+            } 
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
 
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+            "\n"
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
 
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
 
-                        const _0x21__groups = await groups
-                        let _0x8__groups = _0x21__groups
-                        const _0x22__key = await key
-                        let _0x7__key = _0x22__key
-                        const _0x23__await_indentifire_0x2e_exists_inside_0x28_ = await indentifire.exists_inside(_0x8__groups, _0x7__key)
-                        const _0x24__await_indentifire_0x2e_none_0x28_ = await indentifire.none(_0x23__await_indentifire_0x2e_exists_inside_0x28_)
-                        if (_0x24__await_indentifire_0x2e_none_0x28_) {{
-                                const parent_scope = scope
-                                {
-                                    const scope = indentifire.scope(parent_scope)
-                                    const _0x25__groups = await groups
-                                    let _0x9__groups = _0x25__groups
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
 
-                                    const _0x27__key = await key
-                                    let _0xb__key = _0x27__key
-                                    _0x9__groups[_0xb__key] = []
-                                    const _0x26___0x9__groups = await _0x9__groups[_0xb__key]
-                                    let _0xa__key = _0x26___0x9__groups
-                                    _0xa__key
-                                }
-                            } }
-                        const _0x28__groups = await groups
-                        let _0xd__groups = _0x28__groups
-                        const _0x2a__key = await key
-                        let _0xf__key = _0x2a__key
-                        const _0x29___0xd__groups = await _0xd__groups[_0xf__key]
-                        let _0xe__key = _0x29___0xd__groups
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+            ""
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
 
-                        const _0x2c___0xe__key = await _0xe__key
-                        const _0x2d__word = await word
-                        let _0xc__word = _0x2d__word
-                        const _0x2b__push = await Array.prototype.push.call(_0x2c___0xe__key, _0xc__word)
-                        let _0x10__push = _0x2b__push
-                        _0x10__push
-                    }
-                } }
-            const _0x2e__groups = await groups
-            let _0x11__groups = _0x2e__groups
-            const _0x2f__await_indentifire_0x2e_values_0x28_ = await indentifire.values(_0x11__groups)
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
 
-            const _0x30__iter = _0x2f__await_indentifire_0x2e_values_0x28_[Symbol.iterator]();
-            while (true) {
-                const { value, done } = _0x30__iter.next();
-                if (done) { break; }
-                let group = value;
-                {
-                    const parent_scope = scope
-                    {
-                        const scope = indentifire.scope(parent_scope)
-                        const _0x31__group = await group
-                        let _0x12__group = _0x31__group
-                        const _0x33___0x12__group = await _0x12__group
-                        const _0x32__join = await Array.prototype.join.call(_0x33___0x12__group, " ")
-                        let _0x13__join = _0x32__join
-                        const _0x34__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x13__join)
-                        _0x34__await_indentifire_0x2e_log_0x28_
-                    }
-                } }
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+            ""
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+            []
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+            " "
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = indentifire.scope(parent_scope)
+
         }
     } 
 })();

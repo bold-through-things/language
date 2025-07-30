@@ -22,6 +22,8 @@ from typing import Optional, Tuple
 from subprocess import Popen, PIPE
 from typing import List
 
+from test_diff_reporter import create_test_diff_reporter
+
 TEST_ROOT = Path("test")
 EXECUTABLE = "out.js"
 
@@ -143,6 +145,10 @@ def make_test_method(tc: TestCase, args):
         code_dir = tc.code_path
         print(tc.name)
         print(f"running test for {tc}")
+        
+        # create improved diff reporter
+        diff_reporter = create_test_diff_reporter(tc)
+        
         expected_compile_err = read_file(code_dir / "compile.stderr")
         expected_runtime_err = read_file(case_dir / "runtime.stderr")
         expected_stdout = read_file(case_dir / "success.stdout")
@@ -182,11 +188,11 @@ def make_test_method(tc: TestCase, args):
                 print(compile_proc.stderr)
 
                 if expected_compile_err is not None:
-                    self.assertEqual(
-                        read_file(compile_err_actual),
-                        expected_compile_err,
-                        msg="Compile stderr mismatch"
+                    actual_compile_err = read_file(compile_err_actual) or ""
+                    is_equal, error_msg = diff_reporter.compare_text(
+                        actual_compile_err, expected_compile_err, "compile_stderr"
                     )
+                    self.assertTrue(is_equal, msg=error_msg or "Compile stderr mismatch")
                     self.assertNotEqual(compile_proc.returncode, 0, msg="Expected compile to fail")
                     return
 
@@ -208,18 +214,17 @@ def make_test_method(tc: TestCase, args):
                     print(stdout.strip())
                     print(stderr.strip())
                     if expected_runtime_err is not None:
-                        self.assertEqual(
-                            stderr.strip(),
-                            expected_runtime_err.strip(),
-                            msg="Runtime stderr mismatch"
+                        is_equal, error_msg = diff_reporter.compare_text(
+                            stderr.strip(), expected_runtime_err.strip(), "runtime_stderr"
                         )
+                        self.assertTrue(is_equal, msg=error_msg or "Runtime stderr mismatch")
                         self.assertNotEqual(returncode, 0, msg="Expected runtime failure")
                     else:
-                        self.assertEqual(
-                            stdout.strip(),
-                            expected_stdout.strip() if expected_stdout else "",
-                            msg="Runtime stdout mismatch"
+                        expected_out = expected_stdout.strip() if expected_stdout else ""
+                        is_equal, error_msg = diff_reporter.compare_text(
+                            stdout.strip(), expected_out, "runtime_stdout"
                         )
+                        self.assertTrue(is_equal, msg=error_msg or "Runtime stdout mismatch")
                         self.assertEqual(returncode, 0, msg="Runtime failed unexpectedly")
     return test
 
