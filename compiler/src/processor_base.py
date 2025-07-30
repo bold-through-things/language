@@ -27,6 +27,38 @@ def seek_parent_scope(n: Node) -> Scope | None:
     # TODO: Implement proper scope walking as mentioned in problem statement
     return None
 
+def _check_node_for_local_definition(node: Node, name: str, compiler):
+    """Check if a node is a local definition for the given name"""
+    try:
+        macro = compiler.get_metadata(node, Macro)
+        if macro == "local":
+            args = compiler.get_metadata(node, Args)
+            local_name, _ = cut(args, " ")
+            if local_name == name:
+                # Found the local definition
+                from node import FieldDemandType
+                try:
+                    demanded = compiler.get_metadata(node, FieldDemandType)
+                    return demanded
+                except KeyError:
+                    # Fall back to looking for type node
+                    type_node = seek_child_macro(node, "type")
+                    if type_node:
+                        _, demanded = cut(type_node.content, " ")
+                        return demanded
+                    return "*"  # No explicit type
+    except KeyError:
+        pass
+    return None
+
+def _search_in_noscope(noscope_node: Node, name: str, compiler):
+    """Search for local definitions inside a noscope node"""
+    for child in noscope_node.children:
+        result = _check_node_for_local_definition(child, name, compiler)
+        if result is not None:
+            return result
+    return None
+
 def walk_upwards_for_local_definition(node: Node, name: str, compiler):
     """Walk upwards to find local variable definitions using the new metadata system"""
     current = node
@@ -63,27 +95,21 @@ def walk_upwards_for_local_definition(node: Node, name: str, compiler):
                 pass
             
             if current_index is not None:
-                # Check preceding siblings for local definitions
-                for i in range(current_index):
+                # Check preceding siblings for local definitions (nearest to first)
+                for i in range(current_index - 1, -1, -1):
                     sibling = siblings[i]
+                    # First check if the sibling itself is a local definition
+                    result = _check_node_for_local_definition(sibling, name, compiler)
+                    if result is not None:
+                        return result
+                    
+                    # Also check inside noscope nodes
                     try:
                         macro = compiler.get_metadata(sibling, Macro)
-                        if macro == "local":
-                            args = compiler.get_metadata(sibling, Args)
-                            local_name, _ = cut(args, " ")
-                            if local_name == name:
-                                # Found the local definition
-                                from node import FieldDemandType
-                                try:
-                                    demanded = compiler.get_metadata(sibling, FieldDemandType)
-                                    return demanded
-                                except KeyError:
-                                    # Fall back to looking for type node
-                                    type_node = seek_child_macro(sibling, "type")
-                                    if type_node:
-                                        _, demanded = cut(type_node.content, " ")
-                                        return demanded
-                                    return "*"  # No explicit type
+                        if macro == "noscope":
+                            result = _search_in_noscope(sibling, name, compiler)
+                            if result is not None:
+                                return result
                     except KeyError:
                         pass
         

@@ -50,6 +50,13 @@
   },
   {
     "recoverable": false,
+    "line": 52,
+    "char": 0,
+    "content": "PIL:call split",
+    "error": "failed to assert: argument demands str and is given bool"
+  },
+  {
+    "recoverable": false,
     "line": 54,
     "char": 0,
     "content": "PIL:call split",
