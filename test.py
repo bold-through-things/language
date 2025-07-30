@@ -170,21 +170,71 @@ def make_test_method(tc: TestCase, args):
 
             if args.compile:
                 compiler_path = Path("compiler/src/main.py")
-                print(f"{case_dir}: compiling...")
-                compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
                 
-                # Add --expand flag if requested
                 if args.expand:
-                    compile_cmd.append("--expand")
-                
-                # Add any additional compiler arguments
-                if args.compiler_args:
-                    compile_cmd.extend(args.compiler_args)
-                
-                compile_proc = subprocess.run(compile_cmd, cwd=tmpdir, capture_output=True, text=True)
-                print(f"{case_dir}: done compiling. {compile_proc.returncode=}")
-                print(compile_proc.stdout)
-                print(compile_proc.stderr)
+                    # Two-step compilation: .ind → .ind.expanded → .js
+                    print(f"{case_dir}: two-step compilation (expand mode)...")
+                    
+                    # Step 1: .ind → .ind.expanded
+                    expanded_path = tmpdir / "expanded.ind.expanded"
+                    step1_cmd = [compiler_path.absolute(), tmpdir.absolute(), expanded_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--expand"]
+                    
+                    # Add any additional compiler arguments to step 1
+                    if args.compiler_args:
+                        step1_cmd.extend(args.compiler_args)
+                    
+                    print(f"{case_dir}: step 1 - expanding...")
+                    step1_proc = subprocess.run(step1_cmd, cwd=tmpdir, capture_output=True, text=True)
+                    print(f"{case_dir}: step 1 complete. {step1_proc.returncode=}")
+                    print(step1_proc.stdout)
+                    print(step1_proc.stderr)
+                    
+                    if step1_proc.returncode != 0:
+                        if expected_compile_err is not None:
+                            actual_compile_err = read_file(compile_err_actual) or ""
+                            is_equal, error_msg = diff_reporter.compare_text(
+                                actual_compile_err, expected_compile_err, "compile_stderr"
+                            )
+                            self.assertTrue(is_equal, msg=error_msg or "Compile stderr mismatch")
+                            self.assertNotEqual(step1_proc.returncode, 0, msg="Expected compile to fail")
+                            return
+                        self.assertEqual(step1_proc.returncode, 0, msg=f"Step 1 (expand) failed unexpectedly\n{step1_proc.stderr}")
+                        return
+                    
+                    # Step 2: .ind.expanded → .js
+                    # Create a temporary directory with just the expanded file
+                    step2_tmpdir = tmpdir / "step2"
+                    step2_tmpdir.mkdir()
+                    
+                    # Copy the expanded file as an .ind file for step 2
+                    step2_input = step2_tmpdir / "main.ind"
+                    shutil.copy2(expanded_path, step2_input)
+                    
+                    step2_cmd = [compiler_path.absolute(), step2_tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
+                    
+                    # Add any additional compiler arguments to step 2
+                    if args.compiler_args:
+                        step2_cmd.extend(args.compiler_args)
+                    
+                    print(f"{case_dir}: step 2 - compiling expanded form to JS...")
+                    compile_proc = subprocess.run(step2_cmd, cwd=tmpdir, capture_output=True, text=True)
+                    print(f"{case_dir}: step 2 complete. {compile_proc.returncode=}")
+                    print(compile_proc.stdout)
+                    print(compile_proc.stderr)
+                    
+                else:
+                    # Single-step compilation: .ind → .js
+                    print(f"{case_dir}: single-step compilation...")
+                    compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
+                    
+                    # Add any additional compiler arguments
+                    if args.compiler_args:
+                        compile_cmd.extend(args.compiler_args)
+                    
+                    compile_proc = subprocess.run(compile_cmd, cwd=tmpdir, capture_output=True, text=True)
+                    print(f"{case_dir}: done compiling. {compile_proc.returncode=}")
+                    print(compile_proc.stdout)
+                    print(compile_proc.stderr)
 
                 if expected_compile_err is not None:
                     actual_compile_err = read_file(compile_err_actual) or ""

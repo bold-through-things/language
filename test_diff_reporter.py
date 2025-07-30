@@ -49,7 +49,7 @@ class TestDiffReporter:
             f.writelines(diff_lines)
         
         # create error message
-        diff_preview = ''.join(diff_lines[:50])  # first 50 lines of diff
+        diff_preview = '\n'.join(diff_lines[:50])  # first 50 lines of diff
         if len(diff_lines) > 50:
             diff_preview += f"\n... (and {len(diff_lines) - 50} more lines)\n"
         

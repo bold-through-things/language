@@ -67,7 +67,7 @@ class Logger:
         for context in self._context_stack:
             if not context.header_printed:
                 indent = "  " * context.indent_level
-                self.output.write(f"{indent}[{context.tag}] → {context.message}\n")
+                self.output.write(f"{indent}[{context.tag}] begin: {context.message}\n")
                 self.output.flush()
                 context.header_printed = True
     
@@ -101,7 +101,7 @@ class Logger:
                     # Only print footer if we had output and header was printed
                     if context.had_output and context.header_printed:
                         indent = "  " * self._indent_level
-                        self.output.write(f"{indent}[{tag}] ← {message}\n")
+                        self.output.write(f"{indent}[{tag}] done: {message}\n")
                         self.output.flush()
     
     def debug(self, message: str):
@@ -130,8 +130,6 @@ def configure_logger_from_args(log_tags: Optional[str] = None):
     """
     if log_tags is None:
         default_logger.enable_tags(set())  # disable all logging by default
-    elif log_tags.strip() == "":
-        default_logger.enable_tags(set())  # disable all logging
     else:
-        tags = set(tag.strip() for tag in log_tags.split(","))
+        tags = set(tag.strip() for tag in log_tags.split(",") if tag.strip())
         default_logger.enable_tags(tags)
