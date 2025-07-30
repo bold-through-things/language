@@ -179,8 +179,7 @@ def make_test_method(tc: TestCase, args):
                 
                 # Add any additional compiler arguments
                 if args.compiler_args:
-                    import shlex
-                    compile_cmd.extend(shlex.split(args.compiler_args))
+                    compile_cmd.extend(args.compiler_args)
                 
                 compile_proc = subprocess.run(compile_cmd, cwd=tmpdir, capture_output=True, text=True)
                 print(f"{case_dir}: done compiling. {compile_proc.returncode=}")
@@ -241,10 +240,21 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--debug", action='store_true', help="Execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="Skip compilation. Assume the tests are already compiled, and only run the existing output")
     parser.add_argument("--expand", action='store_true', help="Test two-step compilation: .ind → .ind.expanded → .js")
-    parser.add_argument("--compiler-args", help="Additional arguments to pass to the compiler (e.g., '--log typecheck')")
+
+    # Parse known args first, then treat everything after -- as compiler args
+    if "--" in sys.argv:
+        dash_index = sys.argv.index("--")
+        test_args = sys.argv[1:dash_index]
+        compiler_args = sys.argv[dash_index + 1:]
+        sys.argv = [sys.argv[0]] + test_args  # Set up for argparse
+    else:
+        compiler_args = []
 
     args, remaining = parser.parse_known_args()
     sys.argv = [sys.argv[0]] + remaining  # leave only unknown args for unittest
+    
+    # Store compiler args on the args object
+    args.compiler_args = compiler_args
 
     if not args.compile and not args.run:
         # default behavior

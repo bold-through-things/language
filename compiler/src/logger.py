@@ -4,10 +4,19 @@ supports tag-based filtering and automatic indentation based on call stack depth
 """
 
 import sys
-from typing import Set, Optional, TextIO
+from typing import Set, Optional, TextIO, List
 from contextlib import contextmanager
 import threading
 
+class SmartIndentContext:
+    """Tracks whether any output was produced in an indented context"""
+    def __init__(self, tag: str, message: str, indent_level: int):
+        self.tag = tag
+        self.message = message
+        self.indent_level = indent_level
+        self.had_output = False
+        self.header_printed = False
+        
 class Logger:
     """
     a logger that supports tag filtering and automatic indentation.
@@ -20,6 +29,7 @@ class Logger:
         self.enabled_tags: Optional[Set[str]] = None  # None means all tags enabled
         self._indent_level = 0
         self._lock = threading.Lock()  # thread safety for indent level
+        self._context_stack: List[SmartIndentContext] = []  # track indented contexts
         
     def enable_tags(self, tags: Set[str]):
         """enable only the specified tags. if empty set, disable all logging."""
@@ -41,32 +51,58 @@ class Logger:
             return
             
         with self._lock:
+            # Print any pending headers first
+            self._ensure_headers_printed()
+            
+            # Mark that output occurred in all active contexts
+            for context in self._context_stack:
+                context.had_output = True
+                
             indent = "  " * self._indent_level
             self.output.write(f"{indent}[{tag}] {message}\n")
             self.output.flush()
+            
+    def _ensure_headers_printed(self):
+        """Print headers for any contexts that haven't had their headers printed yet"""
+        for context in self._context_stack:
+            if not context.header_printed:
+                indent = "  " * context.indent_level
+                self.output.write(f"{indent}[{context.tag}] → {context.message}\n")
+                self.output.flush()
+                context.header_printed = True
     
     @contextmanager
     def indent(self, tag: str, message: str):
         """
         context manager that logs entry/exit with indentation.
         useful for tracking entering/exiting functions or processing steps.
+        only prints header/footer if something was logged inside.
         """
-        if self.is_tag_enabled(tag):
-            with self._lock:
-                indent = "  " * self._indent_level
-                self.output.write(f"{indent}[{tag}] → {message}\n")
-                self.output.flush()
-                self._indent_level += 1
-        
-        try:
+        if not self.is_tag_enabled(tag):
             yield
+            return
+        
+        context = None
+        try:
+            with self._lock:
+                # Create a new context but don't print header yet
+                context = SmartIndentContext(tag, message, self._indent_level)
+                self._context_stack.append(context)
+                self._indent_level += 1
+            
+            yield
+            
         finally:
-            if self.is_tag_enabled(tag):
-                with self._lock:
+            with self._lock:
+                if context and context in self._context_stack:
+                    self._context_stack.remove(context)
                     self._indent_level -= 1
-                    indent = "  " * self._indent_level
-                    self.output.write(f"{indent}[{tag}] ← {message}\n")
-                    self.output.flush()
+                    
+                    # Only print footer if we had output and header was printed
+                    if context.had_output and context.header_printed:
+                        indent = "  " * self._indent_level
+                        self.output.write(f"{indent}[{tag}] ← {message}\n")
+                        self.output.flush()
     
     def debug(self, message: str):
         """convenience method for debug messages."""
@@ -90,10 +126,10 @@ default_logger = Logger()
 def configure_logger_from_args(log_tags: Optional[str] = None):
     """
     configure the global logger based on command line arguments.
-    log_tags: comma-separated string of tags to enable, or None for all
+    log_tags: comma-separated string of tags to enable, or None to disable all logging
     """
     if log_tags is None:
-        default_logger.enable_all_tags()
+        default_logger.enable_tags(set())  # disable all logging by default
     elif log_tags.strip() == "":
         default_logger.enable_tags(set())  # disable all logging
     else:

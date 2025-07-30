@@ -118,10 +118,18 @@ class TypeCheckingStep(MacroProcessingStep):
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_macros = self.macros.all()
         
-        if macro in all_macros:
-            with ctx.compiler.safely:
-                return all_macros[macro](ctx)
-        else:
-            for child in ctx.node.children:
-                child_ctx = replace(ctx, node=child)
-                self.process_node(child_ctx)
+        # Create a description for this node for indentation
+        node_desc = f"node {macro}"
+        if hasattr(ctx.node, 'content') and ctx.node.content:
+            # Limit content preview to keep it readable
+            content_preview = ctx.node.content[:50] + ("..." if len(ctx.node.content) > 50 else "")
+            node_desc = f"node {macro}: {content_preview}"
+        
+        with default_logger.indent("typecheck", node_desc):
+            if macro in all_macros:
+                with ctx.compiler.safely:
+                    return all_macros[macro](ctx)
+            else:
+                for child in ctx.node.children:
+                    child_ctx = replace(ctx, node=child)
+                    self.process_node(child_ctx)
