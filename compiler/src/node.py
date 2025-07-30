@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Sequence, Union
 
+# Keep TypeMap import for backwards compatibility with existing registrations
 from utils import TypeMap
 
 
@@ -18,7 +19,6 @@ class Node:
         self.parent: Node | None = None
         for child in self._children:
             child.parent = self
-        self.metadata = TypeMap()
         self.pos = pos
 
     @property
@@ -37,9 +37,13 @@ class Node:
         target.parent = None
         self._children.remove(target)
         self.__insert_child(index, new)
+        
+        # Notify about tree changes for metadata invalidation
+        self._notify_tree_change()
 
     def append_child(self, new: Node | list[Node] | None):
         self.__insert_child(len(self._children), new)
+        self._notify_tree_change()
 
     def __insert_child(self, index: int, new: Node | list[Node] | None):
         # prepare new children
@@ -54,6 +58,11 @@ class Node:
             assert isinstance(child, Node) # internal assert
             child.parent = self
             self._children.insert(index, child)
+
+    def _notify_tree_change(self):
+        """Hook for notifying about tree changes - to be implemented by compiler"""
+        # This will be used by the compiler to invalidate metadata
+        pass
 
     def __repr__(self) -> str:
         return self.indented_repr()

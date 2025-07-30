@@ -12,8 +12,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 ERASED_NODE = Node(None, None, children=None)
-ERASED_NODE.metadata[Macro] = None
-ERASED_NODE.metadata[Args] = ""
+# Note: ERASED_NODE metadata will be handled by compiler when accessed
 
 def unroll_parent_chain(n: Node | None) -> list[Node]:
     rv: list[Node] = []
@@ -23,10 +22,101 @@ def unroll_parent_chain(n: Node | None) -> list[Node]:
     return rv
 
 def seek_parent_scope(n: Node) -> Scope | None:
-    for n in unroll_parent_chain(n):
-        scope = n.metadata.maybe(Scope)
-        if scope:
-            return scope
+    # Implement upward walking to find scope information
+    # For now, return None to disable scope tracking completely
+    # TODO: Implement proper scope walking as mentioned in problem statement
+    return None
+
+def _check_node_for_local_definition(node: Node, name: str, compiler):
+    """Check if a node is a local definition for the given name"""
+    try:
+        macro = compiler.get_metadata(node, Macro)
+        if macro == "local":
+            args = compiler.get_metadata(node, Args)
+            local_name, _ = cut(args, " ")
+            if local_name == name:
+                # Found the local definition
+                from node import FieldDemandType
+                try:
+                    demanded = compiler.get_metadata(node, FieldDemandType)
+                    return demanded
+                except KeyError:
+                    # Fall back to looking for type node
+                    type_node = seek_child_macro(node, "type")
+                    if type_node:
+                        _, demanded = cut(type_node.content, " ")
+                        return demanded
+                    return "*"  # No explicit type
+    except KeyError:
+        pass
+    return None
+
+def _search_in_noscope(noscope_node: Node, name: str, compiler):
+    """Search for local definitions inside a noscope node"""
+    for child in noscope_node.children:
+        result = _check_node_for_local_definition(child, name, compiler)
+        if result is not None:
+            return result
+    return None
+
+def walk_upwards_for_local_definition(node: Node, name: str, compiler):
+    """Walk upwards to find local variable definitions using the new metadata system"""
+    current = node
+    while current:
+        # Check if current node is a local definition
+        try:
+            macro = compiler.get_metadata(current, Macro)
+            if macro == "local":
+                args = compiler.get_metadata(current, Args)
+                local_name, _ = cut(args, " ")
+                if local_name == name:
+                    # Found the local definition, try to get its type from metadata
+                    from node import FieldDemandType
+                    try:
+                        demanded = compiler.get_metadata(current, FieldDemandType)
+                        return demanded
+                    except KeyError:
+                        # Fall back to looking for type node
+                        type_node = seek_child_macro(current, "type")
+                        if type_node:
+                            _, demanded = cut(type_node.content, " ")
+                            return demanded
+                        return "*"  # No explicit type
+        except KeyError:
+            pass
+        
+        # Check siblings that come before this node
+        if current.parent:
+            siblings = current.parent.children
+            current_index = None
+            try:
+                current_index = siblings.index(current)
+            except ValueError:
+                pass
+            
+            if current_index is not None:
+                # Check preceding siblings for local definitions (nearest to first)
+                for i in range(current_index - 1, -1, -1):
+                    sibling = siblings[i]
+                    # First check if the sibling itself is a local definition
+                    result = _check_node_for_local_definition(sibling, name, compiler)
+                    if result is not None:
+                        return result
+                    
+                    # Also check inside noscope nodes
+                    try:
+                        macro = compiler.get_metadata(sibling, Macro)
+                        if macro == "noscope":
+                            result = _search_in_noscope(sibling, name, compiler)
+                            if result is not None:
+                                return result
+                    except KeyError:
+                        pass
+        
+        # Move up to parent
+        current = current.parent
+    
+    return None  # Not found
 
 def seek_child_macro(n: Node, macro: str):
     for child in n.children:

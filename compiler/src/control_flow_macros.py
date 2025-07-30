@@ -11,8 +11,9 @@ SCOPE_MACRO = ["do", "then", "else", "PIL:file"]
 @macros.add(*SCOPE_MACRO)
 def scope_macro(ctx: MacroContext):
     from node import Macro
-    if ctx.node.metadata[Macro] in ["else"]:
-        ctx.statement_out.write(f"{ctx.node.metadata[Macro]} ")
+    macro = ctx.compiler.get_metadata(ctx.node, Macro)
+    if macro in ["else"]:
+        ctx.statement_out.write(f"{macro} ")
 
     ctx.statement_out.write("{\n")
     with ctx.statement_out:
@@ -20,7 +21,7 @@ def scope_macro(ctx: MacroContext):
         ctx.statement_out.write("{\n")
         with ctx.statement_out:
             ctx.statement_out.write("const scope = indentifire.scope(parent_scope)\n")
-            inject = ctx.node.metadata.maybe(Inject_code_start)
+            inject = ctx.compiler.maybe_metadata(ctx.node, Inject_code_start)
             if inject:
                 for code in inject.code:
                     ctx.statement_out.write(code)
