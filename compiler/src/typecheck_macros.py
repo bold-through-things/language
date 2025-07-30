@@ -22,7 +22,7 @@ def access_local(ctx: MacroContext):
     from processor_base import walk_upwards_for_local_definition
     demanded = walk_upwards_for_local_definition(ctx.node, first, ctx.compiler)
     
-    if demanded:
+    if demanded and demanded != "*":
         if len(types) > 0:
             # TODO - support multiple arguments
             ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
