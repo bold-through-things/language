@@ -22,9 +22,75 @@ def unroll_parent_chain(n: Node | None) -> list[Node]:
     return rv
 
 def seek_parent_scope(n: Node) -> Scope | None:
-    # This will need to be updated to work with the new metadata system
-    # For now, we'll implement scope walking as suggested in the problem statement
-    return None  # TODO: Implement scope walking or remove scope dependency
+    # Implement upward walking to find scope information
+    # For now, return None to disable scope tracking completely
+    # TODO: Implement proper scope walking as mentioned in problem statement
+    return None
+
+def walk_upwards_for_local_definition(node: Node, name: str, compiler):
+    """Walk upwards to find local variable definitions using the new metadata system"""
+    current = node
+    while current:
+        # Check if current node is a local definition
+        try:
+            macro = compiler.get_metadata(current, Macro)
+            if macro == "local":
+                args = compiler.get_metadata(current, Args)
+                local_name, _ = cut(args, " ")
+                if local_name == name:
+                    # Found the local definition, try to get its type from metadata
+                    from node import FieldDemandType
+                    try:
+                        demanded = compiler.get_metadata(current, FieldDemandType)
+                        return demanded
+                    except KeyError:
+                        # Fall back to looking for type node
+                        type_node = seek_child_macro(current, "type")
+                        if type_node:
+                            _, demanded = cut(type_node.content, " ")
+                            return demanded
+                        return "*"  # No explicit type
+        except KeyError:
+            pass
+        
+        # Check siblings that come before this node
+        if current.parent:
+            siblings = current.parent.children
+            current_index = None
+            try:
+                current_index = siblings.index(current)
+            except ValueError:
+                pass
+            
+            if current_index is not None:
+                # Check preceding siblings for local definitions
+                for i in range(current_index):
+                    sibling = siblings[i]
+                    try:
+                        macro = compiler.get_metadata(sibling, Macro)
+                        if macro == "local":
+                            args = compiler.get_metadata(sibling, Args)
+                            local_name, _ = cut(args, " ")
+                            if local_name == name:
+                                # Found the local definition
+                                from node import FieldDemandType
+                                try:
+                                    demanded = compiler.get_metadata(sibling, FieldDemandType)
+                                    return demanded
+                                except KeyError:
+                                    # Fall back to looking for type node
+                                    type_node = seek_child_macro(sibling, "type")
+                                    if type_node:
+                                        _, demanded = cut(type_node.content, " ")
+                                        return demanded
+                                    return "*"  # No explicit type
+                    except KeyError:
+                        pass
+        
+        # Move up to parent
+        current = current.parent
+    
+    return None  # Not found
 
 def seek_child_macro(n: Node, macro: str):
     for child in n.children:

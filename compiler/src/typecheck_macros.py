@@ -18,23 +18,18 @@ def access_local(ctx: MacroContext):
     types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
     types = list(filter(None, types))
 
-    scope = seek_parent_scope(ctx.node)
-    # Temporarily disable scope checking - implement walking upwards approach later
-    scope = None
-    if scope:
-        from processor_base import unroll_parent_chain
-        assert scope is not None, f"{[n.content for n in unroll_parent_chain(ctx.node)]}" # internal assert
-        name = first
-        resolved_field = scope.resolve(name)
-        if resolved_field:
-            demanded = resolved_field
-            if len(types) > 0:
-                # TODO - support multiple arguments
-                ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
-                received = types[0]
-                ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}")
-            print(f"{ctx.node.content} demanded {demanded}")
-            return demanded or "*"
+    # Use upward walking to find local variable definition
+    from processor_base import walk_upwards_for_local_definition
+    demanded = walk_upwards_for_local_definition(ctx.node, first, ctx.compiler)
+    
+    if demanded:
+        if len(types) > 0:
+            # TODO - support multiple arguments
+            ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
+            received = types[0]
+            ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}")
+        print(f"{ctx.node.content} demanded {demanded}")
+        return demanded or "*"
     return "*"
 
 @typecheck.add("local")
@@ -57,13 +52,19 @@ def local_typecheck(ctx: MacroContext):
     
     _, demanded = cut(type_node.content, " ")
     print(f"{ctx.node.content} demanded {demanded} and was given {received}")
-    scope = seek_parent_scope(ctx.node)
-    # Temporarily disable scope handling - implement walking upwards approach later
-    if scope:
-        from processor_base import unroll_parent_chain
-        assert scope is not None, f"{[n.content for n in unroll_parent_chain(ctx.node)]}" # internal assert
-        scope.mapping[name] = demanded
-        ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}")
+    
+    # Store the local variable type information in compiler metadata for upward walking
+    from node import FieldDemandType
+    ctx.compiler.set_metadata(ctx.node, FieldDemandType, demanded)
+    
+    # Also verify type matching if we have demanded type
+    if demanded:
+        if received is None:
+            # If we have a demanded type but no received value, that's an error
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given None")
+        elif received not in {"*", demanded}:
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}")
+    
     return demanded or received or "*"
 
 @typecheck.add("a")

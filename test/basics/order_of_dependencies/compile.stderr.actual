@@ -1,0 +1,9 @@
+[
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "PIL:access_local lines",
+    "error": "failed to assert: field demands * but is given list"
+  }
+]
