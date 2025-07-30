@@ -3,6 +3,7 @@ from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_sc
 from macro_registry import MacroContext, MacroRegistry
 from strutil import cut
 from node import Node, Position, Scope, Args, Macro
+from logger import default_logger
 
 # Legacy registries - will be moved into steps
 typecheck = unified_typecheck  # Use unified registry
@@ -28,7 +29,7 @@ def access_local(ctx: MacroContext):
             ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
             received = types[0]
             ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}")
-        print(f"{ctx.node.content} demanded {demanded}")
+        default_logger.typecheck(f"{ctx.node.content} demanded {demanded}")
         return demanded or "*"
     return "*"
 
@@ -51,7 +52,7 @@ def local_typecheck(ctx: MacroContext):
         type_node = Node(f"type {received}", ctx.node.pos, [])
     
     _, demanded = cut(type_node.content, " ")
-    print(f"{ctx.node.content} demanded {demanded} and was given {received}")
+    default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received}")
     
     # Store the local variable type information in compiler metadata for upward walking
     from node import FieldDemandType

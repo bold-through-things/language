@@ -166,6 +166,16 @@ def make_test_method(tc: TestCase, args):
                 compiler_path = Path("compiler/src/main.py")
                 print(f"{case_dir}: compiling...")
                 compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
+                
+                # Add --expand flag if requested
+                if args.expand:
+                    compile_cmd.append("--expand")
+                
+                # Add any additional compiler arguments
+                if args.compiler_args:
+                    import shlex
+                    compile_cmd.extend(shlex.split(args.compiler_args))
+                
                 compile_proc = subprocess.run(compile_cmd, cwd=tmpdir, capture_output=True, text=True)
                 print(f"{case_dir}: done compiling. {compile_proc.returncode=}")
                 print(compile_proc.stdout)
@@ -225,6 +235,8 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--compile", action='store_true', help="Only check compilation of target tests")
     parser.add_argument("-d", "--debug", action='store_true', help="Execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="Skip compilation. Assume the tests are already compiled, and only run the existing output")
+    parser.add_argument("--expand", action='store_true', help="Test two-step compilation: .ind → .ind.expanded → .js")
+    parser.add_argument("--compiler-args", help="Additional arguments to pass to the compiler (e.g., '--log typecheck')")
 
     args, remaining = parser.parse_known_args()
     sys.argv = [sys.argv[0]] + remaining  # leave only unknown args for unittest

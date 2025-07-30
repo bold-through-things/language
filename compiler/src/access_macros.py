@@ -7,6 +7,7 @@ from processor_base import (
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
 from node import Args, Macro, Params, Inject_code_start, Target
+from logger import default_logger
 
 # Legacy registries - will be moved into steps
 macros = unified_macros  # Use unified registry
@@ -173,7 +174,7 @@ class PIL_call:
                     if "*" in {demanded, received}:
                         # TODO. generics!
                         continue
-                    print(f"{ctx.node.content} demanded {demanded} and was given {received}")
+                    default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received}")
                     # TODO - this should point to the child node that we received from, actually...
                     ctx.compiler.assert_(received == demanded, ctx.node, f"argument demands {demanded} and is given {received}")
 

@@ -10,6 +10,7 @@ from preprocessing_macros import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
 from literal_macros import JavaScriptEmissionStep
+from logger import default_logger
 
 # Import all macro modules to ensure registrations happen
 import literal_macros
@@ -120,21 +121,24 @@ class Compiler:
 
     def compile(self):
         # Discover macros first
-        for node in self.nodes:
-            self.__discover_macros(node)
+        with default_logger.indent("compile", "discovering macros"):
+            for node in self.nodes:
+                self.__discover_macros(node)
             
         solution_node = self.make_node("PIL:solution", Position(0, 0), self.nodes or [])
             
         # Execute the processing pipeline
         for step in self.processing_steps:
-            ctx = MacroContext(
-                statement_out=StringIO(),  # dummy for non-emission steps
-                expression_out=StringIO(),
-                node=solution_node,
-                compiler=self,
-                current_step=step,
-            )
-            step.process_node(ctx)
+            step_name = step.__class__.__name__
+            with default_logger.indent("compile", f"processing step: {step_name}"):
+                ctx = MacroContext(
+                    statement_out=StringIO(),  # dummy for non-emission steps
+                    expression_out=StringIO(),
+                    node=solution_node,
+                    compiler=self,
+                    current_step=step,
+                )
+                step.process_node(ctx)
         
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
