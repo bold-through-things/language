@@ -11,18 +11,19 @@ class SubstitutingMacro:
     def __init__(self):
         @preprocessor.add("substituting")
         def _(ctx: MacroContext):
-            args = ctx.node.metadata[Args]
+            args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
             assert parent != None
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "sub must have one argument")
             
+            indexers = ctx.compiler.get_metadata(parent, Indexers)
             if len(ctx.node.children) >= 1:
-                parent.metadata[Indexers].mapping[args] = ctx.node.children
+                indexers.mapping[args] = ctx.node.children
             else:
                 # shortcut for when the substitution is literal (i.e. most cases)
                 access = ctx.compiler.make_node(f"a {args}", ctx.node.pos or Position(0, 0), children=None)
-                parent.metadata[Indexers].mapping[args] = [access]
+                indexers.mapping[args] = [access]
             parent.replace_child(ctx.node, None)
 
 @singleton
@@ -30,13 +31,14 @@ class CallingMacro:
     def __init__(self):
         @preprocessor.add("calling")
         def _(ctx: MacroContext):
-            args = ctx.node.metadata[Args]
+            args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) >= 1, ctx.node, "call must have at least one child")
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "call must have one argument")
-            parent.metadata[Callers].mapping[args] = ctx.node.children
+            callers = ctx.compiler.get_metadata(parent, Callers)
+            callers.mapping[args] = ctx.node.children
             parent.replace_child(ctx.node, None)
 
 @singleton
@@ -44,14 +46,15 @@ class InsideMacro:
     def __init__(self):
         @preprocessor.add("inside")
         def _(ctx: MacroContext):
-            args = ctx.node.metadata[Args]
+            args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "inside must have one child")
             ctx.compiler.assert_(args.strip() == "", ctx.node, "inside must have no arguments")
-            ctx.compiler.assert_(parent.metadata[Macro] == "exists", ctx.node, "inside must be inside exists")
-            parent.metadata[Target] = ctx.node.children[0]
+            parent_macro = ctx.compiler.get_metadata(parent, Macro)
+            ctx.compiler.assert_(parent_macro == "exists", ctx.node, "inside must be inside exists")
+            ctx.compiler.set_metadata(parent, Target, ctx.node.children[0])
             parent.replace_child(ctx.node, None)
 
 @singleton
@@ -59,28 +62,32 @@ class ParamMacro:
     def __init__(self):
         @preprocessor.add("param")
         def _(ctx: MacroContext):
-            args = ctx.node.metadata[Args]
+            args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) == 0, ctx.node, "param must have no children")
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "param must have one argument - the name")
-            ctx.compiler.assert_(parent.metadata[Macro] == "fn", ctx.node, "params must be inside fn")
-            parent.metadata[Params].mapping[args] = True
+            parent_macro = ctx.compiler.get_metadata(parent, Macro)
+            ctx.compiler.assert_(parent_macro == "fn", ctx.node, "params must be inside fn")
+            params = ctx.compiler.get_metadata(parent, Params)
+            params.mapping[args] = True
 
 @singleton
 class AccessMacro:
     def __init__(self):
         @preprocessor.add("a", "an", "access")
         def _(ctx: MacroContext):
-            args = ctx.node.metadata[Args]
+            args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
             assert parent != None
             # since children are preprocessed first, we already have Callers and Indexers!
             steps: list[str] = args.split(" ")
-            indexers = getattr(ctx.node.metadata.maybe(Indexers), "mapping", {})
-            callers = getattr(ctx.node.metadata.maybe(Callers), "mapping", {})
+            indexers_metadata = ctx.compiler.maybe_metadata(ctx.node, Indexers)
+            indexers = getattr(indexers_metadata, "mapping", {})
+            callers_metadata = ctx.compiler.maybe_metadata(ctx.node, Callers)
+            callers = getattr(callers_metadata, "mapping", {})
             subs = indexers | callers
             last_chain_ident = None
             replace_with: list[Node] = []
@@ -149,7 +156,7 @@ class PreprocessingStep(MacroProcessingStep):
                 self.process_node(child_ctx)
         
         # Process current node  
-        macro = str(ctx.node.metadata[Macro])
+        macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_preprocessors = self.macros.all()
         
         if macro in all_preprocessors:

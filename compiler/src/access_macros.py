@@ -14,10 +14,12 @@ typecheck = unified_typecheck  # Use unified registry
 
 @macros.add("fn")
 def fn(ctx: MacroContext):
-    ctx.compiler.assert_(ctx.node.metadata[Args].find(" ") == -1, ctx.node, "must have a single arg - fn name")
-    ctx.statement_out.write(f"const {ctx.node.metadata[Args]} = async function (")
+    args = ctx.compiler.get_metadata(ctx.node, Args)
+    ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "must have a single arg - fn name")
+    ctx.statement_out.write(f"const {args} = async function (")
     joiner = Joiner(ctx.statement_out, ", \n")
-    params = ctx.node.metadata[Params].mapping.items()
+    params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
+    params = params_metadata.mapping.items()
     if len(params) > 0:
         ctx.statement_out.write("\n")
     with ctx.statement_out:
@@ -33,7 +35,7 @@ def fn(ctx: MacroContext):
     ctx.compiler.assert_(next != None, ctx.node, "must have a do block")
 
     inject = Inject_code_start()
-    next.metadata[Inject_code_start] = inject
+    ctx.compiler.set_metadata(next, Inject_code_start, inject)
     ctx.statement_out.write("{")
     with ctx.statement_out:
         for k, _ in params:
@@ -44,7 +46,8 @@ def fn(ctx: MacroContext):
 
 @macros.add("PIL:access_field")
 def access_field(ctx: MacroContext):
-    args1 = ctx.node.metadata[Args].split(" ")
+    args_str = ctx.compiler.get_metadata(ctx.node, Args)
+    args1 = args_str.split(" ")
     ctx.compiler.assert_(len(args1) == 2, ctx.node, "first argument is object, second is field")
     obj = args1[0]
     field = args1[1] # TODO - convert field to JS valid value
@@ -66,7 +69,8 @@ def access_field(ctx: MacroContext):
 
 @macros.add("PIL:access_index")
 def access_index(ctx: MacroContext):
-    args = ctx.node.metadata[Args].split(" ")
+    args_str = ctx.compiler.get_metadata(ctx.node, Args)
+    args = args_str.split(" ")
     ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the object into which we should index")
     
     obj = args[0]
@@ -91,7 +95,8 @@ def access_index(ctx: MacroContext):
 
 @macros.add("PIL:access_local")
 def pil_access_local(ctx: MacroContext):
-    args1 = ctx.node.metadata[Args].split(" ")
+    args_str = ctx.compiler.get_metadata(ctx.node, Args)
+    args1 = args_str.split(" ")
     ctx.compiler.assert_(len(args1) == 1, ctx.node, "single argument, the object into which we should index")
     
     local = args1[0]
@@ -113,7 +118,8 @@ def pil_access_local(ctx: MacroContext):
 
 @macros.add("local")
 def local(ctx: MacroContext):
-    name, _ = cut(ctx.node.metadata[Args], " ") # TODO assert one arg
+    args = ctx.compiler.get_metadata(ctx.node, Args)
+    name, _ = cut(args, " ") # TODO assert one arg
     args: list[str | None] = []
     if len(ctx.node.children) > 0:
         # ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "single child, the value") TODO!
@@ -132,7 +138,8 @@ def local(ctx: MacroContext):
 class PIL_call:
     @classmethod
     def resolve_convention(cls, ctx: MacroContext):
-        args = ctx.node.metadata[Args].split(" ")
+        args_str = ctx.compiler.get_metadata(ctx.node, Args)
+        args = args_str.split(" ")
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the function to call")
         
         fn = args[0]
@@ -174,7 +181,8 @@ class PIL_call:
 
         @macros.add("PIL:call")
         def _(ctx: MacroContext):
-            args1 = ctx.node.metadata[Args].split(" ")
+            args_str = ctx.compiler.get_metadata(ctx.node, Args)
+            args1 = args_str.split(" ")
             ident = ctx.compiler.get_new_ident("_".join(args1))
             convention = self.resolve_convention(ctx)
             args: list[str | None] = []
@@ -190,4 +198,5 @@ class PIL_call:
 
 @macros.add("exists")
 def exists_inside(ctx: MacroContext):
-    ctx.compiler.compile_fn_call(ctx, f"await indentifire.exists_inside(", [ctx.node.metadata[Target]] + ctx.node.children)
+    target = ctx.compiler.get_metadata(ctx.node, Target)
+    ctx.compiler.compile_fn_call(ctx, f"await indentifire.exists_inside(", [target] + ctx.node.children)

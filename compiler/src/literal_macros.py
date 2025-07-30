@@ -24,7 +24,8 @@ def comments(_):
 
 @macros.add("int")
 def int_macro(ctx: MacroContext):
-    ctx.expression_out.write(str(ctx.node.metadata[Args]))
+    args = ctx.compiler.get_metadata(ctx.node, Args)
+    ctx.expression_out.write(str(args))
 
 @typecheck.add("int")
 def int_typecheck(ctx: MacroContext):
@@ -32,7 +33,7 @@ def int_typecheck(ctx: MacroContext):
 
 @macros.add("string", "regex")
 def str_macro(ctx: MacroContext):
-    s: str = ctx.node.metadata[Args]
+    s: str = ctx.compiler.get_metadata(ctx.node, Args)
     if len(s) == 0:
         assert False # TODO
         for child in ctx.node.children:
@@ -43,7 +44,8 @@ def str_macro(ctx: MacroContext):
         s = s.removeprefix(delim).removesuffix(delim)
     s = s.replace("\n", "\\n")
     # TODO escape quotes as well...
-    sep = '"' if ctx.node.metadata[Macro] == "string" else "/"
+    macro = ctx.compiler.get_metadata(ctx.node, Macro)
+    sep = '"' if macro == "string" else "/"
     ctx.expression_out.write(f'{sep}{s}{sep}')
 
 @typecheck.add("string")
@@ -67,11 +69,13 @@ with scope:
     @macros.add(*[k for k in literally.keys()])
     def literally_macro(ctx: MacroContext):
         # TODO. this isn't inherently expression_out... indeed most of these should be statement_out...
-        ctx.expression_out.write(literally[ctx.node.metadata[Macro]])
+        macro = ctx.compiler.get_metadata(ctx.node, Macro)
+        ctx.expression_out.write(literally[macro])
 
 @macros.add(*[b for b in builtins.keys()])
 def builtin(ctx: MacroContext):
-    ctx.compiler.compile_fn_call(ctx, f"await indentifire.{builtins[ctx.node.metadata[Macro]]}(", ctx.node.children)
+    macro = ctx.compiler.get_metadata(ctx.node, Macro)
+    ctx.compiler.compile_fn_call(ctx, f"await indentifire.{builtins[macro]}(", ctx.node.children)
 
 @macros.add("PIL:solution")
 def pil_solution(ctx: MacroContext):
@@ -95,7 +99,7 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         if ctx.node == ERASED_NODE:
             return
             
-        macro = str(ctx.node.metadata[Macro])
+        macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_macros = self.macros.all()
 
         # --- cursed Python begins ---

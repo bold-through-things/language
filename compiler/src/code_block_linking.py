@@ -13,7 +13,7 @@ class CodeBlockAssociator:
         # Code block association is handled by the CodeBlockLinkingStep
         pass
         
-    def process_code_blocks(self, node: Node):
+    def process_code_blocks(self, node: Node, compiler):
         """Process code block associations for a node"""
         # associate code blocks with relevant headers
         CODE_BLOCK_HEADERS = {
@@ -31,10 +31,10 @@ class CodeBlockAssociator:
             if not current or not next_child:
                 continue
 
-            current_macro = str(current.metadata[Macro])
+            current_macro = str(compiler.get_metadata(current, Macro))
             if current_macro in CODE_BLOCK_HEADERS:
                 expected_next = CODE_BLOCK_HEADERS[current_macro]
-                next_macro = str(next_child.metadata[Macro])
+                next_macro = str(compiler.get_metadata(next_child, Macro))
                 if next_macro == expected_next:
                     node.replace_child(next_child, None)
                     current.append_child(next_child)
@@ -57,4 +57,4 @@ class CodeBlockLinkingStep(MacroProcessingStep):
                 
         # Process current node
         with ctx.compiler.safely:
-            self.associator.process_code_blocks(ctx.node)
+            self.associator.process_code_blocks(ctx.node, ctx.compiler)

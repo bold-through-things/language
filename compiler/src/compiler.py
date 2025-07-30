@@ -2,7 +2,7 @@ from contextlib import contextmanager
 from typing import Any, Sequence
 from io import StringIO
 from pathlib import Path
-from node import Node, Position
+from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner, cut
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
 from macro_registry import MacroContext
@@ -28,6 +28,9 @@ class Compiler:
         self.compile_errors: list[dict[str, Any]] = []
         self._js_output: str = ""
         
+        # Metadata tracking system to replace TypeMap
+        self._node_metadata: dict[int, dict[type, Any]] = {}
+        
         # Initialize the processing pipeline
         self.processing_steps: list[MacroProcessingStep] = [
             PreprocessingStep(),
@@ -42,6 +45,59 @@ class Compiler:
             ident += f"_{to_valid_js_ident(name)}"
         self.incremental_id += 1
         return ident
+
+    def get_metadata(self, node: Node, metadata_type: type):
+        """Get metadata for a node, auto-computing Macro and Args if missing"""
+        node_id = id(node)
+        
+        # Auto-compute Macro and Args if not present
+        if metadata_type in [Macro, Args] and (node_id not in self._node_metadata or metadata_type not in self._node_metadata[node_id]):
+            self._ensure_macro_args_computed(node)
+        
+        if node_id in self._node_metadata and metadata_type in self._node_metadata[node_id]:
+            return self._node_metadata[node_id][metadata_type]
+        
+        # Check if there's a default factory from the old TypeMap system
+        from utils import TypeMap
+        if metadata_type in TypeMap._default_factories:
+            value = TypeMap._default_factories[metadata_type]()
+            self.set_metadata(node, metadata_type, value)
+            return value
+        
+        raise KeyError(f"No metadata of type {metadata_type} for node")
+
+    def maybe_metadata(self, node: Node, metadata_type: type):
+        """Get metadata for a node if it exists, return None otherwise"""
+        try:
+            return self.get_metadata(node, metadata_type)
+        except KeyError:
+            return None
+
+    def set_metadata(self, node: Node, metadata_type: type, value: Any):
+        """Set metadata for a node"""
+        node_id = id(node)
+        if node_id not in self._node_metadata:
+            self._node_metadata[node_id] = {}
+        self._node_metadata[node_id][metadata_type] = value
+
+    def invalidate_metadata(self, node: Node):
+        """Invalidate metadata for a node and all its descendants when tree changes"""
+        node_id = id(node)
+        if node_id in self._node_metadata:
+            del self._node_metadata[node_id]
+        
+        # Recursively invalidate children
+        for child in node.children:
+            self.invalidate_metadata(child)
+
+    def _ensure_macro_args_computed(self, node: Node):
+        """Ensure Macro and Args metadata is computed for a node"""
+        from node import Macro, Args
+        from strutil import cut
+        
+        macro, args = cut(node.content, " ")
+        self.set_metadata(node, Macro, macro)
+        self.set_metadata(node, Args, args)
 
     def register(self, node: Node):
         self.nodes.append(node)
@@ -86,10 +142,7 @@ class Compiler:
 
     def __discover_macros(self, node: Node):
         # TODO lstring macros should perhaps get special handling here...
-        from node import Macro, Args
-        macro, args = cut(node.content, " ")
-        node.metadata[Macro] = macro
-        node.metadata[Args] = args
+        self._ensure_macro_args_computed(node)
         for child in node.children:
             self.__discover_macros(child)
 
