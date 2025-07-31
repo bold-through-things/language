@@ -162,9 +162,9 @@ class PIL_call:
             convention = self.resolve_convention(ctx)
             
             # Use utility function to collect child expressions
-            args = collect_child_expressions(ctx, filter_empty=False)
+            args = collect_child_expressions(ctx)
 
-            call = convention.compile([a for a in args if a])
+            call = convention.compile(args)
 
             ctx.statement_out.write(f"const {ident} = await {call}\n")
             ctx.expression_out.write(ident)
