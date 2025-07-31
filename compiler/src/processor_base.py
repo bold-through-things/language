@@ -186,17 +186,20 @@ class DirectCall:
         return f"{receiver}{self.fn}({", ".join(args)})"
 
 builtin_calls = {
-    "join": PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str"),
-    "sort": PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list"),
-    "push": PrototypeCall(constructor="Array", fn="push", demands=["list", "*"], returns="list"), # TODO - does it actually return..?
-    "reverse": PrototypeCall(constructor="Array", fn="reverse", demands=["list"], returns="list"),
-    "split": PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
+    "join": [PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")],
+    "sort": [PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list")],
+    "push": [PrototypeCall(constructor="Array", fn="push", demands=["list", "*"], returns="list")], # TODO - does it actually return..?
+    "reverse": [PrototypeCall(constructor="Array", fn="reverse", demands=["list"], returns="list")],
+    "split": [
+        PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
+        PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
+    ],
 
      # TODO - NUKE ME the moment we get method overloading or union types!
-    "splitr": PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
+    "splitr": [PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list")],
 
-    "trim": PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str"),
-    "slice": PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list"),
+    "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
+    "slice": [PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list")],
 }
 
 def replace_chars(s: str, ok: str, map: dict[str, str]) -> str:

@@ -64,7 +64,7 @@ def run_with_input(exec_cmd: List[str], stdin: str, line_delayed: bool = True) -
     threading.Thread(target=read_output, daemon=True).start()
     threading.Thread(target=read_error, daemon=True).start()
 
-    if proc.stdin:
+    if proc.stdin and stdin is not None:
         if line_delayed:
             for line in stdin.splitlines():
                 time.sleep(0.6)
@@ -73,6 +73,8 @@ def run_with_input(exec_cmd: List[str], stdin: str, line_delayed: bool = True) -
         else:
             proc.stdin.write(stdin)
             proc.stdin.flush()
+    
+    if proc.stdin:
         proc.stdin.close()
 
     proc.wait()
