@@ -1,0 +1,9 @@
+[
+  {
+    "recoverable": false,
+    "line": 12,
+    "char": 0,
+    "content": "PIL:call split",
+    "error": "failed to assert: argument demands str and is given regex"
+  }
+]
