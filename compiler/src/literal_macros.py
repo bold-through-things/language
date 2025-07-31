@@ -94,13 +94,7 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         self.macros = unified_macros
         
     def process_node(self, ctx: MacroContext) -> None:
-        """Process a single node for JavaScript emission"""
-        from processor_base import ERASED_NODE
-        
-        if ctx.node == ERASED_NODE:
-            default_logger.codegen("skipping erased node")
-            return
-            
+        """Process a single node for JavaScript emission"""            
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_macros = self.macros.all()
         

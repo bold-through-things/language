@@ -46,4 +46,4 @@ for name, handler in typecheck_macros_registry.all().items():
 
 # Legacy singleton instances for backward compatibility - these are created in their respective modules
 from access_macros import PIL_call
-from preprocessing_macros import SubstitutingMacro, CallingMacro, InsideMacro, ParamMacro, AccessMacro
+from preprocessing_macros import SubstitutingMacro, CallingMacro, ParamMacro, AccessMacro
