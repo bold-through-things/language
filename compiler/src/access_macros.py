@@ -168,5 +168,20 @@ class PIL_call:
 
 @macros.add("exists")
 def exists_inside(ctx: MacroContext):
-    target = ctx.compiler.get_metadata(ctx.node, Target)
-    ctx.compiler.compile_fn_call(ctx, f"await indentifire.exists_inside(", [target] + ctx.node.children)
+    # look for inside modifier among children
+    target = None
+    other_children = []
+    
+    for child in ctx.node.children:
+        macro, _ = cut(child.content, " ")
+        if macro == "inside":
+            args_str = ctx.compiler.get_metadata(child, Args)
+            ctx.compiler.assert_(args_str.strip() == "", child, "inside must have no arguments")
+            ctx.compiler.assert_(len(child.children) == 1, child, "inside must have one child")
+            target = child.children[0]
+            default_logger.macro(f"inside modifier found, target set to: {target.content}")
+        else:
+            other_children.append(child)
+    
+    ctx.compiler.assert_(target is not None, ctx.node, "exists must have an inside modifier")
+    ctx.compiler.compile_fn_call(ctx, f"await indentifire.exists_inside(", [target] + other_children)
