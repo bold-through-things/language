@@ -112,6 +112,11 @@ class Args(str): pass
 @dataclass
 class FieldDemandType(str): pass
 
+@dataclass 
+class ResolvedConvention:
+    """Stores the resolved calling convention for a function call"""
+    convention: Any = None  # Will hold PrototypeCall or DirectCall
+
 @dataclass
 class Scope:
     parent: Scope | None

@@ -1,0 +1,4 @@
+--- expected_runtime_stdout+++ actual_runtime_stdout@@ -1,4 +0,0 @@-a
+-b
+-c
+-d

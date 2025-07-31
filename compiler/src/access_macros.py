@@ -6,7 +6,7 @@ from processor_base import (
 )
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
-from node import Args, Macro, Params, Inject_code_start, Target
+from node import Args, Macro, Params, Inject_code_start, Target, ResolvedConvention
 from common_utils import collect_child_expressions, get_single_arg, get_two_args
 from logger import default_logger
 
@@ -110,7 +110,7 @@ def local(ctx: MacroContext):
 @singleton
 class PIL_call:
     @classmethod
-    def resolve_convention(cls, ctx: MacroContext):
+    def resolve_convention(cls, ctx: MacroContext, actual_arg_types: list[str] = None):
         args_str = ctx.compiler.get_metadata(ctx.node, Args)
         args = args_str.split(" ")
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the function to call")
@@ -119,17 +119,47 @@ class PIL_call:
 
         convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
         if fn in builtin_calls:
-            convention = builtin_calls[fn]
+            overloads = builtin_calls[fn]
+            if isinstance(overloads, list):
+                # Multiple overloads - need to match by parameter types
+                if actual_arg_types:
+                    for overload in overloads:
+                        if cls._matches_signature(actual_arg_types, overload.demands):
+                            convention = overload
+                            break
+                    else:
+                        # No matching overload found, use the first one for now
+                        # This will cause a type error later which is what we want
+                        convention = overloads[0]
+                else:
+                    # No type information available, use first overload
+                    convention = overloads[0]
+            else:
+                # Legacy single overload
+                convention = overloads
         if fn in builtins:
             convention = DirectCall(fn=builtins[fn], demands=None, receiver="indentifire", returns=None)
 
         return convention
 
+    @classmethod
+    def _matches_signature(cls, actual_types: list[str], demanded_types: list[str]) -> bool:
+        """Check if actual parameter types match the demanded signature"""
+        if len(actual_types) != len(demanded_types):
+            return False
+        
+        for actual, demanded in zip(actual_types, demanded_types):
+            # "*" matches anything
+            if demanded == "*" or actual == "*":
+                continue
+            if actual != demanded:
+                return False
+        return True
+
     def __init__(self):
         @typecheck.add("PIL:call")
         def _(ctx: MacroContext):
-            convention = self.resolve_convention(ctx)
-
+            # First, determine the actual parameter types
             args: list[str | None] = []
             for child in ctx.node.children:
                 # Find the typecheck step to handle type checking
@@ -140,6 +170,12 @@ class PIL_call:
                 received = typecheck_step.process_node(replace(ctx, node=child))
                 args.append(received)
             args = [a for a in args if a]
+
+            # Now resolve the convention with actual parameter types
+            convention = self.resolve_convention(ctx, args)
+            
+            # Store the resolved convention in metadata for later use during compilation
+            ctx.compiler.set_metadata(ctx.node, ResolvedConvention, ResolvedConvention(convention=convention))
 
             if convention.demands:
                 for received, demanded in zip(args, convention.demands):
@@ -157,7 +193,14 @@ class PIL_call:
             args_str = ctx.compiler.get_metadata(ctx.node, Args)
             args1 = args_str.split(" ")
             ident = ctx.compiler.get_new_ident("_".join(args1))
-            convention = self.resolve_convention(ctx)
+            
+            # Try to get the resolved convention from metadata first
+            try:
+                resolved_conv = ctx.compiler.get_metadata(ctx.node, ResolvedConvention)
+                convention = resolved_conv.convention
+            except KeyError:
+                # Fallback to the old method if metadata not available
+                convention = self.resolve_convention(ctx)
             
             args = collect_child_expressions(ctx)
 
