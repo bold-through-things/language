@@ -9,9 +9,44 @@ from strutil import cut
 # Legacy registries - will be moved into steps
 preprocessor = MacroRegistry()
 
-# substituting macro removed - now handled contextually in access macro
+@singleton
+class SubstitutingMacro:
+    def __init__(self):
+        @preprocessor.add("substituting")
+        def _(ctx: MacroContext):
+            args = get_single_arg(ctx, "substituting must have one argument")
+            parent = ctx.node.parent
+            
+            default_logger.macro(f"substituting '{args}'")
+            
+            assert parent != None
+            
+            indexers = ctx.compiler.get_metadata(parent, Indexers)
+            if len(ctx.node.children) >= 1:
+                default_logger.debug(f"substituting '{args}' with {len(ctx.node.children)} child nodes")
+                indexers.mapping[args] = ctx.node.children
+            else:
+                # shortcut for when the substitution is literal (i.e. most cases)
+                default_logger.debug(f"substituting '{args}' with literal access")
+                access = ctx.compiler.make_node(f"a {args}", ctx.node.pos or Position(0, 0), children=None)
+                indexers.mapping[args] = [access]
+            parent.replace_child(ctx.node, None)
 
-# calling macro removed - now handled contextually in access macro
+@singleton
+class CallingMacro:
+    def __init__(self):
+        @preprocessor.add("calling")
+        def _(ctx: MacroContext):
+            args = get_single_arg(ctx, "calling must have one argument")
+            parent = ctx.node.parent
+            
+            default_logger.macro(f"calling '{args}' with {len(ctx.node.children)} children")
+            
+            assert parent != None
+            ctx.compiler.assert_(len(ctx.node.children) >= 1, ctx.node, "calling must have at least one child")
+            callers = ctx.compiler.get_metadata(parent, Callers)
+            callers.mapping[args] = ctx.node.children
+            parent.replace_child(ctx.node, None)
 
 # inside macro removed - now handled contextually in exists macro
 
@@ -41,35 +76,12 @@ class AccessMacro:
             parent = ctx.node.parent
             
             assert parent != None
-            
-            # collect indexers and callers from child modifiers
-            indexers: dict[str, list[Node]] = {}
-            callers: dict[str, list[Node]] = {}
-            other_children: list[Node] = []
-            
-            for child in ctx.node.children:
-                macro, _ = cut(child.content, " ")
-                if macro == "substituting":
-                    child_ctx = MacroContext(node=child, current_step=ctx.current_step, compiler=ctx.compiler, statement_out=ctx.statement_out, expression_out=ctx.expression_out)
-                    args_str = get_single_arg(child_ctx, "substituting must have one argument")
-                    if len(child.children) >= 1:
-                        default_logger.debug(f"substituting '{args_str}' with {len(child.children)} child nodes")
-                        indexers[args_str] = child.children
-                    else:
-                        # shortcut for when the substitution is literal (i.e. most cases)
-                        default_logger.debug(f"substituting '{args_str}' with literal access")
-                        access = ctx.compiler.make_node(f"a {args_str}", ctx.node.pos or Position(0, 0), children=None)
-                        indexers[args_str] = [access]
-                elif macro == "calling":
-                    child_ctx = MacroContext(node=child, current_step=ctx.current_step, compiler=ctx.compiler, statement_out=ctx.statement_out, expression_out=ctx.expression_out)
-                    args_str = get_single_arg(child_ctx, "calling must have one argument")
-                    ctx.compiler.assert_(len(child.children) >= 1, child, "calling must have at least one child")
-                    callers[args_str] = child.children
-                    default_logger.debug(f"calling '{args_str}' with {len(child.children)} children")
-                else:
-                    other_children.append(child)
-            
+            # since children are preprocessed first, we already have Callers and Indexers!
             steps: list[str] = args.split(" ")
+            indexers_metadata = ctx.compiler.maybe_metadata(ctx.node, Indexers)
+            indexers = getattr(indexers_metadata, "mapping", {})
+            callers_metadata = ctx.compiler.maybe_metadata(ctx.node, Callers)
+            callers = getattr(callers_metadata, "mapping", {})
             subs = indexers | callers
             last_chain_ident = None
             replace_with: list[Node] = []
@@ -80,13 +92,13 @@ class AccessMacro:
             for step in steps:
                 ident = ctx.compiler.get_new_ident(step)
                 step_is_last = step == steps[-1]
-                children = list(filter(lambda n: not n.content.startswith("noscope"), other_children))
+                children = list(filter(lambda n: not n.content.startswith("noscope"), ctx.node.children))
                 step_needs_call = step in builtin_calls or (step_is_last and len(children) > 1) or step in callers
                 args1: list[Node] = []
                 if step in subs:
                     args1 = subs[step]
                 if step_is_last:
-                    args1 += other_children
+                    args1 += ctx.node.children
 
                 local: list[Node] = []
                 if step in indexers:
