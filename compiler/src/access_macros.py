@@ -63,7 +63,7 @@ def access_field(ctx: MacroContext):
 @macros.add("PIL:access_index")
 def access_index(ctx: MacroContext):
     obj = get_single_arg(ctx, "single argument, the object into which we should index")
-    ident = ctx.compiler.get_new_ident("_".join([obj])) # TODO - pass index name too (doable...)
+    ident = ctx.compiler.get_new_ident(obj) # TODO - pass index name too (doable...)
 
     args: list[str] = collect_child_expressions(ctx)
 
@@ -84,9 +84,8 @@ def pil_access_local(ctx: MacroContext):
     ctx.compiler.assert_(len(args1) == 1, ctx.node, "single argument, the object into which we should index")
     
     local = args1[0]
-    ident = ctx.compiler.get_new_ident("_".join(args1)) # TODO - pass index name too (doable...)
+    ident = ctx.compiler.get_new_ident(local) # TODO - pass index name too (doable...)
 
-    # Use utility function to collect child expressions
     args = collect_child_expressions(ctx)
 
     if len(args) > 0:

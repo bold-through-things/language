@@ -25,7 +25,7 @@ class CodeBlockAssociator:
         }
         
         children = node.children
-        default_logger.codegen(f"checking {len(children)} children for code block associations")
+        default_logger.codegen(f"checking node '{node.content}' for code block associations")
         
         for i in range(len(children)):
             current = children[i]
@@ -44,8 +44,7 @@ class CodeBlockAssociator:
                     node.replace_child(next_child, None)
                     current.append_child(next_child)
                 else:
-                    default_logger.codegen(f"no link: expected '{expected_next}' but found '{next_macro}'")
-                # Note: not raising error here to make it optional
+                    compiler.assert_(False, current, f"expected '{expected_next}' after '{current_macro}' but found '{next_macro}'")
 
 class CodeBlockLinkingStep(MacroProcessingStep):
     """Handles linking code blocks to headers (e.g. do -> for)"""
