@@ -10,6 +10,7 @@ import traceback
 from typing import Any, TextIO
 from tree_parser import TreeParser
 from compiler import Compiler
+from logger import configure_logger_from_args, default_logger
 
 def human_readable(inspections: list[dict[str, Any]]) -> None:
     for i, entry in enumerate(reversed(inspections), 1):
@@ -28,36 +29,56 @@ parser = argparse.ArgumentParser()
 parser.add_argument('input_dir')
 parser.add_argument('output_file')
 parser.add_argument('--errors-file', help="will output compilation errors and warnings (as JSON) into this file if specified")
+parser.add_argument('--log', help="comma-separated list of log tags to enable (e.g., 'typecheck,macro'). omit to disable all logging.")
+parser.add_argument('--expand', action='store_true', help="compile in two-step mode: .ind → .ind.expanded → .js")
 
 args = parser.parse_args()
 
-os.chdir(args.input_dir)
-result = list(Path(".").rglob("*.ind"))
-compiler = Compiler()
+# configure logging based on command line args
+configure_logger_from_args(args.log)
+
+default_logger.compile("starting compilation process")
+with default_logger.indent("compile", "initialization"):
+    os.chdir(args.input_dir)
+    result = list(Path(".").rglob("*.ind"))
+    default_logger.compile(f"found {len(result)} .ind files: {[str(f) for f in result]}")
+    compiler = Compiler()
 
 parser = TreeParser()
-for filename in result:
-    with open(filename) as file:
-        node = parser.parse_tree(file.read())
-        compiler.register(node)
+with default_logger.indent("compile", "parsing files"):
+    for filename in result:
+        default_logger.compile(f"parsing {filename}")
+        with open(filename) as file:
+            node = parser.parse_tree(file.read())
+            compiler.register(node)
 
 crash = None
 compiled = None
-try:
-    compiled = compiler.compile()
-except Exception as e:
-    exc_info = sys.exc_info()
-    crash = ''.join(traceback.format_exception(*exc_info))
 
-if compiled:
-    with open(args.output_file, "w") as f:
-        f.write(compiled)
-expanded_file = Path(args.output_file).parent / ".ind.expanded"
-print(f"expanded into {expanded_file}")
-with open(expanded_file, "w") as f:
-    for node in compiler.nodes:
-        f.write(repr(node))
-        f.write("\n\n")
+# Standard compilation: .ind → (.js or .ind.expanded)
+with default_logger.indent("compile", "single-step compilation"):
+    try:
+        compiled = compiler.compile()
+    except Exception as e:
+        exc_info = sys.exc_info()
+        crash = ''.join(traceback.format_exception(*exc_info))
+        default_logger.compile(f"compilation crashed: {e}")
+
+if args.expand:
+    # Write .ind.expanded instead of .js
+    if compiled:
+        default_logger.compile(f"expand mode: writing expanded form to {args.output_file}")
+        with open(args.output_file, "w") as f:
+            for node in compiler.nodes:
+                f.write(repr(node))
+                f.write("\n\n")
+else:
+    # Write .js output
+    if compiled:
+        default_logger.compile(f"compilation successful, writing output to {args.output_file}")
+        with open(args.output_file, "w") as f:
+            f.write(compiled)
+
 print("refactor confidently when the flame flickers.")
 
 if len(compiler.compile_errors) != 0 or crash:

@@ -22,6 +22,8 @@ from typing import Optional, Tuple
 from subprocess import Popen, PIPE
 from typing import List
 
+from test_diff_reporter import create_test_diff_reporter
+
 TEST_ROOT = Path("test")
 EXECUTABLE = "out.js"
 
@@ -143,6 +145,10 @@ def make_test_method(tc: TestCase, args):
         code_dir = tc.code_path
         print(tc.name)
         print(f"running test for {tc}")
+        
+        # create improved diff reporter
+        diff_reporter = create_test_diff_reporter(tc)
+        
         expected_compile_err = read_file(code_dir / "compile.stderr")
         expected_runtime_err = read_file(case_dir / "runtime.stderr")
         expected_stdout = read_file(case_dir / "success.stdout")
@@ -164,19 +170,78 @@ def make_test_method(tc: TestCase, args):
 
             if args.compile:
                 compiler_path = Path("compiler/src/main.py")
-                print(f"{case_dir}: compiling...")
-                compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
-                compile_proc = subprocess.run(compile_cmd, cwd=tmpdir, capture_output=True, text=True)
-                print(f"{case_dir}: done compiling. {compile_proc.returncode=}")
-                print(compile_proc.stdout)
-                print(compile_proc.stderr)
+                
+                if args.expand:
+                    # Two-step compilation: .ind → .ind.expanded → .js
+                    print(f"{case_dir}: two-step compilation (expand mode)...")
+                    
+                    # Step 1: .ind → .ind.expanded
+                    expanded_path = tmpdir / "expanded.ind.expanded"
+                    step1_cmd = [compiler_path.absolute(), tmpdir.absolute(), expanded_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--expand"]
+                    
+                    # Add any additional compiler arguments to step 1
+                    if args.compiler_args:
+                        step1_cmd.extend(args.compiler_args)
+                    
+                    print(f"{case_dir}: step 1 - expanding...")
+                    step1_proc = subprocess.run(step1_cmd, cwd=tmpdir, capture_output=True, text=True)
+                    print(f"{case_dir}: step 1 complete. {step1_proc.returncode=}")
+                    print(step1_proc.stdout)
+                    print(step1_proc.stderr)
+                    
+                    if step1_proc.returncode != 0:
+                        if expected_compile_err is not None:
+                            actual_compile_err = read_file(compile_err_actual) or ""
+                            is_equal, error_msg = diff_reporter.compare_text(
+                                actual_compile_err, expected_compile_err, "compile_stderr"
+                            )
+                            self.assertTrue(is_equal, msg=error_msg or "Compile stderr mismatch")
+                            self.assertNotEqual(step1_proc.returncode, 0, msg="Expected compile to fail")
+                            return
+                        self.assertEqual(step1_proc.returncode, 0, msg=f"Step 1 (expand) failed unexpectedly\n{step1_proc.stderr}")
+                        return
+                    
+                    # Step 2: .ind.expanded → .js
+                    # Create a temporary directory with just the expanded file
+                    step2_tmpdir = tmpdir / "step2"
+                    step2_tmpdir.mkdir()
+                    
+                    # Copy the expanded file as an .ind file for step 2
+                    step2_input = step2_tmpdir / "main.ind"
+                    shutil.copy2(expanded_path, step2_input)
+                    
+                    step2_cmd = [compiler_path.absolute(), step2_tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
+                    
+                    # Add any additional compiler arguments to step 2
+                    if args.compiler_args:
+                        step2_cmd.extend(args.compiler_args)
+                    
+                    print(f"{case_dir}: step 2 - compiling expanded form to JS...")
+                    compile_proc = subprocess.run(step2_cmd, cwd=tmpdir, capture_output=True, text=True)
+                    print(f"{case_dir}: step 2 complete. {compile_proc.returncode=}")
+                    print(compile_proc.stdout)
+                    print(compile_proc.stderr)
+                    
+                else:
+                    # Single-step compilation: .ind → .js
+                    print(f"{case_dir}: single-step compilation...")
+                    compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
+                    
+                    # Add any additional compiler arguments
+                    if args.compiler_args:
+                        compile_cmd.extend(args.compiler_args)
+                    
+                    compile_proc = subprocess.run(compile_cmd, cwd=tmpdir, capture_output=True, text=True)
+                    print(f"{case_dir}: done compiling. {compile_proc.returncode=}")
+                    print(compile_proc.stdout)
+                    print(compile_proc.stderr)
 
                 if expected_compile_err is not None:
-                    self.assertEqual(
-                        read_file(compile_err_actual),
-                        expected_compile_err,
-                        msg="Compile stderr mismatch"
+                    actual_compile_err = read_file(compile_err_actual) or ""
+                    is_equal, error_msg = diff_reporter.compare_text(
+                        actual_compile_err, expected_compile_err, "compile_stderr"
                     )
+                    self.assertTrue(is_equal, msg=error_msg or "Compile stderr mismatch")
                     self.assertNotEqual(compile_proc.returncode, 0, msg="Expected compile to fail")
                     return
 
@@ -198,18 +263,17 @@ def make_test_method(tc: TestCase, args):
                     print(stdout.strip())
                     print(stderr.strip())
                     if expected_runtime_err is not None:
-                        self.assertEqual(
-                            stderr.strip(),
-                            expected_runtime_err.strip(),
-                            msg="Runtime stderr mismatch"
+                        is_equal, error_msg = diff_reporter.compare_text(
+                            stderr.strip(), expected_runtime_err.strip(), "runtime_stderr"
                         )
+                        self.assertTrue(is_equal, msg=error_msg or "Runtime stderr mismatch")
                         self.assertNotEqual(returncode, 0, msg="Expected runtime failure")
                     else:
-                        self.assertEqual(
-                            stdout.strip(),
-                            expected_stdout.strip() if expected_stdout else "",
-                            msg="Runtime stdout mismatch"
+                        expected_out = expected_stdout.strip() if expected_stdout else ""
+                        is_equal, error_msg = diff_reporter.compare_text(
+                            stdout.strip(), expected_out, "runtime_stdout"
                         )
+                        self.assertTrue(is_equal, msg=error_msg or "Runtime stdout mismatch")
                         self.assertEqual(returncode, 0, msg="Runtime failed unexpectedly")
     return test
 
@@ -225,9 +289,22 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--compile", action='store_true', help="Only check compilation of target tests")
     parser.add_argument("-d", "--debug", action='store_true', help="Execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="Skip compilation. Assume the tests are already compiled, and only run the existing output")
+    parser.add_argument("--expand", action='store_true', help="Test two-step compilation: .ind → .ind.expanded → .js")
+
+    # Parse known args first, then treat everything after -- as compiler args
+    if "--" in sys.argv:
+        dash_index = sys.argv.index("--")
+        test_args = sys.argv[1:dash_index]
+        compiler_args = sys.argv[dash_index + 1:]
+        sys.argv = [sys.argv[0]] + test_args  # Set up for argparse
+    else:
+        compiler_args = []
 
     args, remaining = parser.parse_known_args()
     sys.argv = [sys.argv[0]] + remaining  # leave only unknown args for unittest
+    
+    # Store compiler args on the args object
+    args.compiler_args = compiler_args
 
     if not args.compile and not args.run:
         # default behavior

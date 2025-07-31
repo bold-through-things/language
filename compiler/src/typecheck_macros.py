@@ -3,6 +3,7 @@ from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_sc
 from macro_registry import MacroContext, MacroRegistry
 from strutil import cut
 from node import Node, Position, Scope, Args, Macro
+from logger import default_logger
 
 # Legacy registries - will be moved into steps
 typecheck = unified_typecheck  # Use unified registry
@@ -28,7 +29,7 @@ def access_local(ctx: MacroContext):
             ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
             received = types[0]
             ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}")
-        print(f"{ctx.node.content} demanded {demanded}")
+        default_logger.typecheck(f"{ctx.node.content} demanded {demanded}")
         return demanded or "*"
     return "*"
 
@@ -51,7 +52,7 @@ def local_typecheck(ctx: MacroContext):
         type_node = Node(f"type {received}", ctx.node.pos, [])
     
     _, demanded = cut(type_node.content, " ")
-    print(f"{ctx.node.content} demanded {demanded} and was given {received}")
+    default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received}")
     
     # Store the local variable type information in compiler metadata for upward walking
     from node import FieldDemandType
@@ -117,10 +118,18 @@ class TypeCheckingStep(MacroProcessingStep):
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_macros = self.macros.all()
         
-        if macro in all_macros:
-            with ctx.compiler.safely:
-                return all_macros[macro](ctx)
-        else:
-            for child in ctx.node.children:
-                child_ctx = replace(ctx, node=child)
-                self.process_node(child_ctx)
+        # Create a description for this node for indentation
+        node_desc = f"node {macro}"
+        if hasattr(ctx.node, 'content') and ctx.node.content:
+            # Limit content preview to keep it readable
+            content_preview = ctx.node.content[:50] + ("..." if len(ctx.node.content) > 50 else "")
+            node_desc = f"node {macro}: {content_preview}"
+        
+        with default_logger.indent("typecheck", node_desc):
+            if macro in all_macros:
+                with ctx.compiler.safely:
+                    return all_macros[macro](ctx)
+            else:
+                for child in ctx.node.children:
+                    child_ctx = replace(ctx, node=child)
+                    self.process_node(child_ctx)
