@@ -127,6 +127,10 @@ class Logger:
     def parse(self, message: str):
         """convenience method for parsing messages."""
         self.log("parse", message)
+        
+    def registry(self, message: str):
+        """convenience method for macro registry messages."""
+        self.log("registry", message)
 
 # global logger instance that can be configured
 default_logger = Logger()

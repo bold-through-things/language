@@ -2,6 +2,7 @@ from dataclasses import replace
 from processor_base import MacroProcessingStep, singleton
 from macro_registry import MacroContext, MacroRegistry
 from node import Indexers, Callers, Macro, Args, Target, Params, Position, Node
+from common_utils import get_single_arg
 from logger import default_logger
 
 # Legacy registries - will be moved into steps
@@ -12,43 +13,41 @@ class SubstitutingMacro:
     def __init__(self):
         @preprocessor.add("substituting")
         def _(ctx: MacroContext):
-            args = ctx.compiler.get_metadata(ctx.node, Args)
+            args = get_single_arg(ctx, "sub must have one argument")
             parent = ctx.node.parent
             
-            default_logger.macro(f"processing substituting macro with args: '{args}'")
+            default_logger.macro(f"substituting '{args}'")
             
             assert parent != None
-            ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "sub must have one argument")
             
             indexers = ctx.compiler.get_metadata(parent, Indexers)
             if len(ctx.node.children) >= 1:
-                default_logger.macro(f"substituting '{args}' with {len(ctx.node.children)} child nodes")
+                if default_logger.is_tag_enabled("debug"):
+                    default_logger.debug(f"substituting '{args}' with {len(ctx.node.children)} child nodes")
                 indexers.mapping[args] = ctx.node.children
             else:
                 # shortcut for when the substitution is literal (i.e. most cases)
-                default_logger.macro(f"substituting '{args}' with literal access")
+                if default_logger.is_tag_enabled("debug"):
+                    default_logger.debug(f"substituting '{args}' with literal access")
                 access = ctx.compiler.make_node(f"a {args}", ctx.node.pos or Position(0, 0), children=None)
                 indexers.mapping[args] = [access]
             parent.replace_child(ctx.node, None)
-            default_logger.macro(f"substituting macro '{args}' processed and removed")
 
 @singleton
 class CallingMacro:
     def __init__(self):
         @preprocessor.add("calling")
         def _(ctx: MacroContext):
-            args = ctx.compiler.get_metadata(ctx.node, Args)
+            args = get_single_arg(ctx, "call must have one argument")
             parent = ctx.node.parent
             
-            default_logger.macro(f"processing calling macro with args: '{args}'")
+            default_logger.macro(f"calling '{args}' with {len(ctx.node.children)} children")
             
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) >= 1, ctx.node, "call must have at least one child")
-            ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "call must have one argument")
             callers = ctx.compiler.get_metadata(parent, Callers)
             callers.mapping[args] = ctx.node.children
             parent.replace_child(ctx.node, None)
-            default_logger.macro(f"calling macro '{args}' processed with {len(ctx.node.children)} children")
 
 @singleton
 class InsideMacro:
@@ -74,19 +73,17 @@ class ParamMacro:
     def __init__(self):
         @preprocessor.add("param")
         def _(ctx: MacroContext):
-            args = ctx.compiler.get_metadata(ctx.node, Args)
+            args = get_single_arg(ctx, "param must have one argument - the name")
             parent = ctx.node.parent
             
-            default_logger.macro(f"processing param macro with args: '{args}'")
+            default_logger.macro(f"param '{args}'")
             
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) == 0, ctx.node, "param must have no children")
-            ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "param must have one argument - the name")
             parent_macro = ctx.compiler.get_metadata(parent, Macro)
             ctx.compiler.assert_(parent_macro == "fn", ctx.node, "params must be inside fn")
             params = ctx.compiler.get_metadata(parent, Params)
             params.mapping[args] = True
-            default_logger.macro(f"param '{args}' registered to function")
 
 @singleton
 class AccessMacro:

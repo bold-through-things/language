@@ -43,6 +43,14 @@ with default_logger.indent("compile", "initialization"):
     result = list(Path(".").rglob("*.ind"))
     default_logger.compile(f"found {len(result)} .ind files: {[str(f) for f in result]}")
     compiler = Compiler()
+    
+    # Log macro registry summary if registry logging is enabled
+    if default_logger.is_tag_enabled("registry"):
+        from processor_base import unified_macros, unified_typecheck
+        from preprocessing_macros import preprocessor
+        default_logger.registry(f"macro registry initialized with {len(unified_macros.all())} codegen macros")
+        default_logger.registry(f"typecheck registry initialized with {len(unified_typecheck.all())} typecheck macros")  
+        default_logger.registry(f"preprocessor registry initialized with {len(preprocessor.all())} preprocessor macros")
 
 parser = TreeParser()
 with default_logger.indent("compile", "parsing files"):

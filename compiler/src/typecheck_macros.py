@@ -3,7 +3,7 @@ from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_sc
 from macro_registry import MacroContext, MacroRegistry
 from strutil import cut
 from node import Node, Position, Scope, Args, Macro
-from common_utils import collect_child_types, process_children_with_context
+from common_utils import collect_child_types, process_children_with_context, get_single_arg
 from logger import default_logger
 
 # Legacy registries - will be moved into steps
@@ -11,9 +11,7 @@ typecheck = unified_typecheck  # Use unified registry
 
 @typecheck.add("PIL:access_local")
 def access_local(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    first, extra = cut(args, " ")
-    ctx.compiler.assert_(extra == "", ctx.node, "single argument, the name of local")
+    first = get_single_arg(ctx, "single argument, the name of local")
 
     # Use utility function to collect child types
     types = collect_child_types(ctx)

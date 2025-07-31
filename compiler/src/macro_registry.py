@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Callable, Union, TypeVar, Protocol, cast, Any
 
 from node import Node
 from strutil import IndentedStringIO
+from logger import default_logger
 
 if TYPE_CHECKING:
     from processor import Compiler, MacroProcessingStep
@@ -33,14 +34,22 @@ class MacroRegistry:
             for name in names:
                 if name in self._registry:
                     raise ValueError(f"Macro name '{name}' already registered")
+                # Only log macro registration if registry tag is enabled and logger is configured
+                if hasattr(default_logger, 'enabled_tags') and default_logger.enabled_tags is not None and default_logger.is_tag_enabled("registry"):
+                    default_logger.log("registry", f"registering macro '{name}' -> {obj.__name__ if hasattr(obj, '__name__') else obj}")
                 self._registry[name] = instance
             return obj
         return decorator
 
     def get(self, name: str) -> Macro:
         try:
-            return self._registry[name]
+            macro = self._registry[name]
+            # Only log macro retrieval if registry tag is enabled and logger is configured
+            if hasattr(default_logger, 'enabled_tags') and default_logger.enabled_tags is not None and default_logger.is_tag_enabled("registry"):
+                default_logger.log("registry", f"retrieved macro '{name}'")
+            return macro
         except KeyError:
+            default_logger.macro(f"ERROR: unknown macro '{name}'")
             raise ValueError(f"Unknown macro: {name}")
 
     def all(self) -> dict[str, Macro]:

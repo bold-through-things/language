@@ -4,8 +4,9 @@ common utility functions to reduce code duplication across the compiler.
 
 from dataclasses import replace
 from typing import List, Optional
-from strutil import IndentedStringIO
+from strutil import IndentedStringIO, cut
 from macro_registry import MacroContext
+from node import Args
 from logger import default_logger
 
 def collect_child_expressions(ctx: MacroContext, filter_empty: bool = True) -> List[str]:
@@ -22,20 +23,31 @@ def collect_child_expressions(ctx: MacroContext, filter_empty: bool = True) -> L
     """
     expressions: List[Optional[str]] = []
     
-    default_logger.macro(f"collecting expressions from {len(ctx.node.children)} children")
+    # Only log verbose details if debug tag is enabled
+    if default_logger.is_tag_enabled("debug"):
+        default_logger.debug(f"collecting expressions from {len(ctx.node.children)} children")
     
     for i, child in enumerate(ctx.node.children):
-        with default_logger.indent("macro", f"processing child {i}: {child.content}"):
+        if default_logger.is_tag_enabled("debug"):
+            with default_logger.indent("debug", f"processing child {i}: {child.content}"):
+                expression_out = IndentedStringIO()
+                child_ctx = replace(ctx, node=child, expression_out=expression_out)
+                ctx.current_step.process_node(child_ctx)
+                expr_value = expression_out.getvalue()
+                expressions.append(expr_value)
+                default_logger.debug(f"child {i} produced: '{expr_value}'")
+        else:
+            # Run without verbose logging
             expression_out = IndentedStringIO()
             child_ctx = replace(ctx, node=child, expression_out=expression_out)
             ctx.current_step.process_node(child_ctx)
             expr_value = expression_out.getvalue()
             expressions.append(expr_value)
-            default_logger.macro(f"child {i} produced: '{expr_value}'")
     
     if filter_empty:
         result = [expr for expr in expressions if expr]
-        default_logger.macro(f"filtered {len(expressions)} -> {len(result)} non-empty expressions")
+        if default_logger.is_tag_enabled("debug"):
+            default_logger.debug(f"filtered {len(expressions)} -> {len(result)} non-empty expressions")
         return result
     else:
         return expressions
@@ -92,3 +104,56 @@ def process_children_with_context(ctx: MacroContext, step_processor) -> None:
             with ctx.compiler.safely:
                 child_ctx = replace(ctx, node=child)
                 step_processor.process_node(child_ctx)
+
+def get_args_string(ctx: MacroContext) -> str:
+    """
+    get the arguments string from a node's metadata.
+    this is done so frequently it deserves its own utility.
+    
+    Args:
+        ctx: the macro context
+        
+    Returns:
+        the arguments string
+    """
+    args = ctx.compiler.get_metadata(ctx.node, Args)
+    if default_logger.is_tag_enabled("debug"):
+        default_logger.debug(f"extracted args: '{args}'")
+    return args
+
+def get_single_arg(ctx: MacroContext, error_msg: str = "must have a single argument") -> str:
+    """
+    get a single argument from a node, asserting there's exactly one.
+    another very common pattern.
+    
+    Args:
+        ctx: the macro context
+        error_msg: error message if assertion fails
+        
+    Returns:
+        the single argument string
+    """
+    args = get_args_string(ctx)
+    first, extra = cut(args, " ")
+    ctx.compiler.assert_(extra == "", ctx.node, error_msg)
+    if default_logger.is_tag_enabled("debug"):
+        default_logger.debug(f"validated single arg: '{first}'")
+    return first
+
+def get_two_args(ctx: MacroContext, error_msg: str = "must have exactly two arguments") -> tuple[str, str]:
+    """
+    get exactly two arguments from a node.
+    
+    Args:
+        ctx: the macro context
+        error_msg: error message if assertion fails
+        
+    Returns:
+        tuple of the two argument strings
+    """
+    args = get_args_string(ctx)
+    args_list = args.split(" ")
+    ctx.compiler.assert_(len(args_list) == 2, ctx.node, error_msg)
+    if default_logger.is_tag_enabled("debug"):
+        default_logger.debug(f"validated two args: '{args_list[0]}', '{args_list[1]}'")
+    return args_list[0], args_list[1]
