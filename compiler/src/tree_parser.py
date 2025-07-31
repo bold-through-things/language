@@ -7,6 +7,7 @@ from pathlib import Path
 from strutil import cut, extract_indent
 from node import Node, Position
 from typing import Generic, List, TypeVar
+from logger import default_logger
 
 T = TypeVar("T")
 
@@ -42,6 +43,8 @@ class TreeParser:
         # prepend and append newlines for simpler and cleaner handling
         # TODO - although this will fuck over line numbers, so might actually be a bad idea?
         code = f"\n{code}\n"
+        
+        default_logger.log("parse", f"parsing {len(code)} characters of source code")
 
         @dataclass
         class ParsingNode:
@@ -55,7 +58,11 @@ class TreeParser:
         root = ParsingNode("PIL:file", Position(0))
         scope[0] = root
         line_num = 0
-        for line in code.split("\n"):
+        
+        lines = code.split("\n")
+        default_logger.log("parse", f"processing {len(lines)} lines")
+        
+        for line in lines:
             line_num += 1 # at the start - assumes above \n{code}\n
             line, indent = extract_indent(line)
 
@@ -67,10 +74,20 @@ class TreeParser:
                 # skip empty/indentation-only lines
                 continue
 
+            default_logger.log("parse", f"line {line_num}: indent={indent}, content='{line}'")
             node = ParsingNode(line, Position(line_num))
             scope[indent - 1].children.append(node)
             scope[indent] = node
             scope.trim(indent)
         
-        return root.toNode()
+        result = root.toNode()
+        default_logger.log("parse", f"parsing complete, tree has {self._count_nodes(result)} nodes")
+        return result
+        
+    def _count_nodes(self, node: Node) -> int:
+        """helper to count total nodes in tree for logging"""
+        count = 1
+        for child in node.children:
+            count += self._count_nodes(child)
+        return count
         

@@ -2,6 +2,7 @@ from dataclasses import replace
 from processor_base import MacroProcessingStep, singleton
 from macro_registry import MacroContext, MacroRegistry
 from node import Indexers, Callers, Macro, Args, Target, Params, Position, Node
+from logger import default_logger
 
 # Legacy registries - will be moved into steps
 preprocessor = MacroRegistry()
@@ -14,17 +15,22 @@ class SubstitutingMacro:
             args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
+            default_logger.macro(f"processing substituting macro with args: '{args}'")
+            
             assert parent != None
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "sub must have one argument")
             
             indexers = ctx.compiler.get_metadata(parent, Indexers)
             if len(ctx.node.children) >= 1:
+                default_logger.macro(f"substituting '{args}' with {len(ctx.node.children)} child nodes")
                 indexers.mapping[args] = ctx.node.children
             else:
                 # shortcut for when the substitution is literal (i.e. most cases)
+                default_logger.macro(f"substituting '{args}' with literal access")
                 access = ctx.compiler.make_node(f"a {args}", ctx.node.pos or Position(0, 0), children=None)
                 indexers.mapping[args] = [access]
             parent.replace_child(ctx.node, None)
+            default_logger.macro(f"substituting macro '{args}' processed and removed")
 
 @singleton
 class CallingMacro:
@@ -34,12 +40,15 @@ class CallingMacro:
             args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
+            default_logger.macro(f"processing calling macro with args: '{args}'")
+            
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) >= 1, ctx.node, "call must have at least one child")
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "call must have one argument")
             callers = ctx.compiler.get_metadata(parent, Callers)
             callers.mapping[args] = ctx.node.children
             parent.replace_child(ctx.node, None)
+            default_logger.macro(f"calling macro '{args}' processed with {len(ctx.node.children)} children")
 
 @singleton
 class InsideMacro:
@@ -49,6 +58,8 @@ class InsideMacro:
             args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
+            default_logger.macro(f"processing inside macro")
+            
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "inside must have one child")
             ctx.compiler.assert_(args.strip() == "", ctx.node, "inside must have no arguments")
@@ -56,6 +67,7 @@ class InsideMacro:
             ctx.compiler.assert_(parent_macro == "exists", ctx.node, "inside must be inside exists")
             ctx.compiler.set_metadata(parent, Target, ctx.node.children[0])
             parent.replace_child(ctx.node, None)
+            default_logger.macro(f"inside macro processed, target set to: {ctx.node.children[0].content}")
 
 @singleton
 class ParamMacro:
@@ -65,6 +77,8 @@ class ParamMacro:
             args = ctx.compiler.get_metadata(ctx.node, Args)
             parent = ctx.node.parent
             
+            default_logger.macro(f"processing param macro with args: '{args}'")
+            
             assert parent != None
             ctx.compiler.assert_(len(ctx.node.children) == 0, ctx.node, "param must have no children")
             ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "param must have one argument - the name")
@@ -72,6 +86,7 @@ class ParamMacro:
             ctx.compiler.assert_(parent_macro == "fn", ctx.node, "params must be inside fn")
             params = ctx.compiler.get_metadata(parent, Params)
             params.mapping[args] = True
+            default_logger.macro(f"param '{args}' registered to function")
 
 @singleton
 class AccessMacro:
@@ -149,16 +164,23 @@ class PreprocessingStep(MacroProcessingStep):
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""
+        default_logger.macro(f"preprocessing node: {ctx.node.content}")
+        
         # Process children first
-        for child in ctx.node.children:
-            with ctx.compiler.safely:
-                child_ctx = replace(ctx, node=child)
-                self.process_node(child_ctx)
+        with default_logger.indent("macro", f"preprocessing children of {ctx.node.content}"):
+            for i, child in enumerate(ctx.node.children):
+                with default_logger.indent("macro", f"child {i}: {child.content}"):
+                    with ctx.compiler.safely:
+                        child_ctx = replace(ctx, node=child)
+                        self.process_node(child_ctx)
         
         # Process current node  
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_preprocessors = self.macros.all()
         
         if macro in all_preprocessors:
+            default_logger.macro(f"applying preprocessor for macro: {macro}")
             with ctx.compiler.safely:
                 all_preprocessors[macro](ctx)
+        else:
+            default_logger.macro(f"no preprocessor for macro: {macro}")

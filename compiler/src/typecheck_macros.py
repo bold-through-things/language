@@ -3,6 +3,7 @@ from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_sc
 from macro_registry import MacroContext, MacroRegistry
 from strutil import cut
 from node import Node, Position, Scope, Args, Macro
+from common_utils import collect_child_types, process_children_with_context
 from logger import default_logger
 
 # Legacy registries - will be moved into steps
@@ -14,10 +15,8 @@ def access_local(ctx: MacroContext):
     first, extra = cut(args, " ")
     ctx.compiler.assert_(extra == "", ctx.node, "single argument, the name of local")
 
-    typecheck_step = ctx.current_step
-    assert isinstance(typecheck_step, TypeCheckingStep)
-    types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
-    types = list(filter(None, types))
+    # Use utility function to collect child types
+    types = collect_child_types(ctx)
 
     # Use upward walking to find local variable definition
     from processor_base import walk_upwards_for_local_definition
@@ -76,10 +75,8 @@ def access_typecheck(ctx: MacroContext):
         # TODO. not implemented. quite complex...
         pass
 
-    typecheck_step = ctx.current_step
-    assert isinstance(typecheck_step, TypeCheckingStep)
-    types = [typecheck_step.process_node(replace(ctx, node=child)) for child in ctx.node.children]
-    types = list(filter(None, types))
+    # Use utility function to collect child types  
+    types = collect_child_types(ctx)
 
     scope = seek_parent_scope(ctx.node)
     from processor_base import unroll_parent_chain
@@ -101,9 +98,7 @@ def typecheck_scope_macro(ctx: MacroContext):
     parent = seek_parent_scope(ctx.node)
     # Temporarily disable scope metadata - implement walking upwards approach later
     # ctx.compiler.set_metadata(ctx.node, Scope, Scope(parent=parent))
-    for child in ctx.node.children:
-        assert isinstance(ctx.current_step, TypeCheckingStep)
-        ctx.current_step.process_node(replace(ctx, node=child))
+    process_children_with_context(ctx, ctx.current_step)
 
 class TypeCheckingStep(MacroProcessingStep):
     """Handles type checking"""

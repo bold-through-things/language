@@ -119,6 +119,14 @@ class Logger:
     def compile(self, message: str):
         """convenience method for general compilation messages."""
         self.log("compile", message)
+        
+    def codegen(self, message: str):
+        """convenience method for code generation messages."""
+        self.log("codegen", message)
+        
+    def parse(self, message: str):
+        """convenience method for parsing messages."""
+        self.log("parse", message)
 
 # global logger instance that can be configured
 default_logger = Logger()

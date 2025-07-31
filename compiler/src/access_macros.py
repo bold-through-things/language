@@ -7,6 +7,7 @@ from processor_base import (
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
 from node import Args, Macro, Params, Inject_code_start, Target
+from common_utils import collect_child_expressions
 from logger import default_logger
 
 # Legacy registries - will be moved into steps
@@ -55,12 +56,8 @@ def access_field(ctx: MacroContext):
     field_access = js_field_access(field)
     ident = ctx.compiler.get_new_ident("_".join(args1))
 
-    args: list[str | None] = []
-    for child in ctx.node.children:
-        e = IndentedStringIO()
-        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-        args.append(e.getvalue())
-    args = list(filter(None, args))
+    # Use utility function to collect child expressions
+    args = collect_child_expressions(ctx)
 
     if len(args) > 0:
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single child node for assignment")
@@ -77,12 +74,7 @@ def access_index(ctx: MacroContext):
     obj = args[0]
     ident = ctx.compiler.get_new_ident("_".join(args)) # TODO - pass index name too (doable...)
 
-    args: list[str] = []
-    for child in ctx.node.children:
-        e = IndentedStringIO()
-        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-        args.append(e.getvalue())
-    args = [a for a in args if a]
+    args: list[str] = collect_child_expressions(ctx)
 
     ctx.compiler.assert_(len(args) >= 1, ctx.node, "first child used as indexing key")
     key = args[0]
@@ -103,12 +95,8 @@ def pil_access_local(ctx: MacroContext):
     local = args1[0]
     ident = ctx.compiler.get_new_ident("_".join(args1)) # TODO - pass index name too (doable...)
 
-    args: list[str | None] = []
-    for child in ctx.node.children:
-        e = IndentedStringIO()
-        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-        args.append(e.getvalue())
-    args = list(filter(None, args))
+    # Use utility function to collect child expressions
+    args = collect_child_expressions(ctx)
 
     if len(args) > 0:
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single child used for assignment")
@@ -121,14 +109,10 @@ def pil_access_local(ctx: MacroContext):
 def local(ctx: MacroContext):
     args = ctx.compiler.get_metadata(ctx.node, Args)
     name, _ = cut(args, " ") # TODO assert one arg
-    args: list[str | None] = []
-    if len(ctx.node.children) > 0:
-        # ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "single child, the value") TODO!
-        for child in ctx.node.children:
-            e = IndentedStringIO()
-            ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-            args.append(e.getvalue())
-    args = list(filter(None, args))
+    
+    # Use utility function to collect child expressions
+    args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
+    
     ctx.statement_out.write(f"let {name}")
     if len(args) > 0:
         ctx.statement_out.write(f" = {args[-1]}")
@@ -186,11 +170,9 @@ class PIL_call:
             args1 = args_str.split(" ")
             ident = ctx.compiler.get_new_ident("_".join(args1))
             convention = self.resolve_convention(ctx)
-            args: list[str | None] = []
-            for child in ctx.node.children:
-                e = IndentedStringIO()
-                ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-                args.append(e.getvalue())
+            
+            # Use utility function to collect child expressions
+            args = collect_child_expressions(ctx, filter_empty=False)
 
             call = convention.compile([a for a in args if a])
 
