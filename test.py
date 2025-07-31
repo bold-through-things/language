@@ -284,12 +284,12 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-g", "--glob", help="Only run tests matching glob")
-    parser.add_argument("-s", "--stdin", action='store_true', help="Pass the Python stdin to each test")
-    parser.add_argument("-c", "--compile", action='store_true', help="Only check compilation of target tests")
-    parser.add_argument("-d", "--debug", action='store_true', help="Execute runtime in debug mode")
-    parser.add_argument("-r", "--run", action='store_true', help="Skip compilation. Assume the tests are already compiled, and only run the existing output")
-    parser.add_argument("--expand", action='store_true', help="Test two-step compilation: .ind → .ind.expanded → .js")
+    parser.add_argument("-g", "--glob", help="only run tests matching this midglob. try `--glob anagra` or `--glob ypeche` or `--glob order*main`!")
+    parser.add_argument("-s", "--stdin", action='store_true', help="pass the Python stdin to each test. sometimes useful for manual debugging of runtime execution")
+    parser.add_argument("-c", "--compile", action='store_true', help="only check compilation of target tests")
+    parser.add_argument("-d", "--debug", action='store_true', help="execute runtime in debug mode")
+    parser.add_argument("-r", "--run", action='store_true', help="skip compilation. assume the tests are already compiled, and only run the existing output")
+    parser.add_argument("--expand", action='store_true', help="test two-step compilation: `.ind → .ind.expanded → .js` WIP and expected to fail currently!")
 
     # Parse known args first, then treat everything after -- as compiler args
     if "--" in sys.argv:
@@ -316,7 +316,7 @@ if __name__ == "__main__":
             raise ValueError(
                 "run with what? Deno pls.\n"
                 "corrupt your innocent OS:\n curl -fsSL https://deno.land/install.sh | sh\n"
-                "contain the Deno daemons into this workspace:\n curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
+                "contain the scawy dinosaurs into this workspace:\n curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
             )
     
     for tc in discover_tests(args):

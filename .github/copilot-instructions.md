@@ -30,3 +30,22 @@ important request here specifically for my beloved Copilot! note down the unrela
 keep it all casual and unprofessional in text. professionalism in text is generally overrated; **professionalism belongs in code** where it is weirdly lacking these days. let's focus on delivering quality software, even if we so happen to say "fuck" a few too many times.
 
 keep comments and documentation lowercase and casual.
+
+# agentic
+
+this section outlines instructions relevant for all your agentic coding tasks, such as creating a PR.
+
+don't go beyond what the task asks you for. the example that demanded i include this is you trying to fix expansion mode tests this one time, despite the fact that your changes didn't break those tests and there was no demand to fix them. in general:
+- focus on the task outlined in the PR
+- focus only on ensuring the same tests pass before and after you apply your changes, even if some of them are broken - unless the task explicitly asks you to fix them. (or if you add new ones, obviously those should pass too!)
+
+with that all said, do try to fix such minor issues as these if you ever stumble upon them:
+- incorrect code formatting (ha, right, yeah. it's Python, if it is not formatted it will not compile. crazy idea!)
+- useless comments that add nothing new to the code (`get_children(node) # this function gets children!`)
+- overcomplicated code that could be easily simplified without changing the functionality
+- duplication that could be utilized into a reusable function
+- similar such simple to fix issues
+
+the `./test.py` is our holy grail of deliverables. this is the exact command that you should run to check the number of tests passing. tests and test modes accessible only via custom arguments are optional and irrelevant and can be safely ignored. (of course only if the task itself doesn't specifically target them...)
+
+this repository religiously follows a "code as documentation" mindset. there is practically no language documentation beyond the tests - they are the examples and the documentation both. there are no commands listed in the `readme.md` or even here - run `./test.py --help` to find out the latest correct usage. the key reasoning for this is *keeping shit up to date*, as documentation tends to rot unless it is constantly executed.

@@ -1,0 +1,1 @@
+this here folder is forever cursed to bear the weight of being filled with things that we cannot or simply haven't yet gotten around to explicitly asserting with autotests. ideally, this one would be empty eventually, but the realities of software ensure it will forever remain a heretical library of ideas too complex yet to assert.
