@@ -11,14 +11,14 @@ from logger import default_logger
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
-@macros.add("noop", "type", "PIL:auto_type")
+@macros.add("noop", "type", "PIL:auto_type", "substituting", "calling", "inside")
 def does_not_compile(_):
     # does not compile into code itself - nothing to do
     pass
 
 COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
 @macros.add(*COMMENT_MACROS)
-@typecheck.add(*COMMENT_MACROS)
+@typecheck.add(*COMMENT_MACROS, "substituting", "calling", "inside")
 def comments(_):
     # comments are ignored. TODO - we could and perhaps should transfer comments to output?
     pass

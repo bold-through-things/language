@@ -29,7 +29,8 @@ class SubstitutingMacro:
                 default_logger.debug(f"substituting '{args}' with literal access")
                 access = ctx.compiler.make_node(f"a {args}", ctx.node.pos or Position(0, 0), children=None)
                 indexers.mapping[args] = [access]
-            parent.replace_child(ctx.node, None)
+            # DON'T erase the node - leave it as a contextual modifier for expanded form
+            # parent.replace_child(ctx.node, None)
 
 @singleton
 class CallingMacro:
@@ -45,7 +46,8 @@ class CallingMacro:
             ctx.compiler.assert_(len(ctx.node.children) >= 1, ctx.node, "call must have at least one child")
             callers = ctx.compiler.get_metadata(parent, Callers)
             callers.mapping[args] = ctx.node.children
-            parent.replace_child(ctx.node, None)
+            # DON'T erase the node - leave it as a contextual modifier for expanded form
+            # parent.replace_child(ctx.node, None)
 
 @singleton
 class InsideMacro:
@@ -63,7 +65,8 @@ class InsideMacro:
             parent_macro = ctx.compiler.get_metadata(parent, Macro)
             ctx.compiler.assert_(parent_macro == "exists", ctx.node, "inside must be inside exists")
             ctx.compiler.set_metadata(parent, Target, ctx.node.children[0])
-            parent.replace_child(ctx.node, None)
+            # DON'T erase the node - leave it as a contextual modifier for expanded form
+            # parent.replace_child(ctx.node, None)
             default_logger.macro(f"inside macro processed, target set to: {ctx.node.children[0].content}")
 
 @singleton
@@ -92,13 +95,24 @@ class AccessMacro:
             parent = ctx.node.parent
             
             assert parent != None
-            # since children are preprocessed first, we already have Callers and Indexers!
-            steps: list[str] = args.split(" ")
+            # Check if there are any modifiers (substituting, calling) or if access has children that would require preprocessing
             indexers_metadata = ctx.compiler.maybe_metadata(ctx.node, Indexers)
             indexers = getattr(indexers_metadata, "mapping", {})
             callers_metadata = ctx.compiler.maybe_metadata(ctx.node, Callers)
             callers = getattr(callers_metadata, "mapping", {})
             subs = indexers | callers
+            
+            # Only preprocess if there are modifiers OR if this access has complex children
+            children = list(filter(lambda n: not n.content.startswith("noscope"), ctx.node.children))
+            has_modifiers = len(subs) > 0
+            has_complex_children = len(children) > 0
+            
+            if not has_modifiers and not has_complex_children:
+                default_logger.macro(f"access macro '{args}' has no modifiers or complex children, skipping preprocessing")
+                return
+                
+            # Original preprocessing logic
+            steps: list[str] = args.split(" ")
             last_chain_ident = None
             replace_with: list[Node] = []
             p0 = Position(0, 0)
@@ -179,3 +193,10 @@ class PreprocessingStep(MacroProcessingStep):
                 all_preprocessors[macro](ctx)
         else:
             default_logger.macro(f"no preprocessor for macro: {macro}")
+
+# Instantiate singletons
+SubstitutingMacro()
+CallingMacro()
+InsideMacro()
+ParamMacro()
+AccessMacro()
