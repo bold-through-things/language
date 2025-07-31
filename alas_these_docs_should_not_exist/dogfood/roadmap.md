@@ -1,103 +1,54 @@
 # bootstrapping roadmap
 
-## development phases
+## 18-week development plan
 
-this roadmap outlines the path from current language capabilities to a fully self-hosted compiler.
+### phase 1: foundation (weeks 1-2)
+- **file I/O operations** - read_file, write_file, list_files, path utilities
+- **basic error handling** - try/catch macros mapping to JS try/catch  
+- **testing:** simple file manipulation, error conditions
 
-## phase 1: foundation infrastructure (weeks 1-2)
+### phase 2: module system (weeks 3-4)  
+- **import mechanism** - relative/absolute imports, namespace management
+- **approach:** enforced alphabetical file ordering for compiler rewrite
+- **testing:** multi-file programs, circular dependency detection
 
-### file system basics
-**goal:** read and write files, basic path operations
+### phase 3: enhanced stdlib (weeks 5-6)
+- **string processing** - regex, formatting, parsing utilities
+- **json handling** - parse/stringify operations
+- **approach:** leverage Deno APIs via WebIDL auto-generation
 
-**features to add:**
-```
-# file operations
-read_file
-	string "path/to/file.txt"
+### phase 4: core data structures (weeks 7-8)
+- **struct/class syntax** - user-defined types with fields
+- **collections** - sets, ordered maps, tree structures  
+- **approach:** struct-based syntax with multimethod dispatch
 
-write_file
-	string "path/to/output.js"
-	string "console.log('hello');"
+### phase 5: parser rewrite (weeks 9-10)
+- **tree_parser.ind** - reimplement parsing logic in language
+- **ast representation** - struct-based Node with content/position/children
+- **testing:** parse identical trees to Python version
 
-file_exists
-	string "README.md"
+### phase 6: macro system (weeks 11-12)
+- **macro_registry.ind** - macro registration and processing
+- **approach:** purely declarative macros, all compiled
+- **testing:** macro expansion produces identical output
 
-list_files
-	string "."
+### phase 7: type checker (weeks 13-14)
+- **type_checker.ind** - static type validation system
+- **features:** generics and unions for compiler robustness
+- **focus:** correctness over performance, expressiveness priority
 
-list_dirs  
-	string "test"
-```
+### phase 8: code generation (weeks 15-16)
+- **js_emitter.ind** - JavaScript output generation
+- **goal:** identical output to Python compiler
+- **testing:** byte-for-byte comparison of generated JS
 
-**implementation notes:**
-- add file I/O builtins to macro registry
-- wrap Deno's filesystem APIs
-- handle errors gracefully (file not found, permissions)
-- support both relative and absolute paths
+### phase 9: integration (weeks 17-18)
+- **full compiler assembly** - complete self-hosted pipeline
+- **validation:** all 13 existing tests pass with new compiler
+- **distribution:** Deno binary compilation + JS fallback for Node
 
-**testing strategy:**
-- create simple file read/write tests
-- test error conditions
-- verify path handling works correctly
-
-### basic path utilities
-**goal:** manipulate file paths reliably
-
-**features to add:**
-```
-path_join
-	list
-		string "test"
-		string "basics"
-		string "main.ind"
-
-path_dirname
-	string "test/basics/main.ind"
-	# returns "test/basics"
-
-path_basename
-	string "test/basics/main.ind"  
-	# returns "main.ind"
-
-path_extension
-	string "main.ind"
-	# returns ".ind"
-```
-
-**validation:**
-- implement simple version of test discovery
-- read actual test files from disk
-- generate file paths programmatically
-
-## phase 2: module system (weeks 3-4)
-
-### import mechanism
-**goal:** split code across multiple files
-
-**syntax to add:**
-```
-import
-	string "utils/string_helpers.ind"
-	as string_utils
-
-import
-	string "parser/tree_parser.ind"
-	exposing parse_tree
-
-# relative imports
-import
-	string "./local_module.ind"
-	as local
-```
-
-**implementation notes:**
-- module resolution algorithm
-- prevent circular dependencies
-- namespace management
-- caching of parsed modules
-
-**testing approach:**
-- create multi-file test programs
+## success criteria
+compiler fully rewritten in .ind with all existing tests passing - same performance as Python to JS migration should provide speed boost
 - test circular dependency detection
 - verify namespace isolation
 
