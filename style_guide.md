@@ -32,7 +32,7 @@ this style guide is inferred from feedback on code quality issues. following the
   - bad: multiple conditional branches that do nearly identical work
   - good: extract the common logic, keep differences minimal
 
-- **don't join single-item lists**. if you know a list has exactly one item, just access it directly.
+- **avoid inefficient patterns**. don't write code that you know is obviously wrong or inefficient, like joining single-item lists when you could just access the item directly.
   - bad: `"_".join([obj])`
   - good: `obj`
 
@@ -49,4 +49,4 @@ this style guide is inferred from feedback on code quality issues. following the
 
 ## testing
 
-- **always add tests for error conditions**. if you make something an error instead of a warning, add a test that verifies the error is properly caught and reported.
+- **add tests for error conditions when practical**. if you make something an error instead of a warning, try to add a test that verifies the error is properly caught and reported, unless the effort required is disproportionate to the benefit.

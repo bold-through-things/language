@@ -43,8 +43,6 @@ class TreeParser:
         # prepend and append newlines for simpler and cleaner handling
         # TODO - although this will fuck over line numbers, so might actually be a bad idea?
         code = f"\n{code}\n"
-        
-        default_logger.log("parse", f"parsing {len(code)} characters of source code")
 
         @dataclass
         class ParsingNode:
@@ -81,13 +79,5 @@ class TreeParser:
             scope.trim(indent)
         
         result = root.toNode()
-        default_logger.log("parse", f"parsing complete, tree has {self._count_nodes(result)} nodes")
         return result
-        
-    def _count_nodes(self, node: Node) -> int:
-        """helper to count total nodes in tree for logging"""
-        count = 1
-        for child in node.children:
-            count += self._count_nodes(child)
-        return count
         

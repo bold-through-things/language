@@ -22,13 +22,11 @@ class SubstitutingMacro:
             
             indexers = ctx.compiler.get_metadata(parent, Indexers)
             if len(ctx.node.children) >= 1:
-                if default_logger.is_tag_enabled("debug"):
-                    default_logger.debug(f"substituting '{args}' with {len(ctx.node.children)} child nodes")
+                default_logger.debug(f"substituting '{args}' with {len(ctx.node.children)} child nodes")
                 indexers.mapping[args] = ctx.node.children
             else:
                 # shortcut for when the substitution is literal (i.e. most cases)
-                if default_logger.is_tag_enabled("debug"):
-                    default_logger.debug(f"substituting '{args}' with literal access")
+                default_logger.debug(f"substituting '{args}' with literal access")
                 access = ctx.compiler.make_node(f"a {args}", ctx.node.pos or Position(0, 0), children=None)
                 indexers.mapping[args] = [access]
             parent.replace_child(ctx.node, None)

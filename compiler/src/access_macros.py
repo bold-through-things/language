@@ -51,7 +51,6 @@ def access_field(ctx: MacroContext):
     field_access = js_field_access(field)
     ident = ctx.compiler.get_new_ident("_".join([obj, field]))
 
-    # Use utility function to collect child expressions
     args = collect_child_expressions(ctx)
 
     if len(args) > 0:
@@ -100,7 +99,6 @@ def local(ctx: MacroContext):
     args = ctx.compiler.get_metadata(ctx.node, Args)
     name, _ = cut(args, " ") # TODO assert one arg
     
-    # Use utility function to collect child expressions
     args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
     
     ctx.statement_out.write(f"let {name}")
@@ -161,7 +159,6 @@ class PIL_call:
             ident = ctx.compiler.get_new_ident("_".join(args1))
             convention = self.resolve_convention(ctx)
             
-            # Use utility function to collect child expressions
             args = collect_child_expressions(ctx)
 
             call = convention.compile(args)

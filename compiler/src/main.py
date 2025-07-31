@@ -45,12 +45,14 @@ with default_logger.indent("compile", "initialization"):
     compiler = Compiler()
     
     # Log macro registry summary if registry logging is enabled
-    if default_logger.is_tag_enabled("registry"):
-        from processor_base import unified_macros, unified_typecheck
-        from preprocessing_macros import preprocessor
-        default_logger.registry(f"macro registry initialized with {len(unified_macros.all())} codegen macros")
-        default_logger.registry(f"typecheck registry initialized with {len(unified_typecheck.all())} typecheck macros")  
-        default_logger.registry(f"preprocessor registry initialized with {len(preprocessor.all())} preprocessor macros")
+    from processor_base import unified_macros, unified_typecheck
+    from preprocessing_macros import preprocessor
+    codegen_macros = ", ".join(unified_macros.all().keys())
+    typecheck_macros = ", ".join(unified_typecheck.all().keys())
+    preprocessor_macros = ", ".join(preprocessor.all().keys())
+    default_logger.registry(f"macro registry initialized with codegen macros: {codegen_macros}")
+    default_logger.registry(f"typecheck registry initialized with typecheck macros: {typecheck_macros}")  
+    default_logger.registry(f"preprocessor registry initialized with preprocessor macros: {preprocessor_macros}")
 
 parser = TreeParser()
 with default_logger.indent("compile", "parsing files"):

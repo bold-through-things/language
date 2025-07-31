@@ -54,7 +54,7 @@ def collect_child_types(ctx: MacroContext) -> List[str]:
         
     types: List[Optional[str]] = []
     
-    default_logger.typecheck(f"collecting types from {len(ctx.node.children)} children")
+    default_logger.typecheck(f"collecting types from {ctx.node.content}")
     
     for i, child in enumerate(ctx.node.children):
         with default_logger.indent("typecheck", f"type checking child {i}: {child.content}"):
@@ -76,7 +76,7 @@ def process_children_with_context(ctx: MacroContext, step_processor) -> None:
         ctx: the macro context  
         step_processor: the processing step to apply to each child
     """
-    default_logger.debug(f"processing {len(ctx.node.children)} children with {step_processor.__class__.__name__}")
+    default_logger.debug(f"processing children of {ctx.node.content} with {step_processor.__class__.__name__}")
     
     for i, child in enumerate(ctx.node.children):
         with default_logger.indent("debug", f"processing child {i}: {child.content}"):
