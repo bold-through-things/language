@@ -11,8 +11,7 @@ from utils import *
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-ERASED_NODE = Node(None, None, children=None)
-# Note: ERASED_NODE metadata will be handled by compiler when accessed
+# ERASED_NODE removed - no longer needed
 
 def unroll_parent_chain(n: Node | None) -> list[Node]:
     rv: list[Node] = []
