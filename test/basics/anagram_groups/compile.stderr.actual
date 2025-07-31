@@ -1,0 +1,16 @@
+[
+  {
+    "recoverable": false,
+    "line": 66,
+    "char": 0,
+    "content": "if",
+    "error": "failed to assert: expected 'then' after 'if' but found 'noscope'"
+  },
+  {
+    "recoverable": false,
+    "line": 24,
+    "char": 0,
+    "content": "for word in",
+    "error": "failed to assert: expected 'do' after 'for' but found 'for'"
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "recoverable": false,
+    "line": 119,
+    "char": 0,
+    "content": "if",
+    "error": "failed to assert: expected 'then' after 'if' but found 'if'"
+  },
+  {
+    "recoverable": false,
+    "line": 9,
+    "char": 0,
+    "content": "if",
+    "error": "failed to assert: expected 'then' after 'if' but found 'else'"
+  }
+]

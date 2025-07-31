@@ -1,0 +1,37 @@
+[
+  {
+    "recoverable": false,
+    "line": 118,
+    "char": 0,
+    "content": "if",
+    "error": "failed to assert: expected 'then' after 'if' but found 'noscope'"
+  },
+  {
+    "recoverable": false,
+    "line": 310,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: expected 'do' after 'for' but found 'noscope'"
+  },
+  {
+    "recoverable": false,
+    "line": 282,
+    "char": 0,
+    "content": "if",
+    "error": "failed to assert: expected 'then' after 'if' but found 'else'"
+  },
+  {
+    "recoverable": false,
+    "line": 204,
+    "char": 0,
+    "content": "if ",
+    "error": "failed to assert: expected 'then' after 'if' but found 'noscope'"
+  },
+  {
+    "recoverable": false,
+    "line": 27,
+    "char": 0,
+    "content": "for line in",
+    "error": "failed to assert: expected 'do' after 'for' but found '#'"
+  }
+]

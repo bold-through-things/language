@@ -1,0 +1,9 @@
+[
+  {
+    "recoverable": false,
+    "line": 24,
+    "char": 0,
+    "content": "for word in",
+    "error": "failed to assert: expected 'do' after 'for' but found 'print'"
+  }
+]
