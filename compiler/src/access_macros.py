@@ -7,6 +7,7 @@ from processor_base import (
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
 from node import Args, Macro, Params, Inject_code_start, Target
+from common_utils import collect_child_expressions, get_single_arg, get_two_args
 from logger import default_logger
 
 # Legacy registries - will be moved into steps
@@ -15,8 +16,7 @@ typecheck = unified_typecheck  # Use unified registry
 
 @macros.add("fn")
 def fn(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    ctx.compiler.assert_(args.find(" ") == -1, ctx.node, "must have a single arg - fn name")
+    args = get_single_arg(ctx, "must have a single arg - fn name")
     ctx.statement_out.write(f"const {args} = async function (")
     joiner = Joiner(ctx.statement_out, ", \n")
     params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
@@ -47,20 +47,11 @@ def fn(ctx: MacroContext):
 
 @macros.add("PIL:access_field")
 def access_field(ctx: MacroContext):
-    args_str = ctx.compiler.get_metadata(ctx.node, Args)
-    args1 = args_str.split(" ")
-    ctx.compiler.assert_(len(args1) == 2, ctx.node, "first argument is object, second is field")
-    obj = args1[0]
-    field = args1[1] # TODO - convert field to JS valid value
+    obj, field = get_two_args(ctx, "first argument is object, second is field")
     field_access = js_field_access(field)
-    ident = ctx.compiler.get_new_ident("_".join(args1))
+    ident = ctx.compiler.get_new_ident("_".join([obj, field]))
 
-    args: list[str | None] = []
-    for child in ctx.node.children:
-        e = IndentedStringIO()
-        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-        args.append(e.getvalue())
-    args = list(filter(None, args))
+    args = collect_child_expressions(ctx)
 
     if len(args) > 0:
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single child node for assignment")
@@ -70,19 +61,10 @@ def access_field(ctx: MacroContext):
 
 @macros.add("PIL:access_index")
 def access_index(ctx: MacroContext):
-    args_str = ctx.compiler.get_metadata(ctx.node, Args)
-    args = args_str.split(" ")
-    ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the object into which we should index")
-    
-    obj = args[0]
-    ident = ctx.compiler.get_new_ident("_".join(args)) # TODO - pass index name too (doable...)
+    obj = get_single_arg(ctx, "single argument, the object into which we should index")
+    ident = ctx.compiler.get_new_ident(obj) # TODO - pass index name too (doable...)
 
-    args: list[str] = []
-    for child in ctx.node.children:
-        e = IndentedStringIO()
-        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-        args.append(e.getvalue())
-    args = [a for a in args if a]
+    args: list[str] = collect_child_expressions(ctx)
 
     ctx.compiler.assert_(len(args) >= 1, ctx.node, "first child used as indexing key")
     key = args[0]
@@ -101,14 +83,9 @@ def pil_access_local(ctx: MacroContext):
     ctx.compiler.assert_(len(args1) == 1, ctx.node, "single argument, the object into which we should index")
     
     local = args1[0]
-    ident = ctx.compiler.get_new_ident("_".join(args1)) # TODO - pass index name too (doable...)
+    ident = ctx.compiler.get_new_ident(local) # TODO - pass index name too (doable...)
 
-    args: list[str | None] = []
-    for child in ctx.node.children:
-        e = IndentedStringIO()
-        ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-        args.append(e.getvalue())
-    args = list(filter(None, args))
+    args = collect_child_expressions(ctx)
 
     if len(args) > 0:
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single child used for assignment")
@@ -121,14 +98,9 @@ def pil_access_local(ctx: MacroContext):
 def local(ctx: MacroContext):
     args = ctx.compiler.get_metadata(ctx.node, Args)
     name, _ = cut(args, " ") # TODO assert one arg
-    args: list[str | None] = []
-    if len(ctx.node.children) > 0:
-        # ctx.compiler.assert_(len(ctx.node.children) == 1, ctx.node, "single child, the value") TODO!
-        for child in ctx.node.children:
-            e = IndentedStringIO()
-            ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-            args.append(e.getvalue())
-    args = list(filter(None, args))
+    
+    args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
+    
     ctx.statement_out.write(f"let {name}")
     if len(args) > 0:
         ctx.statement_out.write(f" = {args[-1]}")
@@ -186,13 +158,10 @@ class PIL_call:
             args1 = args_str.split(" ")
             ident = ctx.compiler.get_new_ident("_".join(args1))
             convention = self.resolve_convention(ctx)
-            args: list[str | None] = []
-            for child in ctx.node.children:
-                e = IndentedStringIO()
-                ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
-                args.append(e.getvalue())
+            
+            args = collect_child_expressions(ctx)
 
-            call = convention.compile([a for a in args if a])
+            call = convention.compile(args)
 
             ctx.statement_out.write(f"const {ident} = await {call}\n")
             ctx.expression_out.write(ident)

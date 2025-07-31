@@ -1,0 +1,16 @@
+[
+  {
+    "recoverable": false,
+    "line": 2,
+    "char": 0,
+    "content": "for i in",
+    "error": "failed to assert: expected 'do' after 'for' but found ''"
+  },
+  {
+    "recoverable": false,
+    "line": 2,
+    "char": 0,
+    "content": "for i in",
+    "error": "failed to assert: must have a single argument, the list provider"
+  }
+]

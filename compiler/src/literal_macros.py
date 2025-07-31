@@ -5,6 +5,7 @@ from strutil import IndentedStringIO, cut
 from contextlib import contextmanager
 from utils import *
 from node import Macro, Args
+from logger import default_logger
 
 # Legacy registries - will be moved into steps
 macros = unified_macros  # Use unified registry
@@ -97,10 +98,13 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         from processor_base import ERASED_NODE
         
         if ctx.node == ERASED_NODE:
+            default_logger.codegen("skipping erased node")
             return
             
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_macros = self.macros.all()
+        
+        default_logger.codegen(f"emitting JavaScript for macro: {macro}")
 
         # --- cursed Python begins ---
 
@@ -110,12 +114,14 @@ class JavaScriptEmissionStep(MacroProcessingStep):
             yield ctx
 
         if ctx.node.content == "PIL:solution":
+            default_logger.codegen("wrapping solution in JavaScript runtime setup")
             @contextmanager
             def definitely_wrapped(ctx: MacroContext):
                 out = IndentedStringIO()
                 out.write(js_lib + "\n\n")
                 # need to wrap this crap in async because browsers are GARBAGE 
                 # (top level await only in modules? why?!)
+                default_logger.codegen("adding async wrapper for browser compatibility")
                 out.write("void (async () => {\n")
                 with out:
                     out.write("'use strict';\n")
@@ -123,13 +129,16 @@ class JavaScriptEmissionStep(MacroProcessingStep):
                     yield replace(ctx, statement_out=out, expression_out=out)
                 out.write("\n})();")
                 ctx.compiler._js_output = out.getvalue()
+                default_logger.codegen(f"JavaScript output generated: {len(out.getvalue())} characters")
             possibly_wrapped = definitely_wrapped
 
         # --- cursed Python ends ---
 
         with possibly_wrapped(ctx) as ctx:
             if macro in all_macros:
+                default_logger.codegen(f"applying JavaScript emission macro: {macro}")
                 with ctx.compiler.safely:
                     all_macros[macro](ctx)
             else:
+                default_logger.codegen(f"ERROR: unknown macro {macro}")
                 raise ValueError(f"TODO. unknown macro {macro}")
