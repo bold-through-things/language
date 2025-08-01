@@ -45,7 +45,7 @@ do
 			a zip
 		do
 			a row key
-				substituting key
+				where key is
 					a kv 0
 				a kv 1
 		

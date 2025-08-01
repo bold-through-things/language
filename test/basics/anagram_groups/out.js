@@ -1,7 +1,6 @@
 globalThis.indentifire = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
-    either: (...arr) => arr.reduce((sum, a) => sum || a, false),
     any: (...arr) => arr.reduce((sum, a) => sum || a, false),
     all: (...arr) => arr.reduce((sum, a) => sum && a, true),
     asc: (...arr) => arr.every((v, i, a) => !i || a[i - 1] <= v), // who let bro cook? https://stackoverflow.com/a/53833620

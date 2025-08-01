@@ -35,7 +35,7 @@ do
 			list
 	
 	a modules id
-		substituting id
+		where id is
 			a module id
 		a module
 
@@ -104,7 +104,7 @@ do
 		else
 			a visit
 				a modules id
-					substituting id
+					where id is
 						a dep_id
 				a next_chain
 
