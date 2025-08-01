@@ -17,6 +17,14 @@ def does_not_compile(_):
     pass
 
 COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
+
+# Create a code linking registry for skipping comment macros  
+code_linking = MacroRegistry()
+@code_linking.add(*COMMENT_MACROS)
+def skip_comment_macro(_):
+    # comment macros are skipped during code linking
+    pass
+
 @macros.add(*COMMENT_MACROS)
 @typecheck.add(*COMMENT_MACROS)
 def comments(_):
@@ -25,13 +33,11 @@ def comments(_):
 
 @macros.add("must_compile_error")
 def must_compile_error_processing(ctx: MacroContext):
-    # Don't output anything for must_compile_error blocks
-    # The errors have already been generated during type checking
-    pass
-
-@typecheck.add("must_compile_error")
-def must_compile_error_typecheck(ctx: MacroContext):
-    # Process children to generate expected errors during type checking
+    # Process children to catch emission-time errors but prevent JS output
+    original_statement_out = ctx.statement_out
+    original_expression_out = ctx.expression_out
+    ctx = replace(ctx, statement_out=IndentedStringIO(), expression_out=IndentedStringIO())
+    
     for child in ctx.node.children:
         child_ctx = replace(ctx, node=child)
         ctx.current_step.process_node(child_ctx)

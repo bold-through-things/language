@@ -9,15 +9,8 @@ from strutil import cut
 # Legacy registries - will be moved into steps
 preprocessor = MacroRegistry()
 
-# Add comment macros to preprocessor registry
-COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
-
-# Create a code linking registry for skipping comment macros
-code_linking = MacroRegistry()
-@code_linking.add(*COMMENT_MACROS)
-def skip_comment_macro(_):
-    # comment macros are skipped during code linking
-    pass
+# Import comment macros from literal_macros to avoid duplication
+from literal_macros import COMMENT_MACROS
 
 @preprocessor.add(*COMMENT_MACROS)
 def comments(_):
@@ -195,8 +188,9 @@ class PreprocessingStep(MacroProcessingStep):
         
         # Initialize singletons to register macros
         ParamMacro()
-        AccessMacro()
+        AccessMacro() 
         MustCompileErrorMacro()
+        # These singleton calls are needed for macro registration
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""
