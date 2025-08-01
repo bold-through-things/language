@@ -13,6 +13,14 @@ local my_number
 local my_string
 	string "hello world"
 
+# special string delimiters for escaping  
+local my_scary_string
+	string |error!|
+local my_string_with_quotes
+	string |hello there world|
+local new_years
+	string |level up|
+
 # multiline strings
 local multiline_text
 	string
@@ -50,6 +58,15 @@ print
 	string "hello world"
 
 print
+	a my_scary_string
+
+print
+	a my_string_with_quotes
+
+print
+	a new_years
+
+print
 	a greeting
 
 note conditional logic
@@ -69,6 +86,7 @@ else
 note loops and iteration
 	for loops iterate over collections
 
+# note: list semantics should be supported but aren't yet - currently just compiles to []
 local numbers
 	list
 		int 1
@@ -93,8 +111,9 @@ a person key
 		string "name"
 	string "bob"
 
-a person key
-	where key is
+# the syntax is forever flexible indeed - you can use "field" instead of "key":
+a person data_we_would_like_to_store
+	where data_we_would_like_to_store is
 		string "age"
 	int 30
 
@@ -105,7 +124,7 @@ print
 			string "name"
 
 note string operations
-	various string manipulation functions
+	various string manipulation functions including regex support
 
 local text
 	string "hello world"
@@ -126,6 +145,16 @@ local rejoined
 print
 	a rejoined
 
+# this beauty demonstrates method chaining:
+local word
+	string "hello"
+local key
+	a word split sort join
+		where split takes
+			string ""
+		where join takes
+			string ""
+
 note built-in functions
 	comprehensive list of available built-in functions
 
@@ -145,7 +174,6 @@ print
 	add
 		int 10
 		int 5
-
 print
 	mod
 		int 10

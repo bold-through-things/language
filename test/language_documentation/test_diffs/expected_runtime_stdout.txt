@@ -1,7 +1,7 @@
 hello world
-error!
-hello there world
-level up
+error
+hello "world"
+level
 hello alice
 number is 42
 bob
