@@ -8,9 +8,24 @@ import os
 import sys
 import traceback
 from typing import Any, TextIO
+from logger import configure_logger_from_args, default_logger
+
+# Parse args first to configure logging before any macro registrations
+parser = argparse.ArgumentParser()
+parser.add_argument('input_dir')
+parser.add_argument('output_file')
+parser.add_argument('--errors-file', help="will output compilation errors and warnings (as JSON) into this file if specified")
+parser.add_argument('--log', help="comma-separated list of log tags to enable (e.g., 'typecheck,macro'). omit to disable all logging.")
+parser.add_argument('--expand', action='store_true', help="compile in two-step mode: .ind → .ind.expanded → .js")
+
+args = parser.parse_args()
+
+# configure logging based on command line args BEFORE importing modules that register macros
+configure_logger_from_args(args.log)
+
+# Now import modules that register macros (these will respect the logging configuration)
 from tree_parser import TreeParser
 from compiler import Compiler
-from logger import configure_logger_from_args, default_logger
 
 def human_readable(inspections: list[dict[str, Any]]) -> None:
     for i, entry in enumerate(reversed(inspections), 1):
@@ -25,17 +40,7 @@ def write_json(inspections: list[dict[str, Any]], output: TextIO) -> None:
     output.write('\n')
     output.flush()
 
-parser = argparse.ArgumentParser()
-parser.add_argument('input_dir')
-parser.add_argument('output_file')
-parser.add_argument('--errors-file', help="will output compilation errors and warnings (as JSON) into this file if specified")
-parser.add_argument('--log', help="comma-separated list of log tags to enable (e.g., 'typecheck,macro'). omit to disable all logging.")
-parser.add_argument('--expand', action='store_true', help="compile in two-step mode: .ind → .ind.expanded → .js")
 
-args = parser.parse_args()
-
-# configure logging based on command line args
-configure_logger_from_args(args.log)
 
 default_logger.compile("starting compilation process")
 with default_logger.indent("compile", "initialization"):

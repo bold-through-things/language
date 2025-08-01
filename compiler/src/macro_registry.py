@@ -34,7 +34,7 @@ class MacroRegistry:
             for name in names:
                 if name in self._registry:
                     raise ValueError(f"Macro name '{name}' already registered")
-                default_logger.log("registry", f"registering macro '{name}' -> {obj.__name__ if hasattr(obj, '__name__') else obj}")
+                default_logger.registry(f"registering macro '{name}' -> {obj.__name__ if hasattr(obj, '__name__') else obj}")
                 self._registry[name] = instance
             return obj
         return decorator
