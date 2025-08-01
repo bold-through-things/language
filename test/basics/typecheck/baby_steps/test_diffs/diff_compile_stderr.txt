@@ -1,0 +1,80 @@
+--- expected_compile_stderr+++ actual_compile_stderr@@ -4,62 +4,71 @@     "line": 25,
+     "char": 0,
+     "content": "local test",
+-    "error": "failed to assert: field demands int but is given str"
++    "error": "failed to assert: field demands int but is given str",
++    "error_type": "FIELD_TYPE_MISMATCH"
+   },
+   {
+     "recoverable": false,
+     "line": 30,
+     "char": 0,
+     "content": "local test_str",
+-    "error": "failed to assert: field demands str but is given None"
++    "error": "failed to assert: field demands str but is given None",
++    "error_type": "MISSING_TYPE"
+   },
+   {
+     "recoverable": false,
+     "line": 34,
+     "char": 0,
+     "content": "local test_int",
+-    "error": "failed to assert: field demands int but is given str"
++    "error": "failed to assert: field demands int but is given str",
++    "error_type": "FIELD_TYPE_MISMATCH"
+   },
+   {
+     "recoverable": false,
+     "line": 38,
+     "char": 0,
+     "content": "PIL:access_local test_int",
+-    "error": "failed to assert: field demands int but is given str"
++    "error": "failed to assert: field demands int but is given str",
++    "error_type": "FIELD_TYPE_MISMATCH"
+   },
+   {
+     "recoverable": false,
+     "line": 42,
+     "char": 0,
+     "content": "PIL:access_local test_str",
+-    "error": "failed to assert: field demands str but is given int"
++    "error": "failed to assert: field demands str but is given int",
++    "error_type": "FIELD_TYPE_MISMATCH"
+   },
+   {
+     "recoverable": false,
+     "line": 45,
+     "char": 0,
+     "content": "local test_bool",
+-    "error": "failed to assert: field demands bool but is given str"
++    "error": "failed to assert: field demands bool but is given str",
++    "error_type": "FIELD_TYPE_MISMATCH"
+   },
+   {
+     "recoverable": false,
+     "line": 49,
+     "char": 0,
+     "content": "PIL:access_local test_bool",
+-    "error": "failed to assert: field demands bool but is given str"
++    "error": "failed to assert: field demands bool but is given str",
++    "error_type": "FIELD_TYPE_MISMATCH"
+   },
+   {
+     "recoverable": false,
+     "line": 52,
+     "char": 0,
+     "content": "PIL:call split",
+-    "error": "failed to assert: argument demands str and is given bool"
++    "error": "failed to assert: argument demands str and is given bool",
++    "error_type": "ARGUMENT_TYPE_MISMATCH"
+   },
+   {
+     "recoverable": false,
+     "line": 54,
+     "char": 0,
+     "content": "PIL:call split",
+-    "error": "failed to assert: argument demands str and is given list"
++    "error": "failed to assert: argument demands str and is given list",
++    "error_type": "ARGUMENT_TYPE_MISMATCH"
+   }
+ ]

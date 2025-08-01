@@ -11,6 +11,7 @@ from code_block_linking import CodeBlockLinkingStep
 from typecheck_macros import TypeCheckingStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
+from error_types import categorize_error_message
 
 # Import all macro modules to ensure registrations happen
 import literal_macros
@@ -108,14 +109,18 @@ class Compiler:
             self.compile_error(node, f"failed to assert: {message}")
             raise MacroAssertFailed(message)
 
-    def compile_error(self, node: Node, error: str):
+    def compile_error(self, node: Node, error: str, error_type: str = None):
+        """Add a compile error with automatic error type categorization."""
         pos = node.pos or Position(0, 0)
+        if error_type is None:
+            error_type = categorize_error_message(error)
         entry: dict[str, Any] = { # TODO dataclass
             "recoverable": False, # TODO
             "line": pos.line,
             "char": pos.char,
             "content": node.content,
-            "error": error
+            "error": error,
+            "error_type": error_type
         }
         self.compile_errors.append(entry)
 
