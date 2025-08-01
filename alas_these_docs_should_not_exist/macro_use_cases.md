@@ -2,6 +2,76 @@
 
 this document catalogs realistic macro use cases that could bring genuine value to production systems. each example demonstrates a specific pattern where macros excel at eliminating boilerplate, improving performance, or enabling domain-specific abstractions.
 
+## implementation status checklist
+
+use this index to track how our language currently supports these powerful patterns:
+
+### performance optimizations
+- [ ] logger guards for expensive operations
+  - [ ] builtin support - [ ] userspace support
+- [ ] memoization patterns  
+  - [ ] builtin support - [ ] userspace support
+
+### code generation and serialization
+- [ ] automatic serializers and deserializers
+  - [ ] builtin support - [ ] userspace support  
+- [ ] sql query builders
+  - [ ] builtin support - [ ] userspace support
+
+### boilerplate reduction
+- [ ] property accessors and builders
+  - [ ] builtin support - [ ] userspace support
+- [ ] visitor pattern implementation
+  - [ ] builtin support - [ ] userspace support
+
+### domain-specific languages  
+- [ ] html templating
+  - [ ] builtin support - [ ] userspace support
+- [ ] configuration dsls
+  - [ ] builtin support - [ ] userspace support
+
+### control flow abstractions
+- [ ] retry logic with backoff
+  - [ ] builtin support - [ ] userspace support
+- [ ] transaction patterns
+  - [ ] builtin support - [ ] userspace support
+
+### memory management and resource handling
+- [ ] raii patterns (resource acquisition is initialization)
+  - [ ] builtin support - [ ] userspace support
+- [ ] custom allocators and memory pools
+  - [ ] builtin support - [ ] userspace support
+
+### api patterns and middleware
+- [ ] decorators and middleware composition
+  - [ ] builtin support - [ ] userspace support
+- [ ] api client generation
+  - [ ] builtin support - [ ] userspace support
+
+### data structure manipulation
+- [ ] lens and optics for deep updates
+  - [ ] builtin support - [ ] userspace support
+- [ ] pattern matching and destructuring
+  - [ ] builtin support - [ ] userspace support
+
+### error handling patterns
+- [ ] result and option chaining
+  - [ ] builtin support - [ ] userspace support
+- [ ] error context and debugging
+  - [ ] builtin support - [ ] userspace support
+
+### testing utilities
+- [ ] property-based testing
+  - [ ] builtin support - [ ] userspace support
+- [ ] mock generation
+  - [ ] builtin support - [ ] userspace support
+
+### domain-specific optimizations
+- [ ] the "check if visited, mark if not" pattern
+  - [ ] builtin support - [ ] userspace support
+- [ ] state machine generation
+  - [ ] builtin support - [ ] userspace support
+
 ## performance optimizations
 
 ### logger guards for expensive operations
@@ -48,23 +118,38 @@ def fibonacci(n):
 ```
 
 **with macros:**
-```lisp
-;; Lisp - defmemoize macro automatically adds caching
-(defmemoize fibonacci (n)
-  (if (<= n 1)
-      n
-      (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))
+```nim
+# Nim - memoize macro automatically adds caching
+import macros, tables
 
-;; expands to create the cache and lookup logic automatically
-(let ((fibonacci-cache (make-hash-table)))
-  (defun fibonacci (n)
-    (let ((cached (gethash n fibonacci-cache)))
-      (if cached
-          cached
-          (setf (gethash n fibonacci-cache)
-                (if (<= n 1)
-                    n
-                    (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))))))
+macro memoize(procDef: untyped): untyped =
+  # extract procedure name and parameters
+  let procName = procDef[0]
+  let params = procDef[3]
+  let body = procDef[6]
+  
+  # generate cache variable name
+  let cacheName = ident($procName & "Cache")
+  
+  result = quote do:
+    var `cacheName` = initTable[typeof(`params`[1][1]), typeof((`body`))]()
+    
+    proc `procName`(`params`[1][1]: `params`[1][2]): auto =
+      if `params`[1][1] in `cacheName`:
+        return `cacheName`[`params`[1][1]]
+      
+      let result = block:
+        `body`
+      `cacheName`[`params`[1][1]] = result
+      return result
+
+# usage:
+memoize:
+  proc fibonacci(n: int): int =
+    if n <= 1: n
+    else: fibonacci(n-1) + fibonacci(n-2)
+
+# expands to create cache table and lookup logic automatically
 ```
 
 **value:** automatic optimization without cluttering the core algorithm logic.
@@ -145,18 +230,34 @@ def find_users(name=None, age_min=None, age_max=None):
 ```
 
 **with macros:**
-```lisp
-;; Lisp-style SQL DSL macro
-(defmacro sql-select (table &key where order-by limit)
-  `(execute-query 
-     ,(format nil "SELECT * FROM ~a~@[ WHERE ~a~]~@[ ORDER BY ~a~]~@[ LIMIT ~a~]"
-              table where order-by limit)))
+```nim
+# Nim - SQL DSL macro with compile-time query building
+import macros, strutils
 
-;; usage becomes declarative:
-(sql-select users 
-  :where "name LIKE ? AND age BETWEEN ? AND ?"
-  :order-by "created_at DESC"
-  :limit 10)
+macro sql(tableName: untyped, clauses: varargs[untyped]): untyped =
+  var query = "SELECT * FROM " & $tableName
+  var hasWhere = false
+  
+  for clause in clauses:
+    case $clause[0]:
+      of "where":
+        if not hasWhere:
+          query.add(" WHERE ")
+          hasWhere = true
+        query.add($clause[1])
+      of "orderBy":
+        query.add(" ORDER BY " & $clause[1])
+      of "limit":
+        query.add(" LIMIT " & $clause[1])
+  
+  result = quote do:
+    executeQuery(`query`)
+
+# usage becomes declarative and type-safe:
+sql(users, 
+    where("name LIKE ? AND age BETWEEN ? AND ?"),
+    orderBy("created_at DESC"),
+    limit("10"))
 ```
 
 **value:** type-safe query building with compile-time validation and injection protection.
@@ -276,26 +377,44 @@ class BinaryOpNode extends ASTNode {
 ```
 
 **with macros:**
-```lisp
-;; Lisp - macro generates visitor pattern automatically
-(defmacro define-visitable-hierarchy (base-class &rest node-types)
-  `(progn
-     ;; generate the visitor interface
-     (defgeneric visit (visitor node))
-     
-     ;; generate each node class with accept method
-     ,@(mapcar (lambda (node-type)
-                 `(defclass ,(first node-type) (,base-class)
-                    ,(second node-type)
-                    (:method accept (visitor)
-                      (visit visitor self))))
-               node-types)))
+```rust
+// Rust - procedural macro generates visitor pattern automatically
+use visitor_derive::Visitable;
 
-;; usage:
-(define-visitable-hierarchy ast-node
-  (number-node ((value :type integer)))
-  (string-node ((value :type string)))
-  (binary-op-node ((left :type ast-node) (right :type ast-node) (operator :type string))))
+#[derive(Visitable)]
+enum ASTNode {
+    Number { value: i32 },
+    String { value: String }, 
+    BinaryOp { left: Box<ASTNode>, right: Box<ASTNode>, operator: String },
+}
+
+// expands to generate:
+// trait Visitor<T> {
+//     fn visit_number(&mut self, node: &NumberNode) -> T;
+//     fn visit_string(&mut self, node: &StringNode) -> T;
+//     fn visit_binary_op(&mut self, node: &BinaryOpNode) -> T;
+// }
+//
+// impl ASTNode {
+//     fn accept<T>(&self, visitor: &mut dyn Visitor<T>) -> T {
+//         match self {
+//             ASTNode::Number { value } => visitor.visit_number(value),
+//             ASTNode::String { value } => visitor.visit_string(value),
+//             ASTNode::BinaryOp { left, right, operator } => 
+//                 visitor.visit_binary_op(left, right, operator),
+//         }
+//     }
+// }
+
+// usage:
+struct PrintVisitor;
+impl Visitor<String> for PrintVisitor {
+    fn visit_number(&mut self, value: &i32) -> String { value.to_string() }
+    fn visit_string(&mut self, value: &String) -> String { format!("\"{}\"", value) }
+    fn visit_binary_op(&mut self, left: &Box<ASTNode>, right: &Box<ASTNode>, op: &String) -> String {
+        format!("({} {} {})", left.accept(self), op, right.accept(self))
+    }
+}
 ```
 
 **value:** generates entire visitor hierarchies from declarative specifications.
@@ -325,28 +444,60 @@ def render_user_profile(user, posts):
 ```
 
 **with macros:**
-```lisp
-;; Lisp - HTML DSL macro with automatic escaping
-(defmacro html (&body body)
-  `(with-output-to-string (*standard-output*)
-     (generate-html ,@body)))
+```nim
+# Nim - HTML DSL macro with automatic escaping
+import macros, htmlgen, strutils
 
-(defmacro tag (name &optional attributes &body body)
-  `(progn
-     (format t "<~a~@[ ~a~]>" ',name (render-attributes ,attributes))
-     ,@body
-     (format t "</~a>" ',name)))
+macro html(body: untyped): untyped =
+  proc processNode(node: NimNode): NimNode =
+    case node.kind:
+      of nnkCall:
+        # handle tag calls like div(class="profile"): ...
+        let tagName = $node[0]
+        var attrs = ""
+        var children = newSeq[NimNode]()
+        
+        for i in 1..<node.len:
+          if node[i].kind == nnkExprEqExpr:
+            # attribute assignment
+            attrs.add(&" {$node[i][0]}=\"{$node[i][1]}\""")
+          else:
+            # child content
+            children.add(processNode(node[i]))
+        
+        result = quote do:
+          result.add("<" & `tagName` & `attrs` & ">")
+          `children`
+          result.add("</" & `tagName` & ">")
+      
+      of nnkStrLit:
+        result = quote do:
+          result.add(escapeHtml(`node`))
+      
+      else:
+        result = node
+    
+    result
+  
+  let processedBody = processNode(body)
+  
+  result = quote do:
+    var result = ""
+    `processedBody`
+    result
 
-;; usage:
-(html
-  (tag div ((class "profile"))
-    (tag h1 () (format t "~a" (escape-html (user-name user))))
-    (tag p () (format t "Age: ~a" (escape-html (user-age user))))
-    (tag div ((class "posts"))
-      (dolist (post posts)
-        (tag article ()
-          (tag h2 () (format t "~a" (escape-html (post-title post))))
-          (tag p () (format t "~a" (escape-html (post-content post)))))))))
+# usage:
+let userProfile = html:
+  div(class="profile"):
+    h1: user.name
+    p: "Age: " & $user.age 
+    div(class="posts"):
+      for post in posts:
+        article:
+          h2: post.title
+          p: post.content
+
+# generates type-safe HTML with automatic escaping
 ```
 
 **value:** type-safe HTML generation with automatic escaping and readable structure.
@@ -436,25 +587,31 @@ def call_api_with_retry(func, *args, **kwargs):
 ```
 
 **with macros:**
-```lisp
-;; Lisp - retry macro with configurable strategy
-(defmacro with-retry ((&key max-retries base-delay max-delay jitter) &body body)
-  (let ((attempt (gensym "attempt"))
-        (delay (gensym "delay")))
-    `(loop for ,attempt from 0 to ,max-retries
-           do (handler-case
-                  (return (progn ,@body))
-                (error (e)
-                  (when (= ,attempt ,max-retries)
-                    (error e))
-                  (let ((,delay (min (* ,base-delay (expt 2 ,attempt)) ,max-delay)))
-                    (when ,jitter
-                      (incf ,delay (* ,delay 0.1 (random 1.0))))
-                    (sleep ,delay)))))))
+```nim
+# Nim - retry macro with configurable strategy
+import macros, random, times
 
-;; usage:
-(with-retry (:max-retries 5 :base-delay 1.0 :max-delay 60.0 :jitter t)
-  (call-external-api user-id))
+macro withRetry(maxRetries: int, baseDelay: float, maxDelay: float, 
+                jitter: bool, body: untyped): untyped =
+  result = quote do:
+    block retryBlock:
+      for attempt in 0..`maxRetries`:
+        try:
+          break retryBlock:
+            `body`
+        except Exception as e:
+          if attempt == `maxRetries`:
+            raise e
+          
+          var delay = min(`baseDelay` * pow(2.0, float(attempt)), `maxDelay`)
+          when `jitter`:
+            delay += delay * 0.1 * rand(1.0)
+          
+          sleep(int(delay * 1000))
+
+# usage:
+withRetry(5, 1.0, 60.0, true):
+  callExternalApi(userId)
 ```
 
 **value:** reusable retry logic with customizable backoff strategies.
@@ -493,27 +650,39 @@ def transfer_money(from_account, to_account, amount):
 ```
 
 **with macros:**
-```lisp
-;; Lisp - transaction macro with automatic rollback
-(defmacro with-transaction ((connection) &body body)
-  `(let ((,connection (get-connection)))
-     (unwind-protect
-       (progn
-         (begin-transaction ,connection)
-         (prog1 (progn ,@body)
-           (commit-transaction ,connection)))
-       (when ,connection
-         (ignore-errors (rollback-transaction ,connection))
-         (close-connection ,connection)))))
+```nim
+# Nim - transaction macro with automatic rollback
+import macros
 
-;; usage:
-(with-transaction (conn)
-  (let ((from-balance (get-balance conn from-account)))
-    (when (< from-balance amount)
-      (error 'insufficient-funds))
-    (update-balance conn from-account (- from-balance amount))
-    (update-balance conn to-account (+ (get-balance conn to-account) amount))
-    (log-transaction conn from-account to-account amount)))
+macro withTransaction(connVar: untyped, body: untyped): untyped =
+  result = quote do:
+    let `connVar` = getConnection()
+    try:
+      beginTransaction(`connVar`)
+      let transactionResult = block:
+        `body`
+      commitTransaction(`connVar`)
+      transactionResult
+    except Exception as e:
+      try:
+        rollbackTransaction(`connVar`)
+      except:
+        discard  # ignore rollback errors
+      raise e
+    finally:
+      try:
+        closeConnection(`connVar`)
+      except:
+        discard  # ignore close errors
+
+# usage:
+withTransaction(conn):
+  let fromBalance = getBalance(conn, fromAccount)
+  if fromBalance < amount:
+    raise newException(InsufficientFundsError, "Not enough funds")
+  updateBalance(conn, fromAccount, fromBalance - amount)
+  updateBalance(conn, toAccount, getBalance(conn, toAccount) + amount)
+  logTransaction(conn, fromAccount, toAccount, amount)
 ```
 
 **value:** automatic resource management with guaranteed cleanup.
@@ -523,6 +692,14 @@ def transfer_money(from_account, to_account, amount):
 ### raii patterns (resource acquisition is initialization)
 
 **problem:** ensuring resources are properly cleaned up even when exceptions occur.
+
+**note:** while Python has context managers (`with` statements) and Java has try-with-resources, these approaches have limitations:
+- context managers require explicit `with` blocks for each resource
+- try-with-resources only works with `AutoCloseable` interfaces  
+- both require runtime overhead for resource tracking
+- async contexts complicate resource management significantly
+
+macros can provide zero-cost abstractions that work across sync/async boundaries and multiple resource types.
 
 **without macros:**
 ```cpp
@@ -591,6 +768,10 @@ macro_rules! with_resources {
 **with macros:**
 ```rust
 // Rust - arena allocator macro
+// NOTE: this must be a macro because it needs compile-time type information
+// ($type:ty) to generate the correct Layout and pointer casting at compile time.
+// A function cannot inspect or manipulate types - only macros can expand
+// based on type parameters and generate type-specific code.
 macro_rules! arena_allocate {
     ($arena:expr, $count:expr, $type:ty) => {
         {
@@ -669,14 +850,118 @@ fn get_user_profile(user_id: u64) -> UserProfile {
     expensive_profile_computation(user_id)
 }
 
-// expands to all the wrapper code automatically
+// expands to something like:
+fn get_user_profile_inner(user_id: u64) -> UserProfile {
+    expensive_profile_computation(user_id)
+}
+
+fn get_user_profile(user_id: u64) -> Result<UserProfile, ApiError> {
+    // authentication middleware (equivalent to Python's authenticate_user)
+    if !current_user().is_authenticated() {
+        return Err(ApiError::Unauthorized);
+    }
+    
+    // caching middleware  
+    let cache_key = format!("get_user_profile:{}", user_id);
+    if let Some(cached) = cache.get(&cache_key) {
+        return Ok(cached);
+    }
+    
+    // logging middleware
+    let start = std::time::Instant::now();
+    let result = match get_user_profile_inner(user_id) {
+        Ok(profile) => {
+            log::info!("API call get_user_profile succeeded in {:?}", start.elapsed());
+            Ok(profile)
+        }
+        Err(e) => {
+            log::error!("API call get_user_profile failed in {:?}: {}", start.elapsed(), e);
+            Err(e)
+        }
+    };
+    
+    // cache successful results
+    if let Ok(ref profile) = result {
+        cache.set(cache_key, profile.clone(), Duration::from_secs(300));
+    }
+    
+    result
+}
 ```
+
+**note:** while Python decorators can be combined (`@auth @log @cache`), this requires runtime function wrapping with performance overhead. the macro approach generates the middleware composition at compile time, eliminating runtime indirection.
 
 **value:** declarative middleware composition with compile-time validation.
 
 ### api client generation
 
 **problem:** writing HTTP client code for REST APIs is repetitive and error-prone.
+
+**without macros:**
+```java
+// Java - manual API client implementation (feel the pain!)
+public class GitHubApiClient {
+    private final String baseUrl;
+    private final String token;
+    private final HttpClient httpClient;
+    
+    public GitHubApiClient(String token) {
+        this.baseUrl = "https://api.github.com";
+        this.token = token;
+        this.httpClient = HttpClient.newHttpClient();
+    }
+    
+    public User getUser(String username) throws ApiException {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/users/" + username))
+                .header("Authorization", "Bearer " + token)
+                .header("Accept", "application/vnd.github.v3+json")
+                .GET()
+                .build();
+                
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            if (response.statusCode() >= 400) {
+                throw new ApiException("HTTP " + response.statusCode() + ": " + response.body());
+            }
+            
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(response.body(), User.class);
+        } catch (IOException | InterruptedException e) {
+            throw new ApiException("Request failed", e);
+        }
+    }
+    
+    public Issue createIssue(String owner, String repo, CreateIssue issueData) throws ApiException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonBody = mapper.writeValueAsString(issueData);
+            
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/repos/" + owner + "/" + repo + "/issues"))
+                .header("Authorization", "Bearer " + token)
+                .header("Accept", "application/vnd.github.v3+json")
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .build();
+                
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            if (response.statusCode() >= 400) {
+                throw new ApiException("HTTP " + response.statusCode() + ": " + response.body());
+            }
+            
+            return mapper.readValue(response.body(), Issue.class);
+        } catch (IOException | InterruptedException e) {
+            throw new ApiException("Request failed", e);
+        }
+    }
+    
+    // ... hundreds more methods for each API endpoint
+    // ... each with the same repetitive error handling, serialization, headers, etc.
+}
+```
 
 **with macros:**
 ```rust
@@ -965,6 +1250,14 @@ trait UserRepository {
     async fn delete_user(&self, id: u64) -> Result<(), Error>;
 }
 
+// the macro generates a complete MockUserRepository struct with:
+// - all trait methods implemented to record calls and return configured values
+// - expect_* methods for setting up call expectations (expect_get_user, expect_save_user, etc.)  
+// - with() methods for parameter matching
+// - returning() methods for configuring return values
+// - times() methods for call count verification
+// - automatic verification that all expectations were met
+
 // usage in tests:
 #[tokio::test]
 async fn test_user_service() {
@@ -1004,19 +1297,22 @@ def process_node(node):
 ```
 
 **with a macro:**
-```lisp
-;; Lisp - visited macro that combines check and mark
-(defmacro with-visited-check ((item visited-set) &body body)
-  `(unless (member ,item ,visited-set)
-     (push ,item ,visited-set)
-     ,@body))
+```nim
+# Nim - visited macro that combines check and mark
+import macros, sets
 
-;; usage:
-(defun process-node (node visited)
-  (with-visited-check (node visited)
-    ;; actual processing happens only if not visited
-    (dolist (child (node-children node))
-      (process-node child visited))))
+macro withVisitedCheck(item: untyped, visitedSet: untyped, body: untyped): untyped =
+  result = quote do:
+    if `item` notin `visitedSet`:
+      `visitedSet`.incl(`item`)
+      `body`
+
+# usage:
+proc processNode(node: Node, visited: var HashSet[int]) =
+  withVisitedCheck(node.id, visited):
+    # actual processing happens only if not visited
+    for child in node.children:
+      processNode(child, visited)
 ```
 
 **value:** eliminates a common source of bugs in graph traversal algorithms.
