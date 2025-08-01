@@ -2,7 +2,7 @@
 
 this here is a very neat and nonconforming programming language aimed at **getting shit done.** 
 
-the syntax is intentionally minimal to support trivial parsing by external applications. the official `parser.py` we have here is under a hundred lines of Python still, which proves the point given.
+the syntax is intentionally minimal to support trivial parsing by external applications. the official `tree_parser.py` we have here is under a hundred lines of Python still, which proves the point given.
 
 the current primary argument for this language existing hinges on the fact that no existing language covers all these bases:
 - focus on running in our browsers
@@ -11,19 +11,31 @@ the current primary argument for this language existing hinges on the fact that 
 
 ## tech
 
-the compiler is written in Python currently, though a likely bootstrap is on the horizon. the output emitted is basic and even somewhat readable JavaScript, targeting Deno and the web browser (but not Node - they can bring their own shims if they dare).
+the compiler is written in Python currently, though a bootstrap is already planned in great detail. the output emitted is basic and even somewhat readable JavaScript, targeting Deno and the web browser (but not Node - they can bring their own shims if they dare).
 
 ## style
 
 never add any `bash` scripts, that cursed thing deserves to be nuked immediately. leverage Python instead whenever possible. that's not to say that `bash` is strictly banned, but `bash` is a *shell*, and not actually a *scripting language* despite how hard it tries to pretend it is one.
 
-keep dependencies to a minimum. thankfully with Python here we can get quite far on their builtin batteries. dependencies always introduce supply chain vulnerabilities and we should keep the surface area minimal. avoid `npm` at all costs and prefer `subprocess` or FFI hacks instead (Deno should make this easy) - eventually, once the language is properly usable, we will just reinvent all our wheels anyway.
+keep dependencies to a minimum. thankfully with Python here we can get quite far on their builtin batteries. dependencies are to be considered SCAV (Supply Chain Attack Vectors) and we should keep the surface area minimal. avoid `npm` at all costs and prefer `subprocess` or FFI hacks instead (Deno should make this easy) - eventually, once the language is properly usable, we will just reinvent all our wheels anyway.
 
 remember to run the test suite to validate your changes: `./test.py`. it's a compiler - nothing, except tests, actually mattters. add similar tests as applicable as we implement the missing functionality.
 
 the compiler shall emit no warnings. there are only errors that we can and those we cannot recover from. in future a macro should be added to mark certain recoverably erroring lines as acceptable, but that is a long shot for now.
 
 important request here specifically for my beloved Copilot! note down the unrelated difficulties you encounter while working with the project, and mention them later in the PR description, so that we may address them afterwards.
+
+assertions must always be described as demands. bad:
+
+```
+self.assertTrue(output_file.exists(), "Output file was not created")
+```
+
+good:
+
+```
+self.assertTrue(output_file.exists(), "must create an output file")
+```
 
 ## vibe
 
@@ -49,3 +61,11 @@ with that all said, do try to fix such minor issues as these if you ever stumble
 the `./test.py` is our holy grail of deliverables. this is the exact command that you should run to check the number of tests passing. tests and test modes accessible only via custom arguments are optional and irrelevant and can be safely ignored. (of course only if the task itself doesn't specifically target them...)
 
 this repository religiously follows a "code as documentation" mindset. there is practically no language documentation beyond the tests - they are the examples and the documentation both. there are no commands listed in the `readme.md` or even here - run `./test.py --help` to find out the latest correct usage. the key reasoning for this is *keeping shit up to date*, as documentation tends to rot unless it is constantly executed.
+
+tests are dynamically discovered via `tests.json` files that Cartesian join the source code and the cases.
+
+**there is no backwards compatibility** yet. you seem quite eager to assert it. for whom? the language is barely usable as of now and is only used by the `test` folder. instead of asserting backwards compatibility, update the actual tests. **break this shit** because it isn't even close to being finalized.
+
+most file formats here support comments in one way or another. if you don't know how to address something, simply leave a comment nearby and you will be given guidance later during PR review.
+
+**the tests are our spec.** no matter what `.ind` you may find, unless it is discoverable via the `./test.py`, it has no say as to what the language syntax or semantics are. only the autotest sources define the language syntax.
