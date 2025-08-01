@@ -329,10 +329,19 @@ local another_number
 	a typed_number
 
 note type checking enforces type compatibility:
-	# this would fail: local bad_assignment
-	#	type str  
-	#	a typed_number
-	# error: field demands str but is given int
+	the following demonstrates errors that the type checker will catch
+
+must_compile_error FIELD_TYPE_MISMATCH=336
+	local bad_assignment
+		type str  
+		a typed_number
+
+# another common error: omitting the do block in loops
+must_compile_error EXPECTED_DO_AFTER=342
+	for num in
+		a numbers
+	print
+		a num
 
 print 
 	a typed_number

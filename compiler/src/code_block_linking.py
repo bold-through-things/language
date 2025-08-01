@@ -63,11 +63,11 @@ class CodeBlockLinkingStep(MacroProcessingStep):
         """Process code block associations for a node"""
         default_logger.codegen(f"processing code block linking for: {ctx.node.content}")
         
-        # Skip comment macros entirely
+        # Skip comment macros entirely using the shared registry
         from node import Macro
+        from preprocessing_macros import code_linking
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
-        COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
-        if macro in COMMENT_MACROS:
+        if macro in code_linking._registry:
             default_logger.codegen(f"skipping comment macro: {macro}")
             return
         

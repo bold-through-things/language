@@ -23,6 +23,19 @@ def comments(_):
     # comments are ignored. TODO - we could and perhaps should transfer comments to output?
     pass
 
+@macros.add("must_compile_error")
+def must_compile_error_processing(ctx: MacroContext):
+    # Don't output anything for must_compile_error blocks
+    # The errors have already been generated during type checking
+    pass
+
+@typecheck.add("must_compile_error")
+def must_compile_error_typecheck(ctx: MacroContext):
+    # Process children to generate expected errors during type checking
+    for child in ctx.node.children:
+        child_ctx = replace(ctx, node=child)
+        ctx.current_step.process_node(child_ctx)
+
 @macros.add("int")
 def int_macro(ctx: MacroContext):
     args = ctx.compiler.get_metadata(ctx.node, Args)

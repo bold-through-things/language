@@ -163,12 +163,17 @@ class Compiler:
             expected_errors = expectation['expected_errors']
             
             # Build a map of actual errors by line
-            # TODO: Support multiple compile errors from a single line (currently only stores one per line)
+            # Support multiple compile errors from a single line
             actual_errors_by_line = {}
             for error in self.compile_errors:
                 line = error["line"]
                 error_type = error.get("error_type", "UNKNOWN_ERROR")
-                actual_errors_by_line[line] = error_type
+                if line not in actual_errors_by_line:
+                    actual_errors_by_line[line] = []
+                actual_errors_by_line[line].append(error_type)
+            
+            # Track which errors were consumed by this expectation
+            consumed_error_lines = []
             
             # Check each expected error
             for expected_line, expected_type in expected_errors.items():
@@ -178,12 +183,23 @@ class Compiler:
                         f"expected {expected_type} error on line {expected_line} but no error found",
                         ErrorType.ASSERTION_FAILED
                     )
-                elif actual_errors_by_line[expected_line] != expected_type:
+                elif expected_type not in actual_errors_by_line[expected_line]:
                     self.compile_error(
                         node,
                         f"expected {expected_type} error on line {expected_line} but found {actual_errors_by_line[expected_line]}",
                         ErrorType.ASSERTION_FAILED
                     )
+                else:
+                    # Error matched, mark it for consumption
+                    consumed_error_lines.append(expected_line)
+            
+            # Remove consumed errors from compile_errors
+            # For now, remove all errors from consumed lines - this could be improved
+            # to only remove the specific error types that were expected
+            self.compile_errors = [
+                error for error in self.compile_errors 
+                if error["line"] not in consumed_error_lines
+            ]
 
     def __discover_macros(self, node: Node):
         # TODO lstring macros should perhaps get special handling here...

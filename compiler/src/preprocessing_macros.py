@@ -11,6 +11,14 @@ preprocessor = MacroRegistry()
 
 # Add comment macros to preprocessor registry
 COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
+
+# Create a code linking registry for skipping comment macros
+code_linking = MacroRegistry()
+@code_linking.add(*COMMENT_MACROS)
+def skip_comment_macro(_):
+    # comment macros are skipped during code linking
+    pass
+
 @preprocessor.add(*COMMENT_MACROS)
 def comments(_):
     # comments are ignored. TODO - we could and perhaps should transfer comments to output?
@@ -174,10 +182,8 @@ class MustCompileErrorMacro:
                 'expected_errors': expected_errors
             })
             
-            # Replace this node with an empty node so it doesn't affect output
-            parent = ctx.node.parent
-            if parent:
-                parent.replace_child(ctx.node, [])
+            # Don't replace this node during preprocessing - let it be processed by later steps
+            # to generate the expected errors, but mark it as a special node
 
 class PreprocessingStep(MacroProcessingStep):
     """Handles preprocessing like access macro unrolling"""
