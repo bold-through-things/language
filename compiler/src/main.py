@@ -32,7 +32,7 @@ def human_readable(inspections: list[dict[str, Any]]) -> None:
         out = StringIO()
         print(f"\n\n{i}:")
         for k, v in entry.items():
-            out.write(f"{k} = {v}")
+            out.write(f"{k} = {v}\n")
         print(out.getvalue())
 
 def write_json(inspections: list[dict[str, Any]], output: TextIO) -> None:

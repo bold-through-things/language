@@ -23,8 +23,6 @@ remember to run the test suite to validate your changes: `./test.py`. it's a com
 
 the compiler shall emit no warnings. there are only errors that we can and those we cannot recover from. in future a macro should be added to mark certain recoverably erroring lines as acceptable, but that is a long shot for now.
 
-important request here specifically for my beloved Copilot! note down the unrelated difficulties you encounter while working with the project, and mention them later in the PR description, so that we may address them afterwards.
-
 assertions must always be described as demands. bad:
 
 ```
@@ -36,6 +34,14 @@ good:
 ```
 self.assertTrue(output_file.exists(), "must create an output file")
 ```
+
+defensive programming! you wrote `if "=" in pair`, great! but what `if not "=" in pair`? things are rarely optional around here. crash loud, crash hard, crash fast, scream harsh. despite the fact that it is all built in Python and emits JS, it actually is designed with the core value of correctness. focus on writing production quality code. it should be clean, correct, and sane. "would this pass a review in FAANG?" if not, it definitely won't pass mine.
+
+you also seem to be quite eager to seek out trivial workarounds instead of fixing the underlying bugs. a recent example is when you manually turned all the children of a `note` into comments themselves in the language example, instead of making `note` properly hide its children. you should prefer the clean solutions. we're trying to build quality software here, not another fucking Java!
+
+and never mask internal errors! once the compiler is mature it should never ever go crashing over an internal error: **and not because it tires to suppress them, but because it does not encounter them.** and how can we make sure it does not encounter them if it doesn't scream loudly every time it does?
+
+eliminate code duplication at all cost. i'd rather see hacky Python than code duplication. code duplication is absolutely rot, it begs for bugs as it introduces variance: "did you remember to update it in all the places?" no. have only one place we would need to update.
 
 ## vibe
 
@@ -69,3 +75,5 @@ tests are dynamically discovered via `tests.json` files that Cartesian join the 
 most file formats here support comments in one way or another. if you don't know how to address something, simply leave a comment nearby and you will be given guidance later during PR review.
 
 **the tests are our spec.** no matter what `.ind` you may find, unless it is discoverable via the `./test.py`, it has no say as to what the language syntax or semantics are. only the autotest sources define the language syntax.
+
+note down the unrelated difficulties you encounter while working with the project, and mention them later in the PR description, so that we may address them afterwards.
