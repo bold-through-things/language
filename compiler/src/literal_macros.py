@@ -20,21 +20,30 @@ COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
 
 # Create a code linking registry for skipping comment macros  
 code_linking = MacroRegistry()
-@code_linking.add(*COMMENT_MACROS)
-def skip_comment_macro(_):
-    # comment macros are skipped during code linking
-    pass
 
+@code_linking.add(*COMMENT_MACROS)
 @macros.add(*COMMENT_MACROS)
 @typecheck.add(*COMMENT_MACROS)
 def comments(_):
-    # comments are ignored. TODO - we could and perhaps should transfer comments to output?
+    # comments are ignored during all processing steps. TODO - we could and perhaps should transfer comments to output?
     pass
+
+# Add preprocessing registration for comments - done separately to avoid circular imports
+def _register_comments_for_preprocessing():
+    """Register comments function for preprocessing step to avoid circular imports"""
+    try:
+        from preprocessing_macros import preprocessor
+        preprocessor.add(*COMMENT_MACROS)(comments)
+    except ImportError:
+        # Preprocessing not available during import time
+        pass
+
+_register_comments_for_preprocessing()
 
 @macros.add("must_compile_error")
 def must_compile_error_processing(ctx: MacroContext):
     # This macro is handled by MustCompileErrorVerificationStep
-    # During emission, we just skip it since verification already processed the children
+    # During emission, we skip it entirely since children were already processed during type checking
     pass
 
 

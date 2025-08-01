@@ -10,12 +10,7 @@ from strutil import cut
 preprocessor = MacroRegistry()
 
 # Import comment macros from literal_macros to avoid duplication
-from literal_macros import COMMENT_MACROS
-
-@preprocessor.add(*COMMENT_MACROS)
-def comments(_):
-    # comments are ignored. TODO - we could and perhaps should transfer comments to output?
-    pass
+from literal_macros import COMMENT_MACROS, code_linking
 
 # SubstitutingMacro and CallingMacro removed - now handled contextually in access macro
 
