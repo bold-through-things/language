@@ -133,7 +133,6 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-
             const _0x20__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
             let lines = _0x20__await_indentifire_0x2e_stdin_0x28_
             lines

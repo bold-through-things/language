@@ -1,0 +1,173 @@
+note language documentation and tutorial
+	this file serves as both documentation and an autotest for the language.
+	it demonstrates all available macros and language features.
+
+note basic data types and literals
+	the language supports several fundamental data types
+
+# integers
+local my_number
+	int 42
+
+# strings with delimiters  
+local my_string
+	string "hello world"
+
+# multiline strings
+local multiline_text
+	string
+		this is a multiline string
+		each indented line becomes part of the string
+		joined with newlines
+
+# other literals
+local my_true
+	true
+local my_false  
+	false
+local my_dict
+	dict
+local my_list
+	list
+
+note variables and locals
+	variables are declared with the local keyword
+
+# basic local declaration
+local name
+	string "alice"
+
+# accessing locals using 'a', 'an', or 'access'
+local greeting
+	concat
+		string "hello "
+		a name
+
+note output and basic functions
+	the print function outputs to stdout
+
+print
+	string "hello world"
+
+print
+	a greeting
+
+note conditional logic
+	if-then-else for branching
+
+if
+	eq
+		a my_number
+		int 42
+then
+	print
+		string "number is 42"
+else
+	print
+		string "number is not 42"
+
+note loops and iteration
+	for loops iterate over collections
+
+local numbers
+	list
+		int 1
+		int 2
+		int 3
+
+for num in
+	a numbers
+do
+	print
+		a num
+
+note data structures and access
+	working with lists and dictionaries
+
+local person
+	dict
+
+# setting fields - note: field access syntax needs to be carefully constructed
+a person key
+	where key is
+		string "name"
+	string "bob"
+
+a person key
+	where key is
+		string "age"
+	int 30
+
+# accessing fields
+print
+	a person key
+		where key is
+			string "name"
+
+note string operations
+	various string manipulation functions
+
+local text
+	string "hello world"
+
+# string splitting
+local words
+	a text split
+		string " "
+
+print
+	a words
+
+# string joining
+local rejoined
+	a words join
+		string "-"
+
+print
+	a rejoined
+
+note built-in functions
+	comprehensive list of available built-in functions
+
+# comparison functions
+print
+	eq
+		int 5
+		int 5
+
+print
+	asc
+		int 3
+		int 5
+
+# arithmetic
+print
+	add
+		int 10
+		int 5
+
+print
+	mod
+		int 10
+		int 3
+
+# logical operations
+print
+	all
+		true
+		false
+
+print
+	any
+		true
+		false
+
+print
+	none
+		false
+
+note final output
+	completing the documentation example
+
+print
+	string "documentation complete - all language features demonstrated"
