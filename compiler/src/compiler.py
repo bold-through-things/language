@@ -133,21 +133,62 @@ class Compiler:
         solution_node = self.make_node("PIL:solution", Position(0, 0), self.nodes or [])
             
         # Execute the processing pipeline
-        for step in self.processing_steps:
-            step_name = step.__class__.__name__
-            with default_logger.indent("compile", f"processing step: {step_name}"):
-                ctx = MacroContext(
-                    statement_out=StringIO(),  # dummy for non-emission steps
-                    expression_out=StringIO(),
-                    node=solution_node,
-                    compiler=self,
-                    current_step=step,
-                )
-                step.process_node(ctx)
+        try:
+            for step in self.processing_steps:
+                step_name = step.__class__.__name__
+                with default_logger.indent("compile", f"processing step: {step_name}"):
+                    ctx = MacroContext(
+                        statement_out=StringIO(),  # dummy for non-emission steps
+                        expression_out=StringIO(),
+                        node=solution_node,
+                        compiler=self,
+                        current_step=step,
+                    )
+                    step.process_node(ctx)
+        except Exception as e:
+            # Compilation crashed, but still verify must_compile_error expectations
+            pass
+        
+        # Verify must_compile_error expectations after compilation (or crash)
+        self._verify_must_compile_error_expectations()
         
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
+        
         return self._js_output
+
+    def _verify_must_compile_error_expectations(self):
+        """Verify that expected errors from must_compile_error macros occurred."""
+        if not hasattr(self, '_must_compile_error_expectations'):
+            return
+            
+        from error_types import ErrorType
+        
+        for expectation in self._must_compile_error_expectations:
+            node = expectation['node']
+            expected_errors = expectation['expected_errors']
+            
+            # Build a map of actual errors by line
+            actual_errors_by_line = {}
+            for error in self.compile_errors:
+                line = error["line"]
+                error_type = error.get("error_type", "UNKNOWN_ERROR")
+                actual_errors_by_line[line] = error_type
+            
+            # Check each expected error
+            for expected_line, expected_type in expected_errors.items():
+                if expected_line not in actual_errors_by_line:
+                    self.compile_error(
+                        node, 
+                        f"expected {expected_type} error on line {expected_line} but no error found",
+                        ErrorType.ASSERTION_FAILED
+                    )
+                elif actual_errors_by_line[expected_line] != expected_type:
+                    self.compile_error(
+                        node,
+                        f"expected {expected_type} error on line {expected_line} but found {actual_errors_by_line[expected_line]}",
+                        ErrorType.ASSERTION_FAILED
+                    )
 
     def __discover_macros(self, node: Node):
         # TODO lstring macros should perhaps get special handling here...
