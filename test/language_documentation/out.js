@@ -142,11 +142,11 @@ void (async () => {
             let my_string = "hello world"
             my_string
 
-            let my_scary_string = "error"
+            let my_scary_string = "error!"
             my_scary_string
-            let my_string_with_quotes = "hello "world""
+            let my_string_with_quotes = "hello there world"
             my_string_with_quotes
-            let new_years = "level"
+            let new_years = "level up"
             new_years
 
             let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines"
@@ -285,6 +285,8 @@ void (async () => {
             const _0x3b__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x13__rejoined)
             _0x3b__await_indentifire_0x2e_log_0x28_
 
+            let word = "hello"
+            word
             const _0x3c__word = await word
             let _0x14__word = _0x3c__word
             const _0x3e___0x14__word = await _0x14__word

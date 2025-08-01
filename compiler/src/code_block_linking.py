@@ -3,6 +3,7 @@ from processor_base import MacroProcessingStep
 from macro_registry import MacroContext
 from node import Node, Macro
 from logger import default_logger
+from error_types import ErrorType
 
 class CodeBlockAssociator:
     def __init__(self):
@@ -44,7 +45,12 @@ class CodeBlockAssociator:
                     node.replace_child(next_child, None)
                     current.append_child(next_child)
                 else:
-                    compiler.assert_(False, current, f"expected '{expected_next}' after '{current_macro}' but found '{next_macro}'")
+                    if expected_next == "do":
+                        compiler.assert_(False, current, f"expected '{expected_next}' after '{current_macro}' but found '{next_macro}'", ErrorType.EXPECTED_DO_AFTER)
+                    elif expected_next == "then":
+                        compiler.assert_(False, current, f"expected '{expected_next}' after '{current_macro}' but found '{next_macro}'", ErrorType.EXPECTED_THEN_AFTER)
+                    else:
+                        compiler.assert_(False, current, f"expected '{expected_next}' after '{current_macro}' but found '{next_macro}'", ErrorType.MISSING_BLOCK)
 
 class CodeBlockLinkingStep(MacroProcessingStep):
     """Handles linking code blocks to headers (e.g. do -> for)"""

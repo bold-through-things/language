@@ -104,10 +104,12 @@ class Compiler:
     def register(self, node: Node):
         self.nodes.append(node)
 
-    def assert_(self, must_be_true: bool, node: Node, message: str):
+    def assert_(self, must_be_true: bool, node: Node, message: str, error_type: str = None):
         if not must_be_true:
             from error_types import ErrorType
-            self.compile_error(node, f"failed to assert: {message}", ErrorType.ASSERTION_FAILED)
+            if error_type is None:
+                error_type = ErrorType.ASSERTION_FAILED
+            self.compile_error(node, f"failed to assert: {message}", error_type)
             raise MacroAssertFailed(message)
 
     def compile_error(self, node: Node, error: str, error_type: str):

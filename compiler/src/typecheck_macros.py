@@ -5,6 +5,7 @@ from strutil import cut
 from node import Node, Position, Scope, Args, Macro
 from common_utils import collect_child_types, process_children_with_context, get_single_arg
 from logger import default_logger
+from error_types import ErrorType
 
 # Legacy registries - will be moved into steps
 typecheck = unified_typecheck  # Use unified registry
@@ -23,9 +24,9 @@ def access_local(ctx: MacroContext):
     if demanded and demanded != "*":
         if len(types) > 0:
             # TODO - support multiple arguments
-            ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
+            ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)", ErrorType.WRONG_ARG_COUNT)
             received = types[0]
-            ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}")
+            ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
         default_logger.typecheck(f"{ctx.node.content} demanded {demanded}")
         return demanded or "*"
     return "*"
@@ -59,9 +60,9 @@ def local_typecheck(ctx: MacroContext):
     if demanded:
         if received is None:
             # If we have a demanded type but no received value, that's an error
-            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given None")
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given None", ErrorType.MISSING_TYPE)
         elif received not in {"*", demanded}:
-            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}")
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
     
     return demanded or received or "*"
 
@@ -85,9 +86,9 @@ def access_typecheck(ctx: MacroContext):
         demanded = resolved_field
         if len(types) > 0:
             # TODO - support multiple arguments
-            ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)")
+            ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)", ErrorType.WRONG_ARG_COUNT)
             received = types[0]
-            ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}")
+            ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
         return demanded
 
 SCOPE_MACRO = ["do", "then", "else", "PIL:file"]

@@ -5,7 +5,7 @@
     "char": 0,
     "content": "local test",
     "error": "failed to assert: field demands int but is given str",
-    "error_type": "ASSERTION_FAILED"
+    "error_type": "FIELD_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
@@ -13,7 +13,7 @@
     "char": 0,
     "content": "local test_str",
     "error": "failed to assert: field demands str but is given None",
-    "error_type": "ASSERTION_FAILED"
+    "error_type": "MISSING_TYPE"
   },
   {
     "recoverable": false,
@@ -21,7 +21,7 @@
     "char": 0,
     "content": "local test_int",
     "error": "failed to assert: field demands int but is given str",
-    "error_type": "ASSERTION_FAILED"
+    "error_type": "FIELD_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
@@ -29,7 +29,7 @@
     "char": 0,
     "content": "PIL:access_local test_int",
     "error": "failed to assert: field demands int but is given str",
-    "error_type": "ASSERTION_FAILED"
+    "error_type": "FIELD_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
@@ -37,7 +37,7 @@
     "char": 0,
     "content": "PIL:access_local test_str",
     "error": "failed to assert: field demands str but is given int",
-    "error_type": "ASSERTION_FAILED"
+    "error_type": "FIELD_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
@@ -45,7 +45,7 @@
     "char": 0,
     "content": "local test_bool",
     "error": "failed to assert: field demands bool but is given str",
-    "error_type": "ASSERTION_FAILED"
+    "error_type": "FIELD_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
@@ -53,7 +53,7 @@
     "char": 0,
     "content": "PIL:access_local test_bool",
     "error": "failed to assert: field demands bool but is given str",
-    "error_type": "ASSERTION_FAILED"
+    "error_type": "FIELD_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
