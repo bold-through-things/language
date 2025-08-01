@@ -10,6 +10,13 @@ from error_types import ErrorType
 # Legacy registries - will be moved into steps
 typecheck = unified_typecheck  # Use unified registry
 
+@typecheck.add("must_compile_error")
+def must_compile_error_typecheck(ctx: MacroContext):
+    # Process children to generate type errors during type checking step
+    for child in ctx.node.children:
+        child_ctx = replace(ctx, node=child)
+        ctx.current_step.process_node(child_ctx)
+
 @typecheck.add("PIL:access_local")
 def access_local(ctx: MacroContext):
     first = get_single_arg(ctx, "single argument, the name of local")

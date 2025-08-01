@@ -140,43 +140,7 @@ class AccessMacro:
             replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
             parent.replace_child(ctx.node, replace_with)
 
-@singleton
-class MustCompileErrorMacro:
-    def __init__(self):
-        @preprocessor.add("must_compile_error")
-        def _(ctx: MacroContext):
-            """Handle must_compile_error macro for testing expected compile errors."""
-            from error_types import ErrorType
-            
-            args = ctx.compiler.get_metadata(ctx.node, Args)
-            default_logger.macro(f"must_compile_error with args: '{args}'")
-            
-            # Parse expected errors from args: "ERROR_TYPE=line ERROR_TYPE2=line2"
-            expected_errors = {}
-            if not args.strip():
-                ctx.compiler.compile_error(ctx.node, "must_compile_error macro requires arguments in format ERROR_TYPE=line", ErrorType.INVALID_MACRO)
-                return
-                
-            for pair in args.split():
-                if "=" not in pair:
-                    ctx.compiler.compile_error(ctx.node, f"must_compile_error argument must contain '=': {pair}", ErrorType.INVALID_MACRO)
-                    return
-                error_type, line_str = pair.split("=", 1)
-                try:
-                    line_num = int(line_str)
-                    expected_errors[line_num] = error_type.strip()
-                except ValueError:
-                    ctx.compiler.compile_error(ctx.node, f"invalid line number in must_compile_error: {line_str}", ErrorType.INVALID_MACRO)
-                    return
-            
-            # Store the expected errors for later verification
-            ctx.compiler._must_compile_error_expectations.append({
-                'node': ctx.node,
-                'expected_errors': expected_errors
-            })
-            
-            # Don't replace this node during preprocessing - let it be processed by later steps
-            # to generate the expected errors, but mark it as a special node
+
 
 class PreprocessingStep(MacroProcessingStep):
     """Handles preprocessing like access macro unrolling"""
@@ -189,7 +153,6 @@ class PreprocessingStep(MacroProcessingStep):
         # Initialize singletons to register macros
         ParamMacro()
         AccessMacro() 
-        MustCompileErrorMacro()
         # These singleton calls are needed for macro registration
         
     def process_node(self, ctx: MacroContext) -> None:

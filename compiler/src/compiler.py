@@ -29,7 +29,6 @@ class Compiler:
         self.incremental_id = 0
         self.compile_errors: list[dict[str, Any]] = []
         self._js_output: str = ""
-        self._must_compile_error_expectations: list[dict[str, Any]] = []
         
         # Metadata tracking system to replace TypeMap
         self._node_metadata: dict[int, dict[type, Any]] = {}
