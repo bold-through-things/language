@@ -12,12 +12,12 @@ for word in
 	access words
 do
 	a count key
-		substituting key
+		where key is
 			a word
 		add
 			int 1
 			a count key
-				substituting key
+				where key is
 					a word
 
 print

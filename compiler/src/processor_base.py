@@ -149,7 +149,8 @@ builtins = {
     "is_tty": "is_tty",
     # TODO - these ought to be static code instead of function calls...
     "concat": "concat",
-    "either": "either",
+    "any": "any",
+    "all": "all", 
     "eq": "eq",
     "asc": "asc",
     "add": "add",
@@ -194,9 +195,6 @@ builtin_calls = {
         PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
         PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
     ],
-
-     # TODO - NUKE ME the moment we get method overloading or union types!
-    "splitr": [PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list")],
 
     "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
     "slice": [PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list")],

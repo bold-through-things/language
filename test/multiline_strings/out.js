@@ -133,52 +133,11 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-            const _0xa__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
-            let input = _0xa__await_indentifire_0x2e_stdin_0x28_
-            input
-            const _0xb__input = await input
-            let _0x0__input = _0xb__input
-            const _0xd___0x0__input = await _0x0__input
-            const _0xc__split = await String.prototype.split.call(_0xd___0x0__input, "\n")
-            let _0x1__split = _0xc__split
-            let words = _0x1__split
-            words
-            let count = {}
-            count
-            const _0xe__words = await words
-            let _0x2__words = _0xe__words
-
-            const _0xf__iter = _0x2__words[Symbol.iterator]();
-            while (true) {
-                const { value, done } = _0xf__iter.next();
-                if (done) { break; }
-                let word = value;
-                {
-                    const parent_scope = scope
-                    {
-                        const scope = indentifire.scope(parent_scope)
-                        const _0x10__count = await count
-                        let _0x7__count = _0x10__count
-
-                        const _0x12__word = await word
-                        let _0x3__word = _0x12__word
-                        const _0x13__count = await count
-                        let _0x5__count = _0x13__count
-                        const _0x15__word = await word
-                        let _0x4__word = _0x15__word
-                        const _0x14___0x5__count = await _0x5__count[_0x4__word]
-                        let _0x6__key = _0x14___0x5__count
-                        const _0x16__await_indentifire_0x2e_add_0x28_ = await indentifire.add(1, _0x6__key)
-                        _0x7__count[_0x3__word] = _0x16__await_indentifire_0x2e_add_0x28_
-                        const _0x11___0x7__count = await _0x7__count[_0x3__word]
-                        let _0x8__key = _0x11___0x7__count
-                        _0x8__key
-                    }
-                } }
-            const _0x17__count = await count
-            let _0x9__count = _0x17__count
-            const _0x18__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x9__count)
-            _0x18__await_indentifire_0x2e_log_0x28_
+            "this is a statement-level multiline string.\nit should act like a comment - not produce any output."
+            const _0x0__await_indentifire_0x2e_log_0x28_ = await indentifire.log("this is an expression-level multiline string.\nit should produce a string value.")
+            _0x0__await_indentifire_0x2e_log_0x28_
+            const _0x1__await_indentifire_0x2e_log_0x28_ = await indentifire.log("hello world")
+            _0x1__await_indentifire_0x2e_log_0x28_
         }
     } 
 })();

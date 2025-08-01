@@ -26,17 +26,17 @@ else
 
 	a fizz_divisor
 		an input key
-			substituting key
+			where key is
 				int 0
 
 	a buzz_divisor
 		an input key
-			substituting key
+			where key is
 				int 1
 
 	an n
 		an input key
-			substituting key
+			where key is
 				int 2
 
 local i

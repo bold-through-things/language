@@ -1,0 +1,11 @@
+string
+	this is a statement-level multiline string.
+	it should act like a comment - not produce any output.
+
+print
+	string
+		this is an expression-level multiline string.
+		it should produce a string value.
+
+print
+	string "hello world"

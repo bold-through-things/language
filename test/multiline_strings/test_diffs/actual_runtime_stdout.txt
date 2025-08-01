@@ -1,0 +1,4 @@
+this is a multiline string.
+it should behave like a comment when used as a statement.
+but when used in expression context, it should produce a string value.
+hello world

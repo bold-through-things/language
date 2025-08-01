@@ -1,7 +1,8 @@
 globalThis.indentifire = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
-    either: (...arr) => arr.reduce((sum, a) => sum || a, false),
+    any: (...arr) => arr.reduce((sum, a) => sum || a, false),
+    all: (...arr) => arr.reduce((sum, a) => sum && a, true),
     asc: (...arr) => arr.every((v, i, a) => !i || a[i - 1] <= v), // who let bro cook? https://stackoverflow.com/a/53833620
     add: (...arr) => arr.reduce((sum, a) => sum + (a ?? 0), 0),
     mod: (...arr) => arr[0] % arr[1], // TODO - shouldn't be a binary operation (how?) TODO - ensure we're not ignoring inputs silently
@@ -192,9 +193,9 @@ void (async () => {
                         const _0x61__trim = await String.prototype.trim.call(_0x62___0xc__1)
                         let _0xd__trim = _0x61__trim
                         const _0x64___0xd__trim = await _0xd__trim
-                        const _0x63__splitr = await String.prototype.split.call(_0x64___0xd__trim, /\s+/)
-                        let _0xe__splitr = _0x63__splitr
-                        _0xf__module.deps = _0xe__splitr
+                        const _0x63__split = await String.prototype.split.call(_0x64___0xd__trim, /\s+/)
+                        let _0xe__split = _0x63__split
+                        _0xf__module.deps = _0xe__split
                         const _0x5e___0xf__module_deps = await _0xf__module.deps
                         let _0x10__deps = _0x5e___0xf__module_deps
                         _0x10__deps
