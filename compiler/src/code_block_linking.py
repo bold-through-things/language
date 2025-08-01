@@ -63,6 +63,14 @@ class CodeBlockLinkingStep(MacroProcessingStep):
         """Process code block associations for a node"""
         default_logger.codegen(f"processing code block linking for: {ctx.node.content}")
         
+        # Skip comment macros entirely
+        from node import Macro
+        macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
+        COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
+        if macro in COMMENT_MACROS:
+            default_logger.codegen(f"skipping comment macro: {macro}")
+            return
+        
         # Process children first
         with default_logger.indent("codegen", f"processing children of {ctx.node.content}"):
             for i, child in enumerate(ctx.node.children):

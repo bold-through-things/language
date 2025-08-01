@@ -10,14 +10,14 @@ local my_number
 	int 42
 
 note the approximate JS that it compiles to:
-	# let my_number = 42;
+	let my_number = 42;
 
 # strings with delimiters  
 local my_string
 	string "hello world"
 
 note the approximate JS that it compiles to:
-	# let my_string = "hello world";
+	let my_string = "hello world";
 
 # special string delimiters for escaping  
 local my_scary_string
@@ -26,8 +26,8 @@ local my_string_with_quotes
 	string .hello "world".
 
 note the approximate JS that it compiles to:
-	# let my_scary_string = "error";
-	# let my_string_with_quotes = "hello \"world\"";
+	let my_scary_string = "error";
+	let my_string_with_quotes = "hello \"world\"";
 
 # multiline strings
 local multiline_text
@@ -37,7 +37,7 @@ local multiline_text
 		joined with newlines
 
 note the approximate JS that it compiles to:
-	# let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines";
+	let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines";
 
 print
 	a multiline_text
@@ -53,10 +53,10 @@ local my_list
 	list
 
 note the approximate JS that it compiles to:
-	# let my_true = true;
-	# let my_false = false;
-	# let my_dict = {};
-	# let my_list = [];
+	let my_true = true;
+	let my_false = false;
+	let my_dict = {};
+	let my_list = [];
 
 print
 	a my_true
@@ -71,7 +71,7 @@ local name
 	string "alice"
 
 note the approximate JS that it compiles to:
-	# let name = "alice";
+	let name = "alice";
 
 # accessing locals using 'a', 'an', or 'access'
 local greeting
@@ -80,7 +80,7 @@ local greeting
 		a name
 
 note the approximate JS that it compiles to:
-	# let greeting = ("hello " + name);
+	let greeting = ("hello " + name);
 
 note output and basic functions
 	the print function outputs to stdout
@@ -91,7 +91,7 @@ print
 	string "as it is just an alias for Deno console.log"
 
 note the approximate JS that it compiles to:
-	# console.log("this will be", "concatenated with spaces i think", "as it is just an alias for Deno console.log");
+	console.log("this will be", "concatenated with spaces i think", "as it is just an alias for Deno console.log");
 
 print
 	a my_scary_string
@@ -104,9 +104,9 @@ print
 	string level
 
 note the approximate JS that it compiles to:
-	# console.log(my_scary_string);
-	# console.log(my_string_with_quotes);
-	# console.log("new year's ", "eve");
+	console.log(my_scary_string);
+	console.log(my_string_with_quotes);
+	console.log("new year's ", "eve");
 
 print
 	a greeting
@@ -126,11 +126,11 @@ else
 		string "number is not 42"
 
 note the approximate JS that it compiles to:
-	# if ((my_number == 42)) {
-	# 	console.log("number is 42");
-	# } else {
-	# 	console.log("number is not 42");
-	# }
+	if ((my_number == 42)) {
+		console.log("number is 42");
+	} else {
+		console.log("number is not 42");
+	}
 
 note loops and iteration
 	for loops iterate over collections
@@ -142,7 +142,7 @@ local numbers
 		int 3
 
 note the approximate JS that it compiles to:
-	# let numbers = [1, 2, 3];
+	let numbers = [1, 2, 3];
 
 for num in
 	a numbers
@@ -151,9 +151,9 @@ do
 		a num
 
 note the approximate JS that it compiles to:
-	# for (let num of numbers) {
-	# 	console.log(num);
-	# }
+	for (let num of numbers) {
+		console.log(num);
+	}
 
 note data structures and access
 	working with lists and dictionaries
@@ -162,7 +162,7 @@ local person
 	dict
 
 note the approximate JS that it compiles to:
-	# let person = {};
+	let person = {};
 
 # setting fields - note: field access syntax needs to be carefully constructed
 a person key
@@ -171,7 +171,7 @@ a person key
 	string "bob"
 
 note the approximate JS that it compiles to:
-	# person["name"] = "bob";
+	person["name"] = "bob";
 
 # the syntax is forever flexible indeed - you can use "field" instead of "key":
 a person data_we_would_like_to_store
@@ -180,7 +180,7 @@ a person data_we_would_like_to_store
 	int 30
 
 note the approximate JS that it compiles to:
-	# person["age"] = 30;
+	person["age"] = 30;
 
 # accessing fields
 print
@@ -194,8 +194,8 @@ print
 			string "age"
 
 note the approximate JS that it compiles to:
-	# console.log(person["name"]);
-	# console.log(person["age"]);
+	console.log(person["name"]);
+	console.log(person["age"]);
 
 note string operations
 	various string manipulation functions including regex support
@@ -212,9 +212,9 @@ print
 	a words
 
 note the approximate JS that it compiles to:
-	# let text = "hello world";
-	# let words = text.split(" ");
-	# console.log(words);
+	let text = "hello world";
+	let words = text.split(" ");
+	console.log(words);
 
 # string joining
 local rejoined
@@ -225,8 +225,8 @@ print
 	a rejoined
 
 note the approximate JS that it compiles to:
-	# let rejoined = words.join("-");
-	# console.log(rejoined);
+	let rejoined = words.join("-");
+	console.log(rejoined);
 
 # regex splitting (as used in order_of_dependencies)
 local input_with_spaces
@@ -239,9 +239,9 @@ print
 	a regex_words
 
 note the approximate JS that it compiles to:
-	# let input_with_spaces = "a  b   c";
-	# let regex_words = input_with_spaces.split(/\s+/);
-	# console.log(regex_words);
+	let input_with_spaces = "a  b   c";
+	let regex_words = input_with_spaces.split(/\s+/);
+	console.log(regex_words);
 
 # this beauty demonstrates method chaining:
 local word
@@ -257,14 +257,14 @@ print
 	a key
 
 note the approximate JS that it compiles to:
-	# let word = "hello";
-	# let key = word.split("").sort().join("");
-	# console.log(key);
+	let word = "hello";
+	let key = word.split("").sort().join("");
+	console.log(key);
 
 note built-in functions
 	comprehensive list of available built-in functions
 
-# comparison functions
+# comparison functions - these reduce all provided children, so you could compare 6 values at once
 print
 	eq
 		int 5
@@ -276,8 +276,8 @@ print
 		int 5
 
 note the approximate JS that it compiles to:
-	# console.log((5 == 5));
-	# console.log((3 < 5));
+	console.log((5 == 5));
+	console.log((3 < 5));
 
 # arithmetic
 print
@@ -290,10 +290,10 @@ print
 		int 3
 
 note the approximate JS that it compiles to:
-	# console.log((10 + 5));
-	# console.log((10 % 3));
+	console.log((10 + 5));
+	console.log((10 % 3));
 
-# logical operations
+# logical operations - all of these can handle multiple conditions
 print
 	all
 		true
@@ -309,6 +309,39 @@ print
 		false
 
 note the approximate JS that it compiles to:
-	# console.log((true && false));
-	# console.log((true || false));
-	# console.log((!false));
+	console.log((true && false));
+	console.log((true || false));
+	console.log((!false));
+
+# type checking - the language supports static type checking
+# you can specify types for local variables
+local typed_number
+	type int
+	int 42
+
+local typed_string
+	type str
+	string "hello"
+
+# accessing typed variables
+local another_number
+	type int
+	a typed_number
+
+note type checking enforces type compatibility:
+	# this would fail: local bad_assignment
+	#	type str  
+	#	a typed_number
+	# error: field demands str but is given int
+
+print 
+	a typed_number
+print
+	a typed_string
+
+note the approximate JS that it compiles to:
+	let typed_number = 42;
+	let typed_string = "hello";
+	let another_number = typed_number;
+	console.log(typed_number);
+	console.log(typed_string);

@@ -9,6 +9,13 @@ from strutil import cut
 # Legacy registries - will be moved into steps
 preprocessor = MacroRegistry()
 
+# Add comment macros to preprocessor registry
+COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
+@preprocessor.add(*COMMENT_MACROS)
+def comments(_):
+    # comments are ignored. TODO - we could and perhaps should transfer comments to output?
+    pass
+
 # SubstitutingMacro and CallingMacro removed - now handled contextually in access macro
 
 # inside macro removed - now handled contextually in exists macro
