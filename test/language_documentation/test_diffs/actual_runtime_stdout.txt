@@ -1,0 +1,28 @@
+this is a multiline string
+each indented line becomes part of the string
+joined with newlines
+true
+false
+hello world
+error
+hello "world"
+level
+hello alice
+number is 42
+1
+2
+3
+bob
+30
+[ "hello", "world" ]
+hello-world
+[ "a", "b", "c" ]
+ehllo
+true
+true
+15
+1
+false
+true
+true
+documentation complete - all language features demonstrated

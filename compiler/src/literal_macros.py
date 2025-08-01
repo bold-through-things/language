@@ -47,7 +47,7 @@ def str_macro(ctx: MacroContext):
         ctx.compiler.assert_(s.endswith(delim), ctx.node, "must be delimited on both sides with the same character")
         s = s.removeprefix(delim).removesuffix(delim)
     s = s.replace("\n", "\\n")
-    # TODO escape quotes as well...
+    s = s.replace('"', '\\"')  # escape quotes during JS string emission
     macro = ctx.compiler.get_metadata(ctx.node, Macro)
     sep = '"' if macro == "string" else "/"
     ctx.expression_out.write(f'{sep}{s}{sep}')
@@ -67,7 +67,6 @@ with scope:
         "break": "break",
         "continue": "continue",
         "dict": "{}",
-        "list": "[]",
         "return": "return"
     }
     @macros.add(*[k for k in literally.keys()])
@@ -75,6 +74,26 @@ with scope:
         # TODO. this isn't inherently expression_out... indeed most of these should be statement_out...
         macro = ctx.compiler.get_metadata(ctx.node, Macro)
         ctx.expression_out.write(literally[macro])
+
+@macros.add("list")
+def list_macro(ctx: MacroContext):
+    """Handle list macro - iterate all children, collect their expressions, emit [expr1, expr2, expr3...]"""
+    if not ctx.node.children:
+        ctx.expression_out.write("[]")
+        return
+    
+    expressions = []
+    for child in ctx.node.children:
+        from strutil import IndentedStringIO
+        expression_out = IndentedStringIO()
+        child_ctx = replace(ctx, node=child, expression_out=expression_out)
+        child_ctx.current_step.process_node(child_ctx)
+        # Get the expression output for this child
+        expr = expression_out.getvalue().strip()
+        if expr:
+            expressions.append(expr)
+    
+    ctx.expression_out.write(f"[{', '.join(expressions)}]")
 
 @macros.add(*[b for b in builtins.keys()])
 def builtin(ctx: MacroContext):

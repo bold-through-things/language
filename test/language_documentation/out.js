@@ -142,15 +142,19 @@ void (async () => {
             let my_string = "hello world"
             my_string
 
-            let my_scary_string = "error!"
+            let my_scary_string = "error"
             my_scary_string
-            let my_string_with_quotes = "hello there world"
+            let my_string_with_quotes = "hello \"world\""
             my_string_with_quotes
-            let new_years = "level up"
+            let new_years = "level"
             new_years
 
             let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines"
             multiline_text
+            const _0x21__multiline_text = await multiline_text
+            let _0x0__multiline_text = _0x21__multiline_text
+            const _0x22__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x0__multiline_text)
+            _0x22__await_indentifire_0x2e_log_0x28_
 
             let my_true = true
             my_true
@@ -160,174 +164,205 @@ void (async () => {
             my_dict
             let my_list = []
             my_list
+            const _0x23__my_true = await my_true
+            let _0x1__my_true = _0x23__my_true
+            const _0x24__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1__my_true)
+            _0x24__await_indentifire_0x2e_log_0x28_
+            const _0x25__my_false = await my_false
+            let _0x2__my_false = _0x25__my_false
+            const _0x26__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x2__my_false)
+            _0x26__await_indentifire_0x2e_log_0x28_
 
 
             let name = "alice"
             name
 
-            const _0x18__name = await name
-            let _0x0__name = _0x18__name
-            const _0x19__await_indentifire_0x2e_concat_0x28_ = await indentifire.concat("hello ", _0x0__name)
-            let greeting = _0x19__await_indentifire_0x2e_concat_0x28_
+            const _0x27__name = await name
+            let _0x3__name = _0x27__name
+            const _0x28__await_indentifire_0x2e_concat_0x28_ = await indentifire.concat("hello ", _0x3__name)
+            let greeting = _0x28__await_indentifire_0x2e_concat_0x28_
             greeting
 
-            const _0x1a__await_indentifire_0x2e_log_0x28_ = await indentifire.log("hello world")
-            _0x1a__await_indentifire_0x2e_log_0x28_
-            const _0x1b__my_scary_string = await my_scary_string
-            let _0x1__my_scary_string = _0x1b__my_scary_string
-            const _0x1c__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1__my_scary_string)
-            _0x1c__await_indentifire_0x2e_log_0x28_
-            const _0x1d__my_string_with_quotes = await my_string_with_quotes
-            let _0x2__my_string_with_quotes = _0x1d__my_string_with_quotes
-            const _0x1e__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x2__my_string_with_quotes)
-            _0x1e__await_indentifire_0x2e_log_0x28_
-            const _0x1f__new_years = await new_years
-            let _0x3__new_years = _0x1f__new_years
-            const _0x20__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x3__new_years)
-            _0x20__await_indentifire_0x2e_log_0x28_
-            const _0x21__greeting = await greeting
-            let _0x4__greeting = _0x21__greeting
-            const _0x22__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4__greeting)
-            _0x22__await_indentifire_0x2e_log_0x28_
+            const _0x29__await_indentifire_0x2e_log_0x28_ = await indentifire.log("hello world")
+            _0x29__await_indentifire_0x2e_log_0x28_
+            const _0x2a__my_scary_string = await my_scary_string
+            let _0x4__my_scary_string = _0x2a__my_scary_string
+            const _0x2b__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4__my_scary_string)
+            _0x2b__await_indentifire_0x2e_log_0x28_
+            const _0x2c__my_string_with_quotes = await my_string_with_quotes
+            let _0x5__my_string_with_quotes = _0x2c__my_string_with_quotes
+            const _0x2d__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x5__my_string_with_quotes)
+            _0x2d__await_indentifire_0x2e_log_0x28_
+            const _0x2e__new_years = await new_years
+            let _0x6__new_years = _0x2e__new_years
+            const _0x2f__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x6__new_years)
+            _0x2f__await_indentifire_0x2e_log_0x28_
+            const _0x30__greeting = await greeting
+            let _0x7__greeting = _0x30__greeting
+            const _0x31__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x7__greeting)
+            _0x31__await_indentifire_0x2e_log_0x28_
 
-            const _0x23__my_number = await my_number
-            let _0x5__my_number = _0x23__my_number
-            const _0x24__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x5__my_number, 42)
-            if (_0x24__await_indentifire_0x2e_eq_0x28_) {{
+            const _0x32__my_number = await my_number
+            let _0x8__my_number = _0x32__my_number
+            const _0x33__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x8__my_number, 42)
+            if (_0x33__await_indentifire_0x2e_eq_0x28_) {{
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        const _0x25__await_indentifire_0x2e_log_0x28_ = await indentifire.log("number is 42")
-                        _0x25__await_indentifire_0x2e_log_0x28_
+                        const _0x34__await_indentifire_0x2e_log_0x28_ = await indentifire.log("number is 42")
+                        _0x34__await_indentifire_0x2e_log_0x28_
                     }
                 } }
             else {
                 const parent_scope = scope
                 {
                     const scope = indentifire.scope(parent_scope)
-                    const _0x26__await_indentifire_0x2e_log_0x28_ = await indentifire.log("number is not 42")
-                    _0x26__await_indentifire_0x2e_log_0x28_
+                    const _0x35__await_indentifire_0x2e_log_0x28_ = await indentifire.log("number is not 42")
+                    _0x35__await_indentifire_0x2e_log_0x28_
                 }
             } 
 
 
-            let numbers = []
+            let numbers = [1, 2, 3]
             numbers
-            const _0x27__numbers = await numbers
-            let _0x6__numbers = _0x27__numbers
+            const _0x36__numbers = await numbers
+            let _0x9__numbers = _0x36__numbers
 
-            const _0x28__iter = _0x6__numbers[Symbol.iterator]();
+            const _0x37__iter = _0x9__numbers[Symbol.iterator]();
             while (true) {
-                const { value, done } = _0x28__iter.next();
+                const { value, done } = _0x37__iter.next();
                 if (done) { break; }
                 let num = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
-                        const _0x29__num = await num
-                        let _0x7__num = _0x29__num
-                        const _0x2a__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x7__num)
-                        _0x2a__await_indentifire_0x2e_log_0x28_
+                        const _0x38__num = await num
+                        let _0xa__num = _0x38__num
+                        const _0x39__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0xa__num)
+                        _0x39__await_indentifire_0x2e_log_0x28_
                     }
                 } }
 
             let person = {}
             person
 
-            const _0x2b__person = await person
-            let _0x8__person = _0x2b__person
+            const _0x3a__person = await person
+            let _0xb__person = _0x3a__person
 
-            _0x8__person["name"] = "bob"
-            const _0x2c___0x8__person = await _0x8__person["name"]
-            let _0x9__key = _0x2c___0x8__person
-            _0x9__key
+            _0xb__person["name"] = "bob"
+            const _0x3b___0xb__person = await _0xb__person["name"]
+            let _0xc__key = _0x3b___0xb__person
+            _0xc__key
 
-            const _0x2d__person = await person
-            let _0xa__person = _0x2d__person
+            const _0x3c__person = await person
+            let _0xd__person = _0x3c__person
 
-            _0xa__person["age"] = 30
-            const _0x2e___0xa__person = await _0xa__person["age"]
-            let _0xb__data_we_would_like_to_store = _0x2e___0xa__person
-            _0xb__data_we_would_like_to_store
+            _0xd__person["age"] = 30
+            const _0x3d___0xd__person = await _0xd__person["age"]
+            let _0xe__data_we_would_like_to_store = _0x3d___0xd__person
+            _0xe__data_we_would_like_to_store
 
-            const _0x2f__person = await person
-            let _0xc__person = _0x2f__person
-            const _0x30___0xc__person = await _0xc__person["name"]
-            let _0xd__key = _0x30___0xc__person
-            const _0x31__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0xd__key)
-            _0x31__await_indentifire_0x2e_log_0x28_
+            const _0x3e__person = await person
+            let _0xf__person = _0x3e__person
+            const _0x3f___0xf__person = await _0xf__person["name"]
+            let _0x10__key = _0x3f___0xf__person
+            const _0x40__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x10__key)
+            _0x40__await_indentifire_0x2e_log_0x28_
+            const _0x41__person = await person
+            let _0x11__person = _0x41__person
+            const _0x42___0x11__person = await _0x11__person["age"]
+            let _0x12__data_we_would_like_to_store = _0x42___0x11__person
+            const _0x43__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x12__data_we_would_like_to_store)
+            _0x43__await_indentifire_0x2e_log_0x28_
 
             let text = "hello world"
             text
 
-            const _0x32__text = await text
-            let _0xe__text = _0x32__text
-            const _0x34___0xe__text = await _0xe__text
-            const _0x33__split = await String.prototype.split.call(_0x34___0xe__text, " ")
-            let _0xf__split = _0x33__split
-            let words = _0xf__split
+            const _0x44__text = await text
+            let _0x13__text = _0x44__text
+            const _0x46___0x13__text = await _0x13__text
+            const _0x45__split = await String.prototype.split.call(_0x46___0x13__text, " ")
+            let _0x14__split = _0x45__split
+            let words = _0x14__split
             words
-            const _0x35__words = await words
-            let _0x10__words = _0x35__words
-            const _0x36__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x10__words)
-            _0x36__await_indentifire_0x2e_log_0x28_
+            const _0x47__words = await words
+            let _0x15__words = _0x47__words
+            const _0x48__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x15__words)
+            _0x48__await_indentifire_0x2e_log_0x28_
 
-            const _0x37__words = await words
-            let _0x11__words = _0x37__words
-            const _0x39___0x11__words = await _0x11__words
-            const _0x38__join = await Array.prototype.join.call(_0x39___0x11__words, "-")
-            let _0x12__join = _0x38__join
-            let rejoined = _0x12__join
+            const _0x49__words = await words
+            let _0x16__words = _0x49__words
+            const _0x4b___0x16__words = await _0x16__words
+            const _0x4a__join = await Array.prototype.join.call(_0x4b___0x16__words, "-")
+            let _0x17__join = _0x4a__join
+            let rejoined = _0x17__join
             rejoined
-            const _0x3a__rejoined = await rejoined
-            let _0x13__rejoined = _0x3a__rejoined
-            const _0x3b__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x13__rejoined)
-            _0x3b__await_indentifire_0x2e_log_0x28_
+            const _0x4c__rejoined = await rejoined
+            let _0x18__rejoined = _0x4c__rejoined
+            const _0x4d__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x18__rejoined)
+            _0x4d__await_indentifire_0x2e_log_0x28_
+
+            let input_with_spaces = "a  b   c"
+            input_with_spaces
+            const _0x4e__input_with_spaces = await input_with_spaces
+            let _0x19__input_with_spaces = _0x4e__input_with_spaces
+            const _0x50___0x19__input_with_spaces = await _0x19__input_with_spaces
+            const _0x4f__split = await String.prototype.split.call(_0x50___0x19__input_with_spaces, /\s+/)
+            let _0x1a__split = _0x4f__split
+            let regex_words = _0x1a__split
+            regex_words
+            const _0x51__regex_words = await regex_words
+            let _0x1b__regex_words = _0x51__regex_words
+            const _0x52__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1b__regex_words)
+            _0x52__await_indentifire_0x2e_log_0x28_
 
             let word = "hello"
             word
-            const _0x3c__word = await word
-            let _0x14__word = _0x3c__word
-            const _0x3e___0x14__word = await _0x14__word
-            const _0x3d__split = await String.prototype.split.call(_0x3e___0x14__word, "")
-            let _0x15__split = _0x3d__split
-            const _0x40___0x15__split = await _0x15__split
-            const _0x3f__sort = await Array.prototype.sort.call(_0x40___0x15__split)
-            let _0x16__sort = _0x3f__sort
-            const _0x42___0x16__sort = await _0x16__sort
-            const _0x41__join = await Array.prototype.join.call(_0x42___0x16__sort, "")
-            let _0x17__join = _0x41__join
-            let key = _0x17__join
+            const _0x53__word = await word
+            let _0x1c__word = _0x53__word
+            const _0x55___0x1c__word = await _0x1c__word
+            const _0x54__split = await String.prototype.split.call(_0x55___0x1c__word, "")
+            let _0x1d__split = _0x54__split
+            const _0x57___0x1d__split = await _0x1d__split
+            const _0x56__sort = await Array.prototype.sort.call(_0x57___0x1d__split)
+            let _0x1e__sort = _0x56__sort
+            const _0x59___0x1e__sort = await _0x1e__sort
+            const _0x58__join = await Array.prototype.join.call(_0x59___0x1e__sort, "")
+            let _0x1f__join = _0x58__join
+            let key = _0x1f__join
             key
+            const _0x5a__key = await key
+            let _0x20__key = _0x5a__key
+            const _0x5b__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x20__key)
+            _0x5b__await_indentifire_0x2e_log_0x28_
 
 
-            const _0x43__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(5, 5)
-            const _0x44__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x43__await_indentifire_0x2e_eq_0x28_)
-            _0x44__await_indentifire_0x2e_log_0x28_
-            const _0x45__await_indentifire_0x2e_asc_0x28_ = await indentifire.asc(3, 5)
-            const _0x46__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x45__await_indentifire_0x2e_asc_0x28_)
-            _0x46__await_indentifire_0x2e_log_0x28_
+            const _0x5c__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(5, 5)
+            const _0x5d__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x5c__await_indentifire_0x2e_eq_0x28_)
+            _0x5d__await_indentifire_0x2e_log_0x28_
+            const _0x5e__await_indentifire_0x2e_asc_0x28_ = await indentifire.asc(3, 5)
+            const _0x5f__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x5e__await_indentifire_0x2e_asc_0x28_)
+            _0x5f__await_indentifire_0x2e_log_0x28_
 
-            const _0x47__await_indentifire_0x2e_add_0x28_ = await indentifire.add(10, 5)
-            const _0x48__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x47__await_indentifire_0x2e_add_0x28_)
-            _0x48__await_indentifire_0x2e_log_0x28_
-            const _0x49__await_indentifire_0x2e_mod_0x28_ = await indentifire.mod(10, 3)
-            const _0x4a__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x49__await_indentifire_0x2e_mod_0x28_)
-            _0x4a__await_indentifire_0x2e_log_0x28_
+            const _0x60__await_indentifire_0x2e_add_0x28_ = await indentifire.add(10, 5)
+            const _0x61__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x60__await_indentifire_0x2e_add_0x28_)
+            _0x61__await_indentifire_0x2e_log_0x28_
+            const _0x62__await_indentifire_0x2e_mod_0x28_ = await indentifire.mod(10, 3)
+            const _0x63__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x62__await_indentifire_0x2e_mod_0x28_)
+            _0x63__await_indentifire_0x2e_log_0x28_
 
-            const _0x4b__await_indentifire_0x2e_all_0x28_ = await indentifire.all(true, false)
-            const _0x4c__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4b__await_indentifire_0x2e_all_0x28_)
-            _0x4c__await_indentifire_0x2e_log_0x28_
-            const _0x4d__await_indentifire_0x2e_any_0x28_ = await indentifire.any(true, false)
-            const _0x4e__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4d__await_indentifire_0x2e_any_0x28_)
-            _0x4e__await_indentifire_0x2e_log_0x28_
-            const _0x4f__await_indentifire_0x2e_none_0x28_ = await indentifire.none(false)
-            const _0x50__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4f__await_indentifire_0x2e_none_0x28_)
-            _0x50__await_indentifire_0x2e_log_0x28_
-
-            const _0x51__await_indentifire_0x2e_log_0x28_ = await indentifire.log("documentation complete - all language features demonstrated")
-            _0x51__await_indentifire_0x2e_log_0x28_
+            const _0x64__await_indentifire_0x2e_all_0x28_ = await indentifire.all(true, false)
+            const _0x65__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x64__await_indentifire_0x2e_all_0x28_)
+            _0x65__await_indentifire_0x2e_log_0x28_
+            const _0x66__await_indentifire_0x2e_any_0x28_ = await indentifire.any(true, false)
+            const _0x67__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x66__await_indentifire_0x2e_any_0x28_)
+            _0x67__await_indentifire_0x2e_log_0x28_
+            const _0x68__await_indentifire_0x2e_none_0x28_ = await indentifire.none(false)
+            const _0x69__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x68__await_indentifire_0x2e_none_0x28_)
+            _0x69__await_indentifire_0x2e_log_0x28_
+            const _0x6a__await_indentifire_0x2e_log_0x28_ = await indentifire.log("documentation complete - all language features demonstrated")
+            _0x6a__await_indentifire_0x2e_log_0x28_
         }
     } 
 })();

@@ -15,11 +15,11 @@ local my_string
 
 # special string delimiters for escaping  
 local my_scary_string
-	string |error!|
+	string !error!
 local my_string_with_quotes
-	string |hello there world|
+	string .hello "world".
 local new_years
-	string |level up|
+	string .level.
 
 # multiline strings
 local multiline_text
@@ -27,6 +27,9 @@ local multiline_text
 		this is a multiline string
 		each indented line becomes part of the string
 		joined with newlines
+
+print
+	a multiline_text
 
 # other literals
 local my_true
@@ -37,6 +40,11 @@ local my_dict
 	dict
 local my_list
 	list
+
+print
+	a my_true
+print
+	a my_false
 
 note variables and locals
 	variables are declared with the local keyword
@@ -123,6 +131,11 @@ print
 		where key is
 			string "name"
 
+print
+	a person data_we_would_like_to_store
+		where data_we_would_like_to_store is
+			string "age"
+
 note string operations
 	various string manipulation functions including regex support
 
@@ -145,6 +158,16 @@ local rejoined
 print
 	a rejoined
 
+# regex splitting (as used in order_of_dependencies)
+local input_with_spaces
+	string "a  b   c"
+local regex_words
+	a input_with_spaces split
+		regex /\s+/
+
+print
+	a regex_words
+
 # this beauty demonstrates method chaining:
 local word
 	string "hello"
@@ -154,6 +177,9 @@ local key
 			string ""
 		where join takes
 			string ""
+
+print
+	a key
 
 note built-in functions
 	comprehensive list of available built-in functions
@@ -193,9 +219,6 @@ print
 print
 	none
 		false
-
-note final output
-	completing the documentation example
 
 print
 	string "documentation complete - all language features demonstrated"
