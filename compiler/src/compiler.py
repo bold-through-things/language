@@ -11,7 +11,6 @@ from code_block_linking import CodeBlockLinkingStep
 from typecheck_macros import TypeCheckingStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
-from error_types import categorize_error_message
 
 # Import all macro modules to ensure registrations happen
 import literal_macros
@@ -29,6 +28,7 @@ class Compiler:
         self.incremental_id = 0
         self.compile_errors: list[dict[str, Any]] = []
         self._js_output: str = ""
+        self._must_compile_error_expectations: list[dict[str, Any]] = []
         
         # Metadata tracking system to replace TypeMap
         self._node_metadata: dict[int, dict[type, Any]] = {}
@@ -106,14 +106,13 @@ class Compiler:
 
     def assert_(self, must_be_true: bool, node: Node, message: str):
         if not must_be_true:
-            self.compile_error(node, f"failed to assert: {message}")
+            from error_types import ErrorType
+            self.compile_error(node, f"failed to assert: {message}", ErrorType.ASSERTION_FAILED)
             raise MacroAssertFailed(message)
 
-    def compile_error(self, node: Node, error: str, error_type: str = None):
-        """Add a compile error with automatic error type categorization."""
+    def compile_error(self, node: Node, error: str, error_type: str):
+        """Add a compile error with explicit error type."""
         pos = node.pos or Position(0, 0)
-        if error_type is None:
-            error_type = categorize_error_message(error)
         entry: dict[str, Any] = { # TODO dataclass
             "recoverable": False, # TODO
             "line": pos.line,
@@ -133,23 +132,19 @@ class Compiler:
         solution_node = self.make_node("PIL:solution", Position(0, 0), self.nodes or [])
             
         # Execute the processing pipeline
-        try:
-            for step in self.processing_steps:
-                step_name = step.__class__.__name__
-                with default_logger.indent("compile", f"processing step: {step_name}"):
-                    ctx = MacroContext(
-                        statement_out=StringIO(),  # dummy for non-emission steps
-                        expression_out=StringIO(),
-                        node=solution_node,
-                        compiler=self,
-                        current_step=step,
-                    )
-                    step.process_node(ctx)
-        except Exception as e:
-            # Compilation crashed, but still verify must_compile_error expectations
-            pass
+        for step in self.processing_steps:
+            step_name = step.__class__.__name__
+            with default_logger.indent("compile", f"processing step: {step_name}"):
+                ctx = MacroContext(
+                    statement_out=StringIO(),  # dummy for non-emission steps
+                    expression_out=StringIO(),
+                    node=solution_node,
+                    compiler=self,
+                    current_step=step,
+                )
+                step.process_node(ctx)
         
-        # Verify must_compile_error expectations after compilation (or crash)
+        # Verify must_compile_error expectations after compilation
         self._verify_must_compile_error_expectations()
         
         if len(self.compile_errors) != 0:
@@ -159,9 +154,6 @@ class Compiler:
 
     def _verify_must_compile_error_expectations(self):
         """Verify that expected errors from must_compile_error macros occurred."""
-        if not hasattr(self, '_must_compile_error_expectations'):
-            return
-            
         from error_types import ErrorType
         
         for expectation in self._must_compile_error_expectations:
@@ -169,6 +161,7 @@ class Compiler:
             expected_errors = expectation['expected_errors']
             
             # Build a map of actual errors by line
+            # TODO: Support multiple compile errors from a single line (currently only stores one per line)
             actual_errors_by_line = {}
             for error in self.compile_errors:
                 line = error["line"]

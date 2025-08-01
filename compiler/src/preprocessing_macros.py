@@ -145,38 +145,27 @@ class MustCompileErrorMacro:
             
             # Parse expected errors from args: "ERROR_TYPE=line ERROR_TYPE2=line2"
             expected_errors = {}
-            if args.strip():
-                for pair in args.split():
-                    if "=" in pair:
-                        error_type, line_str = pair.split("=", 1)
-                        try:
-                            line_num = int(line_str)
-                            expected_errors[line_num] = error_type.strip()
-                        except ValueError:
-                            ctx.compiler.compile_error(ctx.node, f"invalid line number in must_compile_error: {line_str}")
-                            return
+            if not args.strip():
+                ctx.compiler.compile_error(ctx.node, "must_compile_error macro requires arguments in format ERROR_TYPE=line", ErrorType.INVALID_MACRO)
+                return
+                
+            for pair in args.split():
+                if "=" not in pair:
+                    ctx.compiler.compile_error(ctx.node, f"must_compile_error argument must contain '=': {pair}", ErrorType.INVALID_MACRO)
+                    return
+                error_type, line_str = pair.split("=", 1)
+                try:
+                    line_num = int(line_str)
+                    expected_errors[line_num] = error_type.strip()
+                except ValueError:
+                    ctx.compiler.compile_error(ctx.node, f"invalid line number in must_compile_error: {line_str}", ErrorType.INVALID_MACRO)
+                    return
             
-            # Store the expected errors for later verification instead of processing now
-            if not hasattr(ctx.compiler, '_must_compile_error_expectations'):
-                ctx.compiler._must_compile_error_expectations = []
-            
+            # Store the expected errors for later verification
             ctx.compiler._must_compile_error_expectations.append({
                 'node': ctx.node,
                 'expected_errors': expected_errors
             })
-            
-            # Replace this node with an empty node so it doesn't affect output
-            parent = ctx.node.parent
-            if parent:
-                parent.replace_child(ctx.node, [])
-
-@singleton
-class NoteMacro:
-    def __init__(self):
-        @preprocessor.add("note")
-        def _(ctx: MacroContext):
-            """Handle note macro for documentation comments - these are ignored during compilation."""
-            default_logger.macro(f"note comment: {ctx.node.content}")
             
             # Replace this node with an empty node so it doesn't affect output
             parent = ctx.node.parent
@@ -195,7 +184,6 @@ class PreprocessingStep(MacroProcessingStep):
         ParamMacro()
         AccessMacro()
         MustCompileErrorMacro()
-        NoteMacro()
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""
