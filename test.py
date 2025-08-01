@@ -382,8 +382,29 @@ if __name__ == "__main__":
                 "contain the scawy dinosaurs into this workspace:\n curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
             )
     
+    # Add discovered tests
     for tc in discover_tests(args):
         setattr(MyLangTestCase, tc.name, make_test_method(tc, args))
+    
+    # Add silent compilation tests if they match the glob
+    import re
+    glob_filter = lambda x: True
+    if args.glob:
+        pattern = fnmatch.translate(f"**{args.glob}**")
+        glob_filter = re.compile(pattern).match
+    
+    # Check if silent compilation tests should be included
+    if glob_filter("test_silent_compilation"):
+        pass  # already defined as method
+    else:
+        print(f"ignoring `test_silent_compilation` per midglob `{args.glob}`")
+        delattr(MyLangTestCase, 'test_silent_compilation')
+        
+    if glob_filter("test_verbose_compilation"):
+        pass  # already defined as method  
+    else:
+        print(f"ignoring `test_verbose_compilation` per midglob `{args.glob}`")
+        delattr(MyLangTestCase, 'test_verbose_compilation')
     
     unittest.main()
 

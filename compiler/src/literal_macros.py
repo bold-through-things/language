@@ -36,17 +36,12 @@ def int_typecheck(ctx: MacroContext):
 def str_macro(ctx: MacroContext):
     s: str = ctx.compiler.get_metadata(ctx.node, Args)
     if len(s) == 0:
-        # multiline string case
-        if ctx.statement_out is ctx.expression_out:
-            # statement context - treat as comment (do nothing)
-            return
-        else:
-            # expression context - collect content from children
-            lines = []
-            for child in ctx.node.children:
-                if child.content:
-                    lines.append(child.content)
-            s = "\n".join(lines)
+        # multiline string case - collect content from children
+        lines = []
+        for child in ctx.node.children:
+            if child.content:
+                lines.append(child.content)
+        s = "\n".join(lines)
     else:
         delim = s[0]
         ctx.compiler.assert_(s.endswith(delim), ctx.node, "must be delimited on both sides with the same character")
