@@ -3,10 +3,10 @@ each indented line becomes part of the string
 joined with newlines
 true
 false
-hello world
+this will be concatenated with spaces i think as it is just an alias for Deno console.log
 error
 hello "world"
-level
+new year's  eve
 hello alice
 number is 42
 1
@@ -25,4 +25,3 @@ true
 false
 true
 true
-documentation complete - all language features demonstrated

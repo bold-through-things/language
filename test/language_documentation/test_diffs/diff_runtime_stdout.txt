@@ -1,19 +1,8 @@
---- expected_runtime_stdout+++ actual_runtime_stdout@@ -1,3 +1,8 @@+this is a multiline string
-+each indented line becomes part of the string
-+joined with newlines
-+true
-+false
- hello world
+--- expected_runtime_stdout+++ actual_runtime_stdout@@ -6,7 +6,7 @@ this will be concatenated with spaces i think as it is just an alias for Deno console.log
  error
  hello "world"
-@@ -8,9 +13,11 @@ 2
- 3
- bob
-+30
- [ "hello", "world" ]
- hello-world
- [ "a", "b", "c" ]
-+ehllo
- true
- true
- 15
+-new year's eve
++new year's  eve
+ hello alice
+ number is 42
+ 1

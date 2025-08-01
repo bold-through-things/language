@@ -82,17 +82,8 @@ def list_macro(ctx: MacroContext):
         ctx.expression_out.write("[]")
         return
     
-    expressions = []
-    for child in ctx.node.children:
-        from strutil import IndentedStringIO
-        expression_out = IndentedStringIO()
-        child_ctx = replace(ctx, node=child, expression_out=expression_out)
-        child_ctx.current_step.process_node(child_ctx)
-        # Get the expression output for this child
-        expr = expression_out.getvalue().strip()
-        if expr:
-            expressions.append(expr)
-    
+    from common_utils import collect_child_expressions
+    expressions = collect_child_expressions(ctx)
     ctx.expression_out.write(f"[{', '.join(expressions)}]")
 
 @macros.add(*[b for b in builtins.keys()])
