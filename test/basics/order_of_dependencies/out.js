@@ -194,9 +194,9 @@ void (async () => {
                         const _0x61__trim = await String.prototype.trim.call(_0x62___0xc__1)
                         let _0xd__trim = _0x61__trim
                         const _0x64___0xd__trim = await _0xd__trim
-                        const _0x63__splitr = await String.prototype.split.call(_0x64___0xd__trim, /\s+/)
-                        let _0xe__splitr = _0x63__splitr
-                        _0xf__module.deps = _0xe__splitr
+                        const _0x63__split = await String.prototype.split.call(_0x64___0xd__trim, /\s+/)
+                        let _0xe__split = _0x63__split
+                        _0xf__module.deps = _0xe__split
                         const _0x5e___0xf__module_deps = await _0xf__module.deps
                         let _0x10__deps = _0x5e___0xf__module_deps
                         _0x10__deps
