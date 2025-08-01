@@ -139,16 +139,20 @@ void (async () => {
             let my_number = 42
             my_number
 
+
             let my_string = "hello world"
             my_string
+
 
             let my_scary_string = "error"
             my_scary_string
             let my_string_with_quotes = "hello \"world\""
             my_string_with_quotes
 
+
             let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines"
             multiline_text
+
             const _0x20__multiline_text = await multiline_text
             let _0x0__multiline_text = _0x20__multiline_text
             const _0x21__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x0__multiline_text)
@@ -162,6 +166,7 @@ void (async () => {
             my_dict
             let my_list = []
             my_list
+
             const _0x22__my_true = await my_true
             let _0x1__my_true = _0x22__my_true
             const _0x23__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1__my_true)
@@ -175,14 +180,17 @@ void (async () => {
             let name = "alice"
             name
 
+
             const _0x26__name = await name
             let _0x3__name = _0x26__name
             const _0x27__await_indentifire_0x2e_concat_0x28_ = await indentifire.concat("hello ", _0x3__name)
             let greeting = _0x27__await_indentifire_0x2e_concat_0x28_
             greeting
 
+
             const _0x28__await_indentifire_0x2e_log_0x28_ = await indentifire.log("this will be", "concatenated with spaces i think", "as it is just an alias for Deno console.log")
             _0x28__await_indentifire_0x2e_log_0x28_
+
             const _0x29__my_scary_string = await my_scary_string
             let _0x4__my_scary_string = _0x29__my_scary_string
             const _0x2a__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4__my_scary_string)
@@ -193,6 +201,7 @@ void (async () => {
             _0x2c__await_indentifire_0x2e_log_0x28_
             const _0x2d__await_indentifire_0x2e_log_0x28_ = await indentifire.log("new year's ", "eve")
             _0x2d__await_indentifire_0x2e_log_0x28_
+
             const _0x2e__greeting = await greeting
             let _0x6__greeting = _0x2e__greeting
             const _0x2f__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x6__greeting)
@@ -221,6 +230,7 @@ void (async () => {
 
             let numbers = [1, 2, 3]
             numbers
+
             const _0x34__numbers = await numbers
             let _0x8__numbers = _0x34__numbers
 
@@ -240,8 +250,10 @@ void (async () => {
                     }
                 } }
 
+
             let person = {}
             person
+
 
             const _0x38__person = await person
             let _0xa__person = _0x38__person
@@ -251,6 +263,7 @@ void (async () => {
             let _0xb__key = _0x39___0xa__person
             _0xb__key
 
+
             const _0x3a__person = await person
             let _0xc__person = _0x3a__person
 
@@ -258,6 +271,7 @@ void (async () => {
             const _0x3b___0xc__person = await _0xc__person["age"]
             let _0xd__data_we_would_like_to_store = _0x3b___0xc__person
             _0xd__data_we_would_like_to_store
+
 
             const _0x3c__person = await person
             let _0xe__person = _0x3c__person
@@ -271,6 +285,7 @@ void (async () => {
             let _0x11__data_we_would_like_to_store = _0x40___0x10__person
             const _0x41__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x11__data_we_would_like_to_store)
             _0x41__await_indentifire_0x2e_log_0x28_
+
 
             let text = "hello world"
             text
@@ -287,6 +302,7 @@ void (async () => {
             const _0x46__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x14__words)
             _0x46__await_indentifire_0x2e_log_0x28_
 
+
             const _0x47__words = await words
             let _0x15__words = _0x47__words
             const _0x49___0x15__words = await _0x15__words
@@ -298,6 +314,7 @@ void (async () => {
             let _0x17__rejoined = _0x4a__rejoined
             const _0x4b__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x17__rejoined)
             _0x4b__await_indentifire_0x2e_log_0x28_
+
 
             let input_with_spaces = "a  b   c"
             input_with_spaces
@@ -312,6 +329,7 @@ void (async () => {
             let _0x1a__regex_words = _0x4f__regex_words
             const _0x50__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1a__regex_words)
             _0x50__await_indentifire_0x2e_log_0x28_
+
 
             let word = "hello"
             word
@@ -334,6 +352,7 @@ void (async () => {
             _0x59__await_indentifire_0x2e_log_0x28_
 
 
+
             const _0x5a__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(5, 5)
             const _0x5b__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x5a__await_indentifire_0x2e_eq_0x28_)
             _0x5b__await_indentifire_0x2e_log_0x28_
@@ -341,12 +360,14 @@ void (async () => {
             const _0x5d__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x5c__await_indentifire_0x2e_asc_0x28_)
             _0x5d__await_indentifire_0x2e_log_0x28_
 
+
             const _0x5e__await_indentifire_0x2e_add_0x28_ = await indentifire.add(10, 5)
             const _0x5f__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x5e__await_indentifire_0x2e_add_0x28_)
             _0x5f__await_indentifire_0x2e_log_0x28_
             const _0x60__await_indentifire_0x2e_mod_0x28_ = await indentifire.mod(10, 3)
             const _0x61__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x60__await_indentifire_0x2e_mod_0x28_)
             _0x61__await_indentifire_0x2e_log_0x28_
+
 
             const _0x62__await_indentifire_0x2e_all_0x28_ = await indentifire.all(true, false)
             const _0x63__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x62__await_indentifire_0x2e_all_0x28_)
@@ -357,6 +378,7 @@ void (async () => {
             const _0x66__await_indentifire_0x2e_none_0x28_ = await indentifire.none(false)
             const _0x67__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x66__await_indentifire_0x2e_none_0x28_)
             _0x67__await_indentifire_0x2e_log_0x28_
+
         }
     } 
 })();
