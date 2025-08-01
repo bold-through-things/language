@@ -2,7 +2,7 @@
 
 ## hybrid migration approach
 
-rather than rewriting from scratch, replace Python components incrementally:
+JSON bridge enables temporary coexistence - Python processes JSON, .ind processes JSON. compiler pipeline clean of ephemeral metadata makes this practical.
 
 1. **coexistence** - both compilers operational
 2. **component replacement** - migrate modules one by one  
@@ -14,9 +14,9 @@ rather than rewriting from scratch, replace Python components incrementally:
 current:  .ind → python parser → python macros → python types → python js → .js
 target:   .ind → lang parser → lang macros → lang types → lang js → .js
 
-phase 1:  .ind → python parser → python macros → python types → lang js → .js  
-phase 2:  .ind → python parser → python macros → lang types → lang js → .js
-phase 3:  .ind → python parser → lang macros → lang types → lang js → .js
+phase 1:  .ind → lang parser → python macros → python types → python js → .js  
+phase 2:  .ind → lang parser → lang macros → python types → python js → .js
+phase 3:  .ind → lang parser → lang macros → lang types → python js → .js
 phase 4:  .ind → lang parser → lang macros → lang types → lang js → .js
 ```
 
@@ -52,15 +52,9 @@ catch error
 ## development approach
 
 ### validation strategy
-- weekly testing with both compilers
-- byte-for-byte output comparison where possible
-- performance and memory monitoring
-- rollback on >5% test failures or >50% performance regression
-
-### compatibility guarantees
-- identical JavaScript output for deterministic cases
-- same error messages and locations
-- same command line interface
-- compatible with existing tooling
+- continuous integration by running `./test.py` on each PR  
+- configure `./test.py` to run each test with both old Python compiler and new hybrid
+- rollback on >0% test failures
+- same error messages and locations required for test compatibility
 
 **success metric:** compiler fully rewritten in .ind with all existing tests passing

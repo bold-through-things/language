@@ -40,14 +40,8 @@
 ## example programs that work
 
 ### fizzbuzz
-```
-local fizz_divisor
-local buzz_divisor  
-local n
+see `test/basics/fizzbuzz/main.ind`
 
-# ... input handling ...
-
-local i
 ## impressive capabilities already working
 
 ### real programs that compile and run
@@ -67,4 +61,4 @@ local i
 
 the language is already quite capable for complex algorithms, I/O, data manipulation, and has sophisticated macro/type systems. all 13 tests pass and real programs work.
 
-**key insight:** this is enough foundation to build a compiler - the gaps are infrastructure rather than fundamental language limitations.
+**key insight:** while technically sufficient, practical compiler development needs classes for better developer experience. gaps are primarily infrastructure and missing syntactic sugar.
