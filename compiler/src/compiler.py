@@ -9,6 +9,7 @@ from macro_registry import MacroContext
 from preprocessing_macros import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
+from must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
 
@@ -38,6 +39,7 @@ class Compiler:
             PreprocessingStep(),
             CodeBlockLinkingStep(), 
             TypeCheckingStep(),
+            MustCompileErrorVerificationStep(),
             JavaScriptEmissionStep()
         ]
 
@@ -146,60 +148,10 @@ class Compiler:
                 )
                 step.process_node(ctx)
         
-        # Verify must_compile_error expectations after compilation
-        self._verify_must_compile_error_expectations()
-        
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
         
         return self._js_output
-
-    def _verify_must_compile_error_expectations(self):
-        """Verify that expected errors from must_compile_error macros occurred."""
-        from error_types import ErrorType
-        
-        for expectation in self._must_compile_error_expectations:
-            node = expectation['node']
-            expected_errors = expectation['expected_errors']
-            
-            # Build a map of actual errors by line
-            # Support multiple compile errors from a single line
-            actual_errors_by_line = {}
-            for error in self.compile_errors:
-                line = error["line"]
-                error_type = error.get("error_type", "UNKNOWN_ERROR")
-                if line not in actual_errors_by_line:
-                    actual_errors_by_line[line] = []
-                actual_errors_by_line[line].append(error_type)
-            
-            # Track which errors were consumed by this expectation
-            consumed_error_lines = []
-            
-            # Check each expected error
-            for expected_line, expected_type in expected_errors.items():
-                if expected_line not in actual_errors_by_line:
-                    self.compile_error(
-                        node, 
-                        f"expected {expected_type} error on line {expected_line} but no error found",
-                        ErrorType.ASSERTION_FAILED
-                    )
-                elif expected_type not in actual_errors_by_line[expected_line]:
-                    self.compile_error(
-                        node,
-                        f"expected {expected_type} error on line {expected_line} but found {actual_errors_by_line[expected_line]}",
-                        ErrorType.ASSERTION_FAILED
-                    )
-                else:
-                    # Error matched, mark it for consumption
-                    consumed_error_lines.append(expected_line)
-            
-            # Remove consumed errors from compile_errors
-            # For now, remove all errors from consumed lines - this could be improved
-            # to only remove the specific error types that were expected
-            self.compile_errors = [
-                error for error in self.compile_errors 
-                if error["line"] not in consumed_error_lines
-            ]
 
     def __discover_macros(self, node: Node):
         # TODO lstring macros should perhaps get special handling here...

@@ -33,6 +33,12 @@ def comments(_):
 
 @macros.add("must_compile_error")
 def must_compile_error_processing(ctx: MacroContext):
+    # Check if this node has been processed by the verification step
+    for expectation in ctx.compiler._must_compile_error_expectations:
+        if expectation['node'] is ctx.node and expectation.get('processed', False):
+            # This node has been verified and its errors consumed, skip processing
+            return
+    
     # Process children to catch emission-time errors but prevent JS output
     original_statement_out = ctx.statement_out
     original_expression_out = ctx.expression_out

@@ -394,14 +394,14 @@ void (async () => {
 
 
 
-            const _0x74__typed_number = await typed_number
-            let _0x24__typed_number = _0x74__typed_number
-            const _0x75__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x24__typed_number)
-            _0x75__await_indentifire_0x2e_log_0x28_
-            const _0x76__typed_string = await typed_string
-            let _0x25__typed_string = _0x76__typed_string
-            const _0x77__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x25__typed_string)
-            _0x77__await_indentifire_0x2e_log_0x28_
+            const _0x6f__typed_number = await typed_number
+            let _0x24__typed_number = _0x6f__typed_number
+            const _0x70__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x24__typed_number)
+            _0x70__await_indentifire_0x2e_log_0x28_
+            const _0x71__typed_string = await typed_string
+            let _0x25__typed_string = _0x71__typed_string
+            const _0x72__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x25__typed_string)
+            _0x72__await_indentifire_0x2e_log_0x28_
 
         }
     } 
