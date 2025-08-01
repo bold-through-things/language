@@ -47,8 +47,18 @@ class AccessMacro:
             
             for child in ctx.node.children:
                 macro, _ = cut(child.content, " ")
-                if macro == "substituting":
-                    key = get_single_arg(replace(ctx, node=child), "substituting must have one argument")
+                if macro == "substituting" or (macro == "where" and "is" in child.content):
+                    if macro == "where":
+                        # New syntax: "where $id is"
+                        parts = child.content.split(" ")
+                        if len(parts) >= 3 and parts[2] == "is":
+                            key = parts[1]
+                        else:
+                            ctx.compiler.assert_(False, child, "where clause must be 'where $id is' or 'where $id takes'")
+                    else:
+                        # Old syntax: "substituting $id"
+                        key = get_single_arg(replace(ctx, node=child), "substituting must have one argument")
+                    
                     default_logger.macro(f"substituting '{key}'")
                     
                     if len(child.children) >= 1:
@@ -59,8 +69,18 @@ class AccessMacro:
                         default_logger.debug(f"substituting '{key}' with literal access")
                         access = ctx.compiler.make_node(f"a {key}", ctx.node.pos or Position(0, 0), children=None)
                         indexers[key] = [access]
-                elif macro == "calling":
-                    key = get_single_arg(replace(ctx, node=child), "calling must have one argument")
+                elif macro == "calling" or (macro == "where" and "takes" in child.content):
+                    if macro == "where":
+                        # New syntax: "where $id takes"
+                        parts = child.content.split(" ")
+                        if len(parts) >= 3 and parts[2] == "takes":
+                            key = parts[1]
+                        else:
+                            ctx.compiler.assert_(False, child, "where clause must be 'where $id is' or 'where $id takes'")
+                    else:
+                        # Old syntax: "calling $id"
+                        key = get_single_arg(replace(ctx, node=child), "calling must have one argument")
+                    
                     default_logger.macro(f"calling '{key}' with {len(child.children)} children")
                     
                     ctx.compiler.assert_(len(child.children) >= 1, child, "calling must have at least one child")

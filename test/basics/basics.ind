@@ -42,7 +42,7 @@ do
 		break
 
 	if
-		either
+		any
 			eq
 				.name
 				string "Alice"

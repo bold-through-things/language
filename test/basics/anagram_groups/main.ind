@@ -13,9 +13,9 @@ for word in
 do
 	local key
 		a word split sort join
-			calling split
+			where split takes
 				string ""
-			calling join
+			where join takes
 				string ""
 	
 	# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?
@@ -29,11 +29,11 @@ do
 					a groups
 	then
 		a groups key
-			substituting key
+			where key is
 			list
 
 	a groups key push
-		substituting key
+		where key is
 		a word
 
 for group in
