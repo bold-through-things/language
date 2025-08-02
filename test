@@ -141,6 +141,45 @@ def discover_tests(args) -> list[TestCase]:
 
     return tests
 
+def validate_gitignore_for_test(test_case, tc: TestCase):
+    """
+    validate that gitignore properly handles test artifacts for this specific test
+    only validates test execution output (JS emission, macro expansion, actual output)
+    """
+    from test_discovery import get_test_artifacts
+    
+    # get all artifacts that should be tracked for this test
+    artifacts = get_test_artifacts(tc)
+    
+    if not artifacts:
+        return  # no artifacts to validate
+    
+    # check that valuable artifacts are properly tracked by git
+    for artifact in artifacts:
+        if artifact.exists():
+            returncode, stdout, stderr = run_with_input(
+                ["git", "ls-files", str(artifact)], 
+                stdin="", 
+                line_delayed=False
+            )
+            test_case.assertEqual(returncode, 0, f"git ls-files failed for {artifact}: {stderr}")
+            test_case.assertTrue(stdout.strip(), f"must track valuable artifact: {artifact}")
+    
+    # check that test_diffs directory is ignored if it exists
+    test_diffs_dirs = [
+        tc.case_path / "test_diffs",
+        tc.code_path / "test_diffs"
+    ]
+    
+    for test_diffs_dir in test_diffs_dirs:
+        if test_diffs_dir.exists():
+            returncode, stdout, stderr = run_with_input(
+                ["git", "check-ignore", str(test_diffs_dir)], 
+                stdin="", 
+                line_delayed=False
+            )
+            test_case.assertEqual(returncode, 0, f"must ignore test_diffs directory: {test_diffs_dir}")
+
 def make_test_method(tc: TestCase, args):
     def test(self: unittest.TestCase) -> None:
         case_dir = tc.case_path
@@ -151,9 +190,9 @@ def make_test_method(tc: TestCase, args):
         # create improved diff reporter
         diff_reporter = create_test_diff_reporter(tc)
         
-        expected_compile_err = read_file(code_dir / "compile.stderr")
-        expected_runtime_err = read_file(case_dir / "runtime.stderr")
-        expected_stdout = read_file(case_dir / "success.stdout")
+        expected_compile_err = read_file(code_dir / "compile.stderr.expected")
+        expected_runtime_err = read_file(case_dir / "runtime.stderr.expected")
+        expected_stdout = read_file(case_dir / "success.stdout.expected")
         if args.stdin:
             stdin_text = sys.stdin.read()
         else:
@@ -277,9 +316,35 @@ def make_test_method(tc: TestCase, args):
                         )
                         self.assertTrue(is_equal, msg=error_msg or "Runtime stdout mismatch")
                         self.assertEqual(returncode, 0, msg="Runtime failed unexpectedly")
+        
+        # Validate gitignore behavior for test artifacts  
+        validate_gitignore_for_test(self, tc)
     return test
 
 if __name__ == "__main__":
+    # Auto-install git hook for quality assurance
+    repo_root = Path(__file__).parent
+    hook_source = repo_root / "git-hooks" / "pre-commit"
+    hook_target = repo_root / ".git" / "hooks" / "pre-commit"
+    
+    if hook_source.exists() and (repo_root / ".git").exists():
+        if not hook_target.exists() or not hook_target.is_symlink():
+            # Install the hook
+            hook_target.parent.mkdir(exist_ok=True)
+            if hook_target.exists():
+                hook_target.unlink()
+            # Create relative path from hooks directory to git-hooks directory
+            relative_source = Path("../../git-hooks/pre-commit")
+            hook_target.symlink_to(relative_source)
+            print("✅ INSTALLED COMMIT HOOK TO ASSERT QUALITY SOFTWARE")
+            print(f"   {hook_target} -> {relative_source}")
+        else:
+            print("✅ you already have the pre commit hook installed, good.\nproceed now to build quality software.")
+    else:
+        raise ValueError("unable to install pre commit hook")
+    
+    print("67.8% OUR GREATEST ENEMY IS OUR INDIFFERENCE")
+    
     # Dynamically create test methods
     class MyLangTestCase(unittest.TestCase):
         def test_silent_compilation(self):

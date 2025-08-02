@@ -47,6 +47,10 @@ and never mask internal errors! once the compiler is mature it should never ever
 
 eliminate code duplication at all cost. i'd rather see hacky Python than code duplication. code duplication is absolutely rot, it begs for bugs as it introduces variance: "did you remember to update it in all the places?" no. have only one place we would need to update.
 
+comments and markdown files are non executable assumptions - we should **always prefer executable assertions.**
+
+if you notice that something is obviously broken, and is trivial to fix, do try to fix it.
+
 ## vibe
 
 keep it all casual and unprofessional in text. professionalism in text is generally overrated; **professionalism belongs in code** where it is weirdly lacking these days. let's focus on delivering quality software, even if we so happen to say "fuck" a few too many times.

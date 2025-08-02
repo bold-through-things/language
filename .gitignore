@@ -9,3 +9,7 @@ fucking_around_with_bash/output.txt
 !.vscode/launch.json
 
 .deno
+
+# test artifacts - temporary files that should not be tracked
+test_diffs/
+*.tmp
