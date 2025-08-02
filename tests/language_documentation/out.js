@@ -139,10 +139,8 @@ void (async () => {
             let my_number = 42
             my_number
 
-
             let my_string = "hello world"
             my_string
-
 
             let my_scary_string = "error"
             my_scary_string
@@ -152,7 +150,6 @@ void (async () => {
 
             let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines"
             multiline_text
-
             const _0x26__multiline_text = await multiline_text
             let _0x0__multiline_text = _0x26__multiline_text
             const _0x27__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x0__multiline_text)
@@ -166,7 +163,6 @@ void (async () => {
             my_dict
             let my_list = []
             my_list
-
             const _0x28__my_true = await my_true
             let _0x1__my_true = _0x28__my_true
             const _0x29__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x1__my_true)
@@ -176,10 +172,8 @@ void (async () => {
             const _0x2b__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x2__my_false)
             _0x2b__await__67lang_0x2e_log_0x28_
 
-
             let name = "alice"
             name
-
 
             const _0x2c__name = await name
             let _0x3__name = _0x2c__name
@@ -187,10 +181,8 @@ void (async () => {
             let greeting = _0x2d__await__67lang_0x2e_concat_0x28_
             greeting
 
-
             const _0x2e__await__67lang_0x2e_log_0x28_ = await _67lang.log("this will be", "concatenated with spaces i think", "as it is just an alias for Deno console.log")
             _0x2e__await__67lang_0x2e_log_0x28_
-
             const _0x2f__my_scary_string = await my_scary_string
             let _0x4__my_scary_string = _0x2f__my_scary_string
             const _0x30__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x4__my_scary_string)
@@ -201,7 +193,6 @@ void (async () => {
             _0x32__await__67lang_0x2e_log_0x28_
             const _0x33__await__67lang_0x2e_log_0x28_ = await _67lang.log("new year's ", "eve")
             _0x33__await__67lang_0x2e_log_0x28_
-
             const _0x34__greeting = await greeting
             let _0x6__greeting = _0x34__greeting
             const _0x35__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x6__greeting)
@@ -227,10 +218,8 @@ void (async () => {
                 }
             } 
 
-
             let numbers = [1, 2, 3]
             numbers
-
             const _0x3a__numbers = await numbers
             let _0x8__numbers = _0x3a__numbers
 
@@ -254,7 +243,6 @@ void (async () => {
             let person = {}
             person
 
-
             const _0x3e__person = await person
             let _0xa__person = _0x3e__person
 
@@ -263,7 +251,6 @@ void (async () => {
             let _0xb__key = _0x3f___0xa__person
             _0xb__key
 
-
             const _0x40__person = await person
             let _0xc__person = _0x40__person
 
@@ -271,7 +258,6 @@ void (async () => {
             const _0x41___0xc__person = await _0xc__person["age"]
             let _0xd__data_we_would_like_to_store = _0x41___0xc__person
             _0xd__data_we_would_like_to_store
-
 
             const _0x42__person = await person
             let _0xe__person = _0x42__person
@@ -285,7 +271,6 @@ void (async () => {
             let _0x11__data_we_would_like_to_store = _0x46___0x10__person
             const _0x47__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x11__data_we_would_like_to_store)
             _0x47__await__67lang_0x2e_log_0x28_
-
 
             let text = "hello world"
             text
@@ -302,7 +287,6 @@ void (async () => {
             const _0x4c__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x14__words)
             _0x4c__await__67lang_0x2e_log_0x28_
 
-
             const _0x4d__words = await words
             let _0x15__words = _0x4d__words
             const _0x4f___0x15__words = await _0x15__words
@@ -314,7 +298,6 @@ void (async () => {
             let _0x17__rejoined = _0x50__rejoined
             const _0x51__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x17__rejoined)
             _0x51__await__67lang_0x2e_log_0x28_
-
 
             let input_with_spaces = "a  b   c"
             input_with_spaces
@@ -329,7 +312,6 @@ void (async () => {
             let _0x1a__regex_words = _0x55__regex_words
             const _0x56__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x1a__regex_words)
             _0x56__await__67lang_0x2e_log_0x28_
-
 
             let word = "hello"
             word
@@ -360,14 +342,12 @@ void (async () => {
             const _0x63__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x62__await__67lang_0x2e_asc_0x28_)
             _0x63__await__67lang_0x2e_log_0x28_
 
-
             const _0x64__await__67lang_0x2e_add_0x28_ = await _67lang.add(10, 5)
             const _0x65__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x64__await__67lang_0x2e_add_0x28_)
             _0x65__await__67lang_0x2e_log_0x28_
             const _0x66__await__67lang_0x2e_mod_0x28_ = await _67lang.mod(10, 3)
             const _0x67__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x66__await__67lang_0x2e_mod_0x28_)
             _0x67__await__67lang_0x2e_log_0x28_
-
 
             const _0x68__await__67lang_0x2e_all_0x28_ = await _67lang.all(true, false)
             const _0x69__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x68__await__67lang_0x2e_all_0x28_)
@@ -378,7 +358,6 @@ void (async () => {
             const _0x6c__await__67lang_0x2e_none_0x28_ = await _67lang.none(false)
             const _0x6d__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x6c__await__67lang_0x2e_none_0x28_)
             _0x6d__await__67lang_0x2e_log_0x28_
-
 
 
             let typed_number = 42
@@ -402,6 +381,17 @@ void (async () => {
             let _0x25__typed_string = _0x76__typed_string
             const _0x77__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x25__typed_string)
             _0x77__await__67lang_0x2e_log_0x28_
+
+
+
+
+
+
+
+
+
+
+
 
         }
     } 

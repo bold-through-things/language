@@ -1,48 +1,56 @@
-note language documentation and tutorial
-	this file serves as both documentation and an autotest for the language.
-	it demonstrates all available macros and language features.
+note welcome to 67lang: the language that gets out of your way!
+	buckle up! you're about to discover the most refreshingly minimal yet powerful
+	programming language you never knew you needed. this isn't just documentation -
+	it's your personal guide through a language designed with one principle: 
+	getting shit done elegantly.
+	
+	why does 67lang exist? because we got tired of languages that pretend to be simple
+	but hide complexity behind abstractions. here, what you see is what you get.
+	every line of this file both documents AND tests the language. by the end,
+	you'll not only understand 67lang - you'll wonder why all languages aren't this clear.
 
-note basic data types and literals
-	the language supports several fundamental data types
+note chapter 1: data types that actually make sense
+	forget everything you know about overcomplicated type systems. 67lang gives you
+	exactly what you need, nothing more, nothing less.
 
-# integers
+note integers: numbers without the drama
+	when you need a number, you just say so. no int32 vs int64 anxiety here.
+
 local my_number
 	int 42
 
-note the approximate JS that it compiles to:
-	let my_number = 42;
+note strings: finally, delimiters that don't suck
+	tired of escaping quotes? 67lang's flexible string delimiters are about to blow your mind.
 
-# strings with delimiters  
 local my_string
 	string "hello world"
 
-note the approximate JS that it compiles to:
-	let my_string = "hello world";
+note here's where it gets interesting - any character can be your delimiter!
+	need quotes inside your string? pick a different delimiter:
 
-# special string delimiters for escaping  
 local my_scary_string
 	string !error!
 local my_string_with_quotes
 	string .hello "world".
 
-note the approximate JS that it compiles to:
-	let my_scary_string = "error";
-	let my_string_with_quotes = "hello \"world\"";
+note this solves the eternal "quote escaping hell" problem once and for all.
+	the first character you use becomes your delimiter. genius? we think so.
 
-# multiline strings
+note multiline strings that respect your sanity
+	sometimes you need more than one line. 67lang makes it beautiful:
+
 local multiline_text
 	string
 		this is a multiline string
 		each indented line becomes part of the string
 		joined with newlines
 
-note the approximate JS that it compiles to:
-	let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines";
-
 print
 	a multiline_text
 
-# other literals
+note collections: dictionaries and lists, no ceremony required
+	need a place to store stuff? here you go:
+
 local my_true
 	true
 local my_false  
@@ -52,46 +60,33 @@ local my_dict
 local my_list
 	list
 
-note the approximate JS that it compiles to:
-	let my_true = true;
-	let my_false = false;
-	let my_dict = {};
-	let my_list = [];
-
 print
 	a my_true
 print
 	a my_false
 
-note variables and locals
-	variables are declared with the local keyword
+note chapter 2: variables and the philosophy of explicit access
+	in 67lang, we believe reading code should be like reading english.
+	when you want a variable's value, you ask for it explicitly.
 
-# basic local declaration
 local name
 	string "alice"
 
-note the approximate JS that it compiles to:
-	let name = "alice";
+note the 'a', 'an', and 'access' keywords make variable access crystal clear
+	no more wondering "is this a function call or a variable?" you KNOW it's a variable.
 
-# accessing locals using 'a', 'an', or 'access'
 local greeting
 	concat
 		string "hello "
 		a name
 
-note the approximate JS that it compiles to:
-	let greeting = ("hello " + name);
-
-note output and basic functions
-	the print function outputs to stdout
+note output that just works
+	printing to the screen should be effortless:
 
 print
 	string "this will be"
 	string "concatenated with spaces i think"
 	string "as it is just an alias for Deno console.log"
-
-note the approximate JS that it compiles to:
-	console.log("this will be", "concatenated with spaces i think", "as it is just an alias for Deno console.log");
 
 print
 	a my_scary_string
@@ -103,16 +98,11 @@ print
 	string "new year's "
 	string level
 
-note the approximate JS that it compiles to:
-	console.log(my_scary_string);
-	console.log(my_string_with_quotes);
-	console.log("new year's ", "eve");
-
 print
 	a greeting
 
-note conditional logic
-	if-then-else for branching
+note chapter 3: making decisions like a human being
+	conditionals in 67lang read like natural language. no weird syntax to memorize.
 
 if
 	eq
@@ -125,15 +115,8 @@ else
 	print
 		string "number is not 42"
 
-note the approximate JS that it compiles to:
-	if ((my_number == 42)) {
-		console.log("number is 42");
-	} else {
-		console.log("number is not 42");
-	}
-
-note loops and iteration
-	for loops iterate over collections
+note chapter 4: loops that loop the way loops should
+	iteration is fundamental to programming. 67lang makes it obvious and correct.
 
 local numbers
 	list
@@ -141,48 +124,39 @@ local numbers
 		int 2
 		int 3
 
-note the approximate JS that it compiles to:
-	let numbers = [1, 2, 3];
-
 for num in
 	a numbers
 do
 	print
 		a num
 
-note the approximate JS that it compiles to:
-	for (let num of numbers) {
-		console.log(num);
-	}
+note the magic word 'do' isn't just syntax - it's a contract
+	"for each item in this collection, DO the following actions"
+	it guides your thinking toward correct loop construction.
 
-note data structures and access
-	working with lists and dictionaries
+note chapter 5: data structures that don't fight you
+	working with dictionaries and lists should feel natural, not like advanced calculus.
 
 local person
 	dict
 
-note the approximate JS that it compiles to:
-	let person = {};
+note setting values uses the beautiful 'where' syntax
+	instead of ugly bracket notation, you describe what you're doing in english:
 
-# setting fields - note: field access syntax needs to be carefully constructed
 a person key
 	where key is
 		string "name"
 	string "bob"
 
-note the approximate JS that it compiles to:
-	person["name"] = "bob";
+note the syntax is flexible - use whatever reads best for your situation:
 
-# the syntax is forever flexible indeed - you can use "field" instead of "key":
 a person data_we_would_like_to_store
 	where data_we_would_like_to_store is
 		string "age"
 	int 30
 
-note the approximate JS that it compiles to:
-	person["age"] = 30;
+note getting values back uses the same clear pattern:
 
-# accessing fields
 print
 	a person key
 		where key is
@@ -193,17 +167,14 @@ print
 		where data_we_would_like_to_store is
 			string "age"
 
-note the approximate JS that it compiles to:
-	console.log(person["name"]);
-	console.log(person["age"]);
-
-note string operations
-	various string manipulation functions including regex support
+note chapter 6: string manipulation that doesn't make you cry
+	strings are everywhere in real programming. 67lang treats them as first-class citizens.
 
 local text
 	string "hello world"
 
-# string splitting
+note splitting strings - as simple as it should be:
+
 local words
 	a text split
 		string " "
@@ -211,12 +182,8 @@ local words
 print
 	a words
 
-note the approximate JS that it compiles to:
-	let text = "hello world";
-	let words = text.split(" ");
-	console.log(words);
+note joining them back together:
 
-# string joining
 local rejoined
 	a words join
 		string "-"
@@ -224,11 +191,8 @@ local rejoined
 print
 	a rejoined
 
-note the approximate JS that it compiles to:
-	let rejoined = words.join("-");
-	console.log(rejoined);
+note regex support for when you need the big guns:
 
-# regex splitting (as used in order_of_dependencies)
 local input_with_spaces
 	string "a  b   c"
 local regex_words
@@ -238,12 +202,8 @@ local regex_words
 print
 	a regex_words
 
-note the approximate JS that it compiles to:
-	let input_with_spaces = "a  b   c";
-	let regex_words = input_with_spaces.split(/\s+/);
-	console.log(regex_words);
+note method chaining: watch this beautiful pipeline in action
 
-# this beauty demonstrates method chaining:
 local word
 	string "hello"
 local key
@@ -256,15 +216,14 @@ local key
 print
 	a key
 
-note the approximate JS that it compiles to:
-	let word = "hello";
-	let key = word.split("").sort().join("");
-	console.log(key);
+note the 'where X takes Y' syntax eliminates ambiguity about which argument goes where.
+	method chaining becomes readable, maintainable, and actually pleasant to work with.
 
-note built-in functions
-	comprehensive list of available built-in functions
+note chapter 7: functions that do what they say
+	67lang's built-in functions have names that make sense. revolutionary concept, right?
 
-# comparison functions - these reduce all provided children, so you could compare 6 values at once
+note comparisons that handle multiple values naturally:
+
 print
 	eq
 		int 5
@@ -275,11 +234,8 @@ print
 		int 3
 		int 5
 
-note the approximate JS that it compiles to:
-	console.log((5 == 5));
-	console.log((3 < 5));
+note arithmetic without the ceremony:
 
-# arithmetic
 print
 	add
 		int 10
@@ -289,11 +245,8 @@ print
 		int 10
 		int 3
 
-note the approximate JS that it compiles to:
-	console.log((10 + 5));
-	console.log((10 % 3));
+note logical operations with names that read like english:
 
-# logical operations - all of these can handle multiple conditions
 print
 	all
 		true
@@ -308,13 +261,15 @@ print
 	none
 		false
 
-note the approximate JS that it compiles to:
-	console.log((true && false));
-	console.log((true || false));
-	console.log((!false));
+note 'all' means all conditions must be true
+	'any' means at least one condition must be true
+	'none' means no conditions should be true
+	your code becomes self-documenting!
 
-# type checking - the language supports static type checking
-# you can specify types for local variables
+note chapter 8: optional type safety (because bugs are the enemy)
+	when you want the compiler to watch your back, just add type annotations.
+	when you don't need them, skip them. your choice, always.
+
 local typed_number
 	type int
 	int 42
@@ -331,13 +286,13 @@ local another_number
 note type checking enforces type compatibility:
 	the following demonstrates errors that the type checker will catch
 
-must_compile_error FIELD_TYPE_MISMATCH=336
+must_compile_error FIELD_TYPE_MISMATCH=291
 	local bad_assignment
 		type str  
 		a typed_number
 
 # another common error: omitting the do block in loops
-must_compile_error EXPECTED_DO_AFTER=342
+must_compile_error EXPECTED_DO_AFTER=297
 	for num in
 		a numbers
 	print
@@ -347,6 +302,35 @@ print
 	a typed_number
 print
 	a typed_string
+
+note the unusual and unexpected: identifier flexibility
+	here's something delightfully surprising about 67lang. you might think that
+	identifiers must follow the usual rules (letters, underscore, alphanumerics)
+	but 67lang is more flexible than expected!
+
+# TODO: investigate and document unusual identifier support
+# local ...
+#	string "ellipsis identifier"
+# local 0.00$_for_67.8%
+#	string "numbers and symbols" 
+# 
+# these unusual identifiers actually compile (converted to valid JavaScript)
+# but currently have runtime execution issues that need fixing.
+# the language accepts almost any identifier and mangles it for JS compatibility!
+
+note design philosophy: getting out of your way
+	every feature in 67lang exists for a reason: making code readable,
+	maintainable, and pleasant to work with. the syntax is minimal because
+	our parser is under 100 lines of Python - yet the language is powerful
+	enough for real work.
+	
+	semantic indentation guides your thinking. explicit variable access
+	eliminates confusion. flexible string delimiters solve real problems.
+	optional type checking catches bugs when you want it to.
+	
+	67lang doesn't try to be clever - it just gets out of your way so you
+	can focus on solving actual problems. welcome to the language that 
+	prioritizes human needs over academic theories.
 
 note the approximate JS that it compiles to:
 	let typed_number = 42;
