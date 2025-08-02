@@ -21,9 +21,8 @@ def main():
     
     print("running tests before commit...")
     
-    # run tests with compilation only (faster)
     returncode, stdout, stderr = run_command(
-        ["python3", "test", "--compile"],
+        ["python3", "test"],
         cwd=repo_root
     )
     
