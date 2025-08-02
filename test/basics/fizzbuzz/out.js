@@ -1,4 +1,4 @@
-globalThis.lang67 = {
+globalThis._67lang = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
     any: (...arr) => arr.reduce((sum, a) => sum || a, false),
@@ -90,7 +90,7 @@ globalThis.lang67 = {
 if (typeof window === "undefined") {
     // Deno environment
 
-    lang67.prompt = async function (msg) {
+    _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
         const n = await Deno.stdin.read(buf);
@@ -100,7 +100,7 @@ if (typeof window === "undefined") {
 
     let stdin_cached = null;
 
-    lang67.stdin = async function () {
+    _67lang.stdin = async function () {
         if (stdin_cached === null) {
             const reader = Deno.stdin.readable.getReader();
             const chunks = [];
@@ -122,7 +122,7 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    lang67.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
 
 
@@ -132,30 +132,30 @@ void (async () => {
     {
         const parent_scope = scope
         {
-            const scope = lang67.scope(parent_scope)
+            const scope = _67lang.scope(parent_scope)
             let fizz_divisor
             fizz_divisor
             let buzz_divisor
             buzz_divisor
             let n
             n
-            const _0x1f__await_lang67_0x2e_is_tty_0x28_ = await lang67.is_tty()
-            if (_0x1f__await_lang67_0x2e_is_tty_0x28_) {{
+            const _0x1f__await__67lang_0x2e_is_tty_0x28_ = await _67lang.is_tty()
+            if (_0x1f__await__67lang_0x2e_is_tty_0x28_) {{
                     const parent_scope = scope
                     {
-                        const scope = lang67.scope(parent_scope)
-                        const _0x21__await_lang67_0x2e_prompt_0x28_ = await lang67.prompt("fizz? ")
-                        fizz_divisor = _0x21__await_lang67_0x2e_prompt_0x28_
+                        const scope = _67lang.scope(parent_scope)
+                        const _0x21__await__67lang_0x2e_prompt_0x28_ = await _67lang.prompt("fizz? ")
+                        fizz_divisor = _0x21__await__67lang_0x2e_prompt_0x28_
                         const _0x20__fizz_divisor = await fizz_divisor
                         let _0x0__fizz_divisor = _0x20__fizz_divisor
                         _0x0__fizz_divisor
-                        const _0x23__await_lang67_0x2e_prompt_0x28_ = await lang67.prompt("buzz? ")
-                        buzz_divisor = _0x23__await_lang67_0x2e_prompt_0x28_
+                        const _0x23__await__67lang_0x2e_prompt_0x28_ = await _67lang.prompt("buzz? ")
+                        buzz_divisor = _0x23__await__67lang_0x2e_prompt_0x28_
                         const _0x22__buzz_divisor = await buzz_divisor
                         let _0x1__buzz_divisor = _0x22__buzz_divisor
                         _0x1__buzz_divisor
-                        const _0x25__await_lang67_0x2e_prompt_0x28_ = await lang67.prompt("n? ")
-                        n = _0x25__await_lang67_0x2e_prompt_0x28_
+                        const _0x25__await__67lang_0x2e_prompt_0x28_ = await _67lang.prompt("n? ")
+                        n = _0x25__await__67lang_0x2e_prompt_0x28_
                         const _0x24__n = await n
                         let _0x2__n = _0x24__n
                         _0x2__n
@@ -164,9 +164,9 @@ void (async () => {
             else {
                 const parent_scope = scope
                 {
-                    const scope = lang67.scope(parent_scope)
-                    const _0x26__await_lang67_0x2e_stdin_0x28_ = await lang67.stdin()
-                    let input = _0x26__await_lang67_0x2e_stdin_0x28_
+                    const scope = _67lang.scope(parent_scope)
+                    const _0x26__await__67lang_0x2e_stdin_0x28_ = await _67lang.stdin()
+                    let input = _0x26__await__67lang_0x2e_stdin_0x28_
                     input
                     const _0x28__input = await input
                     let _0x3__input = _0x28__input
@@ -210,28 +210,28 @@ void (async () => {
                 let _0xf__i = _0x34__i
                 const _0x35__n = await n
                 let _0x10__n = _0x35__n
-                const _0x36__await_lang67_0x2e_asc_0x28_ = await lang67.asc(_0xf__i, _0x10__n)
-                if (!_0x36__await_lang67_0x2e_asc_0x28_) { break; }
+                const _0x36__await__67lang_0x2e_asc_0x28_ = await _67lang.asc(_0xf__i, _0x10__n)
+                if (!_0x36__await__67lang_0x2e_asc_0x28_) { break; }
                 {
                     const parent_scope = scope
                     {
-                        const scope = lang67.scope(parent_scope)
+                        const scope = _67lang.scope(parent_scope)
                         let out = ""
                         out
                         const _0x37__i = await i
                         let _0x11__i = _0x37__i
                         const _0x38__fizz_divisor = await fizz_divisor
                         let _0x12__fizz_divisor = _0x38__fizz_divisor
-                        const _0x39__await_lang67_0x2e_mod_0x28_ = await lang67.mod(_0x11__i, _0x12__fizz_divisor)
-                        const _0x3a__await_lang67_0x2e_eq_0x28_ = await lang67.eq(_0x39__await_lang67_0x2e_mod_0x28_, 0)
-                        if (_0x3a__await_lang67_0x2e_eq_0x28_) {{
+                        const _0x39__await__67lang_0x2e_mod_0x28_ = await _67lang.mod(_0x11__i, _0x12__fizz_divisor)
+                        const _0x3a__await__67lang_0x2e_eq_0x28_ = await _67lang.eq(_0x39__await__67lang_0x2e_mod_0x28_, 0)
+                        if (_0x3a__await__67lang_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
-                                    const scope = lang67.scope(parent_scope)
+                                    const scope = _67lang.scope(parent_scope)
                                     const _0x3c__out = await out
                                     let _0x13__out = _0x3c__out
-                                    const _0x3d__await_lang67_0x2e_concat_0x28_ = await lang67.concat(_0x13__out, "fizz")
-                                    out = _0x3d__await_lang67_0x2e_concat_0x28_
+                                    const _0x3d__await__67lang_0x2e_concat_0x28_ = await _67lang.concat(_0x13__out, "fizz")
+                                    out = _0x3d__await__67lang_0x2e_concat_0x28_
                                     const _0x3b__out = await out
                                     let _0x14__out = _0x3b__out
                                     _0x14__out
@@ -241,16 +241,16 @@ void (async () => {
                         let _0x15__i = _0x3e__i
                         const _0x3f__buzz_divisor = await buzz_divisor
                         let _0x16__buzz_divisor = _0x3f__buzz_divisor
-                        const _0x40__await_lang67_0x2e_mod_0x28_ = await lang67.mod(_0x15__i, _0x16__buzz_divisor)
-                        const _0x41__await_lang67_0x2e_eq_0x28_ = await lang67.eq(_0x40__await_lang67_0x2e_mod_0x28_, 0)
-                        if (_0x41__await_lang67_0x2e_eq_0x28_) {{
+                        const _0x40__await__67lang_0x2e_mod_0x28_ = await _67lang.mod(_0x15__i, _0x16__buzz_divisor)
+                        const _0x41__await__67lang_0x2e_eq_0x28_ = await _67lang.eq(_0x40__await__67lang_0x2e_mod_0x28_, 0)
+                        if (_0x41__await__67lang_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
-                                    const scope = lang67.scope(parent_scope)
+                                    const scope = _67lang.scope(parent_scope)
                                     const _0x43__out = await out
                                     let _0x17__out = _0x43__out
-                                    const _0x44__await_lang67_0x2e_concat_0x28_ = await lang67.concat(_0x17__out, "buzz")
-                                    out = _0x44__await_lang67_0x2e_concat_0x28_
+                                    const _0x44__await__67lang_0x2e_concat_0x28_ = await _67lang.concat(_0x17__out, "buzz")
+                                    out = _0x44__await__67lang_0x2e_concat_0x28_
                                     const _0x42__out = await out
                                     let _0x18__out = _0x42__out
                                     _0x18__out
@@ -258,11 +258,11 @@ void (async () => {
                             } }
                         const _0x45__out = await out
                         let _0x19__out = _0x45__out
-                        const _0x46__await_lang67_0x2e_eq_0x28_ = await lang67.eq(_0x19__out, "")
-                        if (_0x46__await_lang67_0x2e_eq_0x28_) {{
+                        const _0x46__await__67lang_0x2e_eq_0x28_ = await _67lang.eq(_0x19__out, "")
+                        if (_0x46__await__67lang_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
-                                    const scope = lang67.scope(parent_scope)
+                                    const scope = _67lang.scope(parent_scope)
                                     const _0x48__i = await i
                                     let _0x1a__i = _0x48__i
                                     out = _0x1a__i
@@ -273,12 +273,12 @@ void (async () => {
                             } }
                         const _0x49__out = await out
                         let _0x1c__out = _0x49__out
-                        const _0x4a__await_lang67_0x2e_log_0x28_ = await lang67.log(_0x1c__out)
-                        _0x4a__await_lang67_0x2e_log_0x28_
+                        const _0x4a__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x1c__out)
+                        _0x4a__await__67lang_0x2e_log_0x28_
                         const _0x4c__i = await i
                         let _0x1d__i = _0x4c__i
-                        const _0x4d__await_lang67_0x2e_add_0x28_ = await lang67.add(_0x1d__i, 1)
-                        i = _0x4d__await_lang67_0x2e_add_0x28_
+                        const _0x4d__await__67lang_0x2e_add_0x28_ = await _67lang.add(_0x1d__i, 1)
+                        i = _0x4d__await__67lang_0x2e_add_0x28_
                         const _0x4b__i = await i
                         let _0x1e__i = _0x4b__i
                         _0x1e__i

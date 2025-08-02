@@ -9,14 +9,14 @@ from lsprotocol.types import Diagnostic, DiagnosticSeverity, Position, Range
 from pygls.protocol import LanguageServerProtocol
 from lsprotocol.types import DidOpenTextDocumentParams, DidChangeTextDocumentParams
 
-class Lang67(LanguageServer):
+class _67lang(LanguageServer):
     def __init__(self, **kwargs):
         super().__init__("67lang", "0.1", **kwargs)
     def report_server_error(self, error: Exception, source):
         print("error", error, source)
         pass
 
-ls = Lang67()
+ls = _67lang()
 
 def find_debug_words(text):
     """Find all occurrences of the word 'debug' and return their positions."""

@@ -109,7 +109,7 @@ def local(ctx: MacroContext):
     ctx.expression_out.write(name)
 
 @singleton
-class Lang67_call:
+class Macro_67lang_call:
     @classmethod
     def resolve_convention(cls, ctx: MacroContext, actual_arg_types: list[str] = None):
         args_str = ctx.compiler.get_metadata(ctx.node, Args)
@@ -139,7 +139,7 @@ class Lang67_call:
                 # Legacy single overload
                 convention = overloads
         if fn in builtins:
-            convention = DirectCall(fn=builtins[fn], demands=None, receiver="lang67", returns=None)
+            convention = DirectCall(fn=builtins[fn], demands=None, receiver="_67lang", returns=None)
 
         return convention
 
@@ -228,4 +228,4 @@ def exists_inside(ctx: MacroContext):
             other_children.append(child)
     
     ctx.compiler.assert_(target is not None, ctx.node, "exists must have an inside modifier")
-    ctx.compiler.compile_fn_call(ctx, f"await lang67.exists_inside(", [target] + other_children)
+    ctx.compiler.compile_fn_call(ctx, f"await _67lang.exists_inside(", [target] + other_children)

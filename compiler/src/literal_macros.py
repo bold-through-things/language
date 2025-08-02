@@ -125,7 +125,7 @@ def list_macro(ctx: MacroContext):
 @macros.add(*[b for b in builtins.keys()])
 def builtin(ctx: MacroContext):
     macro = ctx.compiler.get_metadata(ctx.node, Macro)
-    ctx.compiler.compile_fn_call(ctx, f"await lang67.{builtins[macro]}(", ctx.node.children)
+    ctx.compiler.compile_fn_call(ctx, f"await _67lang.{builtins[macro]}(", ctx.node.children)
 
 @macros.add("67lang:solution")
 def pil_solution(ctx: MacroContext):

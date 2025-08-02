@@ -1,4 +1,4 @@
-globalThis.lang67 = {
+globalThis._67lang = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
     any: (...arr) => arr.reduce((sum, a) => sum || a, false),
@@ -90,7 +90,7 @@ globalThis.lang67 = {
 if (typeof window === "undefined") {
     // Deno environment
 
-    lang67.prompt = async function (msg) {
+    _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
         const n = await Deno.stdin.read(buf);
@@ -100,7 +100,7 @@ if (typeof window === "undefined") {
 
     let stdin_cached = null;
 
-    lang67.stdin = async function () {
+    _67lang.stdin = async function () {
         if (stdin_cached === null) {
             const reader = Deno.stdin.readable.getReader();
             const chunks = [];
@@ -122,7 +122,7 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    lang67.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
 
 
@@ -132,9 +132,9 @@ void (async () => {
     {
         const parent_scope = scope
         {
-            const scope = lang67.scope(parent_scope)
-            const _0x14__await_lang67_0x2e_stdin_0x28_ = await lang67.stdin()
-            let input = _0x14__await_lang67_0x2e_stdin_0x28_
+            const scope = _67lang.scope(parent_scope)
+            const _0x14__await__67lang_0x2e_stdin_0x28_ = await _67lang.stdin()
+            let input = _0x14__await__67lang_0x2e_stdin_0x28_
             input
             const _0x15__input = await input
             let _0x0__input = _0x15__input
@@ -156,7 +156,7 @@ void (async () => {
                 {
                     const parent_scope = scope
                     {
-                        const scope = lang67.scope(parent_scope)
+                        const scope = _67lang.scope(parent_scope)
                         const _0x1a__word = await word
                         let _0x3__word = _0x1a__word
                         const _0x1c___0x3__word = await _0x3__word
@@ -177,12 +177,12 @@ void (async () => {
                         let _0x8__groups = _0x21__groups
                         const _0x22__key = await key
                         let _0x7__key = _0x22__key
-                        const _0x23__await_lang67_0x2e_exists_inside_0x28_ = await lang67.exists_inside(_0x8__groups, _0x7__key)
-                        const _0x24__await_lang67_0x2e_none_0x28_ = await lang67.none(_0x23__await_lang67_0x2e_exists_inside_0x28_)
-                        if (_0x24__await_lang67_0x2e_none_0x28_) {{
+                        const _0x23__await__67lang_0x2e_exists_inside_0x28_ = await _67lang.exists_inside(_0x8__groups, _0x7__key)
+                        const _0x24__await__67lang_0x2e_none_0x28_ = await _67lang.none(_0x23__await__67lang_0x2e_exists_inside_0x28_)
+                        if (_0x24__await__67lang_0x2e_none_0x28_) {{
                                 const parent_scope = scope
                                 {
-                                    const scope = lang67.scope(parent_scope)
+                                    const scope = _67lang.scope(parent_scope)
                                     const _0x25__groups = await groups
                                     let _0x9__groups = _0x25__groups
 
@@ -211,9 +211,9 @@ void (async () => {
                 } }
             const _0x2e__groups = await groups
             let _0x11__groups = _0x2e__groups
-            const _0x2f__await_lang67_0x2e_values_0x28_ = await lang67.values(_0x11__groups)
+            const _0x2f__await__67lang_0x2e_values_0x28_ = await _67lang.values(_0x11__groups)
 
-            const _0x30__iter = _0x2f__await_lang67_0x2e_values_0x28_[Symbol.iterator]();
+            const _0x30__iter = _0x2f__await__67lang_0x2e_values_0x28_[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0x30__iter.next();
                 if (done) { break; }
@@ -221,14 +221,14 @@ void (async () => {
                 {
                     const parent_scope = scope
                     {
-                        const scope = lang67.scope(parent_scope)
+                        const scope = _67lang.scope(parent_scope)
                         const _0x31__group = await group
                         let _0x12__group = _0x31__group
                         const _0x33___0x12__group = await _0x12__group
                         const _0x32__join = await Array.prototype.join.call(_0x33___0x12__group, " ")
                         let _0x13__join = _0x32__join
-                        const _0x34__await_lang67_0x2e_log_0x28_ = await lang67.log(_0x13__join)
-                        _0x34__await_lang67_0x2e_log_0x28_
+                        const _0x34__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x13__join)
+                        _0x34__await__67lang_0x2e_log_0x28_
                     }
                 } }
         }
