@@ -38,8 +38,8 @@ class Compiler:
             PreprocessingStep(),
             CodeBlockLinkingStep(), 
             TypeCheckingStep(),
-            MustCompileErrorVerificationStep(),
-            JavaScriptEmissionStep()
+            JavaScriptEmissionStep(),
+            MustCompileErrorVerificationStep()
         ]
 
     def get_new_ident(self, name: str | None):

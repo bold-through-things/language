@@ -16,11 +16,6 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
         """Process node using standard tree walking, handling must_compile_error nodes as we encounter them."""
         from node import Macro
         
-        # Process children first (standard tree walking pattern)
-        for child in ctx.node.children:
-            child_ctx = replace(ctx, node=child)
-            self.process_node(child_ctx)
-        
         # Handle current node if it's must_compile_error
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         if macro == "must_compile_error":
@@ -30,7 +25,12 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
                     'node': ctx.node,
                     'expected_errors': expected_errors
                 })
-                # Don't process children - they were already processed by earlier steps
+            # Don't process children - they were already processed by earlier steps
+        else:
+            # Process children for non-must_compile_error nodes (standard tree walking pattern)
+            for child in ctx.node.children:
+                child_ctx = replace(ctx, node=child)
+                self.process_node(child_ctx)
         
         # At the solution level, verify all collected expectations
         if ctx.node.content == "PIL:solution":

@@ -31,20 +31,31 @@ def comments(_):
 # Add preprocessing registration for comments - done separately to avoid circular imports
 def _register_comments_for_preprocessing():
     """Register comments function for preprocessing step to avoid circular imports"""
-    try:
-        from preprocessing_macros import preprocessor
-        preprocessor.add(*COMMENT_MACROS)(comments)
-    except ImportError:
-        # Preprocessing not available during import time
-        pass
+    # TODO: This creates a circular import issue that needs to be resolved properly.
+    # The preprocessing_macros module imports from literal_macros, and literal_macros
+    # tries to import from preprocessing_macros. A proper solution would involve
+    # restructuring the module dependencies, but for now we must avoid the silent
+    # failure that could hide real import issues.
+    from preprocessing_macros import preprocessor
+    preprocessor.add(*COMMENT_MACROS)(comments)
 
 _register_comments_for_preprocessing()
 
 @macros.add("must_compile_error")
 def must_compile_error_processing(ctx: MacroContext):
-    # This macro is handled by MustCompileErrorVerificationStep
-    # During emission, we skip it entirely since children were already processed during type checking
-    pass
+    """Process must_compile_error children during emission to catch emission-time errors.
+    
+    The children are processed normally but their output is discarded using dummy outputs.
+    Any errors generated during emission will be available for the verification step to check.
+    """
+    # Create dummy outputs to discard emission results
+    dummy_statement_out = IndentedStringIO()
+    dummy_expression_out = IndentedStringIO()
+    
+    # Process all children with dummy outputs to catch potential emission-time errors
+    for child in ctx.node.children:
+        child_ctx = replace(ctx, node=child, statement_out=dummy_statement_out, expression_out=dummy_expression_out)
+        ctx.current_step.process_node(child_ctx)
 
 
 
