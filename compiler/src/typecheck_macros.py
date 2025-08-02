@@ -17,7 +17,7 @@ def must_compile_error_typecheck(ctx: MacroContext):
         child_ctx = replace(ctx, node=child)
         ctx.current_step.process_node(child_ctx)
 
-@typecheck.add("PIL:access_local")
+@typecheck.add("67lang:access_local")
 def access_local(ctx: MacroContext):
     first = get_single_arg(ctx, "single argument, the name of local")
 
@@ -52,7 +52,7 @@ def local_typecheck(ctx: MacroContext):
 
     if not type_node:
         # TODO. this should be mandatory.
-        if not seek_child_macro(ctx.node, "PIL:auto_type") or not received:
+        if not seek_child_macro(ctx.node, "67lang:auto_type") or not received:
             return received
         type_node = Node(f"type {received}", ctx.node.pos, [])
     
@@ -98,7 +98,7 @@ def access_typecheck(ctx: MacroContext):
             ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
         return demanded
 
-SCOPE_MACRO = ["do", "then", "else", "PIL:file"]
+SCOPE_MACRO = ["do", "then", "else", "67lang:file"]
 @typecheck.add(*SCOPE_MACRO)
 def typecheck_scope_macro(ctx: MacroContext):
     parent = seek_parent_scope(ctx.node)

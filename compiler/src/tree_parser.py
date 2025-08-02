@@ -53,7 +53,7 @@ class TreeParser:
                 return Node(content=self.content, pos=self.position, children=[child.toNode() for child in self.children])
 
         scope: TrimStack[ParsingNode] = TrimStack()
-        root = ParsingNode("PIL:file", Position(0))
+        root = ParsingNode("67lang:file", Position(0))
         scope[0] = root
         line_num = 0
         

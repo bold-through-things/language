@@ -1,4 +1,4 @@
-globalThis.indentifire = {
+globalThis._67lang = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
     any: (...arr) => arr.reduce((sum, a) => sum || a, false),
@@ -90,7 +90,7 @@ globalThis.indentifire = {
 if (typeof window === "undefined") {
     // Deno environment
 
-    indentifire.prompt = async function (msg) {
+    _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
         const n = await Deno.stdin.read(buf);
@@ -100,7 +100,7 @@ if (typeof window === "undefined") {
 
     let stdin_cached = null;
 
-    indentifire.stdin = async function () {
+    _67lang.stdin = async function () {
         if (stdin_cached === null) {
             const reader = Deno.stdin.readable.getReader();
             const chunks = [];
@@ -122,7 +122,7 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    indentifire.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
 
 
@@ -132,9 +132,9 @@ void (async () => {
     {
         const parent_scope = scope
         {
-            const scope = indentifire.scope(parent_scope)
-            const _0x4d__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
-            let lines = _0x4d__await_indentifire_0x2e_stdin_0x28_
+            const scope = _67lang.scope(parent_scope)
+            const _0x4d__await__67lang_0x2e_stdin_0x28_ = await _67lang.stdin()
+            let lines = _0x4d__await__67lang_0x2e_stdin_0x28_
             lines
             const _0x4f__lines = await lines
             let _0x0__lines = _0x4f__lines
@@ -158,7 +158,7 @@ void (async () => {
                 {
                     const parent_scope = scope
                     {
-                        const scope = indentifire.scope(parent_scope)
+                        const scope = _67lang.scope(parent_scope)
                         let module = {}
                         module
                         const _0x54__line = await line
@@ -207,11 +207,11 @@ void (async () => {
                         const _0x68___0x12__1 = await _0x12__1
                         const _0x67__trim = await String.prototype.trim.call(_0x68___0x12__1)
                         let _0x13__trim = _0x67__trim
-                        const _0x69__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x13__trim, "")
-                        if (_0x69__await_indentifire_0x2e_eq_0x28_) {{
+                        const _0x69__await__67lang_0x2e_eq_0x28_ = await _67lang.eq(_0x13__trim, "")
+                        if (_0x69__await__67lang_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
-                                    const scope = indentifire.scope(parent_scope)
+                                    const scope = _67lang.scope(parent_scope)
                                     const _0x6a__module = await module
                                     let _0x14__module = _0x6a__module
 
@@ -250,7 +250,7 @@ void (async () => {
             ) {{
                     const parent_scope = scope
                     {
-                        const scope = indentifire.scope(parent_scope)
+                        const scope = _67lang.scope(parent_scope)
                         module = module
                         chain = chain
                         const _0x71__module = await module
@@ -260,7 +260,7 @@ void (async () => {
                         if (_0x1d__visited) {{
                                 const parent_scope = scope
                                 {
-                                    const scope = indentifire.scope(parent_scope)
+                                    const scope = _67lang.scope(parent_scope)
                                     return
                                 }
                             } }
@@ -303,16 +303,16 @@ void (async () => {
                             {
                                 const parent_scope = scope
                                 {
-                                    const scope = indentifire.scope(parent_scope)
+                                    const scope = _67lang.scope(parent_scope)
                                     const _0x80__next_chain = await next_chain
                                     let _0x29__next_chain = _0x80__next_chain
                                     const _0x81__dep_id = await dep_id
                                     let _0x28__dep_id = _0x81__dep_id
-                                    const _0x82__await_indentifire_0x2e_exists_inside_0x28_ = await indentifire.exists_inside(_0x29__next_chain, _0x28__dep_id)
-                                    if (_0x82__await_indentifire_0x2e_exists_inside_0x28_) {{
+                                    const _0x82__await__67lang_0x2e_exists_inside_0x28_ = await _67lang.exists_inside(_0x29__next_chain, _0x28__dep_id)
+                                    if (_0x82__await__67lang_0x2e_exists_inside_0x28_) {{
                                             const parent_scope = scope
                                             {
-                                                const scope = indentifire.scope(parent_scope)
+                                                const scope = _67lang.scope(parent_scope)
                                                 let dep_loop = []
                                                 dep_loop
                                                 const _0x83__dep_loop = await dep_loop
@@ -341,7 +341,7 @@ void (async () => {
                                                     {
                                                         const parent_scope = scope
                                                         {
-                                                            const scope = indentifire.scope(parent_scope)
+                                                            const scope = _67lang.scope(parent_scope)
                                                             const _0x8d__dep_loop = await dep_loop
                                                             let _0x31__dep_loop = _0x8d__dep_loop
 
@@ -355,11 +355,11 @@ void (async () => {
                                                             let _0x33__chain_dep_id = _0x91__chain_dep_id
                                                             const _0x92__dep_id = await dep_id
                                                             let _0x34__dep_id = _0x92__dep_id
-                                                            const _0x93__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x33__chain_dep_id, _0x34__dep_id)
-                                                            if (_0x93__await_indentifire_0x2e_eq_0x28_) {{
+                                                            const _0x93__await__67lang_0x2e_eq_0x28_ = await _67lang.eq(_0x33__chain_dep_id, _0x34__dep_id)
+                                                            if (_0x93__await__67lang_0x2e_eq_0x28_) {{
                                                                     const parent_scope = scope
                                                                     {
-                                                                        const scope = indentifire.scope(parent_scope)
+                                                                        const scope = _67lang.scope(parent_scope)
                                                                         break
                                                                     }
                                                                 } }
@@ -389,7 +389,7 @@ void (async () => {
                                     else {
                                         const parent_scope = scope
                                         {
-                                            const scope = indentifire.scope(parent_scope)
+                                            const scope = _67lang.scope(parent_scope)
                                             const _0x9e__modules = await modules
                                             let _0x3c__modules = _0x9e__modules
                                             const _0xa0__dep_id = await dep_id
@@ -420,9 +420,9 @@ void (async () => {
                 } }
             const _0xa7__modules = await modules
             let _0x44__modules = _0xa7__modules
-            const _0xa8__await_indentifire_0x2e_values_0x28_ = await indentifire.values(_0x44__modules)
+            const _0xa8__await__67lang_0x2e_values_0x28_ = await _67lang.values(_0x44__modules)
 
-            const _0xa9__iter = _0xa8__await_indentifire_0x2e_values_0x28_[Symbol.iterator]();
+            const _0xa9__iter = _0xa8__await__67lang_0x2e_values_0x28_[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0xa9__iter.next();
                 if (done) { break; }
@@ -430,7 +430,7 @@ void (async () => {
                 {
                     const parent_scope = scope
                     {
-                        const scope = indentifire.scope(parent_scope)
+                        const scope = _67lang.scope(parent_scope)
                         const _0xab__module = await module
                         let _0x45__module = _0xab__module
                         const _0xaa__visit = await visit(_0x45__module, [])
@@ -442,32 +442,32 @@ void (async () => {
             let _0x47__dep_loops = _0xac__dep_loops
             const _0xad___0x47__dep_loops_length = await _0x47__dep_loops.length
             let _0x48__length = _0xad___0x47__dep_loops_length
-            const _0xae__await_indentifire_0x2e_asc_0x28_ = await indentifire.asc(1, _0x48__length)
-            if (_0xae__await_indentifire_0x2e_asc_0x28_) {{
+            const _0xae__await__67lang_0x2e_asc_0x28_ = await _67lang.asc(1, _0x48__length)
+            if (_0xae__await__67lang_0x2e_asc_0x28_) {{
                     const parent_scope = scope
                     {
-                        const scope = indentifire.scope(parent_scope)
+                        const scope = _67lang.scope(parent_scope)
                         const _0xaf__dep_loops = await dep_loops
                         let _0x49__dep_loops = _0xaf__dep_loops
                         const _0xb1___0x49__dep_loops = await _0x49__dep_loops
                         const _0xb0__join = await Array.prototype.join.call(_0xb1___0x49__dep_loops, "\n")
                         let _0x4a__join = _0xb0__join
-                        const _0xb2__await_indentifire_0x2e_concat_0x28_ = await indentifire.concat("ERROR: there are dependency loops.\n", _0x4a__join)
-                        const _0xb3__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0xb2__await_indentifire_0x2e_concat_0x28_)
-                        _0xb3__await_indentifire_0x2e_log_0x28_
+                        const _0xb2__await__67lang_0x2e_concat_0x28_ = await _67lang.concat("ERROR: there are dependency loops.\n", _0x4a__join)
+                        const _0xb3__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0xb2__await__67lang_0x2e_concat_0x28_)
+                        _0xb3__await__67lang_0x2e_log_0x28_
                     }
                 } }
             else {
                 const parent_scope = scope
                 {
-                    const scope = indentifire.scope(parent_scope)
+                    const scope = _67lang.scope(parent_scope)
                     const _0xb4__build_order = await build_order
                     let _0x4b__build_order = _0xb4__build_order
                     const _0xb6___0x4b__build_order = await _0x4b__build_order
                     const _0xb5__join = await Array.prototype.join.call(_0xb6___0x4b__build_order, "\n")
                     let _0x4c__join = _0xb5__join
-                    const _0xb7__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4c__join)
-                    _0xb7__await_indentifire_0x2e_log_0x28_
+                    const _0xb7__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x4c__join)
+                    _0xb7__await__67lang_0x2e_log_0x28_
                 }
             } 
         }

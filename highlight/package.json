@@ -1,6 +1,6 @@
 {
-    "name": "indentifire_syntax_highlight",
-    "displayName": "INDENTIFIRE Syntax Highlighting",
+    "name": "67lang_syntax_highlight",
+    "displayName": "67LANG Syntax Highlighting",
     "description": "can you see it now?",
     "version": "0.0.1",
     "engines": {
@@ -9,17 +9,17 @@
     "publisher": "u1tmt",
     "contributes": {
         "languages": [{
-            "id": "indentifire",
-            "aliases": ["INDENTIFIRE"],
+            "id": "67lang",
+            "aliases": ["67LANG"],
             "extensions": [".ind"]
         }],
         "grammars": [{
-            "language": "indentifire",
-            "scopeName": "source.indentifire",
-            "path": "./syntaxes/main.indentifire.tmLanguage.json"
+            "language": "67lang",
+            "scopeName": "source.67lang",
+            "path": "./syntaxes/main.67lang.tmLanguage.json"
         }],
         "configurationDefaults": {
-			"[indentifire]": {
+			"[67lang]": {
 				"editor.insertSpaces": false,
 				"editor.tabSize": 2,
 				"editor.detectIndentation": false

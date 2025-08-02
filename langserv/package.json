@@ -1,6 +1,6 @@
 {
-    "name": "indentifire_lsp",
-    "displayName": "INDENTIFIRE Language Server",
+    "name": "67lang_lsp",
+    "displayName": "67LANG Language Server",
     "description": "a better language.",
     "publisher": "u1tmt",
     "version": "0.0.1",
@@ -8,15 +8,15 @@
         "vscode": "^1.80.0"
     },
     "activationEvents": [
-        "onLanguage:indentifire"
+        "onLanguage:67lang"
     ],
     "main": "./client/extension.js",
     "contributes": {
         "languages": [
             {
-                "id": "indentifire",
+                "id": "67lang",
                 "aliases": [
-                    "INDENTIFIRE"
+                    "67LANG"
                 ],
                 "extensions": [
                     ".ind"

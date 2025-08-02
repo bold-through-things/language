@@ -128,7 +128,7 @@ def js_field_access(s: str) -> str:
         return f'.{s}'
     return f'["{s}"]'
 
-TYPICAL_IGNORED_MACROS = {"type", "noscope", "PIL:auto_type"}
+TYPICAL_IGNORED_MACROS = {"type", "noscope", "67lang:auto_type"}
 def filter_child_macros(n: Node):
     def get_macro(n: Node): 
         macro, _ = cut(n.content, " ")

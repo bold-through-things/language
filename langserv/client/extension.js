@@ -71,14 +71,14 @@ function activate(context) {
     };
 
     const clientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'indentifire' }],
-        outputChannelName: "INDENTIFIRE LSP Client",
-        traceOutputChannel: window.createOutputChannel("INDENTIFIRE LSP Client trace")
+        documentSelector: [{ scheme: 'file', language: '67lang' }],
+        outputChannelName: "67LANG LSP Client",
+        traceOutputChannel: window.createOutputChannel("67LANG LSP Client trace")
     };
 
     client = new LanguageClient(
-        'indentifire_lsp',
-        'INDENTIFIRE Language Server',
+        '67lang_lsp',
+        '67LANG Language Server',
         serverOptions,
         clientOptions
     );

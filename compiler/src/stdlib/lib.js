@@ -1,4 +1,4 @@
-globalThis.indentifire = {
+globalThis._67lang = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
     any: (...arr) => arr.reduce((sum, a) => sum || a, false),
@@ -90,7 +90,7 @@ globalThis.indentifire = {
 if (typeof window === "undefined") {
     // Deno environment
 
-    indentifire.prompt = async function (msg) {
+    _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
         const n = await Deno.stdin.read(buf);
@@ -100,7 +100,7 @@ if (typeof window === "undefined") {
 
     let stdin_cached = null;
 
-    indentifire.stdin = async function () {
+    _67lang.stdin = async function () {
         if (stdin_cached === null) {
             const reader = Deno.stdin.readable.getReader();
             const chunks = [];
@@ -122,5 +122,5 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    indentifire.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }

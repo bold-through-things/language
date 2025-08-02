@@ -1,2 +1,3 @@
-this is a multiline string.\nit should behave like a comment when used as a statement.\nbut when used in expression context, it should produce a string value.
+this is an expression-level multiline string.
+it should produce a string value.
 hello world

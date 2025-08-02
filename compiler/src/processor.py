@@ -45,5 +45,5 @@ for name, handler in typecheck_macros_registry.all().items():
     typecheck._registry[name] = handler
 
 # Legacy singleton instances for backward compatibility - these are created in their respective modules
-from access_macros import PIL_call
+from access_macros import Macro_67lang_call
 from preprocessing_macros import SubstitutingMacro, CallingMacro, ParamMacro, AccessMacro

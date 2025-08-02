@@ -132,7 +132,7 @@ class Compiler:
             for node in self.nodes:
                 self.__discover_macros(node)
             
-        solution_node = self.make_node("PIL:solution", Position(0, 0), self.nodes or [])
+        solution_node = self.make_node("67lang:solution", Position(0, 0), self.nodes or [])
             
         # Execute the processing pipeline
         for step in self.processing_steps:
