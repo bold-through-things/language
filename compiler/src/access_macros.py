@@ -8,6 +8,7 @@ from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
 from node import Args, Macro, Params, Inject_code_start, Target, ResolvedConvention
 from common_utils import collect_child_expressions, get_single_arg, get_two_args
+from error_types import ErrorType
 from logger import default_logger
 
 # Legacy registries - will be moved into steps
@@ -184,7 +185,7 @@ class PIL_call:
                         continue
                     default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received}")
                     # TODO - this should point to the child node that we received from, actually...
-                    ctx.compiler.assert_(received == demanded, ctx.node, f"argument demands {demanded} and is given {received}")
+                    ctx.compiler.assert_(received == demanded, ctx.node, f"argument demands {demanded} and is given {received}", ErrorType.ARGUMENT_TYPE_MISMATCH)
 
             return convention.returns or "*"
 

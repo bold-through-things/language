@@ -9,6 +9,7 @@ from macro_registry import MacroContext
 from preprocessing_macros import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
+from must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
 
@@ -37,7 +38,8 @@ class Compiler:
             PreprocessingStep(),
             CodeBlockLinkingStep(), 
             TypeCheckingStep(),
-            JavaScriptEmissionStep()
+            JavaScriptEmissionStep(),
+            MustCompileErrorVerificationStep()
         ]
 
     def get_new_ident(self, name: str | None):
@@ -103,19 +105,24 @@ class Compiler:
     def register(self, node: Node):
         self.nodes.append(node)
 
-    def assert_(self, must_be_true: bool, node: Node, message: str):
+    def assert_(self, must_be_true: bool, node: Node, message: str, error_type: str = None):
         if not must_be_true:
-            self.compile_error(node, f"failed to assert: {message}")
+            from error_types import ErrorType
+            if error_type is None:
+                error_type = ErrorType.ASSERTION_FAILED
+            self.compile_error(node, f"failed to assert: {message}", error_type)
             raise MacroAssertFailed(message)
 
-    def compile_error(self, node: Node, error: str):
+    def compile_error(self, node: Node, error: str, error_type: str):
+        """Add a compile error with explicit error type."""
         pos = node.pos or Position(0, 0)
         entry: dict[str, Any] = { # TODO dataclass
             "recoverable": False, # TODO
             "line": pos.line,
             "char": pos.char,
             "content": node.content,
-            "error": error
+            "error": error,
+            "error_type": error_type
         }
         self.compile_errors.append(entry)
 
@@ -142,6 +149,7 @@ class Compiler:
         
         if len(self.compile_errors) != 0:
             return "" # TODO - raise an error instead ?
+        
         return self._js_output
 
     def __discover_macros(self, node: Node):

@@ -1,0 +1,356 @@
+note language documentation and tutorial
+	this file serves as both documentation and an autotest for the language.
+	it demonstrates all available macros and language features.
+
+note basic data types and literals
+	the language supports several fundamental data types
+
+# integers
+local my_number
+	int 42
+
+note the approximate JS that it compiles to:
+	let my_number = 42;
+
+# strings with delimiters  
+local my_string
+	string "hello world"
+
+note the approximate JS that it compiles to:
+	let my_string = "hello world";
+
+# special string delimiters for escaping  
+local my_scary_string
+	string !error!
+local my_string_with_quotes
+	string .hello "world".
+
+note the approximate JS that it compiles to:
+	let my_scary_string = "error";
+	let my_string_with_quotes = "hello \"world\"";
+
+# multiline strings
+local multiline_text
+	string
+		this is a multiline string
+		each indented line becomes part of the string
+		joined with newlines
+
+note the approximate JS that it compiles to:
+	let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines";
+
+print
+	a multiline_text
+
+# other literals
+local my_true
+	true
+local my_false  
+	false
+local my_dict
+	dict
+local my_list
+	list
+
+note the approximate JS that it compiles to:
+	let my_true = true;
+	let my_false = false;
+	let my_dict = {};
+	let my_list = [];
+
+print
+	a my_true
+print
+	a my_false
+
+note variables and locals
+	variables are declared with the local keyword
+
+# basic local declaration
+local name
+	string "alice"
+
+note the approximate JS that it compiles to:
+	let name = "alice";
+
+# accessing locals using 'a', 'an', or 'access'
+local greeting
+	concat
+		string "hello "
+		a name
+
+note the approximate JS that it compiles to:
+	let greeting = ("hello " + name);
+
+note output and basic functions
+	the print function outputs to stdout
+
+print
+	string "this will be"
+	string "concatenated with spaces i think"
+	string "as it is just an alias for Deno console.log"
+
+note the approximate JS that it compiles to:
+	console.log("this will be", "concatenated with spaces i think", "as it is just an alias for Deno console.log");
+
+print
+	a my_scary_string
+
+print
+	a my_string_with_quotes
+
+print
+	string "new year's "
+	string level
+
+note the approximate JS that it compiles to:
+	console.log(my_scary_string);
+	console.log(my_string_with_quotes);
+	console.log("new year's ", "eve");
+
+print
+	a greeting
+
+note conditional logic
+	if-then-else for branching
+
+if
+	eq
+		a my_number
+		int 42
+then
+	print
+		string "number is 42"
+else
+	print
+		string "number is not 42"
+
+note the approximate JS that it compiles to:
+	if ((my_number == 42)) {
+		console.log("number is 42");
+	} else {
+		console.log("number is not 42");
+	}
+
+note loops and iteration
+	for loops iterate over collections
+
+local numbers
+	list
+		int 1
+		int 2
+		int 3
+
+note the approximate JS that it compiles to:
+	let numbers = [1, 2, 3];
+
+for num in
+	a numbers
+do
+	print
+		a num
+
+note the approximate JS that it compiles to:
+	for (let num of numbers) {
+		console.log(num);
+	}
+
+note data structures and access
+	working with lists and dictionaries
+
+local person
+	dict
+
+note the approximate JS that it compiles to:
+	let person = {};
+
+# setting fields - note: field access syntax needs to be carefully constructed
+a person key
+	where key is
+		string "name"
+	string "bob"
+
+note the approximate JS that it compiles to:
+	person["name"] = "bob";
+
+# the syntax is forever flexible indeed - you can use "field" instead of "key":
+a person data_we_would_like_to_store
+	where data_we_would_like_to_store is
+		string "age"
+	int 30
+
+note the approximate JS that it compiles to:
+	person["age"] = 30;
+
+# accessing fields
+print
+	a person key
+		where key is
+			string "name"
+
+print
+	a person data_we_would_like_to_store
+		where data_we_would_like_to_store is
+			string "age"
+
+note the approximate JS that it compiles to:
+	console.log(person["name"]);
+	console.log(person["age"]);
+
+note string operations
+	various string manipulation functions including regex support
+
+local text
+	string "hello world"
+
+# string splitting
+local words
+	a text split
+		string " "
+
+print
+	a words
+
+note the approximate JS that it compiles to:
+	let text = "hello world";
+	let words = text.split(" ");
+	console.log(words);
+
+# string joining
+local rejoined
+	a words join
+		string "-"
+
+print
+	a rejoined
+
+note the approximate JS that it compiles to:
+	let rejoined = words.join("-");
+	console.log(rejoined);
+
+# regex splitting (as used in order_of_dependencies)
+local input_with_spaces
+	string "a  b   c"
+local regex_words
+	a input_with_spaces split
+		regex /\s+/
+
+print
+	a regex_words
+
+note the approximate JS that it compiles to:
+	let input_with_spaces = "a  b   c";
+	let regex_words = input_with_spaces.split(/\s+/);
+	console.log(regex_words);
+
+# this beauty demonstrates method chaining:
+local word
+	string "hello"
+local key
+	a word split sort join
+		where split takes
+			string ""
+		where join takes
+			string ""
+
+print
+	a key
+
+note the approximate JS that it compiles to:
+	let word = "hello";
+	let key = word.split("").sort().join("");
+	console.log(key);
+
+note built-in functions
+	comprehensive list of available built-in functions
+
+# comparison functions - these reduce all provided children, so you could compare 6 values at once
+print
+	eq
+		int 5
+		int 5
+
+print
+	asc
+		int 3
+		int 5
+
+note the approximate JS that it compiles to:
+	console.log((5 == 5));
+	console.log((3 < 5));
+
+# arithmetic
+print
+	add
+		int 10
+		int 5
+print
+	mod
+		int 10
+		int 3
+
+note the approximate JS that it compiles to:
+	console.log((10 + 5));
+	console.log((10 % 3));
+
+# logical operations - all of these can handle multiple conditions
+print
+	all
+		true
+		false
+
+print
+	any
+		true
+		false
+
+print
+	none
+		false
+
+note the approximate JS that it compiles to:
+	console.log((true && false));
+	console.log((true || false));
+	console.log((!false));
+
+# type checking - the language supports static type checking
+# you can specify types for local variables
+local typed_number
+	type int
+	int 42
+
+local typed_string
+	type str
+	string "hello"
+
+# accessing typed variables
+local another_number
+	type int
+	a typed_number
+
+note type checking enforces type compatibility:
+	the following demonstrates errors that the type checker will catch
+
+must_compile_error FIELD_TYPE_MISMATCH=336
+	local bad_assignment
+		type str  
+		a typed_number
+
+# another common error: omitting the do block in loops
+must_compile_error EXPECTED_DO_AFTER=342
+	for num in
+		a numbers
+	print
+		a num
+
+print 
+	a typed_number
+print
+	a typed_string
+
+note the approximate JS that it compiles to:
+	let typed_number = 42;
+	let typed_string = "hello";
+	let another_number = typed_number;
+	console.log(typed_number);
+	console.log(typed_string);

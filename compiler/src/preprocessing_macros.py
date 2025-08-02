@@ -9,6 +9,9 @@ from strutil import cut
 # Legacy registries - will be moved into steps
 preprocessor = MacroRegistry()
 
+# Import comment macros from literal_macros to avoid duplication
+from literal_macros import COMMENT_MACROS, code_linking
+
 # SubstitutingMacro and CallingMacro removed - now handled contextually in access macro
 
 # inside macro removed - now handled contextually in exists macro
@@ -132,6 +135,8 @@ class AccessMacro:
             replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
             parent.replace_child(ctx.node, replace_with)
 
+
+
 class PreprocessingStep(MacroProcessingStep):
     """Handles preprocessing like access macro unrolling"""
     
@@ -139,6 +144,11 @@ class PreprocessingStep(MacroProcessingStep):
         super().__init__()
         # Move preprocessor macros into this step
         self.macros = preprocessor
+        
+        # Initialize singletons to register macros
+        ParamMacro()
+        AccessMacro() 
+        # These singleton calls are needed for macro registration
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""

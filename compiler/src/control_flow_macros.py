@@ -3,6 +3,7 @@ from processor_base import MacroProcessingStep, seek_child_macro, unified_macros
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO
 from node import Inject_code_start
+from error_types import ErrorType
 
 # Legacy registries - will be moved into steps
 macros = unified_macros  # Use unified registry
@@ -55,7 +56,7 @@ def for_macro(ctx: MacroContext):
         args.append(e.getvalue())
     args = list(filter(None, args))
 
-    ctx.compiler.assert_(len(args) == 1, ctx.node, "must have a single argument, the list provider")
+    ctx.compiler.assert_(len(args) == 1, ctx.node, "must have a single argument, the list provider", ErrorType.WRONG_ARG_COUNT)
 
     iter_ident = ctx.compiler.get_new_ident("iter")
     ctx.statement_out.write(f"""

@@ -17,11 +17,47 @@ def does_not_compile(_):
     pass
 
 COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
+
+# Create a code linking registry for skipping comment macros  
+code_linking = MacroRegistry()
+
+@code_linking.add(*COMMENT_MACROS)
 @macros.add(*COMMENT_MACROS)
 @typecheck.add(*COMMENT_MACROS)
 def comments(_):
-    # comments are ignored. TODO - we could and perhaps should transfer comments to output?
+    # comments are ignored during all processing steps. TODO - we could and perhaps should transfer comments to output?
     pass
+
+# Add preprocessing registration for comments - done separately to avoid circular imports
+def _register_comments_for_preprocessing():
+    """Register comments function for preprocessing step to avoid circular imports"""
+    # TODO: This creates a circular import issue that needs to be resolved properly.
+    # The preprocessing_macros module imports from literal_macros, and literal_macros
+    # tries to import from preprocessing_macros. A proper solution would involve
+    # restructuring the module dependencies, but for now we must avoid the silent
+    # failure that could hide real import issues.
+    from preprocessing_macros import preprocessor
+    preprocessor.add(*COMMENT_MACROS)(comments)
+
+_register_comments_for_preprocessing()
+
+@macros.add("must_compile_error")
+def must_compile_error_processing(ctx: MacroContext):
+    """Process must_compile_error children during emission to catch emission-time errors.
+    
+    The children are processed normally but their output is discarded using dummy outputs.
+    Any errors generated during emission will be available for the verification step to check.
+    """
+    # Create dummy outputs to discard emission results
+    dummy_statement_out = IndentedStringIO()
+    dummy_expression_out = IndentedStringIO()
+    
+    # Process all children with dummy outputs to catch potential emission-time errors
+    for child in ctx.node.children:
+        child_ctx = replace(ctx, node=child, statement_out=dummy_statement_out, expression_out=dummy_expression_out)
+        ctx.current_step.process_node(child_ctx)
+
+
 
 @macros.add("int")
 def int_macro(ctx: MacroContext):
@@ -47,7 +83,7 @@ def str_macro(ctx: MacroContext):
         ctx.compiler.assert_(s.endswith(delim), ctx.node, "must be delimited on both sides with the same character")
         s = s.removeprefix(delim).removesuffix(delim)
     s = s.replace("\n", "\\n")
-    # TODO escape quotes as well...
+    s = s.replace('"', '\\"')  # escape quotes during JS string emission
     macro = ctx.compiler.get_metadata(ctx.node, Macro)
     sep = '"' if macro == "string" else "/"
     ctx.expression_out.write(f'{sep}{s}{sep}')
@@ -67,7 +103,6 @@ with scope:
         "break": "break",
         "continue": "continue",
         "dict": "{}",
-        "list": "[]",
         "return": "return"
     }
     @macros.add(*[k for k in literally.keys()])
@@ -75,6 +110,17 @@ with scope:
         # TODO. this isn't inherently expression_out... indeed most of these should be statement_out...
         macro = ctx.compiler.get_metadata(ctx.node, Macro)
         ctx.expression_out.write(literally[macro])
+
+@macros.add("list")
+def list_macro(ctx: MacroContext):
+    """Handle list macro - iterate all children, collect their expressions, emit [expr1, expr2, expr3...]"""
+    if not ctx.node.children:
+        ctx.expression_out.write("[]")
+        return
+    
+    from common_utils import collect_child_expressions
+    expressions = collect_child_expressions(ctx)
+    ctx.expression_out.write(f"[{', '.join(expressions)}]")
 
 @macros.add(*[b for b in builtins.keys()])
 def builtin(ctx: MacroContext):

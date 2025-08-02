@@ -61,7 +61,7 @@
     "char": 0,
     "content": "PIL:call split",
     "error": "failed to assert: argument demands str and is given bool",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error_type": "ASSERTION_FAILED"
   },
   {
     "recoverable": false,
@@ -69,6 +69,6 @@
     "char": 0,
     "content": "PIL:call split",
     "error": "failed to assert: argument demands str and is given list",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error_type": "ASSERTION_FAILED"
   }
 ]
