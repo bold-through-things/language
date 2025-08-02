@@ -1,5 +1,7 @@
 # summary
 
+67.8% Language. `67lang`.
+
 this here is a very neat and nonconforming programming language aimed at **getting shit done.** 
 
 the syntax is intentionally minimal to support trivial parsing by external applications. the official `tree_parser.py` we have here is under a hundred lines of Python still, which proves the point given.
@@ -35,6 +37,8 @@ good:
 self.assertTrue(output_file.exists(), "must create an output file")
 ```
 
+everything that fails because of user supplied `67lang` code being garbage should use the compile error reporting framework. everything that fails because of our own internal assumptions about how the compiler works being violated (thus our own code being garbage) should crash incredibly loud via uncaught `Exception`.
+
 defensive programming! you wrote `if "=" in pair`, great! but what `if not "=" in pair`? things are rarely optional around here. crash loud, crash hard, crash fast, scream harsh. despite the fact that it is all built in Python and emits JS, it actually is designed with the core value of correctness. focus on writing production quality code. it should be clean, correct, and sane. "would this pass a review in FAANG?" if not, it definitely won't pass mine.
 
 you also seem to be quite eager to seek out trivial workarounds instead of fixing the underlying bugs. a recent example is when you manually turned all the children of a `note` into comments themselves in the language example, instead of making `note` properly hide its children. you should prefer the clean solutions. we're trying to build quality software here, not another fucking Java!
@@ -48,6 +52,8 @@ eliminate code duplication at all cost. i'd rather see hacky Python than code du
 keep it all casual and unprofessional in text. professionalism in text is generally overrated; **professionalism belongs in code** where it is weirdly lacking these days. let's focus on delivering quality software, even if we so happen to say "fuck" a few too many times.
 
 keep comments and documentation lowercase and casual.
+
+**build quality sofware. build reliable software.**
 
 # agentic
 
@@ -77,3 +83,5 @@ most file formats here support comments in one way or another. if you don't know
 **the tests are our spec.** no matter what `.ind` you may find, unless it is discoverable via the `./test.py`, it has no say as to what the language syntax or semantics are. only the autotest sources define the language syntax.
 
 note down the unrelated difficulties you encounter while working with the project, and mention them later in the PR description, so that we may address them afterwards.
+
+**do not track PR comments via line numbers!** track them via the lines (or the summary of lines) that they comment upon. this happens far too often - you lose track of which lines the comment is actually discussing because you edited the file and the line numbers shifted. incredibly frustrating!
