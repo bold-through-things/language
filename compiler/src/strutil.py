@@ -9,6 +9,10 @@ def extract_indent(line: str) -> tuple[str, int]:
     while line.startswith('\t'):
         indent += 1
         line = line[1:]
+    # also handle space-based indentation (4 spaces = 1 indent level)
+    while line.startswith('    '):
+        indent += 1
+        line = line[4:]
     return line, indent
 
 from io import StringIO

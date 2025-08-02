@@ -4,7 +4,7 @@
     "line": 2,
     "char": 0,
     "content": "for i in",
-    "error": "failed to assert: expected 'do' after 'for' but found ''",
+    "error": "failed to assert: expected 'do' after 'for' but found 'then'",
     "error_type": "EXPECTED_DO_AFTER"
   },
   {
@@ -12,7 +12,7 @@
     "line": 2,
     "char": 0,
     "content": "for i in",
-    "error": "failed to assert: must have a single argument, the list provider",
-    "error_type": "WRONG_ARG_COUNT"
+    "error": "failed to assert: must have a `do` block",
+    "error_type": "ASSERTION_FAILED"
   }
 ]
