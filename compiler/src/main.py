@@ -16,7 +16,7 @@ parser.add_argument('input_dir')
 parser.add_argument('output_file')
 parser.add_argument('--errors-file', help="will output compilation errors and warnings (as JSON) into this file if specified")
 parser.add_argument('--log', help="comma-separated list of log tags to enable (e.g., 'typecheck,macro'). omit to disable all logging.")
-parser.add_argument('--expand', action='store_true', help="compile in two-step mode: .ind → .ind.expanded → .js")
+parser.add_argument('--expand', action='store_true', help="compile in two-step mode: .67lang → .67lang.expanded → .js")
 
 args = parser.parse_args()
 
@@ -45,8 +45,8 @@ def write_json(inspections: list[dict[str, Any]], output: TextIO) -> None:
 default_logger.compile("starting compilation process")
 with default_logger.indent("compile", "initialization"):
     os.chdir(args.input_dir)
-    result = list(Path(".").rglob("*.ind"))
-    default_logger.compile(f"found {len(result)} .ind files: {[str(f) for f in result]}")
+    result = list(Path(".").rglob("*.67lang"))
+    default_logger.compile(f"found {len(result)} .67lang files: {[str(f) for f in result]}")
     compiler = Compiler()
     
     # Log macro registry summary if registry logging is enabled
@@ -70,7 +70,7 @@ with default_logger.indent("compile", "parsing files"):
 crash = None
 compiled = None
 
-# Standard compilation: .ind → (.js or .ind.expanded)
+# Standard compilation: .67lang → (.js or .67lang.expanded)
 with default_logger.indent("compile", "single-step compilation"):
     try:
         compiled = compiler.compile()
@@ -80,7 +80,7 @@ with default_logger.indent("compile", "single-step compilation"):
         default_logger.compile(f"compilation crashed: {e}")
 
 if args.expand:
-    # Write .ind.expanded instead of .js
+    # Write .67lang.expanded instead of .js
     if compiled:
         default_logger.compile(f"expand mode: writing expanded form to {args.output_file}")
         with open(args.output_file, "w") as f:

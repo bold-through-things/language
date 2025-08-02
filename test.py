@@ -174,11 +174,11 @@ def make_test_method(tc: TestCase, args):
                 compiler_path = Path("compiler/src/main.py")
                 
                 if args.expand:
-                    # Two-step compilation: .ind → .ind.expanded → .js
+                    # Two-step compilation: .67lang → .67lang.expanded → .js
                     print(f"{case_dir}: two-step compilation (expand mode)...")
                     
-                    # Step 1: .ind → .ind.expanded
-                    expanded_path = tmpdir / "expanded.ind.expanded"
+                    # Step 1: .67lang → .67lang.expanded
+                    expanded_path = tmpdir / "expanded.67lang.expanded"
                     step1_cmd = [compiler_path.absolute(), tmpdir.absolute(), expanded_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--expand"]
                     
                     # Add any additional compiler arguments to step 1
@@ -203,13 +203,13 @@ def make_test_method(tc: TestCase, args):
                         self.assertEqual(step1_proc.returncode, 0, msg=f"Step 1 (expand) failed unexpectedly\n{step1_proc.stderr}")
                         return
                     
-                    # Step 2: .ind.expanded → .js
+                    # Step 2: .67lang.expanded → .js
                     # Create a temporary directory with just the expanded file
                     step2_tmpdir = tmpdir / "step2"
                     step2_tmpdir.mkdir()
                     
-                    # Copy the expanded file as an .ind file for step 2
-                    step2_input = step2_tmpdir / "main.ind"
+                    # Copy the expanded file as a .67lang file for step 2
+                    step2_input = step2_tmpdir / "main.67lang"
                     shutil.copy2(expanded_path, step2_input)
                     
                     step2_cmd = [compiler_path.absolute(), step2_tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
@@ -225,7 +225,7 @@ def make_test_method(tc: TestCase, args):
                     print(compile_proc.stderr)
                     
                 else:
-                    # Single-step compilation: .ind → .js
+                    # Single-step compilation: .67lang → .js
                     print(f"{case_dir}: single-step compilation...")
                     compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
                     
@@ -352,7 +352,7 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--compile", action='store_true', help="only check compilation of target tests")
     parser.add_argument("-d", "--debug", action='store_true', help="execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="skip compilation. assume the tests are already compiled, and only run the existing output")
-    parser.add_argument("--expand", action='store_true', help="test two-step compilation: `.ind → .ind.expanded → .js` WIP and expected to fail currently!")
+    parser.add_argument("--expand", action='store_true', help="test two-step compilation: `.67lang → .67lang.expanded → .js` WIP and expected to fail currently!")
 
     # Parse known args first, then treat everything after -- as compiler args
     if "--" in sys.argv:
