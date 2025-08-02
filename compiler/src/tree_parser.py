@@ -63,20 +63,7 @@ class TreeParser:
         for line in lines:
             line_num += 1 # at the start - assumes above \n{code}\n
             
-            try:
-                line, indent = extract_indent(line)
-            except IndentationError as e:
-                # handle space-based indentation error
-                if compiler:
-                    from error_types import ErrorType
-                    # create a dummy node for error reporting
-                    error_node = ParsingNode(line, Position(line_num))
-                    compiler.compile_error(error_node.toNode(), str(e), ErrorType.INVALID_INDENTATION)
-                    # create an empty node and continue to avoid crashing
-                    continue
-                else:
-                    # if no compiler provided, re-raise the error
-                    raise
+            line, indent = extract_indent(line)
 
             # simplifies code. all the top-level lines are indent-1, belonging to a fake top-level Node
             # which is at indent-0

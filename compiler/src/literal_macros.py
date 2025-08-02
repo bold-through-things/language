@@ -184,4 +184,8 @@ class JavaScriptEmissionStep(MacroProcessingStep):
                     all_macros[macro](ctx)
             else:
                 default_logger.codegen(f"ERROR: unknown macro {macro}")
+                # If there are already compile errors, don't crash - just skip this node
+                if len(ctx.compiler.compile_errors) > 0:
+                    default_logger.codegen(f"skipping malformed node due to existing compile errors")
+                    return
                 raise ValueError(f"TODO. unknown macro {macro}")
