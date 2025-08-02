@@ -1,4 +1,4 @@
-globalThis.indentifire = {
+globalThis.lang67 = {
     concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
     eq: (...arr) => arr.every(v => v === arr[0]),
     any: (...arr) => arr.reduce((sum, a) => sum || a, false),
@@ -90,7 +90,7 @@ globalThis.indentifire = {
 if (typeof window === "undefined") {
     // Deno environment
 
-    indentifire.prompt = async function (msg) {
+    lang67.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
         const n = await Deno.stdin.read(buf);
@@ -100,7 +100,7 @@ if (typeof window === "undefined") {
 
     let stdin_cached = null;
 
-    indentifire.stdin = async function () {
+    lang67.stdin = async function () {
         if (stdin_cached === null) {
             const reader = Deno.stdin.readable.getReader();
             const chunks = [];
@@ -122,7 +122,7 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    indentifire.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    lang67.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
 
 
@@ -132,7 +132,7 @@ void (async () => {
     {
         const parent_scope = scope
         {
-            const scope = indentifire.scope(parent_scope)
+            const scope = lang67.scope(parent_scope)
             let str = "testing"
             str
 
@@ -141,16 +141,16 @@ void (async () => {
             const _0x6___0x0__str = await _0x0__str
             const _0x5__split = await String.prototype.split.call(_0x6___0x0__str, "t")
             let _0x1__split = _0x5__split
-            const _0x7__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x1__split)
-            _0x7__await_67lang_0x2e_log_0x28_
+            const _0x7__await_lang67_0x2e_log_0x28_ = await lang67.log(_0x1__split)
+            _0x7__await_lang67_0x2e_log_0x28_
 
             const _0x8__str = await str
             let _0x2__str = _0x8__str
             const _0xa___0x2__str = await _0x2__str
             const _0x9__split = await String.prototype.split.call(_0xa___0x2__str, /t/)
             let _0x3__split = _0x9__split
-            const _0xb__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x3__split)
-            _0xb__await_67lang_0x2e_log_0x28_
+            const _0xb__await_lang67_0x2e_log_0x28_ = await lang67.log(_0x3__split)
+            _0xb__await_lang67_0x2e_log_0x28_
         }
     } 
 })();
