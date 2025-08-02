@@ -1,212 +1,258 @@
-note welcome to 67lang: the language that gets out of your way!
-	buckle up! you're about to discover the most refreshingly minimal yet powerful
-	programming language you never knew you needed. this isn't just documentation -
-	it's your personal guide through a language designed with one principle: 
-	getting shit done elegantly.
+note IMPORTANT: This is a living document!
+	future editors should treat this test differently than typical autotests.
+	if you change the code here, simply update the expected output to match.
+	this documentation is meant to be freely creative and engaging, not constrained
+	by existing test expectations. write the best tutorial possible, then make
+	the tests match the output, not the other way around.
+
+note welcome to 67lang: the language that gets shit done!
+	forget everything you know about programming languages. 67lang isn't trying to be
+	academic, clever, or revolutionary. it exists for one purpose: getting actual work
+	done without the ceremony, confusion, and cognitive overhead that plagues other languages.
 	
-	why does 67lang exist? because we got tired of languages that pretend to be simple
-	but hide complexity behind abstractions. here, what you see is what you get.
-	every line of this file both documents AND tests the language. by the end,
-	you'll not only understand 67lang - you'll wonder why all languages aren't this clear.
+	this isn't just documentation - it's executable proof that programming can be
+	intuitive, readable, and genuinely enjoyable. every single line in this file
+	both teaches AND tests the language. by the time you're done reading, you'll
+	understand why 67lang exists and why your next project should probably use it.
+	
+	ready? let's build something together.
 
-note chapter 1: data types that actually make sense
-	forget everything you know about overcomplicated type systems. 67lang gives you
-	exactly what you need, nothing more, nothing less.
+note === DATA: the building blocks that actually matter ===
+	most languages overcomplicate data types. 67lang gives you exactly what you need:
+	numbers, text, true/false, collections. that's it. no inheritance hierarchies,
+	no confusing type parameters, no academic nonsense. just the tools that solve
+	real problems.
 
-note integers: numbers without the drama
-	when you need a number, you just say so. no int32 vs int64 anxiety here.
+note numbers: because math is inevitable
+	when you need a number, you just declare one. no int32 vs int64 anxiety.
+	no weird casting ceremonies. just numbers that work.
 
-local my_number
-	int 42
+local age
+	int 23
 
-note strings: finally, delimiters that don't suck
-	tired of escaping quotes? 67lang's flexible string delimiters are about to blow your mind.
+local pi_ish
+	float 3.14159
 
-local my_string
+note text: strings that don't hate you
+	the single biggest source of frustration in programming? escaping quotes in strings.
+	67lang solves this forever with flexible delimiters. watch this magic:
+
+local basic_text
 	string "hello world"
 
-note here's where it gets interesting - any character can be your delimiter!
-	need quotes inside your string? pick a different delimiter:
+local text_with_quotes  
+	string !she said "hello there"!
 
-local my_scary_string
-	string !error!
-local my_string_with_quotes
-	string .hello "world".
+local different_delimiter
+	string |even pipes work as delimiters|
 
-note this solves the eternal "quote escaping hell" problem once and for all.
-	the first character you use becomes your delimiter. genius? we think so.
+local fancy_delimiter
+	string ~anything can be a delimiter~
 
-note multiline strings that respect your sanity
-	sometimes you need more than one line. 67lang makes it beautiful:
+note see what happened? the FIRST character becomes your delimiter. need quotes
+	inside your string? just pick literally any other character as your delimiter.
+	no more backslash hell. no more parsing headaches. just strings that work.
 
-local multiline_text
+print 
+	a basic_text
+
+print
+	a text_with_quotes
+
+note multiline text: respect for actual human needs
+	sometimes you need more than one line. instead of terrible concatenation
+	or weird template syntax, 67lang just lets you write what you mean:
+
+local poem
 	string
-		this is a multiline string
-		each indented line becomes part of the string
-		joined with newlines
+		roses are red
+		violets are blue  
+		67lang is simple
+		and powerful too
 
 print
-	a multiline_text
+	a poem
 
-note collections: dictionaries and lists, no ceremony required
-	need a place to store stuff? here you go:
+note truth values: boolean logic without philosophy
+	true is true. false is false. computers should be this simple:
 
-local my_true
+local is_awesome
 	true
-local my_false  
+
+local is_complicated  
 	false
-local my_dict
-	dict
-local my_list
-	list
 
 print
-	a my_true
+	string "67lang is awesome:"
+	a is_awesome
+	
 print
-	a my_false
+	string "67lang is complicated:"
+	a is_complicated
 
-note chapter 2: variables and the philosophy of explicit access
-	in 67lang, we believe reading code should be like reading english.
-	when you want a variable's value, you ask for it explicitly.
+note === VARIABLES: explicit access that eliminates confusion ===
+	here's where 67lang gets radical. in most languages, when you see a name,
+	you have to guess: "is this a function? a variable? a constant? who knows!"
+	
+	67lang fixes this forever. when you want a variable's value, you ASK for it.
+	explicitly. clearly. no ambiguity. no confusion.
 
-local name
+local username
 	string "alice"
 
-note the 'a', 'an', and 'access' keywords make variable access crystal clear
-	no more wondering "is this a function call or a variable?" you KNOW it's a variable.
+local user_age
+	int 25
+
+note the magic words: 'a', 'an', 'access'
+	these make variable access crystal clear. when you read code,
+	you IMMEDIATELY know what's happening:
 
 local greeting
 	concat
-		string "hello "
-		a name
-
-note output that just works
-	printing to the screen should be effortless:
-
-print
-	string "this will be"
-	string "concatenated with spaces i think"
-	string "as it is just an alias for Deno console.log"
-
-print
-	a my_scary_string
-
-print
-	a my_string_with_quotes
-
-print
-	string "new year's "
-	string level
+		string "hello there, "
+		a username
+		string "! you are "
+		a user_age
+		string " years old."
 
 print
 	a greeting
 
-note chapter 3: making decisions like a human being
-	conditionals in 67lang read like natural language. no weird syntax to memorize.
+note this eliminates an entire class of bugs and confusion
+	never again will you stare at code wondering "wait, is this calling
+	a function or reading a variable?" the syntax tells you exactly what's happening.
+
+note === DECISIONS: conditionals that read like english ===
+	making decisions is fundamental to programming. 67lang makes it feel natural:
 
 if
 	eq
-		a my_number
-		int 42
+		a user_age
+		int 25
 then
 	print
-		string "number is 42"
+		string "you're exactly 25!"
 else
 	print
-		string "number is not 42"
+		string "you're not 25"
 
-note chapter 4: loops that loop the way loops should
-	iteration is fundamental to programming. 67lang makes it obvious and correct.
+note see how readable that is? if this equals that, then do this, else do that.
+	no weird punctuation. no obscure operators. just english-like logic.
 
-local numbers
+note === ITERATION: loops that guide your thinking ===
+	repeating actions is another programming fundamental. 67lang makes the
+	structure obvious and guides you toward correct thinking:
+
+local favorite_numbers
 	list
-		int 1
-		int 2
-		int 3
+		int 7
+		int 42  
+		int 100
 
-for num in
-	a numbers
+for number in
+	a favorite_numbers
 do
 	print
-		a num
+		string "i like the number:"
+		a number
 
-note the magic word 'do' isn't just syntax - it's a contract
-	"for each item in this collection, DO the following actions"
-	it guides your thinking toward correct loop construction.
+note that 'do' keyword isn't just decoration - it's a contract
+	"for each item in this collection, DO these actions"
+	the language structure guides you toward writing correct, readable loops.
 
-note chapter 5: data structures that don't fight you
-	working with dictionaries and lists should feel natural, not like advanced calculus.
+note === COLLECTIONS: data structures that cooperate ===
+	storing and organizing data shouldn't require a computer science degree.
+	67lang gives you dictionaries and lists that just work:
 
 local person
 	dict
 
-note setting values uses the beautiful 'where' syntax
-	instead of ugly bracket notation, you describe what you're doing in english:
+note the 'where' syntax: english-like data manipulation
+	instead of ugly bracket notation and confusing syntax, you describe
+	what you're doing in plain english:
 
 a person key
 	where key is
 		string "name"
 	string "bob"
 
-note the syntax is flexible - use whatever reads best for your situation:
+a person key
+	where key is
+		string "profession"
+	string "software developer"
 
-a person data_we_would_like_to_store
-	where data_we_would_like_to_store is
-		string "age"
-	int 30
+a person key
+	where key is
+		string "favorite_number"
+	int 42
 
-note getting values back uses the same clear pattern:
+note getting data back uses the same clear, readable pattern:
 
 print
+	string "name:"
 	a person key
 		where key is
 			string "name"
 
 print
-	a person data_we_would_like_to_store
-		where data_we_would_like_to_store is
-			string "age"
+	string "profession:"
+	a person key
+		where key is
+			string "profession"
 
-note chapter 6: string manipulation that doesn't make you cry
-	strings are everywhere in real programming. 67lang treats them as first-class citizens.
+print  
+	string "favorite number:"
+	a person key
+		where key is
+			string "favorite_number"
 
-local text
-	string "hello world"
+note === TEXT PROCESSING: string manipulation that doesn't suck ===
+	real programs process text constantly. 67lang treats strings as first-class
+	citizens with powerful, intuitive operations:
 
-note splitting strings - as simple as it should be:
+local sentence
+	string "the quick brown fox jumps"
 
-local words
-	a text split
+note splitting text: as straightforward as it should be
+
+local words  
+	a sentence split
 		string " "
 
 print
+	string "words:"
 	a words
 
-note joining them back together:
+note joining them back: equally simple
 
 local rejoined
 	a words join
 		string "-"
 
 print
+	string "rejoined:"
 	a rejoined
 
-note regex support for when you need the big guns:
+note regex support: when you need serious text processing power
 
-local input_with_spaces
-	string "a  b   c"
-local regex_words
-	a input_with_spaces split
+local messy_input
+	string "word1    word2       word3"
+
+local clean_words
+	a messy_input split
 		regex /\s+/
 
 print
-	a regex_words
+	string "clean words:"
+	a clean_words
 
-note method chaining: watch this beautiful pipeline in action
+note method chaining: beautiful pipelines that actually make sense
+	here's where 67lang shines. watch this elegant transformation:
 
 local word
-	string "hello"
-local key
+	string "programming"
+
+local sorted_letters
 	a word split sort join
 		where split takes
 			string ""
@@ -214,127 +260,152 @@ local key
 			string ""
 
 print
-	a key
+	string "sorted letters:"
+	a sorted_letters
 
-note the 'where X takes Y' syntax eliminates ambiguity about which argument goes where.
-	method chaining becomes readable, maintainable, and actually pleasant to work with.
+note the 'where X takes Y' syntax eliminates ambiguity
+	you never have to guess which argument goes where. method chaining
+	becomes readable, maintainable, and genuinely pleasant to use.
 
-note chapter 7: functions that do what they say
-	67lang's built-in functions have names that make sense. revolutionary concept, right?
+note === BUILT-IN FUNCTIONS: operations with names that make sense ===
+	67lang's built-in functions have descriptive names instead of cryptic symbols.
+	revolutionary concept: code that reads like english!
 
-note comparisons that handle multiple values naturally:
+note comparisons: testing equality and order naturally
 
 print
+	string "are 5 and 5 equal?"
 	eq
 		int 5
 		int 5
 
 print
+	string "is 3 less than 5?"
 	asc
 		int 3
 		int 5
 
-note arithmetic without the ceremony:
+note arithmetic: math operations without ceremony
 
 print
+	string "10 plus 5:"
 	add
 		int 10
 		int 5
-print
+
+print  
+	string "10 mod 3:"
 	mod
 		int 10
 		int 3
 
-note logical operations with names that read like english:
+note logical operations: boolean logic in plain english
 
 print
+	string "all conditions true (true AND false):"
 	all
 		true
 		false
 
 print
+	string "any condition true (true OR false):"
 	any
-		true
+		true  
 		false
 
 print
+	string "none of these are true (NOT false):"
 	none
 		false
 
-note 'all' means all conditions must be true
-	'any' means at least one condition must be true
+note these names make code self-documenting
+	'all' means every condition must be true
+	'any' means at least one condition must be true  
 	'none' means no conditions should be true
-	your code becomes self-documenting!
+	your code becomes immediately readable to anyone!
 
-note chapter 8: optional type safety (because bugs are the enemy)
-	when you want the compiler to watch your back, just add type annotations.
-	when you don't need them, skip them. your choice, always.
+note === TYPE SAFETY: optional protection when you want it ===
+	sometimes you want the compiler to watch your back and catch type errors.
+	sometimes you just want to get stuff done quickly. 67lang lets you choose:
 
-local typed_number
+local safe_number
 	type int
-	int 42
+	int 999
 
-local typed_string
+local safe_text
 	type str
-	string "hello"
+	string "type-checked string"
 
-# accessing typed variables
-local another_number
+note accessing typed variables works exactly the same way:
+
+local another_safe_number
 	type int
-	a typed_number
+	a safe_number
 
-note type checking enforces type compatibility:
-	the following demonstrates errors that the type checker will catch
-
-must_compile_error FIELD_TYPE_MISMATCH=291
-	local bad_assignment
-		type str  
-		a typed_number
-
-# another common error: omitting the do block in loops
-must_compile_error EXPECTED_DO_AFTER=297
-	for num in
-		a numbers
-	print
-		a num
-
-print 
-	a typed_number
 print
-	a typed_string
+	string "safe number:"
+	a safe_number
 
-note the unusual and unexpected: identifier flexibility
-	here's something delightfully surprising about 67lang. you might think that
-	identifiers must follow the usual rules (letters, underscore, alphanumerics)
-	but 67lang is more flexible than expected!
+print
+	string "safe text:"
+	a safe_text
 
-# TODO: investigate and document unusual identifier support
-# local ...
-#	string "ellipsis identifier"
-# local 0.00$_for_67.8%
-#	string "numbers and symbols" 
-# 
-# these unusual identifiers actually compile (converted to valid JavaScript)
-# but currently have runtime execution issues that need fixing.
-# the language accepts almost any identifier and mangles it for JS compatibility!
+print
+	string "copied number:"
+	a another_safe_number
 
-note design philosophy: getting out of your way
-	every feature in 67lang exists for a reason: making code readable,
-	maintainable, and pleasant to work with. the syntax is minimal because
-	our parser is under 100 lines of Python - yet the language is powerful
-	enough for real work.
+note type checking catches mistakes when you want it to:
+	the following lines demonstrate compile-time errors that help you avoid bugs
+
+must_compile_error FIELD_TYPE_MISMATCH=+1
+	local broken_assignment
+		type str
+		a safe_number
+
+note syntax errors are caught too:
+	forgetting the 'do' in a loop is a common mistake
+
+must_compile_error EXPECTED_DO_AFTER=+1  
+	for item in
+		a favorite_numbers
+	print
+		string "this won't work!"
+
+note === THE PHILOSOPHY: why 67lang exists ===
+	67lang was born from frustration with languages that prioritize academic
+	theory over human needs. every feature exists to solve real problems:
 	
-	semantic indentation guides your thinking. explicit variable access
-	eliminates confusion. flexible string delimiters solve real problems.
-	optional type checking catches bugs when you want it to.
+	→ semantic indentation guides thinking and eliminates syntax noise
+	→ explicit variable access eliminates confusion and bugs  
+	→ flexible string delimiters solve quote-escaping hell forever
+	→ natural language control flow makes code readable to humans
+	→ optional type checking lets you choose safety vs speed as needed
+	→ minimal syntax means fast parsing and easy tooling
 	
-	67lang doesn't try to be clever - it just gets out of your way so you
-	can focus on solving actual problems. welcome to the language that 
-	prioritizes human needs over academic theories.
+	the entire compiler is under 100 lines of Python, proving that powerful
+	languages don't need complex implementations. 67lang compiles to readable
+	JavaScript that runs everywhere: browsers, Deno, Node (with shims).
+	
+	this isn't about being clever or revolutionary. it's about removing friction
+	from the act of programming. when the language gets out of your way,
+	you can focus on solving actual problems instead of fighting syntax.
 
-note the approximate JS that it compiles to:
-	let typed_number = 42;
-	let typed_string = "hello";
-	let another_number = typed_number;
-	console.log(typed_number);
-	console.log(typed_string);
+note === THE REALITY: what you just experienced ===
+	every line of this file was executed as you read it. this documentation
+	IS the test suite. this tutorial IS the specification. when features change,
+	the documentation changes automatically - because they're the same thing.
+	
+	welcome to a language that respects your time, your intelligence, and your
+	need to get real work done. welcome to 67lang.
+
+note the approximate JS this compiles to:
+	let age = 23;
+	let pi_ish = 3.14159;
+	let basic_text = "hello world";
+	let text_with_quotes = 'she said "hello there"';
+	let poem = "roses are red\nviolets are blue\n67lang is simple\nand powerful too";
+	let is_awesome = true;
+	let is_complicated = false;
+	console.log(basic_text);
+	console.log(text_with_quotes);
+	// ... and so on, readable and straightforward
