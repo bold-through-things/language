@@ -9,8 +9,11 @@ from strutil import cut
 # Legacy registries - will be moved into steps
 preprocessor = MacroRegistry()
 
-# Import comment macros from literal_macros to avoid duplication
-from literal_macros import COMMENT_MACROS, code_linking
+# Import comment macros from comment_macros to avoid duplication
+from macros.comment_macros import COMMENT_MACROS, code_linking, comments
+
+# Register comment macros for preprocessing
+preprocessor.add(*COMMENT_MACROS)(comments)
 
 # SubstitutingMacro and CallingMacro removed - now handled contextually in access macro
 

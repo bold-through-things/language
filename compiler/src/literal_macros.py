@@ -1,138 +1,11 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, builtins, js_lib, unified_macros, unified_typecheck
-from macro_registry import MacroContext, MacroRegistry
-from strutil import IndentedStringIO, cut
+from processor_base import MacroProcessingStep, js_lib, unified_macros
+from macro_registry import MacroContext
+from strutil import IndentedStringIO
 from contextlib import contextmanager
-from utils import *
-from node import Macro, Args
+from node import Macro
 from logger import default_logger
-
-# Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
-typecheck = unified_typecheck  # Use unified registry
-
-@macros.add("noop", "type", "67lang:auto_type")
-def does_not_compile(_):
-    # does not compile into code itself - nothing to do
-    pass
-
-COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
-
-# Create a code linking registry for skipping comment macros  
-code_linking = MacroRegistry()
-
-@code_linking.add(*COMMENT_MACROS)
-@macros.add(*COMMENT_MACROS)
-@typecheck.add(*COMMENT_MACROS)
-def comments(_):
-    # comments are ignored during all processing steps. TODO - we could and perhaps should transfer comments to output?
-    pass
-
-# Add preprocessing registration for comments - done separately to avoid circular imports
-def _register_comments_for_preprocessing():
-    """Register comments function for preprocessing step to avoid circular imports"""
-    # TODO: This creates a circular import issue that needs to be resolved properly.
-    # The preprocessing_macros module imports from literal_macros, and literal_macros
-    # tries to import from preprocessing_macros. A proper solution would involve
-    # restructuring the module dependencies, but for now we must avoid the silent
-    # failure that could hide real import issues.
-    from preprocessing_macros import preprocessor
-    preprocessor.add(*COMMENT_MACROS)(comments)
-
-_register_comments_for_preprocessing()
-
-@macros.add("must_compile_error")
-def must_compile_error_processing(ctx: MacroContext):
-    """Process must_compile_error children during emission to catch emission-time errors.
-    
-    The children are processed normally but their output is discarded using dummy outputs.
-    Any errors generated during emission will be available for the verification step to check.
-    """
-    # Create dummy outputs to discard emission results
-    dummy_statement_out = IndentedStringIO()
-    dummy_expression_out = IndentedStringIO()
-    
-    # Process all children with dummy outputs to catch potential emission-time errors
-    for child in ctx.node.children:
-        child_ctx = replace(ctx, node=child, statement_out=dummy_statement_out, expression_out=dummy_expression_out)
-        ctx.current_step.process_node(child_ctx)
-
-
-
-@macros.add("int")
-def int_macro(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    ctx.expression_out.write(str(args))
-
-@typecheck.add("int")
-def int_typecheck(ctx: MacroContext):
-    return "int"
-
-@macros.add("string", "regex")
-def str_macro(ctx: MacroContext):
-    s: str = ctx.compiler.get_metadata(ctx.node, Args)
-    if len(s) == 0:
-        # multiline string case - collect content from children
-        lines = []
-        for child in ctx.node.children:
-            if child.content:
-                lines.append(child.content)
-        s = "\n".join(lines)
-    else:
-        delim = s[0]
-        ctx.compiler.assert_(s.endswith(delim), ctx.node, "must be delimited on both sides with the same character")
-        s = s.removeprefix(delim).removesuffix(delim)
-    s = s.replace("\n", "\\n")
-    s = s.replace('"', '\\"')  # escape quotes during JS string emission
-    macro = ctx.compiler.get_metadata(ctx.node, Macro)
-    sep = '"' if macro == "string" else "/"
-    ctx.expression_out.write(f'{sep}{s}{sep}')
-
-@typecheck.add("string")
-def str_typecheck(ctx: MacroContext):
-    return "str"
-
-@typecheck.add("regex")
-def regex_typecheck(ctx: MacroContext):
-    return "regex"
-
-with scope:
-    literally = {
-        "true": "true",
-        "false": "false",
-        "break": "break",
-        "continue": "continue",
-        "dict": "{}",
-        "return": "return"
-    }
-    @macros.add(*[k for k in literally.keys()])
-    def literally_macro(ctx: MacroContext):
-        # TODO. this isn't inherently expression_out... indeed most of these should be statement_out...
-        macro = ctx.compiler.get_metadata(ctx.node, Macro)
-        ctx.expression_out.write(literally[macro])
-
-@macros.add("list")
-def list_macro(ctx: MacroContext):
-    """Handle list macro - iterate all children, collect their expressions, emit [expr1, expr2, expr3...]"""
-    if not ctx.node.children:
-        ctx.expression_out.write("[]")
-        return
-    
-    from common_utils import collect_child_expressions
-    expressions = collect_child_expressions(ctx)
-    ctx.expression_out.write(f"[{', '.join(expressions)}]")
-
-@macros.add(*[b for b in builtins.keys()])
-def builtin(ctx: MacroContext):
-    macro = ctx.compiler.get_metadata(ctx.node, Macro)
-    ctx.compiler.compile_fn_call(ctx, f"await _67lang.{builtins[macro]}(", ctx.node.children)
-
-@macros.add("67lang:solution")
-def pil_solution(ctx: MacroContext):
-    """Process all children of the solution node"""
-    for child in ctx.node.children:
-        child_ctx = replace(ctx, node=child)
-        ctx.current_step.process_node(child_ctx)
+from error_types import ErrorType
 
 class JavaScriptEmissionStep(MacroProcessingStep):
     """Handles JavaScript code emission"""
@@ -188,4 +61,4 @@ class JavaScriptEmissionStep(MacroProcessingStep):
                 if len(ctx.compiler.compile_errors) > 0:
                     default_logger.codegen(f"skipping malformed node due to existing compile errors")
                     return
-                raise ValueError(f"TODO. unknown macro {macro}")
+                ctx.compiler.compile_error(ctx.node, f"unknown macro '{macro}' - is this supposed to exist? did you maybe typo something?", ErrorType.INVALID_MACRO)
