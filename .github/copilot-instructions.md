@@ -82,6 +82,6 @@ most file formats here support comments in one way or another. if you don't know
 
 **the tests are our spec.** no matter what `.ind` you may find, unless it is discoverable via the `./test.py`, it has no say as to what the language syntax or semantics are. only the autotest sources define the language syntax.
 
-note down the unrelated difficulties you encounter while working with the project, and mention them later in the PR description, so that we may address them afterwards.
+there's a file, `actually_just_yapping_meta_philosophy_here/developer_frustrations.md`, which you should use freely. edit it no matter the task, note down the things that tend to reduce your velocity.
 
 **do not track PR comments via line numbers!** track them via the lines (or the summary of lines) that they comment upon. this happens far too often - you lose track of which lines the comment is actually discussing because you edited the file and the line numbers shifted. incredibly frustrating!
