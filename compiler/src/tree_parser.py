@@ -39,7 +39,7 @@ class TrimStack(Generic[T]):
         return f"{self.__class__.__name__}({self._data})"
 
 class TreeParser:    
-    def parse_tree(self, code: str) -> Node:
+    def parse_tree(self, code: str, compiler=None) -> Node:
         # prepend and append newlines for simpler and cleaner handling
         # TODO - although this will fuck over line numbers, so might actually be a bad idea?
         code = f"\n{code}\n"
@@ -62,7 +62,21 @@ class TreeParser:
         
         for line in lines:
             line_num += 1 # at the start - assumes above \n{code}\n
-            line, indent = extract_indent(line)
+            
+            try:
+                line, indent = extract_indent(line)
+            except IndentationError as e:
+                # handle space-based indentation error
+                if compiler:
+                    from error_types import ErrorType
+                    # create a dummy node for error reporting
+                    error_node = ParsingNode(line, Position(line_num))
+                    compiler.compile_error(error_node.toNode(), str(e), ErrorType.INVALID_INDENTATION)
+                    # create an empty node and continue to avoid crashing
+                    continue
+                else:
+                    # if no compiler provided, re-raise the error
+                    raise
 
             # simplifies code. all the top-level lines are indent-1, belonging to a fake top-level Node
             # which is at indent-0

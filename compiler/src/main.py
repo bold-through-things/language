@@ -64,7 +64,7 @@ with default_logger.indent("compile", "parsing files"):
     for filename in result:
         default_logger.compile(f"parsing {filename}")
         with open(filename) as file:
-            node = parser.parse_tree(file.read())
+            node = parser.parse_tree(file.read(), compiler)
             compiler.register(node)
 
 crash = None

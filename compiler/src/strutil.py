@@ -5,14 +5,16 @@ def cut(line:str, sep:str) -> tuple[str, str]:
     return line[:index], line[index+len(sep):]
     
 def extract_indent(line: str) -> tuple[str, int]:
+    # check for space-based indentation first and reject it
+    if line.startswith(' '):
+        # find the position of the first space for error reporting
+        from error_types import ErrorType
+        raise IndentationError(f"this language only accepts tabs for indentation, not spaces! spaces are like, totally uncool. use tabs instead, they're way more precise and semantic.")
+    
     indent = 0
     while line.startswith('\t'):
         indent += 1
         line = line[1:]
-    # also handle space-based indentation (4 spaces = 1 indent level)
-    while line.startswith('    '):
-        indent += 1
-        line = line[4:]
     return line, indent
 
 from io import StringIO

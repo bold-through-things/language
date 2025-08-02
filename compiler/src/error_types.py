@@ -11,6 +11,7 @@ _ERROR_TYPES = [
     "EXPECTED_THEN_AFTER",         # Expected 'then' after 'if'
     "SYNTAX_ERROR",                # General syntax errors
     "INVALID_MACRO",               # Unknown macro
+    "INVALID_INDENTATION",         # Invalid indentation (spaces instead of tabs)
     
     # Type checking errors
     "TYPE_MISMATCH",               # Type mismatch in field/argument
