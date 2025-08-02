@@ -344,6 +344,78 @@ if __name__ == "__main__":
                 self.assertIn("[registry] registering macro", all_output, "Expected registry log messages when --log registry is used")
                 self.assertIn("refactor confidently when the flame flickers.", all_output, "Expected final flicker message")
 
+        def test_gitignore_validation(self):
+            """Test that gitignore properly handles test artifacts as mentioned in issue #15"""
+            
+            # run a specific test to generate artifacts
+            returncode, stdout, stderr = run_with_input(
+                ["python3", "test", "--compile", "--glob", "anagra"], 
+                stdin="", 
+                line_delayed=False
+            )
+            
+            self.assertEqual(returncode, 0, f"test failed with code {returncode}\nstdout: {stdout}\nstderr: {stderr}")
+            
+            test_dir = Path("tests") / "basics" / "anagram_groups"
+            
+            # check that valuable artifacts exist
+            valuable_artifacts = [
+                test_dir / ".67lang.expanded",  # macro expansion history
+                test_dir / "out.js",            # JS emission history
+                test_dir / "success.stdout",    # test expectations
+                test_dir / "main.67lang",       # source code
+            ]
+            
+            for artifact in valuable_artifacts:
+                self.assertTrue(artifact.exists(), f"must have valuable artifact: {artifact}")
+            
+            # check git status to ensure temporary files are ignored
+            returncode, stdout, stderr = run_with_input(
+                ["git", "status", "--porcelain", str(test_dir)], 
+                stdin="", 
+                line_delayed=False
+            )
+            
+            self.assertEqual(returncode, 0, f"git status failed: {stderr}")
+            
+            status_lines = [line.strip() for line in stdout.strip().split('\n') if line.strip()]
+            
+            # should not see any test_diffs/ in git status (but actual files should be tracked when they exist)
+            for line in status_lines:
+                self.assertNotIn("test_diffs", line, f"test_diffs should be ignored by git: {line}")
+            
+            # verify test_diffs directory exists but is ignored (if it exists)
+            test_diffs_dir = test_dir / "test_diffs"
+            if test_diffs_dir.exists():
+                returncode, stdout, stderr = run_with_input(
+                    ["git", "check-ignore", str(test_diffs_dir)], 
+                    stdin="", 
+                    line_delayed=False
+                )
+                self.assertEqual(returncode, 0, "must ignore test_diffs directory")
+            
+            # check that .67lang.expanded files are properly tracked
+            expanded_file = test_dir / ".67lang.expanded"
+            if expanded_file.exists():
+                returncode, stdout, stderr = run_with_input(
+                    ["git", "ls-files", str(expanded_file)], 
+                    stdin="", 
+                    line_delayed=False
+                )
+                self.assertEqual(returncode, 0, f"git ls-files failed: {stderr}")
+                self.assertTrue(stdout.strip(), f"must track .67lang.expanded file: {expanded_file}")
+            
+            # check that out.js files are properly tracked
+            out_js_file = test_dir / "out.js"
+            if out_js_file.exists():
+                returncode, stdout, stderr = run_with_input(
+                    ["git", "ls-files", str(out_js_file)], 
+                    stdin="", 
+                    line_delayed=False
+                )
+                self.assertEqual(returncode, 0, f"git ls-files failed: {stderr}")
+                self.assertTrue(stdout.strip(), f"must track out.js file: {out_js_file}")
+
     import argparse
 
     parser = argparse.ArgumentParser()
@@ -405,6 +477,12 @@ if __name__ == "__main__":
     else:
         print(f"ignoring `test_verbose_compilation` per midglob `{args.glob}`")
         delattr(MyLangTestCase, 'test_verbose_compilation')
+        
+    if glob_filter("test_gitignore_validation"):
+        pass  # already defined as method  
+    else:
+        print(f"ignoring `test_gitignore_validation` per midglob `{args.glob}`")
+        delattr(MyLangTestCase, 'test_gitignore_validation')
     
     unittest.main()
 
