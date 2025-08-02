@@ -9,8 +9,18 @@ import sys
 from pathlib import Path
 
 def main():
-    # resolve absolute path of repository root
-    repo_root = Path(__file__).parent.parent.resolve()
+    # resolve absolute path of repository root by finding .git directory
+    current_path = Path(__file__).resolve().parent
+    
+    # search up the directory tree for .git directory
+    while current_path != current_path.parent:
+        if (current_path / ".git").exists():
+            repo_root = current_path
+            break
+        current_path = current_path.parent
+    else:
+        print("error: could not find repository root (.git directory)")
+        return 1
     
     # call the actual pre-commit logic via subprocess with proper working directory
     script_path = repo_root / "run_pre_commit.py"
