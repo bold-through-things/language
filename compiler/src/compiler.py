@@ -9,7 +9,7 @@ from macro_registry import MacroContext
 from preprocessing_macros import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
-from must_compile_error_step import MustCompileErrorVerificationStep
+from steps.must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
 

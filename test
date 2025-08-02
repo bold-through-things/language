@@ -286,7 +286,7 @@ if __name__ == "__main__":
             """Test that compilation is silent by default using existing test case"""
             
             # Use an existing working test case
-            test_dir = Path(__file__).parent / "test" / "basics" / "anagram_groups"
+            test_dir = Path(__file__).parent / "tests" / "basics" / "anagram_groups"
             
             with tempfile.TemporaryDirectory() as tmpdir:
                 tmpdir_path = Path(tmpdir)
@@ -321,7 +321,7 @@ if __name__ == "__main__":
             """Test that compilation shows logs when --log is provided"""
             
             # Use an existing working test case
-            test_dir = Path(__file__).parent / "test" / "basics" / "anagram_groups"
+            test_dir = Path(__file__).parent / "tests" / "basics" / "anagram_groups"
             
             with tempfile.TemporaryDirectory() as tmpdir:
                 tmpdir_path = Path(tmpdir)
