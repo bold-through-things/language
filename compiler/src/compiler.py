@@ -16,7 +16,7 @@ from logger import default_logger
 # Import all macro modules to ensure registrations happen
 import literal_macros
 import access_macros
-import control_flow_macros
+import macros  # Import the new macros package
 import typecheck_macros
 
 class Compiler:
