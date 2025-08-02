@@ -3,70 +3,23 @@
 pre-commit hook to automatically run tests and include valuable test artifacts.
 mentioned in issue #15: "add a commit hook that would automatically run ./test 
 and include all the valuable test artifacts into the commit"
-
-TODO: git hooks cannot be automatically installed via git clone due to security reasons.
-git intentionally does not execute hooks from repositories to prevent arbitrary code execution.
-hooks must be manually installed by users after cloning. the only alternatives would be:
-1. package managers (npm, pip) with postinstall scripts - but we avoid dependencies
-2. makefile/setup script that users must manually run - adds extra step
-3. CI/CD enforcement instead of local hooks - but doesn't help with local commits
-4. git templates - but requires global git config changes
-
-manual install: ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit
 """
 
 import subprocess
 import sys
-import json
 from pathlib import Path
-from itertools import product
+
+# Add the repo root to sys.path so we can import test_discovery
+repo_root = Path(__file__).parent.parent
+sys.path.insert(0, str(repo_root))
+
+# import shared test discovery logic to avoid duplication
+from test_discovery import discover_tests, get_test_artifacts
 
 def run_command(cmd, cwd=None):
     """run a command and return returncode, stdout, stderr"""
     result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
     return result.returncode, result.stdout, result.stderr
-
-def discover_test_artifacts(repo_root):
-    """discover test artifacts that should exist based on tests.json files"""
-    test_root = repo_root / "tests"
-    artifacts = []
-    
-    for tests_json_path in test_root.rglob("tests.json"):
-        with open(tests_json_path, "r") as f:
-            entries = json.load(f)
-        
-        base_dir = tests_json_path.parent
-        
-        for entry in entries:
-            code_glob = entry["code"]
-            case_glob = entry["case"]
-            
-            def resolve(pattern: str, base: Path):
-                if not pattern:
-                    raise ValueError(f"Empty pattern in {base}")
-                return list(base.glob(pattern)) if "*" in pattern else [base / pattern]
-            
-            code_paths = resolve(code_glob, base_dir)
-            case_paths = resolve(case_glob, base_dir)
-            
-            for code_path, case_path in product(code_paths, case_paths):
-                case_dir = case_path
-                
-                # artifacts that should exist after successful compilation/testing
-                potential_artifacts = [
-                    case_dir / ".67lang.expanded",  # macro expansion history
-                    case_dir / "out.js",            # JS emission history  
-                    case_dir / "success.stdout",    # test expectations
-                    case_dir / "runtime.stderr",    # runtime error expectations
-                    case_dir / "compile.stderr",    # compile error expectations
-                ]
-                
-                # only include artifacts that actually exist
-                for artifact in potential_artifacts:
-                    if artifact.exists():
-                        artifacts.append(artifact)
-    
-    return artifacts
 
 def main():
     repo_root = Path(__file__).parent.parent
@@ -86,11 +39,25 @@ def main():
     
     print("tests passed, adding valuable test artifacts...")
     
-    # discover and add all valuable test artifacts based on test discovery
-    artifacts = discover_test_artifacts(repo_root)
+    # discover all test cases using shared logic
+    test_cases = discover_tests(repo_root / "tests")
     
-    if artifacts:
-        artifact_paths = [str(artifact) for artifact in artifacts]
+    # collect all artifacts from all test cases
+    all_artifacts = []
+    for test_case in test_cases:
+        artifacts = get_test_artifacts(test_case)
+        all_artifacts.extend(artifacts)
+    
+    if all_artifacts:
+        # remove duplicates while preserving order
+        unique_artifacts = []
+        seen = set()
+        for artifact in all_artifacts:
+            if artifact not in seen:
+                unique_artifacts.append(artifact)
+                seen.add(artifact)
+        
+        artifact_paths = [str(artifact) for artifact in unique_artifacts]
         returncode, stdout, stderr = run_command(
             ["git", "add"] + artifact_paths,
             cwd=repo_root
@@ -100,8 +67,8 @@ def main():
             print(f"failed to add artifacts: {stderr}")
             return 1
             
-        print(f"added {len(artifacts)} valuable test artifacts to commit")
-        for artifact in artifacts:
+        print(f"added {len(unique_artifacts)} valuable test artifacts to commit:")
+        for artifact in unique_artifacts:
             print(f"  {artifact.relative_to(repo_root)}")
     else:
         print("no test artifacts found to add")
