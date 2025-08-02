@@ -136,117 +136,107 @@ void (async () => {
 
 
 
-            let my_number = 42
-            my_number
 
+            let age = 23
+            age
+            let pi_ish
+            pi_ish
 
-            let my_string = "hello world"
-            my_string
+            let basic_text = "hello world"
+            basic_text
+            let text_with_quotes = "she said \"hello there\""
+            text_with_quotes
+            let different_delimiter = "even pipes work as delimiters"
+            different_delimiter
+            let fancy_delimiter = "anything can be a delimiter"
+            fancy_delimiter
 
+            const _0x37_basic_text = await basic_text
+            let _0x0_basic_text = _0x37_basic_text
+            const _0x38_await__67lang_dot_log_lp_ = await _67lang.log(_0x0_basic_text)
+            _0x38_await__67lang_dot_log_lp_
+            const _0x39_text_with_quotes = await text_with_quotes
+            let _0x1_text_with_quotes = _0x39_text_with_quotes
+            const _0x3a_await__67lang_dot_log_lp_ = await _67lang.log(_0x1_text_with_quotes)
+            _0x3a_await__67lang_dot_log_lp_
 
-            let my_scary_string = "error"
-            my_scary_string
-            let my_string_with_quotes = "hello \"world\""
-            my_string_with_quotes
+            let poem = "roses are red\nviolets are blue  \n67lang is simple\nand powerful too"
+            poem
+            const _0x3b_poem = await poem
+            let _0x2_poem = _0x3b_poem
+            const _0x3c_await__67lang_dot_log_lp_ = await _67lang.log(_0x2_poem)
+            _0x3c_await__67lang_dot_log_lp_
 
+            let is_awesome = true
+            is_awesome
+            let is_complicated = false
+            is_complicated
+            const _0x3d_is_awesome = await is_awesome
+            let _0x3_is_awesome = _0x3d_is_awesome
+            const _0x3e_await__67lang_dot_log_lp_ = await _67lang.log("67lang is awesome:", _0x3_is_awesome)
+            _0x3e_await__67lang_dot_log_lp_
+            const _0x3f_is_complicated = await is_complicated
+            let _0x4_is_complicated = _0x3f_is_complicated
+            const _0x40_await__67lang_dot_log_lp_ = await _67lang.log("67lang is complicated:", _0x4_is_complicated)
+            _0x40_await__67lang_dot_log_lp_
 
-            let multiline_text = "this is a multiline string\neach indented line becomes part of the string\njoined with newlines"
-            multiline_text
+            let username = "alice"
+            username
+            let user_age = 25
+            user_age
 
-            const _0x26__multiline_text = await multiline_text
-            let _0x0__multiline_text = _0x26__multiline_text
-            const _0x27__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x0__multiline_text)
-            _0x27__await__67lang_0x2e_log_0x28_
-
-            let my_true = true
-            my_true
-            let my_false = false
-            my_false
-            let my_dict = {}
-            my_dict
-            let my_list = []
-            my_list
-
-            const _0x28__my_true = await my_true
-            let _0x1__my_true = _0x28__my_true
-            const _0x29__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x1__my_true)
-            _0x29__await__67lang_0x2e_log_0x28_
-            const _0x2a__my_false = await my_false
-            let _0x2__my_false = _0x2a__my_false
-            const _0x2b__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x2__my_false)
-            _0x2b__await__67lang_0x2e_log_0x28_
-
-
-            let name = "alice"
-            name
-
-
-            const _0x2c__name = await name
-            let _0x3__name = _0x2c__name
-            const _0x2d__await__67lang_0x2e_concat_0x28_ = await _67lang.concat("hello ", _0x3__name)
-            let greeting = _0x2d__await__67lang_0x2e_concat_0x28_
+            const _0x41_username = await username
+            let _0x5_username = _0x41_username
+            const _0x42_user_age = await user_age
+            let _0x6_user_age = _0x42_user_age
+            const _0x43_await__67lang_dot_concat_lp_ = await _67lang.concat("hello there, ", _0x5_username, "! you are ", _0x6_user_age, " years old.")
+            let greeting = _0x43_await__67lang_dot_concat_lp_
             greeting
+            const _0x44_greeting = await greeting
+            let _0x7_greeting = _0x44_greeting
+            const _0x45_await__67lang_dot_log_lp_ = await _67lang.log(_0x7_greeting)
+            _0x45_await__67lang_dot_log_lp_
 
 
-            const _0x2e__await__67lang_0x2e_log_0x28_ = await _67lang.log("this will be", "concatenated with spaces i think", "as it is just an alias for Deno console.log")
-            _0x2e__await__67lang_0x2e_log_0x28_
-
-            const _0x2f__my_scary_string = await my_scary_string
-            let _0x4__my_scary_string = _0x2f__my_scary_string
-            const _0x30__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x4__my_scary_string)
-            _0x30__await__67lang_0x2e_log_0x28_
-            const _0x31__my_string_with_quotes = await my_string_with_quotes
-            let _0x5__my_string_with_quotes = _0x31__my_string_with_quotes
-            const _0x32__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x5__my_string_with_quotes)
-            _0x32__await__67lang_0x2e_log_0x28_
-            const _0x33__await__67lang_0x2e_log_0x28_ = await _67lang.log("new year's ", "eve")
-            _0x33__await__67lang_0x2e_log_0x28_
-
-            const _0x34__greeting = await greeting
-            let _0x6__greeting = _0x34__greeting
-            const _0x35__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x6__greeting)
-            _0x35__await__67lang_0x2e_log_0x28_
-
-            const _0x36__my_number = await my_number
-            let _0x7__my_number = _0x36__my_number
-            const _0x37__await__67lang_0x2e_eq_0x28_ = await _67lang.eq(_0x7__my_number, 42)
-            if (_0x37__await__67lang_0x2e_eq_0x28_) {{
+            const _0x46_user_age = await user_age
+            let _0x14_user_age = _0x46_user_age
+            const _0x47_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x14_user_age, 25)
+            if (_0x47_await__67lang_dot_eq_lp_) {{
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x38__await__67lang_0x2e_log_0x28_ = await _67lang.log("number is 42")
-                        _0x38__await__67lang_0x2e_log_0x28_
+                        const _0x48_await__67lang_dot_log_lp_ = await _67lang.log("you're exactly 25!")
+                        _0x48_await__67lang_dot_log_lp_
                     }
                 } }
             else {
                 const parent_scope = scope
                 {
                     const scope = _67lang.scope(parent_scope)
-                    const _0x39__await__67lang_0x2e_log_0x28_ = await _67lang.log("number is not 42")
-                    _0x39__await__67lang_0x2e_log_0x28_
+                    const _0x49_await__67lang_dot_log_lp_ = await _67lang.log("you're not 25")
+                    _0x49_await__67lang_dot_log_lp_
                 }
             } 
 
 
-            let numbers = [1, 2, 3]
-            numbers
+            let favorite_numbers = [7, 42  , 100]
+            favorite_numbers
+            const _0x4a_favorite_numbers = await favorite_numbers
+            let _0x15_favorite_numbers = _0x4a_favorite_numbers
 
-            const _0x3a__numbers = await numbers
-            let _0x8__numbers = _0x3a__numbers
-
-            const _0x3b__iter = _0x8__numbers[Symbol.iterator]();
+            const _0x4b_iter = _0x15_favorite_numbers[Symbol.iterator]();
             while (true) {
-                const { value, done } = _0x3b__iter.next();
+                const { value, done } = _0x4b_iter.next();
                 if (done) { break; }
-                let num = value;
+                let number = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x3c__num = await num
-                        let _0x9__num = _0x3c__num
-                        const _0x3d__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x9__num)
-                        _0x3d__await__67lang_0x2e_log_0x28_
+                        const _0x4c_number = await number
+                        let _0x16_number = _0x4c_number
+                        const _0x4d_await__67lang_dot_log_lp_ = await _67lang.log("i like the number:", _0x16_number)
+                        _0x4d_await__67lang_dot_log_lp_
                     }
                 } }
 
@@ -254,154 +244,162 @@ void (async () => {
             let person = {}
             person
 
+            const _0x4e_person = await person
+            let _0x17_person = _0x4e_person
 
-            const _0x3e__person = await person
-            let _0xa__person = _0x3e__person
+            _0x17_person["name"] = "bob"
+            const _0x4f__0x17_person = await _0x17_person["name"]
+            let _0x18_key = _0x4f__0x17_person
+            _0x18_key
+            const _0x50_person = await person
+            let _0x19_person = _0x50_person
 
-            _0xa__person["name"] = "bob"
-            const _0x3f___0xa__person = await _0xa__person["name"]
-            let _0xb__key = _0x3f___0xa__person
-            _0xb__key
+            _0x19_person["profession"] = "software developer"
+            const _0x51__0x19_person = await _0x19_person["profession"]
+            let _0x1a_key = _0x51__0x19_person
+            _0x1a_key
+            const _0x52_person = await person
+            let _0x1b_person = _0x52_person
 
+            _0x1b_person["favorite_number"] = 42
+            const _0x53__0x1b_person = await _0x1b_person["favorite_number"]
+            let _0x1c_key = _0x53__0x1b_person
+            _0x1c_key
 
-            const _0x40__person = await person
-            let _0xc__person = _0x40__person
+            const _0x54_person = await person
+            let _0x1d_person = _0x54_person
+            const _0x55__0x1d_person = await _0x1d_person["name"]
+            let _0x1e_key = _0x55__0x1d_person
+            const _0x56_await__67lang_dot_log_lp_ = await _67lang.log("name:", _0x1e_key)
+            _0x56_await__67lang_dot_log_lp_
+            const _0x57_person = await person
+            let _0x1f_person = _0x57_person
+            const _0x58__0x1f_person = await _0x1f_person["profession"]
+            let _0x20_key = _0x58__0x1f_person
+            const _0x59_await__67lang_dot_log_lp_ = await _67lang.log("profession:", _0x20_key)
+            _0x59_await__67lang_dot_log_lp_
+            const _0x5a_person = await person
+            let _0x21_person = _0x5a_person
+            const _0x5b__0x21_person = await _0x21_person["favorite_number"]
+            let _0x22_key = _0x5b__0x21_person
+            const _0x5c_await__67lang_dot_log_lp_ = await _67lang.log("favorite number:", _0x22_key)
+            _0x5c_await__67lang_dot_log_lp_
 
-            _0xc__person["age"] = 30
-            const _0x41___0xc__person = await _0xc__person["age"]
-            let _0xd__data_we_would_like_to_store = _0x41___0xc__person
-            _0xd__data_we_would_like_to_store
+            let sentence = "the quick brown fox jumps"
+            sentence
 
-
-            const _0x42__person = await person
-            let _0xe__person = _0x42__person
-            const _0x43___0xe__person = await _0xe__person["name"]
-            let _0xf__key = _0x43___0xe__person
-            const _0x44__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0xf__key)
-            _0x44__await__67lang_0x2e_log_0x28_
-            const _0x45__person = await person
-            let _0x10__person = _0x45__person
-            const _0x46___0x10__person = await _0x10__person["age"]
-            let _0x11__data_we_would_like_to_store = _0x46___0x10__person
-            const _0x47__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x11__data_we_would_like_to_store)
-            _0x47__await__67lang_0x2e_log_0x28_
-
-
-            let text = "hello world"
-            text
-
-            const _0x48__text = await text
-            let _0x12__text = _0x48__text
-            const _0x4a___0x12__text = await _0x12__text
-            const _0x49__split = await String.prototype.split.call(_0x4a___0x12__text, " ")
-            let _0x13__split = _0x49__split
-            let words = _0x13__split
+            const _0x5d_sentence = await sentence
+            let _0x23_sentence = _0x5d_sentence
+            const _0x5f__0x23_sentence = await _0x23_sentence
+            const _0x5e_split = await String.prototype.split.call(_0x5f__0x23_sentence, " ")
+            let _0x24_split = _0x5e_split
+            let words = _0x24_split
             words
-            const _0x4b__words = await words
-            let _0x14__words = _0x4b__words
-            const _0x4c__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x14__words)
-            _0x4c__await__67lang_0x2e_log_0x28_
+            const _0x60_words = await words
+            let _0x25_words = _0x60_words
+            const _0x61_await__67lang_dot_log_lp_ = await _67lang.log("words:", _0x25_words)
+            _0x61_await__67lang_dot_log_lp_
 
-
-            const _0x4d__words = await words
-            let _0x15__words = _0x4d__words
-            const _0x4f___0x15__words = await _0x15__words
-            const _0x4e__join = await Array.prototype.join.call(_0x4f___0x15__words, "-")
-            let _0x16__join = _0x4e__join
-            let rejoined = _0x16__join
+            const _0x62_words = await words
+            let _0x26_words = _0x62_words
+            const _0x64__0x26_words = await _0x26_words
+            const _0x63_join = await Array.prototype.join.call(_0x64__0x26_words, "-")
+            let _0x27_join = _0x63_join
+            let rejoined = _0x27_join
             rejoined
-            const _0x50__rejoined = await rejoined
-            let _0x17__rejoined = _0x50__rejoined
-            const _0x51__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x17__rejoined)
-            _0x51__await__67lang_0x2e_log_0x28_
+            const _0x65_rejoined = await rejoined
+            let _0x28_rejoined = _0x65_rejoined
+            const _0x66_await__67lang_dot_log_lp_ = await _67lang.log("rejoined:", _0x28_rejoined)
+            _0x66_await__67lang_dot_log_lp_
 
+            let messy_input = "word1    word2       word3"
+            messy_input
+            const _0x67_messy_input = await messy_input
+            let _0x29_messy_input = _0x67_messy_input
+            const _0x69__0x29_messy_input = await _0x29_messy_input
+            const _0x68_split = await String.prototype.split.call(_0x69__0x29_messy_input, /\s+/)
+            let _0x2a_split = _0x68_split
+            let clean_words = _0x2a_split
+            clean_words
+            const _0x6a_clean_words = await clean_words
+            let _0x2b_clean_words = _0x6a_clean_words
+            const _0x6b_await__67lang_dot_log_lp_ = await _67lang.log("clean words:", _0x2b_clean_words)
+            _0x6b_await__67lang_dot_log_lp_
 
-            let input_with_spaces = "a  b   c"
-            input_with_spaces
-            const _0x52__input_with_spaces = await input_with_spaces
-            let _0x18__input_with_spaces = _0x52__input_with_spaces
-            const _0x54___0x18__input_with_spaces = await _0x18__input_with_spaces
-            const _0x53__split = await String.prototype.split.call(_0x54___0x18__input_with_spaces, /\s+/)
-            let _0x19__split = _0x53__split
-            let regex_words = _0x19__split
-            regex_words
-            const _0x55__regex_words = await regex_words
-            let _0x1a__regex_words = _0x55__regex_words
-            const _0x56__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x1a__regex_words)
-            _0x56__await__67lang_0x2e_log_0x28_
-
-
-            let word = "hello"
+            let word = "programming"
             word
-            const _0x57__word = await word
-            let _0x1b__word = _0x57__word
-            const _0x59___0x1b__word = await _0x1b__word
-            const _0x58__split = await String.prototype.split.call(_0x59___0x1b__word, "")
-            let _0x1c__split = _0x58__split
-            const _0x5b___0x1c__split = await _0x1c__split
-            const _0x5a__sort = await Array.prototype.sort.call(_0x5b___0x1c__split)
-            let _0x1d__sort = _0x5a__sort
-            const _0x5d___0x1d__sort = await _0x1d__sort
-            const _0x5c__join = await Array.prototype.join.call(_0x5d___0x1d__sort, "")
-            let _0x1e__join = _0x5c__join
-            let key = _0x1e__join
-            key
-            const _0x5e__key = await key
-            let _0x1f__key = _0x5e__key
-            const _0x5f__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x1f__key)
-            _0x5f__await__67lang_0x2e_log_0x28_
+            const _0x6c_word = await word
+            let _0x2c_word = _0x6c_word
+            const _0x6e__0x2c_word = await _0x2c_word
+            const _0x6d_split = await String.prototype.split.call(_0x6e__0x2c_word, "")
+            let _0x2d_split = _0x6d_split
+            const _0x70__0x2d_split = await _0x2d_split
+            const _0x6f_sort = await Array.prototype.sort.call(_0x70__0x2d_split)
+            let _0x2e_sort = _0x6f_sort
+            const _0x72__0x2e_sort = await _0x2e_sort
+            const _0x71_join = await Array.prototype.join.call(_0x72__0x2e_sort, "")
+            let _0x2f_join = _0x71_join
+            let sorted_letters = _0x2f_join
+            sorted_letters
+            const _0x73_sorted_letters = await sorted_letters
+            let _0x30_sorted_letters = _0x73_sorted_letters
+            const _0x74_await__67lang_dot_log_lp_ = await _67lang.log("sorted letters:", _0x30_sorted_letters)
+            _0x74_await__67lang_dot_log_lp_
 
 
 
-            const _0x60__await__67lang_0x2e_eq_0x28_ = await _67lang.eq(5, 5)
-            const _0x61__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x60__await__67lang_0x2e_eq_0x28_)
-            _0x61__await__67lang_0x2e_log_0x28_
-            const _0x62__await__67lang_0x2e_asc_0x28_ = await _67lang.asc(3, 5)
-            const _0x63__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x62__await__67lang_0x2e_asc_0x28_)
-            _0x63__await__67lang_0x2e_log_0x28_
+            const _0x75_await__67lang_dot_eq_lp_ = await _67lang.eq(5, 5)
+            const _0x76_await__67lang_dot_log_lp_ = await _67lang.log("are 5 and 5 equal?", _0x75_await__67lang_dot_eq_lp_)
+            _0x76_await__67lang_dot_log_lp_
+            const _0x77_await__67lang_dot_asc_lp_ = await _67lang.asc(3, 5)
+            const _0x78_await__67lang_dot_log_lp_ = await _67lang.log("is 3 less than 5?", _0x77_await__67lang_dot_asc_lp_)
+            _0x78_await__67lang_dot_log_lp_
+
+            const _0x79_await__67lang_dot_add_lp_ = await _67lang.add(10, 5)
+            const _0x7a_await__67lang_dot_log_lp_ = await _67lang.log("10 plus 5:", _0x79_await__67lang_dot_add_lp_)
+            _0x7a_await__67lang_dot_log_lp_
+            const _0x7b_await__67lang_dot_mod_lp_ = await _67lang.mod(10, 3)
+            const _0x7c_await__67lang_dot_log_lp_ = await _67lang.log("10 mod 3:", _0x7b_await__67lang_dot_mod_lp_)
+            _0x7c_await__67lang_dot_log_lp_
+
+            const _0x7d_await__67lang_dot_all_lp_ = await _67lang.all(true, false)
+            const _0x7e_await__67lang_dot_log_lp_ = await _67lang.log("all conditions true (true AND false):", _0x7d_await__67lang_dot_all_lp_)
+            _0x7e_await__67lang_dot_log_lp_
+            const _0x7f_await__67lang_dot_any_lp_ = await _67lang.any(true, false)
+            const _0x80_await__67lang_dot_log_lp_ = await _67lang.log("any condition true (true OR false):", _0x7f_await__67lang_dot_any_lp_)
+            _0x80_await__67lang_dot_log_lp_
+            const _0x81_await__67lang_dot_none_lp_ = await _67lang.none(false)
+            const _0x82_await__67lang_dot_log_lp_ = await _67lang.log("none of these are true (NOT false):", _0x81_await__67lang_dot_none_lp_)
+            _0x82_await__67lang_dot_log_lp_
 
 
-            const _0x64__await__67lang_0x2e_add_0x28_ = await _67lang.add(10, 5)
-            const _0x65__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x64__await__67lang_0x2e_add_0x28_)
-            _0x65__await__67lang_0x2e_log_0x28_
-            const _0x66__await__67lang_0x2e_mod_0x28_ = await _67lang.mod(10, 3)
-            const _0x67__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x66__await__67lang_0x2e_mod_0x28_)
-            _0x67__await__67lang_0x2e_log_0x28_
+            let safe_number = 999
+            safe_number
+            let safe_text = "type-checked string"
+            safe_text
 
-
-            const _0x68__await__67lang_0x2e_all_0x28_ = await _67lang.all(true, false)
-            const _0x69__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x68__await__67lang_0x2e_all_0x28_)
-            _0x69__await__67lang_0x2e_log_0x28_
-            const _0x6a__await__67lang_0x2e_any_0x28_ = await _67lang.any(true, false)
-            const _0x6b__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x6a__await__67lang_0x2e_any_0x28_)
-            _0x6b__await__67lang_0x2e_log_0x28_
-            const _0x6c__await__67lang_0x2e_none_0x28_ = await _67lang.none(false)
-            const _0x6d__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x6c__await__67lang_0x2e_none_0x28_)
-            _0x6d__await__67lang_0x2e_log_0x28_
-
-
-
-            let typed_number = 42
-            typed_number
-            let typed_string = "hello"
-            typed_string
-
-            const _0x6e__typed_number = await typed_number
-            let _0x20__typed_number = _0x6e__typed_number
-            let another_number = _0x20__typed_number
-            another_number
+            const _0x83_safe_number = await safe_number
+            let _0x31_safe_number = _0x83_safe_number
+            let another_safe_number = _0x31_safe_number
+            another_safe_number
+            const _0x84_safe_number = await safe_number
+            let _0x32_safe_number = _0x84_safe_number
+            const _0x85_await__67lang_dot_log_lp_ = await _67lang.log("safe number:", _0x32_safe_number)
+            _0x85_await__67lang_dot_log_lp_
+            const _0x86_safe_text = await safe_text
+            let _0x33_safe_text = _0x86_safe_text
+            const _0x87_await__67lang_dot_log_lp_ = await _67lang.log("safe text:", _0x33_safe_text)
+            _0x87_await__67lang_dot_log_lp_
+            const _0x88_another_safe_number = await another_safe_number
+            let _0x34_another_safe_number = _0x88_another_safe_number
+            const _0x89_await__67lang_dot_log_lp_ = await _67lang.log("copied number:", _0x34_another_safe_number)
+            _0x89_await__67lang_dot_log_lp_
 
 
 
 
-            const _0x74__typed_number = await typed_number
-            let _0x24__typed_number = _0x74__typed_number
-            const _0x75__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x24__typed_number)
-            _0x75__await__67lang_0x2e_log_0x28_
-            const _0x76__typed_string = await typed_string
-            let _0x25__typed_string = _0x76__typed_string
-            const _0x77__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x25__typed_string)
-            _0x77__await__67lang_0x2e_log_0x28_
+
+
 
         }
     } 

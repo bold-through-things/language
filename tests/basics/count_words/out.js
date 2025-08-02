@@ -133,52 +133,52 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0xa__await__67lang_0x2e_stdin_0x28_ = await _67lang.stdin()
-            let input = _0xa__await__67lang_0x2e_stdin_0x28_
+            const _0xa_await__67lang_dot_stdin_lp_ = await _67lang.stdin()
+            let input = _0xa_await__67lang_dot_stdin_lp_
             input
-            const _0xb__input = await input
-            let _0x0__input = _0xb__input
-            const _0xd___0x0__input = await _0x0__input
-            const _0xc__split = await String.prototype.split.call(_0xd___0x0__input, "\n")
-            let _0x1__split = _0xc__split
-            let words = _0x1__split
+            const _0xb_input = await input
+            let _0x0_input = _0xb_input
+            const _0xd__0x0_input = await _0x0_input
+            const _0xc_split = await String.prototype.split.call(_0xd__0x0_input, "\n")
+            let _0x1_split = _0xc_split
+            let words = _0x1_split
             words
             let count = {}
             count
-            const _0xe__words = await words
-            let _0x2__words = _0xe__words
+            const _0xe_words = await words
+            let _0x2_words = _0xe_words
 
-            const _0xf__iter = _0x2__words[Symbol.iterator]();
+            const _0xf_iter = _0x2_words[Symbol.iterator]();
             while (true) {
-                const { value, done } = _0xf__iter.next();
+                const { value, done } = _0xf_iter.next();
                 if (done) { break; }
                 let word = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x10__count = await count
-                        let _0x7__count = _0x10__count
+                        const _0x10_count = await count
+                        let _0x7_count = _0x10_count
 
-                        const _0x12__word = await word
-                        let _0x3__word = _0x12__word
-                        const _0x13__count = await count
-                        let _0x5__count = _0x13__count
-                        const _0x15__word = await word
-                        let _0x4__word = _0x15__word
-                        const _0x14___0x5__count = await _0x5__count[_0x4__word]
-                        let _0x6__key = _0x14___0x5__count
-                        const _0x16__await__67lang_0x2e_add_0x28_ = await _67lang.add(1, _0x6__key)
-                        _0x7__count[_0x3__word] = _0x16__await__67lang_0x2e_add_0x28_
-                        const _0x11___0x7__count = await _0x7__count[_0x3__word]
-                        let _0x8__key = _0x11___0x7__count
-                        _0x8__key
+                        const _0x12_word = await word
+                        let _0x3_word = _0x12_word
+                        const _0x13_count = await count
+                        let _0x5_count = _0x13_count
+                        const _0x15_word = await word
+                        let _0x4_word = _0x15_word
+                        const _0x14__0x5_count = await _0x5_count[_0x4_word]
+                        let _0x6_key = _0x14__0x5_count
+                        const _0x16_await__67lang_dot_add_lp_ = await _67lang.add(1, _0x6_key)
+                        _0x7_count[_0x3_word] = _0x16_await__67lang_dot_add_lp_
+                        const _0x11__0x7_count = await _0x7_count[_0x3_word]
+                        let _0x8_key = _0x11__0x7_count
+                        _0x8_key
                     }
                 } }
-            const _0x17__count = await count
-            let _0x9__count = _0x17__count
-            const _0x18__await__67lang_0x2e_log_0x28_ = await _67lang.log(_0x9__count)
-            _0x18__await__67lang_0x2e_log_0x28_
+            const _0x17_count = await count
+            let _0x9_count = _0x17_count
+            const _0x18_await__67lang_dot_log_lp_ = await _67lang.log(_0x9_count)
+            _0x18_await__67lang_dot_log_lp_
         }
     } 
 })();

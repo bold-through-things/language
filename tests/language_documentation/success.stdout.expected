@@ -1,29 +1,30 @@
-this is a multiline string
-each indented line becomes part of the string
-joined with newlines
-true
-false
-this will be concatenated with spaces i think as it is just an alias for Deno console.log
-error
-hello "world"
-new year's  eve
-hello alice
-number is 42
-1
-2
-3
-bob
-30
-[ "hello", "world" ]
-hello-world
-[ "a", "b", "c" ]
-ehllo
-true
-true
-15
-1
-false
-true
-true
-42
-hello
+hello world
+she said "hello there"
+roses are red
+violets are blue  
+67lang is simple
+and powerful too
+67lang is awesome: true
+67lang is complicated: false
+hello there, alice! you are 25 years old.
+you're exactly 25!
+i like the number: 7
+i like the number: 42
+i like the number: 100
+name: bob
+profession: software developer
+favorite number: 42
+words: [ "the", "quick", "brown", "fox", "jumps" ]
+rejoined: the-quick-brown-fox-jumps
+clean words: [ "word1", "word2", "word3" ]
+sorted letters: aggimmnoprr
+are 5 and 5 equal? true
+is 3 less than 5? true
+10 plus 5: 15
+10 mod 3: 1
+all conditions true (true AND false): false
+any condition true (true OR false): true
+none of these are true (NOT false): true
+safe number: 999
+safe text: type-checked string
+copied number: 999

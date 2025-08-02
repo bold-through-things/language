@@ -45,22 +45,32 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
         args = ctx.compiler.get_metadata(node, Args)
         default_logger.macro(f"must_compile_error with args: '{args}'")
         
-        # Parse expected errors from args: "ERROR_TYPE=line ERROR_TYPE2=line2"
+        # Parse expected errors from args: "ERROR_TYPE=line ERROR_TYPE2=line2" or "ERROR_TYPE=+offset"
         expected_errors = {}
         if not args.strip():
-            ctx.compiler.compile_error(node, "must_compile_error macro requires arguments in format ERROR_TYPE=line", ErrorType.INVALID_MACRO)
+            ctx.compiler.compile_error(node, "must_compile_error macro requires arguments in format ERROR_TYPE=line or ERROR_TYPE=+offset", ErrorType.INVALID_MACRO)
             return None
+            
+        # Get the line number of this must_compile_error node
+        must_compile_error_line = node.pos.line if node.pos else 0
             
         for pair in args.split():
             if "=" not in pair:
                 ctx.compiler.compile_error(node, f"must_compile_error argument must contain '=': {pair}", ErrorType.INVALID_MACRO)
                 return None
             error_type, line_str = pair.split("=", 1)
+            
             try:
-                line_num = int(line_str)
+                if line_str.startswith("+"):
+                    # Relative line number: +offset from the must_compile_error line
+                    offset = int(line_str[1:])
+                    line_num = must_compile_error_line + offset
+                else:
+                    # Absolute line number
+                    line_num = int(line_str)
                 expected_errors[line_num] = error_type.strip()
             except ValueError:
-                ctx.compiler.compile_error(node, f"invalid line number in must_compile_error: {line_str}", ErrorType.INVALID_MACRO)
+                ctx.compiler.compile_error(node, f"invalid line number in must_compile_error: {line_str} (use absolute line number or +offset)", ErrorType.INVALID_MACRO)
                 return None
         
         return expected_errors
@@ -89,9 +99,16 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
             # Check each expected error
             for expected_line, expected_type in expected_errors.items():
                 if expected_line not in actual_errors_by_line:
+                    # Show nearby errors to help with debugging
+                    nearby_errors = []
+                    for line in sorted(actual_errors_by_line.keys()):
+                        if abs(line - expected_line) <= 3:  # Show errors within 3 lines
+                            nearby_errors.append(f"line {line}: {actual_errors_by_line[line]}")
+                    
+                    nearby_info = f" (nearby errors: {'; '.join(nearby_errors)})" if nearby_errors else ""
                     ctx.compiler.compile_error(
                         node, 
-                        f"expected {expected_type} error on line {expected_line} but no error found",
+                        f"expected {expected_type} error on line {expected_line} but no error found{nearby_info}",
                         ErrorType.ASSERTION_FAILED
                     )
                 elif expected_type not in actual_errors_by_line[expected_line]:
