@@ -133,8 +133,8 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-            const _0x4d__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
-            let lines = _0x4d__await_indentifire_0x2e_stdin_0x28_
+            const _0x4d__await_67lang_0x2e_stdin_0x28_ = await 67lang.stdin()
+            let lines = _0x4d__await_67lang_0x2e_stdin_0x28_
             lines
             const _0x4f__lines = await lines
             let _0x0__lines = _0x4f__lines
@@ -207,8 +207,8 @@ void (async () => {
                         const _0x68___0x12__1 = await _0x12__1
                         const _0x67__trim = await String.prototype.trim.call(_0x68___0x12__1)
                         let _0x13__trim = _0x67__trim
-                        const _0x69__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x13__trim, "")
-                        if (_0x69__await_indentifire_0x2e_eq_0x28_) {{
+                        const _0x69__await_67lang_0x2e_eq_0x28_ = await 67lang.eq(_0x13__trim, "")
+                        if (_0x69__await_67lang_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
@@ -308,8 +308,8 @@ void (async () => {
                                     let _0x29__next_chain = _0x80__next_chain
                                     const _0x81__dep_id = await dep_id
                                     let _0x28__dep_id = _0x81__dep_id
-                                    const _0x82__await_indentifire_0x2e_exists_inside_0x28_ = await indentifire.exists_inside(_0x29__next_chain, _0x28__dep_id)
-                                    if (_0x82__await_indentifire_0x2e_exists_inside_0x28_) {{
+                                    const _0x82__await_67lang_0x2e_exists_inside_0x28_ = await 67lang.exists_inside(_0x29__next_chain, _0x28__dep_id)
+                                    if (_0x82__await_67lang_0x2e_exists_inside_0x28_) {{
                                             const parent_scope = scope
                                             {
                                                 const scope = indentifire.scope(parent_scope)
@@ -355,8 +355,8 @@ void (async () => {
                                                             let _0x33__chain_dep_id = _0x91__chain_dep_id
                                                             const _0x92__dep_id = await dep_id
                                                             let _0x34__dep_id = _0x92__dep_id
-                                                            const _0x93__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x33__chain_dep_id, _0x34__dep_id)
-                                                            if (_0x93__await_indentifire_0x2e_eq_0x28_) {{
+                                                            const _0x93__await_67lang_0x2e_eq_0x28_ = await 67lang.eq(_0x33__chain_dep_id, _0x34__dep_id)
+                                                            if (_0x93__await_67lang_0x2e_eq_0x28_) {{
                                                                     const parent_scope = scope
                                                                     {
                                                                         const scope = indentifire.scope(parent_scope)
@@ -420,9 +420,9 @@ void (async () => {
                 } }
             const _0xa7__modules = await modules
             let _0x44__modules = _0xa7__modules
-            const _0xa8__await_indentifire_0x2e_values_0x28_ = await indentifire.values(_0x44__modules)
+            const _0xa8__await_67lang_0x2e_values_0x28_ = await 67lang.values(_0x44__modules)
 
-            const _0xa9__iter = _0xa8__await_indentifire_0x2e_values_0x28_[Symbol.iterator]();
+            const _0xa9__iter = _0xa8__await_67lang_0x2e_values_0x28_[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0xa9__iter.next();
                 if (done) { break; }
@@ -442,8 +442,8 @@ void (async () => {
             let _0x47__dep_loops = _0xac__dep_loops
             const _0xad___0x47__dep_loops_length = await _0x47__dep_loops.length
             let _0x48__length = _0xad___0x47__dep_loops_length
-            const _0xae__await_indentifire_0x2e_asc_0x28_ = await indentifire.asc(1, _0x48__length)
-            if (_0xae__await_indentifire_0x2e_asc_0x28_) {{
+            const _0xae__await_67lang_0x2e_asc_0x28_ = await 67lang.asc(1, _0x48__length)
+            if (_0xae__await_67lang_0x2e_asc_0x28_) {{
                     const parent_scope = scope
                     {
                         const scope = indentifire.scope(parent_scope)
@@ -452,9 +452,9 @@ void (async () => {
                         const _0xb1___0x49__dep_loops = await _0x49__dep_loops
                         const _0xb0__join = await Array.prototype.join.call(_0xb1___0x49__dep_loops, "\n")
                         let _0x4a__join = _0xb0__join
-                        const _0xb2__await_indentifire_0x2e_concat_0x28_ = await indentifire.concat("ERROR: there are dependency loops.\n", _0x4a__join)
-                        const _0xb3__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0xb2__await_indentifire_0x2e_concat_0x28_)
-                        _0xb3__await_indentifire_0x2e_log_0x28_
+                        const _0xb2__await_67lang_0x2e_concat_0x28_ = await 67lang.concat("ERROR: there are dependency loops.\n", _0x4a__join)
+                        const _0xb3__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0xb2__await_67lang_0x2e_concat_0x28_)
+                        _0xb3__await_67lang_0x2e_log_0x28_
                     }
                 } }
             else {
@@ -466,8 +466,8 @@ void (async () => {
                     const _0xb6___0x4b__build_order = await _0x4b__build_order
                     const _0xb5__join = await Array.prototype.join.call(_0xb6___0x4b__build_order, "\n")
                     let _0x4c__join = _0xb5__join
-                    const _0xb7__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x4c__join)
-                    _0xb7__await_indentifire_0x2e_log_0x28_
+                    const _0xb7__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x4c__join)
+                    _0xb7__await_67lang_0x2e_log_0x28_
                 }
             } 
         }

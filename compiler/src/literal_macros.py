@@ -11,7 +11,7 @@ from logger import default_logger
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
-@macros.add("noop", "type", "PIL:auto_type")
+@macros.add("noop", "type", "67lang:auto_type")
 def does_not_compile(_):
     # does not compile into code itself - nothing to do
     pass
@@ -125,9 +125,9 @@ def list_macro(ctx: MacroContext):
 @macros.add(*[b for b in builtins.keys()])
 def builtin(ctx: MacroContext):
     macro = ctx.compiler.get_metadata(ctx.node, Macro)
-    ctx.compiler.compile_fn_call(ctx, f"await indentifire.{builtins[macro]}(", ctx.node.children)
+    ctx.compiler.compile_fn_call(ctx, f"await lang67.{builtins[macro]}(", ctx.node.children)
 
-@macros.add("PIL:solution")
+@macros.add("67lang:solution")
 def pil_solution(ctx: MacroContext):
     """Process all children of the solution node"""
     for child in ctx.node.children:
@@ -156,7 +156,7 @@ class JavaScriptEmissionStep(MacroProcessingStep):
             # no wrapping needed
             yield ctx
 
-        if ctx.node.content == "PIL:solution":
+        if ctx.node.content == "67lang:solution":
             default_logger.codegen("wrapping solution in JavaScript runtime setup")
             @contextmanager
             def definitely_wrapped(ctx: MacroContext):

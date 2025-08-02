@@ -133,8 +133,8 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-            const _0xa__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
-            let input = _0xa__await_indentifire_0x2e_stdin_0x28_
+            const _0xa__await_67lang_0x2e_stdin_0x28_ = await 67lang.stdin()
+            let input = _0xa__await_67lang_0x2e_stdin_0x28_
             input
             const _0xb__input = await input
             let _0x0__input = _0xb__input
@@ -168,8 +168,8 @@ void (async () => {
                         let _0x4__word = _0x15__word
                         const _0x14___0x5__count = await _0x5__count[_0x4__word]
                         let _0x6__key = _0x14___0x5__count
-                        const _0x16__await_indentifire_0x2e_add_0x28_ = await indentifire.add(1, _0x6__key)
-                        _0x7__count[_0x3__word] = _0x16__await_indentifire_0x2e_add_0x28_
+                        const _0x16__await_67lang_0x2e_add_0x28_ = await 67lang.add(1, _0x6__key)
+                        _0x7__count[_0x3__word] = _0x16__await_67lang_0x2e_add_0x28_
                         const _0x11___0x7__count = await _0x7__count[_0x3__word]
                         let _0x8__key = _0x11___0x7__count
                         _0x8__key
@@ -177,8 +177,8 @@ void (async () => {
                 } }
             const _0x17__count = await count
             let _0x9__count = _0x17__count
-            const _0x18__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x9__count)
-            _0x18__await_indentifire_0x2e_log_0x28_
+            const _0x18__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x9__count)
+            _0x18__await_67lang_0x2e_log_0x28_
         }
     } 
 })();

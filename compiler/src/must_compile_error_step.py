@@ -33,7 +33,7 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
                 self.process_node(child_ctx)
         
         # At the solution level, verify all collected expectations
-        if ctx.node.content == "PIL:solution":
+        if ctx.node.content == "67lang:solution":
             self._verify_expectations(ctx, self.expectations)
             self.expectations = []  # Reset for next compilation
         

@@ -134,10 +134,10 @@ void (async () => {
         {
             const scope = indentifire.scope(parent_scope)
             "this is a statement-level multiline string.\nit should act like a comment - not produce any output."
-            const _0x0__await_indentifire_0x2e_log_0x28_ = await indentifire.log("this is an expression-level multiline string.\nit should produce a string value.")
-            _0x0__await_indentifire_0x2e_log_0x28_
-            const _0x1__await_indentifire_0x2e_log_0x28_ = await indentifire.log("hello world")
-            _0x1__await_indentifire_0x2e_log_0x28_
+            const _0x0__await_67lang_0x2e_log_0x28_ = await 67lang.log("this is an expression-level multiline string.\nit should produce a string value.")
+            _0x0__await_67lang_0x2e_log_0x28_
+            const _0x1__await_67lang_0x2e_log_0x28_ = await 67lang.log("hello world")
+            _0x1__await_67lang_0x2e_log_0x28_
         }
     } 
 })();

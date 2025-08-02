@@ -46,7 +46,7 @@ def fn(ctx: MacroContext):
         ctx.current_step.process_node(inner_ctx)
     ctx.statement_out.write("}")
 
-@macros.add("PIL:access_field")
+@macros.add("67lang:access_field")
 def access_field(ctx: MacroContext):
     obj, field = get_two_args(ctx, "first argument is object, second is field")
     field_access = js_field_access(field)
@@ -60,7 +60,7 @@ def access_field(ctx: MacroContext):
     ctx.statement_out.write(f"const {ident} = await {obj}{field_access}\n")
     ctx.expression_out.write(ident)
 
-@macros.add("PIL:access_index")
+@macros.add("67lang:access_index")
 def access_index(ctx: MacroContext):
     obj = get_single_arg(ctx, "single argument, the object into which we should index")
     ident = ctx.compiler.get_new_ident(obj) # TODO - pass index name too (doable...)
@@ -77,7 +77,7 @@ def access_index(ctx: MacroContext):
     ctx.statement_out.write(f"const {ident} = await {obj}[{key}]\n")
     ctx.expression_out.write(ident)
 
-@macros.add("PIL:access_local")
+@macros.add("67lang:access_local")
 def pil_access_local(ctx: MacroContext):
     args_str = ctx.compiler.get_metadata(ctx.node, Args)
     args1 = args_str.split(" ")
@@ -109,7 +109,7 @@ def local(ctx: MacroContext):
     ctx.expression_out.write(name)
 
 @singleton
-class PIL_call:
+class Lang67_call:
     @classmethod
     def resolve_convention(cls, ctx: MacroContext, actual_arg_types: list[str] = None):
         args_str = ctx.compiler.get_metadata(ctx.node, Args)
@@ -139,7 +139,7 @@ class PIL_call:
                 # Legacy single overload
                 convention = overloads
         if fn in builtins:
-            convention = DirectCall(fn=builtins[fn], demands=None, receiver="indentifire", returns=None)
+            convention = DirectCall(fn=builtins[fn], demands=None, receiver="lang67", returns=None)
 
         return convention
 
@@ -158,7 +158,7 @@ class PIL_call:
         return True
 
     def __init__(self):
-        @typecheck.add("PIL:call")
+        @typecheck.add("67lang:call")
         def _(ctx: MacroContext):
             # First, determine the actual parameter types
             args: list[str | None] = []
@@ -189,7 +189,7 @@ class PIL_call:
 
             return convention.returns or "*"
 
-        @macros.add("PIL:call")
+        @macros.add("67lang:call")
         def _(ctx: MacroContext):
             args_str = ctx.compiler.get_metadata(ctx.node, Args)
             args1 = args_str.split(" ")
@@ -228,4 +228,4 @@ def exists_inside(ctx: MacroContext):
             other_children.append(child)
     
     ctx.compiler.assert_(target is not None, ctx.node, "exists must have an inside modifier")
-    ctx.compiler.compile_fn_call(ctx, f"await indentifire.exists_inside(", [target] + other_children)
+    ctx.compiler.compile_fn_call(ctx, f"await lang67.exists_inside(", [target] + other_children)

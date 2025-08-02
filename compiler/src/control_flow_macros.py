@@ -8,7 +8,7 @@ from error_types import ErrorType
 # Legacy registries - will be moved into steps
 macros = unified_macros  # Use unified registry
 
-SCOPE_MACRO = ["do", "then", "else", "PIL:file"]
+SCOPE_MACRO = ["do", "then", "else", "67lang:file"]
 @macros.add(*SCOPE_MACRO)
 def scope_macro(ctx: MacroContext):
     from node import Macro
@@ -21,7 +21,7 @@ def scope_macro(ctx: MacroContext):
         ctx.statement_out.write("const parent_scope = scope\n")
         ctx.statement_out.write("{\n")
         with ctx.statement_out:
-            ctx.statement_out.write("const scope = indentifire.scope(parent_scope)\n")
+            ctx.statement_out.write("const scope = lang67.scope(parent_scope)\n")
             inject = ctx.compiler.maybe_metadata(ctx.node, Inject_code_start)
             if inject:
                 for code in inject.code:

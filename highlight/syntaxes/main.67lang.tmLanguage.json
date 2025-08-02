@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "INDENTIFIRE",
+	"name": "67LANG",
 	"patterns": [
 		{
 			"include": "#instruction"
@@ -32,7 +32,7 @@
 		"keyword": {
 			"patterns": [
                 {
-                    "name": "keyword.control.indentifire",
+                    "name": "keyword.control.67lang",
                     "match": "(?:\\s|^)(if|then|else|while|do)\\s"
                 }
             ]
@@ -40,7 +40,7 @@
 		"other": {
 			"patterns": [
                 {
-                    "name": "keyword.other.indentifire",
+                    "name": "keyword.other.67lang",
                     "match": "(?:\\s|^)(local)\\s"
                 }
             ]
@@ -48,34 +48,34 @@
 		"operator": {
 			"patterns": [
                 {
-                    "name": "keyword.operator.indentifire",
+                    "name": "keyword.operator.67lang",
                     "match": "(?:\\s|^)(either|eq|concat|add)\\s"
                 }
             ]
 		},
 		"string": {
-			"name": "keyword.control.indentifire",
+			"name": "keyword.control.67lang",
 			"begin": "(?:\\s|^)string\\s+([^\\s])",
 			"end": "(\\1\n)",
 			"captures": {
 				"1": {
-					"name": "keyword.other.indentifire"
+					"name": "keyword.other.67lang"
 				},
 				"2": {
-					"name": "keyword.other.indentifire"
+					"name": "keyword.other.67lang"
 				}
 			},
-			"contentName": "string.unquoted.string.indentifire",
+			"contentName": "string.unquoted.string.67lang",
 			"patterns": []
 		},
 		"identifier": {
 			"patterns": [
                 {
-                    "name": "entity.name.function.indentifire",
+                    "name": "entity.name.function.67lang",
                     "match": "(?:\\s|^)([^\\s]*)(?=\\s)"
                 }
             ]
 		}
 	},
-	"scopeName": "source.indentifire"
+	"scopeName": "source.67lang"
 }

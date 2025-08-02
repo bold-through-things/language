@@ -141,16 +141,16 @@ void (async () => {
             const _0x6___0x0__str = await _0x0__str
             const _0x5__split = await String.prototype.split.call(_0x6___0x0__str, "t")
             let _0x1__split = _0x5__split
-            const _0x7__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1__split)
-            _0x7__await_indentifire_0x2e_log_0x28_
+            const _0x7__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x1__split)
+            _0x7__await_67lang_0x2e_log_0x28_
 
             const _0x8__str = await str
             let _0x2__str = _0x8__str
             const _0xa___0x2__str = await _0x2__str
             const _0x9__split = await String.prototype.split.call(_0xa___0x2__str, /t/)
             let _0x3__split = _0x9__split
-            const _0xb__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x3__split)
-            _0xb__await_indentifire_0x2e_log_0x28_
+            const _0xb__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x3__split)
+            _0xb__await_67lang_0x2e_log_0x28_
         }
     } 
 })();

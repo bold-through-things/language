@@ -133,8 +133,8 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = indentifire.scope(parent_scope)
-            const _0x14__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
-            let input = _0x14__await_indentifire_0x2e_stdin_0x28_
+            const _0x14__await_67lang_0x2e_stdin_0x28_ = await 67lang.stdin()
+            let input = _0x14__await_67lang_0x2e_stdin_0x28_
             input
             const _0x15__input = await input
             let _0x0__input = _0x15__input
@@ -177,9 +177,9 @@ void (async () => {
                         let _0x8__groups = _0x21__groups
                         const _0x22__key = await key
                         let _0x7__key = _0x22__key
-                        const _0x23__await_indentifire_0x2e_exists_inside_0x28_ = await indentifire.exists_inside(_0x8__groups, _0x7__key)
-                        const _0x24__await_indentifire_0x2e_none_0x28_ = await indentifire.none(_0x23__await_indentifire_0x2e_exists_inside_0x28_)
-                        if (_0x24__await_indentifire_0x2e_none_0x28_) {{
+                        const _0x23__await_67lang_0x2e_exists_inside_0x28_ = await 67lang.exists_inside(_0x8__groups, _0x7__key)
+                        const _0x24__await_67lang_0x2e_none_0x28_ = await 67lang.none(_0x23__await_67lang_0x2e_exists_inside_0x28_)
+                        if (_0x24__await_67lang_0x2e_none_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
@@ -211,9 +211,9 @@ void (async () => {
                 } }
             const _0x2e__groups = await groups
             let _0x11__groups = _0x2e__groups
-            const _0x2f__await_indentifire_0x2e_values_0x28_ = await indentifire.values(_0x11__groups)
+            const _0x2f__await_67lang_0x2e_values_0x28_ = await 67lang.values(_0x11__groups)
 
-            const _0x30__iter = _0x2f__await_indentifire_0x2e_values_0x28_[Symbol.iterator]();
+            const _0x30__iter = _0x2f__await_67lang_0x2e_values_0x28_[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0x30__iter.next();
                 if (done) { break; }
@@ -227,8 +227,8 @@ void (async () => {
                         const _0x33___0x12__group = await _0x12__group
                         const _0x32__join = await Array.prototype.join.call(_0x33___0x12__group, " ")
                         let _0x13__join = _0x32__join
-                        const _0x34__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x13__join)
-                        _0x34__await_indentifire_0x2e_log_0x28_
+                        const _0x34__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x13__join)
+                        _0x34__await_67lang_0x2e_log_0x28_
                     }
                 } }
         }

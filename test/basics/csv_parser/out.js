@@ -134,8 +134,8 @@ void (async () => {
         {
             const scope = indentifire.scope(parent_scope)
 
-            const _0x20__await_indentifire_0x2e_stdin_0x28_ = await indentifire.stdin()
-            let lines = _0x20__await_indentifire_0x2e_stdin_0x28_
+            const _0x20__await_67lang_0x2e_stdin_0x28_ = await 67lang.stdin()
+            let lines = _0x20__await_67lang_0x2e_stdin_0x28_
             lines
             const _0x22__lines = await lines
             let _0x0__lines = _0x22__lines
@@ -166,8 +166,8 @@ void (async () => {
                         const scope = indentifire.scope(parent_scope)
                         const _0x27__i = await i
                         let _0x4__i = _0x27__i
-                        const _0x28__await_indentifire_0x2e_eq_0x28_ = await indentifire.eq(_0x4__i, 0)
-                        if (_0x28__await_indentifire_0x2e_eq_0x28_) {{
+                        const _0x28__await_67lang_0x2e_eq_0x28_ = await 67lang.eq(_0x4__i, 0)
+                        if (_0x28__await_67lang_0x2e_eq_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
@@ -193,8 +193,8 @@ void (async () => {
                                 const _0x30___0x9__line = await _0x9__line
                                 const _0x2f__split = await String.prototype.split.call(_0x30___0x9__line, ",")
                                 let _0xa__split = _0x2f__split
-                                const _0x31__await_indentifire_0x2e_zip_0x28_ = await indentifire.zip(_0x8__header, _0xa__split)
-                                let zip = _0x31__await_indentifire_0x2e_zip_0x28_
+                                const _0x31__await_67lang_0x2e_zip_0x28_ = await 67lang.zip(_0x8__header, _0xa__split)
+                                let zip = _0x31__await_67lang_0x2e_zip_0x28_
                                 zip
                                 let row = {}
                                 row
@@ -240,8 +240,8 @@ void (async () => {
                         } 
                         const _0x3f__i = await i
                         let _0x15__i = _0x3f__i
-                        const _0x40__await_indentifire_0x2e_add_0x28_ = await indentifire.add(_0x15__i, 1)
-                        i = _0x40__await_indentifire_0x2e_add_0x28_
+                        const _0x40__await_67lang_0x2e_add_0x28_ = await 67lang.add(_0x15__i, 1)
+                        i = _0x40__await_67lang_0x2e_add_0x28_
                         const _0x3e__i = await i
                         let _0x16__i = _0x3e__i
                         _0x16__i
@@ -263,8 +263,8 @@ void (async () => {
                         let _0x18__row = _0x43__row
                         const _0x44___0x18__row_name = await _0x18__row.name
                         let _0x19__name = _0x44___0x18__row_name
-                        const _0x45__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x19__name)
-                        _0x45__await_indentifire_0x2e_log_0x28_
+                        const _0x45__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x19__name)
+                        _0x45__await_67lang_0x2e_log_0x28_
                     }
                 } }
             let age_over_30 = 0
@@ -285,15 +285,15 @@ void (async () => {
                         let _0x1b__row = _0x48__row
                         const _0x49___0x1b__row_age = await _0x1b__row.age
                         let _0x1c__age = _0x49___0x1b__row_age
-                        const _0x4a__await_indentifire_0x2e_asc_0x28_ = await indentifire.asc(_0x1c__age, 30)
-                        if (_0x4a__await_indentifire_0x2e_asc_0x28_) {{
+                        const _0x4a__await_67lang_0x2e_asc_0x28_ = await 67lang.asc(_0x1c__age, 30)
+                        if (_0x4a__await_67lang_0x2e_asc_0x28_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = indentifire.scope(parent_scope)
                                     const _0x4c__age_over_30 = await age_over_30
                                     let _0x1d__age_over_30 = _0x4c__age_over_30
-                                    const _0x4d__await_indentifire_0x2e_add_0x28_ = await indentifire.add(_0x1d__age_over_30, 1)
-                                    age_over_30 = _0x4d__await_indentifire_0x2e_add_0x28_
+                                    const _0x4d__await_67lang_0x2e_add_0x28_ = await 67lang.add(_0x1d__age_over_30, 1)
+                                    age_over_30 = _0x4d__await_67lang_0x2e_add_0x28_
                                     const _0x4b__age_over_30 = await age_over_30
                                     let _0x1e__age_over_30 = _0x4b__age_over_30
                                     _0x1e__age_over_30
@@ -303,8 +303,8 @@ void (async () => {
                 } }
             const _0x4e__age_over_30 = await age_over_30
             let _0x1f__age_over_30 = _0x4e__age_over_30
-            const _0x4f__await_indentifire_0x2e_log_0x28_ = await indentifire.log(_0x1f__age_over_30)
-            _0x4f__await_indentifire_0x2e_log_0x28_
+            const _0x4f__await_67lang_0x2e_log_0x28_ = await 67lang.log(_0x1f__age_over_30)
+            _0x4f__await_67lang_0x2e_log_0x28_
         }
     } 
 })();
