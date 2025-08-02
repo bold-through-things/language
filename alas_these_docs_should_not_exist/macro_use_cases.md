@@ -620,6 +620,8 @@ withRetry(5, 1.0, 60.0, true):
 
 **problem:** ensuring database transactions are properly committed or rolled back.
 
+**note:** while Python context managers (`with` statements) and Java try-with-resources exist, macros provide zero-cost abstractions that work seamlessly across sync/async boundaries without runtime overhead. context managers still require explicit block syntax and add runtime indirection, while async contexts significantly complicate resource management across await points.
+
 **without macros:**
 ```python
 # Python - manual transaction handling
@@ -1210,6 +1212,55 @@ fn process_file(path: &Path) -> Result<Vec<Record>, anyhow::Error> {
 
 **problem:** writing comprehensive tests requires thinking of many edge cases manually.
 
+**without macros:**
+```java
+// Java - manual edge case testing (the pain is real!)
+@Test
+public void testReverseListProperties() {
+    // manually thinking of edge cases... did we cover everything?
+    
+    // empty list
+    List<Integer> empty = new ArrayList<>();
+    assertEquals(empty, reverse(reverse(empty)));
+    
+    // single element
+    List<Integer> single = Arrays.asList(42);
+    assertEquals(single, reverse(reverse(single)));
+    
+    // two elements  
+    List<Integer> pair = Arrays.asList(1, 2);
+    assertEquals(pair, reverse(reverse(pair)));
+    
+    // three elements
+    List<Integer> triple = Arrays.asList(1, 2, 3);
+    assertEquals(triple, reverse(reverse(triple)));
+    
+    // what about negative numbers?
+    List<Integer> negatives = Arrays.asList(-1, -5, -10);
+    assertEquals(negatives, reverse(reverse(negatives)));
+    
+    // what about duplicates?
+    List<Integer> duplicates = Arrays.asList(1, 1, 2, 1);
+    assertEquals(duplicates, reverse(reverse(duplicates)));
+    
+    // what about large numbers?
+    List<Integer> large = Arrays.asList(Integer.MAX_VALUE, Integer.MIN_VALUE);
+    assertEquals(large, reverse(reverse(large)));
+    
+    // what about a very long list? 
+    List<Integer> longList = new ArrayList<>();
+    for (int i = 0; i < 1000; i++) {
+        longList.add(i);
+    }
+    assertEquals(longList, reverse(reverse(longList)));
+    
+    // what about mixed positive/negative?
+    List<Integer> mixed = Arrays.asList(-5, 0, 3, -1, 100);
+    assertEquals(mixed, reverse(reverse(mixed)));
+    
+    // did we miss any edge cases? probably!
+}
+
 **with macros:**
 ```rust
 // Rust - quickcheck property testing
@@ -1229,10 +1280,15 @@ fn prop_sort_is_idempotent(mut xs: Vec<i32>) -> bool {
     first_sort == xs
 }
 
-// generates hundreds of test cases automatically
+// the macro generates test functions that:
+// - automatically create hundreds of random test cases
+// - generate edge cases like empty lists, single elements, very large lists
+// - try combinations of positive/negative numbers, duplicates, boundary values
+// - shrink failing cases to minimal examples when bugs are found
+// - run tests with different random seeds for reproducibility
 ```
 
-**value:** finds edge cases that manual testing would miss.
+**value:** finds edge cases that manual testing would miss, with automatic test case generation and intelligent shrinking to minimal failing examples.
 
 ### mock generation
 
