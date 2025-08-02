@@ -39,7 +39,7 @@ class TrimStack(Generic[T]):
         return f"{self.__class__.__name__}({self._data})"
 
 class TreeParser:    
-    def parse_tree(self, code: str) -> Node:
+    def parse_tree(self, code: str, compiler=None) -> Node:
         # prepend and append newlines for simpler and cleaner handling
         # TODO - although this will fuck over line numbers, so might actually be a bad idea?
         code = f"\n{code}\n"
@@ -62,6 +62,7 @@ class TreeParser:
         
         for line in lines:
             line_num += 1 # at the start - assumes above \n{code}\n
+            
             line, indent = extract_indent(line)
 
             # simplifies code. all the top-level lines are indent-1, belonging to a fake top-level Node

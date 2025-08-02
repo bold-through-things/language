@@ -65,7 +65,7 @@ class CodeBlockLinkingStep(MacroProcessingStep):
         
         # Skip comment macros entirely using the shared registry
         from node import Macro
-        from literal_macros import code_linking
+        from macros.comment_macros import code_linking
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         if macro in code_linking._registry:
             code_linking._registry[macro](ctx)

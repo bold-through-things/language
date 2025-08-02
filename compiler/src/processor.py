@@ -10,8 +10,8 @@ from literal_macros import JavaScriptEmissionStep
 
 # Import all the individual macro registrations
 from literal_macros import macros as literal_macros_registry, typecheck as literal_typecheck_registry
-from access_macros import macros as access_macros_registry, typecheck as access_typecheck_registry
-from control_flow_macros import macros as control_flow_macros_registry
+from macros.access_macros import macros as access_macros_registry, typecheck as access_typecheck_registry
+import macros  # Import the new macros package to ensure registration
 from preprocessing_macros import preprocessor
 from typecheck_macros import typecheck as typecheck_macros_registry
 
@@ -36,14 +36,12 @@ for name, handler in access_macros_registry.all().items():
 for name, handler in access_typecheck_registry.all().items():
     typecheck._registry[name] = handler
 
-# Merge control flow macros
-for name, handler in control_flow_macros_registry.all().items():
-    macros._registry[name] = handler
+# Note: control flow macros now register directly with unified_macros
 
 # Merge type check macros
 for name, handler in typecheck_macros_registry.all().items():
     typecheck._registry[name] = handler
 
 # Legacy singleton instances for backward compatibility - these are created in their respective modules
-from access_macros import Macro_67lang_call
+from macros.access_macros import Macro_67lang_call
 from preprocessing_macros import SubstitutingMacro, CallingMacro, ParamMacro, AccessMacro

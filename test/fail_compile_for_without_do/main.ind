@@ -1,8 +1,0 @@
-for i in
-    list
-        int 1
-        int 2  
-        int 3
-then
-    print
-        access i

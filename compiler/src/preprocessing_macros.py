@@ -9,8 +9,11 @@ from strutil import cut
 # Legacy registries - will be moved into steps
 preprocessor = MacroRegistry()
 
-# Import comment macros from literal_macros to avoid duplication
-from literal_macros import COMMENT_MACROS, code_linking
+# Import comment macros from comment_macros to avoid duplication
+from macros.comment_macros import COMMENT_MACROS, code_linking, comments
+
+# Register comment macros for preprocessing
+preprocessor.add(*COMMENT_MACROS)(comments)
 
 # SubstitutingMacro and CallingMacro removed - now handled contextually in access macro
 
@@ -153,6 +156,14 @@ class PreprocessingStep(MacroProcessingStep):
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""
         default_logger.macro(f"preprocessing node: {ctx.node.content}")
+        
+        # Validate indentation: ensure content doesn't start with whitespace
+        if ctx.node.content and ctx.node.content[0].isspace():
+            from error_types import ErrorType
+            ctx.compiler.compile_error(ctx.node, 
+                "this language only accepts tabs for indentation, not spaces! spaces are like, totally uncool. use tabs instead, they're way more precise and semantic.", 
+                ErrorType.INVALID_INDENTATION)
+            # Don't return early - let the processing continue so we don't break the pipeline
         
         # Process children first
         with default_logger.indent("macro", f"preprocessing children of {ctx.node.content}"):
