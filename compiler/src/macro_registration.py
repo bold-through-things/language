@@ -147,6 +147,7 @@ def create_typecheck_registry() -> MacroRegistry:
     # Register core typecheck macros
     registry.add("must_compile_error")(MustCompileErrorTypecheck())
     registry.add("67lang:access_local")(AccessLocalTypecheck())
+    registry.add("67lang:assume_local_exists")(AccessLocalTypecheck())  # Alias for assume_local_exists
     registry.add("local")(LocalTypecheck())
     registry.add("call")(CallTypecheck())
     registry.add("literal")(LiteralTypecheck())
@@ -230,12 +231,24 @@ def create_codegen_registry() -> MacroRegistry:
     registry.add("error")(DummyMacro())
     registry.add("67lang:access")(DummyMacro())
     registry.add("67lang:access_local")(DummyMacro())
+    registry.add("67lang:assume_local_exists")(DummyMacro())
     registry.add("a")(DummyMacro())
     registry.add("an")(DummyMacro())
     registry.add("where")(DummyMacro())
     registry.add("is")(DummyMacro())
     registry.add("key")(DummyMacro())
     registry.add("split")(DummyMacro())
+    
+    # Register all builtin functions in codegen too (they should be dummy since preprocessing handles the call conversion)
+    builtin_functions = [
+        "prompt", "stdin", "is_tty", "concat", "any", "all", "eq", "asc", 
+        "add", "mod", "none", "values", "keys", "zip", "push", "trim", "slice",
+        "reverse", "length", "join", "exists", "inside", "sort", "break"
+    ]
+    for builtin_name in builtin_functions:
+        registry.add(builtin_name)(DummyMacro())
+    
+    registry.add("print")(DummyMacro())
     
     # Register comment macros (these should be ignored during codegen)
     comment_macros = ["#", "//", "/*", "--", "note"]

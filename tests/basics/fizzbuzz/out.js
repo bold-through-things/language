@@ -129,5 +129,11 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-
+    let _0x0_fizz_divisor
+    _0x0_fizz_divisorlet _0x1_buzz_divisor
+    _0x1_buzz_divisorlet _0x2_n
+    _0x2_nlet _0x3_input
+    _0x3_inputlet _0x4_i
+    _0x4_ilet _0x5_out
+    _0x5_out
 })();
