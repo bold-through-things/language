@@ -1,8 +1,10 @@
 from dataclasses import replace
-from processor_base import seek_child_macro, unified_macros
+from processor_base import seek_child_macro, unified_macros, unified_typecheck, seek_parent_scope
 from macro_registry import MacroContext
 from strutil import IndentedStringIO
+from common_utils import process_children_with_context
 
+# JavaScript emission for 'if' macro
 @unified_macros.add("if")
 def if_header(ctx: MacroContext):
     args: list[str] = []
@@ -23,3 +25,12 @@ def if_header(ctx: MacroContext):
         inner_ctx = replace(ctx, node=node)
         ctx.current_step.process_node(inner_ctx)
     ctx.statement_out.write("}")
+
+# Type checking for scope macros related to 'if' (then, else)
+@unified_typecheck.add("then", "else") 
+def typecheck_if_scope_macro(ctx: MacroContext):
+    """Type checking for 'then' and 'else' scope macros"""
+    parent = seek_parent_scope(ctx.node)
+    # Temporarily disable scope metadata - implement walking upwards approach later
+    # ctx.compiler.set_metadata(ctx.node, Scope, Scope(parent=parent))
+    process_children_with_context(ctx, ctx.current_step)

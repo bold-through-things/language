@@ -84,7 +84,7 @@ class TypeCheckingStep(MacroProcessingStep):
             
             return demanded or received or "*"
 
-        SCOPE_MACRO = ["do", "then", "else", "67lang:file"]
+        SCOPE_MACRO = ["do", "67lang:file"]
         @self.macros.add(*SCOPE_MACRO)
         def typecheck_scope_macro(ctx: MacroContext):
             parent = seek_parent_scope(ctx.node)
