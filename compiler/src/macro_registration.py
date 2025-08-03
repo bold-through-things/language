@@ -45,6 +45,36 @@ def create_preprocessor_registry() -> MacroRegistry:
     registry.add("llist")(SubstitutingMacro("list"))
     registry.add("assign")(SubstitutingMacro("set"))
     
+    # Register control flow macros - these just pass through during preprocessing
+    class PassThroughMacro:
+        def __call__(self, ctx):
+            for child in ctx.node.children:
+                from dataclasses import replace
+                child_ctx = replace(ctx, node=child)
+                ctx.current_step.process_node(child_ctx)
+    
+    registry.add("if")(PassThroughMacro())
+    registry.add("then")(PassThroughMacro())
+    registry.add("else")(PassThroughMacro())
+    registry.add("do")(PassThroughMacro())
+    registry.add("when")(PassThroughMacro())
+    
+    # Register literal macros
+    registry.add("string")(PassThroughMacro())
+    registry.add("int")(PassThroughMacro())
+    registry.add("float")(PassThroughMacro())
+    registry.add("bool")(PassThroughMacro())
+    registry.add("list")(PassThroughMacro())
+    registry.add("dict")(PassThroughMacro())
+    
+    # Register other common macros  
+    registry.add("a")(PassThroughMacro())
+    registry.add("an")(PassThroughMacro())
+    registry.add("where")(PassThroughMacro())
+    registry.add("is")(PassThroughMacro())
+    registry.add("key")(PassThroughMacro())
+    registry.add("split")(PassThroughMacro())
+    
     # Register calling macros with simplified implementation to avoid circular deps  
     class SimplePrintMacro:
         def __call__(self, ctx):
@@ -65,6 +95,29 @@ def create_preprocessor_registry() -> MacroRegistry:
             from dataclasses import replace
             call_ctx = replace(ctx, node=call_node)
             ctx.current_step.process_node(call_ctx)
+    
+    # Generic builtin function macro that expands to call <function_name>
+    class BuiltinFunctionMacro:
+        def __init__(self, function_name: str):
+            self.function_name = function_name
+            
+        def __call__(self, ctx):
+            # Expand builtin to call <function_name> by modifying the node in place
+            args = ctx.compiler.get_metadata(ctx.node, Args)
+            ctx.node.content = f"call {self.function_name} {args}".strip()
+            # Process children
+            for child in ctx.node.children:
+                from dataclasses import replace
+                child_ctx = replace(ctx, node=child)
+                ctx.current_step.process_node(child_ctx)
+    
+    # Register all builtin functions as macros (manually listed to avoid import issues)
+    builtin_functions = [
+        "prompt", "stdin", "is_tty", "concat", "any", "all", "eq", "asc", 
+        "add", "mod", "none", "values", "keys", "zip"
+    ]
+    for builtin_name in builtin_functions:
+        registry.add(builtin_name)(BuiltinFunctionMacro(builtin_name))
     
     registry.add("print")(SimplePrintMacro())
     registry.add("error")(SimpleErrorMacro())
@@ -102,9 +155,33 @@ def create_codegen_registry() -> MacroRegistry:
                 child_ctx = replace(ctx, node=child)
                 ctx.current_step.process_node(child_ctx)
     
+    # Proper implementations for essential macros
+    class LocalMacro:
+        def __call__(self, ctx):
+            from common_utils import get_single_arg, collect_child_expressions
+            from node import SaneIdentifier
+            
+            desired_name = get_single_arg(ctx)
+            name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
+            
+            args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
+            
+            ctx.statement_out.write(f"let {name}")
+            if len(args) > 0:
+                ctx.statement_out.write(f" = {args[-1]}")
+            ctx.statement_out.write(f"\n")
+            ctx.expression_out.write(name)
+    
+    # Register the local macro with proper implementation
+    registry.add("local")(LocalMacro())
+    
     # Register basic macros with dummy implementations
     registry.add("67lang:file")(DummyMacro())
     registry.add("literal")(DummyMacro())
+    registry.add("string")(DummyMacro())
+    registry.add("int")(DummyMacro())
+    registry.add("float")(DummyMacro())
+    registry.add("bool")(DummyMacro())
     registry.add("list")(DummyMacro())
     registry.add("dict")(DummyMacro())
     registry.add("call")(DummyMacro())
@@ -114,13 +191,21 @@ def create_codegen_registry() -> MacroRegistry:
     registry.add("scope")(DummyMacro())
     registry.add("if")(DummyMacro())
     registry.add("else")(DummyMacro())
+    registry.add("then")(DummyMacro())
     registry.add("for")(DummyMacro())
     registry.add("do")(DummyMacro())
     registry.add("while")(DummyMacro())
+    registry.add("when")(DummyMacro())
     registry.add("noscope")(DummyMacro())
     registry.add("67lang:solution")(DummyMacro())
     registry.add("error")(DummyMacro())
     registry.add("67lang:access")(DummyMacro())
     registry.add("67lang:access_local")(DummyMacro())
+    registry.add("a")(DummyMacro())
+    registry.add("an")(DummyMacro())
+    registry.add("where")(DummyMacro())
+    registry.add("is")(DummyMacro())
+    registry.add("key")(DummyMacro())
+    registry.add("split")(DummyMacro())
     
     return registry

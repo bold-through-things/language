@@ -1,0 +1,10 @@
+[
+  {
+    "recoverable": false,
+    "line": 2,
+    "char": 0,
+    "content": "note the task given",
+    "error": "unknown macro 'note' - is this supposed to exist? did you maybe typo something?",
+    "error_type": "INVALID_MACRO"
+  }
+]
