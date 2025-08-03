@@ -114,13 +114,28 @@ def create_preprocessor_registry() -> MacroRegistry:
     # Register all builtin functions as macros (manually listed to avoid import issues)
     builtin_functions = [
         "prompt", "stdin", "is_tty", "concat", "any", "all", "eq", "asc", 
-        "add", "mod", "none", "values", "keys", "zip"
+        "add", "mod", "none", "values", "keys", "zip", "push", "trim", "slice",
+        "reverse", "length", "join", "exists", "inside", "sort", "break"
     ]
     for builtin_name in builtin_functions:
         registry.add(builtin_name)(BuiltinFunctionMacro(builtin_name))
     
     registry.add("print")(SimplePrintMacro())
     registry.add("error")(SimpleErrorMacro())
+    
+    # Register comment macros (these should be ignored during preprocessing)
+    class CommentMacro:
+        def __call__(self, ctx):
+            # Comments are ignored during preprocessing, but we need to process children to ignore them too
+            for child in ctx.node.children:
+                from dataclasses import replace
+                child_ctx = replace(ctx, node=child)
+                # Process children through the same step to recursively ignore them
+                ctx.current_step.process_node(child_ctx)
+    
+    comment_macros = ["#", "//", "/*", "--", "note"]
+    for comment_name in comment_macros:
+        registry.add(comment_name)(CommentMacro())
     
     return registry
 
@@ -138,6 +153,20 @@ def create_typecheck_registry() -> MacroRegistry:
     registry.add("while")(WhileTypecheck())
     registry.add("for")(ForTypecheck())
     registry.add("if")(IfTypecheck())
+    
+    # Register comment macros (these should be ignored during typecheck)
+    class CommentMacro:
+        def __call__(self, ctx):
+            # Comments are ignored during typecheck, including their children
+            for child in ctx.node.children:
+                from dataclasses import replace
+                child_ctx = replace(ctx, node=child)
+                # Process children through the same step to recursively ignore them
+                ctx.current_step.process_node(child_ctx)
+    
+    comment_macros = ["#", "//", "/*", "--", "note"]
+    for comment_name in comment_macros:
+        registry.add(comment_name)(CommentMacro())
     
     return registry
 
@@ -207,5 +236,10 @@ def create_codegen_registry() -> MacroRegistry:
     registry.add("is")(DummyMacro())
     registry.add("key")(DummyMacro())
     registry.add("split")(DummyMacro())
+    
+    # Register comment macros (these should be ignored during codegen)
+    comment_macros = ["#", "//", "/*", "--", "note"]
+    for comment_name in comment_macros:
+        registry.add(comment_name)(DummyMacro())
     
     return registry

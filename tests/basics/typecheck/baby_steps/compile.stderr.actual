@@ -1,10 +1,10 @@
 [
   {
     "recoverable": false,
-    "line": 2,
+    "line": 5,
     "char": 0,
-    "content": "# these are expected to pass",
-    "error": "unknown macro '#' - is this supposed to exist? did you maybe typo something?",
+    "content": "type int",
+    "error": "unknown macro 'type' - is this supposed to exist? did you maybe typo something?",
     "error_type": "INVALID_MACRO"
   }
 ]
