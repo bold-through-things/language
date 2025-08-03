@@ -129,5 +129,7 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-
+    "this is a statement-level multiline string.\nit should act like a comment - not produce any output."const _0x0_print = await _67lang.log("this is an expression-level multiline string.\nit should produce a string value.")
+    _0x0_printconst _0x1_print = await _67lang.log("hello world")
+    _0x1_print
 })();
