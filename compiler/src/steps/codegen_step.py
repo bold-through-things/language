@@ -49,16 +49,40 @@ class JavaScriptEmissionStep(BaseProcessingStep):
         
         default_logger.codegen(f"emitting JavaScript for macro: {macro}")
 
-        # --- cursed Python begins ---
-
+        # Use the original JavaScriptEmissionStep logic for context management
         @contextmanager
         def possibly_wrapped(ctx: MacroContext):
-            # no wrapping needed
+            # no wrapping needed for most nodes
             yield ctx
+
+        if ctx.node.content == "67lang:solution":
+            default_logger.codegen("wrapping solution in JavaScript runtime setup")
+            @contextmanager
+            def definitely_wrapped(ctx: MacroContext):
+                from processor_base import js_lib
+                out = IndentedStringIO()
+                out.write(js_lib + "\n\n")
+                # need to wrap this crap in async because browsers are GARBAGE 
+                # (top level await only in modules? why?!)
+                default_logger.codegen("adding async wrapper for browser compatibility")
+                out.write("void (async () => {\n")
+                with out:
+                    out.write("'use strict';\n")
+                    out.write("const scope = globalThis;\n")
+                    yield replace(ctx, statement_out=out, expression_out=out)
+                out.write("\n})();")
+                ctx.compiler._js_output = out.getvalue()
+                default_logger.codegen(f"JavaScript output generated: {len(out.getvalue())} characters")
+            possibly_wrapped = definitely_wrapped
 
         with possibly_wrapped(ctx) as final_ctx:
             if macro in all_macros:
-                all_macros[macro](final_ctx)
+                default_logger.codegen(f"applying JavaScript emission macro: {macro}")
+                with ctx.compiler.safely:
+                    all_macros[macro](final_ctx)
+            else:
+                default_logger.codegen(f"ERROR: unknown macro {macro}")
+                # If there are already compile errors, don't crash - just skip this node
                 
         # Process children for nodes that need it
         should_process_children = macro not in ["string", "regex", "int", "float", "true", "false"]

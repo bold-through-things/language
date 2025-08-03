@@ -84,6 +84,10 @@ class CodeBlockLinkingStep(BaseProcessingStep):
                 else:
                     default_logger.codegen(f"code block correctly linked: {current_macro} -> {next_macro}")
                     
+                    # Actually link the code blocks by moving the do block
+                    node.replace_child(next_child, None)  # Remove from current parent
+                    current.append_child(next_child)      # Add as child of for/if/while
+                    
                     # Simple code block association using Target metadata
                     from node import Target
                     compiler.set_metadata(current, Target, next_child)

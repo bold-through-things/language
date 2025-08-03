@@ -1,0 +1,1162 @@
+[
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0x231__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x23a_slice_0x35_next_chain', '_0x37_reverse_0x23c_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x25c_slice_0x35_next_chain', '_0x37_reverse_0x25e_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x27f_slice_0x35_next_chain', '_0x37_reverse_0x281_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x2a1_slice_0x35_next_chain', '_0x37_reverse_0x2a3_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x2d8_slice_0x35_next_chain', '_0x37_reverse_0x2da_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x2fa_slice_0x35_next_chain', '_0x37_reverse_0x2fc_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x31d_slice_0x35_next_chain', '_0x37_reverse_0x31f_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x33f_slice_0x35_next_chain', '_0x37_reverse_0x341_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0x38b__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x394_slice_0x35_next_chain', '_0x37_reverse_0x396_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x3b6_slice_0x35_next_chain', '_0x37_reverse_0x3b8_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x3d9_slice_0x35_next_chain', '_0x37_reverse_0x3db_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x3fb_slice_0x35_next_chain', '_0x37_reverse_0x3fd_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x432_slice_0x35_next_chain', '_0x37_reverse_0x434_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x454_slice_0x35_next_chain', '_0x37_reverse_0x456_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x477_slice_0x35_next_chain', '_0x37_reverse_0x479_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x499_slice_0x35_next_chain', '_0x37_reverse_0x49b_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0x4e5__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x4ee_slice_0x35_next_chain', '_0x37_reverse_0x4f0_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x510_slice_0x35_next_chain', '_0x37_reverse_0x512_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x533_slice_0x35_next_chain', '_0x37_reverse_0x535_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x555_slice_0x35_next_chain', '_0x37_reverse_0x557_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x58c_slice_0x35_next_chain', '_0x37_reverse_0x58e_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x5ae_slice_0x35_next_chain', '_0x37_reverse_0x5b0_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x5d1_slice_0x35_next_chain', '_0x37_reverse_0x5d3_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x5f3_slice_0x35_next_chain', '_0x37_reverse_0x5f5_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0x63f__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x648_slice_0x35_next_chain', '_0x37_reverse_0x64a_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x66a_slice_0x35_next_chain', '_0x37_reverse_0x66c_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x68d_slice_0x35_next_chain', '_0x37_reverse_0x68f_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x6af_slice_0x35_next_chain', '_0x37_reverse_0x6b1_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x6e6_slice_0x35_next_chain', '_0x37_reverse_0x6e8_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x708_slice_0x35_next_chain', '_0x37_reverse_0x70a_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x72b_slice_0x35_next_chain', '_0x37_reverse_0x72d_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x74d_slice_0x35_next_chain', '_0x37_reverse_0x74f_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x1b_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0x9af__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x9b8_slice_0x35_next_chain', '_0x37_reverse_0x9ba_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x9da_slice_0x35_next_chain', '_0x37_reverse_0x9dc_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0x9fd_slice_0x35_next_chain', '_0x37_reverse_0x9ff_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xa1f_slice_0x35_next_chain', '_0x37_reverse_0xa21_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xa56_slice_0x35_next_chain', '_0x37_reverse_0xa58_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xa78_slice_0x35_next_chain', '_0x37_reverse_0xa7a_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xa9b_slice_0x35_next_chain', '_0x37_reverse_0xa9d_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xabd_slice_0x35_next_chain', '_0x37_reverse_0xabf_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0xb09__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xb12_slice_0x35_next_chain', '_0x37_reverse_0xb14_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xb34_slice_0x35_next_chain', '_0x37_reverse_0xb36_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xb57_slice_0x35_next_chain', '_0x37_reverse_0xb59_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xb79_slice_0x35_next_chain', '_0x37_reverse_0xb7b_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xbb0_slice_0x35_next_chain', '_0x37_reverse_0xbb2_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xbd2_slice_0x35_next_chain', '_0x37_reverse_0xbd4_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xbf5_slice_0x35_next_chain', '_0x37_reverse_0xbf7_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xc17_slice_0x35_next_chain', '_0x37_reverse_0xc19_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0xc63__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xc6c_slice_0x35_next_chain', '_0x37_reverse_0xc6e_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xc8e_slice_0x35_next_chain', '_0x37_reverse_0xc90_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xcb1_slice_0x35_next_chain', '_0x37_reverse_0xcb3_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xcd3_slice_0x35_next_chain', '_0x37_reverse_0xcd5_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xd0a_slice_0x35_next_chain', '_0x37_reverse_0xd0c_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xd2c_slice_0x35_next_chain', '_0x37_reverse_0xd2e_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xd4f_slice_0x35_next_chain', '_0x37_reverse_0xd51_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xd71_slice_0x35_next_chain', '_0x37_reverse_0xd73_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 75,
+    "char": 0,
+    "content": "for dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x2d_modulemodule', '_0x2e_deps_0xdbd__0x2d_module_deps'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xdc6_slice_0x35_next_chain', '_0x37_reverse_0xdc8_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xde8_slice_0x35_next_chain', '_0x37_reverse_0xdea_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xe0b_slice_0x35_next_chain', '_0x37_reverse_0xe0d_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xe2d_slice_0x35_next_chain', '_0x37_reverse_0xe2f_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xe64_slice_0x35_next_chain', '_0x37_reverse_0xe66_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xe86_slice_0x35_next_chain', '_0x37_reverse_0xe88_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xea9_slice_0x35_next_chain', '_0x37_reverse_0xeab_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x35_next_chain_0x28_next_chain_0x36_slice_0xecb_slice_0x35_next_chain', '_0x37_reverse_0xecd_reverse_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x9_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xf_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 88,
+    "char": 0,
+    "content": "for chain_dep_id in",
+    "error": "failed to assert: must have a single argument, the list provider (got ['_0x28_next_chain_0x35_next_chain', '_0x36_slice'])",
+    "error_type": "WRONG_ARG_COUNT"
+  }
+]
