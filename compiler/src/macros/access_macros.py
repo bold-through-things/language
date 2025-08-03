@@ -15,70 +15,7 @@ from logger import default_logger
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
-@macros.add("fn")
-def fn(ctx: MacroContext):
-    name = get_single_arg(ctx)
-    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
-    ctx.statement_out.write(f"const {name} = async function (")
-    joiner = Joiner(ctx.statement_out, ", \n")
-    params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
-    params = params_metadata.mapping.items()
-    if len(params) > 0:
-        ctx.statement_out.write("\n")
-    with ctx.statement_out:
-        for k, _ in params:
-            with joiner:
-                # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
-                ctx.statement_out.write(k)
-    if len(params) > 0:
-        ctx.statement_out.write("\n")
-    ctx.statement_out.write(") ")
-    next = seek_child_macro(ctx.node, "do")
 
-    ctx.compiler.assert_(next != None, ctx.node, "must have a do block")
-
-    inject = Inject_code_start()
-    ctx.compiler.set_metadata(next, Inject_code_start, inject)
-    ctx.statement_out.write("{")
-    with ctx.statement_out:
-        # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
-        for k, _ in params:
-            inject.code.append(f"{k} = {k}\n")
-        inner_ctx = replace(ctx, node=next)
-        ctx.current_step.process_node(inner_ctx)
-    ctx.statement_out.write("}")
-
-# Preprocessing for 'fn' macro  
-def fn_preprocessing(ctx: MacroContext):
-    """Preprocessing logic for 'fn' macro - sets up identifiers and parameters"""
-    from processor_base import seek_all_child_macros
-    
-    desired_name = get_single_arg(ctx)
-    actual_name = ctx.compiler.get_new_ident(desired_name)
-    ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
-    
-    # TODO - also hate this hack.
-    for child in seek_all_child_macros(ctx.node, "param"):
-        name = get_single_arg(replace(ctx, node=child))
-        ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
-
-    for child in ctx.node.children:
-        ctx.current_step.process_node(replace(ctx, node=child))
-
-# Preprocessing for 'param' macro
-def param_preprocessing(ctx: MacroContext):
-    """Preprocessing logic for 'param' macro - registers parameters"""
-    args = get_single_arg(ctx, "param must have one argument - the name")
-    parent = ctx.node.parent
-    
-    default_logger.macro(f"param '{args}'")
-    
-    assert parent != None
-    ctx.compiler.assert_(len(ctx.node.children) == 0, ctx.node, "param must have no children")
-    parent_macro = ctx.compiler.get_metadata(parent, Macro)
-    ctx.compiler.assert_(parent_macro == "fn", ctx.node, "params must be inside fn")
-    params = ctx.compiler.get_metadata(parent, Params)
-    params.mapping[args] = True
 
 @macros.add("67lang:access_field")
 def access_field(ctx: MacroContext):
@@ -132,7 +69,25 @@ def pil_access_local(ctx: MacroContext):
 
     ctx.expression_out.write(actual_name)
 
+@macros.add("local")
+def local(ctx: MacroContext):
+    desired_name = get_single_arg(ctx)
+    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
+    
+    args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
+    
+    ctx.statement_out.write(f"let {name}")
+    if len(args) > 0:
+        ctx.statement_out.write(f" = {args[-1]}")
+    ctx.statement_out.write(f"\n")
+    ctx.expression_out.write(name)
 
+# Preprocessing for 'local' macro
+def local_preprocessing(ctx: MacroContext):
+    """Preprocessing logic for 'local' macro - sets up identifiers"""
+    desired_name = get_single_arg(ctx)
+    actual_name = ctx.compiler.get_new_ident(desired_name)
+    ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
 
 @singleton
 class Macro_67lang_call:
@@ -362,7 +317,42 @@ def access_preprocessing(ctx: MacroContext):
     # print(f"replace child {ctx.node.content} of {parent.content} with {[c.content for c in replace_with]}")
     parent.replace_child(ctx.node, replace_with)
 
+# Type checking for 'local' macro
+@typecheck.add("local")
+def local_typecheck(ctx: MacroContext):
+    """Type checking for 'local' macro"""
+    type_node = seek_child_macro(ctx.node, "type")
 
+    received = None
+    # Process children to get their types
+    for child in ctx.node.children:
+        child_ctx = replace(ctx, node=child)
+        received = ctx.current_step.process_node(child_ctx) or received
+
+    if not type_node:
+        # TODO. this should be mandatory.
+        if not seek_child_macro(ctx.node, "67lang:auto_type") or not received:
+            return received
+        from node import Node
+        type_node = Node(f"type {received}", ctx.node.pos, [])
+    
+    from strutil import cut
+    _, demanded = cut(type_node.content, " ")
+    default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received} (children {[c.content for c in ctx.node.children]})")
+    
+    # Store the local variable type information in compiler metadata for upward walking
+    from node import FieldDemandType
+    ctx.compiler.set_metadata(ctx.node, FieldDemandType, demanded)
+    
+    # Also verify type matching if we have demanded type
+    if demanded:
+        if received is None:
+            # If we have a demanded type but no received value, that's an error
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given None", ErrorType.MISSING_TYPE)
+        elif received not in {"*", demanded}:
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
+    
+    return demanded or received or "*"
 
 # Type checking for '67lang:access_local' macro
 @typecheck.add("67lang:access_local")
