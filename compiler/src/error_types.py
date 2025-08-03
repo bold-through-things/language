@@ -18,6 +18,7 @@ _ERROR_TYPES = [
     "FIELD_TYPE_MISMATCH",         # Field demands specific type but given another
     "ARGUMENT_TYPE_MISMATCH",      # Argument demands specific type but given another
     "MISSING_TYPE",                # Field demands type but given None
+    "NO_SUCH_LOCAL",
     
     # Structure/argument errors  
     "WRONG_ARG_COUNT",             # Wrong number of arguments
@@ -31,6 +32,10 @@ _ERROR_TYPES = [
     
     # String literal errors
     "UNTERMINATED_STRING",         # String not properly delimited
+
+    # literal errors
+    "INVALID_INT",
+    "INVALID_FLOAT",
     
     # General errors
     "ASSERTION_FAILED",            # General assertion failure

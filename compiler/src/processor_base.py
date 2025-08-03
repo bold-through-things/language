@@ -1,11 +1,10 @@
-from contextlib import contextmanager
 from dataclasses import replace
 import re
-from typing import Any, Sequence, TypeVar, cast
-from io import StringIO
+from typing import Any, TypeVar, cast
 from pathlib import Path
-from node import Args, Callers, Indexers, Inject_code_start, Macro, Node, Params, Position, Scope, Target
-from strutil import IndentedStringIO, Joiner, cut
+from common_utils import get_single_arg, print_with_callback
+from node import Args, Macro, Node, SaneIdentifier, Scope
+from strutil import cut
 from typing import Callable
 from utils import *
 from abc import ABC, abstractmethod
@@ -26,61 +25,62 @@ def seek_parent_scope(n: Node) -> Scope | None:
     # TODO: Implement proper scope walking as mentioned in problem statement
     return None
 
-def _check_node_for_local_definition(node: Node, name: str, compiler):
-    """Check if a node is a local definition for the given name"""
-    try:
-        macro = compiler.get_metadata(node, Macro)
-        if macro == "local":
-            args = compiler.get_metadata(node, Args)
-            local_name, _ = cut(args, " ")
-            if local_name == name:
-                # Found the local definition
-                from node import FieldDemandType
-                try:
-                    demanded = compiler.get_metadata(node, FieldDemandType)
-                    return demanded
-                except KeyError:
-                    # Fall back to looking for type node
-                    type_node = seek_child_macro(node, "type")
-                    if type_node:
-                        _, demanded = cut(type_node.content, " ")
-                        return demanded
-                    return "*"  # No explicit type
-    except KeyError:
-        pass
-    return None
+# TODO. the code you wrote here is ass. i fixed it somewhat but it absolutely can be simplified further
+# @print_with_callback(lambda ctx, name, ret: f"_try_match_local {name} {ctx.node.pos.line} {ctx.node.content} returns {ret.node.content if ret else "None"}")
+def _try_match_local(ctx: "MacroContext", name: str):
+    # TODO! really should stick to one or the other, not both...
 
-def _search_in_noscope(noscope_node: Node, name: str, compiler):
+    macro = ctx.compiler.get_metadata(ctx.node, Macro)
+    if macro == "local":
+        desired_local_name = get_single_arg(ctx)
+    elif macro in {"67lang:assume_local_exists", "fn"}: # TODO - i hate this hack. find a better way!
+        desired_local_name = get_single_arg(ctx)
+    else:
+        return None
+    sane_local_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_local_name
+    # if name == "row":
+    #     print("row! ", desired_local_name, sane_local_name)
+    if name in {desired_local_name, sane_local_name}:
+        # Found the local definition, try to get its type from metadata
+        from node import FieldDemandType
+        try:
+            demanded = ctx.compiler.get_metadata(ctx.node, FieldDemandType)
+            return LocalMatchResult(ctx.node, str(demanded))
+        except KeyError:
+            # Fall back to looking for type node
+            type_node = seek_child_macro(ctx.node, "type")
+            if type_node:
+                _, demanded = cut(type_node.content, " ")
+                return LocalMatchResult(ctx.node, demanded)
+            return LocalMatchResult(ctx.node, "*")
+
+def _search_in_noscope(ctx: "MacroContext", name: str):
     """Search for local definitions inside a noscope node"""
-    for child in noscope_node.children:
-        result = _check_node_for_local_definition(child, name, compiler)
+    for child in ctx.node.children:
+        child_ctx = replace(ctx, node=child)
+        result = _try_match_local(child_ctx, name)
         if result is not None:
             return result
     return None
 
-def walk_upwards_for_local_definition(node: Node, name: str, compiler):
+@dataclass
+class LocalMatchResult:
+    node: Node
+    type: str
+
+# @print_with_callback(lambda ctx, name, ret: f"walk_upwards_for_local_definition {name} from node {ctx.node.pos.line} {ctx.node.content} finally returns {ret.node.content if ret else "None"}\n")
+def walk_upwards_for_local_definition(ctx: "MacroContext", name: str):
     """Walk upwards to find local variable definitions using the new metadata system"""
-    current = node
+    current = ctx.node
+    compiler = ctx.compiler
     while current:
+        ctx = replace(ctx, node=current)
+        # print(f"walking {[c.content for c in current.children]}")
         # Check if current node is a local definition
         try:
-            macro = compiler.get_metadata(current, Macro)
-            if macro == "local":
-                args = compiler.get_metadata(current, Args)
-                local_name, _ = cut(args, " ")
-                if local_name == name:
-                    # Found the local definition, try to get its type from metadata
-                    from node import FieldDemandType
-                    try:
-                        demanded = compiler.get_metadata(current, FieldDemandType)
-                        return demanded
-                    except KeyError:
-                        # Fall back to looking for type node
-                        type_node = seek_child_macro(current, "type")
-                        if type_node:
-                            _, demanded = cut(type_node.content, " ")
-                            return demanded
-                        return "*"  # No explicit type
+            maybe_result = _try_match_local(ctx, name)
+            if maybe_result:
+                return maybe_result
         except KeyError:
             pass
         
@@ -98,7 +98,8 @@ def walk_upwards_for_local_definition(node: Node, name: str, compiler):
                 for i in range(current_index - 1, -1, -1):
                     sibling = siblings[i]
                     # First check if the sibling itself is a local definition
-                    result = _check_node_for_local_definition(sibling, name, compiler)
+                    sibling_ctx = replace(ctx, node=sibling)
+                    result = _try_match_local(sibling_ctx, name)
                     if result is not None:
                         return result
                     
@@ -106,7 +107,7 @@ def walk_upwards_for_local_definition(node: Node, name: str, compiler):
                     try:
                         macro = compiler.get_metadata(sibling, Macro)
                         if macro == "noscope":
-                            result = _search_in_noscope(sibling, name, compiler)
+                            result = _search_in_noscope(sibling_ctx, name)
                             if result is not None:
                                 return result
                     except KeyError:
@@ -122,6 +123,12 @@ def seek_child_macro(n: Node, macro: str):
         m, _ = cut(child.content, " ")
         if macro == m:
             return child
+        
+def seek_all_child_macros(n: Node, macro: str):
+    for child in n.children:
+        m, _ = cut(child.content, " ")
+        if macro == m:
+            yield child
 
 def js_field_access(s: str) -> str:
     if re.fullmatch(r'[a-zA-Z_$][a-zA-Z0-9_$]*', s):

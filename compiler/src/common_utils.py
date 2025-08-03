@@ -133,3 +133,26 @@ def get_two_args(ctx: MacroContext, error_msg: str = "must have exactly two argu
     ctx.compiler.assert_(len(args_list) == 2, ctx.node, error_msg)
     default_logger.debug(f"validated two args: '{args_list[0]}', '{args_list[1]}'")
     return args_list[0], args_list[1]
+
+
+import inspect
+from functools import wraps
+
+def print_with_callback(callback):
+    def decorator(func):
+        sig = inspect.signature(func)
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            bound = sig.bind(*args, **kwargs)
+            bound.apply_defaults()
+            result = func(*args, **kwargs)
+            # Combine all positional and keyword arguments, followed by result
+            all_args = list(bound.args)
+            # If you want to include keyword arguments as well, add them in desired order
+            all_args.extend(bound.kwargs.values())
+            all_args.append(result)
+            output = callback(*all_args)
+            print(output)
+            return result
+        return wrapper
+    return decorator

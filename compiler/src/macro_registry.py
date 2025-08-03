@@ -7,7 +7,8 @@ from strutil import IndentedStringIO
 from logger import default_logger
 
 if TYPE_CHECKING:
-    from processor import Compiler, MacroProcessingStep
+    from processor import MacroProcessingStep
+    from macrocosm import Macrocosm
 
 # TODO - this shouldn't be here, probably...
 @dataclass(kw_only=True)
@@ -16,7 +17,7 @@ class MacroContext:
     expression_out: IndentedStringIO | StringIO
     node: Node
 
-    compiler: "Compiler"
+    compiler: "Macrocosm"
     current_step: "MacroProcessingStep | None" = None
 
 class Macro(Protocol):

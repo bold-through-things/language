@@ -1434,3 +1434,22 @@ the most valuable macros are those that:
 - the macro system cannot express the required logic cleanly
 
 macros are tools for creating better programming languages within existing languages. use them to eliminate the distance between the problem domain and the solution domain.
+
+## some more from the maintainer
+
+fucking this:
+
+```
+def function():
+    before_return! print(return_value!)
+    if this:
+        return this
+    elif that:
+        return other
+    # implicitly returns none
+```
+
+yea i know i can do it via a decorator, but that is incredibly awkward. it's also unflexible, since you can't
+just register it when applicable, no you have to always run it then.
+
+fuck Python!

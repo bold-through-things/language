@@ -1,4 +1,4 @@
-PIL:file
+67lang:file
 	note the task given
 		Read a newline-separated list of strings (simulate lines of a CSV file).
 
@@ -17,23 +17,23 @@ PIL:file
 
 		# okay i am seeing a reason to stop treating builtins as special, or at the very least to expose them in the scope object
 
-	local _0x2__lines
-		PIL:access_local lines
+	local _0x3_lines
+		67lang:access_local lines
 			noscope
-				local _0x0__lines
-					PIL:access_local lines
+				local _0x1_lines
+					67lang:access_local lines
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x1__split
-				PIL:call split
-					PIL:access_local _0x0__lines
+			local _0x2_split
+				67lang:call split
+					67lang:access_local _0x1_lines
 
 					string "\n"
 
-				PIL:auto_type
+				67lang:auto_type
 
-		PIL:auto_type
+		67lang:auto_type
 
 	local i
 		int 0
@@ -45,192 +45,203 @@ PIL:file
 		list
 
 	for line in
-		local _0x3__lines
-			PIL:access_local lines
+		67lang:assume_local_exists line
 
-			PIL:auto_type
+		local _0x9_lines
+			67lang:access_local lines
+
+			67lang:auto_type
 
 		do
 			if
 				eq
-					local _0x4__i
-						PIL:access_local i
+					local _0xb_i
+						67lang:access_local i
 
-						PIL:auto_type
+						67lang:auto_type
 
 					int 0
 
 				then
-					local _0x7__header
-						PIL:access_local header
+					local _0xe_header
+						67lang:access_local header
 							noscope
-								local _0x5__line
-									PIL:access_local line
+								local _0xc_line
+									67lang:access_local line
 
-									PIL:auto_type
+									67lang:auto_type
 
-							local _0x6__split
-								PIL:call split
-									PIL:access_local _0x5__line
+							local _0xd_split
+								67lang:call split
+									67lang:access_local _0xc_line
 
 									string ","
 
-								PIL:auto_type
+								67lang:auto_type
 
-						PIL:auto_type
+						67lang:auto_type
 
 			else
 				local zip
 					zip
-						local _0x8__header
-							PIL:access_local header
+						local _0x11_header
+							67lang:access_local header
 
-							PIL:auto_type
+							67lang:auto_type
 
 						noscope
-							local _0x9__line
-								PIL:access_local line
+							local _0x12_line
+								67lang:access_local line
 
-								PIL:auto_type
+								67lang:auto_type
 
-						local _0xa__split
-							PIL:call split
-								PIL:access_local _0x9__line
+						local _0x13_split
+							67lang:call split
+								67lang:access_local _0x12_line
 
 								string ","
 
-							PIL:auto_type
+							67lang:auto_type
 
 				local row
 					dict
 
 				for kv in
-					local _0xb__zip
-						PIL:access_local zip
+					67lang:assume_local_exists kv
 
-						PIL:auto_type
+					local _0x16_zip
+						67lang:access_local zip
+
+						67lang:auto_type
 
 					do
 						noscope
-							local _0x10__row
-								PIL:access_local row
+							local _0x1c_row
+								67lang:access_local row
 
-								PIL:auto_type
+								67lang:auto_type
 
-						local _0x11__key
-							PIL:access_index _0x10__row
+						local _0x1d_key
+							67lang:access_index _0x1c_row
 								noscope
-									local _0xc__kv
-										PIL:access_local kv
+									local _0x18_kv
+										67lang:access_local kv
 
-										PIL:auto_type
+										67lang:auto_type
 
-								local _0xd__0
-									PIL:access_field _0xc__kv 0
+								local _0x19__0
+									67lang:access_field _0x18_kv 0
 
-									PIL:auto_type
+									67lang:auto_type
 
 								noscope
-									local _0xe__kv
-										PIL:access_local kv
+									local _0x1a_kv
+										67lang:access_local kv
 
-										PIL:auto_type
+										67lang:auto_type
 
-								local _0xf__1
-									PIL:access_field _0xe__kv 1
+								local _0x1b__1
+									67lang:access_field _0x1a_kv 1
 
-									PIL:auto_type
+									67lang:auto_type
 
 				noscope
-					local _0x13__rows
-						PIL:access_local rows
+					local _0x23_rows
+						67lang:access_local rows
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x14__push
-					PIL:call push
-						PIL:access_local _0x13__rows
+				local _0x24_push
+					67lang:call push
+						67lang:access_local _0x23_rows
 
-						local _0x12__row
-							PIL:access_local row
+						local _0x22_row
+							67lang:access_local row
 
-							PIL:auto_type
+							67lang:auto_type
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x16__i
-				PIL:access_local i
+			local _0x27_i
+				67lang:access_local i
 					add
-						local _0x15__i
-							PIL:access_local i
+						local _0x26_i
+							67lang:access_local i
 
-							PIL:auto_type
+							67lang:auto_type
 
 						int 1
 
-				PIL:auto_type
+				67lang:auto_type
 
 	for row in
-		local _0x17__rows
-			PIL:access_local rows
+		local _0x2a_i
+			67lang:access_local i
 
-			PIL:auto_type
+			67lang:auto_type
+
+		local _0x29_rows
+			67lang:access_local rows
+
+			67lang:auto_type
 
 		do
 			print
 				noscope
-					local _0x18__row
-						PIL:access_local row
+					local _0x2c_row
+						67lang:access_local row
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x19__name
-					PIL:access_field _0x18__row name
+				local _0x2d_name
+					67lang:access_field _0x2c_row name
 
-					PIL:auto_type
+					67lang:auto_type
 
 	local age_over_30
 		int 0
 
 	for row in
-		local _0x1a__rows
-			PIL:access_local rows
+		67lang:assume_local_exists row
 
-			PIL:auto_type
+		local _0x2f_rows
+			67lang:access_local rows
+
+			67lang:auto_type
 
 		do
 			if
 				asc
 					noscope
-						local _0x1b__row
-							PIL:access_local row
+						local _0x31_row
+							67lang:access_local row
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x1c__age
-						PIL:access_field _0x1b__row age
+					local _0x32_age
+						67lang:access_field _0x31_row age
 
-						PIL:auto_type
+						67lang:auto_type
 
 					int 30
 
 				then
-					local _0x1e__age_over_30
-						PIL:access_local age_over_30
+					local _0x34_age_over_30
+						67lang:access_local age_over_30
 							add
-								local _0x1d__age_over_30
-									PIL:access_local age_over_30
+								local _0x33_age_over_30
+									67lang:access_local age_over_30
 
-									PIL:auto_type
+									67lang:auto_type
 
 								int 1
 
-						PIL:auto_type
+						67lang:auto_type
 
 	print
-		local _0x1f__age_over_30
-			PIL:access_local age_over_30
+		local _0x36_age_over_30
+			67lang:access_local age_over_30
 
-			PIL:auto_type
+			67lang:auto_type
 
 

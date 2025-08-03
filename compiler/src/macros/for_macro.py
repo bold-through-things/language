@@ -21,7 +21,7 @@ def for_macro(ctx: MacroContext):
         args.append(e.getvalue())
     args = list(filter(None, args))
 
-    ctx.compiler.assert_(len(args) == 1, ctx.node, "must have a single argument, the list provider", ErrorType.WRONG_ARG_COUNT)
+    ctx.compiler.assert_(len(args) == 1, ctx.node, f"must have a single argument, the list provider (got {args})", ErrorType.WRONG_ARG_COUNT)
 
     iter_ident = ctx.compiler.get_new_ident("iter")
     ctx.statement_out.write(f"""

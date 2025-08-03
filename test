@@ -217,8 +217,8 @@ def make_test_method(tc: TestCase, args):
                     print(f"{case_dir}: two-step compilation (expand mode)...")
                     
                     # Step 1: .67lang → .67lang.expanded
-                    expanded_path = tmpdir / "expanded.67lang.expanded"
-                    step1_cmd = [compiler_path.absolute(), tmpdir.absolute(), expanded_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--expand"]
+                    expanded_path = code_dir / ".67lang.expanded"
+                    step1_cmd = [compiler_path.absolute(), code_dir.absolute(), expanded_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--expand"]
                     
                     # Add any additional compiler arguments to step 1
                     if args.compiler_args:
@@ -242,16 +242,8 @@ def make_test_method(tc: TestCase, args):
                         self.assertEqual(step1_proc.returncode, 0, msg=f"Step 1 (expand) failed unexpectedly\n{step1_proc.stderr}")
                         return
                     
-                    # Step 2: .67lang.expanded → .js
-                    # Create a temporary directory with just the expanded file
-                    step2_tmpdir = tmpdir / "step2"
-                    step2_tmpdir.mkdir()
                     
-                    # Copy the expanded file as a .67lang file for step 2
-                    step2_input = step2_tmpdir / "main.67lang"
-                    shutil.copy2(expanded_path, step2_input)
-                    
-                    step2_cmd = [compiler_path.absolute(), step2_tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
+                    step2_cmd = [compiler_path.absolute(), code_dir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--rte"]
                     
                     # Add any additional compiler arguments to step 2
                     if args.compiler_args:

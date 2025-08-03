@@ -1,9 +1,9 @@
 from dataclasses import replace
 from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_scope, unified_typecheck
-from macro_registry import MacroContext, MacroRegistry
+from macro_registry import MacroContext
 from strutil import cut
-from node import Node, Position, Scope, Args, Macro
-from common_utils import collect_child_types, process_children_with_context, get_single_arg
+from node import Node, Macro
+from common_utils import collect_child_types, get_single_arg, process_children_with_context
 from logger import default_logger
 from error_types import ErrorType
 
@@ -26,7 +26,9 @@ def access_local(ctx: MacroContext):
 
     # Use upward walking to find local variable definition
     from processor_base import walk_upwards_for_local_definition
-    demanded = walk_upwards_for_local_definition(ctx.node, first, ctx.compiler)
+    res = walk_upwards_for_local_definition(ctx, first)
+    ctx.compiler.assert_(res != None, ctx.node, f"{first} must access a defined local", ErrorType.NO_SUCH_LOCAL)
+    demanded = res.type
     
     if demanded and demanded != "*":
         if len(types) > 0:
@@ -40,8 +42,6 @@ def access_local(ctx: MacroContext):
 
 @typecheck.add("local")
 def local_typecheck(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    name, _ = cut(args, " ")
     type_node = seek_child_macro(ctx.node, "type")
 
     received = None
@@ -57,7 +57,7 @@ def local_typecheck(ctx: MacroContext):
         type_node = Node(f"type {received}", ctx.node.pos, [])
     
     _, demanded = cut(type_node.content, " ")
-    default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received}")
+    default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received} (children {[c.content for c in ctx.node.children]})")
     
     # Store the local variable type information in compiler metadata for upward walking
     from node import FieldDemandType
@@ -72,31 +72,6 @@ def local_typecheck(ctx: MacroContext):
             ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
     
     return demanded or received or "*"
-
-@typecheck.add("a")
-def access_typecheck(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    first, extra = cut(args, " ")
-    if extra:
-        # TODO. not implemented. quite complex...
-        pass
-
-    # Use utility function to collect child types  
-    types = collect_child_types(ctx)
-
-    scope = seek_parent_scope(ctx.node)
-    from processor_base import unroll_parent_chain
-    assert scope is not None, f"{[n.content for n in unroll_parent_chain(ctx.node)]}" # internal assert
-    name = first
-    resolved_field = scope.resolve(name)
-    if resolved_field:
-        demanded = resolved_field
-        if len(types) > 0:
-            # TODO - support multiple arguments
-            ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)", ErrorType.WRONG_ARG_COUNT)
-            received = types[0]
-            ctx.compiler.assert_(received == demanded, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
-        return demanded
 
 SCOPE_MACRO = ["do", "then", "else", "67lang:file"]
 @typecheck.add(*SCOPE_MACRO)

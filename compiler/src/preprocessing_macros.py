@@ -1,7 +1,7 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, singleton
+from processor_base import MacroProcessingStep, seek_all_child_macros, seek_child_macro, singleton, unroll_parent_chain
 from macro_registry import MacroContext, MacroRegistry
-from node import Indexers, Callers, Macro, Args, Target, Params, Position, Node
+from node import Indexers, Callers, Macro, Args, SaneIdentifier, Target, Params, Position, Node
 from common_utils import get_single_arg
 from logger import default_logger
 from strutil import cut
@@ -15,9 +15,41 @@ from macros.comment_macros import COMMENT_MACROS, code_linking, comments
 # Register comment macros for preprocessing
 preprocessor.add(*COMMENT_MACROS)(comments)
 
-# SubstitutingMacro and CallingMacro removed - now handled contextually in access macro
+@preprocessor.add("local")
+def local(ctx: MacroContext):
+    desired_name = get_single_arg(ctx)
+    actual_name = ctx.compiler.get_new_ident(desired_name)
+    ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
 
-# inside macro removed - now handled contextually in exists macro
+@preprocessor.add("for")
+def preprocess_for(ctx: MacroContext):
+    # TODO. yes i really do hate this hack. really what we should just do is unroll `for` into the
+    #  manual while true early into the processing
+    args = ctx.compiler.get_metadata(ctx.node, Args)
+    args = args.split(" ")
+    name = args[0] # TODO - this won't support any identifier, it probably should!
+
+    # print("processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
+    ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
+    # print("done processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
+
+    for child in ctx.node.children:
+        ctx.current_step.process_node(replace(ctx, node=child))
+
+
+@preprocessor.add("fn")
+def preprocess_fn(ctx: MacroContext):
+    desired_name = get_single_arg(ctx)
+    actual_name = ctx.compiler.get_new_ident(desired_name)
+    ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
+    
+    # TODO - also hate this hack.
+    for child in seek_all_child_macros(ctx.node, "param"):
+        name = get_single_arg(replace(ctx, node=child))
+        ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
+
+    for child in ctx.node.children:
+        ctx.current_step.process_node(replace(ctx, node=child))
 
 @singleton
 class ParamMacro:
@@ -45,6 +77,7 @@ class AccessMacro:
             parent = ctx.node.parent
             
             assert parent != None
+            assert ctx.node.content.split(" ")[0] in {"a", "an", "access"}, ctx.node.content
             
             # contextually process substituting and calling modifiers among children
             indexers = {}
@@ -136,6 +169,7 @@ class AccessMacro:
                 replace_with.append(local_node)
                 
             replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
+            # print(f"replace child {ctx.node.content} of {parent.content} with {[c.content for c in replace_with]}")
             parent.replace_child(ctx.node, replace_with)
 
 
@@ -179,6 +213,7 @@ class PreprocessingStep(MacroProcessingStep):
         
         if macro in all_preprocessors:
             default_logger.macro(f"applying preprocessor for macro: {macro}")
+            # print(f"macro for {ctx.node.content} seems to be {macro}")
             with ctx.compiler.safely:
                 all_preprocessors[macro](ctx)
         else:

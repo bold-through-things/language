@@ -1,12 +1,12 @@
 from dataclasses import replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
-    builtins, builtin_calls, DirectCall, seek_child_macro, cut,
-    unified_macros, unified_typecheck
+    builtins, builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
+    unified_macros, unified_typecheck, walk_upwards_for_local_definition
 )
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
-from node import Args, Macro, Params, Inject_code_start, Target, ResolvedConvention
+from node import Args, Macro, Params, Inject_code_start, SaneIdentifier, Target, ResolvedConvention
 from common_utils import collect_child_expressions, get_single_arg, get_two_args
 from error_types import ErrorType
 from logger import default_logger
@@ -17,8 +17,9 @@ typecheck = unified_typecheck  # Use unified registry
 
 @macros.add("fn")
 def fn(ctx: MacroContext):
-    args = get_single_arg(ctx, "must have a single arg - fn name")
-    ctx.statement_out.write(f"const {args} = async function (")
+    name = get_single_arg(ctx)
+    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
+    ctx.statement_out.write(f"const {name} = async function (")
     joiner = Joiner(ctx.statement_out, ", \n")
     params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
     params = params_metadata.mapping.items()
@@ -40,6 +41,7 @@ def fn(ctx: MacroContext):
     ctx.compiler.set_metadata(next, Inject_code_start, inject)
     ctx.statement_out.write("{")
     with ctx.statement_out:
+        # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
         for k, _ in params:
             inject.code.append(f"{k} = {k}\n")
         inner_ctx = replace(ctx, node=next)
@@ -48,22 +50,28 @@ def fn(ctx: MacroContext):
 
 @macros.add("67lang:access_field")
 def access_field(ctx: MacroContext):
-    obj, field = get_two_args(ctx, "first argument is object, second is field")
+    name, field = get_two_args(ctx, "first argument is object, second is field")
+    res = walk_upwards_for_local_definition(ctx, name)
+    ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
+    name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
     field_access = js_field_access(field)
-    ident = ctx.compiler.get_new_ident("_".join([obj, field]))
+    ident = ctx.compiler.get_new_ident("_".join([name, field]))
 
     args = collect_child_expressions(ctx)
 
     if len(args) > 0:
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single child node for assignment")
-        ctx.statement_out.write(f"{obj}{field_access} = {args[-1]}\n")
-    ctx.statement_out.write(f"const {ident} = await {obj}{field_access}\n")
+        ctx.statement_out.write(f"{name}{field_access} = {args[-1]}\n")
+    ctx.statement_out.write(f"const {ident} = await {name}{field_access}\n")
     ctx.expression_out.write(ident)
 
 @macros.add("67lang:access_index")
 def access_index(ctx: MacroContext):
-    obj = get_single_arg(ctx, "single argument, the object into which we should index")
-    ident = ctx.compiler.get_new_ident(obj) # TODO - pass index name too (doable...)
+    name = get_single_arg(ctx, "single argument, the object into which we should index")
+    res = walk_upwards_for_local_definition(ctx, name)
+    ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
+    name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
+    ident = ctx.compiler.get_new_ident(name) # TODO - pass index name too (doable...)
 
     args: list[str] = collect_child_expressions(ctx)
 
@@ -72,33 +80,30 @@ def access_index(ctx: MacroContext):
 
     if len(args) > 1:
         ctx.compiler.assert_(len(args) == 2, ctx.node, "second child used for assignment")
-        ctx.statement_out.write(f"{obj}[{key}] = {args[1]}\n")
+        ctx.statement_out.write(f"{name}[{key}] = {args[1]}\n")
 
-    ctx.statement_out.write(f"const {ident} = await {obj}[{key}]\n")
+    ctx.statement_out.write(f"const {ident} = await {name}[{key}]\n")
     ctx.expression_out.write(ident)
 
 @macros.add("67lang:access_local")
 def pil_access_local(ctx: MacroContext):
-    args_str = ctx.compiler.get_metadata(ctx.node, Args)
-    args1 = args_str.split(" ")
-    ctx.compiler.assert_(len(args1) == 1, ctx.node, "single argument, the object into which we should index")
-    
-    local = args1[0]
-    ident = ctx.compiler.get_new_ident(local) # TODO - pass index name too (doable...)
+    desired_name = get_single_arg(ctx)
+    res = walk_upwards_for_local_definition(ctx, desired_name)
+    ctx.compiler.assert_(res != None, ctx.node, f"{desired_name} must access a defined local", ErrorType.NO_SUCH_LOCAL)
+    actual_name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or desired_name
 
     args = collect_child_expressions(ctx)
 
     if len(args) > 0:
         ctx.compiler.assert_(len(args) == 1, ctx.node, "single child used for assignment")
-        ctx.statement_out.write(f"{local} = {args[-1]}\n")
+        ctx.statement_out.write(f"{actual_name} = {args[-1]}\n")
 
-    ctx.statement_out.write(f"const {ident} = await {local}\n")
-    ctx.expression_out.write(ident)
+    ctx.expression_out.write(actual_name)
 
 @macros.add("local")
 def local(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    name, _ = cut(args, " ") # TODO assert one arg
+    desired_name = get_single_arg(ctx)
+    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
     
     args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
     
@@ -118,7 +123,7 @@ class Macro_67lang_call:
         
         fn = args[0]
 
-        convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
+        convention = None
         if fn in builtin_calls:
             overloads = builtin_calls[fn]
             if isinstance(overloads, list):
@@ -138,8 +143,13 @@ class Macro_67lang_call:
             else:
                 # Legacy single overload
                 convention = overloads
-        if fn in builtins:
+        elif fn in builtins:
             convention = DirectCall(fn=builtins[fn], demands=None, receiver="_67lang", returns=None)
+        else:
+            res = walk_upwards_for_local_definition(ctx, fn)
+            ctx.compiler.assert_(res != None, ctx.node, f"{fn} must refer to a defined function")
+            fn = ctx.compiler.get_metadata(res.node, SaneIdentifier)
+            convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
 
         return convention
 

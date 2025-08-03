@@ -1,9 +1,8 @@
 from contextlib import contextmanager
 from typing import Any, Sequence
 from io import StringIO
-from pathlib import Path
 from node import Node, Position, Macro, Args
-from strutil import IndentedStringIO, Joiner, cut
+from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
 from macro_registry import MacroContext
 from preprocessing_macros import PreprocessingStep
@@ -13,13 +12,7 @@ from steps.must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
 
-# Import all macro modules to ensure registrations happen
-import literal_macros
-import macros.access_macros
-import macros  # Import the new macros package
-import typecheck_macros
-
-class Compiler:
+class Macrocosm:
     def __init__(self):
         self.nodes: list[Node] = []
         # TODO. incremental is good enough for now, but we'll have to stabilize it.
@@ -52,9 +45,12 @@ class Compiler:
     def get_metadata(self, node: Node, metadata_type: type):
         """Get metadata for a node, auto-computing Macro and Args if missing"""
         node_id = id(node)
+        default_logger.log("metadata", f"get metadata {str(metadata_type)} for {node_id} {node.content}")
         
         # Auto-compute Macro and Args if not present
-        if metadata_type in [Macro, Args] and (node_id not in self._node_metadata or metadata_type not in self._node_metadata[node_id]):
+
+        # TODO. why. why does that need to be commented out. this doesn't make any sense. explain. i beg you explain.
+        if metadata_type in [Macro, Args]: # and (node_id not in self._node_metadata or metadata_type not in self._node_metadata[node_id]):
             self._ensure_macro_args_computed(node)
         
         if node_id in self._node_metadata and metadata_type in self._node_metadata[node_id]:
@@ -82,6 +78,7 @@ class Compiler:
         if node_id not in self._node_metadata:
             self._node_metadata[node_id] = {}
         self._node_metadata[node_id][metadata_type] = value
+        default_logger.log("metadata", f"set metadata {str(metadata_type)} {str(value)} for {id(node)} {node.content}")
 
     def invalidate_metadata(self, node: Node):
         """Invalidate metadata for a node and all its descendants when tree changes"""

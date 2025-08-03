@@ -10,7 +10,7 @@ COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
 # Create a code linking registry for skipping comment macros  
 code_linking = MacroRegistry()
 
-@code_linking.add(*COMMENT_MACROS)
+@code_linking.add(*(COMMENT_MACROS + ["string", "regex"])) # TODO - ugly. don't concat lists like that. find a better way
 @macros.add(*COMMENT_MACROS)
 @typecheck.add(*COMMENT_MACROS)
 def comments(_):

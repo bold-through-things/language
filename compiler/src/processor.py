@@ -15,8 +15,7 @@ import macros  # Import the new macros package to ensure registration
 from preprocessing_macros import preprocessor
 from typecheck_macros import typecheck as typecheck_macros_registry
 
-# Import the main compiler class
-from compiler import Compiler
+from macrocosm import Macrocosm
 
 # Merge all the registries for backward compatibility
 macros = MacroRegistry()

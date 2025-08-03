@@ -45,6 +45,10 @@ class Node:
         self.__insert_child(len(self._children), new)
         self._notify_tree_change()
 
+    def prepend_child(self, new: Node | list[Node] | None):
+        self.__insert_child(0, new)
+        self._notify_tree_change()
+
     def __insert_child(self, index: int, new: Node | list[Node] | None):
         # prepare new children
         if new is None:
@@ -108,6 +112,7 @@ class Inject_code_start:
 class Target(Node): pass 
 class Macro(str): pass
 class Args(str): pass
+class SaneIdentifier(str): pass
 
 @dataclass
 class FieldDemandType(str): pass

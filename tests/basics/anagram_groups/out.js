@@ -133,102 +133,84 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x14_await__67lang_dot_stdin_lp_ = await _67lang.stdin()
-            let input = _0x14_await__67lang_dot_stdin_lp_
-            input
-            const _0x15_input = await input
-            let _0x0_input = _0x15_input
-            const _0x17__0x0_input = await _0x0_input
-            const _0x16_split = await String.prototype.split.call(_0x17__0x0_input, "\n")
-            let _0x1_split = _0x16_split
-            let words = _0x1_split
-            words
-            let groups = {}
-            groups
-            const _0x18_words = await words
-            let _0x2_words = _0x18_words
+            const _0x1b_await__67lang_dot_stdin_lp_ = await _67lang.stdin()
+            let _0x0_input = _0x1b_await__67lang_dot_stdin_lp_
+            _0x0_input
+            let _0x1_input = _0x0_input
+            const _0x1c_split = await String.prototype.split.call(_0x1_input, "\n")
+            let _0x2_split = _0x1c_split
+            let _0x3_words = _0x2_split
+            _0x3_words
+            let _0x4_groups = {}
+            _0x4_groups
+            let _0x6__0x5_words = _0x3_words
 
-            const _0x19_iter = _0x2_words[Symbol.iterator]();
+            const _0x1d_iter = _0x6__0x5_words[Symbol.iterator]();
             while (true) {
-                const { value, done } = _0x19_iter.next();
+                const { value, done } = _0x1d_iter.next();
                 if (done) { break; }
                 let word = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x1a_word = await word
-                        let _0x3_word = _0x1a_word
-                        const _0x1c__0x3_word = await _0x3_word
-                        const _0x1b_split = await String.prototype.split.call(_0x1c__0x3_word, "")
-                        let _0x4_split = _0x1b_split
-                        const _0x1e__0x4_split = await _0x4_split
-                        const _0x1d_sort = await Array.prototype.sort.call(_0x1e__0x4_split)
-                        let _0x5_sort = _0x1d_sort
-                        const _0x20__0x5_sort = await _0x5_sort
-                        const _0x1f_join = await Array.prototype.join.call(_0x20__0x5_sort, "")
-                        let _0x6_join = _0x1f_join
-                        let key = _0x6_join
-                        key
+                        let _0x7_word = word
+                        const _0x1e_split = await String.prototype.split.call(_0x7_word, "")
+                        let _0x8_split = _0x1e_split
+                        const _0x1f_sort = await Array.prototype.sort.call(_0x8_split)
+                        let _0x9_sort = _0x1f_sort
+                        const _0x20_join = await Array.prototype.join.call(_0x9_sort, "")
+                        let _0xa_join = _0x20_join
+                        let _0xb_key = _0xa_join
+                        _0xb_key
 
 
 
-                        const _0x21_groups = await groups
-                        let _0x8_groups = _0x21_groups
-                        const _0x22_key = await key
-                        let _0x7_key = _0x22_key
-                        const _0x23_await__67lang_dot_exists_inside_lp_ = await _67lang.exists_inside(_0x8_groups, _0x7_key)
-                        const _0x24_await__67lang_dot_none_lp_ = await _67lang.none(_0x23_await__67lang_dot_exists_inside_lp_)
-                        if (_0x24_await__67lang_dot_none_lp_) {{
+                        let _0xd_groups = _0x4_groups
+                        let _0xc_key = _0xb_key
+                        const _0x21_await__67lang_dot_exists_inside_lp_ = await _67lang.exists_inside(_0xd_groups, _0xc_key)
+                        const _0x22_await__67lang_dot_none_lp_ = await _67lang.none(_0x21_await__67lang_dot_exists_inside_lp_)
+                        if (_0x22_await__67lang_dot_none_lp_) {{
                                 const parent_scope = scope
                                 {
                                     const scope = _67lang.scope(parent_scope)
-                                    const _0x25_groups = await groups
-                                    let _0x9_groups = _0x25_groups
+                                    let _0xe_groups = _0x4_groups
 
-                                    const _0x27_key = await key
-                                    let _0xb_key = _0x27_key
-                                    _0x9_groups[_0xb_key] = []
-                                    const _0x26__0x9_groups = await _0x9_groups[_0xb_key]
-                                    let _0xa_key = _0x26__0x9_groups
-                                    _0xa_key
+                                    let _0x10_key = _0xb_key
+                                    _0xe_groups[_0x10_key] = []
+                                    const _0x23__0xe_groups = await _0xe_groups[_0x10_key]
+                                    let _0xf_key = _0x23__0xe_groups
+                                    _0xf_key
                                 }
                             } }
-                        const _0x28_groups = await groups
-                        let _0xd_groups = _0x28_groups
-                        const _0x2a_key = await key
-                        let _0xf_key = _0x2a_key
-                        const _0x29__0xd_groups = await _0xd_groups[_0xf_key]
-                        let _0xe_key = _0x29__0xd_groups
+                        let _0x12_groups = _0x4_groups
+                        let _0x14_key = _0xb_key
+                        const _0x24__0x12_groups = await _0x12_groups[_0x14_key]
+                        let _0x13_key = _0x24__0x12_groups
 
-                        const _0x2c__0xe_key = await _0xe_key
-                        const _0x2d_word = await word
-                        let _0xc_word = _0x2d_word
-                        const _0x2b_push = await Array.prototype.push.call(_0x2c__0xe_key, _0xc_word)
-                        let _0x10_push = _0x2b_push
-                        _0x10_push
+                        let _0x16__0x11_word = word
+                        const _0x25_push = await Array.prototype.push.call(_0x13_key, _0x16__0x11_word)
+                        let _0x15_push = _0x25_push
+                        _0x15_push
                     }
                 } }
-            const _0x2e_groups = await groups
-            let _0x11_groups = _0x2e_groups
-            const _0x2f_await__67lang_dot_values_lp_ = await _67lang.values(_0x11_groups)
+            let _0x18__0x17_groups = _0x4_groups
+            const _0x26_await__67lang_dot_values_lp_ = await _67lang.values(_0x18__0x17_groups)
 
-            const _0x30_iter = _0x2f_await__67lang_dot_values_lp_[Symbol.iterator]();
+            const _0x27_iter = _0x26_await__67lang_dot_values_lp_[Symbol.iterator]();
             while (true) {
-                const { value, done } = _0x30_iter.next();
+                const { value, done } = _0x27_iter.next();
                 if (done) { break; }
                 let group = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x31_group = await group
-                        let _0x12_group = _0x31_group
-                        const _0x33__0x12_group = await _0x12_group
-                        const _0x32_join = await Array.prototype.join.call(_0x33__0x12_group, " ")
-                        let _0x13_join = _0x32_join
-                        const _0x34_await__67lang_dot_log_lp_ = await _67lang.log(_0x13_join)
-                        _0x34_await__67lang_dot_log_lp_
+                        let _0x19_group = group
+                        const _0x28_join = await Array.prototype.join.call(_0x19_group, " ")
+                        let _0x1a_join = _0x28_join
+                        const _0x29_await__67lang_dot_log_lp_ = await _67lang.log(_0x1a_join)
+                        _0x29_await__67lang_dot_log_lp_
                     }
                 } }
         }

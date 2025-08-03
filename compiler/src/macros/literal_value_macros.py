@@ -1,3 +1,4 @@
+from error_types import ErrorType
 from processor_base import unified_macros, unified_typecheck
 from macro_registry import MacroContext
 from node import Args
@@ -5,15 +6,31 @@ from node import Args
 # Legacy registries - will be moved into steps
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
-
 @macros.add("int")
 def int_macro(ctx: MacroContext):
     args = ctx.compiler.get_metadata(ctx.node, Args)
+    try:
+        int(args)
+    except ValueError:
+        ctx.compiler.assert_(False, f"{args} must be a valid integer string.", ErrorType.INVALID_INT)
     ctx.expression_out.write(str(args))
 
 @typecheck.add("int")
 def int_typecheck(ctx: MacroContext):
     return "int"
+
+@macros.add("float")
+def float_macro(ctx: MacroContext):
+    args = ctx.compiler.get_metadata(ctx.node, Args)
+    try:
+        float(args)
+    except ValueError:
+        ctx.compiler.assert_(False, f"{args} must be a valid float string.", ErrorType.INVALID_FLOAT)
+    ctx.expression_out.write(str(args))
+
+@typecheck.add("float")
+def int_typecheck(ctx: MacroContext):
+    return "float"
 
 @macros.add("string", "regex")
 def str_macro(ctx: MacroContext):

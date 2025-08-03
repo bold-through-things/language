@@ -1,33 +1,35 @@
-PIL:file
+67lang:file
 	local lines
 		stdin
 
-	local _0x2__lines
-		PIL:access_local lines
+	local _0x3_lines
+		67lang:access_local lines
 			noscope
-				local _0x0__lines
-					PIL:access_local lines
+				local _0x1_lines
+					67lang:access_local lines
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x1__split
-				PIL:call split
-					PIL:access_local _0x0__lines
+			local _0x2_split
+				67lang:call split
+					67lang:access_local _0x1_lines
 
 					string "\n"
 
-				PIL:auto_type
+				67lang:auto_type
 
-		PIL:auto_type
+		67lang:auto_type
 
 	local modules
 		dict
 
 	for line in
-		local _0x3__lines
-			PIL:access_local lines
+		67lang:assume_local_exists line
 
-			PIL:auto_type
+		local _0x7_lines
+			67lang:access_local lines
+
+			67lang:auto_type
 
 		do
 			local module
@@ -35,150 +37,150 @@ PIL:file
 
 			local kv
 				noscope
-					local _0x4__line
-						PIL:access_local line
+					local _0xa_line
+						67lang:access_local line
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x5__split
-					PIL:call split
-						PIL:access_local _0x4__line
+				local _0xb_split
+					67lang:call split
+						67lang:access_local _0xa_line
 
 						string ":"
 
 						int 2
 
-					PIL:auto_type
+					67lang:auto_type
 
 			noscope
-				local _0x9__module
-					PIL:access_local module
+				local _0x10_module
+					67lang:access_local module
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0xa__id
-				PIL:access_field _0x9__module id
+			local _0x11_id
+				67lang:access_field _0x10_module id
 					noscope
-						local _0x6__kv
-							PIL:access_local kv
+						local _0xd_kv
+							67lang:access_local kv
 
-							PIL:auto_type
+							67lang:auto_type
 
-						local _0x7__0
-							PIL:access_field _0x6__kv 0
+						local _0xe__0
+							67lang:access_field _0xd_kv 0
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x8__trim
-						PIL:call trim
-							PIL:access_local _0x7__0
+					local _0xf_trim
+						67lang:call trim
+							67lang:access_local _0xe__0
 
-						PIL:auto_type
+						67lang:auto_type
 
-				PIL:auto_type
+				67lang:auto_type
 
 			noscope
-				local _0xf__module
-					PIL:access_local module
+				local _0x19_module
+					67lang:access_local module
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x10__deps
-				PIL:access_field _0xf__module deps
+			local _0x1a_deps
+				67lang:access_field _0x19_module deps
 					noscope
-						local _0xb__kv
-							PIL:access_local kv
+						local _0x15_kv
+							67lang:access_local kv
 
-							PIL:auto_type
+							67lang:auto_type
 
-						local _0xc__1
-							PIL:access_field _0xb__kv 1
+						local _0x16__1
+							67lang:access_field _0x15_kv 1
 
-							PIL:auto_type
+							67lang:auto_type
 
-						local _0xd__trim
-							PIL:call trim
-								PIL:access_local _0xc__1
+						local _0x17_trim
+							67lang:call trim
+								67lang:access_local _0x16__1
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0xe__splitr
-						PIL:call splitr
-							PIL:access_local _0xd__trim
+					local _0x18_split
+						67lang:call split
+							67lang:access_local _0x17_trim
 
 							regex /\s+/
 
-						PIL:auto_type
+						67lang:auto_type
 
-				PIL:auto_type
+				67lang:auto_type
 
 			# TODO - this ought to be a macro.
 
 			if
 				eq
 					noscope
-						local _0x11__kv
-							PIL:access_local kv
+						local _0x1f_kv
+							67lang:access_local kv
 
-							PIL:auto_type
+							67lang:auto_type
 
-						local _0x12__1
-							PIL:access_field _0x11__kv 1
+						local _0x20__1
+							67lang:access_field _0x1f_kv 1
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x13__trim
-						PIL:call trim
-							PIL:access_local _0x12__1
+					local _0x21_trim
+						67lang:call trim
+							67lang:access_local _0x20__1
 
-						PIL:auto_type
+						67lang:auto_type
 
 					string ""
 
 				then
 					noscope
-						local _0x14__module
-							PIL:access_local module
+						local _0x22_module
+							67lang:access_local module
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x15__deps
-						PIL:access_field _0x14__module deps
+					local _0x23_deps
+						67lang:access_field _0x22_module deps
 							list
 
-						PIL:auto_type
+						67lang:auto_type
 
 			noscope
-				local _0x19__modules
-					PIL:access_local modules
+				local _0x27_modules
+					67lang:access_local modules
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x1a__id
-				PIL:access_index _0x19__modules
+			local _0x28_id
+				67lang:access_index _0x27_modules
 					noscope
-						local _0x16__module
-							PIL:access_local module
+						local _0x24_module
+							67lang:access_local module
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x17__id
-						PIL:access_field _0x16__module id
+					local _0x25_id
+						67lang:access_field _0x24_module id
 
-						PIL:auto_type
+						67lang:auto_type
 
-					local _0x18__module
-						PIL:access_local module
+					local _0x26_module
+						67lang:access_local module
 
-						PIL:auto_type
+						67lang:auto_type
 
 	# print
 		string "modules"
 
-		local _0x1b__modules
-			PIL:access_local modules
+		local _0x2c_modules
+			67lang:access_local modules
 
-			PIL:auto_type
+			67lang:auto_type
 
 	# TODO - support set initializers
 
@@ -193,6 +195,10 @@ PIL:file
 		list
 
 	fn visit
+		67lang:assume_local_exists chain
+
+		67lang:assume_local_exists module
+
 		param module
 
 		# chain of dependencies currently being inspected - used to detect loops
@@ -202,279 +208,291 @@ PIL:file
 		do
 			if 
 				noscope
-					local _0x1c__module
-						PIL:access_local module
+					local _0x2f_module
+						67lang:access_local module
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x1d__visited
-					PIL:access_field _0x1c__module visited
+				local _0x30_visited
+					67lang:access_field _0x2f_module visited
 
-					PIL:auto_type
+					67lang:auto_type
 
 				then
 					return
 
 			noscope
-				local _0x1e__module
-					PIL:access_local module
+				local _0x31_module
+					67lang:access_local module
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x1f__visited
-				PIL:access_field _0x1e__module visited
+			local _0x32_visited
+				67lang:access_field _0x31_module visited
 					true
 
-				PIL:auto_type
+				67lang:auto_type
 
 			# TODO - this shouldn't be using slice. we need a dedicated copy command
 
 			local next_chain
 				noscope
-					local _0x20__chain
-						PIL:access_local chain
+					local _0x33_chain
+						67lang:access_local chain
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x21__slice
-					PIL:call slice
-						PIL:access_local _0x20__chain
+				local _0x34_slice
+					67lang:call slice
+						67lang:access_local _0x33_chain
 
-					PIL:auto_type
+					67lang:auto_type
 
 			noscope
-				local _0x24__next_chain
-					PIL:access_local next_chain
+				local _0x38_next_chain
+					67lang:access_local next_chain
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x25__push
-				PIL:call push
-					PIL:access_local _0x24__next_chain
+			local _0x39_push
+				67lang:call push
+					67lang:access_local _0x38_next_chain
 
 					noscope
-						local _0x22__module
-							PIL:access_local module
+						local _0x36_module
+							67lang:access_local module
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x23__id
-						PIL:access_field _0x22__module id
+					local _0x37_id
+						67lang:access_field _0x36_module id
 
-						PIL:auto_type
+						67lang:auto_type
 
-				PIL:auto_type
+				67lang:auto_type
 
 			for dep_id in
+				67lang:assume_local_exists dep_id
+
 				noscope
-					local _0x26__module
-						PIL:access_local module
+					local _0x3c_module
+						67lang:access_local module
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x27__deps
-					PIL:access_field _0x26__module deps
+				local _0x3d_deps
+					67lang:access_field _0x3c_module deps
 
-					PIL:auto_type
+					67lang:auto_type
 
 				do
 					if
 						exists
-							local _0x28__dep_id
-								PIL:access_local dep_id
+							local _0x40_dep_id
+								67lang:access_local dep_id
 
-								PIL:auto_type
+								67lang:auto_type
+
+							inside
+								local _0x41_next_chain
+									67lang:access_local next_chain
+
+									67lang:auto_type
 
 						then
 							local dep_loop
 								list
 
 							noscope
-								local _0x2b__dep_loop
-									PIL:access_local dep_loop
+								local _0x44_dep_loop
+									67lang:access_local dep_loop
 
-									PIL:auto_type
+									67lang:auto_type
 
-							local _0x2c__push
-								PIL:call push
-									PIL:access_local _0x2b__dep_loop
+							local _0x45_push
+								67lang:call push
+									67lang:access_local _0x44_dep_loop
 
-									local _0x2a__dep_id
-										PIL:access_local dep_id
+									local _0x43_dep_id
+										67lang:access_local dep_id
 
-										PIL:auto_type
+										67lang:auto_type
 
-								PIL:auto_type
+								67lang:auto_type
 
 							for chain_dep_id in
+								67lang:assume_local_exists chain_dep_id
+
 								noscope
-									local _0x2d__next_chain
-										PIL:access_local next_chain
+									local _0x47_next_chain
+										67lang:access_local next_chain
 
-										PIL:auto_type
+										67lang:auto_type
 
-									local _0x2e__slice
-										PIL:call slice
-											PIL:access_local _0x2d__next_chain
+									local _0x48_slice
+										67lang:call slice
+											67lang:access_local _0x47_next_chain
 
-										PIL:auto_type
+										67lang:auto_type
 
-								local _0x2f__reverse
-									PIL:call reverse
-										PIL:access_local _0x2e__slice
+								local _0x49_reverse
+									67lang:call reverse
+										67lang:access_local _0x48_slice
 
-									PIL:auto_type
+									67lang:auto_type
 
 								do
 									noscope
-										local _0x31__dep_loop
-											PIL:access_local dep_loop
+										local _0x4e_dep_loop
+											67lang:access_local dep_loop
 
-											PIL:auto_type
+											67lang:auto_type
 
-									local _0x32__push
-										PIL:call push
-											PIL:access_local _0x31__dep_loop
+									local _0x4f_push
+										67lang:call push
+											67lang:access_local _0x4e_dep_loop
 
-											local _0x30__chain_dep_id
-												PIL:access_local chain_dep_id
+											local _0x4d_chain_dep_id
+												67lang:access_local chain_dep_id
 
-												PIL:auto_type
+												67lang:auto_type
 
-										PIL:auto_type
+										67lang:auto_type
 
 									if
 										eq
-											local _0x33__chain_dep_id
-												PIL:access_local chain_dep_id
+											local _0x51_chain_dep_id
+												67lang:access_local chain_dep_id
 
-												PIL:auto_type
+												67lang:auto_type
 
-											local _0x34__dep_id
-												PIL:access_local dep_id
+											local _0x52_dep_id
+												67lang:access_local dep_id
 
-												PIL:auto_type
+												67lang:auto_type
 
 										then
 											break
 
 							noscope
-								local _0x35__dep_loop
-									PIL:access_local dep_loop
+								local _0x53_dep_loop
+									67lang:access_local dep_loop
 
-									PIL:auto_type
+									67lang:auto_type
 
-							local _0x36__reverse
-								PIL:call reverse
-									PIL:access_local _0x35__dep_loop
+							local _0x54_reverse
+								67lang:call reverse
+									67lang:access_local _0x53_dep_loop
 
-								PIL:auto_type
+								67lang:auto_type
 
 							noscope
-								local _0x39__dep_loops
-									PIL:access_local dep_loops
+								local _0x57_dep_loops
+									67lang:access_local dep_loops
 
-									PIL:auto_type
+									67lang:auto_type
 
-							local _0x3a__push
-								PIL:call push
-									PIL:access_local _0x39__dep_loops
+							local _0x58_push
+								67lang:call push
+									67lang:access_local _0x57_dep_loops
 
 									noscope
-										local _0x37__dep_loop
-											PIL:access_local dep_loop
+										local _0x55_dep_loop
+											67lang:access_local dep_loop
 
-											PIL:auto_type
+											67lang:auto_type
 
-									local _0x38__join
-										PIL:call join
-											PIL:access_local _0x37__dep_loop
+									local _0x56_join
+										67lang:call join
+											67lang:access_local _0x55_dep_loop
 
 											string " → "
 
-										PIL:auto_type
+										67lang:auto_type
 
-								PIL:auto_type
+								67lang:auto_type
 
 					else
-						local _0x3f__visit
-							PIL:call visit
+						local _0x60_visit
+							67lang:call visit
 								noscope
-									local _0x3c__modules
-										PIL:access_local modules
+									local _0x5c_modules
+										67lang:access_local modules
 
-										PIL:auto_type
+										67lang:auto_type
 
-								local _0x3d__id
-									PIL:access_index _0x3c__modules
-										local _0x3b__dep_id
-											PIL:access_local dep_id
+								local _0x5d_id
+									67lang:access_index _0x5c_modules
+										local _0x5b_dep_id
+											67lang:access_local dep_id
 
-											PIL:auto_type
+											67lang:auto_type
 
-								local _0x3e__next_chain
-									PIL:access_local next_chain
+								local _0x5f_next_chain
+									67lang:access_local next_chain
 
-									PIL:auto_type
+									67lang:auto_type
 
-							PIL:auto_type
+							67lang:auto_type
 
 			noscope
-				local _0x42__build_order
-					PIL:access_local build_order
+				local _0x67_build_order
+					67lang:access_local build_order
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x43__push
-				PIL:call push
-					PIL:access_local _0x42__build_order
+			local _0x68_push
+				67lang:call push
+					67lang:access_local _0x67_build_order
 
 					noscope
-						local _0x40__module
-							PIL:access_local module
+						local _0x65_module
+							67lang:access_local module
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x41__id
-						PIL:access_field _0x40__module id
+					local _0x66_id
+						67lang:access_field _0x65_module id
 
-						PIL:auto_type
+						67lang:auto_type
 
-				PIL:auto_type
+				67lang:auto_type
 
 	for module in
-		values
-			local _0x44__modules
-				PIL:access_local modules
+		67lang:assume_local_exists module
 
-				PIL:auto_type
+		values
+			local _0x6b_modules
+				67lang:access_local modules
+
+				67lang:auto_type
 
 		do
-			local _0x46__visit
-				PIL:call visit
-					local _0x45__module
-						PIL:access_local module
+			local _0x6e_visit
+				67lang:call visit
+					local _0x6d_module
+						67lang:access_local module
 
-						PIL:auto_type
+						67lang:auto_type
 
 					list
 
-				PIL:auto_type
+				67lang:auto_type
 
 	if
 		asc
 			int 1
 
 			noscope
-				local _0x47__dep_loops
-					PIL:access_local dep_loops
+				local _0x70_dep_loops
+					67lang:access_local dep_loops
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x48__length
-				PIL:access_field _0x47__dep_loops length
+			local _0x71_length
+				67lang:access_field _0x70_dep_loops length
 
-				PIL:auto_type
+				67lang:auto_type
 
 		then
 			print
@@ -482,33 +500,33 @@ PIL:file
 					string "ERROR: there are dependency loops.\n"
 
 					noscope
-						local _0x49__dep_loops
-							PIL:access_local dep_loops
+						local _0x72_dep_loops
+							67lang:access_local dep_loops
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0x4a__join
-						PIL:call join
-							PIL:access_local _0x49__dep_loops
+					local _0x73_join
+						67lang:call join
+							67lang:access_local _0x72_dep_loops
 
 							string "\n"
 
-						PIL:auto_type
+						67lang:auto_type
 
 	else
 		print
 			noscope
-				local _0x4b__build_order
-					PIL:access_local build_order
+				local _0x74_build_order
+					67lang:access_local build_order
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x4c__join
-				PIL:call join
-					PIL:access_local _0x4b__build_order
+			local _0x75_join
+				67lang:call join
+					67lang:access_local _0x74_build_order
 
 					string "\n"
 
-				PIL:auto_type
+				67lang:auto_type
 
 

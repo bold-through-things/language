@@ -1,0 +1,777 @@
+67lang:file
+	note IMPORTANT: this is a living document!
+		future editors should treat this test differently than typical autotests.
+
+		if you change the code here, simply update the expected output to match.
+
+		this documentation is meant to be freely creative and engaging, not constrained
+
+		by existing test expectations. write the best tutorial possible, then make
+
+		the tests match the output, not the other way around.
+
+	note this will be an indoctrination. before you read this, repeat the following six times:
+		OUR GREATEST ENEMY IS OUR INDIFFERENCE.
+
+		done? good. now then, at least in theory, you should be properly cleansed, or at least temporarily
+
+		free, of the Big YACC brainwashing and decades of institutionalized bullshit. if so, there is
+
+		actually a tiny but realistic chance that you will be receptive to the ideas that follow.
+
+		and the ideas that follow, define a very real, a very "wrong" and "heretical", a very usable,
+
+		and a very pragmatic, indented language. indeed, that used to be its codename... 
+
+		`pragmatic_indented_language`. but now we call it 67lang. why? because it is made in the scope
+
+		of the 67.8% project. and that number? it's the number of indifference.
+
+		what hereby follows is a language tutorial onboarding documentation which should (but probably 
+
+		isn't) be thorough and sufficiently compelling. it is a language you've never seen before,
+
+		yet it is a language that had to exist through sheer mathematical necessity. it is the language
+
+		that naturally pops out under the constraints of minimal syntax for trivial external tool parsing
+
+		and a macro focused mindset of code generation being the solution to all our problems.
+
+	note in this chapter number one (1) we shall discuss basic types.
+		much as i hate "hello world" as a concept, here it is, dipshits.
+
+	print
+		string "hello world"
+
+	note that you can create and print strings. crazy, i know. are we computing yet? wow.
+
+	print
+		string ""hello world" is a fucking stupid non argument."
+
+	note what happened there. did you forget to escape quotes? no, it's perfectly valid. it will
+		indeed print:
+
+		"hello world" is a fucking stupid non argument.
+
+		but how come?! well, a riddle for you to solve. allow me to give you some hints, though:
+
+	print
+		string "this literally cannot be true... yet it is: "
+
+		all
+			eq
+				string "new year's eve"
+
+				concat 
+					string "new year's "
+
+					string level
+
+			eq
+				string "a very scary error"
+
+				concat
+					string "a very "
+
+					string !scary !
+
+					string -error-
+
+			eq
+				string "your regex should be stored into the regex variable."
+
+				concat
+					string /your regex/
+
+					string " should be stored into the "
+
+					string `regex`
+
+					string " variable."
+
+	note that i completely solved the need to escape quotes. moving on to escaping newlines now:
+
+	print
+		string
+			just write the newlines naturally and 
+
+			they will appear in the output, meaning
+
+			what you see is what you get.
+
+	note that we didn't escape shit. no, wait, that's untrue. we didn't escape the newlines,
+		but what we did escape is the need to escape them. and we did that by escaping established,
+
+		bullshit syntax conventions.
+
+	note that doing math is arguably the entire point of computers.
+
+	print
+		add
+			int 2
+
+			float 0
+
+			int 2
+
+	print
+		asc
+			int 0
+
+			int 1
+
+			int 2
+
+	note that did just say 0 < 1 < 2, yes. trivially. Python would never.
+
+	note in this chapter number two (2) we shall discuss the tasty stuff.
+		variables. being able to declare a slot in memory and store a value in it.
+
+		manipulating memory is arguably the entire point of computers.
+
+	local age
+		int 23
+
+	print
+		string "my age is"
+
+		local _0x1_age
+			67lang:access_local age
+
+			67lang:auto_type
+
+	note that i lied. my age is not currently 23. let's address that by opening a ticket
+		on our JIRA and spending 3 story points.
+
+	local _0x2_age
+		67lang:access_local age
+			int 25
+
+		67lang:auto_type
+
+	print
+		string "actually, i lied. my age is"
+
+		local _0x3_age
+			67lang:access_local age
+
+			67lang:auto_type
+
+	note that we were able to close this ticket within 5 story points. good, let's move on to
+		list some more perfectly sensible examples.
+
+	local 0
+		int 0
+
+	note what the fuck did we just do. wait, hold on. this won't compile. right?
+
+	print
+		local _0x5__0
+			67lang:access_local 0
+
+			67lang:auto_type
+
+	note that no, it actually does. hm, weird. but what if...
+
+	local _0x6__0
+		67lang:access_local 0
+			int 2347
+
+		67lang:auto_type
+
+	print
+		local _0x7__0
+			67lang:access_local 0
+
+			67lang:auto_type
+
+	note that this just printed 2347. why? what's going on here? let's investigate...
+
+	local discord.@member#hash
+		string "#2347"
+
+	local 67lang.$budget
+		int 0
+
+	local (2347)
+		regex /(2347)/
+
+	local ,
+		true
+
+	print
+		local _0xc__comma_
+			67lang:access_local ,
+
+			67lang:auto_type
+
+	note that this language might actually be unhinged. Lisp would never.
+
+	note in this chapter number three (3) we shall discuss the really tasty stuff.
+		the access macro.
+
+		previous examples already hinted at it, but let's explore it in greater detail:
+
+	local _0x10__comma_
+		67lang:access_local ,
+			local _0xe__comma_
+				67lang:access_local ,
+					local _0xd__comma_
+						67lang:access_local ,
+
+						67lang:auto_type
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	note that did literally nothing. incredible. so what did it even do, then? why, it's obvious.
+		you just tried to do `, = , = ,` and it happily did assign `,` to the `,` the value of which
+
+		it assigned to `,`. how helpful.
+
+		of course, if you stop being an absolute shithead and actually write useful code, it turns out
+
+		to be surprisingly helpful - and powerful:
+
+	local 2347
+		string "wow, very helpful."
+
+	print
+		noscope
+			local _0x14__2347
+				67lang:access_local 2347
+
+				67lang:auto_type
+
+			local _0x15_split
+				67lang:call split
+					67lang:access_local _0x14__2347
+
+					string | |
+
+				67lang:auto_type
+
+			local _0x16_sort
+				67lang:call sort
+					67lang:access_local _0x15_split
+
+				67lang:auto_type
+
+		local _0x17_join
+			67lang:call join
+				67lang:access_local _0x16_sort
+
+				string ", "
+
+			67lang:auto_type
+
+	note this will split the phrase into words, sort them, and then join them with commas, 
+		afterwards printing them.
+
+		the approximate JS equivalent is...
+
+		`_2347.split(" ").sort().join(", ")`
+
+		not compelling enough? fine, let's take a look at indexing.
+
+	note in this chapter number four (4) we dare index some dictionaries
+		can't really index empty space, though. let's create a dictionary, then.
+
+	local 67lang.features
+		dict
+
+	noscope
+		local _0x23__67lang_dot_features
+			67lang:access_local 67lang.features
+
+			67lang:auto_type
+
+	local _0x24_name
+		67lang:access_index _0x23__67lang_dot_features
+			string "the access macro"
+
+			string 
+				noscope
+					local _0x19_powerful
+						67lang:access_local powerful
+
+						67lang:auto_type
+
+					local _0x1a_and
+						67lang:access_field _0x19_powerful and
+
+						67lang:auto_type
+
+					local _0x1b_flexible
+						67lang:access_field _0x1a_and flexible
+
+						67lang:auto_type
+
+					local _0x1c_method
+						67lang:access_field _0x1b_flexible method
+
+						67lang:auto_type
+
+					local _0x1d_chaining
+						67lang:access_field _0x1c_method chaining
+
+						67lang:auto_type
+
+					local _0x1e__quot_syntax
+						67lang:access_field _0x1d_chaining "syntax
+
+						67lang:auto_type
+
+					local _0x1f_sugar_quot_
+						67lang:access_field _0x1e__quot_syntax sugar"
+
+						67lang:auto_type
+
+					local _0x20_with
+						67lang:access_field _0x1f_sugar_quot_ with
+
+						67lang:auto_type
+
+					local _0x21_clear
+						67lang:access_field _0x20_with clear
+
+						67lang:auto_type
+
+				local _0x22_branching
+					67lang:access_field _0x21_clear branching
+
+					67lang:auto_type
+
+				eliminating the pain of using brackets and having to erase or insert the bracket
+
+				at the beginning and then at the end inherently by being part of 67lang
+
+				where indentation rules all.
+
+	note what a mouthful. but there are obviously other features here. let's mention
+		the previously outlined flexibility.
+
+	noscope
+		local _0x2f__67lang_dot_features
+			67lang:access_local 67lang.features
+
+			67lang:auto_type
+
+	local _0x30_added
+		67lang:access_index _0x2f__67lang_dot_features
+			string "the flexibility of identifiers"
+
+			string
+				anything can be an identifier. there is only whitespace and non whitespace. this 
+
+				frees programmers to express their ideas in a truly direct and unleashed way.
+
+				if you desire to have a variable named `$`, `,`, `?`, or even `true`, we are
+
+				not here to stop you. if you are stupid, you will certainly misuse this and obliterate
+
+				your foot. if you are smart, you will write the most readable code ever written.
+
+	note that was too much yapping. let's truncate it a little.
+
+	print
+		noscope
+			local _0x31__67lang_dot_features
+				67lang:access_local 67lang.features
+
+				67lang:auto_type
+
+			local _0x32_described
+				67lang:access_index _0x31__67lang_dot_features
+					string "the flexibility of identifiers"
+
+		local _0x33_slice
+			67lang:call slice
+				67lang:access_local _0x32_described
+
+				int 0
+
+				int 67
+
+			67lang:auto_type
+
+	note that if by this point you are not barely holding back the urge to install the compiler
+		and write similar code yourself, you might be a lost cause.
+
+	note in this chapter number five (5) we shall do some conditioning and looping
+		naturally you'd eventually want to `do` some branching and repetition. obviously, since
+
+		branching and repetition is arguably the entire point of computers.
+
+	if
+		true
+
+		then
+			print
+				string "big"
+
+	note that is absolutely big if true.
+		but what if it was not?
+
+	if
+		false
+
+		then
+			print
+				string "big"
+
+	else
+		print
+			string "my disappointment is immeasurable and my day is ruined."
+
+	note that my disappointment in programming languages is indeed immeasurable.
+		we should probably list my disappointments with programming languages, then.
+
+	local i_hate_this_trash!
+		list
+			string "Python? insufferable import semantics, no macros, optional correctness."
+
+			string "Lisp? does not run on JS proper, insufferable syntax, indentation is demanded yet optional."
+
+			string "Java? [statement removed due to violating Terms of Service]"
+
+			string "Nim? possibly the only one that has any chance, but at this point i'm tired of trying."
+
+	note that keeping a list like that is great, but it really does deserve to be shouted
+		into the world as loudly as possible.
+
+	for angy in
+		67lang:assume_local_exists angy
+
+		local _0x35_i_hate_this_trash_bang_
+			67lang:access_local i_hate_this_trash!
+
+			67lang:auto_type
+
+		do
+			print
+				concat
+					local _0x37_angy
+						67lang:access_local angy
+
+						67lang:auto_type
+
+					string "!!!"
+
+	note that i feel much better now. it's good to vent frustration at times, i suppose.
+		let's `do` some work.
+
+	# TODO update this once 67lang is production grade (give it two three months...)
+
+	local does_a_decent_programming_language_exist?
+		false
+
+	while
+		local _0x39_does_a_decent_programming_language_exist_q_
+			67lang:access_local does_a_decent_programming_language_exist?
+
+			67lang:auto_type
+
+		do
+			print
+				string `code for quality software`
+
+	note that we failed to do any meaningful work. that's great. that's enterprise. create another
+		3 story points ticket please and we'll get this blocker resolved.
+
+	note in this chapter number six (6) we shall point out the obvious
+		this isn't a language. there is no parser. this is all just a trick to teach you
+
+		to write the CST directly. wait, "CST"? what is a CST? obviously, silly. it's the
+
+		Concrete Syntax Tree.
+
+		because there is nothing abstract about this. the tree stands tall before you.
+
+		observe its beauty. observe its inherent walkability. you could sufficiently comprehend
+
+		this file with about a hundred lines of Python. how do i know? because i wrote that Python.
+
+		it's in the compiler. it runs every time we run this autotest that i tricked you into reading
+
+		by pretending it's the documentation.
+
+		how large of a parser do you need to comprehend Java? go call Big YACC and ask them for 
+
+		noscope
+			local _0x3a_sales
+				67lang:access_local sales
+
+				67lang:auto_type
+
+		local _0x3b_pitch_dot_
+			67lang:access_field _0x3a_sales pitch.
+
+			67lang:auto_type
+
+		this here is obviously TODO. the reason the language is so self similar, or as the fancy 
+
+		goobers like to say, "homoiconic", is that it begs to be processed with macros. not yet,
+
+		my child. we will get there. we will let our users define their own macros, which expand,
+
+		expand beyond the seven seas, expand like a gray goo, expand straight into quality software.
+
+		but there's a reason i included this section, and it's this. this, already works. this, 
+
+		is a mindset.
+
+		every node can have many children. why restrict them all to two, then?
+
+	print
+		string "false: "
+
+		all
+			true
+
+			true
+
+			false
+
+	print
+		string "true: "
+
+		any
+			true
+
+			false
+
+			false
+
+	print
+		string "true: "
+
+		none
+			false
+
+			false
+
+			false
+
+	print
+		string "6: "
+
+		add
+			int 1
+
+			int 1
+
+			int 1
+
+			int 1
+
+			int 1
+
+			int 1
+
+	note that when you say the incantation "binary operation", you summon chains that limit you. there is never
+		need for a binary operation. aggregate. summarize. simplify.
+
+	note in this chapter number seven (7) we point out that Java is better than JavaScript
+		no, i really can't say that with a straight face. it's physically impossible to say that
+
+		and not cringe. write once, run everywhere? Java would never.
+
+		we emit JavaScript. for Deno. and for browser. no, we don't emit for Node. if you're a Node loser,
+
+		bring your own shims.
+
+		but there is one thing that Java does well, and JavaScript pretends to do. static typing.
+
+		we do it. we bring static typing to JavaScript.
+
+	local 2347
+		type int
+
+		int 2347
+
+	local where?
+		type str
+
+		string "not even in Nebraska."
+
+	must_compile_error FIELD_TYPE_MISMATCH=+1
+		local _0x3f_where_q_
+			67lang:access_local where?
+				local _0x3e__2347
+					67lang:access_local 2347
+
+					67lang:auto_type
+
+			67lang:auto_type
+
+	note that it is a work in progress, but even already it's remarkably powerful. write 
+		quality software with confidence. that's arguably the entire point of this language.
+
+	must_compile_error ARGUMENT_TYPE_MISMATCH=+1
+		noscope
+			local _0x41_where_q_
+				67lang:access_local where?
+
+				67lang:auto_type
+
+			local _0x42_split
+				67lang:call split
+					67lang:access_local _0x41_where_q_
+
+				67lang:auto_type
+
+			local _0x43_split
+				67lang:call split
+					67lang:access_local _0x42_split
+
+				67lang:auto_type
+
+		local _0x44_split
+			67lang:call split
+				67lang:access_local _0x43_split
+
+			67lang:auto_type
+
+	must_compile_error FIELD_TYPE_MISMATCH=+1
+		local number_of_words
+			type int
+
+			noscope
+				local _0x45_where_q_
+					67lang:access_local where?
+
+					67lang:auto_type
+
+				local _0x46_split
+					67lang:call split
+						67lang:access_local _0x45_where_q_
+
+						string " "
+
+					67lang:auto_type
+
+			local _0x47_join
+				67lang:call join
+					67lang:access_local _0x46_split
+
+					string "-"
+
+				67lang:auto_type
+
+	note in this chapter number eight (8) we must explicitly note that this is an autotest.
+		it compiles. it runs.
+
+		it has clear compile errors several lines above. what is going on here?
+
+		your answer will be, oh, just a custom and trivial preprocessing step made just for this test.
+
+		that's why you paraded that "trival to parse with external tools" syntax. big deal, buddy.
+
+		change the `type int` above. i dare you. change it to `type str`. change it and run the test.
+
+		it's not a preprocessing filter. it's not a hack created for a test. it's a basic language feature
+
+		that we ship for you, the user, to leverage exactly the same way. assert your software. assert 
+
+		how it works. that's easy. most languages let you do that.
+
+		assert how it doesn't. assert how it must not be used.
+
+		no language would ever.
+
+	note in this chapter number nine (9) we curse recursively
+
+	fn fuck!
+		67lang:assume_local_exists TODO_i_cant_even_use_periods_in_this_param_name
+
+		67lang:assume_local_exists fucks_given
+
+		param fucks_given
+
+		param TODO_i_cant_even_use_periods_in_this_param_name
+
+		do
+			print
+				string "fuck!"
+
+			if
+				asc
+					0
+
+					fucks_given
+
+				then
+					local _0x4b_fuck_bang_
+						67lang:call fuck!
+							add
+								local _0x4a_fucks_given
+									67lang:access_local fucks_given
+
+									67lang:auto_type
+
+								int -1
+
+							string "TODO..."
+
+						67lang:auto_type
+
+	local _0x4d_fuck_bang_
+		67lang:call fuck!
+			int 6
+
+			string 
+				TODO. the compiler code is garbage actually and assumes 
+
+				it's a local if you don't pass two arguments. horrible!
+
+		67lang:auto_type
+
+	note that speaks for itself.
+
+	note in this chapter i can't be bothered to count because it is the conclusion
+		i know what you're tempted to say here. no, it's not a toy or an experimental language.
+
+		it exists by necessity. it is verbose, we will fix that. it isn't yet production ready,
+
+		we will fix that. it doesn't have a community... maybe we will fix that.
+
+		maybe we won't fix that. maybe we don't want to fix that. maybe this is a language made
+
+		by a certain silly little compiler witch who tried for half a decade, or possibly even longer,
+
+		to find something that works, something expressive enough, something that lets you write
+
+		quality software.
+
+		and didn't find anything. so they built it from scratch.
+
+		and they won't give up. because this wasn't made to try out things. this wasn't made to impress.
+
+		this wasn't made to have fun. this wasn't made to sell. this wasn't made for you.
+
+		this was made for me, because i need to rewrite my Discord bot, because i need to make my 
+
+		own messenger, because i need a new game engine, because i need to create videogames.
+
+		my life has always been and will forever be about videogames. but if i must create a compiler
+
+		first, nothing will stop me. not even sanity itself.
+
+		67.8% Language. 67lang. by @statuscallh8r. initially written on 3rd Aug 2025.
+
+	note ______________________________________________
+		simplicity really is the absolute virtue.
+
+		this language here clearly proves that.
+
+		our greatest enemy is our indifference.
+
+		your code is fire we indent.
+
+		now go and built quality software.
+
+		refactor confidently when the flame flickers.
+
+
