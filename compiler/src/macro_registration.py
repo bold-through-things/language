@@ -64,6 +64,8 @@ def create_preprocessor_registry() -> MacroRegistry:
     
     # Register literal macros
     registry.add("string")(PassThroughMacro())
+    registry.add("regex")(PassThroughMacro())  # Added regex support
+    registry.add("type")(PassThroughMacro())  # Added type macro
     registry.add("int")(PassThroughMacro())
     registry.add("float")(PassThroughMacro())
     registry.add("bool")(PassThroughMacro())
@@ -136,7 +138,7 @@ def create_preprocessor_registry() -> MacroRegistry:
                 # Process children through the same step to recursively ignore them
                 ctx.current_step.process_node(child_ctx)
     
-    comment_macros = ["#", "//", "/*", "--", "note"]
+    comment_macros = ["#", "//", "/*", "--", "note", "Read", "Assume", "Parse", "Store", "Print", "Count"]  # Added more comment macros
     for comment_name in comment_macros:
         registry.add(comment_name)(CommentMacro())
     
@@ -168,7 +170,7 @@ def create_typecheck_registry() -> MacroRegistry:
                 # Process children through the same step to recursively ignore them
                 ctx.current_step.process_node(child_ctx)
     
-    comment_macros = ["#", "//", "/*", "--", "note"]
+    comment_macros = ["#", "//", "/*", "--", "note", "Read", "Assume", "Parse", "Store", "Print", "Count"]  # Added more comment macros for typecheck
     for comment_name in comment_macros:
         registry.add(comment_name)(CommentMacro())
     
@@ -212,9 +214,14 @@ def create_codegen_registry() -> MacroRegistry:
     registry.add("67lang:file")(DummyMacro())
     registry.add("literal")(DummyMacro())
     registry.add("string")(DummyMacro())
+    registry.add("regex")(DummyMacro())  # Added regex support for codegen
     registry.add("int")(DummyMacro())
     registry.add("float")(DummyMacro())
     registry.add("bool")(DummyMacro())
+    registry.add("true")(DummyMacro())  # Added true literal
+    registry.add("false")(DummyMacro())  # Added false literal
+    registry.add("break")(DummyMacro())  # Added break literal
+    registry.add("continue")(DummyMacro())  # Added continue literal
     registry.add("list")(DummyMacro())
     registry.add("dict")(DummyMacro())
     registry.add("call")(DummyMacro())
@@ -226,6 +233,9 @@ def create_codegen_registry() -> MacroRegistry:
     registry.add("else")(DummyMacro())
     registry.add("then")(DummyMacro())
     registry.add("for")(DummyMacro())
+    registry.add("fn")(DummyMacro())  # Added fn macro
+    registry.add("param")(DummyMacro())  # Added param macro
+    registry.add("type")(DummyMacro())  # Added type macro
     registry.add("do")(DummyMacro())
     registry.add("while")(DummyMacro())
     registry.add("when")(DummyMacro())
@@ -246,7 +256,7 @@ def create_codegen_registry() -> MacroRegistry:
     builtin_functions = [
         "prompt", "stdin", "is_tty", "concat", "any", "all", "eq", "asc", 
         "add", "mod", "none", "values", "keys", "zip", "push", "trim", "slice",
-        "reverse", "length", "join", "exists", "inside", "sort", "break"
+        "reverse", "length", "join", "exists", "inside", "sort"
     ]
     for builtin_name in builtin_functions:
         registry.add(builtin_name)(DummyMacro())
@@ -254,7 +264,7 @@ def create_codegen_registry() -> MacroRegistry:
     registry.add("print")(DummyMacro())
     
     # Register comment macros (these should be ignored during codegen)
-    comment_macros = ["#", "//", "/*", "--", "note"]
+    comment_macros = ["#", "//", "/*", "--", "note", "Read", "Assume", "Parse", "Store", "Print", "Count"]  # Added more comment macros for codegen
     for comment_name in comment_macros:
         registry.add(comment_name)(DummyMacro())
     

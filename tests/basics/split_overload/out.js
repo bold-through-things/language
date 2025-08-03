@@ -129,5 +129,6 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-
+    let _0x0_str
+    _0x0_str
 })();
