@@ -1,0 +1,42 @@
+[
+  {
+    "recoverable": false,
+    "line": 4,
+    "char": 0,
+    "content": "if you change the code here, simply update the expected output to match.",
+    "error": "failed to assert: expected 'then' after 'if' but found 'this'",
+    "error_type": "EXPECTED_THEN_AFTER"
+  },
+  {
+    "recoverable": false,
+    "line": 230,
+    "char": 0,
+    "content": "if you desire to have a variable named `$`, `,`, `?`, or even `true`, we are",
+    "error": "failed to assert: expected 'then' after 'if' but found 'not'",
+    "error_type": "EXPECTED_THEN_AFTER"
+  },
+  {
+    "recoverable": false,
+    "line": 399,
+    "char": 0,
+    "content": "must_compile_error FIELD_TYPE_MISMATCH=+1",
+    "error": "expected FIELD_TYPE_MISMATCH error on line 400 but no error found",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 406,
+    "char": 0,
+    "content": "must_compile_error ARGUMENT_TYPE_MISMATCH=+1",
+    "error": "expected ARGUMENT_TYPE_MISMATCH error on line 407 but no error found",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 409,
+    "char": 0,
+    "content": "must_compile_error FIELD_TYPE_MISMATCH=+1",
+    "error": "expected FIELD_TYPE_MISMATCH error on line 410 but no error found",
+    "error_type": "ASSERTION_FAILED"
+  }
+]
