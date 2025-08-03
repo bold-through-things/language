@@ -129,8 +129,31 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-    let _0x0_input
-    _0x0_inputlet _0x1_words
-    _0x1_wordslet _0x2_count
-    _0x2_count
+    const _0xd_stdin = await _67lang.stdin()
+    let _0x0_input = _0xd_stdin
+    _0x0_inputlet _0x2_input = _0x0_input
+    const _0xe_split = await String.prototype.split.call(_0x2_input, "\n")
+    let _0x3_split = _0xe_split
+    let _0x1_words = _0x3_split
+    _0x1_wordslet _0x4_count = {}
+    _0x4_countlet _0x5_words = _0x1_words
+
+    const _0xf_iter = _0x5_words[Symbol.iterator]();
+    while (true) {
+        const { value, done } = _0xf_iter.next();
+        if (done) { break; }
+        let word = value;
+        let _0x6_count = _0x4_count
+        _0x6_countlet _0x8_word = word
+        let _0x9_count = _0x4_count
+        let _0xb_word = word
+        const _0x12__0x9_count = await _0x9_count[_0xb_word]
+        let _0xa_key = _0x12__0x9_count
+        const _0x11_add = await _67lang.add(1, _0x9_count, _0xa_key)
+        _0x6_count[_0x8_word] = _0x11_add
+        const _0x10__0x6_count = await _0x6_count[_0x8_word]
+        let _0x7_key = _0x10__0x6_count
+        _0x7_key}let _0xc_count = _0x4_count
+    const _0x13_print = await _67lang.log(_0xc_count)
+    _0x13_print
 })();

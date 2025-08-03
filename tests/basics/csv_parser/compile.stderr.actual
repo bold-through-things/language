@@ -25,22 +25,6 @@
   },
   {
     "recoverable": false,
-    "line": 33,
-    "char": 0,
-    "content": "67lang:access_local line",
-    "error": "failed to assert: line must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 33,
-    "char": 0,
-    "content": "67lang:access_local line",
-    "error": "JavaScript emission failed: line must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
     "line": 32,
     "char": 0,
     "content": "67lang:access_local header",
@@ -57,57 +41,9 @@
   },
   {
     "recoverable": false,
-    "line": 39,
-    "char": 0,
-    "content": "67lang:access_local line",
-    "error": "failed to assert: line must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 39,
-    "char": 0,
-    "content": "67lang:access_local line",
-    "error": "JavaScript emission failed: line must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 50,
-    "char": 0,
-    "content": "67lang:access_local kv",
-    "error": "failed to assert: kv must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 50,
-    "char": 0,
-    "content": "67lang:access_local kv",
-    "error": "JavaScript emission failed: kv must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 51,
-    "char": 0,
-    "content": "67lang:access_local kv",
-    "error": "failed to assert: kv must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 51,
-    "char": 0,
-    "content": "67lang:access_local kv",
-    "error": "JavaScript emission failed: kv must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
     "line": 48,
     "char": 0,
-    "content": "67lang:access_index _0xc_row",
+    "content": "67lang:access_index _0x14_row",
     "error": "failed to assert: second child used for assignment",
     "error_type": "ASSERTION_FAILED"
   },
@@ -115,40 +51,8 @@
     "recoverable": false,
     "line": 48,
     "char": 0,
-    "content": "67lang:access_index _0xc_row",
+    "content": "67lang:access_index _0x14_row",
     "error": "JavaScript emission failed: second child used for assignment",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 65,
-    "char": 0,
-    "content": "67lang:access_local row",
-    "error": "failed to assert: row must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 65,
-    "char": 0,
-    "content": "67lang:access_local row",
-    "error": "JavaScript emission failed: row must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 74,
-    "char": 0,
-    "content": "67lang:access_local row",
-    "error": "failed to assert: row must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 74,
-    "char": 0,
-    "content": "67lang:access_local row",
-    "error": "JavaScript emission failed: row must access a defined local",
     "error_type": "UNKNOWN_ERROR"
   }
 ]

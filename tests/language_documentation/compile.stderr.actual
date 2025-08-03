@@ -17,54 +17,6 @@
   },
   {
     "recoverable": false,
-    "line": 295,
-    "char": 0,
-    "content": "67lang:access_local angy",
-    "error": "failed to assert: angy must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 295,
-    "char": 0,
-    "content": "67lang:access_local angy",
-    "error": "JavaScript emission failed: angy must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 453,
-    "char": 0,
-    "content": "67lang:access_local fucks_given",
-    "error": "failed to assert: fucks_given must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 453,
-    "char": 0,
-    "content": "67lang:access_local fucks_given",
-    "error": "JavaScript emission failed: fucks_given must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 455,
-    "char": 0,
-    "content": "67lang:call fuck!",
-    "error": "JavaScript emission failed: \"No metadata of type <class 'node.SaneIdentifier'> for node\"",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 461,
-    "char": 0,
-    "content": "67lang:call fuck!",
-    "error": "JavaScript emission failed: \"No metadata of type <class 'node.SaneIdentifier'> for node\"",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
     "line": 399,
     "char": 0,
     "content": "must_compile_error FIELD_TYPE_MISMATCH=+1",

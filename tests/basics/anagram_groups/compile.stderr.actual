@@ -1,50 +1,10 @@
 [
   {
     "recoverable": false,
-    "line": 16,
+    "line": 22,
     "char": 0,
-    "content": "67lang:access_local word",
-    "error": "failed to assert: word must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 16,
-    "char": 0,
-    "content": "67lang:access_local word",
-    "error": "JavaScript emission failed: word must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 38,
-    "char": 0,
-    "content": "67lang:access_local word",
-    "error": "failed to assert: word must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 38,
-    "char": 0,
-    "content": "67lang:access_local word",
-    "error": "JavaScript emission failed: word must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
-  },
-  {
-    "recoverable": false,
-    "line": 45,
-    "char": 0,
-    "content": "67lang:access_local group",
-    "error": "failed to assert: group must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
-  },
-  {
-    "recoverable": false,
-    "line": 45,
-    "char": 0,
-    "content": "67lang:access_local group",
-    "error": "JavaScript emission failed: group must access a defined local",
-    "error_type": "UNKNOWN_ERROR"
+    "content": "# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?",
+    "error": "unknown macro '#' - is this supposed to exist? did you maybe typo something?",
+    "error_type": "INVALID_MACRO"
   }
 ]

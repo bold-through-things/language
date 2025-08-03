@@ -103,18 +103,71 @@ def register_working_preprocessor_macros(registry: MacroRegistry):
             child_ctx = replace(ctx, node=child)
             ctx.current_step.process_node(child_ctx)
     
+    # Special preprocessing for for loops - creates local variable assumptions
+    def preprocess_for(ctx: MacroContext):
+        args = ctx.compiler.get_metadata(ctx.node, Args)
+        args = args.split(" ")
+        name = args[0]  # Loop variable name
+        
+        # Create assume_local_exists node for the loop variable
+        from node import Node
+        ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
+        
+        # Process all children
+        for child in ctx.node.children:
+            ctx.current_step.process_node(replace(ctx, node=child))
+    
+    registry.add("for")(preprocess_for)
+    
+    # Special preprocessing for fn - creates local variable assumptions for parameters
+    def preprocess_fn(ctx: MacroContext):
+        from processor_base import seek_all_child_macros
+        desired_name = get_single_arg(ctx)
+        actual_name = ctx.compiler.get_new_ident(desired_name)
+        ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
+        
+        # Create assume_local_exists for each parameter
+        for child in seek_all_child_macros(ctx.node, "param"):
+            name = get_single_arg(replace(ctx, node=child))
+            from node import Node
+            ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
+        
+        # Process all children
+        for child in ctx.node.children:
+            ctx.current_step.process_node(replace(ctx, node=child))
+    
+    registry.add("fn")(preprocess_fn)
+    
+    # Special preprocessing for local - creates sane identifiers
+    def preprocess_local(ctx: MacroContext):
+        desired_name = get_single_arg(ctx)
+        actual_name = ctx.compiler.get_new_ident(desired_name)
+        ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
+        
+        # Process children normally
+        for child in ctx.node.children:
+            ctx.current_step.process_node(replace(ctx, node=child))
+    
+    registry.add("local")(preprocess_local)
+    
     # Register macros that just pass through during preprocessing
     pass_through_macros = [
-        "67lang:file", "local", "fn", "for", "while", "if", "then", "else", "do", "when", "param", "type",
+        "67lang:file", "while", "if", "then", "else", "do", "when", "param", "type",
         "string", "int", "float", "bool", "list", "dict", "regex", "true", "false",
         "where", "is", "key", "split", "call", "67lang:call",
         "67lang:access", "67lang:access_local", "67lang:access_field", "67lang:access_index",
-        "67lang:assume_local_exists", "exists", "inside", "scope", "noscope", "set", "return",
+        "exists", "inside", "scope", "noscope", "set", "return",
         "67lang:auto_type"  # Add missing auto_type macro
     ]
     
     for macro_name in pass_through_macros:
         registry.add(macro_name)(pass_through_macro)
+    
+    # No-op macro for assume_local_exists - doesn't generate code, just used for tracking
+    def noop_macro(ctx: MacroContext):
+        pass  # Does nothing - just used for local variable tracking
+    
+    registry.add("67lang:assume_local_exists")(noop_macro)
     
     # Builtin function macros - expand to call <function> during preprocessing  
     def builtin_macro_factory(builtin_name: str):
@@ -499,8 +552,6 @@ while (true) {{
             ctx.statement_out.write(f"{actual_name} = {args[-1]}\n")
 
         ctx.expression_out.write(actual_name)
-
-        ctx.expression_out.write(actual_name)
     
     registry.add("67lang:access_local")(access_local_macro)
     
@@ -681,6 +732,12 @@ while (true) {{
     
     registry.add("noscope")(noscope_macro)
     
+    # No-op macro for assume_local_exists - doesn't generate code during codegen
+    def noop_macro(ctx: MacroContext):
+        pass  # Does nothing during codegen
+    
+    registry.add("67lang:assume_local_exists")(noop_macro)
+    
     # Return nothing for now - we just register the macros
     return
 
@@ -787,3 +844,9 @@ def register_working_typecheck_macros(registry: MacroRegistry):
     comment_macros = ["#", "//", "/*", "--", "note", "Read", "Assume", "Parse", "Store", "Print", "Count"]
     for comment_name in comment_macros:
         registry.add(comment_name)(comment_macro)
+    
+    # No-op macro for assume_local_exists - returns wildcard type during typecheck
+    def assume_local_exists_typecheck(ctx: MacroContext):
+        return "*"  # Return wildcard type during typecheck
+    
+    registry.add("67lang:assume_local_exists")(assume_local_exists_typecheck)
