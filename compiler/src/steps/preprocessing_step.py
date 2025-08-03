@@ -20,8 +20,12 @@ class PreprocessingStep(BaseProcessingStep):
         
     def _register_macros(self):
         """Register all preprocessing macros"""
-        # Import existing preprocessing macros
-        from preprocessing_macros import preprocessor
+        # Import existing preprocessing macros and initialize singletons
+        from preprocessing_macros import preprocessor, ParamMacro, AccessMacro
+        
+        # Initialize singletons to register macros
+        ParamMacro()
+        AccessMacro()
         
         # Copy all macros from the existing preprocessor registry
         for name, macro in preprocessor.all().items():
@@ -29,6 +33,15 @@ class PreprocessingStep(BaseProcessingStep):
             
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node for preprocessing"""
+        # Validate indentation: ensure content doesn't start with whitespace  
+        if ctx.node.content and ctx.node.content[0].isspace():
+            from error_types import ErrorType
+            ctx.compiler.compile_error(ctx.node, 
+                "this language only accepts tabs for indentation, not spaces! spaces are like, totally uncool. use tabs instead, they're way more precise and semantic.", 
+                ErrorType.INVALID_INDENTATION)
+            # Return early to avoid cascading errors
+            return
+        
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         macros = self.get_macros().all()
         
@@ -36,6 +49,7 @@ class PreprocessingStep(BaseProcessingStep):
         
         if macro in macros:
             macros[macro](ctx)
+            # Don't process children - the macro handler is responsible for that
         else:
             # Process children for nodes without specific preprocessing
             for child in ctx.node.children:

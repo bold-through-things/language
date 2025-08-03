@@ -134,56 +134,19 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
             let _0x0_str = "testing"
-            _0x0_str"testing"
+            _0x0_str
 
-            let _0x1_str = _0x0_str
             let _0x1_str = _0x0_str
             const _0x5_split = await String.prototype.split.call(_0x1_str, "t")
-            let _0x2_split = _0x5_split_0x1_str"t"
-            const _0x6_split = await String.prototype.split.call(_0x1_str, "t")
-            const _0x7_await__67lang_dot_log_lp_ = await _67lang.log(_0x1_str_0x0_str, _0x2_split_0x6_split_0x1_str"t")
-            _0x7_await__67lang_dot_log_lp_let _0x1_str = _0x0_str
-            let _0x1_str = _0x0_str
-            _0x1_str_0x0_strconst _0x8_split = await String.prototype.split.call(_0x1_str, "t")
-            let _0x2_split = _0x8_split_0x1_str"t"
-            _0x2_splitconst _0x9_split = await String.prototype.split.call(_0x1_str, "t")
-            _0x9_split_0x1_str"t"
+            let _0x2_split = _0x5_split
+            const _0x6_await__67lang_dot_log_lp_ = await _67lang.log(_0x2_split)
+            _0x6_await__67lang_dot_log_lp_
 
             let _0x3_str = _0x0_str
-            let _0x3_str = _0x0_str
-            const _0xa_split = await String.prototype.split.call(_0x3_str, /t/)
-            let _0x4_split = _0xa_split_0x3_str/t/
-            const _0xb_split = await String.prototype.split.call(_0x3_str, /t/)
-            const _0xc_await__67lang_dot_log_lp_ = await _67lang.log(_0x3_str_0x0_str, _0x4_split_0xb_split_0x3_str/t/)
-            _0xc_await__67lang_dot_log_lp_let _0x3_str = _0x0_str
-            let _0x3_str = _0x0_str
-            _0x3_str_0x0_strconst _0xd_split = await String.prototype.split.call(_0x3_str, /t/)
-            let _0x4_split = _0xd_split_0x3_str/t/
-            _0x4_splitconst _0xe_split = await String.prototype.split.call(_0x3_str, /t/)
-            _0xe_split_0x3_str/t/
+            const _0x7_split = await String.prototype.split.call(_0x3_str, /t/)
+            let _0x4_split = _0x7_split
+            const _0x8_await__67lang_dot_log_lp_ = await _67lang.log(_0x4_split)
+            _0x8_await__67lang_dot_log_lp_
         }
-    } let _0x0_str = "testing"
-    _0x0_str"testing"let _0x1_str = _0x0_str
-    let _0x1_str = _0x0_str
-    const _0xf_split = await String.prototype.split.call(_0x1_str, "t")
-    let _0x2_split = _0xf_split_0x1_str"t"
-    const _0x10_split = await String.prototype.split.call(_0x1_str, "t")
-    const _0x11_await__67lang_dot_log_lp_ = await _67lang.log(_0x1_str_0x0_str, _0x2_split_0x10_split_0x1_str"t")
-    _0x11_await__67lang_dot_log_lp_let _0x1_str = _0x0_str
-    let _0x1_str = _0x0_str
-    _0x1_str_0x0_strconst _0x12_split = await String.prototype.split.call(_0x1_str, "t")
-    let _0x2_split = _0x12_split_0x1_str"t"
-    _0x2_splitconst _0x13_split = await String.prototype.split.call(_0x1_str, "t")
-    _0x13_split_0x1_str"t"let _0x3_str = _0x0_str
-    let _0x3_str = _0x0_str
-    const _0x14_split = await String.prototype.split.call(_0x3_str, /t/)
-    let _0x4_split = _0x14_split_0x3_str/t/
-    const _0x15_split = await String.prototype.split.call(_0x3_str, /t/)
-    const _0x16_await__67lang_dot_log_lp_ = await _67lang.log(_0x3_str_0x0_str, _0x4_split_0x15_split_0x3_str/t/)
-    _0x16_await__67lang_dot_log_lp_let _0x3_str = _0x0_str
-    let _0x3_str = _0x0_str
-    _0x3_str_0x0_strconst _0x17_split = await String.prototype.split.call(_0x3_str, /t/)
-    let _0x4_split = _0x17_split_0x3_str/t/
-    _0x4_splitconst _0x18_split = await String.prototype.split.call(_0x3_str, /t/)
-    _0x18_split_0x3_str/t/
+    } 
 })();

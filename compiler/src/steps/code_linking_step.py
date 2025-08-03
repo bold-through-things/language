@@ -33,20 +33,20 @@ class CodeBlockLinkingStep(BaseProcessingStep):
         # Check if there's a specific linking macro for this node type
         if macro in macros:
             macros[macro](ctx)
-            return
-        
-        # Process children first
-        default_logger.codegen(f"processing children of {ctx.node.content}")
-        for i, child in enumerate(ctx.node.children):
-            default_logger.codegen(f"child {i}: {child.content}")
+            # Don't process children - the macro handler is responsible for that
+        else:
+            # Process children first
+            default_logger.codegen(f"processing children of {ctx.node.content}")
+            for i, child in enumerate(ctx.node.children):
+                default_logger.codegen(f"child {i}: {child.content}")
+                with ctx.compiler.safely:
+                    child_ctx = replace(ctx, node=child)
+                    self.process_node(child_ctx)
+                    
+            # Process current node for code block linking
+            default_logger.codegen(f"linking code blocks for {ctx.node.content}")
             with ctx.compiler.safely:
-                child_ctx = replace(ctx, node=child)
-                self.process_node(child_ctx)
-                
-        # Process current node for code block linking
-        default_logger.codegen(f"linking code blocks for {ctx.node.content}")
-        with ctx.compiler.safely:
-            self._process_code_blocks(ctx.node, ctx.compiler)
+                self._process_code_blocks(ctx.node, ctx.compiler)
             
     def _process_code_blocks(self, node: Node, compiler):
         """Process code block associations for a node"""

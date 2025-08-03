@@ -5,7 +5,7 @@ from macro_registry import MacroRegistry
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
-COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
+COMMENT_MACROS = ["#", "//", "/*", "--", "note", "where", "inside"]
 
 # Create a code linking registry for skipping comment macros  
 code_linking = MacroRegistry()

@@ -1,30 +1,6 @@
 [
   {
     "recoverable": false,
-    "line": 391,
-    "char": 0,
-    "content": "local 2347",
-    "error": "failed to assert: field demands int but is given None",
-    "error_type": "MISSING_TYPE"
-  },
-  {
-    "recoverable": false,
-    "line": 395,
-    "char": 0,
-    "content": "local where?",
-    "error": "failed to assert: field demands str but is given None",
-    "error_type": "MISSING_TYPE"
-  },
-  {
-    "recoverable": false,
-    "line": 410,
-    "char": 0,
-    "content": "local number_of_words",
-    "error": "failed to assert: field demands int but is given None",
-    "error_type": "MISSING_TYPE"
-  },
-  {
-    "recoverable": false,
     "line": 399,
     "char": 0,
     "content": "must_compile_error FIELD_TYPE_MISMATCH=+1",
@@ -36,7 +12,7 @@
     "line": 406,
     "char": 0,
     "content": "must_compile_error ARGUMENT_TYPE_MISMATCH=+1",
-    "error": "expected ARGUMENT_TYPE_MISMATCH error on line 407 but no error found (nearby errors: line 410: ['MISSING_TYPE'])",
+    "error": "expected ARGUMENT_TYPE_MISMATCH error on line 407 but no error found",
     "error_type": "ASSERTION_FAILED"
   },
   {
@@ -44,7 +20,7 @@
     "line": 409,
     "char": 0,
     "content": "must_compile_error FIELD_TYPE_MISMATCH=+1",
-    "error": "expected FIELD_TYPE_MISMATCH error on line 410 but found ['MISSING_TYPE']",
+    "error": "expected FIELD_TYPE_MISMATCH error on line 410 but no error found",
     "error_type": "ASSERTION_FAILED"
   }
 ]

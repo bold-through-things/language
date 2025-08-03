@@ -80,13 +80,10 @@ class JavaScriptEmissionStep(BaseProcessingStep):
                 default_logger.codegen(f"applying JavaScript emission macro: {macro}")
                 with ctx.compiler.safely:
                     all_macros[macro](final_ctx)
+                # Don't process children - the macro handler is responsible for that
             else:
                 default_logger.codegen(f"ERROR: unknown macro {macro}")
-                # If there are already compile errors, don't crash - just skip this node
-                
-        # Process children for nodes that need it
-        should_process_children = macro not in ["string", "regex", "int", "float", "true", "false"]
-        if should_process_children:
-            for child in ctx.node.children:
-                child_ctx = replace(ctx, node=child)
-                self.process_node(child_ctx)
+                # Process children for nodes without specific JavaScript emission
+                for child in ctx.node.children:
+                    child_ctx = replace(ctx, node=child)
+                    self.process_node(child_ctx)

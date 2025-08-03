@@ -52,11 +52,9 @@ with default_logger.indent("compile", "initialization"):
     its_just_macros = Macrocosm()
     
     # Log macro registry summary if registry logging is enabled
-    from processor_base import unified_macros, unified_typecheck
-    from preprocessing_macros import preprocessor
-    codegen_macros = ", ".join(unified_macros.all().keys())
-    typecheck_macros = ", ".join(unified_typecheck.all().keys())
-    preprocessor_macros = ", ".join(preprocessor.all().keys())
+    codegen_macros = ", ".join(its_just_macros.registries.get_codegen().all().keys())
+    typecheck_macros = ", ".join(its_just_macros.registries.get_typecheck().all().keys())
+    preprocessor_macros = ", ".join(its_just_macros.registries.get_preprocessing().all().keys())
     default_logger.registry(f"macro registry initialized with codegen macros: {codegen_macros}")
     default_logger.registry(f"typecheck registry initialized with typecheck macros: {typecheck_macros}")  
     default_logger.registry(f"preprocessor registry initialized with preprocessor macros: {preprocessor_macros}")
