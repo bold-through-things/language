@@ -27,62 +27,6 @@ class TypeCheckingStep(MacroProcessingStep):
             for child in ctx.node.children:
                 child_ctx = replace(ctx, node=child)
                 ctx.current_step.process_node(child_ctx)
-
-        @self.macros.add("67lang:access_local")
-        def access_local(ctx: MacroContext):
-            first = get_single_arg(ctx, "single argument, the name of local")
-
-            # Use utility function to collect child types
-            types = collect_child_types(ctx)
-
-            # Use upward walking to find local variable definition
-            from processor_base import walk_upwards_for_local_definition
-            res = walk_upwards_for_local_definition(ctx, first)
-            ctx.compiler.assert_(res != None, ctx.node, f"{first} must access a defined local", ErrorType.NO_SUCH_LOCAL)
-            demanded = res.type
-            
-            if demanded and demanded != "*":
-                if len(types) > 0:
-                    # TODO - support multiple arguments
-                    ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)", ErrorType.WRONG_ARG_COUNT)
-                    received = types[0]
-                    ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
-                default_logger.typecheck(f"{ctx.node.content} demanded {demanded}")
-                return demanded or "*"
-            return "*"
-
-        @self.macros.add("local")
-        def local_typecheck(ctx: MacroContext):
-            type_node = seek_child_macro(ctx.node, "type")
-
-            received = None
-            typecheck_step = ctx.current_step
-            assert isinstance(typecheck_step, TypeCheckingStep)
-            for child in ctx.node.children:
-                received = typecheck_step.process_node(replace(ctx, node=child)) or received
-
-            if not type_node:
-                # TODO. this should be mandatory.
-                if not seek_child_macro(ctx.node, "67lang:auto_type") or not received:
-                    return received
-                type_node = Node(f"type {received}", ctx.node.pos, [])
-            
-            _, demanded = cut(type_node.content, " ")
-            default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received} (children {[c.content for c in ctx.node.children]})")
-            
-            # Store the local variable type information in compiler metadata for upward walking
-            from node import FieldDemandType
-            ctx.compiler.set_metadata(ctx.node, FieldDemandType, demanded)
-            
-            # Also verify type matching if we have demanded type
-            if demanded:
-                if received is None:
-                    # If we have a demanded type but no received value, that's an error
-                    ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given None", ErrorType.MISSING_TYPE)
-                elif received not in {"*", demanded}:
-                    ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
-            
-            return demanded or received or "*"
         
     def process_node(self, ctx: MacroContext) -> None:
         """Type check a single node"""
