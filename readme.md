@@ -30,6 +30,8 @@ and most importantly, perhaps?
 
 `./test.py` is the main entrypoint for you, at least for now. it runs all tests and also self documents the valid compiler usage and output execution.
 
+`tests/language_documentation/main.67lang` for those who wish to actually write the language.
+
 # license
 
 i will open source it all later, i haven't decided on the right license just yet

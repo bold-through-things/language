@@ -2,6 +2,8 @@
 
 unless you behave, your PR won't be merged. end of discussion.
 
+`tests/language_documentation/main.67lang`.
+
 ## the style
 
 never add any `bash` scripts, that cursed thing deserves to be nuked immediately. leverage Python instead whenever possible. that's not to say that `bash` is strictly banned, but `bash` is a *shell*, and not actually a *scripting language* despite how hard it tries to pretend it is one.
