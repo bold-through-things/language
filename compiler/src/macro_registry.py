@@ -7,7 +7,7 @@ from strutil import IndentedStringIO
 from logger import default_logger
 
 if TYPE_CHECKING:
-    from processor import MacroProcessingStep
+    from processor_base import MacroProcessingStep
     from macrocosm import Macrocosm
 
 # TODO - this shouldn't be here, probably...
