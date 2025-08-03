@@ -27,8 +27,8 @@
     "recoverable": false,
     "line": 9,
     "char": 0,
-    "content": "67lang:access_local i",
-    "error": "failed to assert: i must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
+    "content": "local _0x0_i",
+    "error": "unknown macro 'local' - is this supposed to exist? did you maybe typo something?",
+    "error_type": "INVALID_MACRO"
   }
 ]
