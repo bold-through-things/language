@@ -9,7 +9,7 @@ from steps.preprocessing_step import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from steps.typecheck_step import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
-from literal_macros import JavaScriptEmissionStep
+from steps.javascript_emission_step import JavaScriptEmissionStep
 from logger import default_logger
 
 class Macrocosm:
