@@ -7,7 +7,7 @@ from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_i
 from macro_registry import MacroContext
 from steps.preprocessing_step import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
-from typecheck_macros import TypeCheckingStep
+from steps.typecheck_step import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger

@@ -176,7 +176,7 @@ class Macro_67lang_call:
                 # Find the typecheck step to handle type checking
                 typecheck_step = ctx.current_step
                 # Import here to avoid circular imports
-                from typecheck_macros import TypeCheckingStep
+                from steps.typecheck_step import TypeCheckingStep
                 assert isinstance(typecheck_step, TypeCheckingStep)
                 received = typecheck_step.process_node(replace(ctx, node=child))
                 args.append(received)

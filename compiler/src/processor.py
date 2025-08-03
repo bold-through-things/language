@@ -5,7 +5,7 @@ from processor_base import *
 # Import macro processing steps
 from steps.preprocessing_step import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep
-from typecheck_macros import TypeCheckingStep  
+from steps.typecheck_step import TypeCheckingStep  
 from literal_macros import JavaScriptEmissionStep
 
 # Import all the individual macro registrations

@@ -5,7 +5,7 @@
 # The plan is to move all 5 processing steps into this steps/ folder:
 # 1. PreprocessingStep (moved here)
 # 2. CodeBlockLinkingStep (currently in code_block_linking.py)  
-# 3. TypeCheckingStep (currently in typecheck_macros.py)
+# 3. TypeCheckingStep (moved here)
 # 4. JavaScriptEmissionStep (currently in literal_macros.py)
 # 5. MustCompileErrorVerificationStep (already here)
 #
@@ -13,8 +13,10 @@
 
 from .must_compile_error_step import MustCompileErrorVerificationStep
 from .preprocessing_step import PreprocessingStep
+from .typecheck_step import TypeCheckingStep
 
 __all__ = [
     'MustCompileErrorVerificationStep',
-    'PreprocessingStep'
+    'PreprocessingStep',
+    'TypeCheckingStep'
 ]
