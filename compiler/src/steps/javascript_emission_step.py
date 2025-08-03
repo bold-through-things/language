@@ -21,6 +21,7 @@ class JavaScriptEmissionStep(MacroProcessingStep):
         all_macros = self.macros.all()
         
         default_logger.codegen(f"emitting JavaScript for macro: {macro}")
+        default_logger.codegen(f"available macros: {list(all_macros.keys())}")  # Debug output
 
         # --- cursed Python begins ---
 
