@@ -6,7 +6,7 @@ from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
 from macro_registry import MacroContext
 from steps.preprocessing_step import PreprocessingStep
-from code_block_linking import CodeBlockLinkingStep  
+from steps.code_block_linking_step import CodeBlockLinkingStep  
 from steps.typecheck_step import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
 from steps.javascript_emission_step import JavaScriptEmissionStep

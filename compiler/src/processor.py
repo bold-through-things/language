@@ -4,7 +4,7 @@ from processor_base import *
 
 # Import macro processing steps
 from steps.preprocessing_step import PreprocessingStep
-from code_block_linking import CodeBlockLinkingStep
+from steps.code_block_linking_step import CodeBlockLinkingStep
 from steps.typecheck_step import TypeCheckingStep  
 from steps.javascript_emission_step import JavaScriptEmissionStep
 
