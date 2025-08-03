@@ -293,8 +293,8 @@ def make_test_method(tc: TestCase, args):
                 if args.stdin:
                     pass # custom input? don't assert.
                 else:
-                    print(stdout.strip())
-                    print(stderr.strip())
+                    # print(stdout.strip())
+                    # print(stderr.strip())
                     if expected_runtime_err is not None:
                         is_equal, error_msg = diff_reporter.compare_text(
                             stderr.strip(), expected_runtime_err.strip(), "runtime_stderr"
@@ -313,28 +313,7 @@ def make_test_method(tc: TestCase, args):
         validate_gitignore_for_test(self, tc)
     return test
 
-if __name__ == "__main__":
-    # Auto-install git hook for quality assurance
-    repo_root = Path(__file__).parent
-    hook_source = repo_root / "git-hooks" / "pre-commit"
-    hook_target = repo_root / ".git" / "hooks" / "pre-commit"
-    
-    if hook_source.exists() and (repo_root / ".git").exists():
-        if not hook_target.exists() or not hook_target.is_symlink():
-            # Install the hook
-            hook_target.parent.mkdir(exist_ok=True)
-            if hook_target.exists():
-                hook_target.unlink()
-            # Create relative path from hooks directory to git-hooks directory
-            relative_source = Path("../../git-hooks/pre-commit")
-            hook_target.symlink_to(relative_source)
-            print("✅ INSTALLED COMMIT HOOK TO ASSERT QUALITY SOFTWARE")
-            print(f"   {hook_target} -> {relative_source}")
-        else:
-            print("✅ you already have the pre commit hook installed, good.\nproceed now to build quality software.")
-    else:
-        raise ValueError("unable to install pre commit hook")
-    
+if __name__ == "__main__":    
     print("67.8% OUR GREATEST ENEMY IS OUR INDIFFERENCE")
     
     # Dynamically create test methods

@@ -28,7 +28,7 @@ and most importantly, perhaps?
 
 # how
 
-`./test.py` is the main entrypoint for you, at least for now. it runs all tests and also self documents the valid compiler usage and output execution.
+`./test` is the main entrypoint for you, at least for now. it runs all tests and also self documents the valid compiler usage and output execution.
 
 `tests/language_documentation/main.67lang` for those who wish to actually write the language.
 
