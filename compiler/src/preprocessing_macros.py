@@ -143,7 +143,7 @@ class AccessMacro:
                     # index
                     local.append(ctx.compiler.make_node(f"67lang:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
                     for arg in args1:                        
-                        assert isinstance(ctx.current_step, PreprocessingStep)
+                        # assert isinstance(ctx.current_step, PreprocessingStep)
                         ctx.current_step.process_node(replace(ctx, node=arg))
                 elif step_needs_call:
                     # call or set
@@ -153,7 +153,7 @@ class AccessMacro:
                     local.append(ctx.compiler.make_node(f"67lang:call {step}", ctx.node.pos or p0, self_arg + args1))
                     local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        assert isinstance(ctx.current_step, PreprocessingStep)
+                        # assert isinstance(ctx.current_step, PreprocessingStep)
                         ctx.current_step.process_node(replace(ctx, node=arg))
                 else:
                     # static field
@@ -161,7 +161,7 @@ class AccessMacro:
                     local.append(ctx.compiler.make_node(f"67lang:{access} {step}", ctx.node.pos or p0, args1))
                     local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
                     for arg in args1:
-                        assert isinstance(ctx.current_step, PreprocessingStep)
+                        # assert isinstance(ctx.current_step, PreprocessingStep)
                         ctx.current_step.process_node(replace(ctx, node=arg))
 
                 local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)

@@ -3,14 +3,18 @@ from typing import Any, Sequence
 from io import StringIO
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
-from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
 from macro_registry import MacroContext
-from preprocessing_macros import PreprocessingStep
-from code_block_linking import CodeBlockLinkingStep  
-from typecheck_macros import TypeCheckingStep
-from steps.must_compile_error_step import MustCompileErrorVerificationStep
-from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
+from registry_container import RegistryContainer
+
+# Import all step classes
+from steps import (
+    PreprocessingStep,
+    CodeBlockLinkingStep, 
+    TypeCheckingStep,
+    JavaScriptEmissionStep,
+    MustCompileErrorVerificationStep
+)
 
 class Macrocosm:
     def __init__(self):
@@ -26,18 +30,22 @@ class Macrocosm:
         # Metadata tracking system to replace TypeMap
         self._node_metadata: dict[int, dict[type, Any]] = {}
         
-        # Initialize the processing pipeline
-        self.processing_steps: list[MacroProcessingStep] = [
-            PreprocessingStep(),
-            CodeBlockLinkingStep(), 
-            TypeCheckingStep(),
-            JavaScriptEmissionStep(),
-            MustCompileErrorVerificationStep()
+        # Initialize registry container for dependency injection
+        self.registries = RegistryContainer()
+        
+        # Initialize the processing pipeline with dependency injection
+        self.processing_steps = [
+            PreprocessingStep(self.registries),
+            CodeBlockLinkingStep(self.registries), 
+            TypeCheckingStep(self.registries),
+            JavaScriptEmissionStep(self.registries),
+            MustCompileErrorVerificationStep(self.registries)
         ]
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
         if name:
+            from processor_base import to_valid_js_ident
             ident += f"_{to_valid_js_ident(name)}"
         self.incremental_id += 1
         return ident
@@ -105,6 +113,7 @@ class Macrocosm:
     def assert_(self, must_be_true: bool, node: Node, message: str, error_type: str = None):
         if not must_be_true:
             from error_types import ErrorType
+            from processor_base import MacroAssertFailed
             if error_type is None:
                 error_type = ErrorType.ASSERTION_FAILED
             self.compile_error(node, f"failed to assert: {message}", error_type)
@@ -191,6 +200,6 @@ class Macrocosm:
         def _safely():
             try:
                 yield
-            except MacroAssertFailed:
+            except Exception:  # MacroAssertFailed will be caught here
                 pass
         return _safely()

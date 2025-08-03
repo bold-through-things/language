@@ -1,0 +1,10 @@
+[
+  {
+    "recoverable": false,
+    "line": 12,
+    "char": 0,
+    "content": "for word in",
+    "error": "failed to assert: must have a `do` block",
+    "error_type": "ASSERTION_FAILED"
+  }
+]

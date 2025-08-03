@@ -1,0 +1,10 @@
+[
+  {
+    "recoverable": false,
+    "line": 6,
+    "char": 0,
+    "content": "if",
+    "error": "failed to assert: must have a `then` block",
+    "error_type": "ASSERTION_FAILED"
+  }
+]

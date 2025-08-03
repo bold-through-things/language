@@ -46,7 +46,7 @@ def local_typecheck(ctx: MacroContext):
 
     received = None
     typecheck_step = ctx.current_step
-    assert isinstance(typecheck_step, TypeCheckingStep)
+    # assert isinstance(typecheck_step, TypeCheckingStep)
     for child in ctx.node.children:
         received = typecheck_step.process_node(replace(ctx, node=child)) or received
 

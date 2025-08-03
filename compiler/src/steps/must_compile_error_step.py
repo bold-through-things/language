@@ -1,16 +1,20 @@
-from processor_base import MacroProcessingStep
-from macro_registry import MacroContext
+from macro_registry import MacroContext, MacroRegistry
 from dataclasses import replace
 from strutil import IndentedStringIO
 from logger import default_logger
+from steps.base_step import BaseProcessingStep
+from registry_container import RegistryContainer
 
 
-class MustCompileErrorVerificationStep(MacroProcessingStep):
+class MustCompileErrorVerificationStep(BaseProcessingStep):
     """Step that handles must_compile_error nodes - extracts expectations, processes children, and verifies errors."""
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self, registries: RegistryContainer):
+        super().__init__(registries)
         self.expectations = []  # Store expectations as we find them
+        
+    def get_macros(self) -> MacroRegistry:
+        return self.registries.get_error_verification()
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process node using standard tree walking, handling must_compile_error nodes as we encounter them."""

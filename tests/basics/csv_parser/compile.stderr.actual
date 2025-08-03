@@ -1,0 +1,10 @@
+[
+  {
+    "recoverable": false,
+    "line": 24,
+    "char": 0,
+    "content": "for line in",
+    "error": "failed to assert: must have a single argument, the list provider (got [])",
+    "error_type": "WRONG_ARG_COUNT"
+  }
+]
