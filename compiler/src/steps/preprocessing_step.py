@@ -38,13 +38,13 @@ class PreprocessingStep(MacroProcessingStep):
         @self.macros.add("fn")
         def preprocess_fn(ctx: MacroContext):
             # Import the consolidated fn preprocessing function
-            from macros.access_macros import fn_preprocessing
+            from macros.fn_macro import fn_preprocessing
             fn_preprocessing(ctx)
 
         @self.macros.add("param")
         def param_handler(ctx: MacroContext):
             # Import the consolidated param preprocessing function
-            from macros.access_macros import param_preprocessing
+            from macros.fn_macro import param_preprocessing
             param_preprocessing(ctx)
 
         @self.macros.add("a", "an", "access")
