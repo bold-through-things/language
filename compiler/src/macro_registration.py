@@ -53,6 +53,9 @@ def create_preprocessor_registry() -> MacroRegistry:
                 child_ctx = replace(ctx, node=child)
                 ctx.current_step.process_node(child_ctx)
     
+    # Register internal macros that may be generated during processing
+    registry.add("67lang:assume_local_exists")(PassThroughMacro())
+    
     registry.add("if")(PassThroughMacro())
     registry.add("then")(PassThroughMacro())
     registry.add("else")(PassThroughMacro())

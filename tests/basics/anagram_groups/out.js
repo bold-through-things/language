@@ -129,5 +129,9 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-
+    let _0x0_input
+    _0x0_inputlet _0x1_words
+    _0x1_wordslet _0x2_groups
+    _0x2_groupslet _0x3_key
+    _0x3_key
 })();
