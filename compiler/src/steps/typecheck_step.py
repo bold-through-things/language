@@ -83,14 +83,6 @@ class TypeCheckingStep(MacroProcessingStep):
                     ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
             
             return demanded or received or "*"
-
-        SCOPE_MACRO = ["do", "67lang:file"]
-        @self.macros.add(*SCOPE_MACRO)
-        def typecheck_scope_macro(ctx: MacroContext):
-            parent = seek_parent_scope(ctx.node)
-            # Temporarily disable scope metadata - implement walking upwards approach later
-            # ctx.compiler.set_metadata(ctx.node, Scope, Scope(parent=parent))
-            process_children_with_context(ctx, ctx.current_step)
         
     def process_node(self, ctx: MacroContext) -> None:
         """Type check a single node"""
