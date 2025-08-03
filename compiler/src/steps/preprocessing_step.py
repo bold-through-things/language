@@ -21,6 +21,14 @@ class PreprocessingStep(MacroProcessingStep):
         
         default_logger.macro(f"preprocessing macro: {macro}")
         
+        # Validate indentation: ensure content doesn't start with whitespace
+        if ctx.node.content and ctx.node.content[0].isspace():
+            from error_types import ErrorType
+            ctx.compiler.compile_error(ctx.node, 
+                "this language only accepts tabs for indentation, not spaces! spaces are like, totally uncool. use tabs instead, they're way more precise and semantic.", 
+                ErrorType.INVALID_INDENTATION)
+            # Don't return early - let the processing continue so we don't break the pipeline
+        
         if macro in all_macros:
             try:
                 all_macros[macro](ctx)

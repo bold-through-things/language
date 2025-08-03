@@ -5,6 +5,7 @@ Macro registration system - consolidates all macro registrations to eliminate ci
 from macro_registry import MacroRegistry
 from steps.preprocessing_step import LocalMacro, ForMacro, FnMacro, WhileMacro, SubstitutingMacro, CallingMacro, ParamMacro, AccessMacro
 from steps.typecheck_step import MustCompileErrorTypecheck, AccessLocalTypecheck, LocalTypecheck, CallTypecheck, LiteralTypecheck, WhileTypecheck, ForTypecheck, IfTypecheck
+from node import Args
 
 
 def create_preprocessor_registry() -> MacroRegistry:
@@ -19,6 +20,18 @@ def create_preprocessor_registry() -> MacroRegistry:
     registry.add("param")(ParamMacro())
     registry.add("access")(AccessMacro())
     
+    # Register call macro for built-in function calls
+    class CallMacro:
+        def __call__(self, ctx):
+            # Call macro just passes through during preprocessing
+            # The real work happens in typecheck and codegen steps
+            for child in ctx.node.children:
+                from dataclasses import replace
+                child_ctx = replace(ctx, node=child)
+                ctx.current_step.process_node(child_ctx)
+    
+    registry.add("call")(CallMacro())
+    
     # Register comment macros - skip for now due to circular deps
     # TODO: Convert comment macros to proper classes
     
@@ -32,17 +45,29 @@ def create_preprocessor_registry() -> MacroRegistry:
     registry.add("llist")(SubstitutingMacro("list"))
     registry.add("assign")(SubstitutingMacro("set"))
     
-    # Register calling macros - skip complex ones for now
-    # registry.add("print")(CallingMacro("call print"))
-    # registry.add("error")(CallingMacro("call error"))
-    
-    # Simple dummy implementations for now
+    # Register calling macros with simplified implementation to avoid circular deps  
     class SimplePrintMacro:
         def __call__(self, ctx):
-            # Simple print handling without comment macro dependencies
-            pass
+            # Expand print to call print
+            args = ctx.compiler.get_metadata(ctx.node, Args)
+            call_node = ctx.compiler.make_node(f"call print {args}", ctx.node.pos, ctx.node.children)
+            # Process the call node
+            from dataclasses import replace
+            call_ctx = replace(ctx, node=call_node)
+            ctx.current_step.process_node(call_ctx)
+    
+    class SimpleErrorMacro:
+        def __call__(self, ctx):
+            # Expand error to call error
+            args = ctx.compiler.get_metadata(ctx.node, Args)
+            call_node = ctx.compiler.make_node(f"call error {args}", ctx.node.pos, ctx.node.children)
+            # Process the call node
+            from dataclasses import replace
+            call_ctx = replace(ctx, node=call_node)
+            ctx.current_step.process_node(call_ctx)
     
     registry.add("print")(SimplePrintMacro())
+    registry.add("error")(SimpleErrorMacro())
     
     return registry
 
@@ -78,6 +103,7 @@ def create_codegen_registry() -> MacroRegistry:
                 ctx.current_step.process_node(child_ctx)
     
     # Register basic macros with dummy implementations
+    registry.add("67lang:file")(DummyMacro())
     registry.add("literal")(DummyMacro())
     registry.add("list")(DummyMacro())
     registry.add("dict")(DummyMacro())

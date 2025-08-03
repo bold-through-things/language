@@ -57,8 +57,9 @@ class JavaScriptEmissionStep(MacroProcessingStep):
                 except Exception as e:
                     ctx.compiler.compile_error(ctx.node, f"JavaScript emission failed: {e}", ErrorType.UNKNOWN_ERROR)
             else:
-                # For unknown macros, emit children in statement mode
-                default_logger.codegen(f"unknown macro {macro}, processing children")
-                for child in ctx.node.children:
-                    child_ctx = replace(wrapped_ctx, node=child)
-                    self.process_node(child_ctx)
+                default_logger.codegen(f"ERROR: unknown macro {macro}")
+                # If there are already compile errors, don't crash - just skip this node
+                if len(ctx.compiler.compile_errors) > 0:
+                    default_logger.codegen(f"skipping malformed node due to existing compile errors")
+                    return
+                ctx.compiler.compile_error(ctx.node, f"unknown macro '{macro}' - is this supposed to exist? did you maybe typo something?", ErrorType.INVALID_MACRO)
