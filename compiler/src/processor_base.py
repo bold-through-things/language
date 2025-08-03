@@ -264,11 +264,6 @@ def to_valid_js_ident(s: str) -> str:
 
 from macro_registry import MacroContext, MacroRegistry
 
-# Global unified registries for all macros and typechecks
-# These will be populated by all macro modules
-unified_macros = MacroRegistry()
-unified_typecheck = MacroRegistry()
-
 class MacroProcessingStep(ABC):
     """Base class for macro processing steps in the compilation pipeline"""
     

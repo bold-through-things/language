@@ -5,11 +5,8 @@ from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
 from macro_registry import MacroContext
-from preprocessing_macros import PreprocessingStep
-from code_block_linking import CodeBlockLinkingStep  
-from typecheck_macros import TypeCheckingStep
-from steps.must_compile_error_step import MustCompileErrorVerificationStep
-from literal_macros import JavaScriptEmissionStep
+from macro_registration import create_preprocessor_registry, create_typecheck_registry, create_codegen_registry
+from steps import PreprocessingStep, CodeBlockLinkingStep, TypeCheckingStep, JavaScriptEmissionStep, MustCompileErrorVerificationStep
 from logger import default_logger
 
 class Macrocosm:
@@ -26,12 +23,17 @@ class Macrocosm:
         # Metadata tracking system to replace TypeMap
         self._node_metadata: dict[int, dict[type, Any]] = {}
         
-        # Initialize the processing pipeline
+        # Create registries using the new dependency-free system
+        preprocessor_registry = create_preprocessor_registry()
+        typecheck_registry = create_typecheck_registry()
+        codegen_registry = create_codegen_registry()
+        
+        # Initialize the processing pipeline with dependency injection
         self.processing_steps: list[MacroProcessingStep] = [
-            PreprocessingStep(),
+            PreprocessingStep(preprocessor_registry),
             CodeBlockLinkingStep(), 
-            TypeCheckingStep(),
-            JavaScriptEmissionStep(),
+            TypeCheckingStep(typecheck_registry),
+            JavaScriptEmissionStep(codegen_registry),
             MustCompileErrorVerificationStep()
         ]
 

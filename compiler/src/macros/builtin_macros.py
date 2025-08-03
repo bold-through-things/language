@@ -1,9 +1,8 @@
-from processor_base import unified_macros, builtins
+from processor_base import builtins
 from macro_registry import MacroContext
 from node import Macro
 
 # Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
 
 @macros.add(*[b for b in builtins.keys()])
 def builtin(ctx: MacroContext):

@@ -2,7 +2,7 @@ from dataclasses import replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
     builtins, builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
-    unified_macros, unified_typecheck, walk_upwards_for_local_definition
+    walk_upwards_for_local_definition
 )
 from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO, Joiner
@@ -12,8 +12,6 @@ from error_types import ErrorType
 from logger import default_logger
 
 # Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
-typecheck = unified_typecheck  # Use unified registry
 
 @macros.add("fn")
 def fn(ctx: MacroContext):

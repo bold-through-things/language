@@ -1,6 +1,5 @@
 from dataclasses import replace
-from processor_base import seek_child_macro, unified_macros
-from macro_registry import MacroContext
+from processor_base import seek_child_macro, from macro_registry import MacroContext
 from node import Inject_code_start
 
 SCOPE_MACRO = ["do", "then", "else", "67lang:file"]

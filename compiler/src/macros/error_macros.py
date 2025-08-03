@@ -1,10 +1,8 @@
 from dataclasses import replace
-from processor_base import unified_macros
-from macro_registry import MacroContext
+from processor_base import from macro_registry import MacroContext
 from strutil import IndentedStringIO
 
 # Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
 
 @macros.add("must_compile_error")
 def must_compile_error_processing(ctx: MacroContext):

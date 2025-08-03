@@ -51,15 +51,8 @@ with default_logger.indent("compile", "initialization"):
     default_logger.compile(f"found {len(result)} .67lang files: {[str(f) for f in result]}")
     its_just_macros = Macrocosm()
     
-    # Log macro registry summary if registry logging is enabled
-    from processor_base import unified_macros, unified_typecheck
-    from preprocessing_macros import preprocessor
-    codegen_macros = ", ".join(unified_macros.all().keys())
-    typecheck_macros = ", ".join(unified_typecheck.all().keys())
-    preprocessor_macros = ", ".join(preprocessor.all().keys())
-    default_logger.registry(f"macro registry initialized with codegen macros: {codegen_macros}")
-    default_logger.registry(f"typecheck registry initialized with typecheck macros: {typecheck_macros}")  
-    default_logger.registry(f"preprocessor registry initialized with preprocessor macros: {preprocessor_macros}")
+    # TODO: Re-implement macro registry logging with new architecture
+    default_logger.registry(f"macro registries initialized with new dependency-free architecture")
 
 parser = TreeParser()
 with default_logger.indent("compile", "parsing files"):

@@ -1,9 +1,7 @@
 from dataclasses import replace
-from processor_base import unified_macros
-from macro_registry import MacroContext
+from processor_base import from macro_registry import MacroContext
 
 # Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
 
 @macros.add("67lang:solution")
 def pil_solution(ctx: MacroContext):

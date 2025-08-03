@@ -117,6 +117,9 @@ class SaneIdentifier(str): pass
 @dataclass
 class FieldDemandType(str): pass
 
+@dataclass
+class TypeResult(str): pass
+
 @dataclass 
 class ResolvedConvention:
     """Stores the resolved calling convention for a function call"""
