@@ -5,7 +5,7 @@ from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
 from macro_registry import MacroContext
-from preprocessing_macros import PreprocessingStep
+from steps.preprocessing_step import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
