@@ -22,5 +22,21 @@
     "content": "for i in",
     "error": "JavaScript emission failed: must have a `do` block",
     "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 9,
+    "char": 0,
+    "content": "67lang:access_local i",
+    "error": "failed to assert: i must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 9,
+    "char": 0,
+    "content": "67lang:access_local i",
+    "error": "JavaScript emission failed: i must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
   }
 ]

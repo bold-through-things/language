@@ -84,6 +84,10 @@ def register_working_preprocessor_macros(registry: MacroRegistry):
     registry.add("67lang:solution")(solution_macro)
     print(f"DEBUG: Registered 67lang:solution in preprocessor registry")  # Debug output
     
+    # Import access macro with where clause handling from the reference
+    from access_macro_reference import register_access_macro_with_where_support
+    register_access_macro_with_where_support(registry)
+    
     # Comment macros - just pass through during preprocessing
     def comment_macro(ctx: MacroContext):
         for child in ctx.node.children:
@@ -93,7 +97,6 @@ def register_working_preprocessor_macros(registry: MacroRegistry):
     comment_macros = ["#", "//", "/*", "--", "note", "Read", "Assume", "Parse", "Store", "Print", "Count"]
     for comment_name in comment_macros:
         registry.add(comment_name)(comment_macro)
-    
     # Pass-through macro for common language constructs during preprocessing
     def pass_through_macro(ctx: MacroContext):
         for child in ctx.node.children:
@@ -106,24 +109,12 @@ def register_working_preprocessor_macros(registry: MacroRegistry):
         "string", "int", "float", "bool", "list", "dict", "regex", "true", "false",
         "where", "is", "key", "split", "call", "67lang:call",
         "67lang:access", "67lang:access_local", "67lang:access_field", "67lang:access_index",
-        "67lang:assume_local_exists", "exists", "inside", "scope", "noscope", "set", "return"
+        "67lang:assume_local_exists", "exists", "inside", "scope", "noscope", "set", "return",
+        "67lang:auto_type"  # Add missing auto_type macro
     ]
     
     for macro_name in pass_through_macros:
         registry.add(macro_name)(pass_through_macro)
-    
-    # Access macro implementation (pass-through for now)
-    def access_macro(ctx: MacroContext):
-        # For now, just pass through like other macros
-        # TODO: Implement proper access macro transformation
-        for child in ctx.node.children:
-            child_ctx = replace(ctx, node=child)
-            ctx.current_step.process_node(child_ctx)
-    
-    # Register access macros (a, an, access are aliases)
-    registry.add("a")(access_macro)
-    registry.add("an")(access_macro)
-    registry.add("access")(access_macro)
     
     # Builtin function macros - expand to call <function> during preprocessing  
     def builtin_macro_factory(builtin_name: str):
@@ -151,6 +142,10 @@ def register_working_preprocessor_macros(registry: MacroRegistry):
 def register_working_codegen_macros(registry: MacroRegistry):
     """Register working JavaScript codegen macros adapted from reference version"""
     
+    # Import and register missing critical macros ONLY if they're truly missing
+    from missing_macros import add_missing_control_flow_macros, add_missing_builtin_functions 
+    # Don't double-register - check what we actually need
+    
     # Solution macro - just processes children
     def solution_macro(ctx: MacroContext):
         for child in ctx.node.children:
@@ -166,6 +161,62 @@ def register_working_codegen_macros(registry: MacroRegistry):
             ctx.current_step.process_node(child_ctx)
     
     registry.add("67lang:file")(file_macro)
+    
+    # Add ONLY the macros that aren't being registered elsewhere
+    # Register if/then/else/while/do individually to avoid conflicts
+    
+    # IF macro implementation from reference
+    def if_header(ctx: MacroContext):
+        args: list[str] = []
+        if len(ctx.node.children) > 0:
+            for child in ctx.node.children:
+                if child.content.startswith("then"):
+                    continue
+                e = IndentedStringIO()
+                ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
+                args.append(e.getvalue())
+
+        ctx.statement_out.write(f"if ({args[-1]})")
+        ctx.statement_out.write(" {")
+        with ctx.statement_out:
+            node = seek_child_macro(ctx.node, "then")
+            ctx.compiler.assert_(node != None, ctx.node, "must have a `then` block")
+            inner_ctx = replace(ctx, node=node)
+            ctx.current_step.process_node(inner_ctx)
+        ctx.statement_out.write("}")
+    
+    registry.add("if")(if_header)
+    
+    # WHILE macro implementation from reference
+    def while_loop(ctx: MacroContext):
+        ctx.statement_out.write("while(true) {")
+        with ctx.statement_out:
+            ctx.compiler.assert_(len(ctx.node.children) == 2, ctx.node, "must have two children")
+            node = ctx.node.children[0]
+            out = IndentedStringIO()
+            inner_ctx = replace(ctx, node=node, expression_out=out)
+            ctx.current_step.process_node(inner_ctx)
+
+            ctx.statement_out.write(f"if (!{out.getvalue()}) ")
+            ctx.statement_out.write("{ break; }\n")
+
+            node = seek_child_macro(ctx.node, "do")
+            ctx.compiler.assert_(node != None, ctx.node, "must have a `do` block")
+            inner_ctx = replace(ctx, node=node)
+            ctx.current_step.process_node(inner_ctx)
+        ctx.statement_out.write("}")
+    
+    registry.add("while")(while_loop)
+    
+    # THEN/ELSE/DO scope macros from reference 
+    def scope_macro(ctx: MacroContext):
+        for child in ctx.node.children:
+            child_ctx = replace(ctx, node=child)
+            ctx.current_step.process_node(child_ctx)
+    
+    registry.add("then")(scope_macro)
+    registry.add("else")(scope_macro) 
+    registry.add("do")(scope_macro)
     
     # Working call macro that generates JavaScript - this is the real implementation
     def call_codegen(ctx: MacroContext):
@@ -320,13 +371,30 @@ while (true) {{
     
     registry.add("for")(for_macro)
     
-    # Working do macro - just processes children
-    def do_macro(ctx: MacroContext):
-        for child in ctx.node.children:
-            child_ctx = replace(ctx, node=child)
-            ctx.current_step.process_node(child_ctx)
+    # Add missing builtin function macros individually 
+    def builtin_function_factory(builtin_name: str, js_function: str):
+        def builtin_function(ctx: MacroContext):
+            args = []
+            for child in ctx.node.children:
+                e = IndentedStringIO()
+                ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
+                args.append(e.getvalue())
+            
+            result = f"_67lang.{js_function}({', '.join(args)})"
+            ctx.expression_out.write(result)
+        return builtin_function
     
-    registry.add("do")(do_macro)
+    # Missing builtin functions from fizzbuzz test
+    missing_builtins = {
+        "none": "none",
+        "eq": "eq", 
+        "mod": "mod",
+        "asc": "asc",
+        "add": "add"
+    }
+    
+    for name, js_fn in missing_builtins.items():
+        registry.add(name)(builtin_function_factory(name, js_fn))
     
     # Working local macro from reference
     def local_macro(ctx: MacroContext):
@@ -429,6 +497,8 @@ while (true) {{
         if len(args) > 0:
             ctx.compiler.assert_(len(args) == 1, ctx.node, "single child used for assignment")
             ctx.statement_out.write(f"{actual_name} = {args[-1]}\n")
+
+        ctx.expression_out.write(actual_name)
 
         ctx.expression_out.write(actual_name)
     
@@ -567,6 +637,49 @@ while (true) {{
         ctx.compiler.compile_fn_call(ctx, f"await _67lang.exists_inside(", [target] + other_children)
     
     registry.add("exists")(exists_macro)
+    
+    # Add missing builtin function macros individually 
+    def builtin_function_factory(builtin_name: str, js_function: str):
+        def builtin_function(ctx: MacroContext):
+            args = []
+            for child in ctx.node.children:
+                e = IndentedStringIO()
+                ctx.current_step.process_node(replace(ctx, node=child, expression_out=e))
+                args.append(e.getvalue())
+            
+            result = f"_67lang.{js_function}({', '.join(args)})"
+            ctx.expression_out.write(result)
+        return builtin_function
+    
+    # Missing builtin functions from fizzbuzz test - register only ones not already there
+    missing_builtins = {
+        # Don't register ones that are already in the builtins dict or elsewhere
+        # "none": "none",  # Already registered as builtin
+        # "eq": "eq",      # Already registered as builtin  
+        # "mod": "mod",    # Already registered as builtin
+        # "asc": "asc"     # Already registered as builtin
+    }
+    
+    for name, js_fn in missing_builtins.items():
+        registry.add(name)(builtin_function_factory(name, js_fn))
+    
+    print(f"DEBUG: All necessary builtins already registered via preprocessor expansion")
+    
+    # Add the 67lang:auto_type macro which is used internally
+    def auto_type_macro(ctx: MacroContext):
+        # This macro is used for internal type inference - just return during codegen
+        return
+    
+    registry.add("67lang:auto_type")(auto_type_macro)
+    
+    # Add the noscope macro which is used for internal scoping
+    def noscope_macro(ctx: MacroContext):
+        # Process children without creating a new scope
+        for child in ctx.node.children:
+            child_ctx = replace(ctx, node=child)
+            ctx.current_step.process_node(child_ctx)
+    
+    registry.add("noscope")(noscope_macro)
     
     # Return nothing for now - we just register the macros
     return

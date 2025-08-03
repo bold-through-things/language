@@ -1,10 +1,34 @@
 [
   {
     "recoverable": false,
-    "line": 16,
+    "line": 17,
     "char": 0,
-    "content": "where key is",
-    "error": "unknown macro 'where' - is this supposed to exist? did you maybe typo something?",
-    "error_type": "INVALID_MACRO"
+    "content": "67lang:access_local word",
+    "error": "failed to assert: word must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 17,
+    "char": 0,
+    "content": "67lang:access_local word",
+    "error": "JavaScript emission failed: word must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_local word",
+    "error": "failed to assert: word must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_local word",
+    "error": "JavaScript emission failed: word must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
   }
 ]

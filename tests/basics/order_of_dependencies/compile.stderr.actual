@@ -1,10 +1,274 @@
 [
   {
     "recoverable": false,
-    "line": 29,
+    "line": 5,
     "char": 0,
-    "content": "# TODO - this ought to be a macro.",
-    "error": "unknown macro '#' - is this supposed to exist? did you maybe typo something?",
-    "error_type": "INVALID_MACRO"
+    "content": "67lang:access_local lines",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 5,
+    "char": 0,
+    "content": "67lang:access_local lines",
+    "error": "JavaScript emission failed: single child used for assignment",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 18,
+    "char": 0,
+    "content": "67lang:access_local line",
+    "error": "failed to assert: line must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 18,
+    "char": 0,
+    "content": "67lang:access_local line",
+    "error": "JavaScript emission failed: line must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x6_module id",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_field _0x6_module id",
+    "error": "JavaScript emission failed: single child node for assignment",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xb_module deps",
+    "error": "failed to assert: single child node for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 25,
+    "char": 0,
+    "content": "67lang:access_field _0xb_module deps",
+    "error": "JavaScript emission failed: single child node for assignment",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x16_modules",
+    "error": "failed to assert: second child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_index _0x16_modules",
+    "error": "JavaScript emission failed: second child used for assignment",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 63,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "failed to assert: module must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 63,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "JavaScript emission failed: module must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 66,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "failed to assert: module must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 66,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "JavaScript emission failed: module must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 71,
+    "char": 0,
+    "content": "67lang:access_local chain",
+    "error": "failed to assert: chain must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 71,
+    "char": 0,
+    "content": "67lang:access_local chain",
+    "error": "JavaScript emission failed: chain must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 73,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "failed to assert: module must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 73,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "JavaScript emission failed: module must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 76,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "failed to assert: module must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 76,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "JavaScript emission failed: module must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 80,
+    "char": 0,
+    "content": "67lang:access_local dep_id",
+    "error": "failed to assert: dep_id must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 80,
+    "char": 0,
+    "content": "67lang:access_local dep_id",
+    "error": "JavaScript emission failed: dep_id must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 87,
+    "char": 0,
+    "content": "67lang:access_local dep_id",
+    "error": "failed to assert: dep_id must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 87,
+    "char": 0,
+    "content": "67lang:access_local dep_id",
+    "error": "JavaScript emission failed: dep_id must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 92,
+    "char": 0,
+    "content": "67lang:access_local chain_dep_id",
+    "error": "failed to assert: chain_dep_id must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 92,
+    "char": 0,
+    "content": "67lang:access_local chain_dep_id",
+    "error": "JavaScript emission failed: chain_dep_id must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 95,
+    "char": 0,
+    "content": "67lang:access_local chain_dep_id",
+    "error": "failed to assert: chain_dep_id must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 95,
+    "char": 0,
+    "content": "67lang:access_local chain_dep_id",
+    "error": "JavaScript emission failed: chain_dep_id must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 96,
+    "char": 0,
+    "content": "67lang:access_local dep_id",
+    "error": "failed to assert: dep_id must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 96,
+    "char": 0,
+    "content": "67lang:access_local dep_id",
+    "error": "JavaScript emission failed: dep_id must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 106,
+    "char": 0,
+    "content": "67lang:call visit",
+    "error": "JavaScript emission failed: \"No metadata of type <class 'node.SaneIdentifier'> for node\"",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 113,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "failed to assert: module must access a defined local",
+    "error_type": "NO_SUCH_LOCAL"
+  },
+  {
+    "recoverable": false,
+    "line": 113,
+    "char": 0,
+    "content": "67lang:access_local module",
+    "error": "JavaScript emission failed: module must access a defined local",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 119,
+    "char": 0,
+    "content": "67lang:call visit",
+    "error": "JavaScript emission failed: \"No metadata of type <class 'node.SaneIdentifier'> for node\"",
+    "error_type": "UNKNOWN_ERROR"
   }
 ]

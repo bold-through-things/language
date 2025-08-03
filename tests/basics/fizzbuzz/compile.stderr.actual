@@ -1,10 +1,66 @@
 [
   {
     "recoverable": false,
-    "line": 6,
+    "line": 22,
     "char": 0,
-    "content": "if",
-    "error": "unknown macro 'if' - is this supposed to exist? did you maybe typo something?",
-    "error_type": "INVALID_MACRO"
+    "content": "67lang:access_local input",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 22,
+    "char": 0,
+    "content": "67lang:access_local input",
+    "error": "JavaScript emission failed: single child used for assignment",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 28,
+    "char": 0,
+    "content": "67lang:access_local fizz_divisor",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 28,
+    "char": 0,
+    "content": "67lang:access_local fizz_divisor",
+    "error": "JavaScript emission failed: single child used for assignment",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 33,
+    "char": 0,
+    "content": "67lang:access_local buzz_divisor",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 33,
+    "char": 0,
+    "content": "67lang:access_local buzz_divisor",
+    "error": "JavaScript emission failed: single child used for assignment",
+    "error_type": "UNKNOWN_ERROR"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_local n",
+    "error": "failed to assert: single child used for assignment",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 38,
+    "char": 0,
+    "content": "67lang:access_local n",
+    "error": "JavaScript emission failed: single child used for assignment",
+    "error_type": "UNKNOWN_ERROR"
   }
 ]
