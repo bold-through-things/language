@@ -11,6 +11,8 @@ from steps.javascript_emission_step import JavaScriptEmissionStep
 # Import all the individual macro registrations
 from literal_macros import macros as literal_macros_registry, typecheck as literal_typecheck_registry
 from macros.access_macros import macros as access_macros_registry, typecheck as access_typecheck_registry
+# TODO: Import the separated local macro to ensure registration
+import macros.local_macro  # Import to ensure local macro registration
 import macros  # Import the new macros package to ensure registration
 from typecheck_macros import typecheck as typecheck_macros_registry
 

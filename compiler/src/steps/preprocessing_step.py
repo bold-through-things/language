@@ -25,8 +25,8 @@ class PreprocessingStep(MacroProcessingStep):
         # Register preprocessing macros
         @self.macros.add("local")
         def local(ctx: MacroContext):
-            # Import the consolidated local preprocessing function
-            from macros.access_macros import local_preprocessing
+            # TODO: Import the separated local preprocessing function from dedicated file
+            from macros.local_macro import local_preprocessing
             local_preprocessing(ctx)
 
         @self.macros.add("for")

@@ -69,25 +69,7 @@ def pil_access_local(ctx: MacroContext):
 
     ctx.expression_out.write(actual_name)
 
-@macros.add("local")
-def local(ctx: MacroContext):
-    desired_name = get_single_arg(ctx)
-    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
-    
-    args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
-    
-    ctx.statement_out.write(f"let {name}")
-    if len(args) > 0:
-        ctx.statement_out.write(f" = {args[-1]}")
-    ctx.statement_out.write(f"\n")
-    ctx.expression_out.write(name)
-
-# Preprocessing for 'local' macro
-def local_preprocessing(ctx: MacroContext):
-    """Preprocessing logic for 'local' macro - sets up identifiers"""
-    desired_name = get_single_arg(ctx)
-    actual_name = ctx.compiler.get_new_ident(desired_name)
-    ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
+# TODO: local macro moved to local_macro.py - keeping this comment for tracking the separation
 
 @singleton
 class Macro_67lang_call:
@@ -317,42 +299,7 @@ def access_preprocessing(ctx: MacroContext):
     # print(f"replace child {ctx.node.content} of {parent.content} with {[c.content for c in replace_with]}")
     parent.replace_child(ctx.node, replace_with)
 
-# Type checking for 'local' macro
-@typecheck.add("local")
-def local_typecheck(ctx: MacroContext):
-    """Type checking for 'local' macro"""
-    type_node = seek_child_macro(ctx.node, "type")
-
-    received = None
-    # Process children to get their types
-    for child in ctx.node.children:
-        child_ctx = replace(ctx, node=child)
-        received = ctx.current_step.process_node(child_ctx) or received
-
-    if not type_node:
-        # TODO. this should be mandatory.
-        if not seek_child_macro(ctx.node, "67lang:auto_type") or not received:
-            return received
-        from node import Node
-        type_node = Node(f"type {received}", ctx.node.pos, [])
-    
-    from strutil import cut
-    _, demanded = cut(type_node.content, " ")
-    default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received} (children {[c.content for c in ctx.node.children]})")
-    
-    # Store the local variable type information in compiler metadata for upward walking
-    from node import FieldDemandType
-    ctx.compiler.set_metadata(ctx.node, FieldDemandType, demanded)
-    
-    # Also verify type matching if we have demanded type
-    if demanded:
-        if received is None:
-            # If we have a demanded type but no received value, that's an error
-            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given None", ErrorType.MISSING_TYPE)
-        elif received not in {"*", demanded}:
-            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
-    
-    return demanded or received or "*"
+# TODO: local macro typecheck moved to local_macro.py - keeping this comment for tracking the separation
 
 # Type checking for '67lang:access_local' macro
 @typecheck.add("67lang:access_local")

@@ -4,9 +4,11 @@ from . import builtin_macros
 from . import collection_macros
 from . import comment_macros
 from . import error_macros
+from . import fn_macro  # TODO: Added separated fn macro
 from . import for_macro
 from . import if_macro
 from . import literal_value_macros
+from . import local_macro  # TODO: Added separated local macro
 from . import noscope_macro
 from . import scope_macro
 from . import solution_macro
