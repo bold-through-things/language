@@ -69,6 +69,9 @@ class ThenMacro(MacroInterface):
             received = ctx.current_step.process_node(child_ctx) or received
         
         # Return the type of the last expression in the then block
+        # TODO: JavaScript emission needs to be updated to support expression-based if statements
+        # Currently the if macro only generates statement-level conditionals, but in a functional
+        # programming language if statements should be able to return values as expressions
         return received
 
 
@@ -91,4 +94,7 @@ class ElseMacro(MacroInterface):
             received = ctx.current_step.process_node(child_ctx) or received
         
         # Return the type of the last expression in the else block
+        # TODO: JavaScript emission needs to be updated to support expression-based if statements
+        # Currently the if macro only generates statement-level conditionals, but in a functional
+        # programming language if statements should be able to return values as expressions
         return received

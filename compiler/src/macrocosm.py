@@ -34,6 +34,45 @@ class Macrocosm:
             JavaScriptEmissionStep(),
             MustCompileErrorVerificationStep()
         ]
+        
+        # Set up dependency injection macros - moved from import-time registration
+        self._setup_dependency_injection_macros()
+    
+    def _setup_dependency_injection_macros(self):
+        """Set up all dependency injection based macros - centralized to avoid import-time registration"""
+        from macro_base import register_macro_manually, bridge_to_legacy
+        from processor_base import unified_macros, unified_typecheck
+        
+        # Set up local macro
+        try:
+            from macros.local_macro_di import LocalMacro
+            register_macro_manually("local", LocalMacro)
+            bridge_to_legacy(unified_macros, "local", "process")
+            bridge_to_legacy(unified_typecheck, "local", "typecheck")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register local macro: {e}")
+        
+        # Set up fn and param macros  
+        try:
+            from macros.fn_macro_di import FnMacro, ParamMacro
+            register_macro_manually("fn", FnMacro)
+            register_macro_manually("param", ParamMacro, aliases=[])
+            bridge_to_legacy(unified_macros, "fn", "process")
+            bridge_to_legacy(unified_macros, "param", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register fn/param macros: {e}")
+            
+        # Set up if, then, and else macros
+        try:
+            from macros.if_macro_di import IfMacro, ThenMacro, ElseMacro
+            register_macro_manually("if", IfMacro)
+            register_macro_manually("then", ThenMacro)
+            register_macro_manually("else", ElseMacro)
+            bridge_to_legacy(unified_macros, "if", "process")
+            bridge_to_legacy(unified_typecheck, "then", "typecheck")
+            bridge_to_legacy(unified_typecheck, "else", "typecheck")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register if/then/else macros: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
