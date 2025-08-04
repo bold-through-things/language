@@ -25,9 +25,15 @@ class PreprocessingStep(MacroProcessingStep):
         # Register preprocessing macros
         @self.macros.add("local")
         def local(ctx: MacroContext):
-            # TODO: Import the separated local preprocessing function from dedicated file
-            from macros.local_macro import local_preprocessing
-            local_preprocessing(ctx)
+            # TODO: Use dependency injection version if available
+            from macro_base import di_registry
+            if di_registry.has_macro("local"):
+                instance = di_registry.get_instance("local")
+                instance.preprocess(ctx)
+            else:
+                # Fallback to old implementation
+                from macros.local_macro import local_preprocessing
+                local_preprocessing(ctx)
 
         @self.macros.add("for")
         def preprocess_for(ctx: MacroContext):
