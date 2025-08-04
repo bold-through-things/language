@@ -15,38 +15,56 @@ from logger import default_logger
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
-@macros.add("fn")
-def fn(ctx: MacroContext):
-    name = get_single_arg(ctx)
-    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
-    ctx.statement_out.write(f"const {name} = async function (")
-    joiner = Joiner(ctx.statement_out, ", \n")
-    params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
-    params = params_metadata.mapping.items()
-    if len(params) > 0:
-        ctx.statement_out.write("\n")
-    with ctx.statement_out:
-        for k, _ in params:
-            with joiner:
-                # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
-                ctx.statement_out.write(k)
-    if len(params) > 0:
-        ctx.statement_out.write("\n")
-    ctx.statement_out.write(") ")
-    next = seek_child_macro(ctx.node, "do")
+# TODO: Import and bridge dependency injection version
+from macro_base import di_registry, bridge_to_legacy
 
-    ctx.compiler.assert_(next != None, ctx.node, "must have a do block")
+# Import the dependency injection version
+try:
+    from macros.fn_macro_di import FnMacro, ParamMacro
+    # Bridge to legacy registries for backward compatibility
+    bridge_to_legacy(macros, "fn", "process")
+    bridge_to_legacy(macros, "param", "process")
+    # Note: preprocessing step is handled separately 
+    # Mark as using DI version
+    USE_DI_FN = True
+except ImportError:
+    # Fallback to old implementation if DI version not available
+    USE_DI_FN = False
 
-    inject = Inject_code_start()
-    ctx.compiler.set_metadata(next, Inject_code_start, inject)
-    ctx.statement_out.write("{")
-    with ctx.statement_out:
-        # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
-        for k, _ in params:
-            inject.code.append(f"{k} = {k}\n")
-        inner_ctx = replace(ctx, node=next)
-        ctx.current_step.process_node(inner_ctx)
-    ctx.statement_out.write("}")
+# Only register old-style functions if DI version is not available
+if not USE_DI_FN:
+    @macros.add("fn")
+    def fn(ctx: MacroContext):
+        name = get_single_arg(ctx)
+        name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
+        ctx.statement_out.write(f"const {name} = async function (")
+        joiner = Joiner(ctx.statement_out, ", \n")
+        params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
+        params = params_metadata.mapping.items()
+        if len(params) > 0:
+            ctx.statement_out.write("\n")
+        with ctx.statement_out:
+            for k, _ in params:
+                with joiner:
+                    # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
+                    ctx.statement_out.write(k)
+        if len(params) > 0:
+            ctx.statement_out.write("\n")
+        ctx.statement_out.write(") ")
+        next = seek_child_macro(ctx.node, "do")
+
+        ctx.compiler.assert_(next != None, ctx.node, "must have a do block")
+
+        inject = Inject_code_start()
+        ctx.compiler.set_metadata(next, Inject_code_start, inject)
+        ctx.statement_out.write("{")
+        with ctx.statement_out:
+            # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
+            for k, _ in params:
+                inject.code.append(f"{k} = {k}\n")
+            inner_ctx = replace(ctx, node=next)
+            ctx.current_step.process_node(inner_ctx)
+        ctx.statement_out.write("}")
 
 # Preprocessing for 'fn' macro  
 def fn_preprocessing(ctx: MacroContext):

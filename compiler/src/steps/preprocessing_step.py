@@ -43,15 +43,27 @@ class PreprocessingStep(MacroProcessingStep):
 
         @self.macros.add("fn")
         def preprocess_fn(ctx: MacroContext):
-            # Import the consolidated fn preprocessing function
-            from macros.fn_macro import fn_preprocessing
-            fn_preprocessing(ctx)
+            # TODO: Use dependency injection version if available
+            from macro_base import di_registry
+            if di_registry.has_macro("fn"):
+                instance = di_registry.get_instance("fn")
+                instance.preprocess(ctx)
+            else:
+                # Fallback to old implementation
+                from macros.fn_macro import fn_preprocessing
+                fn_preprocessing(ctx)
 
         @self.macros.add("param")
         def param_handler(ctx: MacroContext):
-            # Import the consolidated param preprocessing function
-            from macros.fn_macro import param_preprocessing
-            param_preprocessing(ctx)
+            # TODO: Use dependency injection version if available
+            from macro_base import di_registry
+            if di_registry.has_macro("param"):
+                instance = di_registry.get_instance("param")
+                instance.preprocess(ctx)
+            else:
+                # Fallback to old implementation
+                from macros.fn_macro import param_preprocessing
+                param_preprocessing(ctx)
 
         @self.macros.add("a", "an", "access")
         def access_handler(ctx: MacroContext):
