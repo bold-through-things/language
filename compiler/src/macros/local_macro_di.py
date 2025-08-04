@@ -2,13 +2,14 @@
 Dependency Injection version of the local macro.
 
 This shows the new cleaner approach where all macro logic is contained
-in a single class with clear separation of concerns.
+in a single class with clear separation of concerns, using constructor-based
+dependency injection to avoid circular import issues.
 """
 
 from dataclasses import replace
 from typing import Optional
 
-from macro_base import MacroInterface, register_macro
+from macro_base import MacroInterface
 from macro_registry import MacroContext
 from common_utils import collect_child_expressions, get_single_arg
 from processor_base import seek_child_macro
@@ -17,10 +18,9 @@ from error_types import ErrorType
 from logger import default_logger
 
 
-@register_macro("local")
 class LocalMacro(MacroInterface):
     """
-    Local variable declaration macro using dependency injection pattern.
+    Local variable declaration macro using constructor-based dependency injection.
     
     Handles all aspects of local variable processing:
     - Preprocessing: identifier generation and scoping

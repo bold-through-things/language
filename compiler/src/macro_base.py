@@ -14,6 +14,10 @@ from macro_registry import MacroContext, MacroRegistry
 class MacroInterface(ABC):
     """Base interface for all macros using dependency injection approach"""
     
+    def __init__(self, registry: Optional['DependencyInjectedMacroRegistry'] = None):
+        """Constructor for dependency injection - registry can be injected if needed"""
+        self.registry = registry
+    
     @abstractmethod
     def process(self, ctx: MacroContext) -> Optional[str]:
         """Process the macro and return any type information"""
@@ -61,7 +65,8 @@ class DependencyInjectedMacroRegistry:
                 raise ValueError(f"Unknown macro: {name}")
             
             definition = self._macros[name]
-            self._instances[name] = definition.macro_class()
+            # Pass this registry to the macro constructor for proper dependency injection
+            self._instances[name] = definition.macro_class(registry=self)
         
         return self._instances[name]
     
@@ -76,8 +81,16 @@ class DependencyInjectedMacroRegistry:
 # Global dependency injection registry
 di_registry = DependencyInjectedMacroRegistry()
 
+def register_macro_manually(name: str, macro_class: type[MacroInterface], aliases: list[str] = None):
+    """Manual registration function to avoid import-time registration"""
+    definition = MacroDefinition(name=name, macro_class=macro_class, aliases=aliases or [])
+    di_registry.register(definition)
+
 def register_macro(name: str, aliases: list[str] = None):
-    """Decorator to register a macro class with dependency injection"""
+    """Decorator to register a macro class with dependency injection - DEPRECATED
+    
+    Use register_macro_manually() instead to avoid import-time registration issues.
+    """
     def decorator(cls: type[MacroInterface]) -> type[MacroInterface]:
         definition = MacroDefinition(name=name, macro_class=cls, aliases=aliases or [])
         di_registry.register(definition)

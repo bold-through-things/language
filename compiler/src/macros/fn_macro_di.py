@@ -2,13 +2,13 @@
 Dependency Injection version of the fn and param macros.
 
 This shows the new cleaner approach for complex macros that have multiple
-related functions working together.
+related functions working together, using constructor-based dependency injection.
 """
 
 from dataclasses import replace
 from typing import Optional
 
-from macro_base import MacroInterface, register_macro, di_registry
+from macro_base import MacroInterface
 from macro_registry import MacroContext
 from common_utils import get_single_arg
 from processor_base import seek_child_macro, seek_all_child_macros
@@ -17,10 +17,9 @@ from strutil import Joiner
 from logger import default_logger
 
 
-@register_macro("fn")
 class FnMacro(MacroInterface):
     """
-    Function declaration macro using dependency injection pattern.
+    Function declaration macro using constructor-based dependency injection.
     
     Handles all aspects of function processing:
     - Preprocessing: identifier generation and parameter setup
@@ -78,10 +77,9 @@ class FnMacro(MacroInterface):
         return None  # Functions don't return types, they are processed as statements
 
 
-@register_macro("param", aliases=[])
 class ParamMacro(MacroInterface):
     """
-    Parameter declaration macro using dependency injection pattern.
+    Parameter declaration macro using constructor-based dependency injection.
     
     Handles parameter registration within function declarations.
     """

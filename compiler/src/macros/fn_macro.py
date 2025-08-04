@@ -16,19 +16,32 @@ macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
 # TODO: Import and bridge dependency injection version
-from macro_base import di_registry, bridge_to_legacy
+from macro_base import di_registry, bridge_to_legacy, register_macro_manually
+
+# TODO: Move this to a registration function to avoid import-time registration
+def setup_fn_macros_di():
+    """Set up dependency injection version of fn and param macros"""
+    try:
+        from macros.fn_macro_di import FnMacro, ParamMacro
+        # Register manually to avoid import-time registration
+        register_macro_manually("fn", FnMacro)
+        register_macro_manually("param", ParamMacro, aliases=[])
+        # Bridge to legacy registries for backward compatibility
+        bridge_to_legacy(macros, "fn", "process")
+        bridge_to_legacy(macros, "param", "process")
+        return True
+    except ImportError:
+        return False
+
+# Call setup function
+USE_DI_FN = setup_fn_macros_di()
 
 # Import the dependency injection version
-try:
-    from macros.fn_macro_di import FnMacro, ParamMacro
-    # Bridge to legacy registries for backward compatibility
-    bridge_to_legacy(macros, "fn", "process")
-    bridge_to_legacy(macros, "param", "process")
-    # Note: preprocessing step is handled separately 
-    # Mark as using DI version
-    USE_DI_FN = True
-except ImportError:
-    # Fallback to old implementation if DI version not available
+if USE_DI_FN:
+    # Already set up in function above
+    pass
+else:
+    # Fallback - this code path should not be reached now
     USE_DI_FN = False
 
 # Only register old-style functions if DI version is not available

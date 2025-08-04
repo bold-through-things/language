@@ -16,19 +16,32 @@ macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
 # TODO: Import and bridge dependency injection version
-from macro_base import di_registry, bridge_to_legacy
+from macro_base import di_registry, bridge_to_legacy, register_macro_manually
 
-# Import the dependency injection version
-try:
-    from macros.local_macro_di import LocalMacro
-    # Bridge to legacy registries for backward compatibility
-    bridge_to_legacy(macros, "local", "process")
-    # Note: preprocessing step is handled separately, typecheck goes to different registry  
-    bridge_to_legacy(typecheck, "local", "typecheck")
-    # Mark as using DI version
-    USE_DI_LOCAL = True
-except ImportError:
-    # Fallback to old implementation if DI version not available
+# TODO: Move this to a registration function to avoid import-time registration
+def setup_local_macro_di():
+    """Set up dependency injection version of local macro"""
+    try:
+        from macros.local_macro_di import LocalMacro
+        # Register manually to avoid import-time registration
+        register_macro_manually("local", LocalMacro)
+        # Bridge to legacy registries for backward compatibility
+        bridge_to_legacy(macros, "local", "process")
+        # Note: preprocessing step is handled separately, typecheck goes to different registry  
+        bridge_to_legacy(typecheck, "local", "typecheck")
+        return True
+    except ImportError:
+        return False
+
+# Call setup function 
+USE_DI_LOCAL = setup_local_macro_di()
+
+# Import the dependency injection version  
+if USE_DI_LOCAL:
+    # Already set up in function above
+    pass
+else:
+    # Fallback - this code path should not be reached now
     USE_DI_LOCAL = False
 
 # Only register old-style functions if DI version is not available
