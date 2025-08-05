@@ -14,6 +14,6 @@ from . import literal_value_macros
 # from . import local_macro  # TODO: Converted to DI - remove import-time registration
 # from . import noscope_macro  # TODO: Converted to DI - remove import-time registration
 # from . import scope_macro  # TODO: Converted to DI - remove import-time registration
-from . import solution_macro
-from . import utility_macros
+# from . import solution_macro  # TODO: Converted to DI - remove import-time registration
+# from . import utility_macros  # TODO: Converted to DI - remove import-time registration
 # from . import while_macro  # TODO: Converted to DI - remove import-time registration

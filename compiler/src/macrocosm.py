@@ -128,6 +128,24 @@ class Macrocosm:
                 bridge_to_legacy(unified_macros, builtin_name, "process")
         except ImportError as e:
             raise RuntimeError(f"Failed to register builtin macros: {e}")
+            
+        # Set up utility macros (noop, type, etc.)
+        try:
+            from macros.utility_macros_di import UtilityMacro
+            utility_macros = ["noop", "type", "67lang:auto_type", "67lang:assume_local_exists"]
+            for utility_name in utility_macros:
+                register_macro_manually(utility_name, UtilityMacro)
+                bridge_to_legacy(unified_macros, utility_name, "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register utility macros: {e}")
+            
+        # Set up solution macro
+        try:
+            from macros.solution_macro_di import SolutionMacro
+            register_macro_manually("67lang:solution", SolutionMacro)
+            bridge_to_legacy(unified_macros, "67lang:solution", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register solution macro: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
