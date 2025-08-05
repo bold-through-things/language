@@ -1,0 +1,22 @@
+[
+  {
+    "message": "unknown value type: stdin",
+    "line": 3,
+    "content": "stdin"
+  },
+  {
+    "message": "unknown a-syntax: a word",
+    "line": 17,
+    "content": "a word"
+  },
+  {
+    "message": "unknown a-syntax: a word",
+    "line": 22,
+    "content": "a word"
+  },
+  {
+    "message": "unknown a-syntax: a count",
+    "line": 25,
+    "content": "a count"
+  }
+]

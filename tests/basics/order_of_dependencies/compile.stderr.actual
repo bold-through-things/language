@@ -1,0 +1,32 @@
+[
+  {
+    "message": "unknown value type: stdin",
+    "line": 3,
+    "content": "stdin"
+  },
+  {
+    "message": "unknown a-syntax: a lines",
+    "line": 12,
+    "content": "a lines"
+  },
+  {
+    "message": "unknown a-syntax: a kv 1 trim",
+    "line": 32,
+    "content": "a kv 1 trim"
+  },
+  {
+    "message": "unknown value type: values",
+    "line": 116,
+    "content": "values"
+  },
+  {
+    "message": "unknown a-syntax: a dep_loops length",
+    "line": 126,
+    "content": "a dep_loops length"
+  },
+  {
+    "message": "unknown value type: concat",
+    "line": 129,
+    "content": "concat"
+  }
+]

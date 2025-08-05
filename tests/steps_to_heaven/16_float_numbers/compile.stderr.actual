@@ -1,0 +1,17 @@
+[
+  {
+    "message": "unknown value type: float 3.14159",
+    "line": 3,
+    "content": "float 3.14159"
+  },
+  {
+    "message": "unknown value type: float -273.15",
+    "line": 6,
+    "content": "float -273.15"
+  },
+  {
+    "message": "unknown value type: float 67.8",
+    "line": 9,
+    "content": "float 67.8"
+  }
+]

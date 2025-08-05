@@ -1,0 +1,27 @@
+[
+  {
+    "message": "local statement has no value",
+    "line": 2,
+    "content": "local fizz_divisor"
+  },
+  {
+    "message": "local statement has no value",
+    "line": 3,
+    "content": "local buzz_divisor"
+  },
+  {
+    "message": "local statement has no value",
+    "line": 4,
+    "content": "local n"
+  },
+  {
+    "message": "unknown value type: is_tty",
+    "line": 7,
+    "content": "is_tty"
+  },
+  {
+    "message": "unknown value type: stdin",
+    "line": 20,
+    "content": "stdin"
+  }
+]

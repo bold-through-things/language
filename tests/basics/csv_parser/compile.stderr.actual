@@ -1,0 +1,47 @@
+[
+  {
+    "message": "unknown value type: stdin",
+    "line": 11,
+    "content": "stdin"
+  },
+  {
+    "message": "unknown value type: zip",
+    "line": 37,
+    "content": "zip"
+  },
+  {
+    "message": "unknown a-syntax: a zip",
+    "line": 46,
+    "content": "a zip"
+  },
+  {
+    "message": "unknown a-syntax: a kv 0",
+    "line": 50,
+    "content": "a kv 0"
+  },
+  {
+    "message": "unknown a-syntax: a kv 1",
+    "line": 51,
+    "content": "a kv 1"
+  },
+  {
+    "message": "unknown a-syntax: a rows",
+    "line": 62,
+    "content": "a rows"
+  },
+  {
+    "message": "unknown a-syntax: a row name",
+    "line": 65,
+    "content": "a row name"
+  },
+  {
+    "message": "unknown a-syntax: a rows",
+    "line": 70,
+    "content": "a rows"
+  },
+  {
+    "message": "unknown a-syntax: a row age",
+    "line": 74,
+    "content": "a row age"
+  }
+]

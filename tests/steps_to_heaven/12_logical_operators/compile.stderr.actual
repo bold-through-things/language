@@ -1,0 +1,22 @@
+[
+  {
+    "message": "unknown value type: all",
+    "line": 4,
+    "content": "all"
+  },
+  {
+    "message": "unknown value type: any",
+    "line": 11,
+    "content": "any"
+  },
+  {
+    "message": "unknown value type: none",
+    "line": 18,
+    "content": "none"
+  },
+  {
+    "message": "unknown value type: all",
+    "line": 25,
+    "content": "all"
+  }
+]

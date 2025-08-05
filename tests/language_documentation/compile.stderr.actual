@@ -1,0 +1,82 @@
+[
+  {
+    "message": "unknown value type: all",
+    "line": 56,
+    "content": "all"
+  },
+  {
+    "message": "unknown value type: string",
+    "line": 79,
+    "content": "string"
+  },
+  {
+    "message": "unknown value type: float 0",
+    "line": 93,
+    "content": "float 0"
+  },
+  {
+    "message": "comparison operation needs exactly 2 operands",
+    "line": 97,
+    "content": "asc"
+  },
+  {
+    "message": "unknown a-syntax: a 0",
+    "line": 137,
+    "content": "a 0"
+  },
+  {
+    "message": "unknown a-syntax: a 0",
+    "line": 145,
+    "content": "a 0"
+  },
+  {
+    "message": "unknown value type: regex /(2347)/",
+    "line": 156,
+    "content": "regex /(2347)/"
+  },
+  {
+    "message": "unknown a-syntax: a ,",
+    "line": 162,
+    "content": "a ,"
+  },
+  {
+    "message": "unknown value type: where split takes",
+    "line": 190,
+    "content": "where split takes"
+  },
+  {
+    "message": "unknown a-syntax: a 67lang.features described slice join",
+    "line": 237,
+    "content": "a 67lang.features described slice join"
+  },
+  {
+    "message": "unknown value type: concat",
+    "line": 294,
+    "content": "concat"
+  },
+  {
+    "message": "unknown value type: all",
+    "line": 345,
+    "content": "all"
+  },
+  {
+    "message": "unknown value type: any",
+    "line": 352,
+    "content": "any"
+  },
+  {
+    "message": "unknown value type: none",
+    "line": 359,
+    "content": "none"
+  },
+  {
+    "message": "unknown value type: type int",
+    "line": 392,
+    "content": "type int"
+  },
+  {
+    "message": "unknown value type: type str",
+    "line": 396,
+    "content": "type str"
+  }
+]

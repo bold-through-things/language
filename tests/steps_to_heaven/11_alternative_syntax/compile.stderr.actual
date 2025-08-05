@@ -1,0 +1,12 @@
+[
+  {
+    "message": "unknown a-syntax: a fruits 0",
+    "line": 10,
+    "content": "a fruits 0"
+  },
+  {
+    "message": "unknown a-syntax: a numbers 1",
+    "line": 26,
+    "content": "a numbers 1"
+  }
+]
