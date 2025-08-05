@@ -162,6 +162,14 @@ class Macrocosm:
             bridge_to_legacy(unified_macros, "must_compile_error", "process")
         except ImportError as e:
             raise RuntimeError(f"Failed to register error macro: {e}")
+            
+        # Set up collection macro
+        try:
+            from macros.collection_macros_di import CollectionMacro
+            register_macro_manually("list", CollectionMacro)
+            bridge_to_legacy(unified_macros, "list", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register collection macro: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"

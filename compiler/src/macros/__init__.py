@@ -2,7 +2,7 @@
 # TODO: Gradually remove imports as macros are converted to dependency injection
 from . import access_macros
 # from . import builtin_macros  # TODO: Converted to DI - remove import-time registration
-from . import collection_macros
+# from . import collection_macros  # TODO: Converted to DI - remove import-time registration
 from . import comment_macros
 # from . import error_macros  # TODO: Converted to DI - remove import-time registration
 # from . import exists_macro  # TODO: Converted to DI - remove import-time registration
