@@ -221,21 +221,21 @@ void (async () => {
             let _0x16_sort = _0x65_sort
             const _0x66_join = await Array.prototype.join.call(_0x16_sort, ", ")
             let _0x17_join = _0x66_join
-            const _0x67_await__67lang_dot_log_lp_ = await _67lang.log(_0x17_join)
+            const _0x67_await__67lang_dot_log_lp_ = await _67lang.log(_0x14__2347_0x15_split_0x16_sort, _0x17_join)
             _0x67_await__67lang_dot_log_lp_
 
 
             let _0x18__67lang_dot_features = {}
             _0x18__67lang_dot_features
             let _0x23__67lang_dot_features = _0x18__67lang_dot_features
-
+            _0x23__67lang_dot_features
             _0x23__67lang_dot_features["the access macro"] = "noscope\nlocal _0x22_branching\neliminating the pain of using brackets and having to erase or insert the bracket\nat the beginning and then at the end inherently by being part of 67lang\nwhere indentation rules all."
             const _0x68__0x23__67lang_dot_features = await _0x23__67lang_dot_features["the access macro"]
             let _0x24_name = _0x68__0x23__67lang_dot_features
             _0x24_name
 
             let _0x2f__67lang_dot_features = _0x18__67lang_dot_features
-
+            _0x2f__67lang_dot_features
             _0x2f__67lang_dot_features["the flexibility of identifiers"] = "anything can be an identifier. there is only whitespace and non whitespace. this \nfrees programmers to express their ideas in a truly direct and unleashed way.\nif you desire to have a variable named `$`, `,`, `?`, or even `true`, we are\nnot here to stop you. if you are stupid, you will certainly misuse this and obliterate\nyour foot. if you are smart, you will write the most readable code ever written."
             const _0x69__0x2f__67lang_dot_features = await _0x2f__67lang_dot_features["the flexibility of identifiers"]
             let _0x30_added = _0x69__0x2f__67lang_dot_features
@@ -248,44 +248,23 @@ void (async () => {
             let _0x33_slice = _0x6b_slice
             const _0x6c_join = await Array.prototype.join.call(_0x33_slice, "")
             let _0x34_join = _0x6c_join
-            const _0x6d_await__67lang_dot_log_lp_ = await _67lang.log(_0x34_join)
+            const _0x6d_await__67lang_dot_log_lp_ = await _67lang.log(_0x31__67lang_dot_features_0x32_described_0x33_slice, _0x34_join)
             _0x6d_await__67lang_dot_log_lp_
 
 
-            if (true) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x6e_await__67lang_dot_log_lp_ = await _67lang.log("big")
-                        _0x6e_await__67lang_dot_log_lp_
-                    }
-                } }
+            if (true) {}
 
-            if (false) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x6f_await__67lang_dot_log_lp_ = await _67lang.log("big")
-                        _0x6f_await__67lang_dot_log_lp_
-                    }
-                } }
-            else {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-                    const _0x70_await__67lang_dot_log_lp_ = await _67lang.log("my disappointment is immeasurable and my day is ruined.")
-                    _0x70_await__67lang_dot_log_lp_
-                }
-            } 
+            if (false) {}
+
 
             let _0x35_i_hate_this_trash_bang_ = ["Python? insufferable import semantics, no macros, optional correctness.", "Lisp? does not run on JS proper, insufferable syntax, indentation is demanded yet optional.", "Java? [statement removed due to violating Terms of Service]", "Nim? possibly the only one that has any chance, but at this point i'm tired of trying."]
             _0x35_i_hate_this_trash_bang_
 
             let _0x37__0x36_i_hate_this_trash_bang_ = _0x35_i_hate_this_trash_bang_
 
-            const _0x71_iter = _0x37__0x36_i_hate_this_trash_bang_[Symbol.iterator]();
+            const _0x6e_iter = _0x37__0x36_i_hate_this_trash_bang_[Symbol.iterator]();
             while (true) {
-                const { value, done } = _0x71_iter.next();
+                const { value, done } = _0x6e_iter.next();
                 if (done) { break; }
                 let angy = value;
                 {
@@ -293,9 +272,9 @@ void (async () => {
                     {
                         const scope = _67lang.scope(parent_scope)
                         let _0x38_angy = angy
-                        const _0x72_await__67lang_dot_concat_lp_ = await _67lang.concat(_0x38_angy, "!!!")
-                        const _0x73_await__67lang_dot_log_lp_ = await _67lang.log(_0x72_await__67lang_dot_concat_lp_)
-                        _0x73_await__67lang_dot_log_lp_
+                        const _0x6f_await__67lang_dot_concat_lp_ = await _67lang.concat(_0x38_angy, "!!!")
+                        const _0x70_await__67lang_dot_log_lp_ = await _67lang.log(_0x6f_await__67lang_dot_concat_lp_)
+                        _0x70_await__67lang_dot_log_lp_
                     }
                 } }
 
@@ -308,24 +287,24 @@ void (async () => {
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x74_await__67lang_dot_log_lp_ = await _67lang.log("code for quality software")
-                        _0x74_await__67lang_dot_log_lp_
+                        const _0x71_await__67lang_dot_log_lp_ = await _67lang.log("code for quality software")
+                        _0x71_await__67lang_dot_log_lp_
                     }
                 } }
 
 
-            const _0x75_await__67lang_dot_all_lp_ = await _67lang.all(true, true, false)
-            const _0x76_await__67lang_dot_log_lp_ = await _67lang.log("false: ", _0x75_await__67lang_dot_all_lp_)
-            _0x76_await__67lang_dot_log_lp_
-            const _0x77_await__67lang_dot_any_lp_ = await _67lang.any(true, false, false)
-            const _0x78_await__67lang_dot_log_lp_ = await _67lang.log("true: ", _0x77_await__67lang_dot_any_lp_)
-            _0x78_await__67lang_dot_log_lp_
-            const _0x79_await__67lang_dot_none_lp_ = await _67lang.none(false, false, false)
-            const _0x7a_await__67lang_dot_log_lp_ = await _67lang.log("true: ", _0x79_await__67lang_dot_none_lp_)
-            _0x7a_await__67lang_dot_log_lp_
-            const _0x7b_await__67lang_dot_add_lp_ = await _67lang.add(1, 1, 1, 1, 1, 1)
-            const _0x7c_await__67lang_dot_log_lp_ = await _67lang.log("6: ", _0x7b_await__67lang_dot_add_lp_)
-            _0x7c_await__67lang_dot_log_lp_
+            const _0x72_await__67lang_dot_all_lp_ = await _67lang.all(true, true, false)
+            const _0x73_await__67lang_dot_log_lp_ = await _67lang.log("false: ", _0x72_await__67lang_dot_all_lp_)
+            _0x73_await__67lang_dot_log_lp_
+            const _0x74_await__67lang_dot_any_lp_ = await _67lang.any(true, false, false)
+            const _0x75_await__67lang_dot_log_lp_ = await _67lang.log("true: ", _0x74_await__67lang_dot_any_lp_)
+            _0x75_await__67lang_dot_log_lp_
+            const _0x76_await__67lang_dot_none_lp_ = await _67lang.none(false, false, false)
+            const _0x77_await__67lang_dot_log_lp_ = await _67lang.log("true: ", _0x76_await__67lang_dot_none_lp_)
+            _0x77_await__67lang_dot_log_lp_
+            const _0x78_await__67lang_dot_add_lp_ = await _67lang.add(1, 1, 1, 1, 1, 1)
+            const _0x79_await__67lang_dot_log_lp_ = await _67lang.log("6: ", _0x78_await__67lang_dot_add_lp_)
+            _0x79_await__67lang_dot_log_lp_
 
 
             let _0x3d__2347 = 2347
@@ -347,25 +326,15 @@ void (async () => {
                         const scope = _67lang.scope(parent_scope)
                         fucks_given = fucks_given
                         TODO_i_cant_even_use_periods_in_this_param_name = TODO_i_cant_even_use_periods_in_this_param_name
-                        const _0x82_await__67lang_dot_log_lp_ = await _67lang.log("fuck!")
-                        _0x82_await__67lang_dot_log_lp_
+                        const _0x7f_await__67lang_dot_log_lp_ = await _67lang.log("fuck!")
+                        _0x7f_await__67lang_dot_log_lp_
                         let _0x4b_fucks_given = fucks_given
-                        const _0x83_await__67lang_dot_asc_lp_ = await _67lang.asc(0, _0x4b_fucks_given)
-                        if (_0x83_await__67lang_dot_asc_lp_) {{
-                                const parent_scope = scope
-                                {
-                                    const scope = _67lang.scope(parent_scope)
-                                    let _0x4e__0x4c_fucks_given = fucks_given
-                                    const _0x85_await__67lang_dot_add_lp_ = await _67lang.add(_0x4e__0x4c_fucks_given, -1)
-                                    const _0x84_fuck_bang_ = await _0x4a_fuck_bang_(_0x85_await__67lang_dot_add_lp_, "TODO...")
-                                    let _0x4d_fuck_bang_ = _0x84_fuck_bang_
-                                    _0x4d_fuck_bang_
-                                }
-                            } }
+                        const _0x80_await__67lang_dot_asc_lp_ = await _67lang.asc(0, _0x4b_fucks_given)
+                        if (_0x80_await__67lang_dot_asc_lp_) {}
                     }
                 } }
-            const _0x86_fuck_bang_ = await _0x4a_fuck_bang_(6, "TODO. the compiler code is garbage actually and assumes \nit's a local if you don't pass two arguments. horrible!\nshould be easy to fix! just check if it's a local or a function!")
-            let _0x4f_fuck_bang_ = _0x86_fuck_bang_
+            const _0x81_fuck_bang_ = await _0x4a_fuck_bang_(6, "TODO. the compiler code is garbage actually and assumes \nit's a local if you don't pass two arguments. horrible!\nshould be easy to fix! just check if it's a local or a function!")
+            let _0x4f_fuck_bang_ = _0x81_fuck_bang_
             _0x4f_fuck_bang_
 
 

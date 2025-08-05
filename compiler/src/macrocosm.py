@@ -69,10 +69,53 @@ class Macrocosm:
             register_macro_manually("then", ThenMacro)
             register_macro_manually("else", ElseMacro)
             bridge_to_legacy(unified_macros, "if", "process")
+            bridge_to_legacy(unified_macros, "then", "process")  # then needs JS emission too
+            bridge_to_legacy(unified_macros, "else", "process")  # else needs JS emission too
             bridge_to_legacy(unified_typecheck, "then", "typecheck")
             bridge_to_legacy(unified_typecheck, "else", "typecheck")
         except ImportError as e:
             raise RuntimeError(f"Failed to register if/then/else macros: {e}")
+            
+        # Set up while macro
+        try:
+            from macros.while_macro_di import WhileMacro
+            register_macro_manually("while", WhileMacro)
+            bridge_to_legacy(unified_macros, "while", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register while macro: {e}")
+            
+        # Set up for macro  
+        try:
+            from macros.for_macro_di import ForMacro
+            register_macro_manually("for", ForMacro)
+            bridge_to_legacy(unified_macros, "for", "process")
+            # Bridge preprocessing step
+            from macro_base import di_registry
+            if di_registry.has_macro("for"):
+                # The preprocessing step will automatically use DI version
+                pass
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register for macro: {e}")
+            
+        # Set up noscope macro
+        try:
+            from macros.noscope_macro_di import NoscopeMacro
+            register_macro_manually("noscope", NoscopeMacro)
+            bridge_to_legacy(unified_macros, "noscope", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register noscope macro: {e}")
+            
+        # Set up scope macros (do, 67lang:file only - then/else handled by if macro)
+        try:
+            from macros.scope_macro_di import DoMacro, FileMacro
+            register_macro_manually("do", DoMacro)
+            register_macro_manually("67lang:file", FileMacro)
+            bridge_to_legacy(unified_macros, "do", "process")
+            bridge_to_legacy(unified_macros, "67lang:file", "process")
+            bridge_to_legacy(unified_typecheck, "do", "typecheck")
+            bridge_to_legacy(unified_typecheck, "67lang:file", "typecheck")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register scope macros: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
