@@ -133,48 +133,25 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_age = 25
-            _0x0_age
-            let _0x1_age = _0x0_age
-            const _0x5_await__67lang_dot_asc_lp_ = await _67lang.asc(18, _0x1_age)
-            if (_0x5_await__67lang_dot_asc_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x6_await__67lang_dot_log_lp_ = await _67lang.log("Adult")
-                        _0x6_await__67lang_dot_log_lp_
-                    }
-                } }
-            let _0x2_age = _0x0_age
-            const _0x7_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x2_age, 25)
-            if (_0x7_await__67lang_dot_eq_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x8_await__67lang_dot_log_lp_ = await _67lang.log("Quarter century")
-                        _0x8_await__67lang_dot_log_lp_
-                    }
-                } }
-            let _0x3_name = "Alice"
-            _0x3_name
-            let _0x4_name = _0x3_name
-            const _0x9_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x4_name, "Alice")
-            if (_0x9_await__67lang_dot_eq_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0xa_await__67lang_dot_log_lp_ = await _67lang.log("Hello Alice!")
-                        _0xa_await__67lang_dot_log_lp_
-                    }
-                } }
-            else {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-                    const _0xb_await__67lang_dot_log_lp_ = await _67lang.log("Hello stranger!")
-                    _0xb_await__67lang_dot_log_lp_
-                }
-            } 
+            let _0x0_fruits = ["apple", "banana", "cherry"]
+            _0x0_fruits
+            let _0x1_fruits = _0x0_fruits
+            const _0x8__0x1_fruits_0 = await _0x1_fruits["0"]
+            let _0x2__0 = _0x8__0x1_fruits_0
+            const _0x9_await__67lang_dot_log_lp_ = await _67lang.log("Using a fruits 0:", _0x2__0)
+            _0x9_await__67lang_dot_log_lp_
+            let _0x3_fruits = _0x0_fruits
+            const _0xa__0x3_fruits = await _0x3_fruits[0]
+            let _0x4_key = _0xa__0x3_fruits
+            const _0xb_await__67lang_dot_log_lp_ = await _67lang.log("Using key syntax:", _0x4_key)
+            _0xb_await__67lang_dot_log_lp_
+            let _0x5_numbers = [10, 20, 30]
+            _0x5_numbers
+            let _0x6_numbers = _0x5_numbers
+            const _0xc__0x6_numbers_1 = await _0x6_numbers["1"]
+            let _0x7__1 = _0xc__0x6_numbers_1
+            const _0xd_await__67lang_dot_log_lp_ = await _67lang.log("Second number:", _0x7__1)
+            _0xd_await__67lang_dot_log_lp_
         }
     } 
 })();

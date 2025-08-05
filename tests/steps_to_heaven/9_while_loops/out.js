@@ -133,48 +133,25 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_age = 25
-            _0x0_age
-            let _0x1_age = _0x0_age
-            const _0x5_await__67lang_dot_asc_lp_ = await _67lang.asc(18, _0x1_age)
-            if (_0x5_await__67lang_dot_asc_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x6_await__67lang_dot_log_lp_ = await _67lang.log("Adult")
-                        _0x6_await__67lang_dot_log_lp_
-                    }
-                } }
-            let _0x2_age = _0x0_age
-            const _0x7_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x2_age, 25)
-            if (_0x7_await__67lang_dot_eq_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x8_await__67lang_dot_log_lp_ = await _67lang.log("Quarter century")
-                        _0x8_await__67lang_dot_log_lp_
-                    }
-                } }
-            let _0x3_name = "Alice"
-            _0x3_name
-            let _0x4_name = _0x3_name
-            const _0x9_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x4_name, "Alice")
-            if (_0x9_await__67lang_dot_eq_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0xa_await__67lang_dot_log_lp_ = await _67lang.log("Hello Alice!")
-                        _0xa_await__67lang_dot_log_lp_
-                    }
-                } }
-            else {
-                const parent_scope = scope
+            let _0x0_count = 0
+            _0x0_count
+            while(true) {let _0x1_count = _0x0_count
+                const _0x6_await__67lang_dot_asc_lp_ = await _67lang.asc(_0x1_count, 5)
+                if (!_0x6_await__67lang_dot_asc_lp_) { break; }
                 {
-                    const scope = _67lang.scope(parent_scope)
-                    const _0xb_await__67lang_dot_log_lp_ = await _67lang.log("Hello stranger!")
-                    _0xb_await__67lang_dot_log_lp_
-                }
-            } 
+                    const parent_scope = scope
+                    {
+                        const scope = _67lang.scope(parent_scope)
+                        let _0x2_count = _0x0_count
+                        const _0x7_await__67lang_dot_log_lp_ = await _67lang.log("Count: ", _0x2_count)
+                        _0x7_await__67lang_dot_log_lp_
+                        let _0x5__0x3_count = _0x0_count
+                        const _0x8_await__67lang_dot_add_lp_ = await _67lang.add(_0x5__0x3_count, 1)
+                        _0x0_count = _0x8_await__67lang_dot_add_lp_
+                        let _0x4_count = _0x0_count
+                        _0x4_count
+                    }
+                } }
         }
     } 
 })();

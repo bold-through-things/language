@@ -133,48 +133,42 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_age = 25
-            _0x0_age
-            let _0x1_age = _0x0_age
-            const _0x5_await__67lang_dot_asc_lp_ = await _67lang.asc(18, _0x1_age)
-            if (_0x5_await__67lang_dot_asc_lp_) {{
+            const _0x0_say_hello = async function (
+                name, 
+                unused
+            ) {{
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x6_await__67lang_dot_log_lp_ = await _67lang.log("Adult")
-                        _0x6_await__67lang_dot_log_lp_
+                        name = name
+                        unused = unused
+                        let _0x1_name = name
+                        const _0x7_await__67lang_dot_log_lp_ = await _67lang.log("Hello ", _0x1_name)
+                        _0x7_await__67lang_dot_log_lp_
                     }
                 } }
-            let _0x2_age = _0x0_age
-            const _0x7_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x2_age, 25)
-            if (_0x7_await__67lang_dot_eq_lp_) {{
+            const _0x2_print_sum = async function (
+                a, 
+                b
+            ) {{
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x8_await__67lang_dot_log_lp_ = await _67lang.log("Quarter century")
-                        _0x8_await__67lang_dot_log_lp_
+                        a = a
+                        b = b
+                        let _0x3_a = a
+                        let _0x4_b = b
+                        const _0x8_await__67lang_dot_add_lp_ = await _67lang.add(_0x3_a, _0x4_b)
+                        const _0x9_await__67lang_dot_log_lp_ = await _67lang.log("Sum: ", _0x8_await__67lang_dot_add_lp_)
+                        _0x9_await__67lang_dot_log_lp_
                     }
                 } }
-            let _0x3_name = "Alice"
-            _0x3_name
-            let _0x4_name = _0x3_name
-            const _0x9_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x4_name, "Alice")
-            if (_0x9_await__67lang_dot_eq_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0xa_await__67lang_dot_log_lp_ = await _67lang.log("Hello Alice!")
-                        _0xa_await__67lang_dot_log_lp_
-                    }
-                } }
-            else {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-                    const _0xb_await__67lang_dot_log_lp_ = await _67lang.log("Hello stranger!")
-                    _0xb_await__67lang_dot_log_lp_
-                }
-            } 
+            const _0xa_say_hello = await _0x0_say_hello("Alice", "dummy")
+            let _0x5_say_hello = _0xa_say_hello
+            _0x5_say_hello
+            const _0xb_print_sum = await _0x2_print_sum(5, 3)
+            let _0x6_print_sum = _0xb_print_sum
+            _0x6_print_sum
         }
     } 
 })();

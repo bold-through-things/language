@@ -1,0 +1,3 @@
+Before do block: global
+Inside do block: global scoped
+After do block: global

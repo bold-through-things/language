@@ -1,0 +1,19 @@
+local global_var
+	string "global"
+
+print
+	string "Before do block:"
+	an global_var
+
+do
+	local scoped_var
+		string "scoped"
+	
+	print
+		string "Inside do block:"
+		an global_var
+		an scoped_var
+
+print
+	string "After do block:"
+	an global_var

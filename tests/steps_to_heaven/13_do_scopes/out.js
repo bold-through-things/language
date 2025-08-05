@@ -133,48 +133,26 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_age = 25
-            _0x0_age
-            let _0x1_age = _0x0_age
-            const _0x5_await__67lang_dot_asc_lp_ = await _67lang.asc(18, _0x1_age)
-            if (_0x5_await__67lang_dot_asc_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x6_await__67lang_dot_log_lp_ = await _67lang.log("Adult")
-                        _0x6_await__67lang_dot_log_lp_
-                    }
-                } }
-            let _0x2_age = _0x0_age
-            const _0x7_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x2_age, 25)
-            if (_0x7_await__67lang_dot_eq_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x8_await__67lang_dot_log_lp_ = await _67lang.log("Quarter century")
-                        _0x8_await__67lang_dot_log_lp_
-                    }
-                } }
-            let _0x3_name = "Alice"
-            _0x3_name
-            let _0x4_name = _0x3_name
-            const _0x9_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x4_name, "Alice")
-            if (_0x9_await__67lang_dot_eq_lp_) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0xa_await__67lang_dot_log_lp_ = await _67lang.log("Hello Alice!")
-                        _0xa_await__67lang_dot_log_lp_
-                    }
-                } }
-            else {
+            let _0x0_global_var = "global"
+            _0x0_global_var
+            let _0x1_global_var = _0x0_global_var
+            const _0x6_await__67lang_dot_log_lp_ = await _67lang.log("Before do block:", _0x1_global_var)
+            _0x6_await__67lang_dot_log_lp_
+            {
                 const parent_scope = scope
                 {
                     const scope = _67lang.scope(parent_scope)
-                    const _0xb_await__67lang_dot_log_lp_ = await _67lang.log("Hello stranger!")
-                    _0xb_await__67lang_dot_log_lp_
+                    let _0x2_scoped_var = "scoped"
+                    _0x2_scoped_var
+                    let _0x3_global_var = _0x0_global_var
+                    let _0x4_scoped_var = _0x2_scoped_var
+                    const _0x7_await__67lang_dot_log_lp_ = await _67lang.log("Inside do block:", _0x3_global_var, _0x4_scoped_var)
+                    _0x7_await__67lang_dot_log_lp_
                 }
             } 
+            let _0x5_global_var = _0x0_global_var
+            const _0x8_await__67lang_dot_log_lp_ = await _67lang.log("After do block:", _0x5_global_var)
+            _0x8_await__67lang_dot_log_lp_
         }
     } 
 })();

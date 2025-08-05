@@ -3,8 +3,8 @@ local age
 
 if
 	asc
-		an age
 		int 18
+		an age
 then
 	print
 		string "Adult"
