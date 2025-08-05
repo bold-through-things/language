@@ -4,8 +4,8 @@ from . import access_macros
 # from . import builtin_macros  # TODO: Converted to DI - remove import-time registration
 from . import collection_macros
 from . import comment_macros
-from . import error_macros
-from . import exists_macro  # TODO: Added separated exists macro
+# from . import error_macros  # TODO: Converted to DI - remove import-time registration
+# from . import exists_macro  # TODO: Converted to DI - remove import-time registration
 # from . import fn_macro  # TODO: Converted to DI - remove import-time registration
 # from . import for_macro  # TODO: Converted to DI - remove import-time registration
 # from . import if_macro  # TODO: Converted to DI - remove import-time registration
