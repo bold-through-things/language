@@ -1,7 +1,7 @@
 # Import macro modules to ensure they register with the unified registry
 # TODO: Gradually remove imports as macros are converted to dependency injection
 from . import access_macros
-from . import builtin_macros
+from . import builtin_macros  # TODO: Critical - contains print, add, etc. - needs DI conversion
 from . import collection_macros
 from . import comment_macros
 from . import error_macros
