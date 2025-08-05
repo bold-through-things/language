@@ -278,8 +278,15 @@ class ValueHandler:
             compiler._add_error(f"unknown variable access: {content}", node)
             return content
         
-        # Check for method chaining: a var_name method1 method2 method3 ...
+        # Check for alternative syntax: a var_name index_or_key
         parts = var_part.split()
+        if len(parts) == 2:
+            var_name, potential_index = parts
+            # Check if the second part looks like a number (alternative indexing syntax)
+            if potential_index.isdigit():
+                return f"{var_name}[{potential_index}]"
+        
+        # Check for method chaining: a var_name method1 method2 method3 ...
         if len(parts) >= 2:
             var_name = parts[0]
             potential_methods = parts[1:]
@@ -309,6 +316,14 @@ class ValueHandler:
                     if child.content.startswith(f"where {method} takes"):
                         if child.children:
                             method_arg = compiler._compile_value(child.children[0])
+                            break
+                
+                # Special case: if this is the last method (join), and no specific parameter was found,
+                # check for a remaining string parameter
+                if method == "join" and method_arg is None:
+                    for child in node.children:
+                        if not child.content.startswith("where ") and child.content.startswith("string "):
+                            method_arg = compiler._compile_value(child)
                             break
                 
                 if method_arg:
