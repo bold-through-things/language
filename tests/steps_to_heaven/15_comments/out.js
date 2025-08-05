@@ -133,39 +133,16 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_global_var = "global"
-            _0x0_global_var
-            let _0x1_shadow_var = "outer"
-            _0x1_shadow_var
-            let _0x2_global_var = _0x0_global_var
-            let _0x3_shadow_var = _0x1_shadow_var
-            const _0xd_await__67lang_dot_log_lp_ = await _67lang.log("Before do block:", _0x2_global_var, _0x3_shadow_var)
-            _0xd_await__67lang_dot_log_lp_
-            {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-                    let _0x4_scoped_var = "scoped"
-                    _0x4_scoped_var
-                    let _0x5_shadow_var = "inner"
-                    _0x5_shadow_var
-                    let _0x6_global_var = _0x0_global_var
-                    let _0x7_scoped_var = _0x4_scoped_var
-                    let _0x8_shadow_var = _0x5_shadow_var
-                    const _0xe_await__67lang_dot_log_lp_ = await _67lang.log("Inside do block:", _0x6_global_var, _0x7_scoped_var, _0x8_shadow_var)
-                    _0xe_await__67lang_dot_log_lp_
-                    _0x5_shadow_var = "modified_inner"
-                    let _0x9_shadow_var = _0x5_shadow_var
-                    _0x9_shadow_var
-                    let _0xa_shadow_var = _0x5_shadow_var
-                    const _0xf_await__67lang_dot_log_lp_ = await _67lang.log("After modification in do block:", _0xa_shadow_var)
-                    _0xf_await__67lang_dot_log_lp_
-                }
-            } 
-            let _0xb_global_var = _0x0_global_var
-            let _0xc_shadow_var = _0x1_shadow_var
-            const _0x10_await__67lang_dot_log_lp_ = await _67lang.log("After do block:", _0xb_global_var, _0xc_shadow_var)
-            _0x10_await__67lang_dot_log_lp_
+
+            const _0x2_await__67lang_dot_log_lp_ = await _67lang.log("Code with comments")
+            _0x2_await__67lang_dot_log_lp_
+
+            let _0x0_message = "documented"
+            _0x0_message
+
+            let _0x1_message = _0x0_message
+            const _0x3_await__67lang_dot_log_lp_ = await _67lang.log("Message:", _0x1_message)
+            _0x3_await__67lang_dot_log_lp_
         }
     } 
 })();

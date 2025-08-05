@@ -133,39 +133,31 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_global_var = "global"
-            _0x0_global_var
-            let _0x1_shadow_var = "outer"
-            _0x1_shadow_var
-            let _0x2_global_var = _0x0_global_var
-            let _0x3_shadow_var = _0x1_shadow_var
-            const _0xd_await__67lang_dot_log_lp_ = await _67lang.log("Before do block:", _0x2_global_var, _0x3_shadow_var)
-            _0xd_await__67lang_dot_log_lp_
-            {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-                    let _0x4_scoped_var = "scoped"
-                    _0x4_scoped_var
-                    let _0x5_shadow_var = "inner"
-                    _0x5_shadow_var
-                    let _0x6_global_var = _0x0_global_var
-                    let _0x7_scoped_var = _0x4_scoped_var
-                    let _0x8_shadow_var = _0x5_shadow_var
-                    const _0xe_await__67lang_dot_log_lp_ = await _67lang.log("Inside do block:", _0x6_global_var, _0x7_scoped_var, _0x8_shadow_var)
-                    _0xe_await__67lang_dot_log_lp_
-                    _0x5_shadow_var = "modified_inner"
-                    let _0x9_shadow_var = _0x5_shadow_var
-                    _0x9_shadow_var
-                    let _0xa_shadow_var = _0x5_shadow_var
-                    const _0xf_await__67lang_dot_log_lp_ = await _67lang.log("After modification in do block:", _0xa_shadow_var)
-                    _0xf_await__67lang_dot_log_lp_
-                }
-            } 
-            let _0xb_global_var = _0x0_global_var
-            let _0xc_shadow_var = _0x1_shadow_var
-            const _0x10_await__67lang_dot_log_lp_ = await _67lang.log("After do block:", _0xb_global_var, _0xc_shadow_var)
-            _0x10_await__67lang_dot_log_lp_
+            let _0x0_simple_int = 42
+            _0x0_simple_int
+            let _0x1_simple_str = "hello"
+            _0x1_simple_str
+            let _0x2_simple_bool = true
+            _0x2_simple_bool
+            let _0x3_simple_int = _0x0_simple_int
+            const _0xa_await__67lang_dot_log_lp_ = await _67lang.log("Integer:", _0x3_simple_int)
+            _0xa_await__67lang_dot_log_lp_
+            let _0x4_simple_str = _0x1_simple_str
+            const _0xb_await__67lang_dot_log_lp_ = await _67lang.log("String:", _0x4_simple_str)
+            _0xb_await__67lang_dot_log_lp_
+            let _0x5_simple_bool = _0x2_simple_bool
+            const _0xc_await__67lang_dot_log_lp_ = await _67lang.log("Boolean:", _0x5_simple_bool)
+            _0xc_await__67lang_dot_log_lp_
+            let _0x8__0x6_simple_int = _0x0_simple_int
+            const _0xd_await__67lang_dot_add_lp_ = await _67lang.add(_0x8__0x6_simple_int, 8)
+            _0x0_simple_int = _0xd_await__67lang_dot_add_lp_
+            let _0x7_simple_int = _0x0_simple_int
+            _0x7_simple_int
+            let _0x9_simple_int = _0x0_simple_int
+            const _0xe_await__67lang_dot_log_lp_ = await _67lang.log("Modified integer:", _0x9_simple_int)
+            _0xe_await__67lang_dot_log_lp_
+
+
         }
     } 
 })();

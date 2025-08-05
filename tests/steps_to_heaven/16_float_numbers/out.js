@@ -133,39 +133,30 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_global_var = "global"
-            _0x0_global_var
-            let _0x1_shadow_var = "outer"
-            _0x1_shadow_var
-            let _0x2_global_var = _0x0_global_var
-            let _0x3_shadow_var = _0x1_shadow_var
-            const _0xd_await__67lang_dot_log_lp_ = await _67lang.log("Before do block:", _0x2_global_var, _0x3_shadow_var)
+            let _0x0_pi = 3.14159
+            _0x0_pi
+            let _0x1_temperature = -273.15
+            _0x1_temperature
+            let _0x2_percentage = 67.8
+            _0x2_percentage
+            let _0x3_pi = _0x0_pi
+            const _0xb_await__67lang_dot_log_lp_ = await _67lang.log("Pi:", _0x3_pi)
+            _0xb_await__67lang_dot_log_lp_
+            let _0x4_temperature = _0x1_temperature
+            const _0xc_await__67lang_dot_log_lp_ = await _67lang.log("Absolute zero:", _0x4_temperature)
+            _0xc_await__67lang_dot_log_lp_
+            let _0x5_percentage = _0x2_percentage
+            const _0xd_await__67lang_dot_log_lp_ = await _67lang.log("Project completion:", _0x5_percentage, "%")
             _0xd_await__67lang_dot_log_lp_
-            {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-                    let _0x4_scoped_var = "scoped"
-                    _0x4_scoped_var
-                    let _0x5_shadow_var = "inner"
-                    _0x5_shadow_var
-                    let _0x6_global_var = _0x0_global_var
-                    let _0x7_scoped_var = _0x4_scoped_var
-                    let _0x8_shadow_var = _0x5_shadow_var
-                    const _0xe_await__67lang_dot_log_lp_ = await _67lang.log("Inside do block:", _0x6_global_var, _0x7_scoped_var, _0x8_shadow_var)
-                    _0xe_await__67lang_dot_log_lp_
-                    _0x5_shadow_var = "modified_inner"
-                    let _0x9_shadow_var = _0x5_shadow_var
-                    _0x9_shadow_var
-                    let _0xa_shadow_var = _0x5_shadow_var
-                    const _0xf_await__67lang_dot_log_lp_ = await _67lang.log("After modification in do block:", _0xa_shadow_var)
-                    _0xf_await__67lang_dot_log_lp_
-                }
-            } 
-            let _0xb_global_var = _0x0_global_var
-            let _0xc_shadow_var = _0x1_shadow_var
-            const _0x10_await__67lang_dot_log_lp_ = await _67lang.log("After do block:", _0xb_global_var, _0xc_shadow_var)
-            _0x10_await__67lang_dot_log_lp_
+            let _0x6_pi = _0x0_pi
+            let _0x7_temperature = _0x1_temperature
+            let _0x8_percentage = _0x2_percentage
+            const _0xe_await__67lang_dot_add_lp_ = await _67lang.add(_0x6_pi, _0x7_temperature, _0x8_percentage)
+            let _0x9_sum_floats = _0xe_await__67lang_dot_add_lp_
+            _0x9_sum_floats
+            let _0xa_sum_floats = _0x9_sum_floats
+            const _0xf_await__67lang_dot_log_lp_ = await _67lang.log("Sum of floats:", _0xa_sum_floats)
+            _0xf_await__67lang_dot_log_lp_
         }
     } 
 })();

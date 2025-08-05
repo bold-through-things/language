@@ -133,39 +133,42 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_global_var = "global"
-            _0x0_global_var
-            let _0x1_shadow_var = "outer"
-            _0x1_shadow_var
-            let _0x2_global_var = _0x0_global_var
-            let _0x3_shadow_var = _0x1_shadow_var
-            const _0xd_await__67lang_dot_log_lp_ = await _67lang.log("Before do block:", _0x2_global_var, _0x3_shadow_var)
-            _0xd_await__67lang_dot_log_lp_
-            {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-                    let _0x4_scoped_var = "scoped"
-                    _0x4_scoped_var
-                    let _0x5_shadow_var = "inner"
-                    _0x5_shadow_var
-                    let _0x6_global_var = _0x0_global_var
-                    let _0x7_scoped_var = _0x4_scoped_var
-                    let _0x8_shadow_var = _0x5_shadow_var
-                    const _0xe_await__67lang_dot_log_lp_ = await _67lang.log("Inside do block:", _0x6_global_var, _0x7_scoped_var, _0x8_shadow_var)
-                    _0xe_await__67lang_dot_log_lp_
-                    _0x5_shadow_var = "modified_inner"
-                    let _0x9_shadow_var = _0x5_shadow_var
-                    _0x9_shadow_var
-                    let _0xa_shadow_var = _0x5_shadow_var
-                    const _0xf_await__67lang_dot_log_lp_ = await _67lang.log("After modification in do block:", _0xa_shadow_var)
-                    _0xf_await__67lang_dot_log_lp_
-                }
-            } 
-            let _0xb_global_var = _0x0_global_var
-            let _0xc_shadow_var = _0x1_shadow_var
-            const _0x10_await__67lang_dot_log_lp_ = await _67lang.log("After do block:", _0xb_global_var, _0xc_shadow_var)
-            _0x10_await__67lang_dot_log_lp_
+            let _0x0_a = 5
+            _0x0_a
+            let _0x1_b = 10
+            _0x1_b
+            let _0x2_name1 = "Alice"
+            _0x2_name1
+            let _0x3_name2 = "Bob"
+            _0x3_name2
+            let _0x4_a = _0x0_a
+            const _0xe_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x4_a, 5)
+            const _0xf_await__67lang_dot_log_lp_ = await _67lang.log("Equal integers:", _0xe_await__67lang_dot_eq_lp_)
+            _0xf_await__67lang_dot_log_lp_
+            let _0x5_a = _0x0_a
+            let _0x6_b = _0x1_b
+            const _0x10_await__67lang_dot_eq_lp_ = await _67lang.eq(_0x5_a, _0x6_b)
+            const _0x11_await__67lang_dot_log_lp_ = await _67lang.log("Not equal integers:", _0x10_await__67lang_dot_eq_lp_)
+            _0x11_await__67lang_dot_log_lp_
+            let _0x7_a = _0x0_a
+            let _0x8_b = _0x1_b
+            const _0x12_await__67lang_dot_asc_lp_ = await _67lang.asc(_0x7_a, _0x8_b)
+            const _0x13_await__67lang_dot_log_lp_ = await _67lang.log("Ascending order:", _0x12_await__67lang_dot_asc_lp_)
+            _0x13_await__67lang_dot_log_lp_
+            let _0x9_b = _0x1_b
+            let _0xa_a = _0x0_a
+            const _0x14_await__67lang_dot_asc_lp_ = await _67lang.asc(_0x9_b, _0xa_a)
+            const _0x15_await__67lang_dot_log_lp_ = await _67lang.log("Descending order:", _0x14_await__67lang_dot_asc_lp_)
+            _0x15_await__67lang_dot_log_lp_
+            let _0xb_name1 = _0x2_name1
+            const _0x16_await__67lang_dot_eq_lp_ = await _67lang.eq(_0xb_name1, "Alice")
+            const _0x17_await__67lang_dot_log_lp_ = await _67lang.log("String equality:", _0x16_await__67lang_dot_eq_lp_)
+            _0x17_await__67lang_dot_log_lp_
+            let _0xc_name1 = _0x2_name1
+            let _0xd_name2 = _0x3_name2
+            const _0x18_await__67lang_dot_asc_lp_ = await _67lang.asc(_0xc_name1, _0xd_name2)
+            const _0x19_await__67lang_dot_log_lp_ = await _67lang.log("String comparison:", _0x18_await__67lang_dot_asc_lp_)
+            _0x19_await__67lang_dot_log_lp_
         }
     } 
 })();
