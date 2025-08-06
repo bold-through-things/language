@@ -42,7 +42,7 @@ class ValueHandler:
         elif macro in ['all', 'any', 'none']:
             return self._compile_logical_operator(macro, node, compiler)
         
-        # Variable access - only handle simple variable references for values
+        # Variable access - handle both simple and complex access
         elif macro in ['an']:
             # For value compilation, only handle simple variable names without children
             if not node.children and not ' ' in rest:
@@ -51,6 +51,33 @@ class ValueHandler:
                 # Complex access operations should be handled by AccessMacroHandler
                 compiler._add_error(f"complex access operation in value context: {content}", node)
                 return content
+        
+        elif macro == 'a':
+            # For 'a' operations in value context, compile as access expressions
+            if node.children:
+                # Complex access with children - delegate to access handler for expression compilation
+                access_handler = compiler.macro_handlers.get('a')
+                if access_handler:
+                    return access_handler._compile_as_expression(node, compiler, rest)
+                else:
+                    compiler._add_error(f"no access handler available for: {content}", node)
+                    return content
+            else:
+                # Simple variable reference without children
+                if not ' ' in rest:
+                    return rest
+                else:
+                    # Complex access like "a fruits 0" without children - parse as property access
+                    parts = rest.split()
+                    if len(parts) >= 2:
+                        obj_name = parts[0]
+                        accessor = parts[1]
+                        try:
+                            int(accessor)
+                            return f"{obj_name}[{accessor}]"
+                        except ValueError:
+                            return f"{obj_name}.{accessor}"
+                    return rest
         
         # Arithmetic operations
         elif macro == 'add':

@@ -281,6 +281,62 @@ class AccessMacroHandler(MacroHandler):
         
         # Fallback
         return property_path
+    
+    def _compile_as_expression(self, node: Node, compiler: 'Macrocosm', rest: str) -> str:
+        """Compile access operation as an expression (for use in value contexts)"""
+        # This is for when access operations are used as values (like in print arguments)
+        
+        # Check if this is key syntax
+        if 'key' in rest:
+            return self._compile_key_access_expression(node, compiler, rest)
+        
+        if len(node.children) == 1:
+            # One child - treat as function call: a func_name arg
+            args = []
+            for child in node.children:
+                arg_js = compiler._compile_value(child)
+                args.append(arg_js)
+            return f"{rest}({', '.join(args)})"
+        
+        # No children - property/index access like "a fruits 0"
+        parts = rest.split()
+        if len(parts) >= 2:
+            obj_name = parts[0]
+            accessor = parts[1]
+            
+            # Check if accessor looks like a number (array index)
+            try:
+                int(accessor)
+                return f"{obj_name}[{accessor}]"
+            except ValueError:
+                # Not a number, treat as property
+                return f"{obj_name}.{accessor}"
+        
+        # Simple variable reference
+        return rest
+    
+    def _compile_key_access_expression(self, node: Node, compiler: 'Macrocosm', rest: str) -> str:
+        """Compile key access as expression: a var_name key -> var_name[key_value]"""
+        # Parse variable name from the beginning
+        parts = rest.split()
+        if len(parts) >= 2 and parts[1] == "key":
+            var_name = parts[0]
+        else:
+            return rest  # Not valid key syntax
+        
+        # Find the key value from children
+        key_value = None
+        for child in node.children:
+            if child.content.strip() == "where key is":
+                if child.children:
+                    key_value = compiler._compile_value(child.children[0])
+                break
+        
+        if key_value is not None:
+            return f"{var_name}[{key_value}]"
+        else:
+            # No key value found, return as-is
+            return rest
 
 
 class WhileHandler(MacroHandler):
