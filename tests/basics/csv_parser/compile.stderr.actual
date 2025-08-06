@@ -1,47 +1,32 @@
 [
   {
-    "message": "unknown value type: stdin",
-    "line": 11,
-    "content": "stdin"
+    "message": "Error at line 15: complex access operation in value context: a lines split"
   },
   {
-    "message": "unknown value type: zip",
-    "line": 37,
-    "content": "zip"
+    "message": "Error at line 33: complex access operation in value context: a line split"
   },
   {
-    "message": "unknown a-syntax: a zip",
-    "line": 46,
-    "content": "a zip"
+    "message": "Error at line 50: complex access operation in value context: a kv 0"
   },
   {
-    "message": "unknown a-syntax: a kv 0",
-    "line": 50,
-    "content": "a kv 0"
+    "message": "Error at line 51: complex access operation in value context: a kv 1"
   },
   {
-    "message": "unknown a-syntax: a kv 1",
-    "line": 51,
-    "content": "a kv 1"
+    "message": "Error at line 53: invalid access operation: a rows push"
   },
   {
-    "message": "unknown a-syntax: a rows",
-    "line": 62,
-    "content": "a rows"
+    "message": "Error at line 31: unknown macro: then"
   },
   {
-    "message": "unknown a-syntax: a row name",
-    "line": 65,
-    "content": "a row name"
+    "message": "Error at line 35: unknown macro: else"
   },
   {
-    "message": "unknown a-syntax: a rows",
-    "line": 70,
-    "content": "a rows"
+    "message": "Error at line 65: complex access operation in value context: a row name"
   },
   {
-    "message": "unknown a-syntax: a row age",
-    "line": 74,
-    "content": "a row age"
+    "message": "Error at line 74: complex access operation in value context: a row age"
+  },
+  {
+    "message": "Error at line 76: unknown macro: then"
   }
 ]

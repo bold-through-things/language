@@ -1,37 +1,29 @@
 [
   {
-    "message": "unknown value type: stdin",
-    "line": 3,
-    "content": "stdin"
+    "message": "Error at line 6: complex access operation in value context: an input split"
   },
   {
-    "message": "unknown value type: where split takes",
-    "line": 17,
-    "content": "where split takes"
+    "message": "Error at line 16: complex access operation in value context: a word split sort join"
   },
   {
-    "message": "unknown value type: none",
-    "line": 26,
-    "content": "none"
+    "message": "Error at line 22: unknown macro: # TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?"
   },
   {
-    "message": "key assignment missing key",
-    "line": 32,
-    "content": "a groups key"
+    "message": "Error at line 23: unknown macro: #  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)"
   },
   {
-    "message": "unknown a-syntax: a word",
-    "line": 38,
-    "content": "a word"
+    "message": "Error at line 24: unknown macro: #  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!"
   },
   {
-    "message": "key assignment missing key",
-    "line": 36,
-    "content": "a groups key push"
+    "message": "Error at line 32: key assignment missing key value"
   },
   {
-    "message": "unknown value type: values",
-    "line": 41,
-    "content": "values"
+    "message": "Error at line 31: unknown macro: then"
+  },
+  {
+    "message": "Error at line 36: key assignment missing key value"
+  },
+  {
+    "message": "Error at line 45: complex access operation in value context: a group join"
   }
 ]

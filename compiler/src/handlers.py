@@ -175,12 +175,7 @@ class ForHandler(MacroHandler):
 
 
 class AccessMacroHandler(MacroHandler):
-    """Handles all access operations including key assignments, function calls, and variable assignments"""
-    
-    def can_handle(self, content: str) -> bool:
-        macro, rest = cut(content, ' ')
-        # Handle 'a' and 'access' with children (assignments or function calls)
-        return macro in ['a', 'access'] and rest
+    """Handles all access operations - contextual: 1 arg = getter, 2 args = setter"""
     
     def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
         macro, rest = cut(node.content, ' ')
@@ -189,22 +184,28 @@ class AccessMacroHandler(MacroHandler):
         if 'key' in rest:
             return self._compile_key_assignment(node, compiler, rest)
         
-        # For access operations with children, always treat as variable assignment  
-        if macro == 'access' and node.children:
-            return self._compile_variable_assignment(node, compiler, rest)
+        # Access is contextual based on number of arguments:
+        # 1 arg = getter (a variable_name or a object property)
+        # 2 args = setter (a variable_name value)
         
-        # For 'a' operations with children, check if it could be a function call
-        # by checking if the rest looks like a function name (no spaces)
-        if macro == 'a' and node.children:
-            if ' ' not in rest.strip():  # Simple name, likely a function call
+        if len(node.children) == 0:
+            # No children - simple variable access for values (handled by value compiler)
+            compiler._add_error(f"access operation missing arguments: {node.content}", node)
+            return ""
+        elif len(node.children) == 1:
+            # One child = getter operation (a variable_name -> variable_name)
+            # Or method call (a object method -> object.method())
+            if ' ' not in rest.strip():  # Simple name, function call or property access
                 return self._compile_function_call(node, compiler, rest)
             else:
-                # Has spaces or other syntax, not a simple function call
-                compiler._add_error(f"invalid access operation: {node.content}", node)
-                return ""
-        
-        compiler._add_error(f"unknown access operation: {node.content}", node)
-        return ""
+                # Complex access like "a fruits 0" - property/index access
+                return self._compile_property_access(node, compiler, rest)
+        elif len(node.children) == 2:
+            # Two children = setter operation (a variable_name value)
+            return self._compile_variable_assignment(node, compiler, rest)
+        else:
+            compiler._add_error(f"access operation has too many arguments: {node.content}", node)
+            return ""
     
     def _compile_key_assignment(self, node: Node, compiler: 'Macrocosm', rest: str) -> str:
         """Compile key assignment: a var_name key where key is value_expr"""
@@ -258,6 +259,28 @@ class AccessMacroHandler(MacroHandler):
         
         value = compiler._compile_value(node.children[0])
         return f"{var_name} = {value};"
+    
+    def _compile_property_access(self, node: Node, compiler: 'Macrocosm', property_path: str) -> str:
+        """Handle property/index access like 'a fruits 0' or 'a obj prop'"""
+        # For now, treat as array/object access
+        # "a fruits 0" becomes "fruits[0]"
+        # "a obj prop" becomes "obj.prop" or "obj[prop]"
+        
+        parts = property_path.split()
+        if len(parts) >= 2:
+            obj_name = parts[0]
+            accessor = parts[1]
+            
+            # Check if accessor looks like a number (array index)
+            try:
+                int(accessor)
+                return f"{obj_name}[{accessor}]"
+            except ValueError:
+                # Not a number, treat as property
+                return f"{obj_name}.{accessor}"
+        
+        # Fallback
+        return property_path
 
 
 class WhileHandler(MacroHandler):

@@ -12,6 +12,10 @@ from typing import List, Dict, Any, Optional
 class ValueHandler:
     """Handles value compilation - strings, ints, booleans, variables, etc."""
     
+    def compile(self, node: Node, compiler: 'Macrocosm') -> str:
+        """Handler interface - delegate to compile_value"""
+        return self.compile_value(node, compiler)
+    
     def compile_value(self, node: Node, compiler: 'Macrocosm') -> str:
         content = node.content.strip()
         
@@ -39,7 +43,7 @@ class ValueHandler:
             return self._compile_logical_operator(macro, node, compiler)
         
         # Variable access - only handle simple variable references for values
-        elif macro in ['an', 'a']:
+        elif macro in ['an']:
             # For value compilation, only handle simple variable names without children
             if not node.children and not ' ' in rest:
                 return rest  # Simple variable reference

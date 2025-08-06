@@ -1,7 +1,5 @@
 [
   {
-    "message": "unknown value type: string",
-    "line": 7,
-    "content": "string"
+    "message": "Error at line 2: unknown macro: string"
   }
 ]

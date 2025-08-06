@@ -1,0 +1,5 @@
+[
+  {
+    "message": "Error at line 2: unknown macro: definitely_not_a_real_macro_name"
+  }
+]

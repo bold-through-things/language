@@ -50,3 +50,21 @@ The new tests will follow this hierarchy:
 8. `8_advanced_features` - Complex combinations and edge cases
 
 Each test will be minimal and focused on a single concept, making it easy to implement incrementally.
+
+## Code Quality Guidelines (learned from reviews)
+
+**Always use ./test --help** - Don't run tests manually, use the test runner with proper options.
+
+**Build quality software** - Code should pass FAANG-level review standards.
+
+**Crash loud, crash hard** - Required blocks like `then` and `do` should throw clear compilation errors if missing. No silent failures.
+
+**Keep code generic** - Don't hardcode lists of methods or special cases. Use extensible registries and unified handling.
+
+**Key Architectural Principles:**
+- `a`, `an`, `access` are simple aliases - treat them identically  
+- All macros follow the pattern: first word = macro name (use `cut()` from strutil.py)
+- Access operations are contextual: 1 arg = getter, 2 args = setter
+- Use dict mappings instead of elif ladders or handler iteration
+- Emit errors in the right format from the start
+- Remove unnecessary abstraction layers

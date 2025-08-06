@@ -1,82 +1,50 @@
 [
   {
-    "message": "unknown value type: all",
-    "line": 56,
-    "content": "all"
+    "message": "Error at line 53: unknown macro: # TODO - assert instead of printing (need a new macro)"
   },
   {
-    "message": "unknown value type: string",
-    "line": 79,
-    "content": "string"
+    "message": "Error at line 97: comparison operation needs exactly 2 operands"
   },
   {
-    "message": "unknown value type: float 0",
-    "line": 93,
-    "content": "float 0"
+    "message": "Error at line 121: unknown macro: an age"
   },
   {
-    "message": "comparison operation needs exactly 2 operands",
-    "line": 97,
-    "content": "asc"
+    "message": "Error at line 175: complex access operation in value context: an ,"
   },
   {
-    "message": "unknown a-syntax: a 0",
-    "line": 137,
-    "content": "a 0"
+    "message": "Error at line 189: complex access operation in value context: a 2347 split sort join"
   },
   {
-    "message": "unknown a-syntax: a 0",
-    "line": 145,
-    "content": "a 0"
+    "message": "Error at line 212: invalid access operation: a 67lang.features name"
   },
   {
-    "message": "unknown value type: regex /(2347)/",
-    "line": 156,
-    "content": "regex /(2347)/"
+    "message": "Error at line 224: invalid access operation: a 67lang.features added"
   },
   {
-    "message": "unknown a-syntax: a ,",
-    "line": 162,
-    "content": "a ,"
+    "message": "Error at line 237: complex access operation in value context: a 67lang.features described slice join"
   },
   {
-    "message": "unknown value type: where split takes",
-    "line": 190,
-    "content": "where split takes"
+    "message": "Error at line 259: unknown macro: then"
   },
   {
-    "message": "unknown a-syntax: a 67lang.features described slice join",
-    "line": 237,
-    "content": "a 67lang.features described slice join"
+    "message": "Error at line 269: unknown macro: then"
   },
   {
-    "message": "unknown value type: concat",
-    "line": 294,
-    "content": "concat"
+    "message": "Error at line 272: unknown macro: else"
   },
   {
-    "message": "unknown value type: all",
-    "line": 345,
-    "content": "all"
+    "message": "Error at line 302: unknown macro: # TODO update this once 67lang is production grade (give it two three months...)"
   },
   {
-    "message": "unknown value type: any",
-    "line": 352,
-    "content": "any"
+    "message": "Error at line 399: unknown macro: must_compile_error FIELD_TYPE_MISMATCH=+1"
   },
   {
-    "message": "unknown value type: none",
-    "line": 359,
-    "content": "none"
+    "message": "Error at line 406: unknown macro: must_compile_error ARGUMENT_TYPE_MISMATCH=+1"
   },
   {
-    "message": "unknown value type: type int",
-    "line": 392,
-    "content": "type int"
+    "message": "Error at line 409: unknown macro: must_compile_error FIELD_TYPE_MISMATCH=+1"
   },
   {
-    "message": "unknown value type: type str",
-    "line": 396,
-    "content": "type str"
+    "message": "Error at line 454: unknown macro: then"
   }
 ]

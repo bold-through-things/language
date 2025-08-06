@@ -1,0 +1,17 @@
+[
+  {
+    "message": "Error at line 2: unknown macro: # these are expected to pass"
+  },
+  {
+    "message": "Error at line 23: unknown macro: # these are expected to fail"
+  },
+  {
+    "message": "Error at line 50: complex access operation in value context: a test_str split sort join"
+  },
+  {
+    "message": "Error at line 52: unknown access operation: a test_bool split"
+  },
+  {
+    "message": "Error at line 54: unknown access operation: a test_str split split split"
+  }
+]

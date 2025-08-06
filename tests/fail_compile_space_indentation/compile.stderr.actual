@@ -1,7 +1,8 @@
 [
   {
-    "message": "print statement has no children",
-    "line": 2,
-    "content": "print"
+    "message": "Error at line 2: print statement has no children"
+  },
+  {
+    "message": "Error at line 3: unknown macro: string hello world"
   }
 ]

@@ -1,7 +1,14 @@
 [
   {
-    "message": "unknown value type: regex /t/",
-    "line": 13,
-    "content": "regex /t/"
+    "message": "Error at line 5: unknown macro: # calls the (str, str) overload"
+  },
+  {
+    "message": "Error at line 7: complex access operation in value context: a str split"
+  },
+  {
+    "message": "Error at line 10: unknown macro: # calls the (str, regex) overload"
+  },
+  {
+    "message": "Error at line 12: complex access operation in value context: a str split"
   }
 ]

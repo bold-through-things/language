@@ -1,22 +1,8 @@
 [
   {
-    "message": "unknown value type: stdin",
-    "line": 3,
-    "content": "stdin"
+    "message": "Error at line 6: complex access operation in value context: an input split"
   },
   {
-    "message": "unknown a-syntax: a word",
-    "line": 17,
-    "content": "a word"
-  },
-  {
-    "message": "unknown a-syntax: a word",
-    "line": 22,
-    "content": "a word"
-  },
-  {
-    "message": "unknown a-syntax: a count",
-    "line": 25,
-    "content": "a count"
+    "message": "Error at line 20: complex access operation in value context: a count key"
   }
 ]
