@@ -204,8 +204,12 @@ class AccessMacroHandler(MacroHandler):
             # Two children = setter operation (a variable_name value)
             return self._compile_variable_assignment(node, compiler, rest)
         else:
-            compiler._add_error(f"access operation has too many arguments: {node.content}", node)
-            return ""
+            # More than 2 children - could be method chaining or complex assignment
+            if self._is_method_chaining(rest):
+                return self._compile_method_chaining(node, compiler, rest)
+            else:
+                compiler._add_error(f"access operation has too many arguments: {node.content}", node)
+                return ""
     
     def _compile_key_assignment(self, node: Node, compiler: 'Macrocosm', rest: str) -> str:
         """Compile key assignment: a var_name key where key is value_expr"""
@@ -290,6 +294,12 @@ class AccessMacroHandler(MacroHandler):
         if 'key' in rest:
             return self._compile_key_access_expression(node, compiler, rest)
         
+        # Check for method chaining
+        if self._is_method_chaining(rest):
+            # Remove the semicolon from the method chaining result since this is an expression
+            result = self._compile_method_chaining(node, compiler, rest)
+            return result.rstrip(';')
+        
         if len(node.children) == 1:
             # One child - treat as function call: a func_name arg
             args = []
@@ -337,6 +347,53 @@ class AccessMacroHandler(MacroHandler):
         else:
             # No key value found, return as-is
             return rest
+    
+    def _is_method_chaining(self, rest: str) -> bool:
+        """Check if this looks like method chaining (multiple method names)"""
+        parts = rest.split()
+        if len(parts) >= 3:  # obj method1 method2 ...
+            # Check if the parts after the first one look like method names
+            string_methods = {'split', 'join', 'replace', 'trim', 'toLowerCase', 'toUpperCase', 'sort'}
+            return any(part in string_methods for part in parts[1:])
+        return False
+    
+    def _compile_method_chaining(self, node: Node, compiler: 'Macrocosm', rest: str) -> str:
+        """Compile method chaining like 'a phrase split sort join'"""
+        parts = rest.split()
+        if len(parts) < 3:
+            compiler._add_error("method chaining needs at least object and two methods", node)
+            return ""
+        
+        obj_name = parts[0]
+        methods = parts[1:]
+        
+        # Find method arguments from children
+        method_args = {}
+        join_arg = None
+        
+        for child in node.children:
+            content = child.content.strip()
+            if content.startswith("where ") and " takes" in content:
+                # Parse "where split takes"
+                method_name = content.split()[1]
+                if child.children:
+                    arg_value = compiler._compile_value(child.children[0])
+                    method_args[method_name] = arg_value
+            elif content.startswith("string "):
+                # Standalone string argument (likely for join)
+                join_arg = compiler._compile_value(child)
+        
+        # Build the method chain
+        result = obj_name
+        for method in methods:
+            if method == 'split' and 'split' in method_args:
+                result = f"{result}.{method}({method_args['split']})"
+            elif method == 'join' and join_arg:
+                result = f"{result}.{method}({join_arg})"
+            else:
+                result = f"{result}.{method}()"
+        
+        return result + ";"
 
 
 class WhileHandler(MacroHandler):

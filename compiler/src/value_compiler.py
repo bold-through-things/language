@@ -63,6 +63,10 @@ class ValueHandler:
                     compiler._add_error(f"no access handler available for: {content}", node)
                     return content
             else:
+                # Check for method chaining first
+                if self._is_method_chaining(rest):
+                    return self._compile_method_chaining_expression(node, compiler, rest)
+                
                 # Simple variable reference without children
                 if not ' ' in rest:
                     return rest
@@ -197,3 +201,49 @@ class ValueHandler:
         
         # TODO: Handle dictionary with initial values
         return "{}"
+    
+    def _is_method_chaining(self, rest: str) -> bool:
+        """Check if this looks like method chaining (multiple method names)"""
+        parts = rest.split()
+        if len(parts) >= 3:  # obj method1 method2 ...
+            # Check if the parts after the first one look like method names
+            string_methods = {'split', 'join', 'replace', 'trim', 'toLowerCase', 'toUpperCase', 'sort'}
+            return any(part in string_methods for part in parts[1:])
+        return False
+    
+    def _compile_method_chaining_expression(self, node: Node, compiler: 'Macrocosm', rest: str) -> str:
+        """Compile method chaining as expression for value context"""
+        parts = rest.split()
+        if len(parts) < 3:
+            return rest  # Not valid method chaining
+        
+        obj_name = parts[0]
+        methods = parts[1:]
+        
+        # Find method arguments from children
+        method_args = {}
+        join_arg = None
+        
+        for child in node.children:
+            content = child.content.strip()
+            if content.startswith("where ") and " takes" in content:
+                # Parse "where split takes"
+                method_name = content.split()[1]
+                if child.children:
+                    arg_value = compiler._compile_value(child.children[0])
+                    method_args[method_name] = arg_value
+            elif content.startswith("string "):
+                # Standalone string argument (likely for join)
+                join_arg = compiler._compile_value(child)
+        
+        # Build the method chain
+        result = obj_name
+        for method in methods:
+            if method == 'split' and 'split' in method_args:
+                result = f"{result}.{method}({method_args['split']})"
+            elif method == 'join' and join_arg:
+                result = f"{result}.{method}({join_arg})"
+            else:
+                result = f"{result}.{method}()"
+        
+        return result
