@@ -5,7 +5,7 @@ Type system for 67lang compiler
 Handles type checking, inference, and error reporting
 """
 
-from node import Node
+from node import Node, Position
 from typing import Dict, List, Optional, Any, Set
 from enum import Enum
 import json
@@ -204,16 +204,14 @@ class TypeChecker:
                     # Type mismatch in method chain
                     self.add_error(TypeErrorKind.ARGUMENT_TYPE_MISMATCH,
                                  f"argument demands {sig['input']} and is given {current_type.kind.value}",
-                                 # Note: we don't have the exact node for the method call here
-                                 # This is a limitation of the current design
-                                 None, f"67lang:call {method}")
+                                 # Use a dummy node position for now - this is a limitation
+                                 Node("", Position(0, 0), []), f"67lang:call {method}")
                     return TypeInfo(TypeKind.UNKNOWN)
         
         return current_type
     
     def check_local_declaration(self, node: Node, var_name: str) -> Optional[TypeInfo]:
         """Check a local variable declaration"""
-        print(f"DEBUG: check_local_declaration for {var_name} with {len(node.children)} children", file=sys.stderr)
         
         declared_type = None
         actual_type = None
@@ -224,13 +222,10 @@ class TypeChecker:
         
         for child in node.children:
             child_content = child.content.strip()
-            print(f"DEBUG:   child content: '{child_content}'", file=sys.stderr)
             if child_content.startswith('type '):
                 type_child = child
-                print(f"DEBUG:   found type child: '{child_content}'", file=sys.stderr)
             elif not child_content.startswith('#'):  # Ignore comments
                 value_child = child
-                print(f"DEBUG:   found value child: '{child_content}'", file=sys.stderr)
         
         # Get declared type
         if type_child:
@@ -238,17 +233,13 @@ class TypeChecker:
             type_name = type_content.split(' ', 1)[1] if ' ' in type_content else ''
             if type_name in ['int', 'str', 'bool', 'list', 'dict']:
                 declared_type = TypeInfo(TypeKind(type_name))
-                print(f"DEBUG:   declared type: {declared_type}", file=sys.stderr)
         
         # Get actual type from value
         if value_child:
             actual_type = self.infer_type(value_child)
-            print(f"DEBUG:   actual type: {actual_type}", file=sys.stderr)
         else:
-            print(f"DEBUG:   no value child found", file=sys.stderr)
             # No initial value provided
             if declared_type:
-                print(f"DEBUG:   adding MISSING_TYPE error", file=sys.stderr)
                 self.add_error(TypeErrorKind.MISSING_TYPE,
                              f"field demands {declared_type.kind.value} but is given None",
                              node, f"local {var_name}")
@@ -261,7 +252,6 @@ class TypeChecker:
         # Check type compatibility
         if declared_type and actual_type and declared_type.kind != actual_type.kind:
             if actual_type.kind != TypeKind.UNKNOWN:  # Don't report error for unknown types
-                print(f"DEBUG:   adding FIELD_TYPE_MISMATCH error", file=sys.stderr)
                 self.add_error(TypeErrorKind.FIELD_TYPE_MISMATCH,
                              f"field demands {declared_type.kind.value} but is given {actual_type.kind.value}",
                              node, f"local {var_name}")

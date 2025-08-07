@@ -113,15 +113,20 @@ class Macrocosm:
         for node in self.nodes:
             self._type_check_node(node)
         
-        print(f"DEBUG: After type checking, found {len(self.type_checker.errors)} errors", file=sys.stderr)
+        # Store errors to prevent them from being lost
+        type_errors = self.type_checker.errors[:]  # Make a copy
         
         # If there are type errors, emit them and stop compilation
-        if self.type_checker.errors:
-            # Convert to expected JSON format and write to stderr
-            error_json = self.type_checker.get_errors_json()
-            print(f"DEBUG: Found {len(self.type_checker.errors)} type errors", file=sys.stderr)
-            print(error_json, file=sys.stderr)
-            # Still generate JS to avoid breaking test harness
+        if type_errors:
+            try:
+                # Convert to expected JSON format and write to stderr
+                error_json = json.dumps([error.to_dict() for error in type_errors], indent=2)
+                print(error_json, file=sys.stderr)
+                # Still generate JS to avoid breaking test harness
+            except Exception as e:
+                print(f"DEBUG: JSON generation failed: {e}", file=sys.stderr)
+                import traceback
+                traceback.print_exc(file=sys.stderr)
         
         # Second pass: code generation
         statements = []
