@@ -88,7 +88,7 @@ class ValueHandler:
         elif node.children:
             args = []
             for child in node.children:
-                arg_value = compiler.compile_value(child)
+                arg_value = compiler._compile_node(child)
                 args.append(arg_value)
             return f"{macro}({', '.join(args)})"
         
@@ -106,7 +106,7 @@ class ValueHandler:
         
         values = []
         for child in node.children:
-            value = compiler.compile_value(child)
+            value = compiler._compile_node(child)
             values.append(value)
         
         if operator == 'all':
@@ -135,7 +135,7 @@ class ValueHandler:
         
         operands = []
         for child in node.children:
-            operand = compiler.compile_value(child)
+            operand = compiler._compile_node(child)
             operands.append(operand)
         
         # Chain operations left-to-right
@@ -151,8 +151,8 @@ class ValueHandler:
             compiler._add_error(f"comparison operation needs exactly 2 operands", node)
             return "false"
         
-        left = compiler.compile_value(node.children[0])
-        right = compiler.compile_value(node.children[1])
+        left = compiler._compile_node(node.children[0])
+        right = compiler._compile_node(node.children[1])
         
         return f"({left} {operator} {right})"
     
@@ -160,7 +160,7 @@ class ValueHandler:
         """Compile a list literal"""
         elements = []
         for child in node.children:
-            element = compiler.compile_value(child)
+            element = compiler._compile_node(child)
             elements.append(element)
         
         return f"[{', '.join(elements)}]"
@@ -201,11 +201,11 @@ class ValueHandler:
                 # Parse "where split takes"
                 method_name = content.split()[1]
                 if child.children:
-                    arg_value = compiler.compile_value(child.children[0])
+                    arg_value = compiler._compile_node(child.children[0])
                     method_args[method_name] = arg_value
             elif content.startswith("string "):
                 # Standalone string argument (likely for join)
-                join_arg = compiler.compile_value(child)
+                join_arg = compiler._compile_node(child)
         
         # Build the method chain
         result = obj_name

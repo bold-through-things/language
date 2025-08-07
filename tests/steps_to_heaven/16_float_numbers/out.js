@@ -4,5 +4,5 @@ let percentage = 67.8;
 console.log("Pi:", pi);
 console.log("Absolute zero:", temperature);
 console.log("Project completion:", percentage, "%");
-let sum_floats = ((an pi + an temperature) + an percentage);
+let sum_floats = ((pi + temperature) + percentage);
 console.log("Sum of floats:", sum_floats);

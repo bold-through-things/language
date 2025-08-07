@@ -192,10 +192,26 @@ class AccessMacroHandler(MacroHandler):
         # 2 args = setter (a variable_name value)
         
         if len(node.children) == 0:
-            # No children - simple variable access like "an name" or "a variable"
-            # Extract just the variable name from the rest of the content
-            if rest.strip():  # Has variable name
-                return rest.strip()  # Return just the variable name
+            # No children - could be simple variable access or property access
+            if rest.strip():
+                parts = rest.strip().split()
+                if len(parts) == 1:
+                    # Simple variable access like "an name"
+                    return parts[0]
+                elif len(parts) >= 2:
+                    # Property/index access like "a fruits 0" 
+                    obj_name = parts[0]
+                    accessor = parts[1]
+                    try:
+                        # Try to parse as integer for array index
+                        int(accessor)
+                        return f"{obj_name}[{accessor}]"
+                    except ValueError:
+                        # Property access
+                        return f"{obj_name}.{accessor}"
+                else:
+                    compiler._add_error(f"access operation missing variable name: {node.content}", node)
+                    return ""
             else:
                 compiler._add_error(f"access operation missing variable name: {node.content}", node)
                 return ""
@@ -229,18 +245,18 @@ class AccessMacroHandler(MacroHandler):
             compiler._add_error("invalid key assignment syntax", node)
             return ""
         
-        # Find "where key is" child and get the key value from the next sibling
+        # Find "where key is" child and get the key value from its children
         key_value = None
         assignment_value = None
         
-        for i, child in enumerate(node.children):
+        for child in node.children:
             if child.content.strip() == "where key is":
-                # Key value should be the next child
-                if i + 1 < len(node.children):
-                    key_value = compiler.compile_value(node.children[i + 1])
-                # Assignment value should be the child after that (if exists)
-                if i + 2 < len(node.children):
-                    assignment_value = compiler.compile_value(node.children[i + 2])
+                # Key value should be the first child of "where key is"
+                if child.children:
+                    key_value = compiler.compile_value(child.children[0])
+                # Assignment value would be second child (for setter operations)
+                if len(child.children) > 1:
+                    assignment_value = compiler.compile_value(child.children[1])
                 break
         
         if key_value is None:
@@ -255,18 +271,13 @@ class AccessMacroHandler(MacroHandler):
             else:
                 return f"{var_name}[{key_value}].{method_name}();"
         
-        # Regular assignment
+        # Check if this is a getter or setter operation
         if assignment_value:
+            # Setter: a fruits key where key is int 0 and assignment_value is provided
             return f"{var_name}[{key_value}] = {assignment_value};"
         else:
-            # Initialize with empty value (like creating a list)
-            return f"{var_name}[{key_value}] = [];"
-        
-        if assignment_value is None:
-            compiler._add_error("key assignment missing value", node)
-            return ""
-        
-        return f"{var_name}[{key_value}] = {assignment_value};"
+            # Getter: just a fruits key where key is int 0 (no assignment value)
+            return f"{var_name}[{key_value}]"
     
     def _compile_function_call(self, node: Node, compiler: 'Macrocosm', func_name: str) -> str:
         """Compile function call: a function_name args"""
