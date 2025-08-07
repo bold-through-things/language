@@ -185,6 +185,35 @@ class Macrocosm:
                 # These are handled entirely by preprocessing - no need to bridge process/typecheck
         except ImportError as e:
             raise RuntimeError(f"Failed to register access macros: {e}")
+            
+        # Set up call macro
+        try:
+            from macros.lang_call_macro_di import CallMacro
+            register_macro_manually("67lang:call", CallMacro)
+            bridge_to_legacy(unified_macros, "67lang:call", "process")
+            bridge_to_legacy(unified_typecheck, "67lang:call", "typecheck")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register call macro: {e}")
+            
+        # Set up scope macros
+        try:
+            from macros.scope_macro_di import ScopeMacro
+            scope_macro_names = ["do", "then", "else", "67lang:file"]
+            for scope_name in scope_macro_names:
+                register_macro_manually(scope_name, ScopeMacro)
+                bridge_to_legacy(unified_macros, scope_name, "process")
+                if scope_name in ["do", "67lang:file"]:
+                    bridge_to_legacy(unified_typecheck, scope_name, "typecheck")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register scope macros: {e}")
+            
+        # Set up noscope macro
+        try:
+            from macros.noscope_macro_di import NoscopeMacro
+            register_macro_manually("noscope", NoscopeMacro)
+            bridge_to_legacy(unified_macros, "noscope", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register noscope macro: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"

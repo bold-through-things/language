@@ -70,7 +70,8 @@ class Macro_67lang_call:
         return True
 
     def __init__(self):
-        @typecheck.add("67lang:call")
+        # TODO: Import-time registration removed - now handled by dependency injection in Macrocosm
+        # @typecheck.add("67lang:call")
         def _(ctx: MacroContext):
             # First, determine the actual parameter types
             args: list[str | None] = []
@@ -101,7 +102,7 @@ class Macro_67lang_call:
 
             return convention.returns or "*"
 
-        @macros.add("67lang:call")
+        # @macros.add("67lang:call")
         def _(ctx: MacroContext):
             args_str = ctx.compiler.get_metadata(ctx.node, Args)
             args1 = args_str.split(" ")

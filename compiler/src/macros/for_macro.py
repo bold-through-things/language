@@ -6,7 +6,8 @@ from error_types import ErrorType
 from node import Args, Node
 
 # JavaScript emission for 'for' macro
-@unified_macros.add("for")
+# TODO: Import-time registration removed - now handled by dependency injection in Macrocosm
+# @unified_macros.add("for")
 def for_macro(ctx: MacroContext):
     split = ctx.node.content.split(" ")
     ctx.compiler.assert_(len(split) == 3, ctx.node, "must have a syntax: for $ident in")

@@ -175,7 +175,7 @@ void (async () => {
                                 {
                                     const scope = _67lang.scope(parent_scope)
                                     let _0xe_groups = _0x4_groups
-
+                                    _0xe_groups
                                     let _0x10_key = _0xb_key
                                     _0xe_groups[_0x10_key] = []
                                     const _0x23__0xe_groups = await _0xe_groups[_0x10_key]
@@ -184,10 +184,10 @@ void (async () => {
                                 }
                             } }
                         let _0x12_groups = _0x4_groups
-                        let _0x14_key = _0xb_key
+                        _0x12_groupslet _0x14_key = _0xb_key
                         const _0x24__0x12_groups = await _0x12_groups[_0x14_key]
                         let _0x13_key = _0x24__0x12_groups
-
+                        _0x13_key
                         let _0x16__0x11_word = word
                         const _0x25_push = await Array.prototype.push.call(_0x13_key, _0x16__0x11_word)
                         let _0x15_push = _0x25_push
@@ -209,7 +209,7 @@ void (async () => {
                         let _0x19_group = group
                         const _0x28_join = await Array.prototype.join.call(_0x19_group, " ")
                         let _0x1a_join = _0x28_join
-                        const _0x29_await__67lang_dot_log_lp_ = await _67lang.log(_0x1a_join)
+                        const _0x29_await__67lang_dot_log_lp_ = await _67lang.log(_0x19_group, _0x1a_join)
                         _0x29_await__67lang_dot_log_lp_
                     }
                 } }
