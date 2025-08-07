@@ -1,5 +1,5 @@
 let count = 0;
-while ((count < 5)) {
+while ((an count < 5)) {
     console.log("Count: ", count);
-    count = (count + 1);
+    count = (an count + 1);
   }

@@ -42,7 +42,7 @@ class Macrocosm:
             'do': DoScopeHandler(),
             # Access aliases all map to the same handler
             'a': AccessMacroHandler(),
-            'an': self.value_handler,  # Simple variable references
+            'an': AccessMacroHandler(),
             'access': AccessMacroHandler(),
             # Value handler macros
             'string': self.value_handler,
@@ -103,20 +103,17 @@ class Macrocosm:
         return "\n".join(statements)
     
     def compile_to_js(self, root_node: Node) -> str:
-        """Compile 67lang AST to JavaScript"""
+        """Compile 67lang AST to JavaScript - delegate to FileRootHandler"""
         self.errors = []
         
-        statements = []
-        for child in root_node.children:
-            js = self._compile_node(child)
-            if js:
-                statements.append(js)
+        # Root node should be handled by FileRootHandler
+        js = self._compile_node(root_node)
         
         if self.errors:
             error_msg = "\n".join(self.errors)
             raise RuntimeError(f"Compilation failed:\n{error_msg}")
         
-        return "\n".join(statements)
+        return js or ""
     
     def _compile_node(self, node: Node) -> Optional[str]:
         """Compile a single node using direct macro mapping"""
@@ -133,11 +130,12 @@ class Macrocosm:
         if macro in self.macro_handlers:
             return self.macro_handlers[macro].compile(node, self)
         
-        # Try value compilation if no macro handler found
-        return self._compile_value(node)
+        # Crash loud and hard for unknown nodes - no silent fallbacks
+        self._add_error(f"unknown macro or unhandled node: '{macro}' in '{content}'", node)
+        return ""
     
-    def _compile_value(self, node: Node) -> str:
-        """Compile a value expression"""
+    def compile_value(self, node: Node) -> str:
+        """Compile a value expression - replacement for _compile_value"""
         return self.value_handler.compile_value(node, self)
     
     def _add_error(self, message: str, node: Node):

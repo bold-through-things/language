@@ -61,7 +61,9 @@ with default_logger.indent("compile", "initialization"):
     # default_logger.registry(f"macro registry initialized with codegen macros: {codegen_macros}")
     # default_logger.registry(f"typecheck registry initialized with typecheck macros: {typecheck_macros}")  
     # default_logger.registry(f"preprocessor registry initialized with preprocessor macros: {preprocessor_macros}")
-    default_logger.registry(f"new compiler architecture initialized with {len(its_just_macros.handlers)} handlers")
+    # Show meaningful handler names instead of count
+    handler_names = list(its_just_macros.macro_handlers.keys())
+    default_logger.registry(f"new compiler architecture initialized with handlers: {', '.join(sorted(handler_names))}")
 
 parser = TreeParser()
 with default_logger.indent("compile", "parsing files"):

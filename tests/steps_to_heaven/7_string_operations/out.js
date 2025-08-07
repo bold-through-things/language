@@ -1,6 +1,6 @@
 let text = "hello world example";
-let words = text.split(" ");
-console.log("First word:", words[0]);
-console.log("Last word:", words[2]);
-let joined = words.join("-");
-console.log("Joined:", joined);
+let words = an(" ");
+console.log("First word:", a(where(0)));
+console.log("Last word:", a(where(2)));
+let joined = a("-");
+console.log("Joined:", an joined);

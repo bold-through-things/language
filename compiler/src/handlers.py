@@ -41,7 +41,7 @@ class PrintHandler(MacroHandler):
         # Compile all child values
         js_values = []
         for child in node.children:
-            js_value = compiler._compile_value(child)
+            js_value = compiler._compile_node(child)
             js_values.append(js_value)
         
         # Let console.log handle concatenation naturally
@@ -59,7 +59,7 @@ class LocalHandler(MacroHandler):
             # Allow variable declaration without initial value
             return f"let {var_name};"
         
-        value = compiler._compile_value(node.children[0])
+        value = compiler.compile_value(node.children[0])
         return f"let {var_name} = {value};"
 
 
@@ -72,7 +72,7 @@ class IfHandler(MacroHandler):
             compiler._add_error("if statement has no condition", node)
             return ""
         
-        condition = compiler._compile_value(node.children[0])
+        condition = compiler.compile_value(node.children[0])
         
         # Find then and else blocks
         then_block = None
@@ -141,7 +141,7 @@ class ForHandler(MacroHandler):
         
         # If collection name is empty, try to get it from the first child
         if not collection_name and node.children:
-            collection_name = compiler._compile_value(node.children[0])
+            collection_name = compiler.compile_value(node.children[0])
         
         if not collection_name:
             compiler._add_error("for loop missing collection", node)
@@ -192,14 +192,18 @@ class AccessMacroHandler(MacroHandler):
         # 2 args = setter (a variable_name value)
         
         if len(node.children) == 0:
-            # No children - simple variable access for values (handled by value compiler)
-            compiler._add_error(f"access operation missing arguments: {node.content}", node)
-            return ""
+            # No children - simple variable access like "an name" or "a variable"
+            # Extract just the variable name from the rest of the content
+            if rest.strip():  # Has variable name
+                return rest.strip()  # Return just the variable name
+            else:
+                compiler._add_error(f"access operation missing variable name: {node.content}", node)
+                return ""
         elif len(node.children) == 1:
             # One child - this is actually a setter operation!
             # access variable_name -> variable_name = (child_value)
             if ' ' not in rest.strip():  # Simple variable name
-                child_value = compiler._compile_value(node.children[0])
+                child_value = compiler.compile_value(node.children[0])
                 return f"{rest} = {child_value};"
             else:
                 # Complex access like "a fruits 0" with one child - property/index access
@@ -233,10 +237,10 @@ class AccessMacroHandler(MacroHandler):
             if child.content.strip() == "where key is":
                 # Key value should be the next child
                 if i + 1 < len(node.children):
-                    key_value = compiler._compile_value(node.children[i + 1])
+                    key_value = compiler.compile_value(node.children[i + 1])
                 # Assignment value should be the child after that (if exists)
                 if i + 2 < len(node.children):
-                    assignment_value = compiler._compile_value(node.children[i + 2])
+                    assignment_value = compiler.compile_value(node.children[i + 2])
                 break
         
         if key_value is None:
@@ -268,7 +272,7 @@ class AccessMacroHandler(MacroHandler):
         """Compile function call: a function_name args"""
         args = []
         for child in node.children:
-            arg_js = compiler._compile_value(child)
+            arg_js = compiler.compile_value(child)
             args.append(arg_js)
         
         return f"{func_name}({', '.join(args)})"
@@ -279,7 +283,7 @@ class AccessMacroHandler(MacroHandler):
             compiler._add_error("access assignment missing value", node)
             return ""
         
-        value = compiler._compile_value(node.children[0])
+        value = compiler.compile_value(node.children[0])
         return f"{var_name} = {value};"
     
     def _compile_property_access(self, node: Node, compiler: 'Macrocosm', property_path: str) -> str:
@@ -328,7 +332,7 @@ class AccessMacroHandler(MacroHandler):
             # Collect arguments from children
             args = []
             for child in node.children:
-                arg_js = compiler._compile_value(child)
+                arg_js = compiler.compile_value(child)
                 args.append(arg_js)
             
             return f"{obj_name}.{method_name}({', '.join(args)})"
@@ -337,7 +341,7 @@ class AccessMacroHandler(MacroHandler):
             # One child - treat as function call: a func_name arg
             args = []
             for child in node.children:
-                arg_js = compiler._compile_value(child)
+                arg_js = compiler.compile_value(child)
                 args.append(arg_js)
             return f"{rest}({', '.join(args)})"
         
@@ -374,7 +378,7 @@ class AccessMacroHandler(MacroHandler):
         for child in node.children:
             if child.content.strip() == "where key is":
                 if child.children:
-                    key_value = compiler._compile_value(child.children[0])
+                    key_value = compiler.compile_value(child.children[0])
                 break
         
         if key_value is not None:
@@ -414,11 +418,11 @@ class AccessMacroHandler(MacroHandler):
                 # Parse "where split takes"
                 method_name = content.split()[1]
                 if child.children:
-                    arg_value = compiler._compile_value(child.children[0])
+                    arg_value = compiler.compile_value(child.children[0])
                     method_args[method_name] = arg_value
             elif content.startswith("string "):
                 # Standalone string argument (likely for join)
-                join_arg = compiler._compile_value(child)
+                join_arg = compiler.compile_value(child)
         
         # Build the method chain
         result = obj_name
@@ -442,7 +446,7 @@ class WhileHandler(MacroHandler):
             compiler._add_error("while loop has no condition", node)
             return ""
         
-        condition = compiler._compile_value(node.children[0])
+        condition = compiler.compile_value(node.children[0])
         
         # Find the accompanying do block
         do_block = None
@@ -537,7 +541,7 @@ class CallHandler(MacroHandler):
         # Compile arguments
         args = []
         for child in node.children:
-            arg_js = compiler._compile_value(child)
+            arg_js = compiler.compile_value(child)
             args.append(arg_js)
         
         return f"{func_name}({', '.join(args)})"

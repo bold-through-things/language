@@ -42,50 +42,9 @@ class ValueHandler:
         elif macro in ['all', 'any', 'none']:
             return self._compile_logical_operator(macro, node, compiler)
         
-        # Variable access - handle both simple and complex access
-        elif macro in ['an']:
-            # For value compilation, handle both simple and complex access
-            if not node.children and ' ' not in rest:
-                return rest  # Simple variable reference
-            else:
-                # Complex access operations should be handled by AccessMacroHandler  
-                access_handler = compiler.macro_handlers.get('a')
-                if access_handler:
-                    return access_handler._compile_as_expression(node, compiler, rest)
-                else:
-                    compiler._add_error(f"no access handler available for: {content}", node)
-                    return content
         
-        elif macro == 'a':
-            # For 'a' operations in value context, compile as access expressions
-            if node.children:
-                # Complex access with children - delegate to access handler for expression compilation
-                access_handler = compiler.macro_handlers.get('a')
-                if access_handler:
-                    return access_handler._compile_as_expression(node, compiler, rest)
-                else:
-                    compiler._add_error(f"no access handler available for: {content}", node)
-                    return content
-            else:
-                # Check for method chaining first
-                if self._is_method_chaining(rest):
-                    return self._compile_method_chaining_expression(node, compiler, rest)
-                
-                # Simple variable reference without children
-                if not ' ' in rest:
-                    return rest
-                else:
-                    # Complex access like "a fruits 0" without children - parse as property access
-                    parts = rest.split()
-                    if len(parts) >= 2:
-                        obj_name = parts[0]
-                        accessor = parts[1]
-                        try:
-                            int(accessor)
-                            return f"{obj_name}[{accessor}]"
-                        except ValueError:
-                            return f"{obj_name}.{accessor}"
-                    return rest
+        # Note: 'a', 'an', 'access' operations should only be handled by AccessMacroHandler
+        # The value compiler should not handle access operations at all
         
         # Arithmetic operations
         elif macro == 'add':
@@ -129,7 +88,7 @@ class ValueHandler:
         elif node.children:
             args = []
             for child in node.children:
-                arg_value = compiler._compile_value(child)
+                arg_value = compiler.compile_value(child)
                 args.append(arg_value)
             return f"{macro}({', '.join(args)})"
         
@@ -147,7 +106,7 @@ class ValueHandler:
         
         values = []
         for child in node.children:
-            value = compiler._compile_value(child)
+            value = compiler.compile_value(child)
             values.append(value)
         
         if operator == 'all':
@@ -176,7 +135,7 @@ class ValueHandler:
         
         operands = []
         for child in node.children:
-            operand = compiler._compile_value(child)
+            operand = compiler.compile_value(child)
             operands.append(operand)
         
         # Chain operations left-to-right
@@ -192,8 +151,8 @@ class ValueHandler:
             compiler._add_error(f"comparison operation needs exactly 2 operands", node)
             return "false"
         
-        left = compiler._compile_value(node.children[0])
-        right = compiler._compile_value(node.children[1])
+        left = compiler.compile_value(node.children[0])
+        right = compiler.compile_value(node.children[1])
         
         return f"({left} {operator} {right})"
     
@@ -201,7 +160,7 @@ class ValueHandler:
         """Compile a list literal"""
         elements = []
         for child in node.children:
-            element = compiler._compile_value(child)
+            element = compiler.compile_value(child)
             elements.append(element)
         
         return f"[{', '.join(elements)}]"
@@ -242,11 +201,11 @@ class ValueHandler:
                 # Parse "where split takes"
                 method_name = content.split()[1]
                 if child.children:
-                    arg_value = compiler._compile_value(child.children[0])
+                    arg_value = compiler.compile_value(child.children[0])
                     method_args[method_name] = arg_value
             elif content.startswith("string "):
                 # Standalone string argument (likely for join)
-                join_arg = compiler._compile_value(child)
+                join_arg = compiler.compile_value(child)
         
         # Build the method chain
         result = obj_name
