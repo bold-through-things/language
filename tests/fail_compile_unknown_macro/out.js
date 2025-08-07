@@ -1,1 +1,1 @@
-definitely_not_a_real_macro_name
+definitely_not_a_real_macro_name("this should not compile")

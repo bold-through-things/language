@@ -1,11 +1,5 @@
 [
   {
     "message": "Error at line 97: comparison operation needs exactly 2 operands"
-  },
-  {
-    "message": "Error at line 121: complex access operation in value context: an age"
-  },
-  {
-    "message": "Error at line 175: complex access operation in value context: an ,"
   }
 ]
