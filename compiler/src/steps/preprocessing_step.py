@@ -73,9 +73,15 @@ class PreprocessingStep(MacroProcessingStep):
 
         @self.macros.add("a", "an", "access")
         def access_handler(ctx: MacroContext):
-            # Import the consolidated access preprocessing function
-            from macros.access_macros import access_preprocessing
-            access_preprocessing(ctx)
+            # TODO: Use dependency injection version if available
+            from macro_base import di_registry
+            if di_registry.has_macro("access"):
+                instance = di_registry.get_instance("access")
+                instance.preprocess(ctx)
+            else:
+                # Fallback to old implementation
+                from macros.access_macros import access_preprocessing
+                access_preprocessing(ctx)
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""

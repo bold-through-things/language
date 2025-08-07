@@ -137,6 +137,54 @@ class Macrocosm:
             bridge_to_legacy(unified_macros, "67lang:solution", "process")
         except ImportError as e:
             raise RuntimeError(f"Failed to register solution macro: {e}")
+            
+        # Set up comment macros
+        try:
+            from macros.comment_macros_di import CommentMacro
+            comment_macro_names = ["#", "//", "/*", "--", "note"]
+            for comment_name in comment_macro_names:
+                register_macro_manually(comment_name, CommentMacro)
+                bridge_to_legacy(unified_macros, comment_name, "process")
+                bridge_to_legacy(unified_typecheck, comment_name, "typecheck")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register comment macros: {e}")
+            
+        # Set up literal value macros
+        try:
+            from macros.literal_value_macros_di import LiteralValueMacro
+            # Literal value types
+            literal_types = ["int", "float", "string", "regex"]
+            for literal_type in literal_types:
+                register_macro_manually(literal_type, LiteralValueMacro)
+                bridge_to_legacy(unified_macros, literal_type, "process")
+                bridge_to_legacy(unified_typecheck, literal_type, "typecheck")
+                
+            # Literal constants that map directly to JavaScript
+            literal_constants = ["true", "false", "break", "continue", "dict", "return"]
+            for literal_const in literal_constants:
+                register_macro_manually(literal_const, LiteralValueMacro)
+                bridge_to_legacy(unified_macros, literal_const, "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register literal value macros: {e}")
+            
+        # Set up access macros
+        try:
+            from macros.access_macros_di import AccessMacro
+            # Internal access operations
+            access_ops = ["67lang:access_field", "67lang:access_index", "67lang:access_local"]
+            for access_op in access_ops:
+                register_macro_manually(access_op, AccessMacro)
+                bridge_to_legacy(unified_macros, access_op, "process")
+                if access_op == "67lang:access_local":
+                    bridge_to_legacy(unified_typecheck, access_op, "typecheck")
+                    
+            # High-level access aliases (a, an, access) with preprocessing
+            access_aliases = ["a", "an", "access"]
+            for access_alias in access_aliases:
+                register_macro_manually(access_alias, AccessMacro, aliases=[])
+                # These are handled entirely by preprocessing - no need to bridge process/typecheck
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register access macros: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"

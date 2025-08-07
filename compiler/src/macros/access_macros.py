@@ -17,7 +17,8 @@ typecheck = unified_typecheck  # Use unified registry
 
 
 
-@macros.add("67lang:access_field")
+# TODO: Import-time registration removed - now handled by dependency injection in Macrocosm
+# @macros.add("67lang:access_field")
 def access_field(ctx: MacroContext):
     name, field = get_two_args(ctx, "first argument is object, second is field")
     res = walk_upwards_for_local_definition(ctx, name)
@@ -34,7 +35,7 @@ def access_field(ctx: MacroContext):
     ctx.statement_out.write(f"const {ident} = await {name}{field_access}\n")
     ctx.expression_out.write(ident)
 
-@macros.add("67lang:access_index")
+# @macros.add("67lang:access_index")
 def access_index(ctx: MacroContext):
     name = get_single_arg(ctx, "single argument, the object into which we should index")
     res = walk_upwards_for_local_definition(ctx, name)
@@ -54,7 +55,7 @@ def access_index(ctx: MacroContext):
     ctx.statement_out.write(f"const {ident} = await {name}[{key}]\n")
     ctx.expression_out.write(ident)
 
-@macros.add("67lang:access_local")
+# @macros.add("67lang:access_local")
 def pil_access_local(ctx: MacroContext):
     desired_name = get_single_arg(ctx)
     res = walk_upwards_for_local_definition(ctx, desired_name)
@@ -179,7 +180,7 @@ def access_preprocessing(ctx: MacroContext):
 # TODO: local macro typecheck moved to local_macro.py - keeping this comment for tracking the separation
 
 # Type checking for '67lang:access_local' macro
-@typecheck.add("67lang:access_local")
+# @typecheck.add("67lang:access_local")
 def access_local_typecheck(ctx: MacroContext):
     """Type checking for '67lang:access_local' macro"""
     first = get_single_arg(ctx, "single argument, the name of local")
