@@ -20,6 +20,18 @@ class MacroContext:
     compiler: "Macrocosm"
     current_step: "MacroProcessingStep | None" = None
 
+class Macro_preprocess_provider(Protocol):
+    def preprocess(self, ctx: MacroContext): ...
+class Macro_typecheck_provider(Protocol):
+    def typecheck(self, ctx: MacroContext) -> str | None: ...
+class Macro_emission_provider(Protocol):
+    def emission(self, ctx: MacroContext): ...
+
+Macro_provider = \
+    Macro_preprocess_provider | \
+    Macro_typecheck_provider | \
+    Macro_emission_provider
+
 class Macro(Protocol):
     def __call__(self, ctx: MacroContext) -> str: ...
 
@@ -39,6 +51,12 @@ class MacroRegistry:
                 self._registry[name] = instance
             return obj
         return decorator
+
+    def add_fn(self, m: Macro | None, *names: str):
+        if m is None:
+            return
+        for name in names:
+            self._registry[name] = m
 
     def get(self, name: str) -> Macro:
         try:

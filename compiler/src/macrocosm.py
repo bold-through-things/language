@@ -1,11 +1,13 @@
 from contextlib import contextmanager
 from typing import Any, Sequence
 from io import StringIO
+from macros.literal_value_macros import Number_macro_provider, String_macro_provider
+from macros.while_macro import While_macro_provider
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
-from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
-from macro_registry import MacroContext
-from preprocessing_macros import PreprocessingStep
+from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident, unified_macros, unified_typecheck
+from macro_registry import Macro_emission_provider, MacroContext, Macro_provider, MacroRegistry
+from preprocessing_macros import PreprocessingStep, preprocessor
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
@@ -34,6 +36,8 @@ class Macrocosm:
             JavaScriptEmissionStep(),
             MustCompileErrorVerificationStep()
         ]
+
+        self.registries: dict[str, MacroRegistry] = {}
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
@@ -194,3 +198,62 @@ class Macrocosm:
             except MacroAssertFailed:
                 pass
         return _safely()
+
+def create_macrocosm() -> Macrocosm:
+    # creates it with all the necessary macros registered
+
+    macro_providers: dict[str, Macro_provider] = {
+        "while": While_macro_provider(),
+        "int": Number_macro_provider(int),
+        "float": Number_macro_provider(float),
+        "string": String_macro_provider("string"),
+        "regex": String_macro_provider("regex"),
+    }
+
+    literally = {
+        "true": "true",
+        "false": "false",
+        "break": "break",
+        "continue": "continue",
+        "dict": "{}",
+        "return": "return"
+    }
+
+    # TODO, this should be... elsewhere.
+    class Literal_macro_provider(Macro_emission_provider):
+        def __init__(self, value: str):
+            self.value = value
+        def emission(self, ctx: MacroContext):
+            ctx.expression_out.write(self.value)
+        # TODO, type checking, for booleans...
+    
+    for k, v in literally.items():
+        macro_providers[k] = Literal_macro_provider(v)
+
+    def create_registry(name: str):
+        registry = MacroRegistry()
+        # rv.registries[name] = registry
+        return registry
+    
+    
+    # how FUCKING ironic to have to write such code in a language
+    # that doesn't offer macros only to create a new language
+    # that would trivially implement this with zero repetition?
+
+    preprocess = create_registry("preprocess")
+    typecheck = create_registry("typecheck")
+    emission = create_registry("emission")
+
+    for macro, provider in macro_providers.items():
+        preprocess.add_fn(getattr(provider, "preprocess", None), macro)
+        typecheck.add_fn(getattr(provider, "typecheck", None), macro)
+        emission.add_fn(getattr(provider, "emission", None), macro)
+
+    # TODO - this should not be needed
+    unified_macros._registry.update(emission._registry)
+    unified_typecheck._registry.update(typecheck._registry)
+    preprocessor._registry.update(preprocessor._registry)
+    
+    rv = Macrocosm()
+    return rv
+    

@@ -1,79 +1,71 @@
+from typing import Literal, Type, Union
 from error_types import ErrorType
 from processor_base import unified_macros, unified_typecheck
-from macro_registry import MacroContext
+from macro_registry import Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider, MacroContext
 from node import Args
 
 # Legacy registries - will be moved into steps
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
-@macros.add("int")
-def int_macro(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    try:
-        int(args)
-    except ValueError:
-        ctx.compiler.assert_(False, f"{args} must be a valid integer string.", ErrorType.INVALID_INT)
-    ctx.expression_out.write(str(args))
 
-@typecheck.add("int")
-def int_typecheck(ctx: MacroContext):
-    return "int"
+class Number_macro_provider(
+        Macro_preprocess_provider,
+        Macro_typecheck_provider,
+        Macro_emission_provider
+    ):
+    def __init__(self, number_type: Type[Union[int, float]]):
+        self.number_type = number_type
 
-@macros.add("float")
-def float_macro(ctx: MacroContext):
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    try:
-        float(args)
-    except ValueError:
-        ctx.compiler.assert_(False, f"{args} must be a valid float string.", ErrorType.INVALID_FLOAT)
-    ctx.expression_out.write(str(args))
+    def preprocess(self, ctx: MacroContext):
+        args = ctx.compiler.get_metadata(ctx.node, Args)
+        try:
+            self.number_type(args)
+        except ValueError:
+            error_type = (
+                ErrorType.INVALID_INT if self.number_type is int else ErrorType.INVALID_FLOAT
+            )
+            ctx.compiler.assert_(
+                False,
+                ctx.node,
+                f"{args} must be a valid {self.number_type.__name__} string.",
+                error_type,
+            )
 
-@typecheck.add("float")
-def int_typecheck(ctx: MacroContext):
-    return "float"
+    def typecheck(self, ctx: MacroContext):
+        return self.number_type.__name__
 
-@macros.add("string", "regex")
-def str_macro(ctx: MacroContext):
-    s: str = ctx.compiler.get_metadata(ctx.node, Args)
-    if len(s) == 0:
-        # multiline string case - collect content from children
-        lines = []
-        for child in ctx.node.children:
-            if child.content:
-                lines.append(child.content)
-        s = "\n".join(lines)
-    else:
-        delim = s[0]
-        ctx.compiler.assert_(s.endswith(delim), ctx.node, "must be delimited on both sides with the same character")
-        s = s.removeprefix(delim).removesuffix(delim)
-    s = s.replace("\n", "\\n")
-    s = s.replace('"', '\\"')  # escape quotes during JS string emission
-    from node import Macro
-    macro = ctx.compiler.get_metadata(ctx.node, Macro)
-    sep = '"' if macro == "string" else "/"
-    ctx.expression_out.write(f'{sep}{s}{sep}')
+    def emission(self, ctx: MacroContext):
+        args = ctx.compiler.get_metadata(ctx.node, Args)
+        ctx.expression_out.write(str(args))
 
-@typecheck.add("string")
-def str_typecheck(ctx: MacroContext):
-    return "str"
+class String_macro_provider(
+        Macro_typecheck_provider,
+        Macro_emission_provider,
+    ):
+    def __init__(self, kind: Literal["string", "regex"]):
+        self.kind = kind
 
-@typecheck.add("regex")
-def regex_typecheck(ctx: MacroContext):
-    return "regex"
+    def typecheck(self, ctx: MacroContext):
+        return "str" if self.kind == "string" else "regex"
 
-# Literal values that map directly to JavaScript
-literally = {
-    "true": "true",
-    "false": "false",
-    "break": "break",
-    "continue": "continue",
-    "dict": "{}",
-    "return": "return"
-}
-
-@macros.add(*[k for k in literally.keys()])
-def literally_macro(ctx: MacroContext):
-    # TODO. this isn't inherently expression_out... indeed most of these should be statement_out...
-    from node import Macro
-    macro = ctx.compiler.get_metadata(ctx.node, Macro)
-    ctx.expression_out.write(literally[macro])
+    def emission(self, ctx: MacroContext):
+        s: str = ctx.compiler.get_metadata(ctx.node, Args)
+        if len(s) == 0:
+            # multiline string: collect content from children
+            lines = []
+            for child in ctx.node.children:
+                if child.content:
+                    lines.append(child.content)
+            s = "\n".join(lines)
+        else:
+            delim = s[0]
+            ctx.compiler.assert_(
+                s.endswith(delim),
+                ctx.node,
+                "must be delimited on both sides with the same character"
+            )
+            s = s.removeprefix(delim).removesuffix(delim)
+        s = s.replace("\n", "\\n")
+        s = s.replace('"', '\\"')  # escape quotes during JS string emission
+        sep = '"' if self.kind == "string" else "/"
+        ctx.expression_out.write(f'{sep}{s}{sep}')

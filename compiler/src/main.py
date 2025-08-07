@@ -26,7 +26,7 @@ configure_logger_from_args(args.log)
 
 # Now import modules that register macros (these will respect the logging configuration)
 from tree_parser import TreeParser
-from macrocosm import Macrocosm
+from macrocosm import Macrocosm, create_macrocosm
 
 def human_readable(inspections: list[dict[str, Any]]) -> None:
     for i, entry in enumerate(reversed(inspections), 1):
@@ -49,7 +49,7 @@ with default_logger.indent("compile", "initialization"):
     rglob = "*.67lang.expanded" if args.rte else "*.67lang"
     result = list(Path(".").rglob("*.67lang"))
     default_logger.compile(f"found {len(result)} .67lang files: {[str(f) for f in result]}")
-    its_just_macros = Macrocosm()
+    its_just_macros = create_macrocosm()
     
     # Log macro registry summary if registry logging is enabled
     from processor_base import unified_macros, unified_typecheck
