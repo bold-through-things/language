@@ -70,3 +70,5 @@ Each test will be minimal and focused on a single concept, making it easy to imp
 - Remove unnecessary abstraction layers
 
 **Focus on test execution, not compilation:** Stop caring about "how many tests compile". Tests should *run fully* or *error correctly*. The `./test --compile` flag is just for test debugging - what matters is that tests execute properly and either pass or fail with clear error messages.
+
+**Work commitment and session management:** Do not quit early or make minimal changes that burn through premium requests. Each work session should involve substantial, meaningful progress on fixing failing tests and implementing missing functionality. Stay focused on the core work of making tests pass rather than making small architectural tweaks. The goal is to fix as many failing tests as possible in each session, not to make tiny incremental improvements.

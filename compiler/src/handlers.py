@@ -56,8 +56,8 @@ class LocalHandler(MacroHandler):
         _, var_name = cut(node.content, ' ')
         
         if not node.children:
-            compiler._add_error("local statement has no value", node)
-            return ""
+            # Allow variable declaration without initial value
+            return f"let {var_name};"
         
         value = compiler._compile_value(node.children[0])
         return f"let {var_name} = {value};"
@@ -182,12 +182,13 @@ class AccessMacroHandler(MacroHandler):
             compiler._add_error(f"access operation missing arguments: {node.content}", node)
             return ""
         elif len(node.children) == 1:
-            # One child = getter operation (a variable_name -> variable_name)
-            # Or method call (a object method -> object.method())
-            if ' ' not in rest.strip():  # Simple name, function call or property access
-                return self._compile_function_call(node, compiler, rest)
+            # One child - this is actually a setter operation!
+            # access variable_name -> variable_name = (child_value)
+            if ' ' not in rest.strip():  # Simple variable name
+                child_value = compiler._compile_value(node.children[0])
+                return f"{rest} = {child_value};"
             else:
-                # Complex access like "a fruits 0" - property/index access
+                # Complex access like "a fruits 0" with one child - property/index access
                 return self._compile_property_access(node, compiler, rest)
         elif len(node.children) == 2:
             # Two children = setter operation (a variable_name value)
@@ -210,24 +211,38 @@ class AccessMacroHandler(MacroHandler):
             compiler._add_error("invalid key assignment syntax", node)
             return ""
         
-        # Find the key value from children
+        # Find "where key is" child and get the key value from the next sibling
         key_value = None
-        for child in node.children:
-            if child.content.startswith("where key is"):
-                if child.children:
-                    key_value = compiler._compile_value(child.children[0])
+        assignment_value = None
+        
+        for i, child in enumerate(node.children):
+            if child.content.strip() == "where key is":
+                # Key value should be the next child
+                if i + 1 < len(node.children):
+                    key_value = compiler._compile_value(node.children[i + 1])
+                # Assignment value should be the child after that (if exists)
+                if i + 2 < len(node.children):
+                    assignment_value = compiler._compile_value(node.children[i + 2])
                 break
         
         if key_value is None:
             compiler._add_error("key assignment missing key value", node)
             return ""
         
-        # Find the assignment value
-        assignment_value = None
-        for child in node.children:
-            if not child.content.startswith("where "):
-                assignment_value = compiler._compile_value(child)
-                break
+        # Check if this is a method call (like "push")
+        if len(parts) >= 3:
+            method_name = parts[2]
+            if assignment_value:
+                return f"{var_name}[{key_value}].{method_name}({assignment_value});"
+            else:
+                return f"{var_name}[{key_value}].{method_name}();"
+        
+        # Regular assignment
+        if assignment_value:
+            return f"{var_name}[{key_value}] = {assignment_value};"
+        else:
+            # Initialize with empty value (like creating a list)
+            return f"{var_name}[{key_value}] = [];"
         
         if assignment_value is None:
             compiler._add_error("key assignment missing value", node)
@@ -283,11 +298,26 @@ class AccessMacroHandler(MacroHandler):
         if 'key' in rest:
             return self._compile_key_access_expression(node, compiler, rest)
         
-        # Check for method chaining
+        # Check for method chaining (multiple methods)
         if self._is_method_chaining(rest):
             # Remove the semicolon from the method chaining result since this is an expression
             result = self._compile_method_chaining(node, compiler, rest)
             return result.rstrip(';')
+        
+        # Check for single method call like "text split"
+        parts = rest.split()
+        if len(parts) == 2 and len(node.children) >= 1:
+            # Single method call with arguments: obj method
+            obj_name = parts[0]
+            method_name = parts[1]
+            
+            # Collect arguments from children
+            args = []
+            for child in node.children:
+                arg_js = compiler._compile_value(child)
+                args.append(arg_js)
+            
+            return f"{obj_name}.{method_name}({', '.join(args)})"
         
         if len(node.children) == 1:
             # One child - treat as function call: a func_name arg
@@ -298,7 +328,6 @@ class AccessMacroHandler(MacroHandler):
             return f"{rest}({', '.join(args)})"
         
         # No children - property/index access like "a fruits 0"
-        parts = rest.split()
         if len(parts) >= 2:
             obj_name = parts[0]
             accessor = parts[1]
@@ -310,6 +339,9 @@ class AccessMacroHandler(MacroHandler):
             except ValueError:
                 # Not a number, treat as property
                 return f"{obj_name}.{accessor}"
+        
+        # Fallback to simple variable access
+        return rest
         
         # Simple variable reference
         return rest
@@ -343,7 +375,9 @@ class AccessMacroHandler(MacroHandler):
         if len(parts) >= 3:  # obj method1 method2 ...
             # Check if the parts after the first one look like method names
             string_methods = {'split', 'join', 'replace', 'trim', 'toLowerCase', 'toUpperCase', 'sort'}
-            return any(part in string_methods for part in parts[1:])
+            # Only consider it method chaining if there are at least 2 methods (not just 1)
+            method_count = sum(1 for part in parts[1:] if part in string_methods)
+            return method_count >= 2
         return False
     
     def _compile_method_chaining(self, node: Node, compiler: 'Macrocosm', rest: str) -> str:

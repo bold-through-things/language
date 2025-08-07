@@ -44,13 +44,17 @@ class ValueHandler:
         
         # Variable access - handle both simple and complex access
         elif macro in ['an']:
-            # For value compilation, only handle simple variable names without children
-            if not node.children and not ' ' in rest:
+            # For value compilation, handle both simple and complex access
+            if not node.children and ' ' not in rest:
                 return rest  # Simple variable reference
             else:
-                # Complex access operations should be handled by AccessMacroHandler
-                compiler._add_error(f"complex access operation in value context: {content}", node)
-                return content
+                # Complex access operations should be handled by AccessMacroHandler  
+                access_handler = compiler.macro_handlers.get('a')
+                if access_handler:
+                    return access_handler._compile_as_expression(node, compiler, rest)
+                else:
+                    compiler._add_error(f"no access handler available for: {content}", node)
+                    return content
         
         elif macro == 'a':
             # For 'a' operations in value context, compile as access expressions
@@ -120,6 +124,14 @@ class ValueHandler:
             return self._compile_list(node, compiler)
         elif macro == 'dict':
             return self._compile_dict(node, compiler)
+        
+        # Function calls - if node has children, treat as function call
+        elif node.children:
+            args = []
+            for child in node.children:
+                arg_value = compiler._compile_value(child)
+                args.append(arg_value)
+            return f"{macro}({', '.join(args)})"
         
         # Otherwise, assume it's a variable reference
         return content
