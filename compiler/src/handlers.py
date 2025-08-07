@@ -769,6 +769,62 @@ class ValuesHandler(MacroHandler):
         return f"Object.values({obj})"
 
 
+class ReturnHandler(MacroHandler):
+    """Handles return statements"""
+    expected_macro = "return"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        if not node.children:
+            return "return;"
+        
+        value = compiler._compile_node(node.children[0])
+        return f"return {value};"
+
+
+class BreakHandler(MacroHandler):
+    """Handles break statements"""
+    expected_macro = "break"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        return "break;"
+
+
+class TypeHandler(MacroHandler):
+    """Handles type declarations"""
+    expected_macro = "type"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # Type declarations don't generate JavaScript in this simple implementation
+        # They would be used for static type checking, which isn't implemented yet
+        return None
+
+
+class WhereClauseHandler(MacroHandler):
+    """Handles standalone where clauses (not part of key assignment)"""
+    expected_macro = "where"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # For now, treat where clauses as no-ops since they're handled by parents
+        # This prevents "unknown macro" errors for where clauses in contexts
+        # other than key assignment
+        return None
+
+
+class RegexHandler(MacroHandler):
+    """Handles regex literals"""
+    expected_macro = "regex"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # Extract regex pattern from content like "regex /pattern/"
+        _, rest = cut(node.content, ' ')
+        if not rest.startswith('/') or not rest.endswith('/'):
+            compiler._add_error("invalid regex syntax, expected /pattern/", node)
+            return ""
+        
+        pattern = rest[1:-1]  # Remove surrounding /
+        return f"/{pattern}/"
+
+
 class FileRootHandler(MacroHandler):
     """Handles the root 67lang:file node"""
     

@@ -13,7 +13,8 @@ from handlers import (
     ForHandler, AccessMacroHandler, WhileHandler, FunctionHandler, CallHandler,
     NoteHandler, DoScopeHandler, FileRootHandler, CommentHandler, IsTtyHandler,
     PromptHandler, StdinHandler, ConcatHandler, ZipHandler, ExistsHandler,
-    InsideHandler, ValuesHandler
+    InsideHandler, ValuesHandler, ReturnHandler, BreakHandler, TypeHandler, 
+    WhereClauseHandler, RegexHandler
 )
 from value_compiler import ValueHandler
 from typing import List, Dict, Any, Optional
@@ -52,6 +53,11 @@ class Macrocosm:
             'exists': ExistsHandler(),
             'inside': InsideHandler(),
             'values': ValuesHandler(),
+            'return': ReturnHandler(),
+            'break': BreakHandler(),
+            'type': TypeHandler(),
+            'where': WhereClauseHandler(),
+            'regex': RegexHandler(),
             # Access aliases all map to the same handler
             'a': AccessMacroHandler(),
             'an': AccessMacroHandler(),
