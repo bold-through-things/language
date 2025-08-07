@@ -1,6 +1,6 @@
 # Import all macro modules to ensure they register with the unified registry
 from . import access_macros
-from . import builtin_macros
+# TODO: Migrated to DI - from . import builtin_macros 
 from . import collection_macros
 from . import comment_macros
 from . import error_macros

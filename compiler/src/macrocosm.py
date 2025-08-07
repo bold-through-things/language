@@ -73,6 +73,17 @@ class Macrocosm:
             bridge_to_legacy(unified_typecheck, "else", "typecheck")
         except ImportError as e:
             raise RuntimeError(f"Failed to register if/then/else macros: {e}")
+            
+        # Set up builtin macros
+        try:
+            from macros.builtin_macros_di import BuiltinMacro
+            from processor_base import builtins
+            # Register all builtin operations with the same macro class
+            for builtin_name in builtins.keys():
+                register_macro_manually(builtin_name, BuiltinMacro)
+                bridge_to_legacy(unified_macros, builtin_name, "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register builtin macros: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
