@@ -1,19 +1,18 @@
-# Import macro modules to ensure they register with the unified registry
-# TODO: Gradually remove imports as macros are converted to dependency injection
+# Import all macro modules to ensure they register with the unified registry
 from . import access_macros
-# from . import builtin_macros  # TODO: Converted to DI - remove import-time registration
-# from . import collection_macros  # TODO: Converted to DI - remove import-time registration
+from . import builtin_macros
+from . import collection_macros
 from . import comment_macros
-# from . import error_macros  # TODO: Converted to DI - remove import-time registration
-# from . import exists_macro  # TODO: Converted to DI - remove import-time registration
-# from . import fn_macro  # TODO: Converted to DI - remove import-time registration
-# from . import for_macro  # TODO: Converted to DI - remove import-time registration
-# from . import if_macro  # TODO: Converted to DI - remove import-time registration
+from . import error_macros
+from . import exists_macro  # TODO: Added separated exists macro
+from . import fn_macro  # TODO: Added separated fn macro
+from . import for_macro
+from . import if_macro
 from . import lang_call_macro  # TODO: Added separated 67lang:call macro
 from . import literal_value_macros
-# from . import local_macro  # TODO: Converted to DI - remove import-time registration
-# from . import noscope_macro  # TODO: Converted to DI - remove import-time registration
-# from . import scope_macro  # TODO: Converted to DI - remove import-time registration
-# from . import solution_macro  # TODO: Converted to DI - remove import-time registration
-# from . import utility_macros  # TODO: Converted to DI - remove import-time registration
-# from . import while_macro  # TODO: Converted to DI - remove import-time registration
+from . import local_macro  # TODO: Added separated local macro
+from . import noscope_macro
+from . import scope_macro
+from . import solution_macro
+from . import utility_macros
+from . import while_macro

@@ -37,23 +37,9 @@ class PreprocessingStep(MacroProcessingStep):
 
         @self.macros.add("for")
         def preprocess_for(ctx: MacroContext):
-            # Use dependency injection version if available
-            from macro_base import di_registry
-            if di_registry.has_macro("for"):
-                instance = di_registry.get_instance("for")
-                instance.preprocess(ctx)
-            else:
-                # Fallback: Define preprocessing logic inline to avoid import-time registration
-                from node import Args, Node
-                args = ctx.compiler.get_metadata(ctx.node, Args)
-                args = args.split(" ")
-                name = args[0] # TODO - this won't support any identifier, it probably should!
-
-                ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
-
-                for child in ctx.node.children:
-                    from dataclasses import replace
-                    ctx.current_step.process_node(replace(ctx, node=child))
+            # Import the consolidated for preprocessing function
+            from macros.for_macro import for_preprocessing
+            for_preprocessing(ctx)
 
         @self.macros.add("fn")
         def preprocess_fn(ctx: MacroContext):

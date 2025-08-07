@@ -69,107 +69,10 @@ class Macrocosm:
             register_macro_manually("then", ThenMacro)
             register_macro_manually("else", ElseMacro)
             bridge_to_legacy(unified_macros, "if", "process")
-            bridge_to_legacy(unified_macros, "then", "process")  # then needs JS emission too
-            bridge_to_legacy(unified_macros, "else", "process")  # else needs JS emission too
             bridge_to_legacy(unified_typecheck, "then", "typecheck")
             bridge_to_legacy(unified_typecheck, "else", "typecheck")
         except ImportError as e:
             raise RuntimeError(f"Failed to register if/then/else macros: {e}")
-            
-        # Set up while macro
-        try:
-            from macros.while_macro_di import WhileMacro
-            register_macro_manually("while", WhileMacro)
-            bridge_to_legacy(unified_macros, "while", "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register while macro: {e}")
-            
-        # Set up for macro  
-        try:
-            from macros.for_macro_di import ForMacro
-            register_macro_manually("for", ForMacro)
-            bridge_to_legacy(unified_macros, "for", "process")
-            # Bridge preprocessing step
-            from macro_base import di_registry
-            if di_registry.has_macro("for"):
-                # The preprocessing step will automatically use DI version
-                pass
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register for macro: {e}")
-            
-        # Set up noscope macro
-        try:
-            from macros.noscope_macro_di import NoscopeMacro
-            register_macro_manually("noscope", NoscopeMacro)
-            bridge_to_legacy(unified_macros, "noscope", "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register noscope macro: {e}")
-            
-        # Set up scope macros (do, 67lang:file only - then/else handled by if macro)
-        try:
-            from macros.scope_macro_di import DoMacro, FileMacro
-            register_macro_manually("do", DoMacro)
-            register_macro_manually("67lang:file", FileMacro)
-            bridge_to_legacy(unified_macros, "do", "process")
-            bridge_to_legacy(unified_macros, "67lang:file", "process")
-            bridge_to_legacy(unified_typecheck, "do", "typecheck")
-            bridge_to_legacy(unified_typecheck, "67lang:file", "typecheck")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register scope macros: {e}")
-            
-        # Set up builtin macros (print, add, concat, etc.)
-        try:
-            from macros.builtin_macros_di import BuiltinMacro
-            from processor_base import builtins
-            
-            # Register all builtin macros with individual instances
-            for builtin_name in builtins.keys():
-                register_macro_manually(builtin_name, BuiltinMacro)
-                bridge_to_legacy(unified_macros, builtin_name, "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register builtin macros: {e}")
-            
-        # Set up utility macros (noop, type, etc.)
-        try:
-            from macros.utility_macros_di import UtilityMacro
-            utility_macros = ["noop", "type", "67lang:auto_type", "67lang:assume_local_exists"]
-            for utility_name in utility_macros:
-                register_macro_manually(utility_name, UtilityMacro)
-                bridge_to_legacy(unified_macros, utility_name, "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register utility macros: {e}")
-            
-        # Set up solution macro
-        try:
-            from macros.solution_macro_di import SolutionMacro
-            register_macro_manually("67lang:solution", SolutionMacro)
-            bridge_to_legacy(unified_macros, "67lang:solution", "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register solution macro: {e}")
-            
-        # Set up exists macro
-        try:
-            from macros.exists_macro_di import ExistsMacro
-            register_macro_manually("exists", ExistsMacro)
-            bridge_to_legacy(unified_macros, "exists", "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register exists macro: {e}")
-            
-        # Set up error macro
-        try:
-            from macros.error_macros_di import ErrorMacro
-            register_macro_manually("must_compile_error", ErrorMacro)
-            bridge_to_legacy(unified_macros, "must_compile_error", "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register error macro: {e}")
-            
-        # Set up collection macro
-        try:
-            from macros.collection_macros_di import CollectionMacro
-            register_macro_manually("list", CollectionMacro)
-            bridge_to_legacy(unified_macros, "list", "process")
-        except ImportError as e:
-            raise RuntimeError(f"Failed to register collection macro: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
