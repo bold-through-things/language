@@ -37,9 +37,15 @@ class PreprocessingStep(MacroProcessingStep):
 
         @self.macros.add("for")
         def preprocess_for(ctx: MacroContext):
-            # Import the consolidated for preprocessing function
-            from macros.for_macro import for_preprocessing
-            for_preprocessing(ctx)
+            # TODO: Use dependency injection version if available
+            from macro_base import di_registry
+            if di_registry.has_macro("for"):
+                instance = di_registry.get_instance("for")
+                instance.preprocess(ctx)
+            else:
+                # Fallback to old implementation
+                from macros.for_macro import for_preprocessing
+                for_preprocessing(ctx)
 
         @self.macros.add("fn")
         def preprocess_fn(ctx: MacroContext):
