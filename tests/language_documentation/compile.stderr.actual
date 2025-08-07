@@ -1,50 +1,11 @@
 [
   {
-    "message": "Error at line 53: unknown macro: # TODO - assert instead of printing (need a new macro)"
-  },
-  {
     "message": "Error at line 97: comparison operation needs exactly 2 operands"
   },
   {
-    "message": "Error at line 121: unknown macro: an age"
+    "message": "Error at line 121: complex access operation in value context: an age"
   },
   {
     "message": "Error at line 175: complex access operation in value context: an ,"
-  },
-  {
-    "message": "Error at line 189: complex access operation in value context: a 2347 split sort join"
-  },
-  {
-    "message": "Error at line 212: invalid access operation: a 67lang.features name"
-  },
-  {
-    "message": "Error at line 224: invalid access operation: a 67lang.features added"
-  },
-  {
-    "message": "Error at line 237: complex access operation in value context: a 67lang.features described slice join"
-  },
-  {
-    "message": "Error at line 259: unknown macro: then"
-  },
-  {
-    "message": "Error at line 269: unknown macro: then"
-  },
-  {
-    "message": "Error at line 272: unknown macro: else"
-  },
-  {
-    "message": "Error at line 302: unknown macro: # TODO update this once 67lang is production grade (give it two three months...)"
-  },
-  {
-    "message": "Error at line 399: unknown macro: must_compile_error FIELD_TYPE_MISMATCH=+1"
-  },
-  {
-    "message": "Error at line 406: unknown macro: must_compile_error ARGUMENT_TYPE_MISMATCH=+1"
-  },
-  {
-    "message": "Error at line 409: unknown macro: must_compile_error FIELD_TYPE_MISMATCH=+1"
-  },
-  {
-    "message": "Error at line 454: unknown macro: then"
   }
 ]

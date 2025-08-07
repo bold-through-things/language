@@ -1,25 +1,31 @@
-(() => {
-  let lines = "stdin";
-  let i = 0;
-  let header = [];
-  let rows = [];
-  for (const line of lines) {
-    if ((i === 0)) {
+let lines = stdin;
+lines(lines split("\n"))
+let i = 0;
+let header = [];
+let rows = [];
+for (const line of ) {
+    if ((access i === 0)) {
+    header(line split(","))
   } else {
-    let zip = "zip";
+    let zip = zip;
     let row = {};
-    for (const kv of "a zip") {
-    row["a kv 0"] = "a kv 1";
+    for (const kv of ) {
+    row[kv[0]] = kv[1];
   }
+    rows.push
   }
+    then
+    else
+    i((access i + 1))
   }
-  for (const row of "a rows") {
-    console.log("a row name");
+for (const row of ) {
+    console.log(row.name);
   }
-  let age_over_30 = 0;
-  for (const row of "a rows") {
-    if (("a row age" < 30)) {
+let age_over_30 = 0;
+for (const row of ) {
+    if ((row.age < 30)) {
+    age_over_30((access age_over_30 + 1))
   }
+    then
   }
-  console.log(age_over_30);
-})();
+console.log(access age_over_30);

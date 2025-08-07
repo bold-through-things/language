@@ -1,8 +1,5 @@
 [
   {
     "message": "Error at line 2: for loop missing required do block"
-  },
-  {
-    "message": "Error at line 7: unknown macro: then"
   }
 ]

@@ -68,3 +68,5 @@ Each test will be minimal and focused on a single concept, making it easy to imp
 - Use dict mappings instead of elif ladders or handler iteration
 - Emit errors in the right format from the start
 - Remove unnecessary abstraction layers
+
+**Focus on test execution, not compilation:** Stop caring about "how many tests compile". Tests should *run fully* or *error correctly*. The `./test --compile` flag is just for test debugging - what matters is that tests execute properly and either pass or fail with clear error messages.

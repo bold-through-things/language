@@ -3,27 +3,9 @@
     "message": "Error at line 6: complex access operation in value context: an input split"
   },
   {
-    "message": "Error at line 16: complex access operation in value context: a word split sort join"
-  },
-  {
-    "message": "Error at line 22: unknown macro: # TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?"
-  },
-  {
-    "message": "Error at line 23: unknown macro: #  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)"
-  },
-  {
-    "message": "Error at line 24: unknown macro: #  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!"
-  },
-  {
     "message": "Error at line 32: key assignment missing key value"
   },
   {
-    "message": "Error at line 31: unknown macro: then"
-  },
-  {
     "message": "Error at line 36: key assignment missing key value"
-  },
-  {
-    "message": "Error at line 45: complex access operation in value context: a group join"
   }
 ]

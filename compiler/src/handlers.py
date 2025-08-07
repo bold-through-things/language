@@ -23,13 +23,6 @@ class MacroHandler(ABC):
         macro, _ = cut(content, ' ')
         return macro
     
-    def can_handle(self, content: str) -> bool:
-        """Default implementation checks if macro matches expected_macro"""
-        if hasattr(self, 'expected_macro'):
-            return self.get_macro_name(content) == self.expected_macro
-        # Custom handlers override this method
-        return False
-    
     @abstractmethod
     def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
         """Compile the node to JavaScript"""
@@ -128,10 +121,6 @@ class IfHandler(MacroHandler):
 
 class ForHandler(MacroHandler):
     """Handles for loops"""
-    
-    def can_handle(self, content: str) -> bool:
-        macro, rest = cut(content, ' ')
-        return macro == "for" and " in" in content
     
     def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
         _, rest = cut(node.content, ' ')
@@ -518,9 +507,6 @@ class NoteHandler(MacroHandler):
 class DoScopeHandler(MacroHandler):
     """Handles standalone do blocks (scopes)"""
     
-    def can_handle(self, content: str) -> bool:
-        return content == "do"
-    
     def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
         # Check if this do block is handled by a control structure
         if node.parent:
@@ -545,9 +531,6 @@ class DoScopeHandler(MacroHandler):
 
 class FileRootHandler(MacroHandler):
     """Handles the root 67lang:file node"""
-    
-    def can_handle(self, content: str) -> bool:
-        return content == "67lang:file"
     
     def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
         # Root file node - compile children and join them

@@ -9,30 +9,12 @@
     "message": "Error at line 4: local statement has no value"
   },
   {
-    "message": "Error at line 26: unknown macro: # TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}"
-  },
-  {
     "message": "Error at line 29: complex access operation in value context: an input key"
   },
   {
     "message": "Error at line 34: complex access operation in value context: an input key"
   },
   {
-    "message": "Error at line 38: unknown macro: an n"
-  },
-  {
-    "message": "Error at line 8: unknown macro: then"
-  },
-  {
-    "message": "Error at line 18: unknown macro: else"
-  },
-  {
-    "message": "Error at line 59: unknown macro: then"
-  },
-  {
-    "message": "Error at line 71: unknown macro: then"
-  },
-  {
-    "message": "Error at line 81: unknown macro: then"
+    "message": "Error at line 38: complex access operation in value context: an n"
   }
 ]

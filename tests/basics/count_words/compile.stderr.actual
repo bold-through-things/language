@@ -1,8 +1,5 @@
 [
   {
     "message": "Error at line 6: complex access operation in value context: an input split"
-  },
-  {
-    "message": "Error at line 20: complex access operation in value context: a count key"
   }
 ]
