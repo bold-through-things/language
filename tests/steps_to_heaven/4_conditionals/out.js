@@ -1,12 +1,12 @@
 let age = 25;
-if ((18 < an age)) {
+if ((18 < age)) {
     console.log("Adult");
   }
-if ((an age === 25)) {
+if ((age === 25)) {
     console.log("Quarter century");
   }
 let name = "Alice";
-if ((an name === "Alice")) {
+if ((name === "Alice")) {
     console.log("Hello Alice!");
   } else {
     console.log("Hello stranger!");
