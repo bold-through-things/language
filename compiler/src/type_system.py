@@ -9,6 +9,7 @@ from node import Node
 from typing import Dict, List, Optional, Any, Set
 from enum import Enum
 import json
+import sys
 
 
 class TypeKind(Enum):
@@ -156,52 +157,64 @@ class TypeChecker:
         elif content.startswith('dict'):
             return TypeInfo(TypeKind.DICT)
             
-        # Variable access
+        # Variable access - handle simple variable names
         if content.startswith('a ') or content.startswith('an ') or content.startswith('access '):
-            parts = content.split(' ', 1)
-            if len(parts) > 1:
+            parts = content.split(' ')
+            if len(parts) >= 2:
                 var_name = parts[1]
-                var_type = self.current_scope.get_variable_type(var_name)
-                if var_type:
-                    return var_type
+                # Look for method chaining
+                if len(parts) > 2:
+                    # This is a method chain like 'a test_str split sort join'
+                    var_type = self.current_scope.get_variable_type(var_name)
+                    if var_type:
+                        return self.infer_method_chain_type_for_var(var_type, parts[2:])
+                    else:
+                        self.add_error(TypeErrorKind.UNKNOWN_VARIABLE, 
+                                     f"unknown variable: {var_name}", node)
+                        return TypeInfo(TypeKind.UNKNOWN)
                 else:
-                    self.add_error(TypeErrorKind.UNKNOWN_VARIABLE, 
-                                 f"unknown variable: {var_name}", node)
-                    return TypeInfo(TypeKind.UNKNOWN)
-        
-        # Method calls
-        if node.children and len(node.children) == 1:
-            child = node.children[0]
-            if 'split' in child.content or 'join' in child.content or 'sort' in child.content:
-                return self.infer_method_chain_type(child)
+                    # Simple variable access
+                    var_type = self.current_scope.get_variable_type(var_name)
+                    if var_type:
+                        return var_type
+                    else:
+                        # For debugging, let's see what variables are available
+                        all_vars = []
+                        scope = self.current_scope
+                        while scope:
+                            all_vars.extend(scope.variables.keys())
+                            scope = scope.parent
+                        self.add_error(TypeErrorKind.UNKNOWN_VARIABLE, 
+                                     f"unknown variable: {var_name} (available: {', '.join(all_vars)})", node)
+                        return TypeInfo(TypeKind.UNKNOWN)
         
         return TypeInfo(TypeKind.UNKNOWN)
     
-    def infer_method_chain_type(self, node: Node) -> TypeInfo:
-        """Infer the type of a method chain like 'a var split sort join'"""
-        content = node.content.strip()
-        
-        # For method chains, we need to trace through each method
-        methods = ['split', 'sort', 'join']
-        current_type = TypeInfo(TypeKind.STR)  # Assume string start for now
+    def infer_method_chain_type_for_var(self, start_type: TypeInfo, methods: list[str]) -> TypeInfo:
+        """Infer the type of a method chain starting from a known variable type"""
+        current_type = start_type
         
         for method in methods:
-            if method in content:
-                if method in self.method_signatures:
-                    sig = self.method_signatures[method]
-                    if current_type.kind == TypeKind(sig['input']):
-                        current_type = TypeInfo(TypeKind(sig['output']))
-                    else:
-                        # Type mismatch in method chain
-                        self.add_error(TypeErrorKind.ARGUMENT_TYPE_MISMATCH,
-                                     f"argument demands {sig['input']} and is given {current_type.kind.value}",
-                                     node, f"67lang:call {method}")
-                        return TypeInfo(TypeKind.UNKNOWN)
+            if method in self.method_signatures:
+                sig = self.method_signatures[method]
+                expected_input = TypeKind(sig['input'])
+                if current_type.kind == expected_input:
+                    current_type = TypeInfo(TypeKind(sig['output']))
+                else:
+                    # Type mismatch in method chain
+                    self.add_error(TypeErrorKind.ARGUMENT_TYPE_MISMATCH,
+                                 f"argument demands {sig['input']} and is given {current_type.kind.value}",
+                                 # Note: we don't have the exact node for the method call here
+                                 # This is a limitation of the current design
+                                 None, f"67lang:call {method}")
+                    return TypeInfo(TypeKind.UNKNOWN)
         
         return current_type
     
     def check_local_declaration(self, node: Node, var_name: str) -> Optional[TypeInfo]:
         """Check a local variable declaration"""
+        print(f"DEBUG: check_local_declaration for {var_name} with {len(node.children)} children", file=sys.stderr)
+        
         declared_type = None
         actual_type = None
         
@@ -211,10 +224,13 @@ class TypeChecker:
         
         for child in node.children:
             child_content = child.content.strip()
+            print(f"DEBUG:   child content: '{child_content}'", file=sys.stderr)
             if child_content.startswith('type '):
                 type_child = child
+                print(f"DEBUG:   found type child: '{child_content}'", file=sys.stderr)
             elif not child_content.startswith('#'):  # Ignore comments
                 value_child = child
+                print(f"DEBUG:   found value child: '{child_content}'", file=sys.stderr)
         
         # Get declared type
         if type_child:
@@ -222,16 +238,22 @@ class TypeChecker:
             type_name = type_content.split(' ', 1)[1] if ' ' in type_content else ''
             if type_name in ['int', 'str', 'bool', 'list', 'dict']:
                 declared_type = TypeInfo(TypeKind(type_name))
+                print(f"DEBUG:   declared type: {declared_type}", file=sys.stderr)
         
         # Get actual type from value
         if value_child:
             actual_type = self.infer_type(value_child)
+            print(f"DEBUG:   actual type: {actual_type}", file=sys.stderr)
         else:
+            print(f"DEBUG:   no value child found", file=sys.stderr)
             # No initial value provided
             if declared_type:
+                print(f"DEBUG:   adding MISSING_TYPE error", file=sys.stderr)
                 self.add_error(TypeErrorKind.MISSING_TYPE,
                              f"field demands {declared_type.kind.value} but is given None",
                              node, f"local {var_name}")
+                # Still register the variable with its declared type
+                self.current_scope.declare_variable(var_name, declared_type, True)
                 return declared_type
             else:
                 actual_type = TypeInfo(TypeKind.NONE)
@@ -239,11 +261,13 @@ class TypeChecker:
         # Check type compatibility
         if declared_type and actual_type and declared_type.kind != actual_type.kind:
             if actual_type.kind != TypeKind.UNKNOWN:  # Don't report error for unknown types
+                print(f"DEBUG:   adding FIELD_TYPE_MISMATCH error", file=sys.stderr)
                 self.add_error(TypeErrorKind.FIELD_TYPE_MISMATCH,
                              f"field demands {declared_type.kind.value} but is given {actual_type.kind.value}",
                              node, f"local {var_name}")
         
-        # Register the variable
+        # Register the variable - always register with declared type if available
+        # This allows later operations to know what type was declared
         final_type = declared_type if declared_type else actual_type
         if final_type:
             self.current_scope.declare_variable(var_name, final_type, declared_type is not None)
@@ -265,21 +289,32 @@ class TypeChecker:
         if actual_type:
             self.current_scope.update_variable_type(var_name, actual_type)
     
-    def check_method_call(self, node: Node, method_name: str):
-        """Check a method call for type compatibility"""
-        if method_name in self.method_signatures:
-            sig = self.method_signatures[method_name]
-            
-            # For now, check if the method is called on the right type
-            # This is a simplified check - in reality we'd need to trace the call chain
-            if node.parent and node.parent.content:
-                parent_content = node.parent.content
-                # Simple heuristic: if parent mentions a variable, check its type
-                if 'test_bool' in parent_content:
-                    # This is a specific check for the test case
+    def check_method_call_on_variable(self, node: Node, var_name: str, methods: list[str]):
+        """Check a method call on a variable like 'a test_bool split'"""
+        var_type = self.current_scope.get_variable_type(var_name)
+        if not var_type:
+            self.add_error(TypeErrorKind.UNKNOWN_VARIABLE,
+                         f"unknown variable: {var_name}", node)
+            return
+        
+        current_type = var_type
+        for method in methods:
+            if method in self.method_signatures:
+                sig = self.method_signatures[method]
+                expected_input = TypeKind(sig['input'])
+                if current_type.kind == expected_input:
+                    current_type = TypeInfo(TypeKind(sig['output']))
+                else:
+                    # Type mismatch in method call
                     self.add_error(TypeErrorKind.ARGUMENT_TYPE_MISMATCH,
-                                 f"argument demands {sig['input']} and is given bool",
-                                 node, f"67lang:call {method_name}")
+                                 f"argument demands {sig['input']} and is given {current_type.kind.value}",
+                                 node, f"67lang:call {method}")
+                    return
+    
+    def check_method_call(self, node: Node, method_name: str):
+        """Check a method call for type compatibility - legacy method"""
+        # This is kept for compatibility but the new check_method_call_on_variable is preferred
+        pass
     
     def get_errors_json(self) -> str:
         """Get errors as JSON string"""

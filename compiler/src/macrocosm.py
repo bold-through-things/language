@@ -113,10 +113,13 @@ class Macrocosm:
         for node in self.nodes:
             self._type_check_node(node)
         
+        print(f"DEBUG: After type checking, found {len(self.type_checker.errors)} errors", file=sys.stderr)
+        
         # If there are type errors, emit them and stop compilation
         if self.type_checker.errors:
             # Convert to expected JSON format and write to stderr
             error_json = self.type_checker.get_errors_json()
+            print(f"DEBUG: Found {len(self.type_checker.errors)} type errors", file=sys.stderr)
             print(error_json, file=sys.stderr)
             # Still generate JS to avoid breaking test harness
         
@@ -211,11 +214,19 @@ class Macrocosm:
                 self.type_checker.check_local_declaration(node, var_name)
         
         elif macro in ['a', 'an', 'access']:
-            # Handle access operations - check for assignments
+            # Handle access operations - both variable access and assignments
             var_name = rest.strip() if rest else ""
-            if var_name and len(node.children) > 0:
-                # This is an assignment
-                self.type_checker.check_assignment(node, var_name, node.children[0])
+            if var_name:
+                if len(node.children) > 0:
+                    # This is an assignment
+                    self.type_checker.check_assignment(node, var_name, node.children[0])
+                else:
+                    # Check if this is a method call on a variable
+                    parts = content.split(' ')
+                    if len(parts) > 2:  # e.g., "a test_bool split"
+                        var_name = parts[1]
+                        methods = parts[2:]
+                        self.type_checker.check_method_call_on_variable(node, var_name, methods)
         
         elif macro == 'do':
             # Enter new scope for do blocks
