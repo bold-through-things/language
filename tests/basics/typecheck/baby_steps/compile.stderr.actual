@@ -1,8 +1,5 @@
 [
   {
-    "message": "Error at line 2: unknown macro or unhandled node: '#' in '# these are expected to pass'"
-  },
-  {
     "message": "Error at line 5: unknown macro or unhandled node: 'type' in 'type int'"
   },
   {
@@ -10,9 +7,6 @@
   },
   {
     "message": "Error at line 17: unknown macro or unhandled node: 'type' in 'type int'"
-  },
-  {
-    "message": "Error at line 23: unknown macro or unhandled node: '#' in '# these are expected to fail'"
   },
   {
     "message": "Error at line 26: unknown macro or unhandled node: 'type' in 'type int'"

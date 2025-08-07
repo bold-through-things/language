@@ -183,8 +183,9 @@ class AccessMacroHandler(MacroHandler):
     def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
         macro, rest = cut(node.content, ' ')
         
-        # Check if this is key assignment
-        if 'key' in rest:
+        # Check if this is key assignment (pattern: "variable key ..." not just "key")
+        rest_parts = rest.split()
+        if len(rest_parts) >= 2 and rest_parts[1] == 'key':
             return self._compile_key_assignment(node, compiler, rest)
         
         # Access is contextual based on number of arguments:
