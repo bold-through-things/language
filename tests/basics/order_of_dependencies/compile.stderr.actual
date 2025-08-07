@@ -1,5 +1,41 @@
 [
   {
-    "message": "Error at line 100: access operation missing arguments: a dep_loop reverse"
+    "message": "Error at line 3: unknown macro or unhandled node: 'stdin' in 'stdin'"
+  },
+  {
+    "message": "Error at line 29: unknown macro or unhandled node: '#' in '# TODO - this ought to be a macro.'"
+  },
+  {
+    "message": "Error at line 43: unknown macro or unhandled node: '#' in '# print'"
+  },
+  {
+    "message": "Error at line 47: unknown macro or unhandled node: '#' in '# TODO - support set initializers'"
+  },
+  {
+    "message": "Error at line 48: unknown macro or unhandled node: '#' in '# TODO - support a  way to convert a dict keys to a set cleanly'"
+  },
+  {
+    "message": "Error at line 49: unknown macro or unhandled node: '#' in '# (old code removed)'"
+  },
+  {
+    "message": "Error at line 65: unknown macro or unhandled node: 'return' in 'return'"
+  },
+  {
+    "message": "Error at line 69: unknown macro or unhandled node: '#' in '# TODO - this shouldn't be using slice. we need a dedicated copy command'"
+  },
+  {
+    "message": "Error at line 79: unknown macro or unhandled node: 'exists' in 'exists'"
+  },
+  {
+    "message": "Error at line 98: unknown macro or unhandled node: 'break' in 'break'"
+  },
+  {
+    "message": "Error at line 116: unknown macro or unhandled node: 'values' in 'values'"
+  },
+  {
+    "message": "Error at line 115: for loop missing collection"
+  },
+  {
+    "message": "Error at line 129: unknown macro or unhandled node: 'concat' in 'concat'"
   }
 ]

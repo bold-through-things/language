@@ -1,0 +1,29 @@
+[
+  {
+    "message": "Error at line 3: unknown macro or unhandled node: 'stdin' in 'stdin'"
+  },
+  {
+    "message": "Error at line 22: unknown macro or unhandled node: '#' in '# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?'"
+  },
+  {
+    "message": "Error at line 23: unknown macro or unhandled node: '#' in '#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)'"
+  },
+  {
+    "message": "Error at line 24: unknown macro or unhandled node: '#' in '#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!'"
+  },
+  {
+    "message": "Error at line 27: unknown macro or unhandled node: 'exists' in 'exists'"
+  },
+  {
+    "message": "Error at line 32: key assignment missing key value"
+  },
+  {
+    "message": "Error at line 36: key assignment missing key value"
+  },
+  {
+    "message": "Error at line 41: unknown macro or unhandled node: 'values' in 'values'"
+  },
+  {
+    "message": "Error at line 40: for loop missing collection"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "message": "Error at line 7: unknown macro or unhandled node: 'is_tty' in 'is_tty'"
+  },
+  {
+    "message": "Error at line 10: unknown macro or unhandled node: 'prompt' in 'prompt'"
+  },
+  {
+    "message": "Error at line 13: unknown macro or unhandled node: 'prompt' in 'prompt'"
+  },
+  {
+    "message": "Error at line 16: unknown macro or unhandled node: 'prompt' in 'prompt'"
+  },
+  {
+    "message": "Error at line 20: unknown macro or unhandled node: 'stdin' in 'stdin'"
+  },
+  {
+    "message": "Error at line 26: unknown macro or unhandled node: '#' in '# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}'"
+  },
+  {
+    "message": "Error at line 61: unknown macro or unhandled node: 'concat' in 'concat'"
+  },
+  {
+    "message": "Error at line 73: unknown macro or unhandled node: 'concat' in 'concat'"
+  }
+]

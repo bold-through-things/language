@@ -1,8 +1,29 @@
 [
   {
-    "message": "Error at line 52: access operation missing arguments: a test_bool split"
+    "message": "Error at line 2: unknown macro or unhandled node: '#' in '# these are expected to pass'"
   },
   {
-    "message": "Error at line 54: access operation missing arguments: a test_str split split split"
+    "message": "Error at line 5: unknown macro or unhandled node: 'type' in 'type int'"
+  },
+  {
+    "message": "Error at line 9: unknown macro or unhandled node: 'type' in 'type int'"
+  },
+  {
+    "message": "Error at line 17: unknown macro or unhandled node: 'type' in 'type int'"
+  },
+  {
+    "message": "Error at line 23: unknown macro or unhandled node: '#' in '# these are expected to fail'"
+  },
+  {
+    "message": "Error at line 26: unknown macro or unhandled node: 'type' in 'type int'"
+  },
+  {
+    "message": "Error at line 31: unknown macro or unhandled node: 'type' in 'type str'"
+  },
+  {
+    "message": "Error at line 35: unknown macro or unhandled node: 'type' in 'type int'"
+  },
+  {
+    "message": "Error at line 46: unknown macro or unhandled node: 'type' in 'type bool'"
   }
 ]

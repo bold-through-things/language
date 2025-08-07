@@ -216,11 +216,25 @@ class AccessMacroHandler(MacroHandler):
                 compiler._add_error(f"access operation missing variable name: {node.content}", node)
                 return ""
         elif len(node.children) == 1:
-            # One child - could be setter, method call, or property access
+            # One child - could be function call, setter, method call, or property access
             if ' ' not in rest.strip():  
-                # Simple variable assignment: a variable_name -> variable_name = (child_value)
-                child_value = compiler._compile_node(node.children[0])
-                return f"{rest} = {child_value};"
+                # Could be function call with 1 argument or simple variable assignment
+                # For now, assume it's a variable assignment if using 'access' macro
+                macro, _ = cut(node.content, ' ')
+                if macro == 'access':
+                    # access variable_name -> variable_name = (child_value)
+                    child_value = compiler._compile_node(node.children[0])
+                    return f"{rest} = {child_value};"
+                else:
+                    # a function_name or a variable_name - check if it looks like a function call
+                    child_content = node.children[0].content.strip()
+                    if child_content.startswith('string ') or child_content.startswith('int ') or child_content.startswith('float '):
+                        # Looks like function argument, treat as function call
+                        return self._compile_function_call(node, compiler, rest.strip())
+                    else:
+                        # Simple variable assignment: a variable_name -> variable_name = (child_value)
+                        child_value = compiler._compile_node(node.children[0])
+                        return f"{rest} = {child_value};"
             else:
                 # Complex access with arguments - check if it's a method call
                 parts = rest.strip().split()
@@ -237,8 +251,17 @@ class AccessMacroHandler(MacroHandler):
                         # Property/index access
                         return self._compile_property_access(node, compiler, rest)
         elif len(node.children) == 2:
-            # Two children = setter operation (a variable_name value)
-            return self._compile_variable_assignment(node, compiler, rest)
+            # Two children - could be method chaining, function call or setter operation
+            if self._is_method_chaining(rest):
+                return self._compile_method_chaining(node, compiler, rest)
+            
+            parts = rest.strip().split()
+            if len(parts) == 1:
+                # Could be function call with 2 arguments: a func_name arg1 arg2
+                return self._compile_function_call(node, compiler, parts[0])
+            else:
+                # Setter operation (a variable_name value)
+                return self._compile_variable_assignment(node, compiler, rest)
         else:
             # More than 2 children - could be method chaining or complex assignment
             if self._is_method_chaining(rest):
@@ -260,16 +283,19 @@ class AccessMacroHandler(MacroHandler):
         # Find "where key is" child and get the key value from its children
         key_value = None
         assignment_value = None
+        where_child_index = None
         
-        for child in node.children:
+        for i, child in enumerate(node.children):
             if child.content.strip() == "where key is":
                 # Key value should be the first child of "where key is"
                 if child.children:
                     key_value = compiler._compile_node(child.children[0])
-                # Assignment value would be second child (for setter operations)
-                if len(child.children) > 1:
-                    assignment_value = compiler._compile_node(child.children[1])
+                where_child_index = i
                 break
+        
+        # Look for assignment value as the next sibling after "where key is"
+        if where_child_index is not None and where_child_index + 1 < len(node.children):
+            assignment_value = compiler._compile_node(node.children[where_child_index + 1])
         
         if key_value is None:
             compiler._add_error("key assignment missing key value", node)
@@ -298,7 +324,7 @@ class AccessMacroHandler(MacroHandler):
             arg_js = compiler._compile_node(child)
             args.append(arg_js)
         
-        return f"{func_name}({', '.join(args)})"
+        return f"{func_name}({', '.join(args)});"
     
     def _compile_variable_assignment(self, node: Node, compiler: 'Macrocosm', var_name: str) -> str:
         """Handle variable assignment: access var_name value"""
@@ -467,6 +493,16 @@ class AccessMacroHandler(MacroHandler):
         return result + ";"
 
 
+class WhereHandler(MacroHandler):
+    """Handles where clauses - processed by parent AccessMacroHandler"""
+    expected_macro = "where"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # Where clauses are processed by their parent AccessMacroHandler
+        # This handler just returns empty string to avoid "unknown macro" errors
+        return ""
+
+
 class WhileHandler(MacroHandler):
     """Handles while loops"""
     expected_macro = "while"
@@ -612,8 +648,8 @@ class DoScopeHandler(MacroHandler):
         if node.parent:
             for sibling in node.parent.children:
                 sibling_macro, _ = cut(sibling.content, ' ')
-                if sibling_macro in ['for', 'while'] and sibling != node:
-                    return None  # Let the for/while handler manage this
+                if sibling_macro in ['for', 'while', 'fn'] and sibling != node:
+                    return None  # Let the for/while/fn handler manage this
         
         # Standalone do block creates a scope
         statements = []

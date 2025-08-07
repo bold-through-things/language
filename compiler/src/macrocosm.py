@@ -10,7 +10,7 @@ from logger import default_logger
 from strutil import cut
 from handlers import (
     MacroHandler, PrintHandler, LocalHandler, IfHandler, ThenHandler, ElseHandler, 
-    ForHandler, AccessMacroHandler, WhileHandler, FunctionHandler, CallHandler,
+    ForHandler, AccessMacroHandler, WhereHandler, WhileHandler, FunctionHandler, CallHandler,
     NoteHandler, DoScopeHandler, FileRootHandler
 )
 from value_compiler import ValueHandler
@@ -36,6 +36,7 @@ class Macrocosm:
             'else': ElseHandler(),
             'for': ForHandler(),
             'while': WhileHandler(),
+            'where': WhereHandler(),
             'fn': FunctionHandler(),
             'call': CallHandler(),
             'note': NoteHandler(),

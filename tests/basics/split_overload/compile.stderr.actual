@@ -1,0 +1,11 @@
+[
+  {
+    "message": "Error at line 5: unknown macro or unhandled node: '#' in '# calls the (str, str) overload'"
+  },
+  {
+    "message": "Error at line 10: unknown macro or unhandled node: '#' in '# calls the (str, regex) overload'"
+  },
+  {
+    "message": "Error at line 13: unknown macro or unhandled node: 'regex' in 'regex /t/'"
+  }
+]
