@@ -121,6 +121,22 @@ class Macrocosm:
             bridge_to_legacy(unified_macros, "must_compile_error", "process")
         except ImportError as e:
             raise RuntimeError(f"Failed to register error macros: {e}")
+            
+        # Set up exists macro
+        try:
+            from macros.exists_macro_di import ExistsMacro
+            register_macro_manually("exists", ExistsMacro)
+            bridge_to_legacy(unified_macros, "exists", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register exists macro: {e}")
+            
+        # Set up solution macro
+        try:
+            from macros.solution_macro_di import SolutionMacro
+            register_macro_manually("67lang:solution", SolutionMacro)
+            bridge_to_legacy(unified_macros, "67lang:solution", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register solution macro: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"
