@@ -10,8 +10,10 @@ from logger import default_logger
 from strutil import cut
 from handlers import (
     MacroHandler, PrintHandler, LocalHandler, IfHandler, ThenHandler, ElseHandler, 
-    ForHandler, AccessMacroHandler, WhereHandler, WhileHandler, FunctionHandler, CallHandler,
-    NoteHandler, DoScopeHandler, FileRootHandler
+    ForHandler, AccessMacroHandler, WhileHandler, FunctionHandler, CallHandler,
+    NoteHandler, DoScopeHandler, FileRootHandler, CommentHandler, IsTtyHandler,
+    PromptHandler, StdinHandler, ConcatHandler, ZipHandler, ExistsHandler,
+    InsideHandler, ValuesHandler
 )
 from value_compiler import ValueHandler
 from typing import List, Dict, Any, Optional
@@ -36,11 +38,20 @@ class Macrocosm:
             'else': ElseHandler(),
             'for': ForHandler(),
             'while': WhileHandler(),
-            'where': WhereHandler(),
             'fn': FunctionHandler(),
             'call': CallHandler(),
             'note': NoteHandler(),
             'do': DoScopeHandler(),
+            # New input/output macros
+            '#': CommentHandler(),
+            'is_tty': IsTtyHandler(),
+            'prompt': PromptHandler(),
+            'stdin': StdinHandler(),
+            'concat': ConcatHandler(),
+            'zip': ZipHandler(),
+            'exists': ExistsHandler(),
+            'inside': InsideHandler(),
+            'values': ValuesHandler(),
             # Access aliases all map to the same handler
             'a': AccessMacroHandler(),
             'an': AccessMacroHandler(),

@@ -290,6 +290,9 @@ class AccessMacroHandler(MacroHandler):
                 # Key value should be the first child of "where key is"
                 if child.children:
                     key_value = compiler._compile_node(child.children[0])
+                else:
+                    # If no children, use the variable "key" as the key value
+                    key_value = "key"
                 where_child_index = i
                 break
         
@@ -493,14 +496,7 @@ class AccessMacroHandler(MacroHandler):
         return result + ";"
 
 
-class WhereHandler(MacroHandler):
-    """Handles where clauses - processed by parent AccessMacroHandler"""
-    expected_macro = "where"
-    
-    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
-        # Where clauses are processed by their parent AccessMacroHandler
-        # This handler just returns empty string to avoid "unknown macro" errors
-        return ""
+
 
 
 class WhileHandler(MacroHandler):
@@ -663,6 +659,113 @@ class DoScopeHandler(MacroHandler):
         
         body = "\n    ".join(statements)
         return f"{{\n    {body}\n  }}"
+
+
+class CommentHandler(MacroHandler):
+    """Handles # line comments"""
+    expected_macro = "#"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # Line comments don't generate any JavaScript
+        return None
+
+
+class IsTtyHandler(MacroHandler):
+    """Handles is_tty macro for checking if running in terminal"""
+    expected_macro = "is_tty"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # In browser/Deno context, we can check if stdin is a TTY
+        return "Deno.isatty(Deno.stdin.rid)"
+
+
+class PromptHandler(MacroHandler):
+    """Handles prompt macro for user input"""
+    expected_macro = "prompt"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        if not node.children:
+            compiler._add_error("prompt requires a message", node)
+            return ""
+        
+        message = compiler._compile_node(node.children[0])
+        return f"prompt({message})"
+
+
+class StdinHandler(MacroHandler):
+    """Handles stdin macro for reading standard input"""
+    expected_macro = "stdin"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # Read all stdin as text and split by lines
+        return "new TextDecoder().decode(await Deno.readAll(Deno.stdin)).trim()"
+
+
+class ConcatHandler(MacroHandler):
+    """Handles string concatenation"""
+    expected_macro = "concat"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        if len(node.children) != 2:
+            compiler._add_error("concat requires exactly 2 arguments", node)
+            return ""
+        
+        left = compiler._compile_node(node.children[0])
+        right = compiler._compile_node(node.children[1])
+        return f"({left} + {right})"
+
+
+class ZipHandler(MacroHandler):
+    """Handles zip macro for combining two arrays"""
+    expected_macro = "zip"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        if len(node.children) != 2:
+            compiler._add_error("zip requires exactly 2 arrays", node)
+            return ""
+        
+        arr1 = compiler._compile_node(node.children[0])
+        arr2 = compiler._compile_node(node.children[1])
+        return f"{arr1}.map((item, i) => [item, {arr2}[i]])"
+
+
+class ExistsHandler(MacroHandler):
+    """Handles exists macro for checking if key exists"""
+    expected_macro = "exists"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        if len(node.children) != 2:
+            compiler._add_error("exists requires key and object", node)
+            return ""
+        
+        key = compiler._compile_node(node.children[0])
+        obj = compiler._compile_node(node.children[1])
+        return f"({key} in {obj})"
+
+
+class InsideHandler(MacroHandler):
+    """Handles inside macro - syntactic sugar for object reference"""
+    expected_macro = "inside"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        if not node.children:
+            compiler._add_error("inside requires an object", node)
+            return ""
+        
+        return compiler._compile_node(node.children[0])
+
+
+class ValuesHandler(MacroHandler):
+    """Handles values macro for getting object values"""
+    expected_macro = "values"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        if not node.children:
+            compiler._add_error("values requires an object", node)
+            return ""
+        
+        obj = compiler._compile_node(node.children[0])
+        return f"Object.values({obj})"
 
 
 class FileRootHandler(MacroHandler):

@@ -72,8 +72,8 @@ class ValueHandler:
         elif macro == 'ge':
             return self._compile_comparison(node, '>=', compiler)
         elif macro == 'asc':
-            # asc means ascending/less than
-            return self._compile_comparison(node, '<', compiler)
+            # asc means ascending/less than or equal
+            return self._compile_comparison(node, '<=', compiler)
         elif macro == 'desc':
             # desc means descending/greater than
             return self._compile_comparison(node, '>', compiler)

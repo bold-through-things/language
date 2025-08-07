@@ -1,5 +1,5 @@
 let age = 25;
-if ((18 < age)) {
+if ((18 <= age)) {
     console.log("Adult");
   }
 if ((age === 25)) {
