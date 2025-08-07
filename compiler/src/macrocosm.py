@@ -113,6 +113,14 @@ class Macrocosm:
             bridge_to_legacy(unified_macros, "for", "process")
         except ImportError as e:
             raise RuntimeError(f"Failed to register while/for macros: {e}")
+            
+        # Set up error macros
+        try:
+            from macros.error_macros_di import ErrorMacro
+            register_macro_manually("must_compile_error", ErrorMacro)
+            bridge_to_legacy(unified_macros, "must_compile_error", "process")
+        except ImportError as e:
+            raise RuntimeError(f"Failed to register error macros: {e}")
 
     def get_new_ident(self, name: str | None):
         ident = f"_{hex(self.incremental_id)}"

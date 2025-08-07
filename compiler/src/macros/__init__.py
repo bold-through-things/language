@@ -3,7 +3,7 @@ from . import access_macros
 # TODO: Migrated to DI - from . import builtin_macros 
 # TODO: Migrated to DI - from . import collection_macros
 from . import comment_macros
-from . import error_macros
+# TODO: Migrated to DI - from . import error_macros
 from . import exists_macro  # TODO: Added separated exists macro
 from . import fn_macro  # TODO: Added separated fn macro
 # TODO: Migrated to DI - from . import for_macro
