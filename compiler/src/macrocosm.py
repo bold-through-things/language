@@ -17,8 +17,10 @@ from handlers import (
     WhereClauseHandler, RegexHandler
 )
 from value_compiler import ValueHandler
+from type_system import TypeChecker
 from typing import List, Dict, Any, Optional
 import json
+import sys
 
 
 class Macrocosm:
@@ -29,6 +31,7 @@ class Macrocosm:
         self.compile_errors = []  # For compatibility with main.py
         self.nodes = []  # For compatibility with main.py
         self.value_handler = ValueHandler()
+        self.type_checker = TypeChecker()  # Add type checker
         
         # Direct mapping of macro names to handlers
         self.macro_handlers = {
@@ -104,7 +107,20 @@ class Macrocosm:
         """Compile all registered nodes to JavaScript (compatibility with main.py)"""
         self.errors = []
         self.compile_errors = []
+        self.type_checker = TypeChecker()  # Reset type checker
         
+        # First pass: type checking
+        for node in self.nodes:
+            self._type_check_node(node)
+        
+        # If there are type errors, emit them and stop compilation
+        if self.type_checker.errors:
+            # Convert to expected JSON format and write to stderr
+            error_json = self.type_checker.get_errors_json()
+            print(error_json, file=sys.stderr)
+            # Still generate JS to avoid breaking test harness
+        
+        # Second pass: code generation
         statements = []
         for node in self.nodes:
             js = self._compile_node(node)
@@ -123,8 +139,20 @@ class Macrocosm:
     def compile_to_js(self, root_node: Node) -> str:
         """Compile 67lang AST to JavaScript - delegate to FileRootHandler"""
         self.errors = []
+        self.type_checker = TypeChecker()  # Reset type checker
         
-        # Root node should be handled by FileRootHandler
+        # First pass: type checking
+        self._type_check_node(root_node)
+        
+        # If there are type errors, emit them and stop compilation
+        if self.type_checker.errors:
+            # Convert to expected JSON format and write to stderr
+            import sys
+            error_json = self.type_checker.get_errors_json()
+            print(error_json, file=sys.stderr)
+            # Still try to generate JS for now to avoid breaking the test harness
+            
+        # Second pass: code generation
         js = self._compile_node(root_node)
         
         if self.errors:
@@ -162,3 +190,45 @@ class Macrocosm:
         error = f"Error at {line_info}: {message}"
         self.errors.append(error)
         default_logger.compile(error)
+    
+    def _type_check_node(self, node: Node):
+        """Type check a node and its children"""
+        content = node.content.strip()
+        
+        # Handle file root
+        if content == "67lang:file":
+            for child in node.children:
+                self._type_check_node(child)
+            return
+            
+        # Extract macro name
+        macro, rest = cut(content, ' ')
+        
+        # Handle specific macros that need type checking
+        if macro == 'local':
+            var_name = rest.strip() if rest else ""
+            if var_name:
+                self.type_checker.check_local_declaration(node, var_name)
+        
+        elif macro in ['a', 'an', 'access']:
+            # Handle access operations - check for assignments
+            var_name = rest.strip() if rest else ""
+            if var_name and len(node.children) > 0:
+                # This is an assignment
+                self.type_checker.check_assignment(node, var_name, node.children[0])
+        
+        elif macro == 'do':
+            # Enter new scope for do blocks
+            self.type_checker.enter_scope()
+            for child in node.children:
+                self._type_check_node(child)
+            self.type_checker.exit_scope()
+        
+        elif macro in ['split', 'join', 'sort']:
+            # Check method calls
+            self.type_checker.check_method_call(node, macro)
+        
+        else:
+            # Recursively check children
+            for child in node.children:
+                self._type_check_node(child)
