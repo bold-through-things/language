@@ -1,81 +1,17 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "67LANG",
+	"scopeName": "source.67lang",
+	"fileTypes": ["67"],
+	"name": "67lang",
 	"patterns": [
-		{
-			"include": "#instruction"
+	  {
+		"name": "meta.line.67lang",
+		"match": "^(\\t+)?([^\\s]+)(\\s+)(.*)$",
+		"captures": {
+		  "1": { "name": "storage.modifier.indent.67lang" },
+		  "2": { "name": "keyword.control.67lang" },
+		  "4": { "name": "string.unquoted.header.67lang" }
 		}
+	  }
 	],
-	"repository": {
-		"instruction": {
-			"patterns": [
-                {
-                    "include": "#heredoc"
-                },
-                {
-                    "include": "#string"
-                },
-                {
-                    "include": "#keyword"
-                },
-                {
-                    "include": "#other"
-                },
-				{
-					"include": "#operator"
-				},
-				{
-					"include": "#identifier"
-				}
-            ]
-		},
-		"keyword": {
-			"patterns": [
-                {
-                    "name": "keyword.control.67lang",
-                    "match": "(?:\\s|^)(if|then|else|while|do)\\s"
-                }
-            ]
-		},
-		"other": {
-			"patterns": [
-                {
-                    "name": "keyword.other.67lang",
-                    "match": "(?:\\s|^)(local)\\s"
-                }
-            ]
-		},
-		"operator": {
-			"patterns": [
-                {
-                    "name": "keyword.operator.67lang",
-                    "match": "(?:\\s|^)(either|eq|concat|add)\\s"
-                }
-            ]
-		},
-		"string": {
-			"name": "keyword.control.67lang",
-			"begin": "(?:\\s|^)string\\s+([^\\s])",
-			"end": "(\\1\n)",
-			"captures": {
-				"1": {
-					"name": "keyword.other.67lang"
-				},
-				"2": {
-					"name": "keyword.other.67lang"
-				}
-			},
-			"contentName": "string.unquoted.string.67lang",
-			"patterns": []
-		},
-		"identifier": {
-			"patterns": [
-                {
-                    "name": "entity.name.function.67lang",
-                    "match": "(?:\\s|^)([^\\s]*)(?=\\s)"
-                }
-            ]
-		}
-	},
-	"scopeName": "source.67lang"
-}
+	"uuid": "af4e2e01-3b6a-4c14-8c3b-67lang-grammar-1"
+  }
