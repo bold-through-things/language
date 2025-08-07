@@ -81,15 +81,21 @@ class IfHandler(MacroHandler):
         if node.parent:
             for i, sibling in enumerate(node.parent.children):
                 if sibling is node:
-                    # Look for subsequent then and else blocks
+                    # Look for subsequent then and else blocks  
                     for j in range(i + 1, len(node.parent.children)):
                         next_sibling = node.parent.children[j]
                         if next_sibling.content == "then":
                             then_block = next_sibling
                         elif next_sibling.content == "else":
                             else_block = next_sibling
+                            break  # Stop after finding else
                         elif next_sibling.content.startswith("if "):
                             break  # Next if statement
+                        # Break after finding then if no else follows immediately
+                        if then_block and j + 1 < len(node.parent.children):
+                            next_next = node.parent.children[j + 1] 
+                            if next_next.content != "else":
+                                break
         
         # Crash loud crash hard - then block is required
         if not then_block:
@@ -128,10 +134,18 @@ class ForHandler(MacroHandler):
             compiler._add_error("invalid for loop syntax", node)
             return ""
         
-        # Parse "var_name in collection"
+        # Parse "var_name in collection" - collection might be in children
         var_part, collection_part = rest.split(" in", 1)
         var_name = var_part.strip()
         collection_name = collection_part.strip()
+        
+        # If collection name is empty, try to get it from the first child
+        if not collection_name and node.children:
+            collection_name = compiler._compile_value(node.children[0])
+        
+        if not collection_name:
+            compiler._add_error("for loop missing collection", node)
+            return ""
         
         # Find the accompanying do block
         do_block = None
@@ -536,6 +550,24 @@ class NoteHandler(MacroHandler):
     def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
         # Comments don't generate any JavaScript
         return None
+
+
+class ThenHandler(MacroHandler):
+    """Handles then blocks - should be consumed by IfHandler, so this is a no-op"""
+    expected_macro = "then"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # then blocks are handled by IfHandler, so return empty string
+        return ""
+
+
+class ElseHandler(MacroHandler):
+    """Handles else blocks - should be consumed by IfHandler, so this is a no-op"""
+    expected_macro = "else"
+    
+    def compile(self, node: Node, compiler: 'Macrocosm') -> Optional[str]:
+        # else blocks are handled by IfHandler, so return empty string
+        return ""
 
 
 class DoScopeHandler(MacroHandler):

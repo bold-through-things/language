@@ -9,8 +9,8 @@ from node import Node
 from logger import default_logger
 from strutil import cut
 from handlers import (
-    MacroHandler, PrintHandler, LocalHandler, IfHandler, ForHandler,
-    AccessMacroHandler, WhileHandler, FunctionHandler, CallHandler,
+    MacroHandler, PrintHandler, LocalHandler, IfHandler, ThenHandler, ElseHandler, 
+    ForHandler, AccessMacroHandler, WhileHandler, FunctionHandler, CallHandler,
     NoteHandler, DoScopeHandler, FileRootHandler
 )
 from value_compiler import ValueHandler
@@ -32,6 +32,8 @@ class Macrocosm:
             'print': PrintHandler(),
             'local': LocalHandler(),
             'if': IfHandler(),
+            'then': ThenHandler(),
+            'else': ElseHandler(),
             'for': ForHandler(),
             'while': WhileHandler(),
             'fn': FunctionHandler(),
