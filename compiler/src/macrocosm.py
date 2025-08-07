@@ -1,6 +1,8 @@
 from contextlib import contextmanager
 from typing import Any, Sequence
 from io import StringIO
+from macros.collection_macros import List_macro_provider
+from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
 from macros.while_macro import While_macro_provider
 from node import Node, Position, Macro, Args
@@ -201,13 +203,14 @@ class Macrocosm:
 
 def create_macrocosm() -> Macrocosm:
     # creates it with all the necessary macros registered
-
     macro_providers: dict[str, Macro_provider] = {
         "while": While_macro_provider(),
         "int": Number_macro_provider(int),
         "float": Number_macro_provider(float),
         "string": String_macro_provider("string"),
         "regex": String_macro_provider("regex"),
+        "if": If_macro_provider(),
+        "list": List_macro_provider()
     }
 
     literally = {

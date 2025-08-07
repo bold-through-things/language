@@ -1,0 +1,13 @@
+{
+    // Dev Container configuration for 67lang project
+    "name": "67lang Dev Container",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11",
+    "features": {
+        "ghcr.io/devcontainers/features/deno:2": {}
+    },
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "forwardPorts": [],
+    "remoteUser": "vscode"
+}
