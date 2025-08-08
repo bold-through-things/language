@@ -2,6 +2,10 @@
     // Dev Container configuration for 67lang project
     "name": "67lang Dev Container",
     "image": "mcr.microsoft.com/devcontainers/python:3.13",
+    "postCreateCommand": "npm install -g @google/gemini-cli",
+    "remoteEnv": {
+        "GOOGLE_CLOUD_PROJECT": "build-quality-software-67"
+    },
     "features": {
         "ghcr.io/devcontainers/features/node:1": {
             // this literally just for npm for gemini

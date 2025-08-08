@@ -5,6 +5,7 @@ from macros.collection_macros import List_macro_provider
 from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
 from macros.while_macro import While_macro_provider
+from macros.access_macros import Local_macro_provider, Fn_macro_provider, Access_field_macro_provider, Access_index_macro_provider, Access_local_macro_provider
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident, unified_macros, unified_typecheck
@@ -210,7 +211,12 @@ def create_macrocosm() -> Macrocosm:
         "string": String_macro_provider("string"),
         "regex": String_macro_provider("regex"),
         "if": If_macro_provider(),
-        "list": List_macro_provider()
+        "list": List_macro_provider(),
+        "local": Local_macro_provider(),
+        "fn": Fn_macro_provider(),
+        "67lang:access_field": Access_field_macro_provider(),
+        "67lang:access_index": Access_index_macro_provider(),
+        "67lang:access_local": Access_local_macro_provider()
     }
 
     literally = {

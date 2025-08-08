@@ -4,7 +4,7 @@ from processor_base import (
     builtins, builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
     unified_macros, unified_typecheck, walk_upwards_for_local_definition
 )
-from macro_registry import MacroContext, MacroRegistry
+from macro_registry import MacroContext, Macro_emission_provider, MacroRegistry
 from strutil import IndentedStringIO, Joiner
 from node import Args, Macro, Params, Inject_code_start, SaneIdentifier, Target, ResolvedConvention
 from common_utils import collect_child_expressions, get_single_arg, get_two_args
@@ -15,103 +15,103 @@ from logger import default_logger
 macros = unified_macros  # Use unified registry
 typecheck = unified_typecheck  # Use unified registry
 
-@macros.add("fn")
-def fn(ctx: MacroContext):
-    name = get_single_arg(ctx)
-    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
-    ctx.statement_out.write(f"const {name} = async function (")
-    joiner = Joiner(ctx.statement_out, ", \n")
-    params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
-    params = params_metadata.mapping.items()
-    if len(params) > 0:
-        ctx.statement_out.write("\n")
-    with ctx.statement_out:
-        for k, _ in params:
-            with joiner:
-                # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
-                ctx.statement_out.write(k)
-    if len(params) > 0:
-        ctx.statement_out.write("\n")
-    ctx.statement_out.write(") ")
-    next = seek_child_macro(ctx.node, "do")
+class Fn_macro_provider(Macro_emission_provider):
+    def emission(self, ctx: MacroContext):
+        name = get_single_arg(ctx)
+        name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
+        ctx.statement_out.write(f"const {name} = async function (")
+        joiner = Joiner(ctx.statement_out, ", \n")
+        params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
+        params = params_metadata.mapping.items()
+        if len(params) > 0:
+            ctx.statement_out.write("\n")
+        with ctx.statement_out:
+            for k, _ in params:
+                with joiner:
+                    # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
+                    ctx.statement_out.write(k)
+        if len(params) > 0:
+            ctx.statement_out.write("\n")
+        ctx.statement_out.write(") ")
+        next = seek_child_macro(ctx.node, "do")
 
-    ctx.compiler.assert_(next != None, ctx.node, "must have a do block")
+        ctx.compiler.assert_(next != None, ctx.node, "must have a do block")
 
-    inject = Inject_code_start()
-    ctx.compiler.set_metadata(next, Inject_code_start, inject)
-    ctx.statement_out.write("{")
-    with ctx.statement_out:
-        # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
-        for k, _ in params:
-            inject.code.append(f"{k} = {k}\n")
-        inner_ctx = replace(ctx, node=next)
-        ctx.current_step.process_node(inner_ctx)
-    ctx.statement_out.write("}")
+        inject = Inject_code_start()
+        ctx.compiler.set_metadata(next, Inject_code_start, inject)
+        ctx.statement_out.write("{")
+        with ctx.statement_out:
+            # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
+            for k, _ in params:
+                inject.code.append(f"{k} = {k}\n")
+            inner_ctx = replace(ctx, node=next)
+            ctx.current_step.process_node(inner_ctx)
+        ctx.statement_out.write("}")
 
-@macros.add("67lang:access_field")
-def access_field(ctx: MacroContext):
-    name, field = get_two_args(ctx, "first argument is object, second is field")
-    res = walk_upwards_for_local_definition(ctx, name)
-    ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
-    name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
-    field_access = js_field_access(field)
-    ident = ctx.compiler.get_new_ident("_".join([name, field]))
+class Access_field_macro_provider(Macro_emission_provider):
+    def emission(self, ctx: MacroContext):
+        name, field = get_two_args(ctx, "first argument is object, second is field")
+        res = walk_upwards_for_local_definition(ctx, name)
+        ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
+        name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
+        field_access = js_field_access(field)
+        ident = ctx.compiler.get_new_ident("_".join([name, field]))
 
-    args = collect_child_expressions(ctx)
+        args = collect_child_expressions(ctx)
 
-    if len(args) > 0:
-        ctx.compiler.assert_(len(args) == 1, ctx.node, "single child node for assignment")
-        ctx.statement_out.write(f"{name}{field_access} = {args[-1]}\n")
-    ctx.statement_out.write(f"const {ident} = await {name}{field_access}\n")
-    ctx.expression_out.write(ident)
+        if len(args) > 0:
+            ctx.compiler.assert_(len(args) == 1, ctx.node, "single child node for assignment")
+            ctx.statement_out.write(f"{name}{field_access} = {args[-1]}\n")
+        ctx.statement_out.write(f"const {ident} = await {name}{field_access}\n")
+        ctx.expression_out.write(ident)
 
-@macros.add("67lang:access_index")
-def access_index(ctx: MacroContext):
-    name = get_single_arg(ctx, "single argument, the object into which we should index")
-    res = walk_upwards_for_local_definition(ctx, name)
-    ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
-    name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
-    ident = ctx.compiler.get_new_ident(name) # TODO - pass index name too (doable...)
+class Access_index_macro_provider(Macro_emission_provider):
+    def emission(self, ctx: MacroContext):
+        name = get_single_arg(ctx, "single argument, the object into which we should index")
+        res = walk_upwards_for_local_definition(ctx, name)
+        ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
+        name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
+        ident = ctx.compiler.get_new_ident(name) # TODO - pass index name too (doable...)
 
-    args: list[str] = collect_child_expressions(ctx)
+        args: list[str] = collect_child_expressions(ctx)
 
-    ctx.compiler.assert_(len(args) >= 1, ctx.node, "first child used as indexing key")
-    key = args[0]
+        ctx.compiler.assert_(len(args) >= 1, ctx.node, "first child used as indexing key")
+        key = args[0]
 
-    if len(args) > 1:
-        ctx.compiler.assert_(len(args) == 2, ctx.node, "second child used for assignment")
-        ctx.statement_out.write(f"{name}[{key}] = {args[1]}\n")
+        if len(args) > 1:
+            ctx.compiler.assert_(len(args) == 2, ctx.node, "second child used for assignment")
+            ctx.statement_out.write(f"{name}[{key}] = {args[1]}\n")
 
-    ctx.statement_out.write(f"const {ident} = await {name}[{key}]\n")
-    ctx.expression_out.write(ident)
+        ctx.statement_out.write(f"const {ident} = await {name}[{key}]\n")
+        ctx.expression_out.write(ident)
 
-@macros.add("67lang:access_local")
-def pil_access_local(ctx: MacroContext):
-    desired_name = get_single_arg(ctx)
-    res = walk_upwards_for_local_definition(ctx, desired_name)
-    ctx.compiler.assert_(res != None, ctx.node, f"{desired_name} must access a defined local", ErrorType.NO_SUCH_LOCAL)
-    actual_name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or desired_name
+class Access_local_macro_provider(Macro_emission_provider):
+    def emission(self, ctx: MacroContext):
+        desired_name = get_single_arg(ctx)
+        res = walk_upwards_for_local_definition(ctx, desired_name)
+        ctx.compiler.assert_(res != None, ctx.node, f"{desired_name} must access a defined local", ErrorType.NO_SUCH_LOCAL)
+        actual_name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or desired_name
 
-    args = collect_child_expressions(ctx)
+        args = collect_child_expressions(ctx)
 
-    if len(args) > 0:
-        ctx.compiler.assert_(len(args) == 1, ctx.node, "single child used for assignment")
-        ctx.statement_out.write(f"{actual_name} = {args[-1]}\n")
+        if len(args) > 0:
+            ctx.compiler.assert_(len(args) == 1, ctx.node, "single child used for assignment")
+            ctx.statement_out.write(f"{actual_name} = {args[-1]}\n")
 
-    ctx.expression_out.write(actual_name)
+        ctx.expression_out.write(actual_name)
 
-@macros.add("local")
-def local(ctx: MacroContext):
-    desired_name = get_single_arg(ctx)
-    name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
-    
-    args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
-    
-    ctx.statement_out.write(f"let {name}")
-    if len(args) > 0:
-        ctx.statement_out.write(f" = {args[-1]}")
-    ctx.statement_out.write(f"\n")
-    ctx.expression_out.write(name)
+class Local_macro_provider(Macro_emission_provider):
+    def emission(self, ctx: MacroContext):
+        desired_name = get_single_arg(ctx)
+        name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
+        
+        args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
+        
+        ctx.statement_out.write(f"let {name}")
+        if len(args) > 0:
+            ctx.statement_out.write(f" = {args[-1]}")
+        ctx.statement_out.write(f"\n")
+        ctx.expression_out.write(name)
 
 @singleton
 class Macro_67lang_call:
