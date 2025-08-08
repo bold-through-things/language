@@ -41,6 +41,7 @@ class MacroRegistry:
     def __init__(self) -> None:
         self._registry: dict[str, Macro] = {}
 
+    # TODO - this curse here should be nuked
     def add(self, *names: str) -> Callable[[Union[F, type]], F]:
         def decorator(obj: Union[F, type]) -> F:
             instance: Macro = cast(Macro, obj() if isinstance(obj, type) else obj)

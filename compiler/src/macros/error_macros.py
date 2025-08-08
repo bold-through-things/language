@@ -1,8 +1,8 @@
 from dataclasses import replace
-from macro_registry import MacroContext, Macro_emission_provider
+from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider
 from strutil import IndentedStringIO
 
-class Must_compile_error_macro_provider(Macro_emission_provider):
+class Must_compile_error_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def emission(self, ctx: MacroContext):
         """Process must_compile_error children during emission to catch emission-time errors.
         
@@ -16,4 +16,10 @@ class Must_compile_error_macro_provider(Macro_emission_provider):
         # Process all children with dummy outputs to catch potential emission-time errors
         for child in ctx.node.children:
             child_ctx = replace(ctx, node=child, statement_out=dummy_statement_out, expression_out=dummy_expression_out)
+            ctx.current_step.process_node(child_ctx)
+
+    def typecheck(self, ctx: MacroContext):
+        # Process children to generate type errors during type checking step
+        for child in ctx.node.children:
+            child_ctx = replace(ctx, node=child)
             ctx.current_step.process_node(child_ctx)
