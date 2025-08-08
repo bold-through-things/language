@@ -3,7 +3,11 @@
     "name": "67lang Dev Container",
     "image": "mcr.microsoft.com/devcontainers/python:3.11",
     "features": {
-        "ghcr.io/devcontainers/features/deno:2": {}
+        "ghcr.io/devcontainers/features/node:1": {
+            // this literally just for npm for gemini
+            "version": "20"
+        },
+        "ghcr.io/devcontainers-extra/features/deno-asdf:2": {}
     },
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
