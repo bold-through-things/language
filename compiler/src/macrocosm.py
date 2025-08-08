@@ -5,7 +5,13 @@ from macros.collection_macros import List_macro_provider
 from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
 from macros.while_macro import While_macro_provider
-from macros.access_macros import Local_macro_provider, Fn_macro_provider, Access_field_macro_provider, Access_index_macro_provider, Access_local_macro_provider
+from macros.access_macros import Local_macro_provider, Fn_macro_provider, Access_field_macro_provider, Access_index_macro_provider, Access_local_macro_provider, Exists_macro_provider
+from macros.call_macro import Call_macro_provider
+from macros.utility_macros import Noop_macro_provider
+from macros.solution_macro import Solution_macro_provider
+from macros.error_macros import Must_compile_error_macro_provider
+from macros.comment_macros import Comment_macro_provider, COMMENT_MACROS
+from macros.builtin_macros import Builtin_macro_provider
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident, unified_macros, unified_typecheck
@@ -16,6 +22,7 @@ from typecheck_macros import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
+from processor_base import builtins
 
 class Macrocosm:
     def __init__(self):
@@ -216,8 +223,22 @@ def create_macrocosm() -> Macrocosm:
         "fn": Fn_macro_provider(),
         "67lang:access_field": Access_field_macro_provider(),
         "67lang:access_index": Access_index_macro_provider(),
-        "67lang:access_local": Access_local_macro_provider()
+        "67lang:access_local": Access_local_macro_provider(),
+        "67lang:call": Call_macro_provider(),
+        "exists": Exists_macro_provider(),
+        "noop": Noop_macro_provider(),
+        "type": Noop_macro_provider(),
+        "67lang:auto_type": Noop_macro_provider(),
+        "67lang:assume_local_exists": Noop_macro_provider(),
+        "67lang:solution": Solution_macro_provider(),
+        "must_compile_error": Must_compile_error_macro_provider(),
     }
+
+    for macro in COMMENT_MACROS:
+        macro_providers[macro] = Comment_macro_provider()
+
+    for builtin in builtins.keys():
+        macro_providers[builtin] = Builtin_macro_provider()
 
     literally = {
         "true": "true",

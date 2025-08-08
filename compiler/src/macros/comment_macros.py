@@ -1,18 +1,18 @@
-from processor_base import unified_macros, unified_typecheck
-from macro_registry import MacroRegistry
-
-# Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
-typecheck = unified_typecheck  # Use unified registry
+from macro_registry import Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
 
 COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
 
 # Create a code linking registry for skipping comment macros  
 code_linking = MacroRegistry()
 
+class Comment_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
+    def emission(self, _):
+        pass
+
+    def typecheck(self, _):
+        pass
+
 @code_linking.add(*(COMMENT_MACROS + ["string", "regex"])) # TODO - ugly. don't concat lists like that. find a better way
-@macros.add(*COMMENT_MACROS)
-@typecheck.add(*COMMENT_MACROS)
 def comments(_):
     # comments are ignored during all processing steps. TODO - we could and perhaps should transfer comments to output?
     pass
