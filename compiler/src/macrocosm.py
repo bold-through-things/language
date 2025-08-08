@@ -12,6 +12,7 @@ from macros.solution_macro import Solution_macro_provider
 from macros.error_macros import Must_compile_error_macro_provider
 from macros.comment_macros import Comment_macro_provider, COMMENT_MACROS
 from macros.builtin_macros import Builtin_macro_provider
+from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident, unified_macros, unified_typecheck
@@ -239,6 +240,9 @@ def create_macrocosm() -> Macrocosm:
 
     for builtin in builtins.keys():
         macro_providers[builtin] = Builtin_macro_provider()
+
+    for macro in SCOPE_MACRO:
+        macro_providers[macro] = Scope_macro_provider()
 
     literally = {
         "true": "true",

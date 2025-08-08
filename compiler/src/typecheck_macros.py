@@ -16,13 +16,7 @@ typecheck = unified_typecheck  # Use unified registry
 
 
 
-SCOPE_MACRO = ["do", "then", "else", "67lang:file"]
-@typecheck.add(*SCOPE_MACRO)
-def typecheck_scope_macro(ctx: MacroContext):
-    parent = seek_parent_scope(ctx.node)
-    # Temporarily disable scope metadata - implement walking upwards approach later
-    # ctx.compiler.set_metadata(ctx.node, Scope, Scope(parent=parent))
-    process_children_with_context(ctx, ctx.current_step)
+
 
 class TypeCheckingStep(MacroProcessingStep):
     """Handles type checking"""
