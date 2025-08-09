@@ -4,8 +4,12 @@
     "description": "can you see it now?",
     "version": "0.0.1",
     "engines": {
-        "vscode": ">=0.9.0-pre.1"
+        "vscode": "^1.80.0"
     },
+    "main": "./extension.js",
+    "activationEvents": [
+        "onLanguage:67lang"
+    ],
     "publisher": "u1tmt",
     "contributes": {
         "languages": [{
