@@ -28,7 +28,7 @@ from logger import default_logger
 from processor_base import builtins
 
 class Macrocosm:
-    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry):
+    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry):
         self.nodes: list[Node] = []
         # TODO. incremental is good enough for now, but we'll have to stabilize it.
         #  the last thing you would want is the entire output changing because you added a statement. that's a lot of
@@ -44,7 +44,7 @@ class Macrocosm:
         # Initialize the processing pipeline
         self.processing_steps: list[MacroProcessingStep] = [
             PreprocessingStep(),
-            CodeBlockLinkingStep(), 
+            CodeBlockLinkingStep(code_linking_registry), 
             TypeCheckingStep(typecheck_registry),
             JavaScriptEmissionStep(emission_registry),
             MustCompileErrorVerificationStep()
@@ -293,20 +293,20 @@ def create_macrocosm() -> Macrocosm:
     # this is the new way of doing things
     # we still need to bridge this to the old way, for now
     # TODO - remove the old way
-    from processor_base import code_linking as code_linking_global
-    code_linking_local = create_registry("code_linking")
+    
+    code_linking_registry = create_registry("code_linking")
 
     for macro, provider in macro_providers.items():
         preprocess.add_fn(getattr(provider, "preprocess", None), macro)
         typecheck.add_fn(getattr(provider, "typecheck", None), macro)
         emission.add_fn(getattr(provider, "emission", None), macro)
-        code_linking_local.add_fn(getattr(provider, "code_linking", None), macro)
+        code_linking_registry.add_fn(getattr(provider, "code_linking", None), macro)
 
     # TODO - this should not be needed
     preprocessor._registry.update(preprocess._registry)
-    code_linking_global._registry.update(code_linking_local._registry)
     
-    rv = Macrocosm(emission, typecheck)
+    
+    rv = Macrocosm(emission, typecheck, code_linking_registry)
     rv.registries.update(registries)
     return rv
     

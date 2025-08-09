@@ -1,6 +1,6 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, code_linking
-from macro_registry import MacroContext
+from processor_base import MacroProcessingStep
+from macro_registry import MacroContext, MacroRegistry
 from node import Node, Macro
 from logger import default_logger
 from error_types import ErrorType
@@ -55,10 +55,10 @@ class CodeBlockAssociator:
 class CodeBlockLinkingStep(MacroProcessingStep):
     """Handles linking code blocks to headers (e.g. do -> for)"""
     
-    def __init__(self):
+    def __init__(self, macros: MacroRegistry):
         super().__init__()
         self.associator = CodeBlockAssociator()
-        self.macros = code_linking
+        self.macros = macros
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process code block associations for a node"""
