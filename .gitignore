@@ -4,6 +4,8 @@ node_modules
 
 fucking_around_with_bash/output.txt
 
+.github/issues
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/launch.json
