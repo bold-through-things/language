@@ -266,7 +266,6 @@ from macro_registry import MacroContext, MacroRegistry
 
 # Global unified registries for all macros and typechecks
 # These will be populated by all macro modules
-unified_typecheck = MacroRegistry()
 code_linking = MacroRegistry()
 
 class MacroProcessingStep(ABC):

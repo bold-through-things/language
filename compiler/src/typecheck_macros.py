@@ -1,14 +1,11 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_scope, unified_typecheck
-from macro_registry import MacroContext
+from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_scope
+from macro_registry import MacroContext, MacroRegistry
 from strutil import cut
 from node import Node, Macro
 from common_utils import collect_child_types, get_single_arg, process_children_with_context
 from logger import default_logger
 from error_types import ErrorType
-
-# Legacy registries - will be moved into steps
-typecheck = unified_typecheck  # Use unified registry
 
 
 
@@ -21,10 +18,10 @@ typecheck = unified_typecheck  # Use unified registry
 class TypeCheckingStep(MacroProcessingStep):
     """Handles type checking"""
     
-    def __init__(self):
+    def __init__(self, macros: MacroRegistry):
         super().__init__()
         # Use the unified typecheck registry
-        self.macros = unified_typecheck
+        self.macros = macros
         
     def process_node(self, ctx: MacroContext) -> None:
         """Type check a single node"""
