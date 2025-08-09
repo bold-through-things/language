@@ -5,6 +5,7 @@ from macros.collection_macros import List_macro_provider
 from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
 from macros.while_macro import While_macro_provider
+from macros.for_macro import For_macro_provider
 from macros.access_macros import Local_macro_provider, Fn_macro_provider, Access_field_macro_provider, Access_index_macro_provider, Access_local_macro_provider, Exists_macro_provider
 from macros.call_macro import Call_macro_provider
 from macros.utility_macros import Noop_macro_provider
@@ -214,6 +215,7 @@ def create_macrocosm() -> Macrocosm:
     # creates it with all the necessary macros registered
     macro_providers: dict[str, Macro_provider] = {
         "while": While_macro_provider(),
+        "for": For_macro_provider(),
         "int": Number_macro_provider(int),
         "float": Number_macro_provider(float),
         "string": String_macro_provider("string"),
@@ -293,7 +295,7 @@ def create_macrocosm() -> Macrocosm:
     # TODO - this should not be needed
     unified_macros._registry.update(emission._registry)
     unified_typecheck._registry.update(typecheck._registry)
-    preprocessor._registry.update(preprocessor._registry)
+    preprocessor._registry.update(preprocess._registry)
     code_linking_global._registry.update(code_linking_local._registry)
     
     rv = Macrocosm()

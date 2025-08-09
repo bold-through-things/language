@@ -20,20 +20,7 @@ def local(ctx: MacroContext):
     actual_name = ctx.compiler.get_new_ident(desired_name)
     ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
 
-@preprocessor.add("for")
-def preprocess_for(ctx: MacroContext):
-    # TODO. yes i really do hate this hack. really what we should just do is unroll `for` into the
-    #  manual while true early into the processing
-    args = ctx.compiler.get_metadata(ctx.node, Args)
-    args = args.split(" ")
-    name = args[0] # TODO - this won't support any identifier, it probably should!
 
-    # print("processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
-    ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
-    # print("done processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
-
-    for child in ctx.node.children:
-        ctx.current_step.process_node(replace(ctx, node=child))
 
 
 @preprocessor.add("fn")
