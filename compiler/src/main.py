@@ -26,7 +26,7 @@ configure_logger_from_args(args.log)
 
 # Now import modules that register macros (these will respect the logging configuration)
 from tree_parser import TreeParser
-from macrocosm import Macrocosm
+from macrocosm import Macrocosm, create_macrocosm
 
 def human_readable(inspections: list[dict[str, Any]]) -> None:
     for i, entry in enumerate(reversed(inspections), 1):
@@ -49,14 +49,13 @@ with default_logger.indent("compile", "initialization"):
     rglob = "*.67lang.expanded" if args.rte else "*.67lang"
     result = list(Path(".").rglob("*.67lang"))
     default_logger.compile(f"found {len(result)} .67lang files: {[str(f) for f in result]}")
-    its_just_macros = Macrocosm()
+    its_just_macros = create_macrocosm()
     
     # Log macro registry summary if registry logging is enabled
-    from processor_base import unified_macros, unified_typecheck
-    from preprocessing_macros import preprocessor
-    codegen_macros = ", ".join(unified_macros.all().keys())
-    typecheck_macros = ", ".join(unified_typecheck.all().keys())
-    preprocessor_macros = ", ".join(preprocessor.all().keys())
+    
+    codegen_macros = ", ".join(its_just_macros.registries["emission"].all().keys())
+    typecheck_macros = ", ".join(its_just_macros.registries["typecheck"].all().keys())
+    preprocessor_macros = ", ".join(its_just_macros.registries["preprocess"].all().keys())
     default_logger.registry(f"macro registry initialized with codegen macros: {codegen_macros}")
     default_logger.registry(f"typecheck registry initialized with typecheck macros: {typecheck_macros}")  
     default_logger.registry(f"preprocessor registry initialized with preprocessor macros: {preprocessor_macros}")

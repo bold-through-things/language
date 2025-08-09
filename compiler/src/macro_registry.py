@@ -20,6 +20,21 @@ class MacroContext:
     compiler: "Macrocosm"
     current_step: "MacroProcessingStep | None" = None
 
+class Macro_preprocess_provider(Protocol):
+    def preprocess(self, ctx: MacroContext): ...
+class Macro_typecheck_provider(Protocol):
+    def typecheck(self, ctx: MacroContext) -> str | None: ...
+class Macro_emission_provider(Protocol):
+    def emission(self, ctx: MacroContext): ...
+
+class Macro_code_linking_provider(Protocol):
+    def code_linking(self, ctx: MacroContext): ...
+
+Macro_provider = \
+    Macro_preprocess_provider | \
+    Macro_typecheck_provider | \
+    Macro_emission_provider
+
 class Macro(Protocol):
     def __call__(self, ctx: MacroContext) -> str: ...
 
@@ -29,16 +44,11 @@ class MacroRegistry:
     def __init__(self) -> None:
         self._registry: dict[str, Macro] = {}
 
-    def add(self, *names: str) -> Callable[[Union[F, type]], F]:
-        def decorator(obj: Union[F, type]) -> F:
-            instance: Macro = cast(Macro, obj() if isinstance(obj, type) else obj)
-            for name in names:
-                if name in self._registry:
-                    raise ValueError(f"Macro name '{name}' already registered")
-                default_logger.registry(f"registering macro '{name}' -> {obj.__name__ if hasattr(obj, '__name__') else obj}")
-                self._registry[name] = instance
-            return obj
-        return decorator
+    def add_fn(self, m: Macro | None, *names: str):
+        if m is None:
+            return
+        for name in names:
+            self._registry[name] = m
 
     def get(self, name: str) -> Macro:
         try:

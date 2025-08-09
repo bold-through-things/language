@@ -12,7 +12,7 @@ from literal_macros import JavaScriptEmissionStep
 from literal_macros import macros as literal_macros_registry, typecheck as literal_typecheck_registry
 from macros.access_macros import macros as access_macros_registry, typecheck as access_typecheck_registry
 import macros  # Import the new macros package to ensure registration
-from preprocessing_macros import preprocessor
+
 from typecheck_macros import typecheck as typecheck_macros_registry
 
 from macrocosm import Macrocosm
@@ -35,7 +35,7 @@ for name, handler in access_macros_registry.all().items():
 for name, handler in access_typecheck_registry.all().items():
     typecheck._registry[name] = handler
 
-# Note: control flow macros now register directly with unified_macros
+
 
 # Merge type check macros
 for name, handler in typecheck_macros_registry.all().items():

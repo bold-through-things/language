@@ -1,9 +1,5 @@
-from processor_base import unified_macros
+from macro_registry import Macro_emission_provider
 
-# Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
-
-@macros.add("noop", "type", "67lang:auto_type", "67lang:assume_local_exists")
-def does_not_compile(_):
-    # does not compile into code itself - nothing to do
-    pass
+class Noop_macro_provider(Macro_emission_provider):
+    def emission(self, _):
+        pass

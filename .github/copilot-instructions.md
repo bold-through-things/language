@@ -22,3 +22,5 @@ the compiler is written in Python currently, though a bootstrap is already plann
 leverage the `for_developers.md` religiously. inspect it before you start the work to know what this project is all about. inspect it before you start implementing a solution to validate that the solution is acceptable and save us the back and forth of six PR reviews. **build quality software.**
 
 **do not track PR comments via line numbers!** track them via the lines (or the summary of lines) that they comment upon. this happens far too often - you lose track of which lines the comment is actually discussing because you edited the file and the line numbers shifted. incredibly frustrating!
+
+when refactoring. always perform small incremental changes and `./test` after each. if you break tests you will regret it, and mainly because you will not find a way to fix them. commit each properly atomic change and then **revert** on failure. i do not want you to commit your every edit, but if you finished moving a class somewhere, for example, then `./test` to validate and commit. commits are free in `git`, we do not pay for each.
