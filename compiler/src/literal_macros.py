@@ -1,6 +1,6 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, js_lib, unified_macros
-from macro_registry import MacroContext
+from processor_base import MacroProcessingStep, js_lib
+from macro_registry import MacroContext, MacroRegistry
 from strutil import IndentedStringIO
 from contextlib import contextmanager
 from node import Macro
@@ -10,10 +10,10 @@ from error_types import ErrorType
 class JavaScriptEmissionStep(MacroProcessingStep):
     """Handles JavaScript code emission"""
     
-    def __init__(self):
+    def __init__(self, macros: MacroRegistry):
         super().__init__()
         # Use the unified macros registry
-        self.macros = unified_macros
+        self.macros = macros
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node for JavaScript emission"""            

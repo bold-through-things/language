@@ -1,5 +1,5 @@
 from dataclasses import replace
-from processor_base import seek_child_macro, unified_macros
+from processor_base import seek_child_macro
 from macro_registry import Macro_emission_provider, MacroContext
 from strutil import IndentedStringIO
 

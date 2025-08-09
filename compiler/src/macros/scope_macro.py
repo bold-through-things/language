@@ -1,12 +1,5 @@
 from dataclasses import replace
-from processor_base import seek_child_macro, unified_macros
-from macro_registry import MacroContext
-from node import Inject_code_start
-
-SCOPE_MACRO = ["do", "then", "else", "67lang:file"]
-
-from dataclasses import replace
-from processor_base import seek_child_macro, unified_macros, seek_parent_scope
+from processor_base import seek_child_macro, seek_parent_scope
 from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider
 from node import Inject_code_start
 from common_utils import process_children_with_context

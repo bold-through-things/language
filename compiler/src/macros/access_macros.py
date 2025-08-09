@@ -2,7 +2,7 @@ from dataclasses import replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
     builtins, builtin_calls, DirectCall, seek_child_macro, seek_all_child_macros, cut, to_valid_js_ident,
-    unified_macros, unified_typecheck, walk_upwards_for_local_definition
+    walk_upwards_for_local_definition
 )
 from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider, MacroRegistry
 from strutil import IndentedStringIO, Joiner
@@ -13,9 +13,7 @@ from logger import default_logger
 from typecheck_macros import TypeCheckingStep
 from preprocessing_macros import PreprocessingStep
 
-# Legacy registries - will be moved into steps
-macros = unified_macros  # Use unified registry
-typecheck = unified_typecheck  # Use unified registry
+
 
 class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
     def preprocess(self, ctx: MacroContext):

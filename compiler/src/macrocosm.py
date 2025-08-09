@@ -17,7 +17,7 @@ from macros.builtin_macros import Builtin_macro_provider
 from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
-from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident, unified_macros, unified_typecheck
+from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident, unified_typecheck
 from macro_registry import Macro_emission_provider, MacroContext, Macro_provider, MacroRegistry
 from preprocessing_macros import PreprocessingStep, preprocessor
 from code_block_linking import CodeBlockLinkingStep  
@@ -28,7 +28,7 @@ from logger import default_logger
 from processor_base import builtins
 
 class Macrocosm:
-    def __init__(self):
+    def __init__(self, emission_registry: MacroRegistry):
         self.nodes: list[Node] = []
         # TODO. incremental is good enough for now, but we'll have to stabilize it.
         #  the last thing you would want is the entire output changing because you added a statement. that's a lot of
@@ -46,7 +46,7 @@ class Macrocosm:
             PreprocessingStep(),
             CodeBlockLinkingStep(), 
             TypeCheckingStep(),
-            JavaScriptEmissionStep(),
+            JavaScriptEmissionStep(emission_registry),
             MustCompileErrorVerificationStep()
         ]
 
@@ -275,9 +275,10 @@ def create_macrocosm() -> Macrocosm:
     for name, provider in macro_providers.items():
         default_logger.registry(f"registering macro '{name}' -> {provider.__class__.__name__}")
 
+    registries = {}
     def create_registry(name: str):
         registry = MacroRegistry()
-        # rv.registries[name] = registry
+        registries[name] = registry
         return registry
     
     
@@ -302,11 +303,11 @@ def create_macrocosm() -> Macrocosm:
         code_linking_local.add_fn(getattr(provider, "code_linking", None), macro)
 
     # TODO - this should not be needed
-    unified_macros._registry.update(emission._registry)
     unified_typecheck._registry.update(typecheck._registry)
     preprocessor._registry.update(preprocess._registry)
     code_linking_global._registry.update(code_linking_local._registry)
     
-    rv = Macrocosm()
+    rv = Macrocosm(emission)
+    rv.registries.update(registries)
     return rv
     

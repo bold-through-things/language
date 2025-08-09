@@ -35,7 +35,7 @@ for name, handler in access_macros_registry.all().items():
 for name, handler in access_typecheck_registry.all().items():
     typecheck._registry[name] = handler
 
-# Note: control flow macros now register directly with unified_macros
+
 
 # Merge type check macros
 for name, handler in typecheck_macros_registry.all().items():

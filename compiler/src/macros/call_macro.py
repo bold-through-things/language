@@ -2,7 +2,7 @@ from dataclasses import replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
     builtins, builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
-    unified_macros, unified_typecheck, walk_upwards_for_local_definition
+    walk_upwards_for_local_definition
 )
 from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
 from strutil import IndentedStringIO, Joiner
