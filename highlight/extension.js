@@ -1,4 +1,4 @@
-const { window, TextEditorDecorationType, Position, Range, workspace, ConfigurationTarget, ThemeColor } = require('vscode');
+const { window, TextEditorDecorationType, Position, Range, workspace, ConfigurationTarget, ThemeColor, commands, TextEdit, WorkspaceEdit } = require('vscode');
 
 let gradientDecorationTypes = [];
 
@@ -14,9 +14,53 @@ function hexToRgba(hex, alpha) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+function formatDocument() {
+    const editor = window.activeTextEditor;
+    if (!editor) {
+        return; // No active editor
+    }
+
+    const document = editor.document;
+    if (document.languageId !== '67lang') {
+        return; // Not a 67lang document
+    }
+
+    const edit = new WorkspaceEdit();
+    const tabRegex = /^	+/;
+
+    for (let i = 0; i < document.lineCount; i++) {
+        const line = document.lineAt(i);
+        if (line.text.trim() === '') {
+            let intendedIndentationLevel = 0;
+            // Look ahead for the next non-empty line to determine intended indentation
+            for (let k = i + 1; k < document.lineCount; k++) {
+                const nextLine = document.lineAt(k);
+                if (nextLine.text.trim() !== '') {
+                    const nextLineMatch = tabRegex.exec(nextLine.text);
+                    if (nextLineMatch) {
+                        intendedIndentationLevel = nextLineMatch[0].length;
+                    }
+                    break; // Found the next non-empty line, stop searching
+                }
+            }
+
+            const currentIndentation = line.text.length - line.text.trimStart().length;
+            if (currentIndentation < intendedIndentationLevel) {
+                const newIndentation = '\t'.repeat(intendedIndentationLevel);
+                const range = new Range(line.lineNumber, 0, line.lineNumber, line.text.length);
+                edit.replace(document.uri, range, newIndentation);
+            }
+        }
+    }
+
+    workspace.applyEdit(edit);
+}
+
 function activate(context) {
     const colors = ['#8B0000', '#B22222', '#FF4500', '#FF8C00', '#FFD700']; // Dark red to gold
     const backgroundColor = new ThemeColor('editor.background');
+
+    context.subscriptions.push(commands.registerCommand('67lang.formatDocument', formatDocument));
 
     colors.forEach(color => {
         gradientDecorationTypes.push(window.createTextEditorDecorationType({

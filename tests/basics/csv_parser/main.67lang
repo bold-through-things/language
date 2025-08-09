@@ -37,10 +37,10 @@ do
 				a header
 				a line split
 					string ","
-
+		
 		local row
 			dict
-
+		
 		for kv in
 			a zipped_data
 		do
@@ -51,7 +51,7 @@ do
 		
 		a rows push
 			a row
-
+	
 	access i
 		a add
 			access i
