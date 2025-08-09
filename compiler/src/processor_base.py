@@ -217,12 +217,16 @@ builtin_calls = {
     "any": [NaryOperatorCall(operator="||", demands=None, returns=None)],
     "all": [NaryOperatorCall(operator="&&", demands=None, returns=None)],
     "add": [NaryOperatorCall(operator="+", demands=None, returns=None)],
+    "sub": [NaryOperatorCall(operator="-", demands=None, returns=None)],
+    "mul": [NaryOperatorCall(operator="*", demands=None, returns=None)],
     "mod": [NaryOperatorCall(operator="%", demands=None, returns=None)],
+    "div": [NaryOperatorCall(operator="/", demands=None, returns=None)],
     "none": [NaryOperatorCall(operator="||", wrapper="!", demands=None, returns=None)], # Use || and wrap with !
     "asc": [ChainedComparisonCall(operator="<", demands=None, returns=None)], 
     "nondesc": [ChainedComparisonCall(operator="<=", demands=None, returns=None)], 
-    # 'eq' remains a DirectCall for now due to its complex logic
-    "eq": [DirectCall(fn="eq", receiver="_67lang", demands=None, returns=None)],
+    "desc": [ChainedComparisonCall(operator=">", demands=None, returns=None)], 
+    "nonasc": [ChainedComparisonCall(operator=">=", demands=None, returns=None)], 
+    "eq": [ChainedComparisonCall(operator="===", demands=None, returns=None)], 
 
     "values": [DirectCall(fn="values", receiver="Object", demands=None, returns=None)],
     "keys": [DirectCall(fn="values", receiver="keys", demands=None, returns=None)],

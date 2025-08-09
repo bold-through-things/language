@@ -1,12 +1,5 @@
 globalThis._67lang = {
-    concat: (...arr) => arr.reduce((sum, a) => sum + a, ""),
-    eq: (...arr) => arr.every(v => v === arr[0]),
-    any: (...arr) => arr.reduce((sum, a) => sum || a, false),
-    all: (...arr) => arr.reduce((sum, a) => sum && a, true),
-    asc: (...arr) => arr.every((v, i, a) => !i || a[i - 1] <= v), // who let bro cook? https://stackoverflow.com/a/53833620
-    add: (...arr) => arr.reduce((sum, a) => sum + (a ?? 0), 0),
-    mod: (...arr) => arr[0] % arr[1], // TODO - shouldn't be a binary operation (how?) TODO - ensure we're not ignoring inputs silently
-    none: (...arr) => arr.every(v => !v),
+    // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
         if (Array.isArray(inside)) {
             // array
@@ -23,64 +16,6 @@ globalThis._67lang = {
         });
     },
 
-    keys: Object.keys.bind(Object),
-    values: Object.values.bind(Object),
-    log: console.log.bind(console),
-
-    store() {
-        const obj = { value: null }
-        const fn = (function (set) { if (set !== undefined) { this.value = set; return set; } else { return this.value; } }).bind(obj)
-        return fn
-    },
-
-
-
-    /**
-     * Calls a method or sets a property on an object, simulating `obj[field](...)` or `obj[field] = value`.
-     * If a setter exists on the prototype, it's invoked. Otherwise, the field is either called (if function) or assigned to.
-     * Supports `async` methods.
-     *
-     * @param {object} obj - The target object.
-     * @param {string|symbol} field - The field name or symbol to call or assign.
-     * @param {...unknown} values - Arguments to pass to the method or the value to assign.
-     * @returns {Promise<unknown>} The result of the method call, or `undefined` if assigning.
-     * @throws {TypeError} If the number of arguments is invalid for the setter or assignment.
-     */
-    async access(obj, field, ...values) {
-        if (values.length == 0) {
-            const value = obj[field];
-
-            if (typeof value === 'function') {
-                return await value.call(obj);
-            } else {
-                return value;
-            }
-        }
-
-        const proto = Object.getPrototypeOf(obj);
-        const desc = proto ? Object.getOwnPropertyDescriptor(proto, field) : undefined;
-
-        if (desc?.set) {
-            if (values.length !== 1) {
-                throw new TypeError(`Setter for '${String(field)}' expects exactly 1 argument, got ${values.length}`);
-            }
-            obj[field] = values[0];
-            return values[0];
-        }
-
-        const member = obj[field];
-
-        if (typeof member === 'function') {
-            return await member.call(obj, ...values);
-        } else {
-            if (values.length !== 1) {
-                throw new TypeError(`Assignment to '${String(field)}' expects exactly 1 value, got ${values.length}`);
-            }
-            obj[field] = values[0];
-            return values[0];
-        }
-    },
-
     scope(parent) {
         const scope = Object.create(parent || globalThis);
         return (scope);
@@ -94,7 +29,7 @@ if (typeof window === "undefined") {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
         const n = await Deno.stdin.read(buf);
-        if (n === null) return "";
+        if (n === null) { return ""; }
         return new TextDecoder().decode(buf.subarray(0, n)).trim();
     };
 
@@ -193,7 +128,7 @@ void (async () => {
                         let _0x25__0x21__1 = _0x9b__0x24__0x20_kv_1
                         const _0x9c_trim = await String.prototype.trim.call(_0x25__0x21__1)
                         let _0x26__0x22_trim = _0x9c_trim
-                        const _0x9a_eq = await _67lang.eq(_0x26__0x22_trim, "")
+                        const _0x9a_eq = await (_0x26__0x22_trim === "")
                         let _0x23_eq = _0x9a_eq
                         if (_0x23_eq) {{
                                 const parent_scope = scope
@@ -317,7 +252,7 @@ void (async () => {
                                                             _0x55_push
                                                             let _0x5a__0x57_chain_dep_id = chain_dep_id
                                                             let _0x5b__0x58_dep_id = dep_id
-                                                            const _0xad_eq = await _67lang.eq(_0x5a__0x57_chain_dep_id, _0x5b__0x58_dep_id)
+                                                            const _0xad_eq = await (_0x5a__0x57_chain_dep_id === _0x5b__0x58_dep_id)
                                                             let _0x59_eq = _0xad_eq
                                                             if (_0x59_eq) {{
                                                                     const parent_scope = scope

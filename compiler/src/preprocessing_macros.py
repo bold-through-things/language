@@ -6,25 +6,6 @@ from common_utils import get_single_arg
 from logger import default_logger
 from strutil import cut
 
-# Legacy registries - will be moved into steps
-
-
-# Import comment macros from comment_macros to avoid duplication
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class PreprocessingStep(MacroProcessingStep):
     """Handles preprocessing like access macro unrolling"""
     
