@@ -1,7 +1,7 @@
 from typing import Literal, Type, Union
 from error_types import ErrorType
 from processor_base import unified_macros, unified_typecheck
-from macro_registry import Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider, MacroContext
+from macro_registry import Macro_code_linking_provider, Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider, MacroContext
 from node import Args
 
 # Legacy registries - will be moved into steps
@@ -41,12 +41,16 @@ class Number_macro_provider(
 class String_macro_provider(
         Macro_typecheck_provider,
         Macro_emission_provider,
+        Macro_code_linking_provider
     ):
     def __init__(self, kind: Literal["string", "regex"]):
         self.kind = kind
 
     def typecheck(self, ctx: MacroContext):
         return "str" if self.kind == "string" else "regex"
+
+    def code_linking(self, _):
+        pass
 
     def emission(self, ctx: MacroContext):
         s: str = ctx.compiler.get_metadata(ctx.node, Args)

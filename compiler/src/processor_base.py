@@ -268,6 +268,7 @@ from macro_registry import MacroContext, MacroRegistry
 # These will be populated by all macro modules
 unified_macros = MacroRegistry()
 unified_typecheck = MacroRegistry()
+code_linking = MacroRegistry()
 
 class MacroProcessingStep(ABC):
     """Base class for macro processing steps in the compilation pipeline"""

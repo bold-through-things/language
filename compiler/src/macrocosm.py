@@ -277,16 +277,24 @@ def create_macrocosm() -> Macrocosm:
     preprocess = create_registry("preprocess")
     typecheck = create_registry("typecheck")
     emission = create_registry("emission")
+    
+    # this is the new way of doing things
+    # we still need to bridge this to the old way, for now
+    # TODO - remove the old way
+    from processor_base import code_linking as code_linking_global
+    code_linking_local = create_registry("code_linking")
 
     for macro, provider in macro_providers.items():
         preprocess.add_fn(getattr(provider, "preprocess", None), macro)
         typecheck.add_fn(getattr(provider, "typecheck", None), macro)
         emission.add_fn(getattr(provider, "emission", None), macro)
+        code_linking_local.add_fn(getattr(provider, "code_linking", None), macro)
 
     # TODO - this should not be needed
     unified_macros._registry.update(emission._registry)
     unified_typecheck._registry.update(typecheck._registry)
     preprocessor._registry.update(preprocessor._registry)
+    code_linking_global._registry.update(code_linking_local._registry)
     
     rv = Macrocosm()
     return rv

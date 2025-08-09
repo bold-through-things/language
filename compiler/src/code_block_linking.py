@@ -1,5 +1,5 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep
+from processor_base import MacroProcessingStep, code_linking
 from macro_registry import MacroContext
 from node import Node, Macro
 from logger import default_logger
@@ -58,6 +58,7 @@ class CodeBlockLinkingStep(MacroProcessingStep):
     def __init__(self):
         super().__init__()
         self.associator = CodeBlockAssociator()
+        self.macros = code_linking
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process code block associations for a node"""
@@ -65,10 +66,9 @@ class CodeBlockLinkingStep(MacroProcessingStep):
         
         # Skip comment macros entirely using the shared registry
         from node import Macro
-        from macros.comment_macros import code_linking
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
-        if macro in code_linking._registry:
-            code_linking._registry[macro](ctx)
+        if macro in self.macros.all():
+            self.macros.get(macro)(ctx)
             return
         
         # Process children first

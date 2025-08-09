@@ -10,10 +10,9 @@ from strutil import cut
 preprocessor = MacroRegistry()
 
 # Import comment macros from comment_macros to avoid duplication
-from macros.comment_macros import COMMENT_MACROS, code_linking, comments
 
-# Register comment macros for preprocessing
-preprocessor.add(*COMMENT_MACROS)(comments)
+
+
 
 @preprocessor.add("local")
 def local(ctx: MacroContext):

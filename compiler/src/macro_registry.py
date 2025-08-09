@@ -27,6 +27,9 @@ class Macro_typecheck_provider(Protocol):
 class Macro_emission_provider(Protocol):
     def emission(self, ctx: MacroContext): ...
 
+class Macro_code_linking_provider(Protocol):
+    def code_linking(self, ctx: MacroContext): ...
+
 Macro_provider = \
     Macro_preprocess_provider | \
     Macro_typecheck_provider | \
