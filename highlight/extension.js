@@ -1,4 +1,4 @@
-const { window, TextEditorDecorationType, Position, Range, workspace } = require('vscode');
+const { window, TextEditorDecorationType, Position, Range, workspace, ConfigurationTarget, ThemeColor } = require('vscode');
 
 let gradientDecorationTypes = [];
 
@@ -16,25 +16,16 @@ function hexToRgba(hex, alpha) {
 
 function activate(context) {
     const colors = ['#8B0000', '#B22222', '#FF4500', '#FF8C00', '#FFD700']; // Dark red to gold
+    const backgroundColor = new ThemeColor('editor.background');
 
     colors.forEach(color => {
         gradientDecorationTypes.push(window.createTextEditorDecorationType({
-            // backgroundColor on the decorated text itself (optional)
-            // backgroundColor: 'rgba(0,0,0,0.05)',
-
-            // the 'before' attachment will be placed before the tab character;
-            // use non-breaking spaces in contentText to preserve spacing
-            before: {
-            contentText: '▧',         // two NBSPs as the "attachment content"
-            width: '0.6ch',                     // <--- reduce/increase to control box width
-            height: '1em',                      // match line height
-            margin: '0 0 0 0.2ch',              // shift right to sit *inside* the tab area
-            textDecoration: 'none',
-            backgroundColor: `${hexToRgba(color, 1.0)}`,
-            border: `${hexToRgba(color, 1.0)}`,
-            borderRadius: '3px',
-            },
-            rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+            backgroundColor: hexToRgba(color, 0.67),
+            // TODO. this still a very half arsed h*ck, and in particular it ruins text selection
+            //  because the blue selection overlay isn't actually rendered onto the borders.
+            borderWidth: '6.7px 2.3px',
+            borderColor: backgroundColor,
+            borderStyle: 'solid'
         }));
     });
 

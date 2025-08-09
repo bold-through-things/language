@@ -1,6 +1,6 @@
 {
     "name": "67lang_syntax_highlight",
-    "displayName": "67LANG Syntax Highlighting",
+    "displayName": "67lang Syntax Highlighting",
     "description": "can you see it now?",
     "version": "0.0.1",
     "engines": {
@@ -10,12 +10,11 @@
     "activationEvents": [
         "onLanguage:67lang"
     ],
-    "publisher": "u1tmt",
+    "publisher": "status.call.h8r",
     "contributes": {
         "languages": [{
             "id": "67lang",
-            "aliases": ["67LANG"],
-            "extensions": [".ind"]
+            "extensions": [".67lang"]
         }],
         "grammars": [{
             "language": "67lang",
@@ -25,7 +24,7 @@
         "configurationDefaults": {
 			"[67lang]": {
 				"editor.insertSpaces": false,
-				"editor.tabSize": 2,
+				"editor.tabSize": 4,
 				"editor.detectIndentation": false
 			}
 		}
