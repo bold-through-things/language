@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from typing import Any, Sequence
 from io import StringIO
+from macros.noscope_macro import Noscope_macro_provider
 from macros.collection_macros import List_macro_provider
 from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
@@ -239,6 +240,7 @@ def create_macrocosm() -> Macrocosm:
         "a": Access_macro_provider(),
         "an": Access_macro_provider(),
         "access": Access_macro_provider(),
+        "noscope": Noscope_macro_provider(),
     }
 
     for macro in COMMENT_MACROS:
@@ -269,6 +271,9 @@ def create_macrocosm() -> Macrocosm:
     
     for k, v in literally.items():
         macro_providers[k] = Literal_macro_provider(v)
+
+    for name, provider in macro_providers.items():
+        default_logger.registry(f"registering macro '{name}' -> {provider.__class__.__name__}")
 
     def create_registry(name: str):
         registry = MacroRegistry()

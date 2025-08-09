@@ -44,20 +44,6 @@ class MacroRegistry:
     def __init__(self) -> None:
         self._registry: dict[str, Macro] = {}
 
-    
-
-    # TODO - this curse here should be nuked
-    def add(self, *names: str) -> Callable[[Union[F, type]], F]:
-        def decorator(obj: Union[F, type]) -> F:
-            instance: Macro = cast(Macro, obj() if isinstance(obj, type) else obj)
-            for name in names:
-                if name in self._registry:
-                    raise ValueError(f"Macro name '{name}' already registered")
-                default_logger.registry(f"registering macro '{name}' -> {obj.__name__ if hasattr(obj, '__name__') else obj}")
-                self._registry[name] = instance
-            return obj
-        return decorator
-
     def add_fn(self, m: Macro | None, *names: str):
         if m is None:
             return
