@@ -6,7 +6,7 @@ from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
 from macros.while_macro import While_macro_provider
 from macros.for_macro import For_macro_provider
-from macros.access_macros import Local_macro_provider, Fn_macro_provider, Access_field_macro_provider, Access_index_macro_provider, Access_local_macro_provider, Exists_macro_provider
+from macros.access_macros import Local_macro_provider, Fn_macro_provider, Access_field_macro_provider, Access_index_macro_provider, Access_local_macro_provider, Exists_macro_provider, Param_macro_provider, Access_macro_provider
 from macros.call_macro import Call_macro_provider
 from macros.utility_macros import Noop_macro_provider
 from macros.solution_macro import Solution_macro_provider
@@ -235,6 +235,10 @@ def create_macrocosm() -> Macrocosm:
         "67lang:assume_local_exists": Noop_macro_provider(),
         "67lang:solution": Solution_macro_provider(),
         "must_compile_error": Must_compile_error_macro_provider(),
+        "param": Param_macro_provider(),
+        "a": Access_macro_provider(),
+        "an": Access_macro_provider(),
+        "access": Access_macro_provider(),
     }
 
     for macro in COMMENT_MACROS:
