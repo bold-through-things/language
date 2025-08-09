@@ -34,12 +34,12 @@ note in this chapter number one (1) we shall discuss basic types.
 	
 	much as i hate "hello world" as a concept, here it is, dipshits.
 
-print
+a print
 	string "hello world"
 
 note that you can create and print strings. crazy, i know. are we computing yet? wow.
 
-print
+a print
 	string ""hello world" is a fucking stupid non argument."
 
 note what happened there. did you forget to escape quotes? no, it's perfectly valid. it will
@@ -50,23 +50,23 @@ note what happened there. did you forget to escape quotes? no, it's perfectly va
 	but how come?! well, a riddle for you to solve. allow me to give you some hints, though:
 
 # TODO - assert instead of printing (need a new macro)
-print
+a print
 	string "this literally cannot be true... yet it is: "
-	all
-		eq
+	a all
+		a eq
 			string "new year's eve"
 			access concat
 				string "new year's "
 				string level
-		eq
+		a eq
 			string "a very scary error"
 			access concat
 				string "a very "
 				string !scary !
 				string -error-
-		eq
+		a eq
 			string "your regex should be stored into the regex variable."
-			concat
+			access concat
 				string /your regex/
 				string " should be stored into the "
 				string `regex`
@@ -74,7 +74,7 @@ print
 
 note that i completely solved the need to escape quotes. moving on to escaping newlines now:
 
-print
+a print
 	string
 		just write the newlines naturally and 
 		they will appear in the output, meaning
@@ -86,14 +86,14 @@ note that we didn't escape shit. no, wait, that's untrue. we didn't escape the n
 
 note that doing math is arguably the entire point of computers.
 
-print
-	add
+a print
+	access add
 		int 2
 		float 0
 		int 2
 
-print
-	asc
+a print
+	access asc
 		int 0
 		int 1
 		int 2
@@ -110,7 +110,7 @@ note in this chapter number two (2) we shall discuss the tasty stuff.
 local age
 	int 23
 
-print
+a print
 	string "my age is"
 	an age
 
@@ -120,7 +120,7 @@ note that i lied. my age is not currently 23. let's address that by opening a ti
 an age
 	int 25
 
-print
+a print
 	string "actually, i lied. my age is"
 	an age
 
@@ -132,7 +132,7 @@ local 0
 
 note what the fuck did we just do?! wait, hold on. this won't compile. right?
 
-print
+a print
 	a 0
 
 note that no, it actually does. hm, weird. but what if...
@@ -140,7 +140,7 @@ note that no, it actually does. hm, weird. but what if...
 a 0
 	int 2347
 
-print
+a print
 	a 0
 
 note that this just printed 2347. why? what's going on here? let's investigate...
@@ -157,7 +157,7 @@ local (2347)
 local ,
 	true
 
-print
+a print
 	a ,
 
 note that this language might actually be unhinged. Lisp would never.
@@ -184,7 +184,7 @@ note that did literally nothing. incredible. so what did it even do, then? why, 
 local 2347
 	string "wow, very helpful."
 
-print
+a print
 	a 2347 split sort join
 		where split takes
 			string | |
@@ -232,7 +232,7 @@ a 67lang.features added
 
 note that was too much yapping. let's truncate it a little.
 
-print
+a print
 	a 67lang.features described slice join
 		where described is
 			string "the flexibility of identifiers"
@@ -256,7 +256,7 @@ note in this chapter number five (5) we shall do some conditioning and looping
 if
 	true
 then
-	print
+	a print
 		string "big"
 
 note that is absolutely big if true.
@@ -266,10 +266,10 @@ note that is absolutely big if true.
 if
 	false
 then
-	print
+	a print
 		string "big"
 else
-	print
+	a print
 		string "my disappointment is immeasurable and my day is ruined."
 
 note that my disappointment in programming languages is indeed immeasurable.
@@ -289,8 +289,8 @@ note that keeping a list like that is great, but it really does deserve to be sh
 for angy in
 	an i_hate_this_trash!
 do
-	print
-		concat
+	a print
+		access concat
 			an angy
 			string "!!!"
 
@@ -305,7 +305,7 @@ local does_a_decent_programming_language_exist?
 while
 	a does_a_decent_programming_language_exist?
 do
-	print
+	a print
 		string `code for quality software`
 
 note that we failed to do any meaningful work. that's great. that's enterprise. create another
@@ -339,30 +339,30 @@ note in this chapter number six (6) we shall point out the obvious
 
 	every node can have many children. why restrict them all to two, then?
 
-print
+a print
 	string "false: "
-	all
+	access all
 		true
 		true
 		false
 
-print
+a print
 	string "true: "
-	any
+	access any
 		true
 		false
 		false
 
-print
+a print
 	string "true: "
-	none
+	access none
 		false
 		false
 		false
 
-print
+a print
 	string "6: "
-	add
+	access add
 		int 1
 		int 1
 		int 1
@@ -444,15 +444,15 @@ fn fuck!
 	param fucks_given
 	param TODO_i_cant_even_use_periods_in_this_param_name
 do
-	print
+	a print
 		string "fuck!"
 	if
-		asc
+		access nondesc
 			int 0
 			a fucks_given
 	then
-		a fuck!
-			add
+		access fuck!
+			access add
 				a fucks_given
 				int -1
 			string "TODO..."

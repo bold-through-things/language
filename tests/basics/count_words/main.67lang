@@ -1,5 +1,5 @@
 local input
-	stdin
+	a stdin
 
 local words
 	an input split
@@ -11,16 +11,28 @@ local count
 for word in
 	access words
 do
+	if
+		a none
+			exists
+				a word
+				inside
+					a count
+	then
+		a count key
+			where key is
+				a word
+			int 0
+
 	a count key
 		where key is
 			a word
-		add
+		a add
 			int 1
 			a count key
 				where key is
 					a word
 
-print
+a print
 	a count
 
 

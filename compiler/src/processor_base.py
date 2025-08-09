@@ -145,29 +145,6 @@ def filter_child_macros(n: Node):
 js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
 
 builtins = {
-    "print": "log",
-    # TODO. this is awaited because NodeJS fucking sucks and doesn't give us a proper, 
-    #  blocking prompt function. in future should probably write such a function
-    #  and remove unnecessary await.
-    #  then again, considering this is almost guaranteed to only be used for debugging...
-    #  does it matter?
-    "prompt": "prompt",
-    "stdin": "stdin",
-    "is_tty": "is_tty",
-    # TODO - these ought to be static code instead of function calls...
-    "concat": "concat",
-    "any": "any",
-    "all": "all", 
-    "eq": "eq",
-    "asc": "asc",
-    "add": "add",
-    "mod": "mod",
-    "none": "none",
-    # Object.values TODO i am not happy about this being a builtin. really it ought to be a method on the maps, 
-    # which should explicitly be types. same for keys...
-    "values": "values",
-    "keys": "keys",
-    "zip": "zip",    
 }
 
 @dataclass
@@ -194,14 +171,34 @@ class DirectCall:
         return f"{receiver}{self.fn}({", ".join(args)})"
 
 @dataclass
-class OperatorCall:
-    """Emits a direct JavaScript operator (e.g., +, &&)"""
+class NaryOperatorCall:
+    """Emits a direct JavaScript operator for n-ary application (e.g., +, &&, ||)
+    Optionally wraps the entire expression (e.g., for '!')"""
     operator: str
     demands: list[str] | None
     returns: str | None
+    is_async: bool = False
+    wrapper: str | None = None # New: Optional wrapper for the entire expression
     def compile(self, args: list[str]):
-        # This will need to handle multiple arguments for n-ary operators
-        return f"({f' {self.operator} '.join(args)})"
+        expr = f"({f' {self.operator} '.join(args)})"
+        if self.wrapper:
+            return f"{self.wrapper}{expr}"
+        return expr
+
+@dataclass
+class ChainedComparisonCall:
+    """Emits a chained JavaScript comparison (e.g., a < b && b < c)"""
+    operator: str
+    demands: list[str] | None
+    returns: str | None
+    is_async: bool = False
+    def compile(self, args: list[str]):
+        if len(args) < 2:
+            return "true" # A single element trivially satisfies a chained comparison
+        comparisons = []
+        for i in range(len(args) - 1):
+            comparisons.append(f"{args[i]} {self.operator} {args[i+1]}")
+        return f"({' && '.join(comparisons)})"
 
 builtin_calls = {
     "join": [PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")],
@@ -212,31 +209,36 @@ builtin_calls = {
         PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
         PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
     ],
-
     "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
     "slice": [PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list")],
-}
 
-# Populate builtin_calls with OperatorCall or DirectCall based on builtin_name
-# This is a temporary solution as per user's request to avoid changing 'builtins' structure yet
-for builtin_name, js_function_name in builtins.items():
-    if builtin_name not in builtin_calls: # Only add if not already explicitly defined
-        if builtin_name in {"concat", "any", "all", "eq", "asc", "add", "mod", "none"}:
-            # Map to OperatorCall
-            operator_map = {
-                "concat": "+",
-                "any": "||",
-                "all": "&&",
-                "eq": "===",
-                "asc": "<", # Needs careful handling for n-ary
-                "add": "+",
-                "mod": "%",
-                "none": "!", # Needs careful handling for n-ary
-            }
-            builtin_calls[builtin_name] = [OperatorCall(operator=operator_map[builtin_name], demands=None, returns=None)]
-        else:
-            # Default to DirectCall for other builtins
-            builtin_calls[builtin_name] = [DirectCall(fn=f"_67lang.{js_function_name}", receiver=None, demands=None, returns=None)]
+    # Explicitly define built-ins that map to operators
+    "concat": [NaryOperatorCall(operator="+", demands=None, returns=None)],
+    "any": [NaryOperatorCall(operator="||", demands=None, returns=None)],
+    "all": [NaryOperatorCall(operator="&&", demands=None, returns=None)],
+    "add": [NaryOperatorCall(operator="+", demands=None, returns=None)],
+    "mod": [NaryOperatorCall(operator="%", demands=None, returns=None)],
+    "none": [NaryOperatorCall(operator="||", wrapper="!", demands=None, returns=None)], # Use || and wrap with !
+    "asc": [ChainedComparisonCall(operator="<", demands=None, returns=None)], 
+    "nondesc": [ChainedComparisonCall(operator="<=", demands=None, returns=None)], 
+    # 'eq' remains a DirectCall for now due to its complex logic
+    "eq": [DirectCall(fn="eq", receiver="_67lang", demands=None, returns=None)],
+
+    "values": [DirectCall(fn="values", receiver="Object", demands=None, returns=None)],
+    "keys": [DirectCall(fn="values", receiver="keys", demands=None, returns=None)],
+    "print": [DirectCall(fn="log", receiver="console", demands=None, returns=None)],
+
+    # TODO ideally we would eliminate the `_67lang` shim, although i doubt that will be possible
+    "zip": [DirectCall(fn="zip", receiver="_67lang", demands=None, returns=None)],
+    # TODO. this is awaited because NodeJS fucking sucks and doesn't give us a proper, 
+    #  blocking prompt function. in future should probably write such a function
+    #  and remove unnecessary await. 
+    #  then again, considering this is almost guaranteed to only be used for debugging...
+    #  does it matter?
+    "prompt": [DirectCall(fn="prompt", receiver="_67lang", demands=None, returns=None)],
+    "stdin": [DirectCall(fn="stdin", receiver="_67lang", demands=None, returns=None)],
+    "is_tty": [DirectCall(fn="is_tty", receiver="_67lang", demands=None, returns=None)],
+}
 
 def replace_chars(s: str, ok: str, map: dict[str, str]) -> str:
     return ''.join(

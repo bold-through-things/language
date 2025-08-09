@@ -1,5 +1,5 @@
 local lines
-	stdin
+	a stdin
 
 a lines
 	a lines split
@@ -27,7 +27,7 @@ do
 	
 	# TODO - this ought to be a macro.
 	if
-		eq
+		a eq
 			a kv 1 trim
 			string ""
 	then
@@ -90,7 +90,7 @@ do
 				a dep_loop push
 					a chain_dep_id
 				if
-					eq
+					a eq
 						a chain_dep_id
 						a dep_id
 				then
@@ -112,7 +112,7 @@ do
 		a module id
 
 for module in
-	values
+	a values
 		a modules
 do
 	a visit
@@ -120,16 +120,16 @@ do
 		list
 
 if
-	asc
+	a nondesc
 		int 1
 		a dep_loops length
 then
-	print
-		concat
+	a print
+		a concat
 			string "ERROR: there are dependency loops.\n"
 			a dep_loops join
 				string "\n"
 else
-	print
+	a print
 		a build_order join
 			string "\n"

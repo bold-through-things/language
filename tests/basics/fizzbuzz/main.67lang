@@ -3,20 +3,20 @@ local buzz_divisor
 local n
 
 if
-	is_tty
+	a is_tty
 then
 	access fizz_divisor
-		prompt
+		a prompt
 			string "fizz? "
 	access buzz_divisor
-		prompt
+		a prompt
 			string "buzz? "
 	access n
-		prompt
+		a prompt
 			string "n? "
 else
 	local input
-		stdin
+		a stdin
 	
 	access input
 		access input split
@@ -42,7 +42,7 @@ else
 local i
 	int 0
 while
-	asc
+	a nondesc
 		access i
 		access n
 do
@@ -50,41 +50,41 @@ do
 		string ""
 	
 	if
-		eq
-			mod
+		a eq
+			a mod
 				access i
 				access fizz_divisor
 			int 0
 	then
 		access out
-			concat
+			a concat
 				access out
 				string "fizz"
 
 	if
-		eq
-			mod
+		a eq
+			a mod
 				access i
 				access buzz_divisor
 			int 0
 	then
 		access out
-			concat
+			a concat
 				access out
 				string "buzz"
 	
 	if
-		eq
+		a eq
 			access out
 			string ""
 	then
 		access out
 			access i
 
-	print
+	a print
 		access out
 	
 	access i
-		add
+		a add
 			access i
 			int 1

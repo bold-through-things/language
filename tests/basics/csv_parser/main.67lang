@@ -7,7 +7,7 @@ note the task given
 	Count how many rows have "age" > 30, assuming one of the columns is age.
 
 local lines
-	stdin
+	a stdin
 	# okay i am seeing a reason to stop treating builtins as special, or at the very least to expose them in the scope object
 
 access lines
@@ -24,7 +24,7 @@ for line in
 	access lines
 do
 	if
-		eq
+		a eq
 			access i
 			int 0
 	then
@@ -53,14 +53,14 @@ do
 			a row
 
 	access i
-		add
+		a add
 			access i
 			int 1
 
 for row in
 	a rows
 do
-	print
+	a print
 		a row name
 
 local age_over_30
@@ -69,14 +69,16 @@ for row in
 	a rows
 do
 	if
-		asc
+		note TODO - the test case should probably strain this asc
+			on what happens if age is 30
+		a asc
 			a row age
 			int 30
 	then
 		access age_over_30
-			add
+			a add
 				access age_over_30
 				int 1
 
-print
+a print
 	access age_over_30

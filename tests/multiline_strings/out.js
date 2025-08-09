@@ -134,10 +134,12 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
             "this is a statement-level multiline string.\nit should act like a comment - not produce any output."
-            const _0x0_await__67lang_dot_log_lp_ = await _67lang.log("this is an expression-level multiline string.\nit should produce a string value.")
-            _0x0_await__67lang_dot_log_lp_
-            const _0x1_await__67lang_dot_log_lp_ = await _67lang.log("hello world")
-            _0x1_await__67lang_dot_log_lp_
+            const _0x2_print = await console.log("this is an expression-level multiline string.\nit should produce a string value.")
+            let _0x0_print = _0x2_print
+            _0x0_print
+            const _0x3_print = await console.log("hello world")
+            let _0x1_print = _0x3_print
+            _0x1_print
         }
     } 
 })();
