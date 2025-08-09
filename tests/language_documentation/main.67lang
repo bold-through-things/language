@@ -55,12 +55,12 @@ print
 	all
 		eq
 			string "new year's eve"
-			concat 
+			access concat
 				string "new year's "
 				string level
 		eq
 			string "a very scary error"
-			concat
+			access concat
 				string "a very "
 				string !scary !
 				string -error-

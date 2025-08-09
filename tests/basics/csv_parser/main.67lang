@@ -32,8 +32,8 @@ do
 			a line split
 				string ","
 	else
-		local zip
-			zip
+		local zipped_data
+			access zip
 				a header
 				a line split
 					string ","
@@ -42,7 +42,7 @@ do
 			dict
 
 		for kv in
-			a zip
+			a zipped_data
 		do
 			a row key
 				where key is

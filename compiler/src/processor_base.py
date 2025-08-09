@@ -193,6 +193,16 @@ class DirectCall:
             receiver = f"{self.receiver}."
         return f"{receiver}{self.fn}({", ".join(args)})"
 
+@dataclass
+class OperatorCall:
+    """Emits a direct JavaScript operator (e.g., +, &&)"""
+    operator: str
+    demands: list[str] | None
+    returns: str | None
+    def compile(self, args: list[str]):
+        # This will need to handle multiple arguments for n-ary operators
+        return f"({f' {self.operator} '.join(args)})"
+
 builtin_calls = {
     "join": [PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")],
     "sort": [PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list")],
@@ -206,6 +216,27 @@ builtin_calls = {
     "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
     "slice": [PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list")],
 }
+
+# Populate builtin_calls with OperatorCall or DirectCall based on builtin_name
+# This is a temporary solution as per user's request to avoid changing 'builtins' structure yet
+for builtin_name, js_function_name in builtins.items():
+    if builtin_name not in builtin_calls: # Only add if not already explicitly defined
+        if builtin_name in {"concat", "any", "all", "eq", "asc", "add", "mod", "none"}:
+            # Map to OperatorCall
+            operator_map = {
+                "concat": "+",
+                "any": "||",
+                "all": "&&",
+                "eq": "===",
+                "asc": "<", # Needs careful handling for n-ary
+                "add": "+",
+                "mod": "%",
+                "none": "!", # Needs careful handling for n-ary
+            }
+            builtin_calls[builtin_name] = [OperatorCall(operator=operator_map[builtin_name], demands=None, returns=None)]
+        else:
+            # Default to DirectCall for other builtins
+            builtin_calls[builtin_name] = [DirectCall(fn=f"_67lang.{js_function_name}", receiver=None, demands=None, returns=None)]
 
 def replace_chars(s: str, ok: str, map: dict[str, str]) -> str:
     return ''.join(

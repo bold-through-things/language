@@ -13,6 +13,8 @@ from logger import default_logger
 
 class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def _matches_signature(self, actual_types: list[str], demanded_types: list[str]) -> bool:
+        if demanded_types is None:
+            return True # No specific demands, so it matches
         """Check if actual parameter types match the demanded signature"""
         if len(actual_types) != len(demanded_types):
             return False
