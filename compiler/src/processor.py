@@ -12,7 +12,7 @@ from literal_macros import JavaScriptEmissionStep
 from literal_macros import macros as literal_macros_registry, typecheck as literal_typecheck_registry
 from macros.access_macros import macros as access_macros_registry, typecheck as access_typecheck_registry
 import macros  # Import the new macros package to ensure registration
-from preprocessing_macros import preprocessor
+
 from typecheck_macros import typecheck as typecheck_macros_registry
 
 from macrocosm import Macrocosm

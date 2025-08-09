@@ -19,7 +19,7 @@ from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
 from macro_registry import Macro_emission_provider, MacroContext, Macro_provider, MacroRegistry
-from preprocessing_macros import PreprocessingStep, preprocessor
+from preprocessing_macros import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
@@ -28,7 +28,7 @@ from logger import default_logger
 from processor_base import builtins
 
 class Macrocosm:
-    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry):
+    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry, preprocess_registry: MacroRegistry):
         self.nodes: list[Node] = []
         # TODO. incremental is good enough for now, but we'll have to stabilize it.
         #  the last thing you would want is the entire output changing because you added a statement. that's a lot of
@@ -43,7 +43,7 @@ class Macrocosm:
         
         # Initialize the processing pipeline
         self.processing_steps: list[MacroProcessingStep] = [
-            PreprocessingStep(),
+            PreprocessingStep(preprocess_registry),
             CodeBlockLinkingStep(code_linking_registry), 
             TypeCheckingStep(typecheck_registry),
             JavaScriptEmissionStep(emission_registry),
@@ -303,10 +303,10 @@ def create_macrocosm() -> Macrocosm:
         code_linking_registry.add_fn(getattr(provider, "code_linking", None), macro)
 
     # TODO - this should not be needed
-    preprocessor._registry.update(preprocess._registry)
     
     
-    rv = Macrocosm(emission, typecheck, code_linking_registry)
+    
+    rv = Macrocosm(emission, typecheck, code_linking_registry, preprocess)
     rv.registries.update(registries)
     return rv
     

@@ -7,7 +7,7 @@ from logger import default_logger
 from strutil import cut
 
 # Legacy registries - will be moved into steps
-preprocessor = MacroRegistry()
+
 
 # Import comment macros from comment_macros to avoid duplication
 
@@ -28,10 +28,10 @@ preprocessor = MacroRegistry()
 class PreprocessingStep(MacroProcessingStep):
     """Handles preprocessing like access macro unrolling"""
     
-    def __init__(self):
+    def __init__(self, macros: MacroRegistry):
         super().__init__()
         # Move preprocessor macros into this step
-        self.macros = preprocessor
+        self.macros = macros
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process a single node using the preprocessor registry"""

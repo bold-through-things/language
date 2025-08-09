@@ -52,7 +52,7 @@ with default_logger.indent("compile", "initialization"):
     its_just_macros = create_macrocosm()
     
     # Log macro registry summary if registry logging is enabled
-    from preprocessing_macros import preprocessor
+    
     codegen_macros = ", ".join(its_just_macros.registries["emission"].all().keys())
     typecheck_macros = ", ".join(its_just_macros.registries["typecheck"].all().keys())
     preprocessor_macros = ", ".join(its_just_macros.registries["preprocess"].all().keys())
