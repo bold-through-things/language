@@ -279,11 +279,20 @@ class Access_macro_provider(Macro_preprocess_provider):
         
         from processor_base import builtin_calls
         
-        for step in steps:
+        nodes_to_process: list[Node] = []
+
+        for i, step in enumerate(steps):
             ident = ctx.compiler.get_new_ident(step)
             step_is_last = step == steps[-1]
             children = list(filter(lambda n: not n.content.startswith("noscope"), other_children))
-            step_needs_call = step in builtin_calls or (step_is_last and len(children) > 1) or step in callers
+            
+            is_first_step = i == 0
+            local_def = None
+            if is_first_step:
+                local_def = walk_upwards_for_local_definition(ctx, step)
+
+            step_needs_call = (not local_def and step in builtin_calls) or (step_is_last and len(children) > 1) or step in callers
+            
             args1: list[Node] = []
             if step in subs:
                 args1 = subs[step]
@@ -294,9 +303,7 @@ class Access_macro_provider(Macro_preprocess_provider):
             if step in indexers:
                 # index
                 local.append(ctx.compiler.make_node(f"67lang:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
-                for arg in args1:                        
-                    assert isinstance(ctx.current_step, PreprocessingStep)
-                    ctx.current_step.process_node(replace(ctx, node=arg))
+                nodes_to_process.extend(args1)
             elif step_needs_call:
                 # call or set
                 self_arg = []
@@ -304,17 +311,13 @@ class Access_macro_provider(Macro_preprocess_provider):
                     self_arg = [ctx.compiler.make_node(f"67lang:access_local {last_chain_ident}", ctx.node.pos or p0, [])]
                 local.append(ctx.compiler.make_node(f"67lang:call {step}", ctx.node.pos or p0, self_arg + args1))
                 local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
-                for arg in args1:
-                    assert isinstance(ctx.current_step, PreprocessingStep)
-                    ctx.current_step.process_node(replace(ctx, node=arg))
+                nodes_to_process.extend(args1)
             else:
                 # static field
                 access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
                 local.append(ctx.compiler.make_node(f"67lang:{access} {step}", ctx.node.pos or p0, args1))
                 local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
-                for arg in args1:
-                    assert isinstance(ctx.current_step, PreprocessingStep)
-                    ctx.current_step.process_node(replace(ctx, node=arg))
+                nodes_to_process.extend(args1)
 
             local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)
             last_chain_ident = ident
@@ -323,3 +326,7 @@ class Access_macro_provider(Macro_preprocess_provider):
         replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
         # print(f"replace child {ctx.node.content} of {parent.content} with {[c.content for c in replace_with]}")
         parent.replace_child(ctx.node, replace_with)
+
+        for node in nodes_to_process:
+            assert isinstance(ctx.current_step, PreprocessingStep)
+            ctx.current_step.process_node(replace(ctx, node=node))

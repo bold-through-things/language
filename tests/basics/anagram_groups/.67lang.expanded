@@ -1,60 +1,65 @@
-PIL:file
+67lang:file
 	local input
-		stdin
+		local _0x0_stdin
+			67lang:call stdin
+
+			67lang:auto_type
 
 	local words
 		noscope
-			local _0x0__input
-				PIL:access_local input
+			local _0x2_input
+				67lang:access_local input
 
-				PIL:auto_type
+				67lang:auto_type
 
-		local _0x1__split
-			PIL:call split
-				PIL:access_local _0x0__input
+		local _0x3_split
+			67lang:call split
+				67lang:access_local _0x2_input
 
 				string "\n"
 
-			PIL:auto_type
+			67lang:auto_type
 
 	local groups
 		dict
 
 	for word in
-		local _0x2__words
-			PIL:access_local words
+		67lang:assume_local_exists word
 
-			PIL:auto_type
+		local _0x6_words
+			67lang:access_local words
+
+			67lang:auto_type
 
 		do
 			local key
 				noscope
-					local _0x3__word
-						PIL:access_local word
+					local _0x8_word
+						67lang:access_local word
 
-						PIL:auto_type
+						67lang:auto_type
 
-					local _0x4__split
-						PIL:call split
-							PIL:access_local _0x3__word
+					local _0x9_split
+						67lang:call split
+							67lang:access_local _0x8_word
 
 							string ""
 
-						PIL:auto_type
+						67lang:auto_type
 
-					local _0x5__sort
-						PIL:call sort
-							PIL:access_local _0x4__split
+					local _0xa_sort
+						67lang:call sort
+							67lang:access_local _0x9_split
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x6__join
-					PIL:call join
-						PIL:access_local _0x5__sort
+				local _0xb_join
+					67lang:call join
+						67lang:access_local _0xa_sort
 
 						string ""
 
-					PIL:auto_type
+					67lang:auto_type
 
 			# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?
 
@@ -63,74 +68,91 @@ PIL:file
 			#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
 
 			if
-				none
-					exists
-						local _0x7__key
-							PIL:access_local key
+				local _0xf_none
+					67lang:call none
+						exists
+							local _0xd_key
+								67lang:access_local key
 
-							PIL:auto_type
+								67lang:auto_type
+
+							inside
+								local _0xe_groups
+									67lang:access_local groups
+
+									67lang:auto_type
+
+					67lang:auto_type
 
 				then
 					noscope
-						local _0x9__groups
-							PIL:access_local groups
+						local _0x12_groups
+							67lang:access_local groups
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0xa__key
-						PIL:access_index _0x9__groups
-							local _0xb__key
-								PIL:access_local key
+					local _0x13_key
+						67lang:access_index _0x12_groups
+							local _0x14_key
+								67lang:call key
 
-								PIL:auto_type
+								67lang:auto_type
 
 							list
 
 			noscope
-				local _0xd__groups
-					PIL:access_local groups
+				local _0x16_groups
+					67lang:access_local groups
 
-					PIL:auto_type
+					67lang:auto_type
 
-				local _0xe__key
-					PIL:access_index _0xd__groups
-						local _0xf__key
-							PIL:access_local key
+				local _0x17_key
+					67lang:access_index _0x16_groups
+						local _0x18_key
+							67lang:call key
 
-							PIL:auto_type
+							67lang:auto_type
 
-			local _0x10__push
-				PIL:call push
-					PIL:access_local _0xe__key
+			local _0x19_push
+				67lang:call push
+					67lang:access_local _0x17_key
 
-					local _0xc__word
-						PIL:access_local word
+					local _0x15_word
+						67lang:access_local word
 
-						PIL:auto_type
+						67lang:auto_type
 
-				PIL:auto_type
+				67lang:auto_type
 
 	for group in
-		values
-			local _0x11__groups
-				PIL:access_local groups
+		67lang:assume_local_exists group
 
-				PIL:auto_type
+		local _0x1c_values
+			67lang:call values
+				local _0x1b_groups
+					67lang:access_local groups
+
+					67lang:auto_type
+
+			67lang:auto_type
 
 		do
-			print
-				noscope
-					local _0x12__group
-						PIL:access_local group
+			local _0x22_print
+				67lang:call print
+					noscope
+						local _0x20_group
+							67lang:access_local group
 
-						PIL:auto_type
+							67lang:auto_type
 
-				local _0x13__join
-					PIL:call join
-						PIL:access_local _0x12__group
+					local _0x21_join
+						67lang:call join
+							67lang:access_local _0x20_group
 
-						string " "
+							string " "
 
-					PIL:auto_type
+						67lang:auto_type
+
+				67lang:auto_type
 
 

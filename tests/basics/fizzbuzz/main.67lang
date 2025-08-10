@@ -16,7 +16,6 @@ then
 			string "n? "
 else
 	local input
-		type str
 		a stdin
 	
 	access input

@@ -60,7 +60,7 @@
     "line": 52,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: argument demands str and is given bool",
+    "error": "failed to assert: argument 1 demands str and is given bool",
     "error_type": "ARGUMENT_TYPE_MISMATCH"
   },
   {
@@ -68,7 +68,7 @@
     "line": 54,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: argument demands str and is given list",
+    "error": "failed to assert: argument 1 demands str and is given list",
     "error_type": "ARGUMENT_TYPE_MISMATCH"
   }
 ]

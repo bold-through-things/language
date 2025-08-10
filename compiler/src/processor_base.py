@@ -151,6 +151,22 @@ builtins = {
 # provided by child nodes
 
 @dataclass
+class FieldCall:
+    """receiver.field"""
+    field: str
+    demands: list[str] | None
+    returns: str | None
+    def compile(self, args: list[str]):
+        maybe_assign = ""
+        receiver = args[0]
+        args = args[1:]
+        if len(args) > 0:
+            # TODO - assert one arg (need context for compile errors...)
+            #  or just this i guess..? what even happens lmfao
+            maybe_assign = f" = ({",".join(args)})"
+        return f"{receiver}.{self.field}{maybe_assign}"
+
+@dataclass
 class PrototypeCall:
     """String.join.call(self, args...) type shit"""
     constructor: str
@@ -214,6 +230,7 @@ class NewCall:
 
 
 builtin_calls = {
+    "length": [FieldCall(field="length", demands=["list"], returns="str")],
     "join": [PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")],
     "sort": [PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list")],
     "push": [PrototypeCall(constructor="Array", fn="push", demands=["list", "*"], returns="list")], # TODO - does it actually return..?
@@ -253,7 +270,7 @@ builtin_calls = {
     #  then again, considering this is almost guaranteed to only be used for debugging...
     #  does it matter?
     "prompt": [DirectCall(fn="prompt", receiver="_67lang", demands=None, returns=None)],
-    "stdin": [DirectCall(fn="stdin", receiver="_67lang", demands=None, returns=None)],
+    "stdin": [DirectCall(fn="stdin", receiver="_67lang", demands=None, returns="str")],
     "is_tty": [DirectCall(fn="is_tty", receiver="_67lang", demands=None, returns=None)],
 }
 
