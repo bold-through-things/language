@@ -1,0 +1,18 @@
+[
+  {
+    "recoverable": false,
+    "line": 72,
+    "char": 0,
+    "content": "67lang:call push",
+    "error": "failed to assert: could not find a matching overload for push with arguments ['*']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 112,
+    "char": 0,
+    "content": "67lang:call push",
+    "error": "failed to assert: could not find a matching overload for push with arguments ['*']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  }
+]

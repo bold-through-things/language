@@ -238,6 +238,8 @@ builtin_calls = {
     "split": [
         PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
         PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
+        PrototypeCall(constructor="String", fn="split", demands=["str", "str", "int"], returns="list"),
+        PrototypeCall(constructor="String", fn="split", demands=["str", "regex", "int"], returns="list"),
     ],
     "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
     "slice": [PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list")],

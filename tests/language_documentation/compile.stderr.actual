@@ -1,0 +1,42 @@
+[
+  {
+    "recoverable": false,
+    "line": 237,
+    "char": 0,
+    "content": "67lang:call slice",
+    "error": "failed to assert: could not find a matching overload for slice with arguments ['*', 'int', 'int']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 407,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: could not find a matching overload for split with arguments ['str']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 407,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: could not find a matching overload for split with arguments ['*']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 407,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: could not find a matching overload for split with arguments ['*']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 406,
+    "char": 0,
+    "content": "must_compile_error ARGUMENT_TYPE_MISMATCH=+1",
+    "error": "expected ARGUMENT_TYPE_MISMATCH error on line 407 but found ['NO_MATCHING_OVERLOAD', 'NO_MATCHING_OVERLOAD', 'NO_MATCHING_OVERLOAD']",
+    "error_type": "ASSERTION_FAILED"
+  }
+]

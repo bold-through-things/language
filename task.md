@@ -21,10 +21,34 @@ The primary goal of this task was to implement a pipeline to automatically gener
     *   The test case uses the `URL` API, which is supported by the Deno runtime environment used for testing.
     *   We encountered and fixed several issues during testing, including syntax errors, incorrect macro handling, type mismatches, and git tracking issues.
 
+## Work Summary (Continued)
+
+5.  **Expanding API Coverage:** We decided to expand the API coverage to more WebIDL APIs. We started by improving the `webidl_importer.py` script.
+6.  **Improved Type Handling:** We improved the `idl_type_to_67lang_type` function to use the IDL type names directly instead of relying on a hardcoded `TYPE_MAPPING`. This makes the importer more robust.
+7.  **Optional Argument Handling:** We updated the importer to correctly handle optional arguments in constructors and methods, generating multiple overloads to accommodate different numbers of arguments.
+8.  **Test Failure and Type System Limitations:** While testing the `TextDecoder` API, we discovered a limitation in the compiler's type system. The compiler is unable to resolve overloaded methods correctly when inheritance or union types are involved. This is causing the test for `TextDecoder.decode` to fail.
+
 ## Current Status
 
-The pipeline for generating WebIDL built-ins is now functional, and the test case for the `URL` API is passing. The `webref` directory, which was cloned to get the WebIDL data, has been removed to save space.
+The `webidl_importer.py` script is now more robust and can handle optional arguments. The test for the `URL` constructor, which has an optional argument, is now passing during compilation. However, the test for `TextDecoder.decode` is still failing due to the type system limitations, and the overall test case fails due to a mismatch in the expected output.
+
+After further investigation, we discovered that the root cause of the test failures is a deeper issue in the `Access_macro_provider`. The provider does not correctly handle chained method calls with arguments, leading to incorrect overload resolution. We have paused the effort to fix this to allow for more thought on the best approach.
 
 ## Next Steps
 
-When we resume, we can continue to expand the test suite to cover more WebIDL APIs and handle more complex scenarios.
+1.  Re-architect the `Access_macro_provider` to correctly handle chained method calls and argument passing.
+2.  Continue with the type system implementation.
+
+## Type System Fix Plan
+
+1.  **Represent the type hierarchy:**
+    *   Create a data structure to store the inheritance relationships between interfaces. A simple dictionary mapping a class to its parent would work.
+    *   Populate this data structure by reading all the `.json` files in `webref/ed/idlparsed` and extracting the `inheritance` field.
+
+2.  **Represent union types:**
+    *   Create a data structure to store union types. A dictionary mapping the union type name to a list of its member types would work.
+    *   Populate this data structure by parsing the IDL. Union types are defined with the `typedef` keyword or as part of an argument/return type.
+
+3.  **Improve `_matches_signature`:**
+    *   Modify the `_matches_signature` function in `compiler/src/macros/call_macro.py` to use the type hierarchy and union type information.
+    *   When checking if an `actual` type matches a `demanded` type, it should not just do a string comparison. It should check if the `actual` type is a subtype of the `demanded` type (inheritance) or if the `demanded` type is a union that contains the `actual` type.

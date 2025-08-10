@@ -49,26 +49,50 @@
   },
   {
     "recoverable": false,
-    "line": 49,
+    "line": 50,
     "char": 0,
-    "content": "67lang:access_local test_bool",
-    "error": "failed to assert: field demands bool but is given str",
-    "error_type": "FIELD_TYPE_MISMATCH"
+    "content": "67lang:call split",
+    "error": "failed to assert: could not find a matching overload for split with arguments ['str']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 50,
+    "char": 0,
+    "content": "67lang:call join",
+    "error": "failed to assert: could not find a matching overload for join with arguments ['list']",
+    "error_type": "NO_MATCHING_OVERLOAD"
   },
   {
     "recoverable": false,
     "line": 52,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: argument 1 demands str and is given bool",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error": "failed to assert: could not find a matching overload for split with arguments ['bool']",
+    "error_type": "NO_MATCHING_OVERLOAD"
   },
   {
     "recoverable": false,
     "line": 54,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: argument 1 demands str and is given list",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error": "failed to assert: could not find a matching overload for split with arguments ['str']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 54,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: could not find a matching overload for split with arguments ['*']",
+    "error_type": "NO_MATCHING_OVERLOAD"
+  },
+  {
+    "recoverable": false,
+    "line": 54,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: could not find a matching overload for split with arguments ['*']",
+    "error_type": "NO_MATCHING_OVERLOAD"
   }
 ]
