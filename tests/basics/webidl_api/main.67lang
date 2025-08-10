@@ -4,3 +4,23 @@ local myURL
 
 a print
 	a myURL pathname
+
+local encoder
+	a TextEncoder
+
+local encoded
+	an encoder encode
+		string "hello world"
+
+a print
+	an encoded
+
+local decoder
+	a TextDecoder
+
+local decoded
+	a decoder decode
+		an encoded
+
+a print
+	a decoded

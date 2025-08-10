@@ -68,16 +68,43 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x7_URL = await new URL("https://example.com/path?query=123")
-            let _0x0_URL = _0x7_URL
+            const _0x19_URL = await new URL("https://example.com/path?query=123")
+            let _0x0_URL = _0x19_URL
             let _0x1_myURL = _0x0_URL
             _0x1_myURL
             let _0x5__0x2_myURL = _0x1_myURL
-            const _0x9__0x5__0x2_myURL_pathname = await _0x5__0x2_myURL.pathname
-            let _0x6__0x3_pathname = _0x9__0x5__0x2_myURL_pathname
-            const _0x8_print = await console.log(_0x6__0x3_pathname)
-            let _0x4_print = _0x8_print
+            const _0x1b__0x5__0x2_myURL_pathname = await _0x5__0x2_myURL.pathname
+            let _0x6__0x3_pathname = _0x1b__0x5__0x2_myURL_pathname
+            const _0x1a_print = await console.log(_0x6__0x3_pathname)
+            let _0x4_print = _0x1a_print
             _0x4_print
+            const _0x1c_TextEncoder = await new TextEncoder()
+            let _0x7_TextEncoder = _0x1c_TextEncoder
+            let _0x8_encoder = _0x7_TextEncoder
+            _0x8_encoder
+            let _0x9_encoder = _0x8_encoder
+            const _0x1d_encode = await TextEncoder.prototype.encode.call(_0x9_encoder, "hello world")
+            let _0xa_encode = _0x1d_encode
+            let _0xb_encoded = _0xa_encode
+            _0xb_encoded
+            let _0xe__0xc_encoded = _0xb_encoded
+            const _0x1e_print = await console.log(_0xe__0xc_encoded)
+            let _0xd_print = _0x1e_print
+            _0xd_print
+            const _0x1f_TextDecoder = await new TextDecoder()
+            let _0xf_TextDecoder = _0x1f_TextDecoder
+            let _0x10_decoder = _0xf_TextDecoder
+            _0x10_decoder
+            let _0x12_decoder = _0x10_decoder
+            let _0x14__0x11_encoded = _0xb_encoded
+            const _0x20_decode = await AudioDecoder.prototype.decode.call(_0x12_decoder, _0x14__0x11_encoded)
+            let _0x13_decode = _0x20_decode
+            let _0x15_decoded = _0x13_decode
+            _0x15_decoded
+            let _0x18__0x16_decoded = _0x15_decoded
+            const _0x21_print = await console.log(_0x18__0x16_decoded)
+            let _0x17_print = _0x21_print
+            _0x17_print
         }
     } 
 })();

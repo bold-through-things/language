@@ -9,18 +9,19 @@ from processor_base import PrototypeCall, DirectCall, NewCall
 
 TYPE_MAPPING = {
     "DOMString": "str",
+    "USVString": "str",
+    "ByteString": "str",
     "boolean": "bool",
     "unsigned long": "int",
+    "unsigned long long": "int",
+    "long": "int",
+    "octet": "int",
     "void": "None",
     "any": "*",
     "undefined": "None",
-    "EventTarget": "EventTarget",
-    "Node": "Node",
-    "Element": "Element",
-    "Document": "Document",
-    "Window": "Window",
-    "URL": "URL",
-    "USVString": "str",
+    "DOMHighResTimeStamp": "float",
+    "double": "float",
+    "unrestricted double": "float",
 }
 
 def idl_type_to_67lang_type(idl_type):
@@ -30,14 +31,14 @@ def idl_type_to_67lang_type(idl_type):
     
     if not isinstance(idl_type, dict):
         # Handle simple string types
-        return TYPE_MAPPING.get(idl_type, f"TODO_UNKNOWN_TYPE_{idl_type}")
+        return TYPE_MAPPING.get(idl_type, idl_type)
 
     type_name = idl_type.get("idlType")
     if isinstance(type_name, list):
         # Handle union types, for now just take the first one
         return idl_type_to_67lang_type(type_name[0])
 
-    return TYPE_MAPPING.get(type_name, f"TODO_UNKNOWN_TYPE_{type_name}")
+    return TYPE_MAPPING.get(type_name, type_name)
 
 def main():
     parser = argparse.ArgumentParser(description='Import WebIDL definitions.')
@@ -58,27 +59,41 @@ def main():
                             for member in definition["members"]:
                                 try:
                                     if member["type"] == "constructor":
-                                        demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in member["arguments"]]
-                                        returns = name
-                                        call = NewCall(constructor=name, demands=demands, returns=returns)
-                                        if name not in generated_builtins:
-                                            generated_builtins[name] = []
-                                        generated_builtins[name].append(call)
+                                        arguments = member["arguments"]
+                                        min_args = 0
+                                        for arg in arguments:
+                                            if not arg["optional"]:
+                                                min_args += 1
+
+                                        for i in range(min_args, len(arguments) + 1):
+                                            demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
+                                            returns = name
+                                            call = NewCall(constructor=name, demands=demands, returns=returns)
+                                            if name not in generated_builtins:
+                                                generated_builtins[name] = []
+                                            generated_builtins[name].append(call)
                                     elif member["type"] == "operation":
-                                        demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in member["arguments"]]
-                                        returns = idl_type_to_67lang_type(member["idlType"])
+                                        arguments = member["arguments"]
+                                        min_args = 0
+                                        for arg in arguments:
+                                            if not arg["optional"]:
+                                                min_args += 1
                                         
-                                        if "static" in member.get("special", ""):
-                                            call = DirectCall(fn=member["name"], receiver=name, demands=demands, returns=returns)
-                                        else:
-                                            # Prepend self type to demands for instance methods
-                                            instance_demands = [name] + demands
-                                            call = PrototypeCall(constructor=name, fn=member["name"], demands=instance_demands, returns=returns)
-                                        
-                                        key = member["name"].lower()
-                                        if key not in generated_builtins:
-                                            generated_builtins[key] = []
-                                        generated_builtins[key].append(call)
+                                        for i in range(min_args, len(arguments) + 1):
+                                            demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
+                                            returns = idl_type_to_67lang_type(member["idlType"])
+                                            
+                                            if "static" in member.get("special", ""):
+                                                call = DirectCall(fn=member["name"], receiver=name, demands=demands, returns=returns)
+                                            else:
+                                                # Prepend self type to demands for instance methods
+                                                instance_demands = [name] + demands
+                                                call = PrototypeCall(constructor=name, fn=member["name"], demands=instance_demands, returns=returns)
+                                            
+                                            key = member["name"].lower()
+                                            if key not in generated_builtins:
+                                                generated_builtins[key] = []
+                                            generated_builtins[key].append(call)
                                 except KeyError as e:
                                     print(f"Skipping member of {name} due to missing key: {e}")
 

@@ -19,6 +19,7 @@ _ERROR_TYPES = [
     "ARGUMENT_TYPE_MISMATCH",      # Argument demands specific type but given another
     "MISSING_TYPE",                # Field demands type but given None
     "NO_SUCH_LOCAL",
+    "NO_MATCHING_OVERLOAD",        # No matching overload found for function call
     
     # Structure/argument errors  
     "WRONG_ARG_COUNT",             # Wrong number of arguments

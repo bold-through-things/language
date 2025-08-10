@@ -45,9 +45,8 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
                             convention = overload
                             break
                     else:
-                        # No matching overload found, use the first one for now
-                        # This will cause a type error later which is what we want
-                        convention = overloads[0]
+                        # No matching overload found
+                        ctx.compiler.assert_(False, ctx.node, f"could not find a matching overload for {fn} with arguments {actual_arg_types}", ErrorType.NO_MATCHING_OVERLOAD)
                 else:
                     # No type information available, use first overload
                     convention = overloads[0]
