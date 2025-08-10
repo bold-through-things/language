@@ -1,0 +1,6 @@
+local myURL
+	a URL
+		string "https://example.com/path?query=123"
+
+a print
+	a myURL pathname

@@ -1,6 +1,38 @@
 [
   {
     "recoverable": false,
+    "line": 8,
+    "char": 0,
+    "content": "local test_1",
+    "error": "failed to assert: field demands int but is given bool",
+    "error_type": "FIELD_TYPE_MISMATCH"
+  },
+  {
+    "recoverable": false,
+    "line": 12,
+    "char": 0,
+    "content": "67lang:call test",
+    "error": "failed to assert: argument demands URLPattern and is given int",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
+  },
+  {
+    "recoverable": false,
+    "line": 16,
+    "char": 0,
+    "content": "local test_1",
+    "error": "failed to assert: field demands int but is given bool",
+    "error_type": "FIELD_TYPE_MISMATCH"
+  },
+  {
+    "recoverable": false,
+    "line": 20,
+    "char": 0,
+    "content": "67lang:call test",
+    "error": "failed to assert: argument demands URLPattern and is given int",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
+  },
+  {
+    "recoverable": false,
     "line": 25,
     "char": 0,
     "content": "local test",

@@ -84,13 +84,15 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         ctx.compiler.set_metadata(ctx.node, ResolvedConvention, ResolvedConvention(convention=convention))
 
         if convention.demands:
+            i = 0
             for received, demanded in zip(args, convention.demands):
+                i += 1
                 if "*" in {demanded, received}:
                     # TODO. generics!
                     continue
                 default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received}")
                 # TODO - this should point to the child node that we received from, actually...
-                ctx.compiler.assert_(received == demanded, ctx.node, f"argument demands {demanded} and is given {received}", ErrorType.ARGUMENT_TYPE_MISMATCH)
+                ctx.compiler.assert_(received == demanded, ctx.node, f"argument {i} demands {demanded} and is given {received}", ErrorType.ARGUMENT_TYPE_MISMATCH)
 
         return convention.returns or "*"
 

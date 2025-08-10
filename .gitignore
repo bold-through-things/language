@@ -15,3 +15,6 @@ fucking_around_with_bash/output.txt
 # test artifacts - temporary files that should not be tracked
 test_diffs/
 *.tmp
+
+# TODO remove me (should probably download into a temp dir)
+webref

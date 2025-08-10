@@ -147,6 +147,9 @@ js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
 builtins = {
 }
 
+# "call conventions" are our sane way to emit JavaScript from arguments
+# provided by child nodes
+
 @dataclass
 class PrototypeCall:
     """String.join.call(self, args...) type shit"""
@@ -200,6 +203,16 @@ class ChainedComparisonCall:
             comparisons.append(f"{args[i]} {self.operator} {args[i+1]}")
         return f"({' && '.join(comparisons)})"
 
+@dataclass
+class NewCall:
+    """Emits a new expression (e.g., new Thing(a, b))"""
+    constructor: str
+    demands: list[str] | None
+    returns: str | None
+    def compile(self, args: list[str]):
+        return f"new {self.constructor}({', '.join(args)})"
+
+
 builtin_calls = {
     "join": [PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")],
     "sort": [PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list")],
@@ -243,6 +256,18 @@ builtin_calls = {
     "stdin": [DirectCall(fn="stdin", receiver="_67lang", demands=None, returns=None)],
     "is_tty": [DirectCall(fn="is_tty", receiver="_67lang", demands=None, returns=None)],
 }
+
+try:
+    from webidl_builtins import webidl_calls
+    for name, calls in webidl_calls.items():
+        if name in builtin_calls:
+            builtin_calls[name].extend(calls)
+        else:
+            builtin_calls[name] = calls
+except ImportError as e:
+    # It's ok if the file doesn't exist
+    print(e)
+    pass
 
 def replace_chars(s: str, ok: str, map: dict[str, str]) -> str:
     return ''.join(

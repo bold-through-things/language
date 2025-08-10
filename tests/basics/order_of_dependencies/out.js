@@ -324,8 +324,8 @@ void (async () => {
                     }
                 } }
             let _0x7f__0x7c_dep_loops = _0x33_dep_loops
-            const _0xb9__0x7f__0x7c_dep_loops_length = await _0x7f__0x7c_dep_loops.length
-            let _0x80__0x7d_length = _0xb9__0x7f__0x7c_dep_loops_length
+            const _0xb9_length = await SharedStorage.prototype.length.call(_0x7f__0x7c_dep_loops)
+            let _0x80__0x7d_length = _0xb9_length
             const _0xb8_nondesc = await (1 <= _0x80__0x7d_length)
             let _0x7e_nondesc = _0xb8_nondesc
             if (_0x7e_nondesc) {{

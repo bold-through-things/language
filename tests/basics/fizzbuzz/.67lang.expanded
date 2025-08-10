@@ -1,4 +1,4 @@
-PIL:file
+67lang:file
 	local fizz_divisor
 
 	local buzz_divisor
@@ -6,206 +6,253 @@ PIL:file
 	local n
 
 	if
-		is_tty
+		local _0x3_is_tty
+			67lang:call is_tty
+
+			67lang:auto_type
 
 		then
-			local _0x0__fizz_divisor
-				PIL:access_local fizz_divisor
-					prompt
-						string "fizz? "
+			local _0x5_fizz_divisor
+				67lang:access_local fizz_divisor
+					local _0x4_prompt
+						67lang:call prompt
+							string "fizz? "
 
-				PIL:auto_type
+						67lang:auto_type
 
-			local _0x1__buzz_divisor
-				PIL:access_local buzz_divisor
-					prompt
-						string "buzz? "
+				67lang:auto_type
 
-				PIL:auto_type
+			local _0x8_buzz_divisor
+				67lang:access_local buzz_divisor
+					local _0x7_prompt
+						67lang:call prompt
+							string "buzz? "
 
-			local _0x2__n
-				PIL:access_local n
-					prompt
-						string "n? "
+						67lang:auto_type
 
-				PIL:auto_type
+				67lang:auto_type
+
+			local _0xb_n
+				67lang:access_local n
+					local _0xa_prompt
+						67lang:call prompt
+							string "n? "
+
+						67lang:auto_type
+
+				67lang:auto_type
 
 	else
 		local input
-			stdin
+			type str
 
-		local _0x5__input
-			PIL:access_local input
+			local _0xd_stdin
+				67lang:call stdin
+
+				67lang:auto_type
+
+		local _0x11_input
+			67lang:call input
 				noscope
-					local _0x3__input
-						PIL:access_local input
+					local _0xf_input
+						67lang:call input
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x4__split
-					PIL:call split
-						PIL:access_local _0x3__input
+				local _0x10_split
+					67lang:call split
+						67lang:access_local _0xf_input
 
 						string "\n"
 
-					PIL:auto_type
+					67lang:auto_type
 
-			PIL:auto_type
+			67lang:auto_type
 
 		# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
 
-		local _0x8__fizz_divisor
-			PIL:access_local fizz_divisor
+		local _0x16_fizz_divisor
+			67lang:access_local fizz_divisor
 				noscope
-					local _0x6__input
-						PIL:access_local input
+					local _0x14_input
+						67lang:call input
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0x7__key
-					PIL:access_index _0x6__input
+				local _0x15_key
+					67lang:access_index _0x14_input
 						int 0
 
-			PIL:auto_type
+			67lang:auto_type
 
-		local _0xb__buzz_divisor
-			PIL:access_local buzz_divisor
+		local _0x1b_buzz_divisor
+			67lang:access_local buzz_divisor
 				noscope
-					local _0x9__input
-						PIL:access_local input
+					local _0x19_input
+						67lang:call input
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0xa__key
-					PIL:access_index _0x9__input
+				local _0x1a_key
+					67lang:access_index _0x19_input
 						int 1
 
-			PIL:auto_type
+			67lang:auto_type
 
-		local _0xe__n
-			PIL:access_local n
+		local _0x20_n
+			67lang:access_local n
 				noscope
-					local _0xc__input
-						PIL:access_local input
+					local _0x1e_input
+						67lang:call input
 
-						PIL:auto_type
+						67lang:auto_type
 
-				local _0xd__key
-					PIL:access_index _0xc__input
+				local _0x1f_key
+					67lang:access_index _0x1e_input
 						int 2
 
-			PIL:auto_type
+			67lang:auto_type
 
 	local i
 		int 0
 
 	while
-		asc
-			local _0xf__i
-				PIL:access_local i
+		local _0x26_nondesc
+			67lang:call nondesc
+				local _0x24_i
+					67lang:access_local i
 
-				PIL:auto_type
+					67lang:auto_type
 
-			local _0x10__n
-				PIL:access_local n
+				local _0x25_n
+					67lang:access_local n
 
-				PIL:auto_type
+					67lang:auto_type
+
+			67lang:auto_type
 
 		do
 			local out
 				string ""
 
 			if
-				eq
-					mod
-						local _0x11__i
-							PIL:access_local i
+				local _0x2f_eq
+					67lang:call eq
+						local _0x2c_mod
+							67lang:call mod
+								local _0x2a_i
+									67lang:access_local i
 
-							PIL:auto_type
+									67lang:auto_type
 
-						local _0x12__fizz_divisor
-							PIL:access_local fizz_divisor
+								local _0x2b_fizz_divisor
+									67lang:access_local fizz_divisor
 
-							PIL:auto_type
+									67lang:auto_type
 
-					int 0
+							67lang:auto_type
+
+						int 0
+
+					67lang:auto_type
 
 				then
-					local _0x14__out
-						PIL:access_local out
-							concat
-								local _0x13__out
-									PIL:access_local out
+					local _0x36_out
+						67lang:access_local out
+							local _0x34_concat
+								67lang:call concat
+									local _0x33_out
+										67lang:access_local out
 
-									PIL:auto_type
+										67lang:auto_type
 
-								string "fizz"
+									string "fizz"
 
-						PIL:auto_type
+								67lang:auto_type
+
+						67lang:auto_type
 
 			if
-				eq
-					mod
-						local _0x15__i
-							PIL:access_local i
+				local _0x3e_eq
+					67lang:call eq
+						local _0x3b_mod
+							67lang:call mod
+								local _0x39_i
+									67lang:access_local i
 
-							PIL:auto_type
+									67lang:auto_type
 
-						local _0x16__buzz_divisor
-							PIL:access_local buzz_divisor
+								local _0x3a_buzz_divisor
+									67lang:access_local buzz_divisor
 
-							PIL:auto_type
+									67lang:auto_type
 
-					int 0
+							67lang:auto_type
+
+						int 0
+
+					67lang:auto_type
 
 				then
-					local _0x18__out
-						PIL:access_local out
-							concat
-								local _0x17__out
-									PIL:access_local out
+					local _0x45_out
+						67lang:access_local out
+							local _0x43_concat
+								67lang:call concat
+									local _0x42_out
+										67lang:access_local out
 
-									PIL:auto_type
+										67lang:auto_type
 
-								string "buzz"
+									string "buzz"
 
-						PIL:auto_type
+								67lang:auto_type
+
+						67lang:auto_type
 
 			if
-				eq
-					local _0x19__out
-						PIL:access_local out
+				local _0x49_eq
+					67lang:call eq
+						local _0x48_out
+							67lang:access_local out
 
-						PIL:auto_type
+							67lang:auto_type
 
-					string ""
+						string ""
+
+					67lang:auto_type
 
 				then
-					local _0x1b__out
-						PIL:access_local out
-							local _0x1a__i
-								PIL:access_local i
+					local _0x4c_out
+						67lang:access_local out
+							local _0x4b_i
+								67lang:access_local i
 
-								PIL:auto_type
+								67lang:auto_type
 
-						PIL:auto_type
+						67lang:auto_type
 
-			print
-				local _0x1c__out
-					PIL:access_local out
+			local _0x4f_print
+				67lang:call print
+					local _0x4e_out
+						67lang:access_local out
 
-					PIL:auto_type
+						67lang:auto_type
 
-			local _0x1e__i
-				PIL:access_local i
-					add
-						local _0x1d__i
-							PIL:access_local i
+				67lang:auto_type
 
-							PIL:auto_type
+			local _0x54_i
+				67lang:access_local i
+					local _0x52_add
+						67lang:call add
+							local _0x51_i
+								67lang:access_local i
 
-						int 1
+								67lang:auto_type
 
-				PIL:auto_type
+							int 1
+
+						67lang:auto_type
+
+				67lang:auto_type
 
 
