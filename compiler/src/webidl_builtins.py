@@ -5,10 +5,10 @@ webidl_calls = {
         NewCall(constructor='SecurityPolicyViolationEvent', demands=['str'], returns='SecurityPolicyViolationEvent'),
         NewCall(constructor='SecurityPolicyViolationEvent', demands=['str', 'SecurityPolicyViolationEventInit'], returns='SecurityPolicyViolationEvent'),
     ],
-    "drawarraysinstancedbaseinstancewebgl": [
+    "drawArraysInstancedBaseInstanceWEBGL": [
         PrototypeCall(constructor='WEBGL_draw_instanced_base_vertex_base_instance', fn='drawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'GLsizei', 'GLsizei', 'GLuint'], returns='None'),
     ],
-    "drawelementsinstancedbasevertexbaseinstancewebgl": [
+    "drawElementsInstancedBaseVertexBaseInstanceWEBGL": [
         PrototypeCall(constructor='WEBGL_draw_instanced_base_vertex_base_instance', fn='drawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'GLenum', 'GLintptr', 'GLsizei', 'GLint', 'GLuint'], returns='None'),
     ],
     "IntersectionObserver": [
@@ -49,7 +49,7 @@ webidl_calls = {
         PrototypeCall(constructor='AudioNode', fn='disconnect', demands=['AudioNode', 'AudioParam'], returns='None'),
         PrototypeCall(constructor='AudioNode', fn='disconnect', demands=['AudioNode', 'AudioParam', 'int'], returns='None'),
     ],
-    "takerecords": [
+    "takeRecords": [
         PrototypeCall(constructor='IntersectionObserver', fn='takeRecords', demands=['IntersectionObserver'], returns='IntersectionObserverEntry'),
         PrototypeCall(constructor='PerformanceObserver', fn='takeRecords', demands=['PerformanceObserver'], returns='PerformanceEntryList'),
         PrototypeCall(constructor='ReportingObserver', fn='takeRecords', demands=['ReportingObserver'], returns='ReportList'),
@@ -59,14 +59,14 @@ webidl_calls = {
     "IntersectionObserverEntry": [
         NewCall(constructor='IntersectionObserverEntry', demands=['IntersectionObserverEntryInit'], returns='IntersectionObserverEntry'),
     ],
-    "getclientextensionresults": [
+    "getClientExtensionResults": [
         PrototypeCall(constructor='PublicKeyCredential', fn='getClientExtensionResults', demands=['PublicKeyCredential'], returns='AuthenticationExtensionsClientOutputs'),
     ],
-    "isconditionalmediationavailable": [
+    "isConditionalMediationAvailable": [
         DirectCall(fn='isConditionalMediationAvailable', receiver='PublicKeyCredential', demands=[], returns='bool'),
         DirectCall(fn='isConditionalMediationAvailable', receiver='Credential', demands=[], returns='bool'),
     ],
-    "tojson": [
+    "toJSON": [
         PrototypeCall(constructor='PublicKeyCredential', fn='toJSON', demands=['PublicKeyCredential'], returns='PublicKeyCredentialJSON'),
         PrototypeCall(constructor='PerformanceEntry', fn='toJSON', demands=['PerformanceEntry'], returns='object'),
         PrototypeCall(constructor='PaymentResponse', fn='toJSON', demands=['PaymentResponse'], returns='object'),
@@ -107,16 +107,16 @@ webidl_calls = {
         PrototypeCall(constructor='GeolocationPosition', fn='toJSON', demands=['GeolocationPosition'], returns='object'),
         PrototypeCall(constructor='GeolocationCoordinates', fn='toJSON', demands=['GeolocationCoordinates'], returns='object'),
     ],
-    "gettransports": [
+    "getTransports": [
         PrototypeCall(constructor='AuthenticatorAttestationResponse', fn='getTransports', demands=['AuthenticatorAttestationResponse'], returns='str'),
     ],
-    "getauthenticatordata": [
+    "getAuthenticatorData": [
         PrototypeCall(constructor='AuthenticatorAttestationResponse', fn='getAuthenticatorData', demands=['AuthenticatorAttestationResponse'], returns='ArrayBuffer'),
     ],
-    "getpublickey": [
+    "getPublicKey": [
         PrototypeCall(constructor='AuthenticatorAttestationResponse', fn='getPublicKey', demands=['AuthenticatorAttestationResponse'], returns='ArrayBuffer'),
     ],
-    "getpublickeyalgorithm": [
+    "getPublicKeyAlgorithm": [
         PrototypeCall(constructor='AuthenticatorAttestationResponse', fn='getPublicKeyAlgorithm', demands=['AuthenticatorAttestationResponse'], returns='COSEAlgorithmIdentifier'),
     ],
     "open": [
@@ -181,13 +181,13 @@ webidl_calls = {
         PrototypeCall(constructor='StorageAccessHandle', fn='estimate', demands=['StorageAccessHandle'], returns='StorageEstimate'),
         PrototypeCall(constructor='StorageManager', fn='estimate', demands=['StorageManager'], returns='StorageEstimate'),
     ],
-    "setexpires": [
+    "setExpires": [
         PrototypeCall(constructor='StorageBucket', fn='setExpires', demands=['StorageBucket', 'float'], returns='None'),
     ],
     "expires": [
         PrototypeCall(constructor='StorageBucket', fn='expires', demands=['StorageBucket'], returns='float'),
     ],
-    "getdirectory": [
+    "getDirectory": [
         PrototypeCall(constructor='StorageBucket', fn='getDirectory', demands=['StorageBucket'], returns='FileSystemDirectoryHandle'),
         PrototypeCall(constructor='StorageAccessHandle', fn='getDirectory', demands=['StorageAccessHandle'], returns='FileSystemDirectoryHandle'),
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='getDirectory', demands=['FileSystemDirectoryEntry'], returns='None'),
@@ -196,20 +196,20 @@ webidl_calls = {
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='getDirectory', demands=['FileSystemDirectoryEntry', 'str', 'FileSystemFlags', 'FileSystemEntryCallback'], returns='None'),
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='getDirectory', demands=['FileSystemDirectoryEntry', 'str', 'FileSystemFlags', 'FileSystemEntryCallback', 'ErrorCallback'], returns='None'),
     ],
-    "setactionhandler": [
+    "setActionHandler": [
         PrototypeCall(constructor='MediaSession', fn='setActionHandler', demands=['MediaSession', 'MediaSessionAction', 'MediaSessionActionHandler'], returns='None'),
     ],
-    "setpositionstate": [
+    "setPositionState": [
         PrototypeCall(constructor='MediaSession', fn='setPositionState', demands=['MediaSession'], returns='None'),
         PrototypeCall(constructor='MediaSession', fn='setPositionState', demands=['MediaSession', 'MediaPositionState'], returns='None'),
     ],
-    "setmicrophoneactive": [
+    "setMicrophoneActive": [
         PrototypeCall(constructor='MediaSession', fn='setMicrophoneActive', demands=['MediaSession', 'bool'], returns='None'),
     ],
-    "setcameraactive": [
+    "setCameraActive": [
         PrototypeCall(constructor='MediaSession', fn='setCameraActive', demands=['MediaSession', 'bool'], returns='None'),
     ],
-    "setscreenshareactive": [
+    "setScreenshareActive": [
         PrototypeCall(constructor='MediaSession', fn='setScreenshareActive', demands=['MediaSession', 'bool'], returns='None'),
     ],
     "MediaMetadata": [
@@ -219,13 +219,13 @@ webidl_calls = {
     "PerformanceObserver": [
         NewCall(constructor='PerformanceObserver', demands=['PerformanceObserverCallback'], returns='PerformanceObserver'),
     ],
-    "getentries": [
+    "getEntries": [
         PrototypeCall(constructor='PerformanceObserverEntryList', fn='getEntries', demands=['PerformanceObserverEntryList'], returns='PerformanceEntryList'),
     ],
-    "getentriesbytype": [
+    "getEntriesByType": [
         PrototypeCall(constructor='PerformanceObserverEntryList', fn='getEntriesByType', demands=['PerformanceObserverEntryList', 'str'], returns='PerformanceEntryList'),
     ],
-    "getentriesbyname": [
+    "getEntriesByName": [
         PrototypeCall(constructor='PerformanceObserverEntryList', fn='getEntriesByName', demands=['PerformanceObserverEntryList', 'str'], returns='PerformanceEntryList'),
         PrototypeCall(constructor='PerformanceObserverEntryList', fn='getEntriesByName', demands=['PerformanceObserverEntryList', 'str', 'str'], returns='PerformanceEntryList'),
     ],
@@ -244,13 +244,13 @@ webidl_calls = {
         PrototypeCall(constructor='FormData', fn='set', demands=['FormData', 'str', 'Blob'], returns='None'),
         PrototypeCall(constructor='FormData', fn='set', demands=['FormData', 'str', 'Blob', 'str'], returns='None'),
     ],
-    "drawarraysinstancedangle": [
+    "drawArraysInstancedANGLE": [
         PrototypeCall(constructor='ANGLE_instanced_arrays', fn='drawArraysInstancedANGLE', demands=['ANGLE_instanced_arrays', 'GLenum', 'GLint', 'GLsizei', 'GLsizei'], returns='None'),
     ],
-    "drawelementsinstancedangle": [
+    "drawElementsInstancedANGLE": [
         PrototypeCall(constructor='ANGLE_instanced_arrays', fn='drawElementsInstancedANGLE', demands=['ANGLE_instanced_arrays', 'GLenum', 'GLsizei', 'GLenum', 'GLintptr', 'GLsizei'], returns='None'),
     ],
-    "vertexattribdivisorangle": [
+    "vertexAttribDivisorANGLE": [
         PrototypeCall(constructor='ANGLE_instanced_arrays', fn='vertexAttribDivisorANGLE', demands=['ANGLE_instanced_arrays', 'GLuint', 'GLuint'], returns='None'),
     ],
     "ClipboardEvent": [
@@ -261,7 +261,7 @@ webidl_calls = {
         NewCall(constructor='ClipboardItem', demands=['str'], returns='ClipboardItem'),
         NewCall(constructor='ClipboardItem', demands=['str', 'ClipboardItemOptions'], returns='ClipboardItem'),
     ],
-    "gettype": [
+    "getType": [
         PrototypeCall(constructor='ClipboardItem', fn='getType', demands=['ClipboardItem', 'str'], returns='Blob'),
     ],
     "supports": [
@@ -280,7 +280,7 @@ webidl_calls = {
         DirectCall(fn='read', receiver='GeolocationSensor', demands=[], returns='GeolocationSensorReading'),
         DirectCall(fn='read', receiver='GeolocationSensor', demands=['ReadOptions'], returns='GeolocationSensorReading'),
     ],
-    "readtext": [
+    "readText": [
         PrototypeCall(constructor='Clipboard', fn='readText', demands=['Clipboard'], returns='str'),
     ],
     "write": [
@@ -295,25 +295,28 @@ webidl_calls = {
         PrototypeCall(constructor='WritableStreamDefaultWriter', fn='write', demands=['WritableStreamDefaultWriter'], returns='None'),
         PrototypeCall(constructor='WritableStreamDefaultWriter', fn='write', demands=['WritableStreamDefaultWriter', '*'], returns='None'),
     ],
-    "writetext": [
+    "writeText": [
         PrototypeCall(constructor='Clipboard', fn='writeText', demands=['Clipboard', 'str'], returns='None'),
     ],
     "SnapEvent": [
         NewCall(constructor='SnapEvent', demands=['str'], returns='SnapEvent'),
         NewCall(constructor='SnapEvent', demands=['str', 'SnapEventInit'], returns='SnapEvent'),
     ],
-    "createobjecturl": [
+    "createObjectURL": [
         PrototypeCall(constructor='StorageAccessHandle', fn='createObjectURL', demands=['StorageAccessHandle', 'Blob'], returns='str'),
     ],
-    "revokeobjecturl": [
+    "revokeObjectURL": [
         PrototypeCall(constructor='StorageAccessHandle', fn='revokeObjectURL', demands=['StorageAccessHandle', 'str'], returns='None'),
     ],
-    "broadcastchannel": [
+    "BroadcastChannel": [
         PrototypeCall(constructor='StorageAccessHandle', fn='BroadcastChannel', demands=['StorageAccessHandle', 'str'], returns='BroadcastChannel'),
+        NewCall(constructor='BroadcastChannel', demands=['str'], returns='BroadcastChannel'),
     ],
-    "sharedworker": [
+    "SharedWorker": [
         PrototypeCall(constructor='StorageAccessHandle', fn='SharedWorker', demands=['StorageAccessHandle', 'str'], returns='SharedWorker'),
         PrototypeCall(constructor='StorageAccessHandle', fn='SharedWorker', demands=['StorageAccessHandle', 'str', 'str'], returns='SharedWorker'),
+        NewCall(constructor='SharedWorker', demands=['TrustedScriptURL'], returns='SharedWorker'),
+        NewCall(constructor='SharedWorker', demands=['TrustedScriptURL', 'str'], returns='SharedWorker'),
     ],
     "PaymentRequest": [
         NewCall(constructor='PaymentRequest', demands=['PaymentMethodData', 'PaymentDetailsInit'], returns='PaymentRequest'),
@@ -342,7 +345,7 @@ webidl_calls = {
         PrototypeCall(constructor='XMLHttpRequest', fn='abort', demands=['XMLHttpRequest'], returns='None'),
         PrototypeCall(constructor='FileReader', fn='abort', demands=['FileReader'], returns='None'),
     ],
-    "canmakepayment": [
+    "canMakePayment": [
         PrototypeCall(constructor='PaymentRequest', fn='canMakePayment', demands=['PaymentRequest'], returns='bool'),
     ],
     "complete": [
@@ -363,7 +366,7 @@ webidl_calls = {
         NewCall(constructor='PaymentRequestUpdateEvent', demands=['str'], returns='PaymentRequestUpdateEvent'),
         NewCall(constructor='PaymentRequestUpdateEvent', demands=['str', 'PaymentRequestUpdateEventInit'], returns='PaymentRequestUpdateEvent'),
     ],
-    "updatewith": [
+    "updateWith": [
         PrototypeCall(constructor='PaymentRequestUpdateEvent', fn='updateWith', demands=['PaymentRequestUpdateEvent', 'PaymentDetailsUpdate'], returns='None'),
     ],
     "cancel": [
@@ -374,7 +377,7 @@ webidl_calls = {
         PrototypeCall(constructor='ReadableStream', fn='cancel', demands=['ReadableStream', '*'], returns='None'),
         PrototypeCall(constructor='Animation', fn='cancel', demands=['Animation'], returns='None'),
     ],
-    "getpose": [
+    "getPose": [
         PrototypeCall(constructor='XRHitTestResult', fn='getPose', demands=['XRHitTestResult', 'XRSpace'], returns='XRPose'),
         PrototypeCall(constructor='XRFrame', fn='getPose', demands=['XRFrame', 'XRSpace', 'XRSpace'], returns='XRPose'),
     ],
@@ -395,7 +398,7 @@ webidl_calls = {
         DirectCall(fn='parse', receiver='CSSNumericValue', demands=['str'], returns='CSSNumericValue'),
         DirectCall(fn='parse', receiver='CSSColorValue', demands=['str'], returns='CSSColorValue'),
     ],
-    "canparse": [
+    "canParse": [
         DirectCall(fn='canParse', receiver='URL', demands=['str'], returns='bool'),
         DirectCall(fn='canParse', receiver='URL', demands=['str', 'str'], returns='bool'),
     ],
@@ -435,7 +438,7 @@ webidl_calls = {
         PrototypeCall(constructor='FormData', fn='get', demands=['FormData', 'str'], returns='FormDataEntryValue'),
         PrototypeCall(constructor='XRHand', fn='get', demands=['XRHand', 'XRHandJoint'], returns='XRJointSpace'),
     ],
-    "getall": [
+    "getAll": [
         PrototypeCall(constructor='URLSearchParams', fn='getAll', demands=['URLSearchParams', 'str'], returns='str'),
         PrototypeCall(constructor='ContentIndex', fn='getAll', demands=['ContentIndex'], returns='ContentDescription'),
         PrototypeCall(constructor='CookieStore', fn='getAll', demands=['CookieStore', 'str'], returns='CookieList'),
@@ -466,7 +469,7 @@ webidl_calls = {
         NewCall(constructor='DeviceOrientationEvent', demands=['str'], returns='DeviceOrientationEvent'),
         NewCall(constructor='DeviceOrientationEvent', demands=['str', 'DeviceOrientationEventInit'], returns='DeviceOrientationEvent'),
     ],
-    "requestpermission": [
+    "requestPermission": [
         DirectCall(fn='requestPermission', receiver='DeviceOrientationEvent', demands=[], returns='PermissionState'),
         DirectCall(fn='requestPermission', receiver='DeviceOrientationEvent', demands=['bool'], returns='PermissionState'),
         DirectCall(fn='requestPermission', receiver='DeviceMotionEvent', demands=[], returns='PermissionState'),
@@ -478,16 +481,16 @@ webidl_calls = {
         NewCall(constructor='DeviceMotionEvent', demands=['str'], returns='DeviceMotionEvent'),
         NewCall(constructor='DeviceMotionEvent', demands=['str', 'DeviceMotionEventInit'], returns='DeviceMotionEvent'),
     ],
-    "requestframe": [
+    "requestFrame": [
         PrototypeCall(constructor='CanvasCaptureMediaStreamTrack', fn='requestFrame', demands=['CanvasCaptureMediaStreamTrack'], returns='None'),
     ],
-    "gettitlebararearect": [
+    "getTitlebarAreaRect": [
         PrototypeCall(constructor='WindowControlsOverlay', fn='getTitlebarAreaRect', demands=['WindowControlsOverlay'], returns='DOMRect'),
     ],
     "WindowControlsOverlayGeometryChangeEvent": [
         NewCall(constructor='WindowControlsOverlayGeometryChangeEvent', demands=['str', 'WindowControlsOverlayGeometryChangeEventInit'], returns='WindowControlsOverlayGeometryChangeEvent'),
     ],
-    "fromelement": [
+    "fromElement": [
         DirectCall(fn='fromElement', receiver='RestrictionTarget', demands=['Element'], returns='RestrictionTarget'),
         DirectCall(fn='fromElement', receiver='CropTarget', demands=['Element'], returns='CropTarget'),
     ],
@@ -498,29 +501,29 @@ webidl_calls = {
         NewCall(constructor='Sanitizer', demands=[], returns='Sanitizer'),
         NewCall(constructor='Sanitizer', demands=['SanitizerConfig'], returns='Sanitizer'),
     ],
-    "allowelement": [
+    "allowElement": [
         PrototypeCall(constructor='Sanitizer', fn='allowElement', demands=['Sanitizer', 'SanitizerElementWithAttributes'], returns='None'),
     ],
-    "removeelement": [
+    "removeElement": [
         PrototypeCall(constructor='Sanitizer', fn='removeElement', demands=['Sanitizer', 'SanitizerElement'], returns='None'),
     ],
-    "replaceelementwithchildren": [
+    "replaceElementWithChildren": [
         PrototypeCall(constructor='Sanitizer', fn='replaceElementWithChildren', demands=['Sanitizer', 'SanitizerElement'], returns='None'),
     ],
-    "allowattribute": [
+    "allowAttribute": [
         PrototypeCall(constructor='Sanitizer', fn='allowAttribute', demands=['Sanitizer', 'SanitizerAttribute'], returns='None'),
     ],
-    "removeattribute": [
+    "removeAttribute": [
         PrototypeCall(constructor='Sanitizer', fn='removeAttribute', demands=['Sanitizer', 'SanitizerAttribute'], returns='None'),
         PrototypeCall(constructor='Element', fn='removeAttribute', demands=['Element', 'str'], returns='None'),
     ],
-    "setcomments": [
+    "setComments": [
         PrototypeCall(constructor='Sanitizer', fn='setComments', demands=['Sanitizer', 'bool'], returns='None'),
     ],
-    "setdataattributes": [
+    "setDataAttributes": [
         PrototypeCall(constructor='Sanitizer', fn='setDataAttributes', demands=['Sanitizer', 'bool'], returns='None'),
     ],
-    "removeunsafe": [
+    "removeUnsafe": [
         PrototypeCall(constructor='Sanitizer', fn='removeUnsafe', demands=['Sanitizer'], returns='None'),
     ],
     "TextDetector": [
@@ -533,35 +536,35 @@ webidl_calls = {
         PrototypeCall(constructor='LanguageDetector', fn='detect', demands=['LanguageDetector', 'str'], returns='LanguageDetectionResult'),
         PrototypeCall(constructor='LanguageDetector', fn='detect', demands=['LanguageDetector', 'str', 'LanguageDetectorDetectOptions'], returns='LanguageDetectionResult'),
     ],
-    "createqueryext": [
+    "createQueryEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='createQueryEXT', demands=['EXT_disjoint_timer_query'], returns='WebGLTimerQueryEXT'),
     ],
-    "deletequeryext": [
+    "deleteQueryEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='deleteQueryEXT', demands=['EXT_disjoint_timer_query', 'WebGLTimerQueryEXT'], returns='None'),
     ],
-    "isqueryext": [
+    "isQueryEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='isQueryEXT', demands=['EXT_disjoint_timer_query', 'WebGLTimerQueryEXT'], returns='bool'),
     ],
-    "beginqueryext": [
+    "beginQueryEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='beginQueryEXT', demands=['EXT_disjoint_timer_query', 'GLenum', 'WebGLTimerQueryEXT'], returns='None'),
     ],
-    "endqueryext": [
+    "endQueryEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='endQueryEXT', demands=['EXT_disjoint_timer_query', 'GLenum'], returns='None'),
     ],
-    "querycounterext": [
+    "queryCounterEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='queryCounterEXT', demands=['EXT_disjoint_timer_query', 'WebGLTimerQueryEXT', 'GLenum'], returns='None'),
         PrototypeCall(constructor='EXT_disjoint_timer_query_webgl2', fn='queryCounterEXT', demands=['EXT_disjoint_timer_query_webgl2', 'WebGLQuery', 'GLenum'], returns='None'),
     ],
-    "getqueryext": [
+    "getQueryEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='getQueryEXT', demands=['EXT_disjoint_timer_query', 'GLenum', 'GLenum'], returns='*'),
     ],
-    "getqueryobjectext": [
+    "getQueryObjectEXT": [
         PrototypeCall(constructor='EXT_disjoint_timer_query', fn='getQueryObjectEXT', demands=['EXT_disjoint_timer_query', 'WebGLTimerQueryEXT', 'GLenum'], returns='*'),
     ],
-    "getrandomvalues": [
+    "getRandomValues": [
         PrototypeCall(constructor='Crypto', fn='getRandomValues', demands=['Crypto', 'ArrayBufferView'], returns='ArrayBufferView'),
     ],
-    "randomuuid": [
+    "randomUUID": [
         PrototypeCall(constructor='Crypto', fn='randomUUID', demands=['Crypto'], returns='str'),
     ],
     "encrypt": [
@@ -579,29 +582,29 @@ webidl_calls = {
     "digest": [
         PrototypeCall(constructor='SubtleCrypto', fn='digest', demands=['SubtleCrypto', 'AlgorithmIdentifier', 'BufferSource'], returns='ArrayBuffer'),
     ],
-    "generatekey": [
+    "generateKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='generateKey', demands=['SubtleCrypto', 'AlgorithmIdentifier', 'bool', 'KeyUsage'], returns='CryptoKey'),
     ],
-    "derivekey": [
+    "deriveKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='deriveKey', demands=['SubtleCrypto', 'AlgorithmIdentifier', 'CryptoKey', 'AlgorithmIdentifier', 'bool', 'KeyUsage'], returns='CryptoKey'),
     ],
-    "derivebits": [
+    "deriveBits": [
         PrototypeCall(constructor='SubtleCrypto', fn='deriveBits', demands=['SubtleCrypto', 'AlgorithmIdentifier', 'CryptoKey'], returns='ArrayBuffer'),
         PrototypeCall(constructor='SubtleCrypto', fn='deriveBits', demands=['SubtleCrypto', 'AlgorithmIdentifier', 'CryptoKey', 'int'], returns='ArrayBuffer'),
     ],
-    "importkey": [
+    "importKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='importKey', demands=['SubtleCrypto', 'KeyFormat', 'BufferSource', 'AlgorithmIdentifier', 'bool', 'KeyUsage'], returns='CryptoKey'),
     ],
-    "exportkey": [
+    "exportKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='exportKey', demands=['SubtleCrypto', 'KeyFormat', 'CryptoKey'], returns='ArrayBuffer'),
     ],
-    "wrapkey": [
+    "wrapKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='wrapKey', demands=['SubtleCrypto', 'KeyFormat', 'CryptoKey', 'CryptoKey', 'AlgorithmIdentifier'], returns='ArrayBuffer'),
     ],
-    "unwrapkey": [
+    "unwrapKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='unwrapKey', demands=['SubtleCrypto', 'KeyFormat', 'BufferSource', 'CryptoKey', 'AlgorithmIdentifier', 'AlgorithmIdentifier', 'bool', 'KeyUsage'], returns='CryptoKey'),
     ],
-    "getdepthinmeters": [
+    "getDepthInMeters": [
         PrototypeCall(constructor='XRCPUDepthInformation', fn='getDepthInMeters', demands=['XRCPUDepthInformation', 'float', 'float'], returns='float'),
     ],
     "MediaStream": [
@@ -609,25 +612,25 @@ webidl_calls = {
         NewCall(constructor='MediaStream', demands=['MediaStream'], returns='MediaStream'),
         NewCall(constructor='MediaStream', demands=['MediaStreamTrack'], returns='MediaStream'),
     ],
-    "getaudiotracks": [
+    "getAudioTracks": [
         PrototypeCall(constructor='MediaStream', fn='getAudioTracks', demands=['MediaStream'], returns='MediaStreamTrack'),
     ],
-    "getvideotracks": [
+    "getVideoTracks": [
         PrototypeCall(constructor='MediaStream', fn='getVideoTracks', demands=['MediaStream'], returns='MediaStreamTrack'),
     ],
-    "gettracks": [
+    "getTracks": [
         PrototypeCall(constructor='MediaStream', fn='getTracks', demands=['MediaStream'], returns='MediaStreamTrack'),
     ],
-    "gettrackbyid": [
+    "getTrackById": [
         PrototypeCall(constructor='MediaStream', fn='getTrackById', demands=['MediaStream', 'str'], returns='MediaStreamTrack'),
         PrototypeCall(constructor='AudioTrackList', fn='getTrackById', demands=['AudioTrackList', 'str'], returns='AudioTrack'),
         PrototypeCall(constructor='VideoTrackList', fn='getTrackById', demands=['VideoTrackList', 'str'], returns='VideoTrack'),
         PrototypeCall(constructor='TextTrackList', fn='getTrackById', demands=['TextTrackList', 'str'], returns='TextTrack'),
     ],
-    "addtrack": [
+    "addTrack": [
         PrototypeCall(constructor='MediaStream', fn='addTrack', demands=['MediaStream', 'MediaStreamTrack'], returns='None'),
     ],
-    "removetrack": [
+    "removeTrack": [
         PrototypeCall(constructor='MediaStream', fn='removeTrack', demands=['MediaStream', 'MediaStreamTrack'], returns='None'),
     ],
     "clone": [
@@ -654,19 +657,19 @@ webidl_calls = {
         PrototypeCall(constructor='AudioScheduledSourceNode', fn='stop', demands=['AudioScheduledSourceNode'], returns='None'),
         PrototypeCall(constructor='AudioScheduledSourceNode', fn='stop', demands=['AudioScheduledSourceNode', 'float'], returns='None'),
     ],
-    "getcapabilities": [
+    "getCapabilities": [
         PrototypeCall(constructor='MediaStreamTrack', fn='getCapabilities', demands=['MediaStreamTrack'], returns='MediaTrackCapabilities'),
         PrototypeCall(constructor='InputDeviceInfo', fn='getCapabilities', demands=['InputDeviceInfo'], returns='MediaTrackCapabilities'),
         DirectCall(fn='getCapabilities', receiver='RTCRtpSender', demands=['str'], returns='RTCRtpCapabilities'),
         DirectCall(fn='getCapabilities', receiver='RTCRtpReceiver', demands=['str'], returns='RTCRtpCapabilities'),
     ],
-    "getconstraints": [
+    "getConstraints": [
         PrototypeCall(constructor='MediaStreamTrack', fn='getConstraints', demands=['MediaStreamTrack'], returns='MediaTrackConstraints'),
     ],
-    "getsettings": [
+    "getSettings": [
         PrototypeCall(constructor='MediaStreamTrack', fn='getSettings', demands=['MediaStreamTrack'], returns='MediaTrackSettings'),
     ],
-    "applyconstraints": [
+    "applyConstraints": [
         PrototypeCall(constructor='MediaStreamTrack', fn='applyConstraints', demands=['MediaStreamTrack'], returns='None'),
         PrototypeCall(constructor='MediaStreamTrack', fn='applyConstraints', demands=['MediaStreamTrack', 'MediaTrackConstraints'], returns='None'),
     ],
@@ -677,14 +680,14 @@ webidl_calls = {
         NewCall(constructor='OverconstrainedError', demands=['str'], returns='OverconstrainedError'),
         NewCall(constructor='OverconstrainedError', demands=['str', 'str'], returns='OverconstrainedError'),
     ],
-    "enumeratedevices": [
+    "enumerateDevices": [
         PrototypeCall(constructor='MediaDevices', fn='enumerateDevices', demands=['MediaDevices'], returns='MediaDeviceInfo'),
     ],
     "DeviceChangeEvent": [
         NewCall(constructor='DeviceChangeEvent', demands=['str'], returns='DeviceChangeEvent'),
         NewCall(constructor='DeviceChangeEvent', demands=['str', 'DeviceChangeEventInit'], returns='DeviceChangeEvent'),
     ],
-    "selecturl": [
+    "selectURL": [
         PrototypeCall(constructor='SharedStorageWorklet', fn='selectURL', demands=['SharedStorageWorklet', 'str', 'SharedStorageUrlWithMetadata'], returns='SharedStorageResponse'),
         PrototypeCall(constructor='SharedStorageWorklet', fn='selectURL', demands=['SharedStorageWorklet', 'str', 'SharedStorageUrlWithMetadata', 'SharedStorageRunOperationMethodOptions'], returns='SharedStorageResponse'),
         PrototypeCall(constructor='SharedStorage', fn='selectURL', demands=['SharedStorage', 'str', 'SharedStorageUrlWithMetadata'], returns='SharedStorageResponse'),
@@ -705,7 +708,7 @@ webidl_calls = {
         PrototypeCall(constructor='PeriodicSyncManager', fn='register', demands=['PeriodicSyncManager', 'str', 'BackgroundSyncOptions'], returns='None'),
         PrototypeCall(constructor='SyncManager', fn='register', demands=['SyncManager', 'str'], returns='None'),
     ],
-    "interestgroups": [
+    "interestGroups": [
         PrototypeCall(constructor='SharedStorageWorkletGlobalScope', fn='interestGroups', demands=['SharedStorageWorkletGlobalScope'], returns='StorageInterestGroup'),
     ],
     "SharedStorageSetMethod": [
@@ -741,58 +744,58 @@ webidl_calls = {
         PrototypeCall(constructor='SVGTransformList', fn='clear', demands=['SVGTransformList'], returns='None'),
         PrototypeCall(constructor='SVGPointList', fn='clear', demands=['SVGPointList'], returns='None'),
     ],
-    "batchupdate": [
+    "batchUpdate": [
         PrototypeCall(constructor='SharedStorage', fn='batchUpdate', demands=['SharedStorage', 'SharedStorageModifierMethod'], returns='*'),
         PrototypeCall(constructor='SharedStorage', fn='batchUpdate', demands=['SharedStorage', 'SharedStorageModifierMethod', 'SharedStorageModifierMethodOptions'], returns='*'),
     ],
-    "createworklet": [
+    "createWorklet": [
         PrototypeCall(constructor='SharedStorage', fn='createWorklet', demands=['SharedStorage', 'str'], returns='SharedStorageWorklet'),
         PrototypeCall(constructor='SharedStorage', fn='createWorklet', demands=['SharedStorage', 'str', 'SharedStorageWorkletOptions'], returns='SharedStorageWorklet'),
     ],
     "length": [
         PrototypeCall(constructor='SharedStorage', fn='length', demands=['SharedStorage'], returns='int'),
     ],
-    "remainingbudget": [
+    "remainingBudget": [
         PrototypeCall(constructor='SharedStorage', fn='remainingBudget', demands=['SharedStorage'], returns='float'),
     ],
     "RTCPeerConnection": [
         NewCall(constructor='RTCPeerConnection', demands=[], returns='RTCPeerConnection'),
         NewCall(constructor='RTCPeerConnection', demands=['RTCConfiguration'], returns='RTCPeerConnection'),
     ],
-    "createoffer": [
+    "createOffer": [
         PrototypeCall(constructor='RTCPeerConnection', fn='createOffer', demands=['RTCPeerConnection'], returns='RTCSessionDescriptionInit'),
         PrototypeCall(constructor='RTCPeerConnection', fn='createOffer', demands=['RTCPeerConnection', 'RTCOfferOptions'], returns='RTCSessionDescriptionInit'),
         PrototypeCall(constructor='RTCPeerConnection', fn='createOffer', demands=['RTCPeerConnection', 'RTCSessionDescriptionCallback', 'RTCPeerConnectionErrorCallback'], returns='None'),
         PrototypeCall(constructor='RTCPeerConnection', fn='createOffer', demands=['RTCPeerConnection', 'RTCSessionDescriptionCallback', 'RTCPeerConnectionErrorCallback', 'RTCOfferOptions'], returns='None'),
     ],
-    "createanswer": [
+    "createAnswer": [
         PrototypeCall(constructor='RTCPeerConnection', fn='createAnswer', demands=['RTCPeerConnection'], returns='RTCSessionDescriptionInit'),
         PrototypeCall(constructor='RTCPeerConnection', fn='createAnswer', demands=['RTCPeerConnection', 'RTCAnswerOptions'], returns='RTCSessionDescriptionInit'),
         PrototypeCall(constructor='RTCPeerConnection', fn='createAnswer', demands=['RTCPeerConnection', 'RTCSessionDescriptionCallback', 'RTCPeerConnectionErrorCallback'], returns='None'),
     ],
-    "setlocaldescription": [
+    "setLocalDescription": [
         PrototypeCall(constructor='RTCPeerConnection', fn='setLocalDescription', demands=['RTCPeerConnection'], returns='None'),
         PrototypeCall(constructor='RTCPeerConnection', fn='setLocalDescription', demands=['RTCPeerConnection', 'RTCLocalSessionDescriptionInit'], returns='None'),
         PrototypeCall(constructor='RTCPeerConnection', fn='setLocalDescription', demands=['RTCPeerConnection', 'RTCLocalSessionDescriptionInit', 'VoidFunction', 'RTCPeerConnectionErrorCallback'], returns='None'),
     ],
-    "setremotedescription": [
+    "setRemoteDescription": [
         PrototypeCall(constructor='RTCPeerConnection', fn='setRemoteDescription', demands=['RTCPeerConnection', 'RTCSessionDescriptionInit'], returns='None'),
         PrototypeCall(constructor='RTCPeerConnection', fn='setRemoteDescription', demands=['RTCPeerConnection', 'RTCSessionDescriptionInit', 'VoidFunction', 'RTCPeerConnectionErrorCallback'], returns='None'),
     ],
-    "addicecandidate": [
+    "addIceCandidate": [
         PrototypeCall(constructor='RTCPeerConnection', fn='addIceCandidate', demands=['RTCPeerConnection'], returns='None'),
         PrototypeCall(constructor='RTCPeerConnection', fn='addIceCandidate', demands=['RTCPeerConnection', 'RTCIceCandidateInit'], returns='None'),
         PrototypeCall(constructor='RTCPeerConnection', fn='addIceCandidate', demands=['RTCPeerConnection', 'RTCIceCandidateInit', 'VoidFunction', 'RTCPeerConnectionErrorCallback'], returns='None'),
     ],
-    "restartice": [
+    "restartIce": [
         PrototypeCall(constructor='RTCPeerConnection', fn='restartIce', demands=['RTCPeerConnection'], returns='None'),
     ],
-    "getconfiguration": [
+    "getConfiguration": [
         PrototypeCall(constructor='RTCPeerConnection', fn='getConfiguration', demands=['RTCPeerConnection'], returns='RTCConfiguration'),
         PrototypeCall(constructor='MediaKeySystemAccess', fn='getConfiguration', demands=['MediaKeySystemAccess'], returns='MediaKeySystemConfiguration'),
         PrototypeCall(constructor='GPUCanvasContext', fn='getConfiguration', demands=['GPUCanvasContext'], returns='GPUCanvasConfiguration'),
     ],
-    "setconfiguration": [
+    "setConfiguration": [
         PrototypeCall(constructor='RTCPeerConnection', fn='setConfiguration', demands=['RTCPeerConnection'], returns='None'),
         PrototypeCall(constructor='RTCPeerConnection', fn='setConfiguration', demands=['RTCPeerConnection', 'RTCConfiguration'], returns='None'),
     ],
@@ -851,25 +854,25 @@ webidl_calls = {
     "RTCPeerConnectionIceErrorEvent": [
         NewCall(constructor='RTCPeerConnectionIceErrorEvent', demands=['str', 'RTCPeerConnectionIceErrorEventInit'], returns='RTCPeerConnectionIceErrorEvent'),
     ],
-    "getfingerprints": [
+    "getFingerprints": [
         PrototypeCall(constructor='RTCCertificate', fn='getFingerprints', demands=['RTCCertificate'], returns='RTCDtlsFingerprint'),
     ],
-    "setparameters": [
+    "setParameters": [
         PrototypeCall(constructor='RTCRtpSender', fn='setParameters', demands=['RTCRtpSender', 'RTCRtpSendParameters'], returns='None'),
         PrototypeCall(constructor='RTCRtpSender', fn='setParameters', demands=['RTCRtpSender', 'RTCRtpSendParameters', 'RTCSetParameterOptions'], returns='None'),
     ],
-    "getparameters": [
+    "getParameters": [
         PrototypeCall(constructor='RTCRtpSender', fn='getParameters', demands=['RTCRtpSender'], returns='RTCRtpSendParameters'),
         PrototypeCall(constructor='RTCRtpReceiver', fn='getParameters', demands=['RTCRtpReceiver'], returns='RTCRtpReceiveParameters'),
         PrototypeCall(constructor='CSSFunctionRule', fn='getParameters', demands=['CSSFunctionRule'], returns='FunctionParameter'),
     ],
-    "replacetrack": [
+    "replaceTrack": [
         PrototypeCall(constructor='RTCRtpSender', fn='replaceTrack', demands=['RTCRtpSender', 'MediaStreamTrack'], returns='None'),
     ],
-    "setstreams": [
+    "setStreams": [
         PrototypeCall(constructor='RTCRtpSender', fn='setStreams', demands=['RTCRtpSender', 'MediaStream'], returns='None'),
     ],
-    "getstats": [
+    "getStats": [
         PrototypeCall(constructor='RTCRtpSender', fn='getStats', demands=['RTCRtpSender'], returns='RTCStatsReport'),
         PrototypeCall(constructor='RTCRtpReceiver', fn='getStats', demands=['RTCRtpReceiver'], returns='RTCStatsReport'),
         PrototypeCall(constructor='WebTransport', fn='getStats', demands=['WebTransport'], returns='WebTransportConnectionStats'),
@@ -877,31 +880,31 @@ webidl_calls = {
         PrototypeCall(constructor='WebTransportSendGroup', fn='getStats', demands=['WebTransportSendGroup'], returns='WebTransportSendStreamStats'),
         PrototypeCall(constructor='WebTransportReceiveStream', fn='getStats', demands=['WebTransportReceiveStream'], returns='WebTransportReceiveStreamStats'),
     ],
-    "getcontributingsources": [
+    "getContributingSources": [
         PrototypeCall(constructor='RTCRtpReceiver', fn='getContributingSources', demands=['RTCRtpReceiver'], returns='RTCRtpContributingSource'),
     ],
-    "getsynchronizationsources": [
+    "getSynchronizationSources": [
         PrototypeCall(constructor='RTCRtpReceiver', fn='getSynchronizationSources', demands=['RTCRtpReceiver'], returns='RTCRtpSynchronizationSource'),
     ],
-    "setcodecpreferences": [
+    "setCodecPreferences": [
         PrototypeCall(constructor='RTCRtpTransceiver', fn='setCodecPreferences', demands=['RTCRtpTransceiver', 'RTCRtpCodec'], returns='None'),
     ],
-    "getremotecertificates": [
+    "getRemoteCertificates": [
         PrototypeCall(constructor='RTCDtlsTransport', fn='getRemoteCertificates', demands=['RTCDtlsTransport'], returns='ArrayBuffer'),
     ],
-    "getlocalcandidates": [
+    "getLocalCandidates": [
         PrototypeCall(constructor='RTCIceTransport', fn='getLocalCandidates', demands=['RTCIceTransport'], returns='RTCIceCandidate'),
     ],
-    "getremotecandidates": [
+    "getRemoteCandidates": [
         PrototypeCall(constructor='RTCIceTransport', fn='getRemoteCandidates', demands=['RTCIceTransport'], returns='RTCIceCandidate'),
     ],
-    "getselectedcandidatepair": [
+    "getSelectedCandidatePair": [
         PrototypeCall(constructor='RTCIceTransport', fn='getSelectedCandidatePair', demands=['RTCIceTransport'], returns='RTCIceCandidatePair'),
     ],
-    "getlocalparameters": [
+    "getLocalParameters": [
         PrototypeCall(constructor='RTCIceTransport', fn='getLocalParameters', demands=['RTCIceTransport'], returns='RTCIceParameters'),
     ],
-    "getremoteparameters": [
+    "getRemoteParameters": [
         PrototypeCall(constructor='RTCIceTransport', fn='getRemoteParameters', demands=['RTCIceTransport'], returns='RTCIceParameters'),
     ],
     "RTCTrackEvent": [
@@ -925,7 +928,7 @@ webidl_calls = {
     "RTCDataChannelEvent": [
         NewCall(constructor='RTCDataChannelEvent', demands=['str', 'RTCDataChannelEventInit'], returns='RTCDataChannelEvent'),
     ],
-    "insertdtmf": [
+    "insertDTMF": [
         PrototypeCall(constructor='RTCDTMFSender', fn='insertDTMF', demands=['RTCDTMFSender', 'str'], returns='None'),
         PrototypeCall(constructor='RTCDTMFSender', fn='insertDTMF', demands=['RTCDTMFSender', 'str', 'int'], returns='None'),
         PrototypeCall(constructor='RTCDTMFSender', fn='insertDTMF', demands=['RTCDTMFSender', 'str', 'int', 'int'], returns='None'),
@@ -941,7 +944,7 @@ webidl_calls = {
     "RTCErrorEvent": [
         NewCall(constructor='RTCErrorEvent', demands=['str', 'RTCErrorEventInit'], returns='RTCErrorEvent'),
     ],
-    "timeremaining": [
+    "timeRemaining": [
         PrototypeCall(constructor='IdleDeadline', fn='timeRemaining', demands=['IdleDeadline'], returns='float'),
     ],
     "ContentVisibilityAutoStateChangeEvent": [
@@ -952,21 +955,21 @@ webidl_calls = {
         NewCall(constructor='AmbientLightSensor', demands=[], returns='AmbientLightSensor'),
         NewCall(constructor='AmbientLightSensor', demands=['SensorOptions'], returns='AmbientLightSensor'),
     ],
-    "getports": [
+    "getPorts": [
         PrototypeCall(constructor='Serial', fn='getPorts', demands=['Serial'], returns='SerialPort'),
     ],
-    "requestport": [
+    "requestPort": [
         PrototypeCall(constructor='Serial', fn='requestPort', demands=['Serial'], returns='SerialPort'),
         PrototypeCall(constructor='Serial', fn='requestPort', demands=['Serial', 'SerialPortRequestOptions'], returns='SerialPort'),
     ],
-    "getinfo": [
+    "getInfo": [
         PrototypeCall(constructor='SerialPort', fn='getInfo', demands=['SerialPort'], returns='SerialPortInfo'),
     ],
-    "setsignals": [
+    "setSignals": [
         PrototypeCall(constructor='SerialPort', fn='setSignals', demands=['SerialPort'], returns='None'),
         PrototypeCall(constructor='SerialPort', fn='setSignals', demands=['SerialPort', 'SerialOutputSignals'], returns='None'),
     ],
-    "getsignals": [
+    "getSignals": [
         PrototypeCall(constructor='SerialPort', fn='getSignals', demands=['SerialPort'], returns='SerialInputSignals'),
     ],
     "forget": [
@@ -975,10 +978,10 @@ webidl_calls = {
         PrototypeCall(constructor='BluetoothDevice', fn='forget', demands=['BluetoothDevice'], returns='None'),
         PrototypeCall(constructor='USBDevice', fn='forget', demands=['USBDevice'], returns='None'),
     ],
-    "requestpersistenthandle": [
+    "requestPersistentHandle": [
         PrototypeCall(constructor='XRAnchor', fn='requestPersistentHandle', demands=['XRAnchor'], returns='str'),
     ],
-    "createcontext": [
+    "createContext": [
         PrototypeCall(constructor='ML', fn='createContext', demands=['ML'], returns='MLContext'),
         PrototypeCall(constructor='ML', fn='createContext', demands=['ML', 'MLContextOptions'], returns='MLContext'),
         PrototypeCall(constructor='ML', fn='createContext', demands=['ML', 'GPUDevice'], returns='MLContext'),
@@ -986,20 +989,20 @@ webidl_calls = {
     "dispatch": [
         PrototypeCall(constructor='MLContext', fn='dispatch', demands=['MLContext', 'MLGraph', 'MLNamedTensors', 'MLNamedTensors'], returns='None'),
     ],
-    "createtensor": [
+    "createTensor": [
         PrototypeCall(constructor='MLContext', fn='createTensor', demands=['MLContext', 'MLTensorDescriptor'], returns='MLTensor'),
     ],
-    "createconstanttensor": [
+    "createConstantTensor": [
         PrototypeCall(constructor='MLContext', fn='createConstantTensor', demands=['MLContext', 'MLOperandDescriptor', 'AllowSharedBufferSource'], returns='MLTensor'),
     ],
-    "readtensor": [
+    "readTensor": [
         PrototypeCall(constructor='MLContext', fn='readTensor', demands=['MLContext', 'MLTensor'], returns='ArrayBuffer'),
         PrototypeCall(constructor='MLContext', fn='readTensor', demands=['MLContext', 'MLTensor', 'AllowSharedBufferSource'], returns='None'),
     ],
-    "writetensor": [
+    "writeTensor": [
         PrototypeCall(constructor='MLContext', fn='writeTensor', demands=['MLContext', 'MLTensor', 'AllowSharedBufferSource'], returns='None'),
     ],
-    "opsupportlimits": [
+    "opSupportLimits": [
         PrototypeCall(constructor='MLContext', fn='opSupportLimits', demands=['MLContext'], returns='MLOpSupportLimits'),
     ],
     "destroy": [
@@ -1044,11 +1047,11 @@ webidl_calls = {
         DirectCall(fn='flatten', receiver='JsonLdProcessor', demands=['JsonLdInput', 'JsonLdContext'], returns='JsonLdRecord'),
         DirectCall(fn='flatten', receiver='JsonLdProcessor', demands=['JsonLdInput', 'JsonLdContext', 'JsonLdOptions'], returns='JsonLdRecord'),
     ],
-    "fromrdf": [
+    "fromRdf": [
         DirectCall(fn='fromRdf', receiver='JsonLdProcessor', demands=['RdfDataset'], returns='JsonLdRecord'),
         DirectCall(fn='fromRdf', receiver='JsonLdProcessor', demands=['RdfDataset', 'JsonLdOptions'], returns='JsonLdRecord'),
     ],
-    "tordf": [
+    "toRdf": [
         DirectCall(fn='toRdf', receiver='JsonLdProcessor', demands=['JsonLdInput'], returns='RdfDataset'),
         DirectCall(fn='toRdf', receiver='JsonLdProcessor', demands=['JsonLdInput', 'JsonLdOptions'], returns='RdfDataset'),
     ],
@@ -1096,14 +1099,14 @@ webidl_calls = {
         PrototypeCall(constructor='Observable', fn='subscribe', demands=['Observable', 'ObserverUnion'], returns='None'),
         PrototypeCall(constructor='Observable', fn='subscribe', demands=['Observable', 'ObserverUnion', 'SubscribeOptions'], returns='None'),
     ],
-    "getsubscription": [
+    "getSubscription": [
         PrototypeCall(constructor='PushManager', fn='getSubscription', demands=['PushManager'], returns='PushSubscription'),
     ],
-    "permissionstate": [
+    "permissionState": [
         PrototypeCall(constructor='PushManager', fn='permissionState', demands=['PushManager'], returns='PermissionState'),
         PrototypeCall(constructor='PushManager', fn='permissionState', demands=['PushManager', 'PushSubscriptionOptionsInit'], returns='PermissionState'),
     ],
-    "getkey": [
+    "getKey": [
         PrototypeCall(constructor='PushSubscription', fn='getKey', demands=['PushSubscription', 'PushEncryptionKeyName'], returns='ArrayBuffer'),
         PrototypeCall(constructor='IDBObjectStore', fn='getKey', demands=['IDBObjectStore', '*'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBIndex', fn='getKey', demands=['IDBIndex', '*'], returns='IDBRequest'),
@@ -1112,7 +1115,7 @@ webidl_calls = {
         PrototypeCall(constructor='PushSubscription', fn='unsubscribe', demands=['PushSubscription'], returns='bool'),
         PrototypeCall(constructor='CookieStoreManager', fn='unsubscribe', demands=['CookieStoreManager', 'CookieStoreGetOptions'], returns='None'),
     ],
-    "arraybuffer": [
+    "arrayBuffer": [
         PrototypeCall(constructor='PushMessageData', fn='arrayBuffer', demands=['PushMessageData'], returns='ArrayBuffer'),
         PrototypeCall(constructor='Blob', fn='arrayBuffer', demands=['Blob'], returns='ArrayBuffer'),
     ],
@@ -1141,17 +1144,17 @@ webidl_calls = {
         NewCall(constructor='PushSubscriptionChangeEvent', demands=['str'], returns='PushSubscriptionChangeEvent'),
         NewCall(constructor='PushSubscriptionChangeEvent', demands=['str', 'PushSubscriptionChangeEventInit'], returns='PushSubscriptionChangeEvent'),
     ],
-    "requestwindow": [
+    "requestWindow": [
         PrototypeCall(constructor='DocumentPictureInPicture', fn='requestWindow', demands=['DocumentPictureInPicture'], returns='Window'),
         PrototypeCall(constructor='DocumentPictureInPicture', fn='requestWindow', demands=['DocumentPictureInPicture', 'DocumentPictureInPictureOptions'], returns='Window'),
     ],
     "DocumentPictureInPictureEvent": [
         NewCall(constructor='DocumentPictureInPictureEvent', demands=['str', 'DocumentPictureInPictureEventInit'], returns='DocumentPictureInPictureEvent'),
     ],
-    "issameentry": [
+    "isSameEntry": [
         PrototypeCall(constructor='FileSystemHandle', fn='isSameEntry', demands=['FileSystemHandle', 'FileSystemHandle'], returns='bool'),
     ],
-    "getfile": [
+    "getFile": [
         PrototypeCall(constructor='FileSystemFileHandle', fn='getFile', demands=['FileSystemFileHandle'], returns='File'),
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='getFile', demands=['FileSystemDirectoryEntry'], returns='None'),
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='getFile', demands=['FileSystemDirectoryEntry', 'str'], returns='None'),
@@ -1159,24 +1162,24 @@ webidl_calls = {
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='getFile', demands=['FileSystemDirectoryEntry', 'str', 'FileSystemFlags', 'FileSystemEntryCallback'], returns='None'),
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='getFile', demands=['FileSystemDirectoryEntry', 'str', 'FileSystemFlags', 'FileSystemEntryCallback', 'ErrorCallback'], returns='None'),
     ],
-    "createwritable": [
+    "createWritable": [
         PrototypeCall(constructor='FileSystemFileHandle', fn='createWritable', demands=['FileSystemFileHandle'], returns='FileSystemWritableFileStream'),
         PrototypeCall(constructor='FileSystemFileHandle', fn='createWritable', demands=['FileSystemFileHandle', 'FileSystemCreateWritableOptions'], returns='FileSystemWritableFileStream'),
         PrototypeCall(constructor='WebTransportDatagramDuplexStream', fn='createWritable', demands=['WebTransportDatagramDuplexStream'], returns='WebTransportDatagramsWritable'),
         PrototypeCall(constructor='WebTransportDatagramDuplexStream', fn='createWritable', demands=['WebTransportDatagramDuplexStream', 'WebTransportSendOptions'], returns='WebTransportDatagramsWritable'),
     ],
-    "createsyncaccesshandle": [
+    "createSyncAccessHandle": [
         PrototypeCall(constructor='FileSystemFileHandle', fn='createSyncAccessHandle', demands=['FileSystemFileHandle'], returns='FileSystemSyncAccessHandle'),
     ],
-    "getfilehandle": [
+    "getFileHandle": [
         PrototypeCall(constructor='FileSystemDirectoryHandle', fn='getFileHandle', demands=['FileSystemDirectoryHandle', 'str'], returns='FileSystemFileHandle'),
         PrototypeCall(constructor='FileSystemDirectoryHandle', fn='getFileHandle', demands=['FileSystemDirectoryHandle', 'str', 'FileSystemGetFileOptions'], returns='FileSystemFileHandle'),
     ],
-    "getdirectoryhandle": [
+    "getDirectoryHandle": [
         PrototypeCall(constructor='FileSystemDirectoryHandle', fn='getDirectoryHandle', demands=['FileSystemDirectoryHandle', 'str'], returns='FileSystemDirectoryHandle'),
         PrototypeCall(constructor='FileSystemDirectoryHandle', fn='getDirectoryHandle', demands=['FileSystemDirectoryHandle', 'str', 'FileSystemGetDirectoryOptions'], returns='FileSystemDirectoryHandle'),
     ],
-    "removeentry": [
+    "removeEntry": [
         PrototypeCall(constructor='FileSystemDirectoryHandle', fn='removeEntry', demands=['FileSystemDirectoryHandle', 'str'], returns='None'),
         PrototypeCall(constructor='FileSystemDirectoryHandle', fn='removeEntry', demands=['FileSystemDirectoryHandle', 'str', 'FileSystemRemoveOptions'], returns='None'),
     ],
@@ -1192,7 +1195,7 @@ webidl_calls = {
         PrototypeCall(constructor='FileSystemWritableFileStream', fn='truncate', demands=['FileSystemWritableFileStream', 'int'], returns='None'),
         PrototypeCall(constructor='FileSystemSyncAccessHandle', fn='truncate', demands=['FileSystemSyncAccessHandle', 'int'], returns='None'),
     ],
-    "getsize": [
+    "getSize": [
         PrototypeCall(constructor='FileSystemSyncAccessHandle', fn='getSize', demands=['FileSystemSyncAccessHandle'], returns='int'),
     ],
     "flush": [
@@ -1206,7 +1209,7 @@ webidl_calls = {
         NewCall(constructor='ProximitySensor', demands=[], returns='ProximitySensor'),
         NewCall(constructor='ProximitySensor', demands=['SensorOptions'], returns='ProximitySensor'),
     ],
-    "registerpaint": [
+    "registerPaint": [
         PrototypeCall(constructor='PaintWorkletGlobalScope', fn='registerPaint', demands=['PaintWorkletGlobalScope', 'str', 'VoidFunction'], returns='None'),
     ],
     "DataCue": [
@@ -1224,25 +1227,25 @@ webidl_calls = {
         NewCall(constructor='EditContext', demands=[], returns='EditContext'),
         NewCall(constructor='EditContext', demands=['EditContextInit'], returns='EditContext'),
     ],
-    "updatetext": [
+    "updateText": [
         PrototypeCall(constructor='EditContext', fn='updateText', demands=['EditContext', 'int', 'int', 'str'], returns='None'),
     ],
-    "updateselection": [
+    "updateSelection": [
         PrototypeCall(constructor='EditContext', fn='updateSelection', demands=['EditContext', 'int', 'int'], returns='None'),
     ],
-    "updatecontrolbounds": [
+    "updateControlBounds": [
         PrototypeCall(constructor='EditContext', fn='updateControlBounds', demands=['EditContext', 'DOMRect'], returns='None'),
     ],
-    "updateselectionbounds": [
+    "updateSelectionBounds": [
         PrototypeCall(constructor='EditContext', fn='updateSelectionBounds', demands=['EditContext', 'DOMRect'], returns='None'),
     ],
-    "updatecharacterbounds": [
+    "updateCharacterBounds": [
         PrototypeCall(constructor='EditContext', fn='updateCharacterBounds', demands=['EditContext', 'int', 'DOMRect'], returns='None'),
     ],
-    "attachedelements": [
+    "attachedElements": [
         PrototypeCall(constructor='EditContext', fn='attachedElements', demands=['EditContext'], returns='HTMLElement'),
     ],
-    "characterbounds": [
+    "characterBounds": [
         PrototypeCall(constructor='EditContext', fn='characterBounds', demands=['EditContext'], returns='DOMRect'),
     ],
     "TextUpdateEvent": [
@@ -1257,20 +1260,20 @@ webidl_calls = {
         NewCall(constructor='TextFormatUpdateEvent', demands=['str'], returns='TextFormatUpdateEvent'),
         NewCall(constructor='TextFormatUpdateEvent', demands=['str', 'TextFormatUpdateEventInit'], returns='TextFormatUpdateEvent'),
     ],
-    "gettextformats": [
+    "getTextFormats": [
         PrototypeCall(constructor='TextFormatUpdateEvent', fn='getTextFormats', demands=['TextFormatUpdateEvent'], returns='TextFormat'),
     ],
     "CharacterBoundsUpdateEvent": [
         NewCall(constructor='CharacterBoundsUpdateEvent', demands=['str'], returns='CharacterBoundsUpdateEvent'),
         NewCall(constructor='CharacterBoundsUpdateEvent', demands=['str', 'CharacterBoundsUpdateEventInit'], returns='CharacterBoundsUpdateEvent'),
     ],
-    "getregions": [
+    "getRegions": [
         PrototypeCall(constructor='NamedFlow', fn='getRegions', demands=['NamedFlow'], returns='Element'),
     ],
-    "getcontent": [
+    "getContent": [
         PrototypeCall(constructor='NamedFlow', fn='getContent', demands=['NamedFlow'], returns='Node'),
     ],
-    "getregionsbycontent": [
+    "getRegionsByContent": [
         PrototypeCall(constructor='NamedFlow', fn='getRegionsByContent', demands=['NamedFlow', 'Node'], returns='Element'),
     ],
     "": [
@@ -1305,7 +1308,7 @@ webidl_calls = {
         PrototypeCall(constructor='SVGTransformList', fn='', demands=['SVGTransformList', 'int', 'SVGTransform'], returns='None'),
         PrototypeCall(constructor='SVGPointList', fn='', demands=['SVGPointList', 'int', 'DOMPoint'], returns='None'),
     ],
-    "nameditem": [
+    "namedItem": [
         PrototypeCall(constructor='HTMLAllCollection', fn='namedItem', demands=['HTMLAllCollection', 'str'], returns='HTMLCollection'),
         PrototypeCall(constructor='HTMLFormControlsCollection', fn='namedItem', demands=['HTMLFormControlsCollection', 'str'], returns='RadioNodeList'),
         PrototypeCall(constructor='HTMLSelectElement', fn='namedItem', demands=['HTMLSelectElement', 'str'], returns='HTMLOptionElement'),
@@ -1358,17 +1361,17 @@ webidl_calls = {
     "click": [
         PrototypeCall(constructor='HTMLElement', fn='click', demands=['HTMLElement'], returns='None'),
     ],
-    "attachinternals": [
+    "attachInternals": [
         PrototypeCall(constructor='HTMLElement', fn='attachInternals', demands=['HTMLElement'], returns='ElementInternals'),
     ],
-    "showpopover": [
+    "showPopover": [
         PrototypeCall(constructor='HTMLElement', fn='showPopover', demands=['HTMLElement'], returns='None'),
         PrototypeCall(constructor='HTMLElement', fn='showPopover', demands=['HTMLElement', 'ShowPopoverOptions'], returns='None'),
     ],
-    "hidepopover": [
+    "hidePopover": [
         PrototypeCall(constructor='HTMLElement', fn='hidePopover', demands=['HTMLElement'], returns='None'),
     ],
-    "togglepopover": [
+    "togglePopover": [
         PrototypeCall(constructor='HTMLElement', fn='togglePopover', demands=['HTMLElement'], returns='bool'),
         PrototypeCall(constructor='HTMLElement', fn='togglePopover', demands=['HTMLElement', 'TogglePopoverOptions'], returns='bool'),
     ],
@@ -1469,7 +1472,7 @@ webidl_calls = {
     "HTMLIFrameElement": [
         NewCall(constructor='HTMLIFrameElement', demands=[], returns='HTMLIFrameElement'),
     ],
-    "getsvgdocument": [
+    "getSVGDocument": [
         PrototypeCall(constructor='HTMLIFrameElement', fn='getSVGDocument', demands=['HTMLIFrameElement'], returns='Document'),
         PrototypeCall(constructor='HTMLEmbedElement', fn='getSVGDocument', demands=['HTMLEmbedElement'], returns='Document'),
         PrototypeCall(constructor='HTMLObjectElement', fn='getSVGDocument', demands=['HTMLObjectElement'], returns='Document'),
@@ -1480,7 +1483,7 @@ webidl_calls = {
     "HTMLObjectElement": [
         NewCall(constructor='HTMLObjectElement', demands=[], returns='HTMLObjectElement'),
     ],
-    "checkvalidity": [
+    "checkValidity": [
         PrototypeCall(constructor='HTMLObjectElement', fn='checkValidity', demands=['HTMLObjectElement'], returns='bool'),
         PrototypeCall(constructor='HTMLFormElement', fn='checkValidity', demands=['HTMLFormElement'], returns='bool'),
         PrototypeCall(constructor='HTMLInputElement', fn='checkValidity', demands=['HTMLInputElement'], returns='bool'),
@@ -1491,7 +1494,7 @@ webidl_calls = {
         PrototypeCall(constructor='HTMLFieldSetElement', fn='checkValidity', demands=['HTMLFieldSetElement'], returns='bool'),
         PrototypeCall(constructor='ElementInternals', fn='checkValidity', demands=['ElementInternals'], returns='bool'),
     ],
-    "reportvalidity": [
+    "reportValidity": [
         PrototypeCall(constructor='HTMLObjectElement', fn='reportValidity', demands=['HTMLObjectElement'], returns='bool'),
         PrototypeCall(constructor='HTMLFormElement', fn='reportValidity', demands=['HTMLFormElement'], returns='bool'),
         PrototypeCall(constructor='HTMLInputElement', fn='reportValidity', demands=['HTMLInputElement'], returns='bool'),
@@ -1502,7 +1505,7 @@ webidl_calls = {
         PrototypeCall(constructor='HTMLFieldSetElement', fn='reportValidity', demands=['HTMLFieldSetElement'], returns='bool'),
         PrototypeCall(constructor='ElementInternals', fn='reportValidity', demands=['ElementInternals'], returns='bool'),
     ],
-    "setcustomvalidity": [
+    "setCustomValidity": [
         PrototypeCall(constructor='HTMLObjectElement', fn='setCustomValidity', demands=['HTMLObjectElement', 'str'], returns='None'),
         PrototypeCall(constructor='HTMLInputElement', fn='setCustomValidity', demands=['HTMLInputElement', 'str'], returns='None'),
         PrototypeCall(constructor='HTMLButtonElement', fn='setCustomValidity', demands=['HTMLButtonElement', 'str'], returns='None'),
@@ -1527,13 +1530,13 @@ webidl_calls = {
         PrototypeCall(constructor='FontFaceSet', fn='load', demands=['FontFaceSet', 'CSSOMString'], returns='FontFace'),
         PrototypeCall(constructor='FontFaceSet', fn='load', demands=['FontFaceSet', 'CSSOMString', 'CSSOMString'], returns='FontFace'),
     ],
-    "canplaytype": [
+    "canPlayType": [
         PrototypeCall(constructor='HTMLMediaElement', fn='canPlayType', demands=['HTMLMediaElement', 'str'], returns='CanPlayTypeResult'),
     ],
-    "fastseek": [
+    "fastSeek": [
         PrototypeCall(constructor='HTMLMediaElement', fn='fastSeek', demands=['HTMLMediaElement', 'float'], returns='None'),
     ],
-    "getstartdate": [
+    "getStartDate": [
         PrototypeCall(constructor='HTMLMediaElement', fn='getStartDate', demands=['HTMLMediaElement'], returns='object'),
     ],
     "play": [
@@ -1546,18 +1549,18 @@ webidl_calls = {
         PrototypeCall(constructor='SpeechSynthesis', fn='pause', demands=['SpeechSynthesis'], returns='None'),
         PrototypeCall(constructor='Animation', fn='pause', demands=['Animation'], returns='None'),
     ],
-    "addtexttrack": [
+    "addTextTrack": [
         PrototypeCall(constructor='HTMLMediaElement', fn='addTextTrack', demands=['HTMLMediaElement', 'TextTrackKind'], returns='TextTrack'),
         PrototypeCall(constructor='HTMLMediaElement', fn='addTextTrack', demands=['HTMLMediaElement', 'TextTrackKind', 'str'], returns='TextTrack'),
         PrototypeCall(constructor='HTMLMediaElement', fn='addTextTrack', demands=['HTMLMediaElement', 'TextTrackKind', 'str', 'str'], returns='TextTrack'),
     ],
-    "addcue": [
+    "addCue": [
         PrototypeCall(constructor='TextTrack', fn='addCue', demands=['TextTrack', 'TextTrackCue'], returns='None'),
     ],
-    "removecue": [
+    "removeCue": [
         PrototypeCall(constructor='TextTrack', fn='removeCue', demands=['TextTrack', 'TextTrackCue'], returns='None'),
     ],
-    "getcuebyid": [
+    "getCueById": [
         PrototypeCall(constructor='TextTrackCueList', fn='getCueById', demands=['TextTrackCueList', 'str'], returns='TextTrackCue'),
     ],
     "start": [
@@ -1598,34 +1601,34 @@ webidl_calls = {
     "HTMLTableElement": [
         NewCall(constructor='HTMLTableElement', demands=[], returns='HTMLTableElement'),
     ],
-    "createcaption": [
+    "createCaption": [
         PrototypeCall(constructor='HTMLTableElement', fn='createCaption', demands=['HTMLTableElement'], returns='HTMLTableCaptionElement'),
     ],
-    "deletecaption": [
+    "deleteCaption": [
         PrototypeCall(constructor='HTMLTableElement', fn='deleteCaption', demands=['HTMLTableElement'], returns='None'),
     ],
-    "createthead": [
+    "createTHead": [
         PrototypeCall(constructor='HTMLTableElement', fn='createTHead', demands=['HTMLTableElement'], returns='HTMLTableSectionElement'),
     ],
-    "deletethead": [
+    "deleteTHead": [
         PrototypeCall(constructor='HTMLTableElement', fn='deleteTHead', demands=['HTMLTableElement'], returns='None'),
     ],
-    "createtfoot": [
+    "createTFoot": [
         PrototypeCall(constructor='HTMLTableElement', fn='createTFoot', demands=['HTMLTableElement'], returns='HTMLTableSectionElement'),
     ],
-    "deletetfoot": [
+    "deleteTFoot": [
         PrototypeCall(constructor='HTMLTableElement', fn='deleteTFoot', demands=['HTMLTableElement'], returns='None'),
     ],
-    "createtbody": [
+    "createTBody": [
         PrototypeCall(constructor='HTMLTableElement', fn='createTBody', demands=['HTMLTableElement'], returns='HTMLTableSectionElement'),
     ],
-    "insertrow": [
+    "insertRow": [
         PrototypeCall(constructor='HTMLTableElement', fn='insertRow', demands=['HTMLTableElement'], returns='HTMLTableRowElement'),
         PrototypeCall(constructor='HTMLTableElement', fn='insertRow', demands=['HTMLTableElement', 'int'], returns='HTMLTableRowElement'),
         PrototypeCall(constructor='HTMLTableSectionElement', fn='insertRow', demands=['HTMLTableSectionElement'], returns='HTMLTableRowElement'),
         PrototypeCall(constructor='HTMLTableSectionElement', fn='insertRow', demands=['HTMLTableSectionElement', 'int'], returns='HTMLTableRowElement'),
     ],
-    "deleterow": [
+    "deleteRow": [
         PrototypeCall(constructor='HTMLTableElement', fn='deleteRow', demands=['HTMLTableElement', 'int'], returns='None'),
         PrototypeCall(constructor='HTMLTableSectionElement', fn='deleteRow', demands=['HTMLTableSectionElement', 'int'], returns='None'),
     ],
@@ -1641,11 +1644,11 @@ webidl_calls = {
     "HTMLTableRowElement": [
         NewCall(constructor='HTMLTableRowElement', demands=[], returns='HTMLTableRowElement'),
     ],
-    "insertcell": [
+    "insertCell": [
         PrototypeCall(constructor='HTMLTableRowElement', fn='insertCell', demands=['HTMLTableRowElement'], returns='HTMLTableCellElement'),
         PrototypeCall(constructor='HTMLTableRowElement', fn='insertCell', demands=['HTMLTableRowElement', 'int'], returns='HTMLTableCellElement'),
     ],
-    "deletecell": [
+    "deleteCell": [
         PrototypeCall(constructor='HTMLTableRowElement', fn='deleteCell', demands=['HTMLTableRowElement', 'int'], returns='None'),
     ],
     "HTMLTableCellElement": [
@@ -1658,7 +1661,7 @@ webidl_calls = {
         PrototypeCall(constructor='HTMLFormElement', fn='submit', demands=['HTMLFormElement'], returns='None'),
         PrototypeCall(constructor='GPUQueue', fn='submit', demands=['GPUQueue', 'GPUCommandBuffer'], returns='None'),
     ],
-    "requestsubmit": [
+    "requestSubmit": [
         PrototypeCall(constructor='HTMLFormElement', fn='requestSubmit', demands=['HTMLFormElement'], returns='None'),
         PrototypeCall(constructor='HTMLFormElement', fn='requestSubmit', demands=['HTMLFormElement', 'HTMLElement'], returns='None'),
     ],
@@ -1679,11 +1682,11 @@ webidl_calls = {
     "HTMLInputElement": [
         NewCall(constructor='HTMLInputElement', demands=[], returns='HTMLInputElement'),
     ],
-    "stepup": [
+    "stepUp": [
         PrototypeCall(constructor='HTMLInputElement', fn='stepUp', demands=['HTMLInputElement'], returns='None'),
         PrototypeCall(constructor='HTMLInputElement', fn='stepUp', demands=['HTMLInputElement', 'int'], returns='None'),
     ],
-    "stepdown": [
+    "stepDown": [
         PrototypeCall(constructor='HTMLInputElement', fn='stepDown', demands=['HTMLInputElement'], returns='None'),
         PrototypeCall(constructor='HTMLInputElement', fn='stepDown', demands=['HTMLInputElement', 'int'], returns='None'),
     ],
@@ -1693,7 +1696,7 @@ webidl_calls = {
         PrototypeCall(constructor='ContactsManager', fn='select', demands=['ContactsManager', 'ContactProperty'], returns='ContactInfo'),
         PrototypeCall(constructor='ContactsManager', fn='select', demands=['ContactsManager', 'ContactProperty', 'ContactsSelectOptions'], returns='ContactInfo'),
     ],
-    "setrangetext": [
+    "setRangeText": [
         PrototypeCall(constructor='HTMLInputElement', fn='setRangeText', demands=['HTMLInputElement', 'str'], returns='None'),
         PrototypeCall(constructor='HTMLInputElement', fn='setRangeText', demands=['HTMLInputElement', 'str', 'int', 'int'], returns='None'),
         PrototypeCall(constructor='HTMLInputElement', fn='setRangeText', demands=['HTMLInputElement', 'str', 'int', 'int', 'SelectionMode'], returns='None'),
@@ -1701,13 +1704,13 @@ webidl_calls = {
         PrototypeCall(constructor='HTMLTextAreaElement', fn='setRangeText', demands=['HTMLTextAreaElement', 'str', 'int', 'int'], returns='None'),
         PrototypeCall(constructor='HTMLTextAreaElement', fn='setRangeText', demands=['HTMLTextAreaElement', 'str', 'int', 'int', 'SelectionMode'], returns='None'),
     ],
-    "setselectionrange": [
+    "setSelectionRange": [
         PrototypeCall(constructor='HTMLInputElement', fn='setSelectionRange', demands=['HTMLInputElement', 'int', 'int'], returns='None'),
         PrototypeCall(constructor='HTMLInputElement', fn='setSelectionRange', demands=['HTMLInputElement', 'int', 'int', 'str'], returns='None'),
         PrototypeCall(constructor='HTMLTextAreaElement', fn='setSelectionRange', demands=['HTMLTextAreaElement', 'int', 'int'], returns='None'),
         PrototypeCall(constructor='HTMLTextAreaElement', fn='setSelectionRange', demands=['HTMLTextAreaElement', 'int', 'int', 'str'], returns='None'),
     ],
-    "showpicker": [
+    "showPicker": [
         PrototypeCall(constructor='HTMLInputElement', fn='showPicker', demands=['HTMLInputElement'], returns='None'),
         PrototypeCall(constructor='HTMLSelectElement', fn='showPicker', demands=['HTMLSelectElement'], returns='None'),
     ],
@@ -1760,10 +1763,10 @@ webidl_calls = {
     "HTMLDialogElement": [
         NewCall(constructor='HTMLDialogElement', demands=[], returns='HTMLDialogElement'),
     ],
-    "showmodal": [
+    "showModal": [
         PrototypeCall(constructor='HTMLDialogElement', fn='showModal', demands=['HTMLDialogElement'], returns='None'),
     ],
-    "requestclose": [
+    "requestClose": [
         PrototypeCall(constructor='HTMLDialogElement', fn='requestClose', demands=['HTMLDialogElement'], returns='None'),
         PrototypeCall(constructor='HTMLDialogElement', fn='requestClose', demands=['HTMLDialogElement', 'str'], returns='None'),
         PrototypeCall(constructor='CloseWatcher', fn='requestClose', demands=['CloseWatcher'], returns='None'),
@@ -1777,11 +1780,11 @@ webidl_calls = {
     "HTMLSlotElement": [
         NewCall(constructor='HTMLSlotElement', demands=[], returns='HTMLSlotElement'),
     ],
-    "assignednodes": [
+    "assignedNodes": [
         PrototypeCall(constructor='HTMLSlotElement', fn='assignedNodes', demands=['HTMLSlotElement'], returns='Node'),
         PrototypeCall(constructor='HTMLSlotElement', fn='assignedNodes', demands=['HTMLSlotElement', 'AssignedNodesOptions'], returns='Node'),
     ],
-    "assignedelements": [
+    "assignedElements": [
         PrototypeCall(constructor='HTMLSlotElement', fn='assignedElements', demands=['HTMLSlotElement'], returns='Element'),
         PrototypeCall(constructor='HTMLSlotElement', fn='assignedElements', demands=['HTMLSlotElement', 'AssignedNodesOptions'], returns='Element'),
     ],
@@ -1792,29 +1795,29 @@ webidl_calls = {
     "HTMLCanvasElement": [
         NewCall(constructor='HTMLCanvasElement', demands=[], returns='HTMLCanvasElement'),
     ],
-    "getcontext": [
+    "getContext": [
         PrototypeCall(constructor='HTMLCanvasElement', fn='getContext', demands=['HTMLCanvasElement', 'str'], returns='RenderingContext'),
         PrototypeCall(constructor='HTMLCanvasElement', fn='getContext', demands=['HTMLCanvasElement', 'str', '*'], returns='RenderingContext'),
         PrototypeCall(constructor='OffscreenCanvas', fn='getContext', demands=['OffscreenCanvas', 'OffscreenRenderingContextId'], returns='OffscreenRenderingContext'),
         PrototypeCall(constructor='OffscreenCanvas', fn='getContext', demands=['OffscreenCanvas', 'OffscreenRenderingContextId', '*'], returns='OffscreenRenderingContext'),
     ],
-    "todataurl": [
+    "toDataURL": [
         PrototypeCall(constructor='HTMLCanvasElement', fn='toDataURL', demands=['HTMLCanvasElement'], returns='str'),
         PrototypeCall(constructor='HTMLCanvasElement', fn='toDataURL', demands=['HTMLCanvasElement', 'str'], returns='str'),
         PrototypeCall(constructor='HTMLCanvasElement', fn='toDataURL', demands=['HTMLCanvasElement', 'str', '*'], returns='str'),
     ],
-    "toblob": [
+    "toBlob": [
         PrototypeCall(constructor='HTMLCanvasElement', fn='toBlob', demands=['HTMLCanvasElement', 'BlobCallback'], returns='None'),
         PrototypeCall(constructor='HTMLCanvasElement', fn='toBlob', demands=['HTMLCanvasElement', 'BlobCallback', 'str'], returns='None'),
         PrototypeCall(constructor='HTMLCanvasElement', fn='toBlob', demands=['HTMLCanvasElement', 'BlobCallback', 'str', '*'], returns='None'),
     ],
-    "transfercontroltooffscreen": [
+    "transferControlToOffscreen": [
         PrototypeCall(constructor='HTMLCanvasElement', fn='transferControlToOffscreen', demands=['HTMLCanvasElement'], returns='OffscreenCanvas'),
     ],
-    "addcolorstop": [
+    "addColorStop": [
         PrototypeCall(constructor='CanvasGradient', fn='addColorStop', demands=['CanvasGradient', 'float', 'str'], returns='None'),
     ],
-    "settransform": [
+    "setTransform": [
         PrototypeCall(constructor='CanvasPattern', fn='setTransform', demands=['CanvasPattern'], returns='None'),
         PrototypeCall(constructor='CanvasPattern', fn='setTransform', demands=['CanvasPattern', 'DOMMatrix2DInit'], returns='None'),
     ],
@@ -1822,20 +1825,20 @@ webidl_calls = {
         NewCall(constructor='Path2D', demands=[], returns='Path2D'),
         NewCall(constructor='Path2D', demands=['Path2D'], returns='Path2D'),
     ],
-    "addpath": [
+    "addPath": [
         PrototypeCall(constructor='Path2D', fn='addPath', demands=['Path2D', 'Path2D'], returns='None'),
         PrototypeCall(constructor='Path2D', fn='addPath', demands=['Path2D', 'Path2D', 'DOMMatrix2DInit'], returns='None'),
     ],
-    "transferfromimagebitmap": [
+    "transferFromImageBitmap": [
         PrototypeCall(constructor='ImageBitmapRenderingContext', fn='transferFromImageBitmap', demands=['ImageBitmapRenderingContext', 'ImageBitmap'], returns='None'),
     ],
     "OffscreenCanvas": [
         NewCall(constructor='OffscreenCanvas', demands=['int', 'int'], returns='OffscreenCanvas'),
     ],
-    "transfertoimagebitmap": [
+    "transferToImageBitmap": [
         PrototypeCall(constructor='OffscreenCanvas', fn='transferToImageBitmap', demands=['OffscreenCanvas'], returns='ImageBitmap'),
     ],
-    "converttoblob": [
+    "convertToBlob": [
         PrototypeCall(constructor='OffscreenCanvas', fn='convertToBlob', demands=['OffscreenCanvas'], returns='Blob'),
         PrototypeCall(constructor='OffscreenCanvas', fn='convertToBlob', demands=['OffscreenCanvas', 'ImageEncodeOptions'], returns='Blob'),
     ],
@@ -1846,10 +1849,10 @@ webidl_calls = {
         PrototypeCall(constructor='CustomElementRegistry', fn='define', demands=['CustomElementRegistry', 'str', 'CustomElementConstructor'], returns='None'),
         PrototypeCall(constructor='CustomElementRegistry', fn='define', demands=['CustomElementRegistry', 'str', 'CustomElementConstructor', 'ElementDefinitionOptions'], returns='None'),
     ],
-    "getname": [
+    "getName": [
         PrototypeCall(constructor='CustomElementRegistry', fn='getName', demands=['CustomElementRegistry', 'CustomElementConstructor'], returns='str'),
     ],
-    "whendefined": [
+    "whenDefined": [
         PrototypeCall(constructor='CustomElementRegistry', fn='whenDefined', demands=['CustomElementRegistry', 'str'], returns='CustomElementConstructor'),
     ],
     "upgrade": [
@@ -1863,11 +1866,11 @@ webidl_calls = {
         PrototypeCall(constructor='SVGTransformList', fn='initialize', demands=['SVGTransformList', 'SVGTransform'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGPointList', fn='initialize', demands=['SVGPointList', 'DOMPoint'], returns='DOMPoint'),
     ],
-    "setformvalue": [
+    "setFormValue": [
         PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'File'], returns='None'),
         PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'File', 'File'], returns='None'),
     ],
-    "setvalidity": [
+    "setValidity": [
         PrototypeCall(constructor='ElementInternals', fn='setValidity', demands=['ElementInternals'], returns='None'),
         PrototypeCall(constructor='ElementInternals', fn='setValidity', demands=['ElementInternals', 'ValidityStateFlags'], returns='None'),
         PrototypeCall(constructor='ElementInternals', fn='setValidity', demands=['ElementInternals', 'ValidityStateFlags', 'str'], returns='None'),
@@ -1888,23 +1891,23 @@ webidl_calls = {
     "DataTransfer": [
         NewCall(constructor='DataTransfer', demands=[], returns='DataTransfer'),
     ],
-    "setdragimage": [
+    "setDragImage": [
         PrototypeCall(constructor='DataTransfer', fn='setDragImage', demands=['DataTransfer', 'Element', 'int', 'int'], returns='None'),
     ],
-    "getdata": [
+    "getData": [
         PrototypeCall(constructor='DataTransfer', fn='getData', demands=['DataTransfer', 'str'], returns='str'),
     ],
-    "setdata": [
+    "setData": [
         PrototypeCall(constructor='DataTransfer', fn='setData', demands=['DataTransfer', 'str', 'str'], returns='None'),
     ],
-    "cleardata": [
+    "clearData": [
         PrototypeCall(constructor='DataTransfer', fn='clearData', demands=['DataTransfer'], returns='None'),
         PrototypeCall(constructor='DataTransfer', fn='clearData', demands=['DataTransfer', 'str'], returns='None'),
     ],
-    "getasstring": [
+    "getAsString": [
         PrototypeCall(constructor='DataTransferItem', fn='getAsString', demands=['DataTransferItem', 'FunctionStringCallback'], returns='None'),
     ],
-    "getasfile": [
+    "getAsFile": [
         PrototypeCall(constructor='DataTransferItem', fn='getAsFile', demands=['DataTransferItem'], returns='File'),
     ],
     "DragEvent": [
@@ -1936,7 +1939,7 @@ webidl_calls = {
     "print": [
         PrototypeCall(constructor='Window', fn='print', demands=['Window'], returns='None'),
     ],
-    "postmessage": [
+    "postMessage": [
         PrototypeCall(constructor='Window', fn='postMessage', demands=['Window', '*', 'str'], returns='None'),
         PrototypeCall(constructor='Window', fn='postMessage', demands=['Window', '*', 'str', 'object'], returns='None'),
         PrototypeCall(constructor='Window', fn='postMessage', demands=['Window', '*'], returns='None'),
@@ -1986,18 +1989,18 @@ webidl_calls = {
         PrototypeCall(constructor='Navigation', fn='forward', demands=['Navigation'], returns='NavigationResult'),
         PrototypeCall(constructor='Navigation', fn='forward', demands=['Navigation', 'NavigationOptions'], returns='NavigationResult'),
     ],
-    "pushstate": [
+    "pushState": [
         PrototypeCall(constructor='History', fn='pushState', demands=['History', '*', 'str'], returns='None'),
         PrototypeCall(constructor='History', fn='pushState', demands=['History', '*', 'str', 'str'], returns='None'),
     ],
-    "replacestate": [
+    "replaceState": [
         PrototypeCall(constructor='History', fn='replaceState', demands=['History', '*', 'str'], returns='None'),
         PrototypeCall(constructor='History', fn='replaceState', demands=['History', '*', 'str', 'str'], returns='None'),
     ],
     "entries": [
         PrototypeCall(constructor='Navigation', fn='entries', demands=['Navigation'], returns='NavigationHistoryEntry'),
     ],
-    "updatecurrententry": [
+    "updateCurrentEntry": [
         PrototypeCall(constructor='Navigation', fn='updateCurrentEntry', demands=['Navigation', 'NavigationUpdateCurrentEntryOptions'], returns='None'),
     ],
     "navigate": [
@@ -2005,11 +2008,11 @@ webidl_calls = {
         PrototypeCall(constructor='Navigation', fn='navigate', demands=['Navigation', 'str', 'NavigationNavigateOptions'], returns='NavigationResult'),
         PrototypeCall(constructor='WindowClient', fn='navigate', demands=['WindowClient', 'str'], returns='WindowClient'),
     ],
-    "traverseto": [
+    "traverseTo": [
         PrototypeCall(constructor='Navigation', fn='traverseTo', demands=['Navigation', 'str'], returns='NavigationResult'),
         PrototypeCall(constructor='Navigation', fn='traverseTo', demands=['Navigation', 'str', 'NavigationOptions'], returns='NavigationResult'),
     ],
-    "getstate": [
+    "getState": [
         PrototypeCall(constructor='NavigationHistoryEntry', fn='getState', demands=['NavigationHistoryEntry'], returns='*'),
         PrototypeCall(constructor='NavigationDestination', fn='getState', demands=['NavigationDestination'], returns='*'),
         PrototypeCall(constructor='NavigationPreloadManager', fn='getState', demands=['NavigationPreloadManager'], returns='NavigationPreloadState'),
@@ -2057,13 +2060,13 @@ webidl_calls = {
     "DOMParser": [
         NewCall(constructor='DOMParser', demands=[], returns='DOMParser'),
     ],
-    "parsefromstring": [
+    "parseFromString": [
         PrototypeCall(constructor='DOMParser', fn='parseFromString', demands=['DOMParser', 'TrustedHTML', 'DOMParserSupportedType'], returns='Document'),
     ],
     "XMLSerializer": [
         NewCall(constructor='XMLSerializer', demands=[], returns='XMLSerializer'),
     ],
-    "serializetostring": [
+    "serializeToString": [
         PrototypeCall(constructor='XMLSerializer', fn='serializeToString', demands=['XMLSerializer', 'Node'], returns='str'),
     ],
     "refresh": [
@@ -2080,7 +2083,7 @@ webidl_calls = {
         NewCall(constructor='MessageEvent', demands=['str'], returns='MessageEvent'),
         NewCall(constructor='MessageEvent', demands=['str', 'MessageEventInit'], returns='MessageEvent'),
     ],
-    "initmessageevent": [
+    "initMessageEvent": [
         PrototypeCall(constructor='MessageEvent', fn='initMessageEvent', demands=['MessageEvent', 'str'], returns='None'),
         PrototypeCall(constructor='MessageEvent', fn='initMessageEvent', demands=['MessageEvent', 'str', 'bool'], returns='None'),
         PrototypeCall(constructor='MessageEvent', fn='initMessageEvent', demands=['MessageEvent', 'str', 'bool', 'bool'], returns='None'),
@@ -2097,10 +2100,7 @@ webidl_calls = {
     "MessageChannel": [
         NewCall(constructor='MessageChannel', demands=[], returns='MessageChannel'),
     ],
-    "BroadcastChannel": [
-        NewCall(constructor='BroadcastChannel', demands=['str'], returns='BroadcastChannel'),
-    ],
-    "importscripts": [
+    "importScripts": [
         PrototypeCall(constructor='WorkerGlobalScope', fn='importScripts', demands=['WorkerGlobalScope', 'TrustedScriptURL'], returns='None'),
     ],
     "Worker": [
@@ -2112,18 +2112,14 @@ webidl_calls = {
         PrototypeCall(constructor='PresentationConnection', fn='terminate', demands=['PresentationConnection'], returns='None'),
         PrototypeCall(constructor='TransformStreamDefaultController', fn='terminate', demands=['TransformStreamDefaultController'], returns='None'),
     ],
-    "SharedWorker": [
-        NewCall(constructor='SharedWorker', demands=['TrustedScriptURL'], returns='SharedWorker'),
-        NewCall(constructor='SharedWorker', demands=['TrustedScriptURL', 'str'], returns='SharedWorker'),
-    ],
-    "addmodule": [
+    "addModule": [
         PrototypeCall(constructor='Worklet', fn='addModule', demands=['Worklet', 'str'], returns='None'),
         PrototypeCall(constructor='Worklet', fn='addModule', demands=['Worklet', 'str', 'WorkletOptions'], returns='None'),
     ],
     "key": [
         PrototypeCall(constructor='Storage', fn='key', demands=['Storage', 'int'], returns='str'),
     ],
-    "getitem": [
+    "getItem": [
         PrototypeCall(constructor='Storage', fn='getItem', demands=['Storage', 'str'], returns='str'),
         PrototypeCall(constructor='SVGNumberList', fn='getItem', demands=['SVGNumberList', 'int'], returns='SVGNumber'),
         PrototypeCall(constructor='SVGLengthList', fn='getItem', demands=['SVGLengthList', 'int'], returns='SVGLength'),
@@ -2131,10 +2127,10 @@ webidl_calls = {
         PrototypeCall(constructor='SVGTransformList', fn='getItem', demands=['SVGTransformList', 'int'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGPointList', fn='getItem', demands=['SVGPointList', 'int'], returns='DOMPoint'),
     ],
-    "setitem": [
+    "setItem": [
         PrototypeCall(constructor='Storage', fn='setItem', demands=['Storage', 'str', 'str'], returns='None'),
     ],
-    "removeitem": [
+    "removeItem": [
         PrototypeCall(constructor='Storage', fn='removeItem', demands=['Storage', 'str'], returns='None'),
         PrototypeCall(constructor='SVGNumberList', fn='removeItem', demands=['SVGNumberList', 'int'], returns='SVGNumber'),
         PrototypeCall(constructor='SVGLengthList', fn='removeItem', demands=['SVGLengthList', 'int'], returns='SVGLength'),
@@ -2146,7 +2142,7 @@ webidl_calls = {
         NewCall(constructor='StorageEvent', demands=['str'], returns='StorageEvent'),
         NewCall(constructor='StorageEvent', demands=['str', 'StorageEventInit'], returns='StorageEvent'),
     ],
-    "initstorageevent": [
+    "initStorageEvent": [
         PrototypeCall(constructor='StorageEvent', fn='initStorageEvent', demands=['StorageEvent', 'str'], returns='None'),
         PrototypeCall(constructor='StorageEvent', fn='initStorageEvent', demands=['StorageEvent', 'str', 'bool'], returns='None'),
         PrototypeCall(constructor='StorageEvent', fn='initStorageEvent', demands=['StorageEvent', 'str', 'bool', 'bool'], returns='None'),
@@ -2174,10 +2170,10 @@ webidl_calls = {
     "HTMLParamElement": [
         NewCall(constructor='HTMLParamElement', demands=[], returns='HTMLParamElement'),
     ],
-    "addsearchprovider": [
+    "AddSearchProvider": [
         PrototypeCall(constructor='External', fn='AddSearchProvider', demands=['External'], returns='None'),
     ],
-    "issearchproviderinstalled": [
+    "IsSearchProviderInstalled": [
         PrototypeCall(constructor='External', fn='IsSearchProviderInstalled', demands=['External'], returns='None'),
     ],
     "FaceDetector": [
@@ -2188,37 +2184,37 @@ webidl_calls = {
         NewCall(constructor='BarcodeDetector', demands=[], returns='BarcodeDetector'),
         NewCall(constructor='BarcodeDetector', demands=['BarcodeDetectorOptions'], returns='BarcodeDetector'),
     ],
-    "getsupportedformats": [
+    "getSupportedFormats": [
         DirectCall(fn='getSupportedFormats', receiver='BarcodeDetector', demands=[], returns='BarcodeFormat'),
     ],
     "MediaSource": [
         NewCall(constructor='MediaSource', demands=[], returns='MediaSource'),
     ],
-    "addsourcebuffer": [
+    "addSourceBuffer": [
         PrototypeCall(constructor='MediaSource', fn='addSourceBuffer', demands=['MediaSource', 'str'], returns='SourceBuffer'),
     ],
-    "removesourcebuffer": [
+    "removeSourceBuffer": [
         PrototypeCall(constructor='MediaSource', fn='removeSourceBuffer', demands=['MediaSource', 'SourceBuffer'], returns='None'),
     ],
-    "endofstream": [
+    "endOfStream": [
         PrototypeCall(constructor='MediaSource', fn='endOfStream', demands=['MediaSource'], returns='None'),
         PrototypeCall(constructor='MediaSource', fn='endOfStream', demands=['MediaSource', 'EndOfStreamError'], returns='None'),
     ],
-    "setliveseekablerange": [
+    "setLiveSeekableRange": [
         PrototypeCall(constructor='MediaSource', fn='setLiveSeekableRange', demands=['MediaSource', 'float', 'float'], returns='None'),
     ],
-    "clearliveseekablerange": [
+    "clearLiveSeekableRange": [
         PrototypeCall(constructor='MediaSource', fn='clearLiveSeekableRange', demands=['MediaSource'], returns='None'),
     ],
-    "istypesupported": [
+    "isTypeSupported": [
         DirectCall(fn='isTypeSupported', receiver='MediaSource', demands=['str'], returns='bool'),
         DirectCall(fn='isTypeSupported', receiver='ImageDecoder', demands=['str'], returns='bool'),
         DirectCall(fn='isTypeSupported', receiver='MediaRecorder', demands=['str'], returns='bool'),
     ],
-    "appendbuffer": [
+    "appendBuffer": [
         PrototypeCall(constructor='SourceBuffer', fn='appendBuffer', demands=['SourceBuffer', 'BufferSource'], returns='None'),
     ],
-    "changetype": [
+    "changeType": [
         PrototypeCall(constructor='SourceBuffer', fn='changeType', demands=['SourceBuffer', 'str'], returns='None'),
     ],
     "ManagedMediaSource": [
@@ -2268,7 +2264,7 @@ webidl_calls = {
         NewCall(constructor='CloseEvent', demands=['str'], returns='CloseEvent'),
         NewCall(constructor='CloseEvent', demands=['str', 'CloseEventInit'], returns='CloseEvent'),
     ],
-    "cropto": [
+    "cropTo": [
         PrototypeCall(constructor='BrowserCaptureMediaStreamTrack', fn='cropTo', demands=['BrowserCaptureMediaStreamTrack', 'CropTarget'], returns='None'),
     ],
     "AudioDecoder": [
@@ -2281,7 +2277,7 @@ webidl_calls = {
         PrototypeCall(constructor='VideoEncoder', fn='configure', demands=['VideoEncoder', 'VideoEncoderConfig'], returns='None'),
         PrototypeCall(constructor='GPUCanvasContext', fn='configure', demands=['GPUCanvasContext', 'GPUCanvasConfiguration'], returns='None'),
     ],
-    "isconfigsupported": [
+    "isConfigSupported": [
         DirectCall(fn='isConfigSupported', receiver='AudioDecoder', demands=['AudioDecoderConfig'], returns='AudioDecoderSupport'),
         DirectCall(fn='isConfigSupported', receiver='VideoDecoder', demands=['VideoDecoderConfig'], returns='VideoDecoderSupport'),
         DirectCall(fn='isConfigSupported', receiver='AudioEncoder', demands=['AudioEncoderConfig'], returns='AudioEncoderSupport'),
@@ -2306,7 +2302,7 @@ webidl_calls = {
     "EncodedAudioChunk": [
         NewCall(constructor='EncodedAudioChunk', demands=['EncodedAudioChunkInit'], returns='EncodedAudioChunk'),
     ],
-    "copyto": [
+    "copyTo": [
         PrototypeCall(constructor='EncodedAudioChunk', fn='copyTo', demands=['EncodedAudioChunk', 'AllowSharedBufferSource'], returns='None'),
         PrototypeCall(constructor='EncodedVideoChunk', fn='copyTo', demands=['EncodedVideoChunk', 'AllowSharedBufferSource'], returns='None'),
         PrototypeCall(constructor='AudioData', fn='copyTo', demands=['AudioData', 'AllowSharedBufferSource', 'AudioDataCopyToOptions'], returns='None'),
@@ -2319,7 +2315,7 @@ webidl_calls = {
     "AudioData": [
         NewCall(constructor='AudioData', demands=['AudioDataInit'], returns='AudioData'),
     ],
-    "allocationsize": [
+    "allocationSize": [
         PrototypeCall(constructor='AudioData', fn='allocationSize', demands=['AudioData', 'AudioDataCopyToOptions'], returns='int'),
         PrototypeCall(constructor='VideoFrame', fn='allocationSize', demands=['VideoFrame'], returns='int'),
         PrototypeCall(constructor='VideoFrame', fn='allocationSize', demands=['VideoFrame', 'VideoFrameCopyToOptions'], returns='int'),
@@ -2339,12 +2335,12 @@ webidl_calls = {
     "ImageDecoder": [
         NewCall(constructor='ImageDecoder', demands=['ImageDecoderInit'], returns='ImageDecoder'),
     ],
-    "getdevices": [
+    "getDevices": [
         PrototypeCall(constructor='HID', fn='getDevices', demands=['HID'], returns='HIDDevice'),
         PrototypeCall(constructor='Bluetooth', fn='getDevices', demands=['Bluetooth'], returns='BluetoothDevice'),
         PrototypeCall(constructor='USB', fn='getDevices', demands=['USB'], returns='USBDevice'),
     ],
-    "requestdevice": [
+    "requestDevice": [
         PrototypeCall(constructor='HID', fn='requestDevice', demands=['HID', 'HIDDeviceRequestOptions'], returns='HIDDevice'),
         PrototypeCall(constructor='Bluetooth', fn='requestDevice', demands=['Bluetooth'], returns='BluetoothDevice'),
         PrototypeCall(constructor='Bluetooth', fn='requestDevice', demands=['Bluetooth', 'RequestDeviceOptions'], returns='BluetoothDevice'),
@@ -2352,13 +2348,13 @@ webidl_calls = {
         PrototypeCall(constructor='GPUAdapter', fn='requestDevice', demands=['GPUAdapter'], returns='GPUDevice'),
         PrototypeCall(constructor='GPUAdapter', fn='requestDevice', demands=['GPUAdapter', 'GPUDeviceDescriptor'], returns='GPUDevice'),
     ],
-    "sendreport": [
+    "sendReport": [
         PrototypeCall(constructor='HIDDevice', fn='sendReport', demands=['HIDDevice', 'int', 'BufferSource'], returns='None'),
     ],
-    "sendfeaturereport": [
+    "sendFeatureReport": [
         PrototypeCall(constructor='HIDDevice', fn='sendFeatureReport', demands=['HIDDevice', 'int', 'BufferSource'], returns='None'),
     ],
-    "receivefeaturereport": [
+    "receiveFeatureReport": [
         PrototypeCall(constructor='HIDDevice', fn='receiveFeatureReport', demands=['HIDDevice', 'int'], returns='DataView'),
     ],
     "HIDConnectionEvent": [
@@ -2404,11 +2400,11 @@ webidl_calls = {
         PrototypeCall(constructor='Summarizer', fn='summarize', demands=['Summarizer', 'str'], returns='str'),
         PrototypeCall(constructor='Summarizer', fn='summarize', demands=['Summarizer', 'str', 'SummarizerSummarizeOptions'], returns='str'),
     ],
-    "summarizestreaming": [
+    "summarizeStreaming": [
         PrototypeCall(constructor='Summarizer', fn='summarizeStreaming', demands=['Summarizer', 'str'], returns='ReadableStream'),
         PrototypeCall(constructor='Summarizer', fn='summarizeStreaming', demands=['Summarizer', 'str', 'SummarizerSummarizeOptions'], returns='ReadableStream'),
     ],
-    "measureinputusage": [
+    "measureInputUsage": [
         PrototypeCall(constructor='Summarizer', fn='measureInputUsage', demands=['Summarizer', 'str'], returns='float'),
         PrototypeCall(constructor='Summarizer', fn='measureInputUsage', demands=['Summarizer', 'str', 'SummarizerSummarizeOptions'], returns='float'),
         PrototypeCall(constructor='Writer', fn='measureInputUsage', demands=['Writer', 'str'], returns='float'),
@@ -2420,7 +2416,7 @@ webidl_calls = {
         PrototypeCall(constructor='LanguageDetector', fn='measureInputUsage', demands=['LanguageDetector', 'str'], returns='float'),
         PrototypeCall(constructor='LanguageDetector', fn='measureInputUsage', demands=['LanguageDetector', 'str', 'LanguageDetectorDetectOptions'], returns='float'),
     ],
-    "writestreaming": [
+    "writeStreaming": [
         PrototypeCall(constructor='Writer', fn='writeStreaming', demands=['Writer', 'str'], returns='ReadableStream'),
         PrototypeCall(constructor='Writer', fn='writeStreaming', demands=['Writer', 'str', 'WriterWriteOptions'], returns='ReadableStream'),
     ],
@@ -2428,7 +2424,7 @@ webidl_calls = {
         PrototypeCall(constructor='Rewriter', fn='rewrite', demands=['Rewriter', 'str'], returns='str'),
         PrototypeCall(constructor='Rewriter', fn='rewrite', demands=['Rewriter', 'str', 'RewriterRewriteOptions'], returns='str'),
     ],
-    "rewritestreaming": [
+    "rewriteStreaming": [
         PrototypeCall(constructor='Rewriter', fn='rewriteStreaming', demands=['Rewriter', 'str'], returns='ReadableStream'),
         PrototypeCall(constructor='Rewriter', fn='rewriteStreaming', demands=['Rewriter', 'str', 'RewriterRewriteOptions'], returns='ReadableStream'),
     ],
@@ -2443,26 +2439,26 @@ webidl_calls = {
         NewCall(constructor='PortalActivateEvent', demands=['str'], returns='PortalActivateEvent'),
         NewCall(constructor='PortalActivateEvent', demands=['str', 'PortalActivateEventInit'], returns='PortalActivateEvent'),
     ],
-    "adoptpredecessor": [
+    "adoptPredecessor": [
         PrototypeCall(constructor='PortalActivateEvent', fn='adoptPredecessor', demands=['PortalActivateEvent'], returns='HTMLPortalElement'),
     ],
     "RTCIdentityAssertion": [
         NewCall(constructor='RTCIdentityAssertion', demands=['str', 'str'], returns='RTCIdentityAssertion'),
     ],
-    "losecontext": [
+    "loseContext": [
         PrototypeCall(constructor='WEBGL_lose_context', fn='loseContext', demands=['WEBGL_lose_context'], returns='None'),
     ],
-    "restorecontext": [
+    "restoreContext": [
         PrototypeCall(constructor='WEBGL_lose_context', fn='restoreContext', demands=['WEBGL_lose_context'], returns='None'),
     ],
-    "setstddeviation": [
+    "setStdDeviation": [
         PrototypeCall(constructor='SVGFEDropShadowElement', fn='setStdDeviation', demands=['SVGFEDropShadowElement', 'float', 'float'], returns='None'),
         PrototypeCall(constructor='SVGFEGaussianBlurElement', fn='setStdDeviation', demands=['SVGFEGaussianBlurElement', 'float', 'float'], returns='None'),
     ],
-    "decodinginfo": [
+    "decodingInfo": [
         PrototypeCall(constructor='MediaCapabilities', fn='decodingInfo', demands=['MediaCapabilities', 'MediaDecodingConfiguration'], returns='MediaCapabilitiesDecodingInfo'),
     ],
-    "encodinginfo": [
+    "encodingInfo": [
         PrototypeCall(constructor='MediaCapabilities', fn='encodingInfo', demands=['MediaCapabilities', 'MediaEncodingConfiguration'], returns='MediaCapabilitiesEncodingInfo'),
     ],
     "MediaStreamTrackProcessor": [
@@ -2475,21 +2471,21 @@ webidl_calls = {
         NewCall(constructor='PointerEvent', demands=['str'], returns='PointerEvent'),
         NewCall(constructor='PointerEvent', demands=['str', 'PointerEventInit'], returns='PointerEvent'),
     ],
-    "getcoalescedevents": [
+    "getCoalescedEvents": [
         PrototypeCall(constructor='PointerEvent', fn='getCoalescedEvents', demands=['PointerEvent'], returns='PointerEvent'),
     ],
-    "getpredictedevents": [
+    "getPredictedEvents": [
         PrototypeCall(constructor='PointerEvent', fn='getPredictedEvents', demands=['PointerEvent'], returns='PointerEvent'),
     ],
-    "gettotallength": [
+    "getTotalLength": [
         PrototypeCall(constructor='SVGPathElement', fn='getTotalLength', demands=['SVGPathElement'], returns='float'),
         PrototypeCall(constructor='SVGGeometryElement', fn='getTotalLength', demands=['SVGGeometryElement'], returns='float'),
     ],
-    "getpointatlength": [
+    "getPointAtLength": [
         PrototypeCall(constructor='SVGPathElement', fn='getPointAtLength', demands=['SVGPathElement', 'float'], returns='DOMPoint'),
         PrototypeCall(constructor='SVGGeometryElement', fn='getPointAtLength', demands=['SVGGeometryElement', 'float'], returns='DOMPoint'),
     ],
-    "getpathsegmentatlength": [
+    "getPathSegmentAtLength": [
         PrototypeCall(constructor='SVGPathElement', fn='getPathSegmentAtLength', demands=['SVGPathElement', 'float'], returns='SVGPathSegment'),
     ],
     "QuotaExceededError": [
@@ -2502,10 +2498,10 @@ webidl_calls = {
         NewCall(constructor='DOMException', demands=['str'], returns='DOMException'),
         NewCall(constructor='DOMException', demands=['str', 'str'], returns='DOMException'),
     ],
-    "multidrawarraysinstancedbaseinstancewebgl": [
+    "multiDrawArraysInstancedBaseInstanceWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
     ],
-    "multidrawelementsinstancedbasevertexbaseinstancewebgl": [
+    "multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
     ],
     "IdentityCredentialError": [
@@ -2513,7 +2509,7 @@ webidl_calls = {
         NewCall(constructor='IdentityCredentialError', demands=['str'], returns='IdentityCredentialError'),
         NewCall(constructor='IdentityCredentialError', demands=['str', 'IdentityCredentialErrorInit'], returns='IdentityCredentialError'),
     ],
-    "getuserinfo": [
+    "getUserInfo": [
         DirectCall(fn='getUserInfo', receiver='IdentityProvider', demands=['IdentityProviderConfig'], returns='IdentityUserInfo'),
     ],
     "TextDecoder": [
@@ -2524,7 +2520,7 @@ webidl_calls = {
     "TextEncoder": [
         NewCall(constructor='TextEncoder', demands=[], returns='TextEncoder'),
     ],
-    "encodeinto": [
+    "encodeInto": [
         PrototypeCall(constructor='TextEncoder', fn='encodeInto', demands=['TextEncoder', 'str', 'Uint8Array'], returns='TextEncoderEncodeIntoResult'),
     ],
     "TextDecoderStream": [
@@ -2539,54 +2535,54 @@ webidl_calls = {
         NewCall(constructor='AnimationEvent', demands=['CSSOMString'], returns='AnimationEvent'),
         NewCall(constructor='AnimationEvent', demands=['CSSOMString', 'AnimationEventInit'], returns='AnimationEvent'),
     ],
-    "appendrule": [
+    "appendRule": [
         PrototypeCall(constructor='CSSKeyframesRule', fn='appendRule', demands=['CSSKeyframesRule', 'CSSOMString'], returns='None'),
     ],
-    "deleterule": [
+    "deleteRule": [
         PrototypeCall(constructor='CSSKeyframesRule', fn='deleteRule', demands=['CSSKeyframesRule', 'CSSOMString'], returns='None'),
         PrototypeCall(constructor='CSSStyleSheet', fn='deleteRule', demands=['CSSStyleSheet', 'int'], returns='None'),
         PrototypeCall(constructor='CSSGroupingRule', fn='deleteRule', demands=['CSSGroupingRule', 'int'], returns='None'),
     ],
-    "findrule": [
+    "findRule": [
         PrototypeCall(constructor='CSSKeyframesRule', fn='findRule', demands=['CSSKeyframesRule', 'CSSOMString'], returns='CSSKeyframeRule'),
     ],
     "XRWebGLBinding": [
         NewCall(constructor='XRWebGLBinding', demands=['XRSession', 'XRWebGLRenderingContext'], returns='XRWebGLBinding'),
     ],
-    "createprojectionlayer": [
+    "createProjectionLayer": [
         PrototypeCall(constructor='XRWebGLBinding', fn='createProjectionLayer', demands=['XRWebGLBinding'], returns='XRProjectionLayer'),
         PrototypeCall(constructor='XRWebGLBinding', fn='createProjectionLayer', demands=['XRWebGLBinding', 'XRProjectionLayerInit'], returns='XRProjectionLayer'),
     ],
-    "createquadlayer": [
+    "createQuadLayer": [
         PrototypeCall(constructor='XRWebGLBinding', fn='createQuadLayer', demands=['XRWebGLBinding'], returns='XRQuadLayer'),
         PrototypeCall(constructor='XRWebGLBinding', fn='createQuadLayer', demands=['XRWebGLBinding', 'XRQuadLayerInit'], returns='XRQuadLayer'),
         PrototypeCall(constructor='XRMediaBinding', fn='createQuadLayer', demands=['XRMediaBinding', 'HTMLVideoElement'], returns='XRQuadLayer'),
         PrototypeCall(constructor='XRMediaBinding', fn='createQuadLayer', demands=['XRMediaBinding', 'HTMLVideoElement', 'XRMediaQuadLayerInit'], returns='XRQuadLayer'),
     ],
-    "createcylinderlayer": [
+    "createCylinderLayer": [
         PrototypeCall(constructor='XRWebGLBinding', fn='createCylinderLayer', demands=['XRWebGLBinding'], returns='XRCylinderLayer'),
         PrototypeCall(constructor='XRWebGLBinding', fn='createCylinderLayer', demands=['XRWebGLBinding', 'XRCylinderLayerInit'], returns='XRCylinderLayer'),
         PrototypeCall(constructor='XRMediaBinding', fn='createCylinderLayer', demands=['XRMediaBinding', 'HTMLVideoElement'], returns='XRCylinderLayer'),
         PrototypeCall(constructor='XRMediaBinding', fn='createCylinderLayer', demands=['XRMediaBinding', 'HTMLVideoElement', 'XRMediaCylinderLayerInit'], returns='XRCylinderLayer'),
     ],
-    "createequirectlayer": [
+    "createEquirectLayer": [
         PrototypeCall(constructor='XRWebGLBinding', fn='createEquirectLayer', demands=['XRWebGLBinding'], returns='XREquirectLayer'),
         PrototypeCall(constructor='XRWebGLBinding', fn='createEquirectLayer', demands=['XRWebGLBinding', 'XREquirectLayerInit'], returns='XREquirectLayer'),
         PrototypeCall(constructor='XRMediaBinding', fn='createEquirectLayer', demands=['XRMediaBinding', 'HTMLVideoElement'], returns='XREquirectLayer'),
         PrototypeCall(constructor='XRMediaBinding', fn='createEquirectLayer', demands=['XRMediaBinding', 'HTMLVideoElement', 'XRMediaEquirectLayerInit'], returns='XREquirectLayer'),
     ],
-    "createcubelayer": [
+    "createCubeLayer": [
         PrototypeCall(constructor='XRWebGLBinding', fn='createCubeLayer', demands=['XRWebGLBinding'], returns='XRCubeLayer'),
         PrototypeCall(constructor='XRWebGLBinding', fn='createCubeLayer', demands=['XRWebGLBinding', 'XRCubeLayerInit'], returns='XRCubeLayer'),
     ],
-    "getsubimage": [
+    "getSubImage": [
         PrototypeCall(constructor='XRWebGLBinding', fn='getSubImage', demands=['XRWebGLBinding', 'XRCompositionLayer', 'XRFrame'], returns='XRWebGLSubImage'),
         PrototypeCall(constructor='XRWebGLBinding', fn='getSubImage', demands=['XRWebGLBinding', 'XRCompositionLayer', 'XRFrame', 'XREye'], returns='XRWebGLSubImage'),
     ],
-    "getviewsubimage": [
+    "getViewSubImage": [
         PrototypeCall(constructor='XRWebGLBinding', fn='getViewSubImage', demands=['XRWebGLBinding', 'XRProjectionLayer', 'XRView'], returns='XRWebGLSubImage'),
     ],
-    "foveateboundtexture": [
+    "foveateBoundTexture": [
         PrototypeCall(constructor='XRWebGLBinding', fn='foveateBoundTexture', demands=['XRWebGLBinding', 'GLenum', 'float'], returns='None'),
     ],
     "XRMediaBinding": [
@@ -2595,22 +2591,22 @@ webidl_calls = {
     "XRLayerEvent": [
         NewCall(constructor='XRLayerEvent', demands=['str', 'XRLayerEventInit'], returns='XRLayerEvent'),
     ],
-    "getrangeat": [
+    "getRangeAt": [
         PrototypeCall(constructor='Selection', fn='getRangeAt', demands=['Selection', 'int'], returns='Range'),
     ],
-    "addrange": [
+    "addRange": [
         PrototypeCall(constructor='Selection', fn='addRange', demands=['Selection', 'Range'], returns='None'),
     ],
-    "removerange": [
+    "removeRange": [
         PrototypeCall(constructor='Selection', fn='removeRange', demands=['Selection', 'Range'], returns='None'),
     ],
-    "removeallranges": [
+    "removeAllRanges": [
         PrototypeCall(constructor='Selection', fn='removeAllRanges', demands=['Selection'], returns='None'),
     ],
     "empty": [
         PrototypeCall(constructor='Selection', fn='empty', demands=['Selection'], returns='None'),
     ],
-    "getcomposedranges": [
+    "getComposedRanges": [
         PrototypeCall(constructor='Selection', fn='getComposedRanges', demands=['Selection'], returns='StaticRange'),
         PrototypeCall(constructor='Selection', fn='getComposedRanges', demands=['Selection', 'GetComposedRangesOptions'], returns='StaticRange'),
     ],
@@ -2620,26 +2616,26 @@ webidl_calls = {
         PrototypeCall(constructor='Range', fn='collapse', demands=['Range'], returns='None'),
         PrototypeCall(constructor='Range', fn='collapse', demands=['Range', 'bool'], returns='None'),
     ],
-    "setposition": [
+    "setPosition": [
         PrototypeCall(constructor='Selection', fn='setPosition', demands=['Selection', 'Node'], returns='None'),
         PrototypeCall(constructor='Selection', fn='setPosition', demands=['Selection', 'Node', 'int'], returns='None'),
         PrototypeCall(constructor='AudioListener', fn='setPosition', demands=['AudioListener', 'float', 'float', 'float'], returns='None'),
         PrototypeCall(constructor='PannerNode', fn='setPosition', demands=['PannerNode', 'float', 'float', 'float'], returns='None'),
     ],
-    "collapsetostart": [
+    "collapseToStart": [
         PrototypeCall(constructor='Selection', fn='collapseToStart', demands=['Selection'], returns='None'),
     ],
-    "collapsetoend": [
+    "collapseToEnd": [
         PrototypeCall(constructor='Selection', fn='collapseToEnd', demands=['Selection'], returns='None'),
     ],
     "extend": [
         PrototypeCall(constructor='Selection', fn='extend', demands=['Selection', 'Node'], returns='None'),
         PrototypeCall(constructor='Selection', fn='extend', demands=['Selection', 'Node', 'int'], returns='None'),
     ],
-    "setbaseandextent": [
+    "setBaseAndExtent": [
         PrototypeCall(constructor='Selection', fn='setBaseAndExtent', demands=['Selection', 'Node', 'int', 'Node', 'int'], returns='None'),
     ],
-    "selectallchildren": [
+    "selectAllChildren": [
         PrototypeCall(constructor='Selection', fn='selectAllChildren', demands=['Selection', 'Node'], returns='None'),
     ],
     "modify": [
@@ -2648,10 +2644,10 @@ webidl_calls = {
         PrototypeCall(constructor='Selection', fn='modify', demands=['Selection', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='Selection', fn='modify', demands=['Selection', 'str', 'str', 'str'], returns='None'),
     ],
-    "deletefromdocument": [
+    "deleteFromDocument": [
         PrototypeCall(constructor='Selection', fn='deleteFromDocument', demands=['Selection'], returns='None'),
     ],
-    "containsnode": [
+    "containsNode": [
         PrototypeCall(constructor='Selection', fn='containsNode', demands=['Selection', 'Node'], returns='bool'),
         PrototypeCall(constructor='Selection', fn='containsNode', demands=['Selection', 'Node', 'bool'], returns='bool'),
     ],
@@ -2659,24 +2655,24 @@ webidl_calls = {
         NewCall(constructor='ReportingObserver', demands=['ReportingObserverCallback'], returns='ReportingObserver'),
         NewCall(constructor='ReportingObserver', demands=['ReportingObserverCallback', 'ReportingObserverOptions'], returns='ReportingObserver'),
     ],
-    "contributetohistogram": [
+    "contributeToHistogram": [
         PrototypeCall(constructor='PrivateAggregation', fn='contributeToHistogram', demands=['PrivateAggregation', 'PAHistogramContribution'], returns='None'),
         PrototypeCall(constructor='RealTimeReporting', fn='contributeToHistogram', demands=['RealTimeReporting', 'RealTimeContribution'], returns='None'),
     ],
-    "contributetohistogramonevent": [
+    "contributeToHistogramOnEvent": [
         PrototypeCall(constructor='PrivateAggregation', fn='contributeToHistogramOnEvent', demands=['PrivateAggregation', 'str', 'str'], returns='None'),
     ],
-    "enabledebugmode": [
+    "enableDebugMode": [
         PrototypeCall(constructor='PrivateAggregation', fn='enableDebugMode', demands=['PrivateAggregation'], returns='None'),
         PrototypeCall(constructor='PrivateAggregation', fn='enableDebugMode', demands=['PrivateAggregation', 'PADebugModeOptions'], returns='None'),
     ],
-    "willrequestconditionalcreation": [
+    "willRequestConditionalCreation": [
         DirectCall(fn='willRequestConditionalCreation', receiver='Credential', demands=[], returns='None'),
     ],
     "store": [
         PrototypeCall(constructor='CredentialsContainer', fn='store', demands=['CredentialsContainer', 'Credential'], returns='None'),
     ],
-    "preventsilentaccess": [
+    "preventSilentAccess": [
         PrototypeCall(constructor='CredentialsContainer', fn='preventSilentAccess', demands=['CredentialsContainer'], returns='None'),
     ],
     "PasswordCredential": [
@@ -2686,20 +2682,20 @@ webidl_calls = {
     "FederatedCredential": [
         NewCall(constructor='FederatedCredential', demands=['FederatedCredentialInit'], returns='FederatedCredential'),
     ],
-    "addlistener": [
+    "addListener": [
         PrototypeCall(constructor='MediaQueryList', fn='addListener', demands=['MediaQueryList', 'EventListener'], returns='None'),
     ],
-    "removelistener": [
+    "removeListener": [
         PrototypeCall(constructor='MediaQueryList', fn='removeListener', demands=['MediaQueryList', 'EventListener'], returns='None'),
     ],
     "MediaQueryListEvent": [
         NewCall(constructor='MediaQueryListEvent', demands=['CSSOMString'], returns='MediaQueryListEvent'),
         NewCall(constructor='MediaQueryListEvent', demands=['CSSOMString', 'MediaQueryListEventInit'], returns='MediaQueryListEvent'),
     ],
-    "getclientrect": [
+    "getClientRect": [
         PrototypeCall(constructor='CaretPosition', fn='getClientRect', demands=['CaretPosition'], returns='DOMRect'),
     ],
-    "gettranslatedshadersource": [
+    "getTranslatedShaderSource": [
         PrototypeCall(constructor='WEBGL_debug_shaders', fn='getTranslatedShaderSource', demands=['WEBGL_debug_shaders', 'WebGLShader'], returns='str'),
     ],
     "NDEFMessage": [
@@ -2708,7 +2704,7 @@ webidl_calls = {
     "NDEFRecord": [
         NewCall(constructor='NDEFRecord', demands=['NDEFRecordInit'], returns='NDEFRecord'),
     ],
-    "torecords": [
+    "toRecords": [
         PrototypeCall(constructor='NDEFRecord', fn='toRecords', demands=['NDEFRecord'], returns='NDEFRecord'),
     ],
     "NDEFReader": [
@@ -2718,7 +2714,7 @@ webidl_calls = {
         PrototypeCall(constructor='NDEFReader', fn='scan', demands=['NDEFReader'], returns='None'),
         PrototypeCall(constructor='NDEFReader', fn='scan', demands=['NDEFReader', 'NDEFScanOptions'], returns='None'),
     ],
-    "makereadonly": [
+    "makeReadOnly": [
         PrototypeCall(constructor='NDEFReader', fn='makeReadOnly', demands=['NDEFReader'], returns='None'),
         PrototypeCall(constructor='NDEFReader', fn='makeReadOnly', demands=['NDEFReader', 'NDEFMakeReadOnlyOptions'], returns='None'),
     ],
@@ -2729,7 +2725,7 @@ webidl_calls = {
         NewCall(constructor='PerformanceMark', demands=['str'], returns='PerformanceMark'),
         NewCall(constructor='PerformanceMark', demands=['str', 'PerformanceMarkOptions'], returns='PerformanceMark'),
     ],
-    "getsubscriptions": [
+    "getSubscriptions": [
         PrototypeCall(constructor='CookieStoreManager', fn='getSubscriptions', demands=['CookieStoreManager'], returns='CookieStoreGetOptions'),
     ],
     "CookieChangeEvent": [
@@ -2740,13 +2736,13 @@ webidl_calls = {
         NewCall(constructor='ExtendableCookieChangeEvent', demands=['str'], returns='ExtendableCookieChangeEvent'),
         NewCall(constructor='ExtendableCookieChangeEvent', demands=['str', 'ExtendableCookieChangeEventInit'], returns='ExtendableCookieChangeEvent'),
     ],
-    "clearoverride": [
+    "clearOverride": [
         PrototypeCall(constructor='PreferenceObject', fn='clearOverride', demands=['PreferenceObject'], returns='None'),
     ],
-    "requestoverride": [
+    "requestOverride": [
         PrototypeCall(constructor='PreferenceObject', fn='requestOverride', demands=['PreferenceObject', 'str'], returns='None'),
     ],
-    "provokingvertexwebgl": [
+    "provokingVertexWEBGL": [
         PrototypeCall(constructor='WEBGL_provoking_vertex', fn='provokingVertexWEBGL', demands=['WEBGL_provoking_vertex', 'GLenum'], returns='None'),
     ],
     "Highlight": [
@@ -2760,7 +2756,7 @@ webidl_calls = {
         NewCall(constructor='IDBVersionChangeEvent', demands=['str'], returns='IDBVersionChangeEvent'),
         NewCall(constructor='IDBVersionChangeEvent', demands=['str', 'IDBVersionChangeEventInit'], returns='IDBVersionChangeEvent'),
     ],
-    "deletedatabase": [
+    "deleteDatabase": [
         PrototypeCall(constructor='IDBFactory', fn='deleteDatabase', demands=['IDBFactory', 'str'], returns='IDBOpenDBRequest'),
     ],
     "databases": [
@@ -2774,11 +2770,11 @@ webidl_calls = {
         PrototypeCall(constructor='IDBDatabase', fn='transaction', demands=['IDBDatabase', 'str', 'IDBTransactionMode'], returns='IDBTransaction'),
         PrototypeCall(constructor='IDBDatabase', fn='transaction', demands=['IDBDatabase', 'str', 'IDBTransactionMode', 'IDBTransactionOptions'], returns='IDBTransaction'),
     ],
-    "createobjectstore": [
+    "createObjectStore": [
         PrototypeCall(constructor='IDBDatabase', fn='createObjectStore', demands=['IDBDatabase', 'str'], returns='IDBObjectStore'),
         PrototypeCall(constructor='IDBDatabase', fn='createObjectStore', demands=['IDBDatabase', 'str', 'IDBObjectStoreParameters'], returns='IDBObjectStore'),
     ],
-    "deleteobjectstore": [
+    "deleteObjectStore": [
         PrototypeCall(constructor='IDBDatabase', fn='deleteObjectStore', demands=['IDBDatabase', 'str'], returns='None'),
     ],
     "put": [
@@ -2786,7 +2782,7 @@ webidl_calls = {
         PrototypeCall(constructor='IDBObjectStore', fn='put', demands=['IDBObjectStore', '*', '*'], returns='IDBRequest'),
         PrototypeCall(constructor='Cache', fn='put', demands=['Cache', 'RequestInfo', 'Response'], returns='None'),
     ],
-    "getallkeys": [
+    "getAllKeys": [
         PrototypeCall(constructor='IDBObjectStore', fn='getAllKeys', demands=['IDBObjectStore'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBObjectStore', fn='getAllKeys', demands=['IDBObjectStore', '*'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBObjectStore', fn='getAllKeys', demands=['IDBObjectStore', '*', 'int'], returns='IDBRequest'),
@@ -2794,7 +2790,7 @@ webidl_calls = {
         PrototypeCall(constructor='IDBIndex', fn='getAllKeys', demands=['IDBIndex', '*'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBIndex', fn='getAllKeys', demands=['IDBIndex', '*', 'int'], returns='IDBRequest'),
     ],
-    "getallrecords": [
+    "getAllRecords": [
         PrototypeCall(constructor='IDBObjectStore', fn='getAllRecords', demands=['IDBObjectStore'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBObjectStore', fn='getAllRecords', demands=['IDBObjectStore', 'IDBGetAllOptions'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBIndex', fn='getAllRecords', demands=['IDBIndex'], returns='IDBRequest'),
@@ -2806,7 +2802,7 @@ webidl_calls = {
         PrototypeCall(constructor='IDBIndex', fn='count', demands=['IDBIndex'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBIndex', fn='count', demands=['IDBIndex', '*'], returns='IDBRequest'),
     ],
-    "opencursor": [
+    "openCursor": [
         PrototypeCall(constructor='IDBObjectStore', fn='openCursor', demands=['IDBObjectStore'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBObjectStore', fn='openCursor', demands=['IDBObjectStore', '*'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBObjectStore', fn='openCursor', demands=['IDBObjectStore', '*', 'IDBCursorDirection'], returns='IDBRequest'),
@@ -2814,7 +2810,7 @@ webidl_calls = {
         PrototypeCall(constructor='IDBIndex', fn='openCursor', demands=['IDBIndex', '*'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBIndex', fn='openCursor', demands=['IDBIndex', '*', 'IDBCursorDirection'], returns='IDBRequest'),
     ],
-    "openkeycursor": [
+    "openKeyCursor": [
         PrototypeCall(constructor='IDBObjectStore', fn='openKeyCursor', demands=['IDBObjectStore'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBObjectStore', fn='openKeyCursor', demands=['IDBObjectStore', '*'], returns='IDBRequest'),
         PrototypeCall(constructor='IDBObjectStore', fn='openKeyCursor', demands=['IDBObjectStore', '*', 'IDBCursorDirection'], returns='IDBRequest'),
@@ -2825,21 +2821,21 @@ webidl_calls = {
     "index": [
         PrototypeCall(constructor='IDBObjectStore', fn='index', demands=['IDBObjectStore', 'str'], returns='IDBIndex'),
     ],
-    "createindex": [
+    "createIndex": [
         PrototypeCall(constructor='IDBObjectStore', fn='createIndex', demands=['IDBObjectStore', 'str', 'str'], returns='IDBIndex'),
         PrototypeCall(constructor='IDBObjectStore', fn='createIndex', demands=['IDBObjectStore', 'str', 'str', 'IDBIndexParameters'], returns='IDBIndex'),
     ],
-    "deleteindex": [
+    "deleteIndex": [
         PrototypeCall(constructor='IDBObjectStore', fn='deleteIndex', demands=['IDBObjectStore', 'str'], returns='None'),
     ],
     "only": [
         DirectCall(fn='only', receiver='IDBKeyRange', demands=['*'], returns='IDBKeyRange'),
     ],
-    "lowerbound": [
+    "lowerBound": [
         DirectCall(fn='lowerBound', receiver='IDBKeyRange', demands=['*'], returns='IDBKeyRange'),
         DirectCall(fn='lowerBound', receiver='IDBKeyRange', demands=['*', 'bool'], returns='IDBKeyRange'),
     ],
-    "upperbound": [
+    "upperBound": [
         DirectCall(fn='upperBound', receiver='IDBKeyRange', demands=['*'], returns='IDBKeyRange'),
         DirectCall(fn='upperBound', receiver='IDBKeyRange', demands=['*', 'bool'], returns='IDBKeyRange'),
     ],
@@ -2858,7 +2854,7 @@ webidl_calls = {
         PrototypeCall(constructor='IDBCursor', fn='continue', demands=['IDBCursor'], returns='None'),
         PrototypeCall(constructor='IDBCursor', fn='continue', demands=['IDBCursor', '*'], returns='None'),
     ],
-    "continueprimarykey": [
+    "continuePrimaryKey": [
         PrototypeCall(constructor='IDBCursor', fn='continuePrimaryKey', demands=['IDBCursor', '*', '*'], returns='None'),
     ],
     "update": [
@@ -2866,14 +2862,14 @@ webidl_calls = {
         PrototypeCall(constructor='ServiceWorkerRegistration', fn='update', demands=['ServiceWorkerRegistration'], returns='ServiceWorkerRegistration'),
         PrototypeCall(constructor='MediaKeySession', fn='update', demands=['MediaKeySession', 'BufferSource'], returns='None'),
     ],
-    "objectstore": [
+    "objectStore": [
         PrototypeCall(constructor='IDBTransaction', fn='objectStore', demands=['IDBTransaction', 'str'], returns='IDBObjectStore'),
     ],
     "commit": [
         PrototypeCall(constructor='IDBTransaction', fn='commit', demands=['IDBTransaction'], returns='None'),
         PrototypeCall(constructor='WebTransportWriter', fn='commit', demands=['WebTransportWriter'], returns='None'),
     ],
-    "startdrawing": [
+    "startDrawing": [
         PrototypeCall(constructor='HandwritingRecognizer', fn='startDrawing', demands=['HandwritingRecognizer'], returns='HandwritingDrawing'),
         PrototypeCall(constructor='HandwritingRecognizer', fn='startDrawing', demands=['HandwritingRecognizer', 'HandwritingHints'], returns='HandwritingDrawing'),
     ],
@@ -2885,44 +2881,44 @@ webidl_calls = {
         PrototypeCall(constructor='GPURenderBundleEncoder', fn='finish', demands=['GPURenderBundleEncoder', 'GPURenderBundleDescriptor'], returns='GPURenderBundle'),
         PrototypeCall(constructor='Animation', fn='finish', demands=['Animation'], returns='None'),
     ],
-    "addstroke": [
+    "addStroke": [
         PrototypeCall(constructor='HandwritingDrawing', fn='addStroke', demands=['HandwritingDrawing', 'HandwritingStroke'], returns='None'),
     ],
-    "removestroke": [
+    "removeStroke": [
         PrototypeCall(constructor='HandwritingDrawing', fn='removeStroke', demands=['HandwritingDrawing', 'HandwritingStroke'], returns='None'),
     ],
-    "getstrokes": [
+    "getStrokes": [
         PrototypeCall(constructor='HandwritingDrawing', fn='getStrokes', demands=['HandwritingDrawing'], returns='HandwritingStroke'),
     ],
-    "getprediction": [
+    "getPrediction": [
         PrototypeCall(constructor='HandwritingDrawing', fn='getPrediction', demands=['HandwritingDrawing'], returns='HandwritingPrediction'),
     ],
     "HandwritingStroke": [
         NewCall(constructor='HandwritingStroke', demands=[], returns='HandwritingStroke'),
     ],
-    "addpoint": [
+    "addPoint": [
         PrototypeCall(constructor='HandwritingStroke', fn='addPoint', demands=['HandwritingStroke', 'HandwritingPoint'], returns='None'),
     ],
-    "getpoints": [
+    "getPoints": [
         PrototypeCall(constructor='HandwritingStroke', fn='getPoints', demands=['HandwritingStroke'], returns='HandwritingPoint'),
     ],
     "Event": [
         NewCall(constructor='Event', demands=['str'], returns='Event'),
         NewCall(constructor='Event', demands=['str', 'EventInit'], returns='Event'),
     ],
-    "composedpath": [
+    "composedPath": [
         PrototypeCall(constructor='Event', fn='composedPath', demands=['Event'], returns='EventTarget'),
     ],
-    "stoppropagation": [
+    "stopPropagation": [
         PrototypeCall(constructor='Event', fn='stopPropagation', demands=['Event'], returns='None'),
     ],
-    "stopimmediatepropagation": [
+    "stopImmediatePropagation": [
         PrototypeCall(constructor='Event', fn='stopImmediatePropagation', demands=['Event'], returns='None'),
     ],
-    "preventdefault": [
+    "preventDefault": [
         PrototypeCall(constructor='Event', fn='preventDefault', demands=['Event'], returns='None'),
     ],
-    "initevent": [
+    "initEvent": [
         PrototypeCall(constructor='Event', fn='initEvent', demands=['Event', 'str'], returns='None'),
         PrototypeCall(constructor='Event', fn='initEvent', demands=['Event', 'str', 'bool'], returns='None'),
         PrototypeCall(constructor='Event', fn='initEvent', demands=['Event', 'str', 'bool', 'bool'], returns='None'),
@@ -2931,7 +2927,7 @@ webidl_calls = {
         NewCall(constructor='CustomEvent', demands=['str'], returns='CustomEvent'),
         NewCall(constructor='CustomEvent', demands=['str', 'CustomEventInit'], returns='CustomEvent'),
     ],
-    "initcustomevent": [
+    "initCustomEvent": [
         PrototypeCall(constructor='CustomEvent', fn='initCustomEvent', demands=['CustomEvent', 'str'], returns='None'),
         PrototypeCall(constructor='CustomEvent', fn='initCustomEvent', demands=['CustomEvent', 'str', 'bool'], returns='None'),
         PrototypeCall(constructor='CustomEvent', fn='initCustomEvent', demands=['CustomEvent', 'str', 'bool', 'bool'], returns='None'),
@@ -2940,15 +2936,15 @@ webidl_calls = {
     "EventTarget": [
         NewCall(constructor='EventTarget', demands=[], returns='EventTarget'),
     ],
-    "addeventlistener": [
+    "addEventListener": [
         PrototypeCall(constructor='EventTarget', fn='addEventListener', demands=['EventTarget', 'str', 'EventListener'], returns='None'),
         PrototypeCall(constructor='EventTarget', fn='addEventListener', demands=['EventTarget', 'str', 'EventListener', 'AddEventListenerOptions'], returns='None'),
     ],
-    "removeeventlistener": [
+    "removeEventListener": [
         PrototypeCall(constructor='EventTarget', fn='removeEventListener', demands=['EventTarget', 'str', 'EventListener'], returns='None'),
         PrototypeCall(constructor='EventTarget', fn='removeEventListener', demands=['EventTarget', 'str', 'EventListener', 'EventListenerOptions'], returns='None'),
     ],
-    "dispatchevent": [
+    "dispatchEvent": [
         PrototypeCall(constructor='EventTarget', fn='dispatchEvent', demands=['EventTarget', 'Event'], returns='bool'),
     ],
     "AbortController": [
@@ -2962,135 +2958,135 @@ webidl_calls = {
         DirectCall(fn='any', receiver='TaskSignal', demands=['AbortSignal'], returns='TaskSignal'),
         DirectCall(fn='any', receiver='TaskSignal', demands=['AbortSignal', 'TaskSignalAnyInit'], returns='TaskSignal'),
     ],
-    "throwifaborted": [
+    "throwIfAborted": [
         PrototypeCall(constructor='AbortSignal', fn='throwIfAborted', demands=['AbortSignal'], returns='None'),
     ],
     "MutationObserver": [
         NewCall(constructor='MutationObserver', demands=['MutationCallback'], returns='MutationObserver'),
     ],
-    "getrootnode": [
+    "getRootNode": [
         PrototypeCall(constructor='Node', fn='getRootNode', demands=['Node'], returns='Node'),
         PrototypeCall(constructor='Node', fn='getRootNode', demands=['Node', 'GetRootNodeOptions'], returns='Node'),
     ],
-    "haschildnodes": [
+    "hasChildNodes": [
         PrototypeCall(constructor='Node', fn='hasChildNodes', demands=['Node'], returns='bool'),
     ],
     "normalize": [
         PrototypeCall(constructor='Node', fn='normalize', demands=['Node'], returns='None'),
     ],
-    "clonenode": [
+    "cloneNode": [
         PrototypeCall(constructor='Node', fn='cloneNode', demands=['Node'], returns='Node'),
         PrototypeCall(constructor='Node', fn='cloneNode', demands=['Node', 'bool'], returns='Node'),
     ],
-    "isequalnode": [
+    "isEqualNode": [
         PrototypeCall(constructor='Node', fn='isEqualNode', demands=['Node', 'Node'], returns='bool'),
     ],
-    "issamenode": [
+    "isSameNode": [
         PrototypeCall(constructor='Node', fn='isSameNode', demands=['Node', 'Node'], returns='bool'),
     ],
-    "comparedocumentposition": [
+    "compareDocumentPosition": [
         PrototypeCall(constructor='Node', fn='compareDocumentPosition', demands=['Node', 'Node'], returns='unsigned short'),
     ],
-    "lookupprefix": [
+    "lookupPrefix": [
         PrototypeCall(constructor='Node', fn='lookupPrefix', demands=['Node', 'str'], returns='str'),
     ],
-    "lookupnamespaceuri": [
+    "lookupNamespaceURI": [
         PrototypeCall(constructor='Node', fn='lookupNamespaceURI', demands=['Node', 'str'], returns='str'),
     ],
-    "isdefaultnamespace": [
+    "isDefaultNamespace": [
         PrototypeCall(constructor='Node', fn='isDefaultNamespace', demands=['Node', 'str'], returns='bool'),
     ],
-    "insertbefore": [
+    "insertBefore": [
         PrototypeCall(constructor='Node', fn='insertBefore', demands=['Node', 'Node', 'Node'], returns='Node'),
     ],
-    "appendchild": [
+    "appendChild": [
         PrototypeCall(constructor='Node', fn='appendChild', demands=['Node', 'Node'], returns='Node'),
     ],
-    "replacechild": [
+    "replaceChild": [
         PrototypeCall(constructor='Node', fn='replaceChild', demands=['Node', 'Node', 'Node'], returns='Node'),
     ],
-    "removechild": [
+    "removeChild": [
         PrototypeCall(constructor='Node', fn='removeChild', demands=['Node', 'Node'], returns='Node'),
     ],
     "Document": [
         NewCall(constructor='Document', demands=[], returns='Document'),
     ],
-    "getelementsbytagname": [
+    "getElementsByTagName": [
         PrototypeCall(constructor='Document', fn='getElementsByTagName', demands=['Document', 'str'], returns='HTMLCollection'),
         PrototypeCall(constructor='Element', fn='getElementsByTagName', demands=['Element', 'str'], returns='HTMLCollection'),
     ],
-    "getelementsbytagnamens": [
+    "getElementsByTagNameNS": [
         PrototypeCall(constructor='Document', fn='getElementsByTagNameNS', demands=['Document', 'str', 'str'], returns='HTMLCollection'),
         PrototypeCall(constructor='Element', fn='getElementsByTagNameNS', demands=['Element', 'str', 'str'], returns='HTMLCollection'),
     ],
-    "getelementsbyclassname": [
+    "getElementsByClassName": [
         PrototypeCall(constructor='Document', fn='getElementsByClassName', demands=['Document', 'str'], returns='HTMLCollection'),
         PrototypeCall(constructor='Element', fn='getElementsByClassName', demands=['Element', 'str'], returns='HTMLCollection'),
     ],
-    "createelement": [
+    "createElement": [
         PrototypeCall(constructor='Document', fn='createElement', demands=['Document', 'str'], returns='Element'),
         PrototypeCall(constructor='Document', fn='createElement', demands=['Document', 'str', 'str'], returns='Element'),
     ],
-    "createelementns": [
+    "createElementNS": [
         PrototypeCall(constructor='Document', fn='createElementNS', demands=['Document', 'str', 'str'], returns='Element'),
         PrototypeCall(constructor='Document', fn='createElementNS', demands=['Document', 'str', 'str', 'str'], returns='Element'),
     ],
-    "createdocumentfragment": [
+    "createDocumentFragment": [
         PrototypeCall(constructor='Document', fn='createDocumentFragment', demands=['Document'], returns='DocumentFragment'),
     ],
-    "createtextnode": [
+    "createTextNode": [
         PrototypeCall(constructor='Document', fn='createTextNode', demands=['Document', 'str'], returns='Text'),
     ],
-    "createcdatasection": [
+    "createCDATASection": [
         PrototypeCall(constructor='Document', fn='createCDATASection', demands=['Document', 'str'], returns='CDATASection'),
     ],
-    "createcomment": [
+    "createComment": [
         PrototypeCall(constructor='Document', fn='createComment', demands=['Document', 'str'], returns='Comment'),
     ],
-    "createprocessinginstruction": [
+    "createProcessingInstruction": [
         PrototypeCall(constructor='Document', fn='createProcessingInstruction', demands=['Document', 'str', 'str'], returns='ProcessingInstruction'),
     ],
-    "importnode": [
+    "importNode": [
         PrototypeCall(constructor='Document', fn='importNode', demands=['Document', 'Node'], returns='Node'),
         PrototypeCall(constructor='Document', fn='importNode', demands=['Document', 'Node', 'bool'], returns='Node'),
     ],
-    "adoptnode": [
+    "adoptNode": [
         PrototypeCall(constructor='Document', fn='adoptNode', demands=['Document', 'Node'], returns='Node'),
     ],
-    "createattribute": [
+    "createAttribute": [
         PrototypeCall(constructor='Document', fn='createAttribute', demands=['Document', 'str'], returns='Attr'),
     ],
-    "createattributens": [
+    "createAttributeNS": [
         PrototypeCall(constructor='Document', fn='createAttributeNS', demands=['Document', 'str', 'str'], returns='Attr'),
     ],
-    "createevent": [
+    "createEvent": [
         PrototypeCall(constructor='Document', fn='createEvent', demands=['Document', 'str'], returns='Event'),
     ],
-    "createrange": [
+    "createRange": [
         PrototypeCall(constructor='Document', fn='createRange', demands=['Document'], returns='Range'),
     ],
-    "createnodeiterator": [
+    "createNodeIterator": [
         PrototypeCall(constructor='Document', fn='createNodeIterator', demands=['Document', 'Node'], returns='NodeIterator'),
         PrototypeCall(constructor='Document', fn='createNodeIterator', demands=['Document', 'Node', 'int'], returns='NodeIterator'),
         PrototypeCall(constructor='Document', fn='createNodeIterator', demands=['Document', 'Node', 'int', 'NodeFilter'], returns='NodeIterator'),
     ],
-    "createtreewalker": [
+    "createTreeWalker": [
         PrototypeCall(constructor='Document', fn='createTreeWalker', demands=['Document', 'Node'], returns='TreeWalker'),
         PrototypeCall(constructor='Document', fn='createTreeWalker', demands=['Document', 'Node', 'int'], returns='TreeWalker'),
         PrototypeCall(constructor='Document', fn='createTreeWalker', demands=['Document', 'Node', 'int', 'NodeFilter'], returns='TreeWalker'),
     ],
-    "createdocumenttype": [
+    "createDocumentType": [
         PrototypeCall(constructor='DOMImplementation', fn='createDocumentType', demands=['DOMImplementation', 'str', 'str', 'str'], returns='DocumentType'),
     ],
-    "createdocument": [
+    "createDocument": [
         PrototypeCall(constructor='DOMImplementation', fn='createDocument', demands=['DOMImplementation', 'str', 'str'], returns='XMLDocument'),
         PrototypeCall(constructor='DOMImplementation', fn='createDocument', demands=['DOMImplementation', 'str', 'str', 'DocumentType'], returns='XMLDocument'),
     ],
-    "createhtmldocument": [
+    "createHTMLDocument": [
         PrototypeCall(constructor='DOMImplementation', fn='createHTMLDocument', demands=['DOMImplementation'], returns='Document'),
         PrototypeCall(constructor='DOMImplementation', fn='createHTMLDocument', demands=['DOMImplementation', 'str'], returns='Document'),
     ],
-    "hasfeature": [
+    "hasFeature": [
         PrototypeCall(constructor='DOMImplementation', fn='hasFeature', demands=['DOMImplementation'], returns='bool'),
         PrototypeCall(constructor='EpubReadingSystem', fn='hasFeature', demands=['EpubReadingSystem', 'str'], returns='bool'),
         PrototypeCall(constructor='EpubReadingSystem', fn='hasFeature', demands=['EpubReadingSystem', 'str', 'str'], returns='bool'),
@@ -3098,53 +3094,53 @@ webidl_calls = {
     "DocumentFragment": [
         NewCall(constructor='DocumentFragment', demands=[], returns='DocumentFragment'),
     ],
-    "hasattributes": [
+    "hasAttributes": [
         PrototypeCall(constructor='Element', fn='hasAttributes', demands=['Element'], returns='bool'),
     ],
-    "getattributenames": [
+    "getAttributeNames": [
         PrototypeCall(constructor='Element', fn='getAttributeNames', demands=['Element'], returns='str'),
     ],
-    "getattribute": [
+    "getAttribute": [
         PrototypeCall(constructor='Element', fn='getAttribute', demands=['Element', 'str'], returns='str'),
     ],
-    "getattributens": [
+    "getAttributeNS": [
         PrototypeCall(constructor='Element', fn='getAttributeNS', demands=['Element', 'str', 'str'], returns='str'),
     ],
-    "setattribute": [
+    "setAttribute": [
         PrototypeCall(constructor='Element', fn='setAttribute', demands=['Element', 'str', 'str'], returns='None'),
     ],
-    "setattributens": [
+    "setAttributeNS": [
         PrototypeCall(constructor='Element', fn='setAttributeNS', demands=['Element', 'str', 'str', 'str'], returns='None'),
     ],
-    "removeattributens": [
+    "removeAttributeNS": [
         PrototypeCall(constructor='Element', fn='removeAttributeNS', demands=['Element', 'str', 'str'], returns='None'),
     ],
-    "toggleattribute": [
+    "toggleAttribute": [
         PrototypeCall(constructor='Element', fn='toggleAttribute', demands=['Element', 'str'], returns='bool'),
         PrototypeCall(constructor='Element', fn='toggleAttribute', demands=['Element', 'str', 'bool'], returns='bool'),
     ],
-    "hasattribute": [
+    "hasAttribute": [
         PrototypeCall(constructor='Element', fn='hasAttribute', demands=['Element', 'str'], returns='bool'),
     ],
-    "hasattributens": [
+    "hasAttributeNS": [
         PrototypeCall(constructor='Element', fn='hasAttributeNS', demands=['Element', 'str', 'str'], returns='bool'),
     ],
-    "getattributenode": [
+    "getAttributeNode": [
         PrototypeCall(constructor='Element', fn='getAttributeNode', demands=['Element', 'str'], returns='Attr'),
     ],
-    "getattributenodens": [
+    "getAttributeNodeNS": [
         PrototypeCall(constructor='Element', fn='getAttributeNodeNS', demands=['Element', 'str', 'str'], returns='Attr'),
     ],
-    "setattributenode": [
+    "setAttributeNode": [
         PrototypeCall(constructor='Element', fn='setAttributeNode', demands=['Element', 'Attr'], returns='Attr'),
     ],
-    "setattributenodens": [
+    "setAttributeNodeNS": [
         PrototypeCall(constructor='Element', fn='setAttributeNodeNS', demands=['Element', 'Attr'], returns='Attr'),
     ],
-    "removeattributenode": [
+    "removeAttributeNode": [
         PrototypeCall(constructor='Element', fn='removeAttributeNode', demands=['Element', 'Attr'], returns='Attr'),
     ],
-    "attachshadow": [
+    "attachShadow": [
         PrototypeCall(constructor='Element', fn='attachShadow', demands=['Element', 'ShadowRootInit'], returns='ShadowRoot'),
     ],
     "closest": [
@@ -3153,53 +3149,53 @@ webidl_calls = {
     "matches": [
         PrototypeCall(constructor='Element', fn='matches', demands=['Element', 'str'], returns='bool'),
     ],
-    "webkitmatchesselector": [
+    "webkitMatchesSelector": [
         PrototypeCall(constructor='Element', fn='webkitMatchesSelector', demands=['Element', 'str'], returns='bool'),
     ],
-    "insertadjacentelement": [
+    "insertAdjacentElement": [
         PrototypeCall(constructor='Element', fn='insertAdjacentElement', demands=['Element', 'str', 'Element'], returns='Element'),
     ],
-    "insertadjacenttext": [
+    "insertAdjacentText": [
         PrototypeCall(constructor='Element', fn='insertAdjacentText', demands=['Element', 'str', 'str'], returns='None'),
     ],
-    "getnameditem": [
+    "getNamedItem": [
         PrototypeCall(constructor='NamedNodeMap', fn='getNamedItem', demands=['NamedNodeMap', 'str'], returns='Attr'),
     ],
-    "getnameditemns": [
+    "getNamedItemNS": [
         PrototypeCall(constructor='NamedNodeMap', fn='getNamedItemNS', demands=['NamedNodeMap', 'str', 'str'], returns='Attr'),
     ],
-    "setnameditem": [
+    "setNamedItem": [
         PrototypeCall(constructor='NamedNodeMap', fn='setNamedItem', demands=['NamedNodeMap', 'Attr'], returns='Attr'),
     ],
-    "setnameditemns": [
+    "setNamedItemNS": [
         PrototypeCall(constructor='NamedNodeMap', fn='setNamedItemNS', demands=['NamedNodeMap', 'Attr'], returns='Attr'),
     ],
-    "removenameditem": [
+    "removeNamedItem": [
         PrototypeCall(constructor='NamedNodeMap', fn='removeNamedItem', demands=['NamedNodeMap', 'str'], returns='Attr'),
     ],
-    "removenameditemns": [
+    "removeNamedItemNS": [
         PrototypeCall(constructor='NamedNodeMap', fn='removeNamedItemNS', demands=['NamedNodeMap', 'str', 'str'], returns='Attr'),
     ],
-    "substringdata": [
+    "substringData": [
         PrototypeCall(constructor='CharacterData', fn='substringData', demands=['CharacterData', 'int', 'int'], returns='str'),
     ],
-    "appenddata": [
+    "appendData": [
         PrototypeCall(constructor='CharacterData', fn='appendData', demands=['CharacterData', 'str'], returns='None'),
     ],
-    "insertdata": [
+    "insertData": [
         PrototypeCall(constructor='CharacterData', fn='insertData', demands=['CharacterData', 'int', 'str'], returns='None'),
     ],
-    "deletedata": [
+    "deleteData": [
         PrototypeCall(constructor='CharacterData', fn='deleteData', demands=['CharacterData', 'int', 'int'], returns='None'),
     ],
-    "replacedata": [
+    "replaceData": [
         PrototypeCall(constructor='CharacterData', fn='replaceData', demands=['CharacterData', 'int', 'int', 'str'], returns='None'),
     ],
     "Text": [
         NewCall(constructor='Text', demands=[], returns='Text'),
         NewCall(constructor='Text', demands=['str'], returns='Text'),
     ],
-    "splittext": [
+    "splitText": [
         PrototypeCall(constructor='Text', fn='splitText', demands=['Text', 'int'], returns='Text'),
     ],
     "Comment": [
@@ -3212,95 +3208,95 @@ webidl_calls = {
     "Range": [
         NewCall(constructor='Range', demands=[], returns='Range'),
     ],
-    "setstart": [
+    "setStart": [
         PrototypeCall(constructor='Range', fn='setStart', demands=['Range', 'Node', 'int'], returns='None'),
     ],
-    "setend": [
+    "setEnd": [
         PrototypeCall(constructor='Range', fn='setEnd', demands=['Range', 'Node', 'int'], returns='None'),
     ],
-    "setstartbefore": [
+    "setStartBefore": [
         PrototypeCall(constructor='Range', fn='setStartBefore', demands=['Range', 'Node'], returns='None'),
     ],
-    "setstartafter": [
+    "setStartAfter": [
         PrototypeCall(constructor='Range', fn='setStartAfter', demands=['Range', 'Node'], returns='None'),
     ],
-    "setendbefore": [
+    "setEndBefore": [
         PrototypeCall(constructor='Range', fn='setEndBefore', demands=['Range', 'Node'], returns='None'),
     ],
-    "setendafter": [
+    "setEndAfter": [
         PrototypeCall(constructor='Range', fn='setEndAfter', demands=['Range', 'Node'], returns='None'),
     ],
-    "selectnode": [
+    "selectNode": [
         PrototypeCall(constructor='Range', fn='selectNode', demands=['Range', 'Node'], returns='None'),
     ],
-    "selectnodecontents": [
+    "selectNodeContents": [
         PrototypeCall(constructor='Range', fn='selectNodeContents', demands=['Range', 'Node'], returns='None'),
     ],
-    "compareboundarypoints": [
+    "compareBoundaryPoints": [
         PrototypeCall(constructor='Range', fn='compareBoundaryPoints', demands=['Range', 'unsigned short', 'Range'], returns='short'),
     ],
-    "deletecontents": [
+    "deleteContents": [
         PrototypeCall(constructor='Range', fn='deleteContents', demands=['Range'], returns='None'),
     ],
-    "extractcontents": [
+    "extractContents": [
         PrototypeCall(constructor='Range', fn='extractContents', demands=['Range'], returns='DocumentFragment'),
     ],
-    "clonecontents": [
+    "cloneContents": [
         PrototypeCall(constructor='Range', fn='cloneContents', demands=['Range'], returns='DocumentFragment'),
     ],
-    "insertnode": [
+    "insertNode": [
         PrototypeCall(constructor='Range', fn='insertNode', demands=['Range', 'Node'], returns='None'),
     ],
-    "surroundcontents": [
+    "surroundContents": [
         PrototypeCall(constructor='Range', fn='surroundContents', demands=['Range', 'Node'], returns='None'),
     ],
-    "clonerange": [
+    "cloneRange": [
         PrototypeCall(constructor='Range', fn='cloneRange', demands=['Range'], returns='Range'),
     ],
     "detach": [
         PrototypeCall(constructor='Range', fn='detach', demands=['Range'], returns='None'),
         PrototypeCall(constructor='NodeIterator', fn='detach', demands=['NodeIterator'], returns='None'),
     ],
-    "ispointinrange": [
+    "isPointInRange": [
         PrototypeCall(constructor='Range', fn='isPointInRange', demands=['Range', 'Node', 'int'], returns='bool'),
     ],
-    "comparepoint": [
+    "comparePoint": [
         PrototypeCall(constructor='Range', fn='comparePoint', demands=['Range', 'Node', 'int'], returns='short'),
     ],
-    "intersectsnode": [
+    "intersectsNode": [
         PrototypeCall(constructor='Range', fn='intersectsNode', demands=['Range', 'Node'], returns='bool'),
     ],
-    "nextnode": [
+    "nextNode": [
         PrototypeCall(constructor='NodeIterator', fn='nextNode', demands=['NodeIterator'], returns='Node'),
         PrototypeCall(constructor='TreeWalker', fn='nextNode', demands=['TreeWalker'], returns='Node'),
     ],
-    "previousnode": [
+    "previousNode": [
         PrototypeCall(constructor='NodeIterator', fn='previousNode', demands=['NodeIterator'], returns='Node'),
         PrototypeCall(constructor='TreeWalker', fn='previousNode', demands=['TreeWalker'], returns='Node'),
     ],
-    "parentnode": [
+    "parentNode": [
         PrototypeCall(constructor='TreeWalker', fn='parentNode', demands=['TreeWalker'], returns='Node'),
     ],
-    "firstchild": [
+    "firstChild": [
         PrototypeCall(constructor='TreeWalker', fn='firstChild', demands=['TreeWalker'], returns='Node'),
     ],
-    "lastchild": [
+    "lastChild": [
         PrototypeCall(constructor='TreeWalker', fn='lastChild', demands=['TreeWalker'], returns='Node'),
     ],
-    "previoussibling": [
+    "previousSibling": [
         PrototypeCall(constructor='TreeWalker', fn='previousSibling', demands=['TreeWalker'], returns='Node'),
     ],
-    "nextsibling": [
+    "nextSibling": [
         PrototypeCall(constructor='TreeWalker', fn='nextSibling', demands=['TreeWalker'], returns='Node'),
     ],
     "toggle": [
         PrototypeCall(constructor='DOMTokenList', fn='toggle', demands=['DOMTokenList', 'str'], returns='bool'),
         PrototypeCall(constructor='DOMTokenList', fn='toggle', demands=['DOMTokenList', 'str', 'bool'], returns='bool'),
     ],
-    "iteratenext": [
+    "iterateNext": [
         PrototypeCall(constructor='XPathResult', fn='iterateNext', demands=['XPathResult'], returns='Node'),
     ],
-    "snapshotitem": [
+    "snapshotItem": [
         PrototypeCall(constructor='XPathResult', fn='snapshotItem', demands=['XPathResult', 'int'], returns='Node'),
     ],
     "evaluate": [
@@ -3314,45 +3310,45 @@ webidl_calls = {
     "XSLTProcessor": [
         NewCall(constructor='XSLTProcessor', demands=[], returns='XSLTProcessor'),
     ],
-    "importstylesheet": [
+    "importStylesheet": [
         PrototypeCall(constructor='XSLTProcessor', fn='importStylesheet', demands=['XSLTProcessor', 'Node'], returns='None'),
     ],
-    "transformtofragment": [
+    "transformToFragment": [
         PrototypeCall(constructor='XSLTProcessor', fn='transformToFragment', demands=['XSLTProcessor', 'Node', 'Document'], returns='DocumentFragment'),
     ],
-    "transformtodocument": [
+    "transformToDocument": [
         PrototypeCall(constructor='XSLTProcessor', fn='transformToDocument', demands=['XSLTProcessor', 'Node'], returns='Document'),
     ],
-    "setparameter": [
+    "setParameter": [
         PrototypeCall(constructor='XSLTProcessor', fn='setParameter', demands=['XSLTProcessor', 'str', 'str', '*'], returns='None'),
     ],
-    "getparameter": [
+    "getParameter": [
         PrototypeCall(constructor='XSLTProcessor', fn='getParameter', demands=['XSLTProcessor', 'str', 'str'], returns='*'),
     ],
-    "removeparameter": [
+    "removeParameter": [
         PrototypeCall(constructor='XSLTProcessor', fn='removeParameter', demands=['XSLTProcessor', 'str', 'str'], returns='None'),
     ],
-    "clearparameters": [
+    "clearParameters": [
         PrototypeCall(constructor='XSLTProcessor', fn='clearParameters', demands=['XSLTProcessor'], returns='None'),
     ],
-    "gethighentropyvalues": [
+    "getHighEntropyValues": [
         PrototypeCall(constructor='NavigatorUAData', fn='getHighEntropyValues', demands=['NavigatorUAData', 'str'], returns='UADataValues'),
     ],
-    "useragentallowsprotocol": [
+    "userAgentAllowsProtocol": [
         DirectCall(fn='userAgentAllowsProtocol', receiver='DigitalCredential', demands=['str'], returns='bool'),
     ],
     "CaptureActionEvent": [
         NewCall(constructor='CaptureActionEvent', demands=[], returns='CaptureActionEvent'),
         NewCall(constructor='CaptureActionEvent', demands=['CaptureActionEventInit'], returns='CaptureActionEvent'),
     ],
-    "registeranimator": [
+    "registerAnimator": [
         PrototypeCall(constructor='AnimationWorkletGlobalScope', fn='registerAnimator', demands=['AnimationWorkletGlobalScope', 'str', 'AnimatorInstanceConstructor'], returns='None'),
     ],
-    "gettiming": [
+    "getTiming": [
         PrototypeCall(constructor='WorkletAnimationEffect', fn='getTiming', demands=['WorkletAnimationEffect'], returns='EffectTiming'),
         PrototypeCall(constructor='AnimationEffect', fn='getTiming', demands=['AnimationEffect'], returns='EffectTiming'),
     ],
-    "getcomputedtiming": [
+    "getComputedTiming": [
         PrototypeCall(constructor='WorkletAnimationEffect', fn='getComputedTiming', demands=['WorkletAnimationEffect'], returns='ComputedEffectTiming'),
         PrototypeCall(constructor='AnimationEffect', fn='getComputedTiming', demands=['AnimationEffect'], returns='ComputedEffectTiming'),
     ],
@@ -3362,16 +3358,16 @@ webidl_calls = {
         NewCall(constructor='WorkletAnimation', demands=['str', 'AnimationEffect', 'AnimationTimeline'], returns='WorkletAnimation'),
         NewCall(constructor='WorkletAnimation', demands=['str', 'AnimationEffect', 'AnimationTimeline', '*'], returns='WorkletAnimation'),
     ],
-    "getchildren": [
+    "getChildren": [
         PrototypeCall(constructor='WorkletGroupEffect', fn='getChildren', demands=['WorkletGroupEffect'], returns='WorkletAnimationEffect'),
     ],
-    "enabledelegations": [
+    "enableDelegations": [
         PrototypeCall(constructor='PaymentManager', fn='enableDelegations', demands=['PaymentManager', 'PaymentDelegation'], returns='None'),
     ],
     "CanMakePaymentEvent": [
         NewCall(constructor='CanMakePaymentEvent', demands=['str'], returns='CanMakePaymentEvent'),
     ],
-    "respondwith": [
+    "respondWith": [
         PrototypeCall(constructor='CanMakePaymentEvent', fn='respondWith', demands=['CanMakePaymentEvent', 'bool'], returns='None'),
         PrototypeCall(constructor='PaymentRequestEvent', fn='respondWith', demands=['PaymentRequestEvent', 'PaymentHandlerResponse'], returns='None'),
         PrototypeCall(constructor='FetchEvent', fn='respondWith', demands=['FetchEvent', 'Response'], returns='None'),
@@ -3380,22 +3376,22 @@ webidl_calls = {
         NewCall(constructor='PaymentRequestEvent', demands=['str'], returns='PaymentRequestEvent'),
         NewCall(constructor='PaymentRequestEvent', demands=['str', 'PaymentRequestEventInit'], returns='PaymentRequestEvent'),
     ],
-    "openwindow": [
+    "openWindow": [
         PrototypeCall(constructor='PaymentRequestEvent', fn='openWindow', demands=['PaymentRequestEvent', 'str'], returns='WindowClient'),
         PrototypeCall(constructor='Clients', fn='openWindow', demands=['Clients', 'str'], returns='WindowClient'),
     ],
-    "changepaymentmethod": [
+    "changePaymentMethod": [
         PrototypeCall(constructor='PaymentRequestEvent', fn='changePaymentMethod', demands=['PaymentRequestEvent', 'str'], returns='PaymentRequestDetailsUpdate'),
         PrototypeCall(constructor='PaymentRequestEvent', fn='changePaymentMethod', demands=['PaymentRequestEvent', 'str', 'object'], returns='PaymentRequestDetailsUpdate'),
     ],
-    "changeshippingaddress": [
+    "changeShippingAddress": [
         PrototypeCall(constructor='PaymentRequestEvent', fn='changeShippingAddress', demands=['PaymentRequestEvent'], returns='PaymentRequestDetailsUpdate'),
         PrototypeCall(constructor='PaymentRequestEvent', fn='changeShippingAddress', demands=['PaymentRequestEvent', 'AddressInit'], returns='PaymentRequestDetailsUpdate'),
     ],
-    "changeshippingoption": [
+    "changeShippingOption": [
         PrototypeCall(constructor='PaymentRequestEvent', fn='changeShippingOption', demands=['PaymentRequestEvent', 'str'], returns='PaymentRequestDetailsUpdate'),
     ],
-    "getavailability": [
+    "getAvailability": [
         PrototypeCall(constructor='Bluetooth', fn='getAvailability', demands=['Bluetooth'], returns='bool'),
         PrototypeCall(constructor='PresentationRequest', fn='getAvailability', demands=['PresentationRequest'], returns='PresentationAvailability'),
     ],
@@ -3403,7 +3399,7 @@ webidl_calls = {
         NewCall(constructor='ValueEvent', demands=['str'], returns='ValueEvent'),
         NewCall(constructor='ValueEvent', demands=['str', 'ValueEventInit'], returns='ValueEvent'),
     ],
-    "watchadvertisements": [
+    "watchAdvertisements": [
         PrototypeCall(constructor='BluetoothDevice', fn='watchAdvertisements', demands=['BluetoothDevice'], returns='None'),
         PrototypeCall(constructor='BluetoothDevice', fn='watchAdvertisements', demands=['BluetoothDevice', 'WatchAdvertisementsOptions'], returns='None'),
     ],
@@ -3418,73 +3414,73 @@ webidl_calls = {
         PrototypeCall(constructor='AudioNode', fn='connect', demands=['AudioNode', 'AudioParam'], returns='None'),
         PrototypeCall(constructor='AudioNode', fn='connect', demands=['AudioNode', 'AudioParam', 'int'], returns='None'),
     ],
-    "getprimaryservice": [
+    "getPrimaryService": [
         PrototypeCall(constructor='BluetoothRemoteGATTServer', fn='getPrimaryService', demands=['BluetoothRemoteGATTServer', 'BluetoothServiceUUID'], returns='BluetoothRemoteGATTService'),
     ],
-    "getprimaryservices": [
+    "getPrimaryServices": [
         PrototypeCall(constructor='BluetoothRemoteGATTServer', fn='getPrimaryServices', demands=['BluetoothRemoteGATTServer'], returns='BluetoothRemoteGATTService'),
         PrototypeCall(constructor='BluetoothRemoteGATTServer', fn='getPrimaryServices', demands=['BluetoothRemoteGATTServer', 'BluetoothServiceUUID'], returns='BluetoothRemoteGATTService'),
     ],
-    "getcharacteristic": [
+    "getCharacteristic": [
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getCharacteristic', demands=['BluetoothRemoteGATTService', 'BluetoothCharacteristicUUID'], returns='BluetoothRemoteGATTCharacteristic'),
         DirectCall(fn='getCharacteristic', receiver='BluetoothUUID', demands=['str'], returns='UUID'),
     ],
-    "getcharacteristics": [
+    "getCharacteristics": [
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getCharacteristics', demands=['BluetoothRemoteGATTService'], returns='BluetoothRemoteGATTCharacteristic'),
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getCharacteristics', demands=['BluetoothRemoteGATTService', 'BluetoothCharacteristicUUID'], returns='BluetoothRemoteGATTCharacteristic'),
     ],
-    "getincludedservice": [
+    "getIncludedService": [
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getIncludedService', demands=['BluetoothRemoteGATTService', 'BluetoothServiceUUID'], returns='BluetoothRemoteGATTService'),
     ],
-    "getincludedservices": [
+    "getIncludedServices": [
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getIncludedServices', demands=['BluetoothRemoteGATTService'], returns='BluetoothRemoteGATTService'),
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getIncludedServices', demands=['BluetoothRemoteGATTService', 'BluetoothServiceUUID'], returns='BluetoothRemoteGATTService'),
     ],
-    "getdescriptor": [
+    "getDescriptor": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='getDescriptor', demands=['BluetoothRemoteGATTCharacteristic', 'BluetoothDescriptorUUID'], returns='BluetoothRemoteGATTDescriptor'),
         DirectCall(fn='getDescriptor', receiver='BluetoothUUID', demands=['str'], returns='UUID'),
     ],
-    "getdescriptors": [
+    "getDescriptors": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='getDescriptors', demands=['BluetoothRemoteGATTCharacteristic'], returns='BluetoothRemoteGATTDescriptor'),
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='getDescriptors', demands=['BluetoothRemoteGATTCharacteristic', 'BluetoothDescriptorUUID'], returns='BluetoothRemoteGATTDescriptor'),
     ],
-    "readvalue": [
+    "readValue": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='readValue', demands=['BluetoothRemoteGATTCharacteristic'], returns='DataView'),
         PrototypeCall(constructor='BluetoothRemoteGATTDescriptor', fn='readValue', demands=['BluetoothRemoteGATTDescriptor'], returns='DataView'),
     ],
-    "writevalue": [
+    "writeValue": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='writeValue', demands=['BluetoothRemoteGATTCharacteristic', 'BufferSource'], returns='None'),
         PrototypeCall(constructor='BluetoothRemoteGATTDescriptor', fn='writeValue', demands=['BluetoothRemoteGATTDescriptor', 'BufferSource'], returns='None'),
     ],
-    "writevaluewithresponse": [
+    "writeValueWithResponse": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='writeValueWithResponse', demands=['BluetoothRemoteGATTCharacteristic', 'BufferSource'], returns='None'),
     ],
-    "writevaluewithoutresponse": [
+    "writeValueWithoutResponse": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='writeValueWithoutResponse', demands=['BluetoothRemoteGATTCharacteristic', 'BufferSource'], returns='None'),
     ],
-    "startnotifications": [
+    "startNotifications": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='startNotifications', demands=['BluetoothRemoteGATTCharacteristic'], returns='BluetoothRemoteGATTCharacteristic'),
     ],
-    "stopnotifications": [
+    "stopNotifications": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='stopNotifications', demands=['BluetoothRemoteGATTCharacteristic'], returns='BluetoothRemoteGATTCharacteristic'),
     ],
-    "getservice": [
+    "getService": [
         DirectCall(fn='getService', receiver='BluetoothUUID', demands=['str'], returns='UUID'),
     ],
-    "canonicaluuid": [
+    "canonicalUUID": [
         DirectCall(fn='canonicalUUID', receiver='BluetoothUUID', demands=['int'], returns='UUID'),
     ],
-    "requestpresenter": [
+    "requestPresenter": [
         PrototypeCall(constructor='Ink', fn='requestPresenter', demands=['Ink'], returns='DelegatedInkTrailPresenter'),
         PrototypeCall(constructor='Ink', fn='requestPresenter', demands=['Ink', 'InkPresenterParam'], returns='DelegatedInkTrailPresenter'),
     ],
-    "updateinktrailstartpoint": [
+    "updateInkTrailStartPoint": [
         PrototypeCall(constructor='DelegatedInkTrailPresenter', fn='updateInkTrailStartPoint', demands=['DelegatedInkTrailPresenter', 'PointerEvent', 'InkTrailStyle'], returns='None'),
     ],
     "PressureObserver": [
         NewCall(constructor='PressureObserver', demands=['PressureUpdateCallback'], returns='PressureObserver'),
     ],
-    "getmanagedconfiguration": [
+    "getManagedConfiguration": [
         PrototypeCall(constructor='NavigatorManagedData', fn='getManagedConfiguration', demands=['NavigatorManagedData', 'str'], returns='str'),
     ],
     "MediaRecorder": [
@@ -3497,31 +3493,31 @@ webidl_calls = {
         PrototypeCall(constructor='AudioContext', fn='resume', demands=['AudioContext'], returns='None'),
         PrototypeCall(constructor='OfflineAudioContext', fn='resume', demands=['OfflineAudioContext'], returns='None'),
     ],
-    "requestdata": [
+    "requestData": [
         PrototypeCall(constructor='MediaRecorder', fn='requestData', demands=['MediaRecorder'], returns='None'),
     ],
     "BlobEvent": [
         NewCall(constructor='BlobEvent', demands=['str', 'BlobEventInit'], returns='BlobEvent'),
     ],
-    "enableioes": [
+    "enableiOES": [
         PrototypeCall(constructor='OES_draw_buffers_indexed', fn='enableiOES', demands=['OES_draw_buffers_indexed', 'GLenum', 'GLuint'], returns='None'),
     ],
-    "disableioes": [
+    "disableiOES": [
         PrototypeCall(constructor='OES_draw_buffers_indexed', fn='disableiOES', demands=['OES_draw_buffers_indexed', 'GLenum', 'GLuint'], returns='None'),
     ],
-    "blendequationioes": [
+    "blendEquationiOES": [
         PrototypeCall(constructor='OES_draw_buffers_indexed', fn='blendEquationiOES', demands=['OES_draw_buffers_indexed', 'GLuint', 'GLenum'], returns='None'),
     ],
-    "blendequationseparateioes": [
+    "blendEquationSeparateiOES": [
         PrototypeCall(constructor='OES_draw_buffers_indexed', fn='blendEquationSeparateiOES', demands=['OES_draw_buffers_indexed', 'GLuint', 'GLenum', 'GLenum'], returns='None'),
     ],
-    "blendfuncioes": [
+    "blendFunciOES": [
         PrototypeCall(constructor='OES_draw_buffers_indexed', fn='blendFunciOES', demands=['OES_draw_buffers_indexed', 'GLuint', 'GLenum', 'GLenum'], returns='None'),
     ],
-    "blendfuncseparateioes": [
+    "blendFuncSeparateiOES": [
         PrototypeCall(constructor='OES_draw_buffers_indexed', fn='blendFuncSeparateiOES', demands=['OES_draw_buffers_indexed', 'GLuint', 'GLenum', 'GLenum', 'GLenum', 'GLenum'], returns='None'),
     ],
-    "colormaskioes": [
+    "colorMaskiOES": [
         PrototypeCall(constructor='OES_draw_buffers_indexed', fn='colorMaskiOES', demands=['OES_draw_buffers_indexed', 'GLuint', 'GLboolean', 'GLboolean', 'GLboolean', 'GLboolean'], returns='None'),
     ],
     "UIEvent": [
@@ -3536,7 +3532,7 @@ webidl_calls = {
         NewCall(constructor='MouseEvent', demands=['str'], returns='MouseEvent'),
         NewCall(constructor='MouseEvent', demands=['str', 'MouseEventInit'], returns='MouseEvent'),
     ],
-    "getmodifierstate": [
+    "getModifierState": [
         PrototypeCall(constructor='MouseEvent', fn='getModifierState', demands=['MouseEvent', 'str'], returns='bool'),
         PrototypeCall(constructor='KeyboardEvent', fn='getModifierState', demands=['KeyboardEvent', 'str'], returns='bool'),
         PrototypeCall(constructor='TouchEvent', fn='getModifierState', demands=['TouchEvent', 'str'], returns='bool'),
@@ -3557,7 +3553,7 @@ webidl_calls = {
         NewCall(constructor='CompositionEvent', demands=['str'], returns='CompositionEvent'),
         NewCall(constructor='CompositionEvent', demands=['str', 'CompositionEventInit'], returns='CompositionEvent'),
     ],
-    "inittextevent": [
+    "initTextEvent": [
         PrototypeCall(constructor='TextEvent', fn='initTextEvent', demands=['TextEvent', 'str'], returns='None'),
         PrototypeCall(constructor='TextEvent', fn='initTextEvent', demands=['TextEvent', 'str', 'bool'], returns='None'),
         PrototypeCall(constructor='TextEvent', fn='initTextEvent', demands=['TextEvent', 'str', 'bool', 'bool'], returns='None'),
@@ -3593,38 +3589,38 @@ webidl_calls = {
     "USBIsochronousOutTransferResult": [
         NewCall(constructor='USBIsochronousOutTransferResult', demands=['USBIsochronousOutTransferPacket'], returns='USBIsochronousOutTransferResult'),
     ],
-    "selectconfiguration": [
+    "selectConfiguration": [
         PrototypeCall(constructor='USBDevice', fn='selectConfiguration', demands=['USBDevice', 'int'], returns='None'),
     ],
-    "claiminterface": [
+    "claimInterface": [
         PrototypeCall(constructor='USBDevice', fn='claimInterface', demands=['USBDevice', 'int'], returns='None'),
     ],
-    "releaseinterface": [
+    "releaseInterface": [
         PrototypeCall(constructor='USBDevice', fn='releaseInterface', demands=['USBDevice', 'int'], returns='None'),
     ],
-    "selectalternateinterface": [
+    "selectAlternateInterface": [
         PrototypeCall(constructor='USBDevice', fn='selectAlternateInterface', demands=['USBDevice', 'int', 'int'], returns='None'),
     ],
-    "controltransferin": [
+    "controlTransferIn": [
         PrototypeCall(constructor='USBDevice', fn='controlTransferIn', demands=['USBDevice', 'USBControlTransferParameters', 'unsigned short'], returns='USBInTransferResult'),
     ],
-    "controltransferout": [
+    "controlTransferOut": [
         PrototypeCall(constructor='USBDevice', fn='controlTransferOut', demands=['USBDevice', 'USBControlTransferParameters'], returns='USBOutTransferResult'),
         PrototypeCall(constructor='USBDevice', fn='controlTransferOut', demands=['USBDevice', 'USBControlTransferParameters', 'BufferSource'], returns='USBOutTransferResult'),
     ],
-    "clearhalt": [
+    "clearHalt": [
         PrototypeCall(constructor='USBDevice', fn='clearHalt', demands=['USBDevice', 'USBDirection', 'int'], returns='None'),
     ],
-    "transferin": [
+    "transferIn": [
         PrototypeCall(constructor='USBDevice', fn='transferIn', demands=['USBDevice', 'int', 'int'], returns='USBInTransferResult'),
     ],
-    "transferout": [
+    "transferOut": [
         PrototypeCall(constructor='USBDevice', fn='transferOut', demands=['USBDevice', 'int', 'BufferSource'], returns='USBOutTransferResult'),
     ],
-    "isochronoustransferin": [
+    "isochronousTransferIn": [
         PrototypeCall(constructor='USBDevice', fn='isochronousTransferIn', demands=['USBDevice', 'int', 'int'], returns='USBIsochronousInTransferResult'),
     ],
-    "isochronoustransferout": [
+    "isochronousTransferOut": [
         PrototypeCall(constructor='USBDevice', fn='isochronousTransferOut', demands=['USBDevice', 'int', 'BufferSource', 'int'], returns='USBIsochronousOutTransferResult'),
     ],
     "USBConfiguration": [
@@ -3642,35 +3638,35 @@ webidl_calls = {
     "pseudo": [
         PrototypeCall(constructor='CSSPseudoElement', fn='pseudo', demands=['CSSPseudoElement', 'CSSOMString'], returns='CSSPseudoElement'),
     ],
-    "inittimeevent": [
+    "initTimeEvent": [
         PrototypeCall(constructor='TimeEvent', fn='initTimeEvent', demands=['TimeEvent', 'str', 'Window', 'int'], returns='None'),
     ],
-    "getstarttime": [
+    "getStartTime": [
         PrototypeCall(constructor='SVGAnimationElement', fn='getStartTime', demands=['SVGAnimationElement'], returns='float'),
     ],
-    "getcurrenttime": [
+    "getCurrentTime": [
         PrototypeCall(constructor='SVGAnimationElement', fn='getCurrentTime', demands=['SVGAnimationElement'], returns='float'),
     ],
-    "getsimpleduration": [
+    "getSimpleDuration": [
         PrototypeCall(constructor='SVGAnimationElement', fn='getSimpleDuration', demands=['SVGAnimationElement'], returns='float'),
     ],
-    "beginelement": [
+    "beginElement": [
         PrototypeCall(constructor='SVGAnimationElement', fn='beginElement', demands=['SVGAnimationElement'], returns='None'),
     ],
-    "beginelementat": [
+    "beginElementAt": [
         PrototypeCall(constructor='SVGAnimationElement', fn='beginElementAt', demands=['SVGAnimationElement', 'float'], returns='None'),
     ],
-    "endelement": [
+    "endElement": [
         PrototypeCall(constructor='SVGAnimationElement', fn='endElement', demands=['SVGAnimationElement'], returns='None'),
     ],
-    "endelementat": [
+    "endElementAt": [
         PrototypeCall(constructor='SVGAnimationElement', fn='endElementAt', demands=['SVGAnimationElement', 'float'], returns='None'),
     ],
     "NavigationEvent": [
         NewCall(constructor='NavigationEvent', demands=['str'], returns='NavigationEvent'),
         NewCall(constructor='NavigationEvent', demands=['str', 'NavigationEventInit'], returns='NavigationEvent'),
     ],
-    "framebuffertexturemultiviewovr": [
+    "framebufferTextureMultiviewOVR": [
         PrototypeCall(constructor='OVR_multiview2', fn='framebufferTextureMultiviewOVR', demands=['OVR_multiview2', 'GLenum', 'GLenum', 'WebGLTexture', 'GLint', 'GLint', 'GLsizei'], returns='None'),
     ],
     "Accelerometer": [
@@ -3689,26 +3685,26 @@ webidl_calls = {
         NewCall(constructor='WebTransport', demands=['str'], returns='WebTransport'),
         NewCall(constructor='WebTransport', demands=['str', 'WebTransportOptions'], returns='WebTransport'),
     ],
-    "exportkeyingmaterial": [
+    "exportKeyingMaterial": [
         PrototypeCall(constructor='WebTransport', fn='exportKeyingMaterial', demands=['WebTransport', 'BufferSource'], returns='ArrayBuffer'),
         PrototypeCall(constructor='WebTransport', fn='exportKeyingMaterial', demands=['WebTransport', 'BufferSource', 'BufferSource'], returns='ArrayBuffer'),
     ],
-    "createbidirectionalstream": [
+    "createBidirectionalStream": [
         PrototypeCall(constructor='WebTransport', fn='createBidirectionalStream', demands=['WebTransport'], returns='WebTransportBidirectionalStream'),
         PrototypeCall(constructor='WebTransport', fn='createBidirectionalStream', demands=['WebTransport', 'WebTransportSendStreamOptions'], returns='WebTransportBidirectionalStream'),
     ],
-    "createunidirectionalstream": [
+    "createUnidirectionalStream": [
         PrototypeCall(constructor='WebTransport', fn='createUnidirectionalStream', demands=['WebTransport'], returns='WebTransportSendStream'),
         PrototypeCall(constructor='WebTransport', fn='createUnidirectionalStream', demands=['WebTransport', 'WebTransportSendStreamOptions'], returns='WebTransportSendStream'),
     ],
-    "createsendgroup": [
+    "createSendGroup": [
         PrototypeCall(constructor='WebTransport', fn='createSendGroup', demands=['WebTransport'], returns='WebTransportSendGroup'),
     ],
-    "getwriter": [
+    "getWriter": [
         PrototypeCall(constructor='WebTransportSendStream', fn='getWriter', demands=['WebTransportSendStream'], returns='WebTransportWriter'),
         PrototypeCall(constructor='WritableStream', fn='getWriter', demands=['WritableStream'], returns='WritableStreamDefaultWriter'),
     ],
-    "atomicwrite": [
+    "atomicWrite": [
         PrototypeCall(constructor='WebTransportWriter', fn='atomicWrite', demands=['WebTransportWriter'], returns='None'),
         PrototypeCall(constructor='WebTransportWriter', fn='atomicWrite', demands=['WebTransportWriter', '*'], returns='None'),
     ],
@@ -3726,7 +3722,7 @@ webidl_calls = {
     "imports": [
         DirectCall(fn='imports', receiver='Module', demands=['Module'], returns='ModuleImportDescriptor'),
     ],
-    "customsections": [
+    "customSections": [
         DirectCall(fn='customSections', receiver='Module', demands=['Module', 'str'], returns='ArrayBuffer'),
     ],
     "Instance": [
@@ -3741,10 +3737,10 @@ webidl_calls = {
         PrototypeCall(constructor='Table', fn='grow', demands=['Table', 'int'], returns='int'),
         PrototypeCall(constructor='Table', fn='grow', demands=['Table', 'int', '*'], returns='int'),
     ],
-    "tofixedlengthbuffer": [
+    "toFixedLengthBuffer": [
         PrototypeCall(constructor='Memory', fn='toFixedLengthBuffer', demands=['Memory'], returns='ArrayBuffer'),
     ],
-    "toresizablebuffer": [
+    "toResizableBuffer": [
         PrototypeCall(constructor='Memory', fn='toResizableBuffer', demands=['Memory'], returns='ArrayBuffer'),
     ],
     "Table": [
@@ -3755,7 +3751,7 @@ webidl_calls = {
         NewCall(constructor='Global', demands=['GlobalDescriptor'], returns='Global'),
         NewCall(constructor='Global', demands=['GlobalDescriptor', '*'], returns='Global'),
     ],
-    "valueof": [
+    "valueOf": [
         PrototypeCall(constructor='Global', fn='valueOf', demands=['Global'], returns='*'),
     ],
     "SpeechRecognition": [
@@ -3776,11 +3772,11 @@ webidl_calls = {
     "SpeechGrammarList": [
         NewCall(constructor='SpeechGrammarList', demands=[], returns='SpeechGrammarList'),
     ],
-    "addfromuri": [
+    "addFromURI": [
         PrototypeCall(constructor='SpeechGrammarList', fn='addFromURI', demands=['SpeechGrammarList', 'str'], returns='None'),
         PrototypeCall(constructor='SpeechGrammarList', fn='addFromURI', demands=['SpeechGrammarList', 'str', 'float'], returns='None'),
     ],
-    "addfromstring": [
+    "addFromString": [
         PrototypeCall(constructor='SpeechGrammarList', fn='addFromString', demands=['SpeechGrammarList', 'str'], returns='None'),
         PrototypeCall(constructor='SpeechGrammarList', fn='addFromString', demands=['SpeechGrammarList', 'str', 'float'], returns='None'),
     ],
@@ -3791,7 +3787,7 @@ webidl_calls = {
     "speak": [
         PrototypeCall(constructor='SpeechSynthesis', fn='speak', demands=['SpeechSynthesis', 'SpeechSynthesisUtterance'], returns='None'),
     ],
-    "getvoices": [
+    "getVoices": [
         PrototypeCall(constructor='SpeechSynthesis', fn='getVoices', demands=['SpeechSynthesis'], returns='SpeechSynthesisVoice'),
     ],
     "SpeechSynthesisUtterance": [
@@ -3808,14 +3804,14 @@ webidl_calls = {
         PrototypeCall(constructor='ServiceWorkerRegistration', fn='unregister', demands=['ServiceWorkerRegistration'], returns='bool'),
         PrototypeCall(constructor='PeriodicSyncManager', fn='unregister', demands=['PeriodicSyncManager', 'str'], returns='None'),
     ],
-    "getregistration": [
+    "getRegistration": [
         PrototypeCall(constructor='ServiceWorkerContainer', fn='getRegistration', demands=['ServiceWorkerContainer'], returns='ServiceWorkerRegistration'),
         PrototypeCall(constructor='ServiceWorkerContainer', fn='getRegistration', demands=['ServiceWorkerContainer', 'str'], returns='ServiceWorkerRegistration'),
     ],
-    "getregistrations": [
+    "getRegistrations": [
         PrototypeCall(constructor='ServiceWorkerContainer', fn='getRegistrations', demands=['ServiceWorkerContainer'], returns='ServiceWorkerRegistration'),
     ],
-    "startmessages": [
+    "startMessages": [
         PrototypeCall(constructor='ServiceWorkerContainer', fn='startMessages', demands=['ServiceWorkerContainer'], returns='None'),
     ],
     "enable": [
@@ -3824,13 +3820,13 @@ webidl_calls = {
     "disable": [
         PrototypeCall(constructor='NavigationPreloadManager', fn='disable', demands=['NavigationPreloadManager'], returns='None'),
     ],
-    "setheadervalue": [
+    "setHeaderValue": [
         PrototypeCall(constructor='NavigationPreloadManager', fn='setHeaderValue', demands=['NavigationPreloadManager', 'str'], returns='None'),
     ],
-    "skipwaiting": [
+    "skipWaiting": [
         PrototypeCall(constructor='ServiceWorkerGlobalScope', fn='skipWaiting', demands=['ServiceWorkerGlobalScope'], returns='None'),
     ],
-    "matchall": [
+    "matchAll": [
         PrototypeCall(constructor='Clients', fn='matchAll', demands=['Clients'], returns='Client'),
         PrototypeCall(constructor='Clients', fn='matchAll', demands=['Clients', 'ClientQueryOptions'], returns='Client'),
         PrototypeCall(constructor='Cache', fn='matchAll', demands=['Cache'], returns='Response'),
@@ -3847,14 +3843,14 @@ webidl_calls = {
         NewCall(constructor='ExtendableEvent', demands=['str'], returns='ExtendableEvent'),
         NewCall(constructor='ExtendableEvent', demands=['str', 'ExtendableEventInit'], returns='ExtendableEvent'),
     ],
-    "waituntil": [
+    "waitUntil": [
         PrototypeCall(constructor='ExtendableEvent', fn='waitUntil', demands=['ExtendableEvent', '*'], returns='None'),
     ],
     "InstallEvent": [
         NewCall(constructor='InstallEvent', demands=['str'], returns='InstallEvent'),
         NewCall(constructor='InstallEvent', demands=['str', 'ExtendableEventInit'], returns='InstallEvent'),
     ],
-    "addroutes": [
+    "addRoutes": [
         PrototypeCall(constructor='InstallEvent', fn='addRoutes', demands=['InstallEvent', 'RouterRule'], returns='None'),
     ],
     "FetchEvent": [
@@ -3872,29 +3868,29 @@ webidl_calls = {
         PrototypeCall(constructor='BackgroundFetchRegistration', fn='match', demands=['BackgroundFetchRegistration', 'RequestInfo'], returns='BackgroundFetchRecord'),
         PrototypeCall(constructor='BackgroundFetchRegistration', fn='match', demands=['BackgroundFetchRegistration', 'RequestInfo', 'CacheQueryOptions'], returns='BackgroundFetchRecord'),
     ],
-    "addall": [
+    "addAll": [
         PrototypeCall(constructor='Cache', fn='addAll', demands=['Cache', 'RequestInfo'], returns='None'),
     ],
     "PictureInPictureEvent": [
         NewCall(constructor='PictureInPictureEvent', demands=['str', 'PictureInPictureEventInit'], returns='PictureInPictureEvent'),
     ],
-    "getsupportedprofiles": [
+    "getSupportedProfiles": [
         PrototypeCall(constructor='WEBGL_compressed_texture_astc', fn='getSupportedProfiles', demands=['WEBGL_compressed_texture_astc'], returns='str'),
     ],
-    "allowsfeature": [
+    "allowsFeature": [
         PrototypeCall(constructor='PermissionsPolicy', fn='allowsFeature', demands=['PermissionsPolicy', 'str'], returns='bool'),
         PrototypeCall(constructor='PermissionsPolicy', fn='allowsFeature', demands=['PermissionsPolicy', 'str', 'str'], returns='bool'),
     ],
     "features": [
         PrototypeCall(constructor='PermissionsPolicy', fn='features', demands=['PermissionsPolicy'], returns='str'),
     ],
-    "allowedfeatures": [
+    "allowedFeatures": [
         PrototypeCall(constructor='PermissionsPolicy', fn='allowedFeatures', demands=['PermissionsPolicy'], returns='str'),
     ],
-    "getallowlistforfeature": [
+    "getAllowlistForFeature": [
         PrototypeCall(constructor='PermissionsPolicy', fn='getAllowlistForFeature', demands=['PermissionsPolicy', 'str'], returns='str'),
     ],
-    "parseall": [
+    "parseAll": [
         DirectCall(fn='parseAll', receiver='CSSStyleValue', demands=['str', 'str'], returns='CSSStyleValue'),
     ],
     "CSSUnparsedValue": [
@@ -3928,7 +3924,7 @@ webidl_calls = {
     "to": [
         PrototypeCall(constructor='CSSNumericValue', fn='to', demands=['CSSNumericValue', 'str'], returns='CSSUnitValue'),
     ],
-    "tosum": [
+    "toSum": [
         PrototypeCall(constructor='CSSNumericValue', fn='toSum', demands=['CSSNumericValue', 'str'], returns='CSSMathSum'),
     ],
     "type": [
@@ -3961,7 +3957,7 @@ webidl_calls = {
     "CSSTransformValue": [
         NewCall(constructor='CSSTransformValue', demands=['CSSTransformComponent'], returns='CSSTransformValue'),
     ],
-    "tomatrix": [
+    "toMatrix": [
         PrototypeCall(constructor='CSSTransformValue', fn='toMatrix', demands=['CSSTransformValue'], returns='DOMMatrix'),
         PrototypeCall(constructor='CSSTransformComponent', fn='toMatrix', demands=['CSSTransformComponent'], returns='DOMMatrix'),
     ],
@@ -4029,7 +4025,7 @@ webidl_calls = {
         NewCall(constructor='PointerTimeline', demands=[], returns='PointerTimeline'),
         NewCall(constructor='PointerTimeline', demands=['PointerTimelineOptions'], returns='PointerTimeline'),
     ],
-    "setstatus": [
+    "setStatus": [
         PrototypeCall(constructor='NavigatorLogin', fn='setStatus', demands=['NavigatorLogin', 'LoginStatus'], returns='None'),
     ],
     "PresentationRequest": [
@@ -4064,13 +4060,13 @@ webidl_calls = {
         NewCall(constructor='DOMPointReadOnly', demands=['float', 'float', 'float'], returns='DOMPointReadOnly'),
         NewCall(constructor='DOMPointReadOnly', demands=['float', 'float', 'float', 'float'], returns='DOMPointReadOnly'),
     ],
-    "frompoint": [
+    "fromPoint": [
         DirectCall(fn='fromPoint', receiver='DOMPointReadOnly', demands=[], returns='DOMPointReadOnly'),
         DirectCall(fn='fromPoint', receiver='DOMPointReadOnly', demands=['DOMPointInit'], returns='DOMPointReadOnly'),
         DirectCall(fn='fromPoint', receiver='DOMPoint', demands=[], returns='DOMPoint'),
         DirectCall(fn='fromPoint', receiver='DOMPoint', demands=['DOMPointInit'], returns='DOMPoint'),
     ],
-    "matrixtransform": [
+    "matrixTransform": [
         PrototypeCall(constructor='DOMPointReadOnly', fn='matrixTransform', demands=['DOMPointReadOnly'], returns='DOMPoint'),
         PrototypeCall(constructor='DOMPointReadOnly', fn='matrixTransform', demands=['DOMPointReadOnly', 'DOMMatrixInit'], returns='DOMPoint'),
     ],
@@ -4088,7 +4084,7 @@ webidl_calls = {
         NewCall(constructor='DOMRectReadOnly', demands=['float', 'float', 'float'], returns='DOMRectReadOnly'),
         NewCall(constructor='DOMRectReadOnly', demands=['float', 'float', 'float', 'float'], returns='DOMRectReadOnly'),
     ],
-    "fromrect": [
+    "fromRect": [
         DirectCall(fn='fromRect', receiver='DOMRectReadOnly', demands=[], returns='DOMRectReadOnly'),
         DirectCall(fn='fromRect', receiver='DOMRectReadOnly', demands=['DOMRectInit'], returns='DOMRectReadOnly'),
         DirectCall(fn='fromRect', receiver='DOMRect', demands=[], returns='DOMRect'),
@@ -4110,28 +4106,28 @@ webidl_calls = {
         NewCall(constructor='DOMQuad', demands=['DOMPointInit', 'DOMPointInit', 'DOMPointInit'], returns='DOMQuad'),
         NewCall(constructor='DOMQuad', demands=['DOMPointInit', 'DOMPointInit', 'DOMPointInit', 'DOMPointInit'], returns='DOMQuad'),
     ],
-    "fromquad": [
+    "fromQuad": [
         DirectCall(fn='fromQuad', receiver='DOMQuad', demands=[], returns='DOMQuad'),
         DirectCall(fn='fromQuad', receiver='DOMQuad', demands=['DOMQuadInit'], returns='DOMQuad'),
     ],
-    "getbounds": [
+    "getBounds": [
         PrototypeCall(constructor='DOMQuad', fn='getBounds', demands=['DOMQuad'], returns='DOMRect'),
     ],
     "DOMMatrixReadOnly": [
         NewCall(constructor='DOMMatrixReadOnly', demands=[], returns='DOMMatrixReadOnly'),
         NewCall(constructor='DOMMatrixReadOnly', demands=['str'], returns='DOMMatrixReadOnly'),
     ],
-    "frommatrix": [
+    "fromMatrix": [
         DirectCall(fn='fromMatrix', receiver='DOMMatrixReadOnly', demands=[], returns='DOMMatrixReadOnly'),
         DirectCall(fn='fromMatrix', receiver='DOMMatrixReadOnly', demands=['DOMMatrixInit'], returns='DOMMatrixReadOnly'),
         DirectCall(fn='fromMatrix', receiver='DOMMatrix', demands=[], returns='DOMMatrix'),
         DirectCall(fn='fromMatrix', receiver='DOMMatrix', demands=['DOMMatrixInit'], returns='DOMMatrix'),
     ],
-    "fromfloat32array": [
+    "fromFloat32Array": [
         DirectCall(fn='fromFloat32Array', receiver='DOMMatrixReadOnly', demands=['Float32Array'], returns='DOMMatrixReadOnly'),
         DirectCall(fn='fromFloat32Array', receiver='DOMMatrix', demands=['Float32Array'], returns='DOMMatrix'),
     ],
-    "fromfloat64array": [
+    "fromFloat64Array": [
         DirectCall(fn='fromFloat64Array', receiver='DOMMatrixReadOnly', demands=['Float64Array'], returns='DOMMatrixReadOnly'),
         DirectCall(fn='fromFloat64Array', receiver='DOMMatrix', demands=['Float64Array'], returns='DOMMatrix'),
     ],
@@ -4152,7 +4148,7 @@ webidl_calls = {
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='scale', demands=['DOMMatrixReadOnly', 'float', 'float', 'float', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='scale', demands=['DOMMatrixReadOnly', 'float', 'float', 'float', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "scalenonuniform": [
+    "scaleNonUniform": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='scaleNonUniform', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='scaleNonUniform', demands=['DOMMatrixReadOnly', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='scaleNonUniform', demands=['DOMMatrixReadOnly', 'float', 'float'], returns='DOMMatrix'),
@@ -4170,23 +4166,23 @@ webidl_calls = {
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotate', demands=['DOMMatrixReadOnly', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotate', demands=['DOMMatrixReadOnly', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "rotatefromvector": [
+    "rotateFromVector": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateFromVector', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateFromVector', demands=['DOMMatrixReadOnly', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateFromVector', demands=['DOMMatrixReadOnly', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "rotateaxisangle": [
+    "rotateAxisAngle": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateAxisAngle', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateAxisAngle', demands=['DOMMatrixReadOnly', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateAxisAngle', demands=['DOMMatrixReadOnly', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateAxisAngle', demands=['DOMMatrixReadOnly', 'float', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='rotateAxisAngle', demands=['DOMMatrixReadOnly', 'float', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "skewx": [
+    "skewX": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='skewX', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='skewX', demands=['DOMMatrixReadOnly', 'float'], returns='DOMMatrix'),
     ],
-    "skewy": [
+    "skewY": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='skewY', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='skewY', demands=['DOMMatrixReadOnly', 'float'], returns='DOMMatrix'),
     ],
@@ -4194,44 +4190,44 @@ webidl_calls = {
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='multiply', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='multiply', demands=['DOMMatrixReadOnly', 'DOMMatrixInit'], returns='DOMMatrix'),
     ],
-    "flipx": [
+    "flipX": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='flipX', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
     ],
-    "flipy": [
+    "flipY": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='flipY', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
     ],
     "inverse": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='inverse', demands=['DOMMatrixReadOnly'], returns='DOMMatrix'),
     ],
-    "transformpoint": [
+    "transformPoint": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='transformPoint', demands=['DOMMatrixReadOnly'], returns='DOMPoint'),
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='transformPoint', demands=['DOMMatrixReadOnly', 'DOMPointInit'], returns='DOMPoint'),
     ],
-    "tofloat32array": [
+    "toFloat32Array": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='toFloat32Array', demands=['DOMMatrixReadOnly'], returns='Float32Array'),
     ],
-    "tofloat64array": [
+    "toFloat64Array": [
         PrototypeCall(constructor='DOMMatrixReadOnly', fn='toFloat64Array', demands=['DOMMatrixReadOnly'], returns='Float64Array'),
     ],
     "DOMMatrix": [
         NewCall(constructor='DOMMatrix', demands=[], returns='DOMMatrix'),
         NewCall(constructor='DOMMatrix', demands=['str'], returns='DOMMatrix'),
     ],
-    "multiplyself": [
+    "multiplySelf": [
         PrototypeCall(constructor='DOMMatrix', fn='multiplySelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='multiplySelf', demands=['DOMMatrix', 'DOMMatrixInit'], returns='DOMMatrix'),
     ],
-    "premultiplyself": [
+    "preMultiplySelf": [
         PrototypeCall(constructor='DOMMatrix', fn='preMultiplySelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='preMultiplySelf', demands=['DOMMatrix', 'DOMMatrixInit'], returns='DOMMatrix'),
     ],
-    "translateself": [
+    "translateSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='translateSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='translateSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='translateSelf', demands=['DOMMatrix', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='translateSelf', demands=['DOMMatrix', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "scaleself": [
+    "scaleSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='scaleSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='scaleSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='scaleSelf', demands=['DOMMatrix', 'float', 'float'], returns='DOMMatrix'),
@@ -4240,77 +4236,77 @@ webidl_calls = {
         PrototypeCall(constructor='DOMMatrix', fn='scaleSelf', demands=['DOMMatrix', 'float', 'float', 'float', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='scaleSelf', demands=['DOMMatrix', 'float', 'float', 'float', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "scale3dself": [
+    "scale3dSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='scale3dSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='scale3dSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='scale3dSelf', demands=['DOMMatrix', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='scale3dSelf', demands=['DOMMatrix', 'float', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='scale3dSelf', demands=['DOMMatrix', 'float', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "rotateself": [
+    "rotateSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='rotateSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateSelf', demands=['DOMMatrix', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateSelf', demands=['DOMMatrix', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "rotatefromvectorself": [
+    "rotateFromVectorSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='rotateFromVectorSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateFromVectorSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateFromVectorSelf', demands=['DOMMatrix', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "rotateaxisangleself": [
+    "rotateAxisAngleSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='rotateAxisAngleSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateAxisAngleSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateAxisAngleSelf', demands=['DOMMatrix', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateAxisAngleSelf', demands=['DOMMatrix', 'float', 'float', 'float'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='rotateAxisAngleSelf', demands=['DOMMatrix', 'float', 'float', 'float', 'float'], returns='DOMMatrix'),
     ],
-    "skewxself": [
+    "skewXSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='skewXSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='skewXSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
     ],
-    "skewyself": [
+    "skewYSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='skewYSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
         PrototypeCall(constructor='DOMMatrix', fn='skewYSelf', demands=['DOMMatrix', 'float'], returns='DOMMatrix'),
     ],
-    "invertself": [
+    "invertSelf": [
         PrototypeCall(constructor='DOMMatrix', fn='invertSelf', demands=['DOMMatrix'], returns='DOMMatrix'),
     ],
-    "setmatrixvalue": [
+    "setMatrixValue": [
         PrototypeCall(constructor='DOMMatrix', fn='setMatrixValue', demands=['DOMMatrix', 'str'], returns='DOMMatrix'),
     ],
-    "createpolicy": [
+    "createPolicy": [
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='createPolicy', demands=['TrustedTypePolicyFactory', 'str'], returns='TrustedTypePolicy'),
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='createPolicy', demands=['TrustedTypePolicyFactory', 'str', 'TrustedTypePolicyOptions'], returns='TrustedTypePolicy'),
     ],
-    "ishtml": [
+    "isHTML": [
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='isHTML', demands=['TrustedTypePolicyFactory', '*'], returns='bool'),
     ],
-    "isscript": [
+    "isScript": [
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='isScript', demands=['TrustedTypePolicyFactory', '*'], returns='bool'),
     ],
-    "isscripturl": [
+    "isScriptURL": [
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='isScriptURL', demands=['TrustedTypePolicyFactory', '*'], returns='bool'),
     ],
-    "getattributetype": [
+    "getAttributeType": [
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='getAttributeType', demands=['TrustedTypePolicyFactory', 'str', 'str'], returns='str'),
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='getAttributeType', demands=['TrustedTypePolicyFactory', 'str', 'str', 'str'], returns='str'),
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='getAttributeType', demands=['TrustedTypePolicyFactory', 'str', 'str', 'str', 'str'], returns='str'),
     ],
-    "getpropertytype": [
+    "getPropertyType": [
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='getPropertyType', demands=['TrustedTypePolicyFactory', 'str', 'str'], returns='str'),
         PrototypeCall(constructor='TrustedTypePolicyFactory', fn='getPropertyType', demands=['TrustedTypePolicyFactory', 'str', 'str', 'str'], returns='str'),
     ],
-    "createhtml": [
+    "createHTML": [
         PrototypeCall(constructor='TrustedTypePolicy', fn='createHTML', demands=['TrustedTypePolicy', 'str', '*'], returns='TrustedHTML'),
     ],
-    "createscript": [
+    "createScript": [
         PrototypeCall(constructor='TrustedTypePolicy', fn='createScript', demands=['TrustedTypePolicy', 'str', '*'], returns='TrustedScript'),
     ],
-    "createscripturl": [
+    "createScriptURL": [
         PrototypeCall(constructor='TrustedTypePolicy', fn='createScriptURL', demands=['TrustedTypePolicy', 'str', '*'], returns='TrustedScriptURL'),
     ],
-    "populatematrix": [
+    "populateMatrix": [
         PrototypeCall(constructor='OrientationSensor', fn='populateMatrix', demands=['OrientationSensor', 'RotationMatrixType'], returns='None'),
     ],
     "AbsoluteOrientationSensor": [
@@ -4337,24 +4333,24 @@ webidl_calls = {
         NewCall(constructor='BluetoothLEScanFilter', demands=[], returns='BluetoothLEScanFilter'),
         NewCall(constructor='BluetoothLEScanFilter', demands=['BluetoothLEScanFilterInit'], returns='BluetoothLEScanFilter'),
     ],
-    "skiptransition": [
+    "skipTransition": [
         PrototypeCall(constructor='ViewTransition', fn='skipTransition', demands=['ViewTransition'], returns='None'),
     ],
-    "createmediakeys": [
+    "createMediaKeys": [
         PrototypeCall(constructor='MediaKeySystemAccess', fn='createMediaKeys', demands=['MediaKeySystemAccess'], returns='MediaKeys'),
     ],
-    "createsession": [
+    "createSession": [
         PrototypeCall(constructor='MediaKeys', fn='createSession', demands=['MediaKeys'], returns='MediaKeySession'),
         PrototypeCall(constructor='MediaKeys', fn='createSession', demands=['MediaKeys', 'MediaKeySessionType'], returns='MediaKeySession'),
     ],
-    "getstatusforpolicy": [
+    "getStatusForPolicy": [
         PrototypeCall(constructor='MediaKeys', fn='getStatusForPolicy', demands=['MediaKeys'], returns='MediaKeyStatus'),
         PrototypeCall(constructor='MediaKeys', fn='getStatusForPolicy', demands=['MediaKeys', 'MediaKeysPolicy'], returns='MediaKeyStatus'),
     ],
-    "setservercertificate": [
+    "setServerCertificate": [
         PrototypeCall(constructor='MediaKeys', fn='setServerCertificate', demands=['MediaKeys', 'BufferSource'], returns='bool'),
     ],
-    "generaterequest": [
+    "generateRequest": [
         PrototypeCall(constructor='MediaKeySession', fn='generateRequest', demands=['MediaKeySession', 'str', 'BufferSource'], returns='None'),
     ],
     "MediaKeyMessageEvent": [
@@ -4364,7 +4360,7 @@ webidl_calls = {
         NewCall(constructor='MediaEncryptedEvent', demands=['str'], returns='MediaEncryptedEvent'),
         NewCall(constructor='MediaEncryptedEvent', demands=['str', 'MediaEncryptedEventInit'], returns='MediaEncryptedEvent'),
     ],
-    "getproperties": [
+    "getProperties": [
         PrototypeCall(constructor='ContactsManager', fn='getProperties', demands=['ContactsManager'], returns='ContactProperty'),
     ],
     "ReadableStream": [
@@ -4376,15 +4372,15 @@ webidl_calls = {
         DirectCall(fn='from', receiver='ReadableStream', demands=['*'], returns='ReadableStream'),
         DirectCall(fn='from', receiver='Observable', demands=['*'], returns='Observable'),
     ],
-    "getreader": [
+    "getReader": [
         PrototypeCall(constructor='ReadableStream', fn='getReader', demands=['ReadableStream'], returns='ReadableStreamReader'),
         PrototypeCall(constructor='ReadableStream', fn='getReader', demands=['ReadableStream', 'ReadableStreamGetReaderOptions'], returns='ReadableStreamReader'),
     ],
-    "pipethrough": [
+    "pipeThrough": [
         PrototypeCall(constructor='ReadableStream', fn='pipeThrough', demands=['ReadableStream', 'ReadableWritablePair'], returns='ReadableStream'),
         PrototypeCall(constructor='ReadableStream', fn='pipeThrough', demands=['ReadableStream', 'ReadableWritablePair', 'StreamPipeOptions'], returns='ReadableStream'),
     ],
-    "pipeto": [
+    "pipeTo": [
         PrototypeCall(constructor='ReadableStream', fn='pipeTo', demands=['ReadableStream', 'WritableStream'], returns='None'),
         PrototypeCall(constructor='ReadableStream', fn='pipeTo', demands=['ReadableStream', 'WritableStream', 'StreamPipeOptions'], returns='None'),
     ],
@@ -4394,7 +4390,7 @@ webidl_calls = {
     "ReadableStreamDefaultReader": [
         NewCall(constructor='ReadableStreamDefaultReader', demands=['ReadableStream'], returns='ReadableStreamDefaultReader'),
     ],
-    "releaselock": [
+    "releaseLock": [
         PrototypeCall(constructor='ReadableStreamDefaultReader', fn='releaseLock', demands=['ReadableStreamDefaultReader'], returns='None'),
         PrototypeCall(constructor='ReadableStreamBYOBReader', fn='releaseLock', demands=['ReadableStreamBYOBReader'], returns='None'),
         PrototypeCall(constructor='WritableStreamDefaultWriter', fn='releaseLock', demands=['WritableStreamDefaultWriter'], returns='None'),
@@ -4424,7 +4420,7 @@ webidl_calls = {
     "respond": [
         PrototypeCall(constructor='ReadableStreamBYOBRequest', fn='respond', demands=['ReadableStreamBYOBRequest', 'int'], returns='None'),
     ],
-    "respondwithnewview": [
+    "respondWithNewView": [
         PrototypeCall(constructor='ReadableStreamBYOBRequest', fn='respondWithNewView', demands=['ReadableStreamBYOBRequest', 'ArrayBufferView'], returns='None'),
     ],
     "WritableStream": [
@@ -4447,7 +4443,7 @@ webidl_calls = {
     "CountQueuingStrategy": [
         NewCall(constructor='CountQueuingStrategy', demands=['QueuingStrategyInit'], returns='CountQueuingStrategy'),
     ],
-    "gettags": [
+    "getTags": [
         PrototypeCall(constructor='PeriodicSyncManager', fn='getTags', demands=['PeriodicSyncManager'], returns='str'),
         PrototypeCall(constructor='SyncManager', fn='getTags', demands=['SyncManager'], returns='str'),
     ],
@@ -4472,13 +4468,13 @@ webidl_calls = {
     "CSSParserFunction": [
         NewCall(constructor='CSSParserFunction', demands=['str', 'CSSParserValue'], returns='CSSParserFunction'),
     ],
-    "registerlayout": [
+    "registerLayout": [
         PrototypeCall(constructor='LayoutWorkletGlobalScope', fn='registerLayout', demands=['LayoutWorkletGlobalScope', 'str', 'VoidFunction'], returns='None'),
     ],
-    "intrinsicsizes": [
+    "intrinsicSizes": [
         PrototypeCall(constructor='LayoutChild', fn='intrinsicSizes', demands=['LayoutChild'], returns='IntrinsicSizes'),
     ],
-    "layoutnextfragment": [
+    "layoutNextFragment": [
         PrototypeCall(constructor='LayoutChild', fn='layoutNextFragment', demands=['LayoutChild', 'LayoutConstraintsOptions', 'ChildBreakToken'], returns='LayoutFragment'),
     ],
     "FragmentResult": [
@@ -4511,7 +4507,7 @@ webidl_calls = {
         NewCall(constructor='AnimationTrigger', demands=[], returns='AnimationTrigger'),
         NewCall(constructor='AnimationTrigger', demands=['AnimationTriggerOptions'], returns='AnimationTrigger'),
     ],
-    "posttask": [
+    "postTask": [
         PrototypeCall(constructor='Scheduler', fn='postTask', demands=['Scheduler', 'SchedulerPostTaskCallback'], returns='*'),
         PrototypeCall(constructor='Scheduler', fn='postTask', demands=['Scheduler', 'SchedulerPostTaskCallback', 'SchedulerPostTaskOptions'], returns='*'),
     ],
@@ -4525,19 +4521,19 @@ webidl_calls = {
         NewCall(constructor='TaskController', demands=[], returns='TaskController'),
         NewCall(constructor='TaskController', demands=['TaskControllerInit'], returns='TaskController'),
     ],
-    "setpriority": [
+    "setPriority": [
         PrototypeCall(constructor='TaskController', fn='setPriority', demands=['TaskController', 'TaskPriority'], returns='None'),
         PrototypeCall(constructor='InterestGroupBiddingScriptRunnerGlobalScope', fn='setPriority', demands=['InterestGroupBiddingScriptRunnerGlobalScope', 'float'], returns='None'),
     ],
-    "getparent": [
+    "getParent": [
         PrototypeCall(constructor='FileSystemEntry', fn='getParent', demands=['FileSystemEntry'], returns='None'),
         PrototypeCall(constructor='FileSystemEntry', fn='getParent', demands=['FileSystemEntry', 'FileSystemEntryCallback'], returns='None'),
         PrototypeCall(constructor='FileSystemEntry', fn='getParent', demands=['FileSystemEntry', 'FileSystemEntryCallback', 'ErrorCallback'], returns='None'),
     ],
-    "createreader": [
+    "createReader": [
         PrototypeCall(constructor='FileSystemDirectoryEntry', fn='createReader', demands=['FileSystemDirectoryEntry'], returns='FileSystemDirectoryReader'),
     ],
-    "readentries": [
+    "readEntries": [
         PrototypeCall(constructor='FileSystemDirectoryReader', fn='readEntries', demands=['FileSystemDirectoryReader', 'FileSystemEntriesCallback'], returns='None'),
         PrototypeCall(constructor='FileSystemDirectoryReader', fn='readEntries', demands=['FileSystemDirectoryReader', 'FileSystemEntriesCallback', 'ErrorCallback'], returns='None'),
     ],
@@ -4558,24 +4554,24 @@ webidl_calls = {
     "FencedFrameConfig": [
         NewCall(constructor='FencedFrameConfig', demands=['str'], returns='FencedFrameConfig'),
     ],
-    "setsharedstoragecontext": [
+    "setSharedStorageContext": [
         PrototypeCall(constructor='FencedFrameConfig', fn='setSharedStorageContext', demands=['FencedFrameConfig', 'str'], returns='None'),
     ],
-    "reportevent": [
+    "reportEvent": [
         PrototypeCall(constructor='Fence', fn='reportEvent', demands=['Fence'], returns='None'),
         PrototypeCall(constructor='Fence', fn='reportEvent', demands=['Fence', 'ReportEventType'], returns='None'),
     ],
-    "setreporteventdataforautomaticbeacons": [
+    "setReportEventDataForAutomaticBeacons": [
         PrototypeCall(constructor='Fence', fn='setReportEventDataForAutomaticBeacons', demands=['Fence'], returns='None'),
         PrototypeCall(constructor='Fence', fn='setReportEventDataForAutomaticBeacons', demands=['Fence', 'FenceEvent'], returns='None'),
     ],
-    "getnestedconfigs": [
+    "getNestedConfigs": [
         PrototypeCall(constructor='Fence', fn='getNestedConfigs', demands=['Fence'], returns='FencedFrameConfig'),
     ],
-    "disableuntrustednetwork": [
+    "disableUntrustedNetwork": [
         PrototypeCall(constructor='Fence', fn='disableUntrustedNetwork', demands=['Fence'], returns='None'),
     ],
-    "notifyevent": [
+    "notifyEvent": [
         PrototypeCall(constructor='Fence', fn='notifyEvent', demands=['Fence', 'Event'], returns='None'),
     ],
     "Notification": [
@@ -4585,76 +4581,76 @@ webidl_calls = {
     "NotificationEvent": [
         NewCall(constructor='NotificationEvent', demands=['str', 'NotificationEventInit'], returns='NotificationEvent'),
     ],
-    "getdetails": [
+    "getDetails": [
         PrototypeCall(constructor='DigitalGoodsService', fn='getDetails', demands=['DigitalGoodsService', 'str'], returns='ItemDetails'),
     ],
-    "listpurchases": [
+    "listPurchases": [
         PrototypeCall(constructor='DigitalGoodsService', fn='listPurchases', demands=['DigitalGoodsService'], returns='PurchaseDetails'),
     ],
-    "listpurchasehistory": [
+    "listPurchaseHistory": [
         PrototypeCall(constructor='DigitalGoodsService', fn='listPurchaseHistory', demands=['DigitalGoodsService'], returns='PurchaseDetails'),
     ],
     "consume": [
         PrototypeCall(constructor='DigitalGoodsService', fn='consume', demands=['DigitalGoodsService', 'str'], returns='None'),
     ],
-    "createvertexarrayoes": [
+    "createVertexArrayOES": [
         PrototypeCall(constructor='OES_vertex_array_object', fn='createVertexArrayOES', demands=['OES_vertex_array_object'], returns='WebGLVertexArrayObjectOES'),
     ],
-    "deletevertexarrayoes": [
+    "deleteVertexArrayOES": [
         PrototypeCall(constructor='OES_vertex_array_object', fn='deleteVertexArrayOES', demands=['OES_vertex_array_object', 'WebGLVertexArrayObjectOES'], returns='None'),
     ],
-    "isvertexarrayoes": [
+    "isVertexArrayOES": [
         PrototypeCall(constructor='OES_vertex_array_object', fn='isVertexArrayOES', demands=['OES_vertex_array_object', 'WebGLVertexArrayObjectOES'], returns='GLboolean'),
     ],
-    "bindvertexarrayoes": [
+    "bindVertexArrayOES": [
         PrototypeCall(constructor='OES_vertex_array_object', fn='bindVertexArrayOES', demands=['OES_vertex_array_object', 'WebGLVertexArrayObjectOES'], returns='None'),
     ],
-    "appendmedium": [
+    "appendMedium": [
         PrototypeCall(constructor='MediaList', fn='appendMedium', demands=['MediaList', 'CSSOMString'], returns='None'),
     ],
-    "deletemedium": [
+    "deleteMedium": [
         PrototypeCall(constructor='MediaList', fn='deleteMedium', demands=['MediaList', 'CSSOMString'], returns='None'),
     ],
     "CSSStyleSheet": [
         NewCall(constructor='CSSStyleSheet', demands=[], returns='CSSStyleSheet'),
         NewCall(constructor='CSSStyleSheet', demands=['CSSStyleSheetInit'], returns='CSSStyleSheet'),
     ],
-    "insertrule": [
+    "insertRule": [
         PrototypeCall(constructor='CSSStyleSheet', fn='insertRule', demands=['CSSStyleSheet', 'CSSOMString'], returns='int'),
         PrototypeCall(constructor='CSSStyleSheet', fn='insertRule', demands=['CSSStyleSheet', 'CSSOMString', 'int'], returns='int'),
         PrototypeCall(constructor='CSSGroupingRule', fn='insertRule', demands=['CSSGroupingRule', 'CSSOMString'], returns='int'),
         PrototypeCall(constructor='CSSGroupingRule', fn='insertRule', demands=['CSSGroupingRule', 'CSSOMString', 'int'], returns='int'),
     ],
-    "replacesync": [
+    "replaceSync": [
         PrototypeCall(constructor='CSSStyleSheet', fn='replaceSync', demands=['CSSStyleSheet', 'str'], returns='None'),
     ],
-    "getpropertyvalue": [
+    "getPropertyValue": [
         PrototypeCall(constructor='CSSStyleDeclaration', fn='getPropertyValue', demands=['CSSStyleDeclaration', 'CSSOMString'], returns='CSSOMString'),
     ],
-    "getpropertypriority": [
+    "getPropertyPriority": [
         PrototypeCall(constructor='CSSStyleDeclaration', fn='getPropertyPriority', demands=['CSSStyleDeclaration', 'CSSOMString'], returns='CSSOMString'),
     ],
-    "setproperty": [
+    "setProperty": [
         PrototypeCall(constructor='CSSStyleDeclaration', fn='setProperty', demands=['CSSStyleDeclaration', 'CSSOMString', 'CSSOMString'], returns='None'),
         PrototypeCall(constructor='CSSStyleDeclaration', fn='setProperty', demands=['CSSStyleDeclaration', 'CSSOMString', 'CSSOMString', 'CSSOMString'], returns='None'),
     ],
-    "removeproperty": [
+    "removeProperty": [
         PrototypeCall(constructor='CSSStyleDeclaration', fn='removeProperty', demands=['CSSStyleDeclaration', 'CSSOMString'], returns='CSSOMString'),
     ],
     "ImageCapture": [
         NewCall(constructor='ImageCapture', demands=['MediaStreamTrack'], returns='ImageCapture'),
     ],
-    "takephoto": [
+    "takePhoto": [
         PrototypeCall(constructor='ImageCapture', fn='takePhoto', demands=['ImageCapture'], returns='Blob'),
         PrototypeCall(constructor='ImageCapture', fn='takePhoto', demands=['ImageCapture', 'PhotoSettings'], returns='Blob'),
     ],
-    "getphotocapabilities": [
+    "getPhotoCapabilities": [
         PrototypeCall(constructor='ImageCapture', fn='getPhotoCapabilities', demands=['ImageCapture'], returns='PhotoCapabilities'),
     ],
-    "getphotosettings": [
+    "getPhotoSettings": [
         PrototypeCall(constructor='ImageCapture', fn='getPhotoSettings', demands=['ImageCapture'], returns='PhotoSettings'),
     ],
-    "grabframe": [
+    "grabFrame": [
         PrototypeCall(constructor='ImageCapture', fn='grabFrame', demands=['ImageCapture'], returns='ImageBitmap'),
     ],
     "ResizeObserver": [
@@ -4677,67 +4673,67 @@ webidl_calls = {
         PrototypeCall(constructor='URLPattern', fn='exec', demands=['URLPattern', 'URLPatternInput'], returns='URLPatternResult'),
         PrototypeCall(constructor='URLPattern', fn='exec', demands=['URLPattern', 'URLPatternInput', 'str'], returns='URLPatternResult'),
     ],
-    "requestadapter": [
+    "requestAdapter": [
         PrototypeCall(constructor='GPU', fn='requestAdapter', demands=['GPU'], returns='GPUAdapter'),
         PrototypeCall(constructor='GPU', fn='requestAdapter', demands=['GPU', 'GPURequestAdapterOptions'], returns='GPUAdapter'),
     ],
-    "getpreferredcanvasformat": [
+    "getPreferredCanvasFormat": [
         PrototypeCall(constructor='GPU', fn='getPreferredCanvasFormat', demands=['GPU'], returns='GPUTextureFormat'),
     ],
-    "createbuffer": [
+    "createBuffer": [
         PrototypeCall(constructor='GPUDevice', fn='createBuffer', demands=['GPUDevice', 'GPUBufferDescriptor'], returns='GPUBuffer'),
         PrototypeCall(constructor='BaseAudioContext', fn='createBuffer', demands=['BaseAudioContext', 'int', 'int', 'float'], returns='AudioBuffer'),
     ],
-    "createtexture": [
+    "createTexture": [
         PrototypeCall(constructor='GPUDevice', fn='createTexture', demands=['GPUDevice', 'GPUTextureDescriptor'], returns='GPUTexture'),
     ],
-    "createsampler": [
+    "createSampler": [
         PrototypeCall(constructor='GPUDevice', fn='createSampler', demands=['GPUDevice'], returns='GPUSampler'),
         PrototypeCall(constructor='GPUDevice', fn='createSampler', demands=['GPUDevice', 'GPUSamplerDescriptor'], returns='GPUSampler'),
     ],
-    "importexternaltexture": [
+    "importExternalTexture": [
         PrototypeCall(constructor='GPUDevice', fn='importExternalTexture', demands=['GPUDevice', 'GPUExternalTextureDescriptor'], returns='GPUExternalTexture'),
     ],
-    "createbindgrouplayout": [
+    "createBindGroupLayout": [
         PrototypeCall(constructor='GPUDevice', fn='createBindGroupLayout', demands=['GPUDevice', 'GPUBindGroupLayoutDescriptor'], returns='GPUBindGroupLayout'),
     ],
-    "createpipelinelayout": [
+    "createPipelineLayout": [
         PrototypeCall(constructor='GPUDevice', fn='createPipelineLayout', demands=['GPUDevice', 'GPUPipelineLayoutDescriptor'], returns='GPUPipelineLayout'),
     ],
-    "createbindgroup": [
+    "createBindGroup": [
         PrototypeCall(constructor='GPUDevice', fn='createBindGroup', demands=['GPUDevice', 'GPUBindGroupDescriptor'], returns='GPUBindGroup'),
     ],
-    "createshadermodule": [
+    "createShaderModule": [
         PrototypeCall(constructor='GPUDevice', fn='createShaderModule', demands=['GPUDevice', 'GPUShaderModuleDescriptor'], returns='GPUShaderModule'),
     ],
-    "createcomputepipeline": [
+    "createComputePipeline": [
         PrototypeCall(constructor='GPUDevice', fn='createComputePipeline', demands=['GPUDevice', 'GPUComputePipelineDescriptor'], returns='GPUComputePipeline'),
     ],
-    "createrenderpipeline": [
+    "createRenderPipeline": [
         PrototypeCall(constructor='GPUDevice', fn='createRenderPipeline', demands=['GPUDevice', 'GPURenderPipelineDescriptor'], returns='GPURenderPipeline'),
     ],
-    "createcomputepipelineasync": [
+    "createComputePipelineAsync": [
         PrototypeCall(constructor='GPUDevice', fn='createComputePipelineAsync', demands=['GPUDevice', 'GPUComputePipelineDescriptor'], returns='GPUComputePipeline'),
     ],
-    "createrenderpipelineasync": [
+    "createRenderPipelineAsync": [
         PrototypeCall(constructor='GPUDevice', fn='createRenderPipelineAsync', demands=['GPUDevice', 'GPURenderPipelineDescriptor'], returns='GPURenderPipeline'),
     ],
-    "createcommandencoder": [
+    "createCommandEncoder": [
         PrototypeCall(constructor='GPUDevice', fn='createCommandEncoder', demands=['GPUDevice'], returns='GPUCommandEncoder'),
         PrototypeCall(constructor='GPUDevice', fn='createCommandEncoder', demands=['GPUDevice', 'GPUCommandEncoderDescriptor'], returns='GPUCommandEncoder'),
     ],
-    "createrenderbundleencoder": [
+    "createRenderBundleEncoder": [
         PrototypeCall(constructor='GPUDevice', fn='createRenderBundleEncoder', demands=['GPUDevice', 'GPURenderBundleEncoderDescriptor'], returns='GPURenderBundleEncoder'),
     ],
-    "createqueryset": [
+    "createQuerySet": [
         PrototypeCall(constructor='GPUDevice', fn='createQuerySet', demands=['GPUDevice', 'GPUQuerySetDescriptor'], returns='GPUQuerySet'),
     ],
-    "mapasync": [
+    "mapAsync": [
         PrototypeCall(constructor='GPUBuffer', fn='mapAsync', demands=['GPUBuffer', 'GPUMapModeFlags'], returns='None'),
         PrototypeCall(constructor='GPUBuffer', fn='mapAsync', demands=['GPUBuffer', 'GPUMapModeFlags', 'GPUSize64'], returns='None'),
         PrototypeCall(constructor='GPUBuffer', fn='mapAsync', demands=['GPUBuffer', 'GPUMapModeFlags', 'GPUSize64', 'GPUSize64'], returns='None'),
     ],
-    "getmappedrange": [
+    "getMappedRange": [
         PrototypeCall(constructor='GPUBuffer', fn='getMappedRange', demands=['GPUBuffer'], returns='ArrayBuffer'),
         PrototypeCall(constructor='GPUBuffer', fn='getMappedRange', demands=['GPUBuffer', 'GPUSize64'], returns='ArrayBuffer'),
         PrototypeCall(constructor='GPUBuffer', fn='getMappedRange', demands=['GPUBuffer', 'GPUSize64', 'GPUSize64'], returns='ArrayBuffer'),
@@ -4745,97 +4741,97 @@ webidl_calls = {
     "unmap": [
         PrototypeCall(constructor='GPUBuffer', fn='unmap', demands=['GPUBuffer'], returns='None'),
     ],
-    "createview": [
+    "createView": [
         PrototypeCall(constructor='GPUTexture', fn='createView', demands=['GPUTexture'], returns='GPUTextureView'),
         PrototypeCall(constructor='GPUTexture', fn='createView', demands=['GPUTexture', 'GPUTextureViewDescriptor'], returns='GPUTextureView'),
     ],
-    "getcompilationinfo": [
+    "getCompilationInfo": [
         PrototypeCall(constructor='GPUShaderModule', fn='getCompilationInfo', demands=['GPUShaderModule'], returns='GPUCompilationInfo'),
     ],
     "GPUPipelineError": [
         NewCall(constructor='GPUPipelineError', demands=['str'], returns='GPUPipelineError'),
         NewCall(constructor='GPUPipelineError', demands=['str', 'GPUPipelineErrorInit'], returns='GPUPipelineError'),
     ],
-    "beginrenderpass": [
+    "beginRenderPass": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='beginRenderPass', demands=['GPUCommandEncoder', 'GPURenderPassDescriptor'], returns='GPURenderPassEncoder'),
     ],
-    "begincomputepass": [
+    "beginComputePass": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='beginComputePass', demands=['GPUCommandEncoder'], returns='GPUComputePassEncoder'),
         PrototypeCall(constructor='GPUCommandEncoder', fn='beginComputePass', demands=['GPUCommandEncoder', 'GPUComputePassDescriptor'], returns='GPUComputePassEncoder'),
     ],
-    "copybuffertobuffer": [
+    "copyBufferToBuffer": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='copyBufferToBuffer', demands=['GPUCommandEncoder', 'GPUBuffer', 'GPUBuffer'], returns='None'),
         PrototypeCall(constructor='GPUCommandEncoder', fn='copyBufferToBuffer', demands=['GPUCommandEncoder', 'GPUBuffer', 'GPUBuffer', 'GPUSize64'], returns='None'),
         PrototypeCall(constructor='GPUCommandEncoder', fn='copyBufferToBuffer', demands=['GPUCommandEncoder', 'GPUBuffer', 'GPUSize64', 'GPUBuffer', 'GPUSize64'], returns='None'),
         PrototypeCall(constructor='GPUCommandEncoder', fn='copyBufferToBuffer', demands=['GPUCommandEncoder', 'GPUBuffer', 'GPUSize64', 'GPUBuffer', 'GPUSize64', 'GPUSize64'], returns='None'),
     ],
-    "copybuffertotexture": [
+    "copyBufferToTexture": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='copyBufferToTexture', demands=['GPUCommandEncoder', 'GPUTexelCopyBufferInfo', 'GPUTexelCopyTextureInfo', 'GPUExtent3D'], returns='None'),
     ],
-    "copytexturetobuffer": [
+    "copyTextureToBuffer": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='copyTextureToBuffer', demands=['GPUCommandEncoder', 'GPUTexelCopyTextureInfo', 'GPUTexelCopyBufferInfo', 'GPUExtent3D'], returns='None'),
     ],
-    "copytexturetotexture": [
+    "copyTextureToTexture": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='copyTextureToTexture', demands=['GPUCommandEncoder', 'GPUTexelCopyTextureInfo', 'GPUTexelCopyTextureInfo', 'GPUExtent3D'], returns='None'),
     ],
-    "clearbuffer": [
+    "clearBuffer": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='clearBuffer', demands=['GPUCommandEncoder', 'GPUBuffer'], returns='None'),
         PrototypeCall(constructor='GPUCommandEncoder', fn='clearBuffer', demands=['GPUCommandEncoder', 'GPUBuffer', 'GPUSize64'], returns='None'),
         PrototypeCall(constructor='GPUCommandEncoder', fn='clearBuffer', demands=['GPUCommandEncoder', 'GPUBuffer', 'GPUSize64', 'GPUSize64'], returns='None'),
     ],
-    "resolvequeryset": [
+    "resolveQuerySet": [
         PrototypeCall(constructor='GPUCommandEncoder', fn='resolveQuerySet', demands=['GPUCommandEncoder', 'GPUQuerySet', 'GPUSize32', 'GPUSize32', 'GPUBuffer', 'GPUSize64'], returns='None'),
     ],
-    "setpipeline": [
+    "setPipeline": [
         PrototypeCall(constructor='GPUComputePassEncoder', fn='setPipeline', demands=['GPUComputePassEncoder', 'GPUComputePipeline'], returns='None'),
     ],
-    "dispatchworkgroups": [
+    "dispatchWorkgroups": [
         PrototypeCall(constructor='GPUComputePassEncoder', fn='dispatchWorkgroups', demands=['GPUComputePassEncoder', 'GPUSize32'], returns='None'),
         PrototypeCall(constructor='GPUComputePassEncoder', fn='dispatchWorkgroups', demands=['GPUComputePassEncoder', 'GPUSize32', 'GPUSize32'], returns='None'),
         PrototypeCall(constructor='GPUComputePassEncoder', fn='dispatchWorkgroups', demands=['GPUComputePassEncoder', 'GPUSize32', 'GPUSize32', 'GPUSize32'], returns='None'),
     ],
-    "dispatchworkgroupsindirect": [
+    "dispatchWorkgroupsIndirect": [
         PrototypeCall(constructor='GPUComputePassEncoder', fn='dispatchWorkgroupsIndirect', demands=['GPUComputePassEncoder', 'GPUBuffer', 'GPUSize64'], returns='None'),
     ],
-    "setviewport": [
+    "setViewport": [
         PrototypeCall(constructor='GPURenderPassEncoder', fn='setViewport', demands=['GPURenderPassEncoder', 'float', 'float', 'float', 'float', 'float', 'float'], returns='None'),
     ],
-    "setscissorrect": [
+    "setScissorRect": [
         PrototypeCall(constructor='GPURenderPassEncoder', fn='setScissorRect', demands=['GPURenderPassEncoder', 'GPUIntegerCoordinate', 'GPUIntegerCoordinate', 'GPUIntegerCoordinate', 'GPUIntegerCoordinate'], returns='None'),
     ],
-    "setblendconstant": [
+    "setBlendConstant": [
         PrototypeCall(constructor='GPURenderPassEncoder', fn='setBlendConstant', demands=['GPURenderPassEncoder', 'GPUColor'], returns='None'),
     ],
-    "setstencilreference": [
+    "setStencilReference": [
         PrototypeCall(constructor='GPURenderPassEncoder', fn='setStencilReference', demands=['GPURenderPassEncoder', 'GPUStencilValue'], returns='None'),
     ],
-    "beginocclusionquery": [
+    "beginOcclusionQuery": [
         PrototypeCall(constructor='GPURenderPassEncoder', fn='beginOcclusionQuery', demands=['GPURenderPassEncoder', 'GPUSize32'], returns='None'),
     ],
-    "endocclusionquery": [
+    "endOcclusionQuery": [
         PrototypeCall(constructor='GPURenderPassEncoder', fn='endOcclusionQuery', demands=['GPURenderPassEncoder'], returns='None'),
     ],
-    "executebundles": [
+    "executeBundles": [
         PrototypeCall(constructor='GPURenderPassEncoder', fn='executeBundles', demands=['GPURenderPassEncoder', 'GPURenderBundle'], returns='None'),
     ],
-    "onsubmittedworkdone": [
+    "onSubmittedWorkDone": [
         PrototypeCall(constructor='GPUQueue', fn='onSubmittedWorkDone', demands=['GPUQueue'], returns='None'),
     ],
-    "writebuffer": [
+    "writeBuffer": [
         PrototypeCall(constructor='GPUQueue', fn='writeBuffer', demands=['GPUQueue', 'GPUBuffer', 'GPUSize64', 'AllowSharedBufferSource'], returns='None'),
         PrototypeCall(constructor='GPUQueue', fn='writeBuffer', demands=['GPUQueue', 'GPUBuffer', 'GPUSize64', 'AllowSharedBufferSource', 'GPUSize64'], returns='None'),
         PrototypeCall(constructor='GPUQueue', fn='writeBuffer', demands=['GPUQueue', 'GPUBuffer', 'GPUSize64', 'AllowSharedBufferSource', 'GPUSize64', 'GPUSize64'], returns='None'),
     ],
-    "writetexture": [
+    "writeTexture": [
         PrototypeCall(constructor='GPUQueue', fn='writeTexture', demands=['GPUQueue', 'GPUTexelCopyTextureInfo', 'AllowSharedBufferSource', 'GPUTexelCopyBufferLayout', 'GPUExtent3D'], returns='None'),
     ],
-    "copyexternalimagetotexture": [
+    "copyExternalImageToTexture": [
         PrototypeCall(constructor='GPUQueue', fn='copyExternalImageToTexture', demands=['GPUQueue', 'GPUCopyExternalImageSourceInfo', 'GPUCopyExternalImageDestInfo', 'GPUExtent3D'], returns='None'),
     ],
     "unconfigure": [
         PrototypeCall(constructor='GPUCanvasContext', fn='unconfigure', demands=['GPUCanvasContext'], returns='None'),
     ],
-    "getcurrenttexture": [
+    "getCurrentTexture": [
         PrototypeCall(constructor='GPUCanvasContext', fn='getCurrentTexture', demands=['GPUCanvasContext'], returns='GPUTexture'),
     ],
     "GPUValidationError": [
@@ -4856,61 +4852,61 @@ webidl_calls = {
     "VTTCue": [
         NewCall(constructor='VTTCue', demands=['float', 'float', 'str'], returns='VTTCue'),
     ],
-    "getcueashtml": [
+    "getCueAsHTML": [
         PrototypeCall(constructor='VTTCue', fn='getCueAsHTML', demands=['VTTCue'], returns='DocumentFragment'),
     ],
     "VTTRegion": [
         NewCall(constructor='VTTRegion', demands=[], returns='VTTRegion'),
     ],
-    "playeffect": [
+    "playEffect": [
         PrototypeCall(constructor='GamepadHapticActuator', fn='playEffect', demands=['GamepadHapticActuator', 'GamepadHapticEffectType'], returns='GamepadHapticsResult'),
         PrototypeCall(constructor='GamepadHapticActuator', fn='playEffect', demands=['GamepadHapticActuator', 'GamepadHapticEffectType', 'GamepadEffectParameters'], returns='GamepadHapticsResult'),
     ],
     "GamepadEvent": [
         NewCall(constructor='GamepadEvent', demands=['str', 'GamepadEventInit'], returns='GamepadEvent'),
     ],
-    "multidrawarrayswebgl": [
+    "multiDrawArraysWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
     ],
-    "multidrawelementswebgl": [
+    "multiDrawElementsWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei'], returns='None'),
     ],
-    "multidrawarraysinstancedwebgl": [
+    "multiDrawArraysInstancedWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
     ],
-    "multidrawelementsinstancedwebgl": [
+    "multiDrawElementsInstancedWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
     ],
-    "issessionsupported": [
+    "isSessionSupported": [
         PrototypeCall(constructor='XRSystem', fn='isSessionSupported', demands=['XRSystem', 'XRSessionMode'], returns='bool'),
     ],
-    "requestsession": [
+    "requestSession": [
         PrototypeCall(constructor='XRSystem', fn='requestSession', demands=['XRSystem', 'XRSessionMode'], returns='XRSession'),
         PrototypeCall(constructor='XRSystem', fn='requestSession', demands=['XRSystem', 'XRSessionMode', 'XRSessionInit'], returns='XRSession'),
     ],
-    "updaterenderstate": [
+    "updateRenderState": [
         PrototypeCall(constructor='XRSession', fn='updateRenderState', demands=['XRSession'], returns='None'),
         PrototypeCall(constructor='XRSession', fn='updateRenderState', demands=['XRSession', 'XRRenderStateInit'], returns='None'),
     ],
-    "updatetargetframerate": [
+    "updateTargetFrameRate": [
         PrototypeCall(constructor='XRSession', fn='updateTargetFrameRate', demands=['XRSession', 'float'], returns='None'),
     ],
-    "requestreferencespace": [
+    "requestReferenceSpace": [
         PrototypeCall(constructor='XRSession', fn='requestReferenceSpace', demands=['XRSession', 'XRReferenceSpaceType'], returns='XRReferenceSpace'),
     ],
-    "requestanimationframe": [
+    "requestAnimationFrame": [
         PrototypeCall(constructor='XRSession', fn='requestAnimationFrame', demands=['XRSession', 'XRFrameRequestCallback'], returns='int'),
     ],
-    "cancelanimationframe": [
+    "cancelAnimationFrame": [
         PrototypeCall(constructor='XRSession', fn='cancelAnimationFrame', demands=['XRSession', 'int'], returns='None'),
     ],
-    "getviewerpose": [
+    "getViewerPose": [
         PrototypeCall(constructor='XRFrame', fn='getViewerPose', demands=['XRFrame', 'XRReferenceSpace'], returns='XRViewerPose'),
     ],
-    "getoffsetreferencespace": [
+    "getOffsetReferenceSpace": [
         PrototypeCall(constructor='XRReferenceSpace', fn='getOffsetReferenceSpace', demands=['XRReferenceSpace', 'XRRigidTransform'], returns='XRReferenceSpace'),
     ],
-    "requestviewportscale": [
+    "requestViewportScale": [
         PrototypeCall(constructor='XRView', fn='requestViewportScale', demands=['XRView', 'float'], returns='None'),
     ],
     "XRRigidTransform": [
@@ -4922,10 +4918,10 @@ webidl_calls = {
         NewCall(constructor='XRWebGLLayer', demands=['XRSession', 'XRWebGLRenderingContext'], returns='XRWebGLLayer'),
         NewCall(constructor='XRWebGLLayer', demands=['XRSession', 'XRWebGLRenderingContext', 'XRWebGLLayerInit'], returns='XRWebGLLayer'),
     ],
-    "getviewport": [
+    "getViewport": [
         PrototypeCall(constructor='XRWebGLLayer', fn='getViewport', demands=['XRWebGLLayer', 'XRView'], returns='XRViewport'),
     ],
-    "getnativeframebufferscalefactor": [
+    "getNativeFramebufferScaleFactor": [
         DirectCall(fn='getNativeFramebufferScaleFactor', receiver='XRWebGLLayer', demands=['XRSession'], returns='float'),
     ],
     "XRSessionEvent": [
@@ -4955,13 +4951,13 @@ webidl_calls = {
     "next": [
         PrototypeCall(constructor='Subscriber', fn='next', demands=['Subscriber', '*'], returns='None'),
     ],
-    "addteardown": [
+    "addTeardown": [
         PrototypeCall(constructor='Subscriber', fn='addTeardown', demands=['Subscriber', 'VoidFunction'], returns='None'),
     ],
     "Observable": [
         NewCall(constructor='Observable', demands=['SubscribeCallback'], returns='Observable'),
     ],
-    "takeuntil": [
+    "takeUntil": [
         PrototypeCall(constructor='Observable', fn='takeUntil', demands=['Observable', '*'], returns='Observable'),
     ],
     "map": [
@@ -4976,10 +4972,10 @@ webidl_calls = {
     "drop": [
         PrototypeCall(constructor='Observable', fn='drop', demands=['Observable', 'int'], returns='Observable'),
     ],
-    "flatmap": [
+    "flatMap": [
         PrototypeCall(constructor='Observable', fn='flatMap', demands=['Observable', 'Mapper'], returns='Observable'),
     ],
-    "switchmap": [
+    "switchMap": [
         PrototypeCall(constructor='Observable', fn='switchMap', demands=['Observable', 'Mapper'], returns='Observable'),
     ],
     "inspect": [
@@ -4992,11 +4988,11 @@ webidl_calls = {
     "finally": [
         PrototypeCall(constructor='Observable', fn='finally', demands=['Observable', 'VoidFunction'], returns='Observable'),
     ],
-    "toarray": [
+    "toArray": [
         PrototypeCall(constructor='Observable', fn='toArray', demands=['Observable'], returns='*'),
         PrototypeCall(constructor='Observable', fn='toArray', demands=['Observable', 'SubscribeOptions'], returns='*'),
     ],
-    "foreach": [
+    "forEach": [
         PrototypeCall(constructor='Observable', fn='forEach', demands=['Observable', 'Visitor'], returns='None'),
         PrototypeCall(constructor='Observable', fn='forEach', demands=['Observable', 'Visitor', 'SubscribeOptions'], returns='None'),
     ],
@@ -5025,167 +5021,167 @@ webidl_calls = {
         PrototypeCall(constructor='Observable', fn='reduce', demands=['Observable', 'Reducer', '*'], returns='*'),
         PrototypeCall(constructor='Observable', fn='reduce', demands=['Observable', 'Reducer', '*', 'SubscribeOptions'], returns='*'),
     ],
-    "getbbox": [
+    "getBBox": [
         PrototypeCall(constructor='SVGGraphicsElement', fn='getBBox', demands=['SVGGraphicsElement'], returns='DOMRect'),
         PrototypeCall(constructor='SVGGraphicsElement', fn='getBBox', demands=['SVGGraphicsElement', 'SVGBoundingBoxOptions'], returns='DOMRect'),
     ],
-    "getctm": [
+    "getCTM": [
         PrototypeCall(constructor='SVGGraphicsElement', fn='getCTM', demands=['SVGGraphicsElement'], returns='DOMMatrix'),
     ],
-    "getscreenctm": [
+    "getScreenCTM": [
         PrototypeCall(constructor='SVGGraphicsElement', fn='getScreenCTM', demands=['SVGGraphicsElement'], returns='DOMMatrix'),
     ],
-    "ispointinfill": [
+    "isPointInFill": [
         PrototypeCall(constructor='SVGGeometryElement', fn='isPointInFill', demands=['SVGGeometryElement'], returns='bool'),
         PrototypeCall(constructor='SVGGeometryElement', fn='isPointInFill', demands=['SVGGeometryElement', 'DOMPointInit'], returns='bool'),
     ],
-    "ispointinstroke": [
+    "isPointInStroke": [
         PrototypeCall(constructor='SVGGeometryElement', fn='isPointInStroke', demands=['SVGGeometryElement'], returns='bool'),
         PrototypeCall(constructor='SVGGeometryElement', fn='isPointInStroke', demands=['SVGGeometryElement', 'DOMPointInit'], returns='bool'),
     ],
-    "newvaluespecifiedunits": [
+    "newValueSpecifiedUnits": [
         PrototypeCall(constructor='SVGLength', fn='newValueSpecifiedUnits', demands=['SVGLength', 'unsigned short', 'float'], returns='None'),
         PrototypeCall(constructor='SVGAngle', fn='newValueSpecifiedUnits', demands=['SVGAngle', 'unsigned short', 'float'], returns='None'),
     ],
-    "converttospecifiedunits": [
+    "convertToSpecifiedUnits": [
         PrototypeCall(constructor='SVGLength', fn='convertToSpecifiedUnits', demands=['SVGLength', 'unsigned short'], returns='None'),
         PrototypeCall(constructor='SVGAngle', fn='convertToSpecifiedUnits', demands=['SVGAngle', 'unsigned short'], returns='None'),
     ],
-    "insertitembefore": [
+    "insertItemBefore": [
         PrototypeCall(constructor='SVGNumberList', fn='insertItemBefore', demands=['SVGNumberList', 'SVGNumber', 'int'], returns='SVGNumber'),
         PrototypeCall(constructor='SVGLengthList', fn='insertItemBefore', demands=['SVGLengthList', 'SVGLength', 'int'], returns='SVGLength'),
         PrototypeCall(constructor='SVGStringList', fn='insertItemBefore', demands=['SVGStringList', 'str', 'int'], returns='str'),
         PrototypeCall(constructor='SVGTransformList', fn='insertItemBefore', demands=['SVGTransformList', 'SVGTransform', 'int'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGPointList', fn='insertItemBefore', demands=['SVGPointList', 'DOMPoint', 'int'], returns='DOMPoint'),
     ],
-    "replaceitem": [
+    "replaceItem": [
         PrototypeCall(constructor='SVGNumberList', fn='replaceItem', demands=['SVGNumberList', 'SVGNumber', 'int'], returns='SVGNumber'),
         PrototypeCall(constructor='SVGLengthList', fn='replaceItem', demands=['SVGLengthList', 'SVGLength', 'int'], returns='SVGLength'),
         PrototypeCall(constructor='SVGStringList', fn='replaceItem', demands=['SVGStringList', 'str', 'int'], returns='str'),
         PrototypeCall(constructor='SVGTransformList', fn='replaceItem', demands=['SVGTransformList', 'SVGTransform', 'int'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGPointList', fn='replaceItem', demands=['SVGPointList', 'DOMPoint', 'int'], returns='DOMPoint'),
     ],
-    "appenditem": [
+    "appendItem": [
         PrototypeCall(constructor='SVGNumberList', fn='appendItem', demands=['SVGNumberList', 'SVGNumber'], returns='SVGNumber'),
         PrototypeCall(constructor='SVGLengthList', fn='appendItem', demands=['SVGLengthList', 'SVGLength'], returns='SVGLength'),
         PrototypeCall(constructor='SVGStringList', fn='appendItem', demands=['SVGStringList', 'str'], returns='str'),
         PrototypeCall(constructor='SVGTransformList', fn='appendItem', demands=['SVGTransformList', 'SVGTransform'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGPointList', fn='appendItem', demands=['SVGPointList', 'DOMPoint'], returns='DOMPoint'),
     ],
-    "getintersectionlist": [
+    "getIntersectionList": [
         PrototypeCall(constructor='SVGSVGElement', fn='getIntersectionList', demands=['SVGSVGElement', 'DOMRectReadOnly', 'SVGElement'], returns='NodeList'),
     ],
-    "getenclosurelist": [
+    "getEnclosureList": [
         PrototypeCall(constructor='SVGSVGElement', fn='getEnclosureList', demands=['SVGSVGElement', 'DOMRectReadOnly', 'SVGElement'], returns='NodeList'),
     ],
-    "checkintersection": [
+    "checkIntersection": [
         PrototypeCall(constructor='SVGSVGElement', fn='checkIntersection', demands=['SVGSVGElement', 'SVGElement', 'DOMRectReadOnly'], returns='bool'),
     ],
-    "checkenclosure": [
+    "checkEnclosure": [
         PrototypeCall(constructor='SVGSVGElement', fn='checkEnclosure', demands=['SVGSVGElement', 'SVGElement', 'DOMRectReadOnly'], returns='bool'),
     ],
-    "deselectall": [
+    "deselectAll": [
         PrototypeCall(constructor='SVGSVGElement', fn='deselectAll', demands=['SVGSVGElement'], returns='None'),
     ],
-    "createsvgnumber": [
+    "createSVGNumber": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGNumber', demands=['SVGSVGElement'], returns='SVGNumber'),
     ],
-    "createsvglength": [
+    "createSVGLength": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGLength', demands=['SVGSVGElement'], returns='SVGLength'),
     ],
-    "createsvgangle": [
+    "createSVGAngle": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGAngle', demands=['SVGSVGElement'], returns='SVGAngle'),
     ],
-    "createsvgpoint": [
+    "createSVGPoint": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGPoint', demands=['SVGSVGElement'], returns='DOMPoint'),
     ],
-    "createsvgmatrix": [
+    "createSVGMatrix": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGMatrix', demands=['SVGSVGElement'], returns='DOMMatrix'),
     ],
-    "createsvgrect": [
+    "createSVGRect": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGRect', demands=['SVGSVGElement'], returns='DOMRect'),
     ],
-    "createsvgtransform": [
+    "createSVGTransform": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGTransform', demands=['SVGSVGElement'], returns='SVGTransform'),
     ],
-    "createsvgtransformfrommatrix": [
+    "createSVGTransformFromMatrix": [
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGTransformFromMatrix', demands=['SVGSVGElement'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGSVGElement', fn='createSVGTransformFromMatrix', demands=['SVGSVGElement', 'DOMMatrix2DInit'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGTransformList', fn='createSVGTransformFromMatrix', demands=['SVGTransformList'], returns='SVGTransform'),
         PrototypeCall(constructor='SVGTransformList', fn='createSVGTransformFromMatrix', demands=['SVGTransformList', 'DOMMatrix2DInit'], returns='SVGTransform'),
     ],
-    "getelementbyid": [
+    "getElementById": [
         PrototypeCall(constructor='SVGSVGElement', fn='getElementById', demands=['SVGSVGElement', 'str'], returns='Element'),
     ],
-    "suspendredraw": [
+    "suspendRedraw": [
         PrototypeCall(constructor='SVGSVGElement', fn='suspendRedraw', demands=['SVGSVGElement', 'int'], returns='int'),
     ],
-    "unsuspendredraw": [
+    "unsuspendRedraw": [
         PrototypeCall(constructor='SVGSVGElement', fn='unsuspendRedraw', demands=['SVGSVGElement', 'int'], returns='None'),
     ],
-    "unsuspendredrawall": [
+    "unsuspendRedrawAll": [
         PrototypeCall(constructor='SVGSVGElement', fn='unsuspendRedrawAll', demands=['SVGSVGElement'], returns='None'),
     ],
-    "forceredraw": [
+    "forceRedraw": [
         PrototypeCall(constructor='SVGSVGElement', fn='forceRedraw', demands=['SVGSVGElement'], returns='None'),
     ],
     "ShadowAnimation": [
         NewCall(constructor='ShadowAnimation', demands=['Animation', 'Element'], returns='ShadowAnimation'),
     ],
-    "setmatrix": [
+    "setMatrix": [
         PrototypeCall(constructor='SVGTransform', fn='setMatrix', demands=['SVGTransform'], returns='None'),
         PrototypeCall(constructor='SVGTransform', fn='setMatrix', demands=['SVGTransform', 'DOMMatrix2DInit'], returns='None'),
     ],
-    "settranslate": [
+    "setTranslate": [
         PrototypeCall(constructor='SVGTransform', fn='setTranslate', demands=['SVGTransform', 'float', 'float'], returns='None'),
     ],
-    "setscale": [
+    "setScale": [
         PrototypeCall(constructor='SVGTransform', fn='setScale', demands=['SVGTransform', 'float', 'float'], returns='None'),
     ],
-    "setrotate": [
+    "setRotate": [
         PrototypeCall(constructor='SVGTransform', fn='setRotate', demands=['SVGTransform', 'float', 'float', 'float'], returns='None'),
     ],
-    "setskewx": [
+    "setSkewX": [
         PrototypeCall(constructor='SVGTransform', fn='setSkewX', demands=['SVGTransform', 'float'], returns='None'),
     ],
-    "setskewy": [
+    "setSkewY": [
         PrototypeCall(constructor='SVGTransform', fn='setSkewY', demands=['SVGTransform', 'float'], returns='None'),
     ],
     "consolidate": [
         PrototypeCall(constructor='SVGTransformList', fn='consolidate', demands=['SVGTransformList'], returns='SVGTransform'),
     ],
-    "getnumberofchars": [
+    "getNumberOfChars": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getNumberOfChars', demands=['SVGTextContentElement'], returns='int'),
     ],
-    "getcomputedtextlength": [
+    "getComputedTextLength": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getComputedTextLength', demands=['SVGTextContentElement'], returns='float'),
     ],
-    "getsubstringlength": [
+    "getSubStringLength": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getSubStringLength', demands=['SVGTextContentElement', 'int', 'int'], returns='float'),
     ],
-    "getstartpositionofchar": [
+    "getStartPositionOfChar": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getStartPositionOfChar', demands=['SVGTextContentElement', 'int'], returns='DOMPoint'),
     ],
-    "getendpositionofchar": [
+    "getEndPositionOfChar": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getEndPositionOfChar', demands=['SVGTextContentElement', 'int'], returns='DOMPoint'),
     ],
-    "getextentofchar": [
+    "getExtentOfChar": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getExtentOfChar', demands=['SVGTextContentElement', 'int'], returns='DOMRect'),
     ],
-    "getrotationofchar": [
+    "getRotationOfChar": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getRotationOfChar', demands=['SVGTextContentElement', 'int'], returns='float'),
     ],
-    "getcharnumatposition": [
+    "getCharNumAtPosition": [
         PrototypeCall(constructor='SVGTextContentElement', fn='getCharNumAtPosition', demands=['SVGTextContentElement'], returns='int'),
         PrototypeCall(constructor='SVGTextContentElement', fn='getCharNumAtPosition', demands=['SVGTextContentElement', 'DOMPointInit'], returns='int'),
     ],
-    "selectsubstring": [
+    "selectSubString": [
         PrototypeCall(constructor='SVGTextContentElement', fn='selectSubString', demands=['SVGTextContentElement', 'int', 'int'], returns='None'),
     ],
-    "setorienttoauto": [
+    "setOrientToAuto": [
         PrototypeCall(constructor='SVGMarkerElement', fn='setOrientToAuto', demands=['SVGMarkerElement'], returns='None'),
     ],
-    "setorienttoangle": [
+    "setOrientToAngle": [
         PrototypeCall(constructor='SVGMarkerElement', fn='setOrientToAngle', demands=['SVGMarkerElement', 'SVGAngle'], returns='None'),
     ],
     "GeolocationSensor": [
@@ -5206,7 +5202,7 @@ webidl_calls = {
         NewCall(constructor='SFrameTransform', demands=[], returns='SFrameTransform'),
         NewCall(constructor='SFrameTransform', demands=['SFrameTransformOptions'], returns='SFrameTransform'),
     ],
-    "setencryptionkey": [
+    "setEncryptionKey": [
         PrototypeCall(constructor='SFrameTransform', fn='setEncryptionKey', demands=['SFrameTransform', 'CryptoKey'], returns='None'),
         PrototypeCall(constructor='SFrameTransform', fn='setEncryptionKey', demands=['SFrameTransform', 'CryptoKey', 'CryptoKeyID'], returns='None'),
     ],
@@ -5217,7 +5213,7 @@ webidl_calls = {
         NewCall(constructor='RTCEncodedVideoFrame', demands=['RTCEncodedVideoFrame'], returns='RTCEncodedVideoFrame'),
         NewCall(constructor='RTCEncodedVideoFrame', demands=['RTCEncodedVideoFrame', 'RTCEncodedVideoFrameOptions'], returns='RTCEncodedVideoFrame'),
     ],
-    "getmetadata": [
+    "getMetadata": [
         PrototypeCall(constructor='RTCEncodedVideoFrame', fn='getMetadata', demands=['RTCEncodedVideoFrame'], returns='RTCEncodedVideoFrameMetadata'),
         PrototypeCall(constructor='RTCEncodedAudioFrame', fn='getMetadata', demands=['RTCEncodedAudioFrame'], returns='RTCEncodedAudioFrameMetadata'),
     ],
@@ -5225,11 +5221,11 @@ webidl_calls = {
         NewCall(constructor='RTCEncodedAudioFrame', demands=['RTCEncodedAudioFrame'], returns='RTCEncodedAudioFrame'),
         NewCall(constructor='RTCEncodedAudioFrame', demands=['RTCEncodedAudioFrame', 'RTCEncodedAudioFrameOptions'], returns='RTCEncodedAudioFrame'),
     ],
-    "generatekeyframe": [
+    "generateKeyFrame": [
         PrototypeCall(constructor='RTCRtpScriptTransformer', fn='generateKeyFrame', demands=['RTCRtpScriptTransformer'], returns='int'),
         PrototypeCall(constructor='RTCRtpScriptTransformer', fn='generateKeyFrame', demands=['RTCRtpScriptTransformer', 'str'], returns='int'),
     ],
-    "sendkeyframerequest": [
+    "sendKeyFrameRequest": [
         PrototypeCall(constructor='RTCRtpScriptTransformer', fn='sendKeyFrameRequest', demands=['RTCRtpScriptTransformer'], returns='None'),
     ],
     "RTCRtpScriptTransform": [
@@ -5241,13 +5237,13 @@ webidl_calls = {
         NewCall(constructor='KeyFrameRequestEvent', demands=['str'], returns='KeyFrameRequestEvent'),
         NewCall(constructor='KeyFrameRequestEvent', demands=['str', 'str'], returns='KeyFrameRequestEvent'),
     ],
-    "drawbufferswebgl": [
+    "drawBuffersWEBGL": [
         PrototypeCall(constructor='WEBGL_draw_buffers', fn='drawBuffersWEBGL', demands=['WEBGL_draw_buffers', 'GLenum'], returns='None'),
     ],
-    "watchavailability": [
+    "watchAvailability": [
         PrototypeCall(constructor='RemotePlayback', fn='watchAvailability', demands=['RemotePlayback', 'RemotePlaybackAvailabilityCallback'], returns='int'),
     ],
-    "cancelwatchavailability": [
+    "cancelWatchAvailability": [
         PrototypeCall(constructor='RemotePlayback', fn='cancelWatchAvailability', demands=['RemotePlayback'], returns='None'),
         PrototypeCall(constructor='RemotePlayback', fn='cancelWatchAvailability', demands=['RemotePlayback', 'int'], returns='None'),
     ],
@@ -5255,7 +5251,7 @@ webidl_calls = {
         NewCall(constructor='Headers', demands=[], returns='Headers'),
         NewCall(constructor='Headers', demands=['HeadersInit'], returns='Headers'),
     ],
-    "getsetcookie": [
+    "getSetCookie": [
         PrototypeCall(constructor='Headers', fn='getSetCookie', demands=['Headers'], returns='str'),
     ],
     "Request": [
@@ -5280,16 +5276,16 @@ webidl_calls = {
         NewCall(constructor='Animation', demands=['AnimationEffect'], returns='Animation'),
         NewCall(constructor='Animation', demands=['AnimationEffect', 'AnimationTimeline'], returns='Animation'),
     ],
-    "updateplaybackrate": [
+    "updatePlaybackRate": [
         PrototypeCall(constructor='Animation', fn='updatePlaybackRate', demands=['Animation', 'float'], returns='None'),
     ],
     "reverse": [
         PrototypeCall(constructor='Animation', fn='reverse', demands=['Animation'], returns='None'),
     ],
-    "commitstyles": [
+    "commitStyles": [
         PrototypeCall(constructor='Animation', fn='commitStyles', demands=['Animation'], returns='None'),
     ],
-    "updatetiming": [
+    "updateTiming": [
         PrototypeCall(constructor='AnimationEffect', fn='updateTiming', demands=['AnimationEffect'], returns='None'),
         PrototypeCall(constructor='AnimationEffect', fn='updateTiming', demands=['AnimationEffect', 'OptionalEffectTiming'], returns='None'),
     ],
@@ -5298,10 +5294,10 @@ webidl_calls = {
         NewCall(constructor='KeyframeEffect', demands=['Element', 'object', 'float'], returns='KeyframeEffect'),
         NewCall(constructor='KeyframeEffect', demands=['KeyframeEffect'], returns='KeyframeEffect'),
     ],
-    "getkeyframes": [
+    "getKeyframes": [
         PrototypeCall(constructor='KeyframeEffect', fn='getKeyframes', demands=['KeyframeEffect'], returns='object'),
     ],
-    "setkeyframes": [
+    "setKeyframes": [
         PrototypeCall(constructor='KeyframeEffect', fn='setKeyframes', demands=['KeyframeEffect', 'object'], returns='None'),
     ],
     "CompressionStream": [
@@ -5310,10 +5306,10 @@ webidl_calls = {
     "DecompressionStream": [
         NewCall(constructor='DecompressionStream', demands=['CompressionFormat'], returns='DecompressionStream'),
     ],
-    "setconsumer": [
+    "setConsumer": [
         PrototypeCall(constructor='LaunchQueue', fn='setConsumer', demands=['LaunchQueue', 'LaunchConsumer'], returns='None'),
     ],
-    "isinputpending": [
+    "isInputPending": [
         PrototypeCall(constructor='Scheduling', fn='isInputPending', demands=['Scheduling'], returns='bool'),
         PrototypeCall(constructor='Scheduling', fn='isInputPending', demands=['Scheduling', 'IsInputPendingOptions'], returns='bool'),
     ],
@@ -5321,7 +5317,7 @@ webidl_calls = {
         PrototypeCall(constructor='BackgroundFetchManager', fn='fetch', demands=['BackgroundFetchManager', 'str', 'RequestInfo'], returns='BackgroundFetchRegistration'),
         PrototypeCall(constructor='BackgroundFetchManager', fn='fetch', demands=['BackgroundFetchManager', 'str', 'RequestInfo', 'BackgroundFetchOptions'], returns='BackgroundFetchRegistration'),
     ],
-    "getids": [
+    "getIds": [
         PrototypeCall(constructor='BackgroundFetchManager', fn='getIds', demands=['BackgroundFetchManager'], returns='str'),
     ],
     "BackgroundFetchEvent": [
@@ -5330,27 +5326,27 @@ webidl_calls = {
     "BackgroundFetchUpdateUIEvent": [
         NewCall(constructor='BackgroundFetchUpdateUIEvent', demands=['str', 'BackgroundFetchEventInit'], returns='BackgroundFetchUpdateUIEvent'),
     ],
-    "updateui": [
+    "updateUI": [
         PrototypeCall(constructor='BackgroundFetchUpdateUIEvent', fn='updateUI', demands=['BackgroundFetchUpdateUIEvent'], returns='None'),
         PrototypeCall(constructor='BackgroundFetchUpdateUIEvent', fn='updateUI', demands=['BackgroundFetchUpdateUIEvent', 'BackgroundFetchUIOptions'], returns='None'),
     ],
-    "translatestreaming": [
+    "translateStreaming": [
         PrototypeCall(constructor='Translator', fn='translateStreaming', demands=['Translator', 'str'], returns='ReadableStream'),
         PrototypeCall(constructor='Translator', fn='translateStreaming', demands=['Translator', 'str', 'TranslatorTranslateOptions'], returns='ReadableStream'),
     ],
     "XMLHttpRequest": [
         NewCall(constructor='XMLHttpRequest', demands=[], returns='XMLHttpRequest'),
     ],
-    "setrequestheader": [
+    "setRequestHeader": [
         PrototypeCall(constructor='XMLHttpRequest', fn='setRequestHeader', demands=['XMLHttpRequest', 'str', 'str'], returns='None'),
     ],
-    "getresponseheader": [
+    "getResponseHeader": [
         PrototypeCall(constructor='XMLHttpRequest', fn='getResponseHeader', demands=['XMLHttpRequest', 'str'], returns='str'),
     ],
-    "getallresponseheaders": [
+    "getAllResponseHeaders": [
         PrototypeCall(constructor='XMLHttpRequest', fn='getAllResponseHeaders', demands=['XMLHttpRequest'], returns='str'),
     ],
-    "overridemimetype": [
+    "overrideMimeType": [
         PrototypeCall(constructor='XMLHttpRequest', fn='overrideMimeType', demands=['XMLHttpRequest', 'str'], returns='None'),
     ],
     "FormData": [
@@ -5362,65 +5358,65 @@ webidl_calls = {
         NewCall(constructor='ProgressEvent', demands=['str'], returns='ProgressEvent'),
         NewCall(constructor='ProgressEvent', demands=['str', 'ProgressEventInit'], returns='ProgressEvent'),
     ],
-    "createanalyser": [
+    "createAnalyser": [
         PrototypeCall(constructor='BaseAudioContext', fn='createAnalyser', demands=['BaseAudioContext'], returns='AnalyserNode'),
     ],
-    "createbiquadfilter": [
+    "createBiquadFilter": [
         PrototypeCall(constructor='BaseAudioContext', fn='createBiquadFilter', demands=['BaseAudioContext'], returns='BiquadFilterNode'),
     ],
-    "createbuffersource": [
+    "createBufferSource": [
         PrototypeCall(constructor='BaseAudioContext', fn='createBufferSource', demands=['BaseAudioContext'], returns='AudioBufferSourceNode'),
     ],
-    "createchannelmerger": [
+    "createChannelMerger": [
         PrototypeCall(constructor='BaseAudioContext', fn='createChannelMerger', demands=['BaseAudioContext'], returns='ChannelMergerNode'),
         PrototypeCall(constructor='BaseAudioContext', fn='createChannelMerger', demands=['BaseAudioContext', 'int'], returns='ChannelMergerNode'),
     ],
-    "createchannelsplitter": [
+    "createChannelSplitter": [
         PrototypeCall(constructor='BaseAudioContext', fn='createChannelSplitter', demands=['BaseAudioContext'], returns='ChannelSplitterNode'),
         PrototypeCall(constructor='BaseAudioContext', fn='createChannelSplitter', demands=['BaseAudioContext', 'int'], returns='ChannelSplitterNode'),
     ],
-    "createconstantsource": [
+    "createConstantSource": [
         PrototypeCall(constructor='BaseAudioContext', fn='createConstantSource', demands=['BaseAudioContext'], returns='ConstantSourceNode'),
     ],
-    "createconvolver": [
+    "createConvolver": [
         PrototypeCall(constructor='BaseAudioContext', fn='createConvolver', demands=['BaseAudioContext'], returns='ConvolverNode'),
     ],
-    "createdelay": [
+    "createDelay": [
         PrototypeCall(constructor='BaseAudioContext', fn='createDelay', demands=['BaseAudioContext'], returns='DelayNode'),
         PrototypeCall(constructor='BaseAudioContext', fn='createDelay', demands=['BaseAudioContext', 'float'], returns='DelayNode'),
     ],
-    "createdynamicscompressor": [
+    "createDynamicsCompressor": [
         PrototypeCall(constructor='BaseAudioContext', fn='createDynamicsCompressor', demands=['BaseAudioContext'], returns='DynamicsCompressorNode'),
     ],
-    "creategain": [
+    "createGain": [
         PrototypeCall(constructor='BaseAudioContext', fn='createGain', demands=['BaseAudioContext'], returns='GainNode'),
     ],
-    "createiirfilter": [
+    "createIIRFilter": [
         PrototypeCall(constructor='BaseAudioContext', fn='createIIRFilter', demands=['BaseAudioContext', 'float', 'float'], returns='IIRFilterNode'),
     ],
-    "createoscillator": [
+    "createOscillator": [
         PrototypeCall(constructor='BaseAudioContext', fn='createOscillator', demands=['BaseAudioContext'], returns='OscillatorNode'),
     ],
-    "createpanner": [
+    "createPanner": [
         PrototypeCall(constructor='BaseAudioContext', fn='createPanner', demands=['BaseAudioContext'], returns='PannerNode'),
     ],
-    "createperiodicwave": [
+    "createPeriodicWave": [
         PrototypeCall(constructor='BaseAudioContext', fn='createPeriodicWave', demands=['BaseAudioContext', 'float', 'float'], returns='PeriodicWave'),
         PrototypeCall(constructor='BaseAudioContext', fn='createPeriodicWave', demands=['BaseAudioContext', 'float', 'float', 'PeriodicWaveConstraints'], returns='PeriodicWave'),
     ],
-    "createscriptprocessor": [
+    "createScriptProcessor": [
         PrototypeCall(constructor='BaseAudioContext', fn='createScriptProcessor', demands=['BaseAudioContext'], returns='ScriptProcessorNode'),
         PrototypeCall(constructor='BaseAudioContext', fn='createScriptProcessor', demands=['BaseAudioContext', 'int'], returns='ScriptProcessorNode'),
         PrototypeCall(constructor='BaseAudioContext', fn='createScriptProcessor', demands=['BaseAudioContext', 'int', 'int'], returns='ScriptProcessorNode'),
         PrototypeCall(constructor='BaseAudioContext', fn='createScriptProcessor', demands=['BaseAudioContext', 'int', 'int', 'int'], returns='ScriptProcessorNode'),
     ],
-    "createstereopanner": [
+    "createStereoPanner": [
         PrototypeCall(constructor='BaseAudioContext', fn='createStereoPanner', demands=['BaseAudioContext'], returns='StereoPannerNode'),
     ],
-    "createwaveshaper": [
+    "createWaveShaper": [
         PrototypeCall(constructor='BaseAudioContext', fn='createWaveShaper', demands=['BaseAudioContext'], returns='WaveShaperNode'),
     ],
-    "decodeaudiodata": [
+    "decodeAudioData": [
         PrototypeCall(constructor='BaseAudioContext', fn='decodeAudioData', demands=['BaseAudioContext', 'ArrayBuffer'], returns='AudioBuffer'),
         PrototypeCall(constructor='BaseAudioContext', fn='decodeAudioData', demands=['BaseAudioContext', 'ArrayBuffer', 'DecodeSuccessCallback'], returns='AudioBuffer'),
         PrototypeCall(constructor='BaseAudioContext', fn='decodeAudioData', demands=['BaseAudioContext', 'ArrayBuffer', 'DecodeSuccessCallback', 'DecodeErrorCallback'], returns='AudioBuffer'),
@@ -5429,33 +5425,33 @@ webidl_calls = {
         NewCall(constructor='AudioContext', demands=[], returns='AudioContext'),
         NewCall(constructor='AudioContext', demands=['AudioContextOptions'], returns='AudioContext'),
     ],
-    "getoutputtimestamp": [
+    "getOutputTimestamp": [
         PrototypeCall(constructor='AudioContext', fn='getOutputTimestamp', demands=['AudioContext'], returns='AudioTimestamp'),
     ],
     "suspend": [
         PrototypeCall(constructor='AudioContext', fn='suspend', demands=['AudioContext'], returns='None'),
         PrototypeCall(constructor='OfflineAudioContext', fn='suspend', demands=['OfflineAudioContext', 'float'], returns='None'),
     ],
-    "setsinkid": [
+    "setSinkId": [
         PrototypeCall(constructor='AudioContext', fn='setSinkId', demands=['AudioContext', 'str'], returns='None'),
     ],
-    "createmediaelementsource": [
+    "createMediaElementSource": [
         PrototypeCall(constructor='AudioContext', fn='createMediaElementSource', demands=['AudioContext', 'HTMLMediaElement'], returns='MediaElementAudioSourceNode'),
     ],
-    "createmediastreamsource": [
+    "createMediaStreamSource": [
         PrototypeCall(constructor='AudioContext', fn='createMediaStreamSource', demands=['AudioContext', 'MediaStream'], returns='MediaStreamAudioSourceNode'),
     ],
-    "createmediastreamtracksource": [
+    "createMediaStreamTrackSource": [
         PrototypeCall(constructor='AudioContext', fn='createMediaStreamTrackSource', demands=['AudioContext', 'MediaStreamTrack'], returns='MediaStreamTrackAudioSourceNode'),
     ],
-    "createmediastreamdestination": [
+    "createMediaStreamDestination": [
         PrototypeCall(constructor='AudioContext', fn='createMediaStreamDestination', demands=['AudioContext'], returns='MediaStreamAudioDestinationNode'),
     ],
     "OfflineAudioContext": [
         NewCall(constructor='OfflineAudioContext', demands=['OfflineAudioContextOptions'], returns='OfflineAudioContext'),
         NewCall(constructor='OfflineAudioContext', demands=['int', 'int', 'float'], returns='OfflineAudioContext'),
     ],
-    "startrendering": [
+    "startRendering": [
         PrototypeCall(constructor='OfflineAudioContext', fn='startRendering', demands=['OfflineAudioContext'], returns='AudioBuffer'),
     ],
     "OfflineAudioCompletionEvent": [
@@ -5464,59 +5460,59 @@ webidl_calls = {
     "AudioBuffer": [
         NewCall(constructor='AudioBuffer', demands=['AudioBufferOptions'], returns='AudioBuffer'),
     ],
-    "getchanneldata": [
+    "getChannelData": [
         PrototypeCall(constructor='AudioBuffer', fn='getChannelData', demands=['AudioBuffer', 'int'], returns='Float32Array'),
     ],
-    "copyfromchannel": [
+    "copyFromChannel": [
         PrototypeCall(constructor='AudioBuffer', fn='copyFromChannel', demands=['AudioBuffer', 'Float32Array', 'int'], returns='None'),
         PrototypeCall(constructor='AudioBuffer', fn='copyFromChannel', demands=['AudioBuffer', 'Float32Array', 'int', 'int'], returns='None'),
     ],
-    "copytochannel": [
+    "copyToChannel": [
         PrototypeCall(constructor='AudioBuffer', fn='copyToChannel', demands=['AudioBuffer', 'Float32Array', 'int'], returns='None'),
         PrototypeCall(constructor='AudioBuffer', fn='copyToChannel', demands=['AudioBuffer', 'Float32Array', 'int', 'int'], returns='None'),
     ],
-    "setvalueattime": [
+    "setValueAtTime": [
         PrototypeCall(constructor='AudioParam', fn='setValueAtTime', demands=['AudioParam', 'float', 'float'], returns='AudioParam'),
     ],
-    "linearramptovalueattime": [
+    "linearRampToValueAtTime": [
         PrototypeCall(constructor='AudioParam', fn='linearRampToValueAtTime', demands=['AudioParam', 'float', 'float'], returns='AudioParam'),
     ],
-    "exponentialramptovalueattime": [
+    "exponentialRampToValueAtTime": [
         PrototypeCall(constructor='AudioParam', fn='exponentialRampToValueAtTime', demands=['AudioParam', 'float', 'float'], returns='AudioParam'),
     ],
-    "settargetattime": [
+    "setTargetAtTime": [
         PrototypeCall(constructor='AudioParam', fn='setTargetAtTime', demands=['AudioParam', 'float', 'float', 'float'], returns='AudioParam'),
     ],
-    "setvaluecurveattime": [
+    "setValueCurveAtTime": [
         PrototypeCall(constructor='AudioParam', fn='setValueCurveAtTime', demands=['AudioParam', 'float', 'float', 'float'], returns='AudioParam'),
     ],
-    "cancelscheduledvalues": [
+    "cancelScheduledValues": [
         PrototypeCall(constructor='AudioParam', fn='cancelScheduledValues', demands=['AudioParam', 'float'], returns='AudioParam'),
     ],
-    "cancelandholdattime": [
+    "cancelAndHoldAtTime": [
         PrototypeCall(constructor='AudioParam', fn='cancelAndHoldAtTime', demands=['AudioParam', 'float'], returns='AudioParam'),
     ],
     "AnalyserNode": [
         NewCall(constructor='AnalyserNode', demands=['BaseAudioContext'], returns='AnalyserNode'),
         NewCall(constructor='AnalyserNode', demands=['BaseAudioContext', 'AnalyserOptions'], returns='AnalyserNode'),
     ],
-    "getfloatfrequencydata": [
+    "getFloatFrequencyData": [
         PrototypeCall(constructor='AnalyserNode', fn='getFloatFrequencyData', demands=['AnalyserNode', 'Float32Array'], returns='None'),
     ],
-    "getbytefrequencydata": [
+    "getByteFrequencyData": [
         PrototypeCall(constructor='AnalyserNode', fn='getByteFrequencyData', demands=['AnalyserNode', 'Uint8Array'], returns='None'),
     ],
-    "getfloattimedomaindata": [
+    "getFloatTimeDomainData": [
         PrototypeCall(constructor='AnalyserNode', fn='getFloatTimeDomainData', demands=['AnalyserNode', 'Float32Array'], returns='None'),
     ],
-    "getbytetimedomaindata": [
+    "getByteTimeDomainData": [
         PrototypeCall(constructor='AnalyserNode', fn='getByteTimeDomainData', demands=['AnalyserNode', 'Uint8Array'], returns='None'),
     ],
     "AudioBufferSourceNode": [
         NewCall(constructor='AudioBufferSourceNode', demands=['BaseAudioContext'], returns='AudioBufferSourceNode'),
         NewCall(constructor='AudioBufferSourceNode', demands=['BaseAudioContext', 'AudioBufferSourceOptions'], returns='AudioBufferSourceNode'),
     ],
-    "setorientation": [
+    "setOrientation": [
         PrototypeCall(constructor='AudioListener', fn='setOrientation', demands=['AudioListener', 'float', 'float', 'float', 'float', 'float', 'float'], returns='None'),
         PrototypeCall(constructor='PannerNode', fn='setOrientation', demands=['PannerNode', 'float', 'float', 'float'], returns='None'),
     ],
@@ -5527,7 +5523,7 @@ webidl_calls = {
         NewCall(constructor='BiquadFilterNode', demands=['BaseAudioContext'], returns='BiquadFilterNode'),
         NewCall(constructor='BiquadFilterNode', demands=['BaseAudioContext', 'BiquadFilterOptions'], returns='BiquadFilterNode'),
     ],
-    "getfrequencyresponse": [
+    "getFrequencyResponse": [
         PrototypeCall(constructor='BiquadFilterNode', fn='getFrequencyResponse', demands=['BiquadFilterNode', 'Float32Array', 'Float32Array', 'Float32Array'], returns='None'),
         PrototypeCall(constructor='IIRFilterNode', fn='getFrequencyResponse', demands=['IIRFilterNode', 'Float32Array', 'Float32Array', 'Float32Array'], returns='None'),
     ],
@@ -5579,7 +5575,7 @@ webidl_calls = {
         NewCall(constructor='OscillatorNode', demands=['BaseAudioContext'], returns='OscillatorNode'),
         NewCall(constructor='OscillatorNode', demands=['BaseAudioContext', 'OscillatorOptions'], returns='OscillatorNode'),
     ],
-    "setperiodicwave": [
+    "setPeriodicWave": [
         PrototypeCall(constructor='OscillatorNode', fn='setPeriodicWave', demands=['OscillatorNode', 'PeriodicWave'], returns='None'),
     ],
     "PannerNode": [
@@ -5598,7 +5594,7 @@ webidl_calls = {
         NewCall(constructor='WaveShaperNode', demands=['BaseAudioContext'], returns='WaveShaperNode'),
         NewCall(constructor='WaveShaperNode', demands=['BaseAudioContext', 'WaveShaperOptions'], returns='WaveShaperNode'),
     ],
-    "registerprocessor": [
+    "registerProcessor": [
         PrototypeCall(constructor='AudioWorkletGlobalScope', fn='registerProcessor', demands=['AudioWorkletGlobalScope', 'str', 'AudioWorkletProcessorConstructor'], returns='None'),
     ],
     "AudioWorkletNode": [
@@ -5629,76 +5625,76 @@ webidl_calls = {
     "FileReader": [
         NewCall(constructor='FileReader', demands=[], returns='FileReader'),
     ],
-    "readasarraybuffer": [
+    "readAsArrayBuffer": [
         PrototypeCall(constructor='FileReader', fn='readAsArrayBuffer', demands=['FileReader', 'Blob'], returns='None'),
         PrototypeCall(constructor='FileReaderSync', fn='readAsArrayBuffer', demands=['FileReaderSync', 'Blob'], returns='ArrayBuffer'),
     ],
-    "readasbinarystring": [
+    "readAsBinaryString": [
         PrototypeCall(constructor='FileReader', fn='readAsBinaryString', demands=['FileReader', 'Blob'], returns='None'),
         PrototypeCall(constructor='FileReaderSync', fn='readAsBinaryString', demands=['FileReaderSync', 'Blob'], returns='str'),
     ],
-    "readastext": [
+    "readAsText": [
         PrototypeCall(constructor='FileReader', fn='readAsText', demands=['FileReader', 'Blob'], returns='None'),
         PrototypeCall(constructor='FileReader', fn='readAsText', demands=['FileReader', 'Blob', 'str'], returns='None'),
         PrototypeCall(constructor='FileReaderSync', fn='readAsText', demands=['FileReaderSync', 'Blob'], returns='str'),
         PrototypeCall(constructor='FileReaderSync', fn='readAsText', demands=['FileReaderSync', 'Blob', 'str'], returns='str'),
     ],
-    "readasdataurl": [
+    "readAsDataURL": [
         PrototypeCall(constructor='FileReader', fn='readAsDataURL', demands=['FileReader', 'Blob'], returns='None'),
         PrototypeCall(constructor='FileReaderSync', fn='readAsDataURL', demands=['FileReaderSync', 'Blob'], returns='str'),
     ],
     "FileReaderSync": [
         NewCall(constructor='FileReaderSync', demands=[], returns='FileReaderSync'),
     ],
-    "encodeutf8": [
+    "encodeUtf8": [
         PrototypeCall(constructor='ProtectedAudienceUtilities', fn='encodeUtf8', demands=['ProtectedAudienceUtilities', 'str'], returns='Uint8Array'),
     ],
-    "decodeutf8": [
+    "decodeUtf8": [
         PrototypeCall(constructor='ProtectedAudienceUtilities', fn='decodeUtf8', demands=['ProtectedAudienceUtilities', 'Uint8Array'], returns='str'),
     ],
-    "reportadauctionwin": [
+    "reportAdAuctionWin": [
         PrototypeCall(constructor='ForDebuggingOnly', fn='reportAdAuctionWin', demands=['ForDebuggingOnly', 'str'], returns='None'),
     ],
-    "reportadauctionloss": [
+    "reportAdAuctionLoss": [
         PrototypeCall(constructor='ForDebuggingOnly', fn='reportAdAuctionLoss', demands=['ForDebuggingOnly', 'str'], returns='None'),
     ],
-    "setbid": [
+    "setBid": [
         PrototypeCall(constructor='InterestGroupBiddingScriptRunnerGlobalScope', fn='setBid', demands=['InterestGroupBiddingScriptRunnerGlobalScope'], returns='bool'),
         PrototypeCall(constructor='InterestGroupBiddingScriptRunnerGlobalScope', fn='setBid', demands=['InterestGroupBiddingScriptRunnerGlobalScope', 'GenerateBidOutput'], returns='bool'),
     ],
-    "setprioritysignalsoverride": [
+    "setPrioritySignalsOverride": [
         PrototypeCall(constructor='InterestGroupBiddingScriptRunnerGlobalScope', fn='setPrioritySignalsOverride', demands=['InterestGroupBiddingScriptRunnerGlobalScope', 'str'], returns='None'),
         PrototypeCall(constructor='InterestGroupBiddingScriptRunnerGlobalScope', fn='setPrioritySignalsOverride', demands=['InterestGroupBiddingScriptRunnerGlobalScope', 'str', 'float'], returns='None'),
     ],
-    "sendreportto": [
+    "sendReportTo": [
         PrototypeCall(constructor='InterestGroupReportingScriptRunnerGlobalScope', fn='sendReportTo', demands=['InterestGroupReportingScriptRunnerGlobalScope', 'str'], returns='None'),
     ],
-    "registeradbeacon": [
+    "registerAdBeacon": [
         PrototypeCall(constructor='InterestGroupReportingScriptRunnerGlobalScope', fn='registerAdBeacon', demands=['InterestGroupReportingScriptRunnerGlobalScope', 'str'], returns='None'),
     ],
-    "registeradmacro": [
+    "registerAdMacro": [
         PrototypeCall(constructor='InterestGroupReportingScriptRunnerGlobalScope', fn='registerAdMacro', demands=['InterestGroupReportingScriptRunnerGlobalScope', 'str', 'str'], returns='None'),
     ],
-    "queryfeaturesupport": [
+    "queryFeatureSupport": [
         PrototypeCall(constructor='ProtectedAudience', fn='queryFeatureSupport', demands=['ProtectedAudience', 'str'], returns='*'),
     ],
     "CaptureController": [
         NewCall(constructor='CaptureController', demands=[], returns='CaptureController'),
     ],
-    "setfocusbehavior": [
+    "setFocusBehavior": [
         PrototypeCall(constructor='CaptureController', fn='setFocusBehavior', demands=['CaptureController', 'CaptureStartFocusBehavior'], returns='None'),
     ],
-    "getcurrentposition": [
+    "getCurrentPosition": [
         PrototypeCall(constructor='Geolocation', fn='getCurrentPosition', demands=['Geolocation', 'PositionCallback'], returns='None'),
         PrototypeCall(constructor='Geolocation', fn='getCurrentPosition', demands=['Geolocation', 'PositionCallback', 'PositionErrorCallback'], returns='None'),
         PrototypeCall(constructor='Geolocation', fn='getCurrentPosition', demands=['Geolocation', 'PositionCallback', 'PositionErrorCallback', 'PositionOptions'], returns='None'),
     ],
-    "watchposition": [
+    "watchPosition": [
         PrototypeCall(constructor='Geolocation', fn='watchPosition', demands=['Geolocation', 'PositionCallback'], returns='int'),
         PrototypeCall(constructor='Geolocation', fn='watchPosition', demands=['Geolocation', 'PositionCallback', 'PositionErrorCallback'], returns='int'),
         PrototypeCall(constructor='Geolocation', fn='watchPosition', demands=['Geolocation', 'PositionCallback', 'PositionErrorCallback', 'PositionOptions'], returns='int'),
     ],
-    "clearwatch": [
+    "clearWatch": [
         PrototypeCall(constructor='Geolocation', fn='clearWatch', demands=['Geolocation', 'int'], returns='None'),
     ],
 }

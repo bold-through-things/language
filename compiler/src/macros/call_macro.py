@@ -10,9 +10,32 @@ from node import Args, Macro, Params, Inject_code_start, SaneIdentifier, Target,
 from common_utils import collect_child_expressions, get_single_arg, get_two_args
 from error_types import ErrorType
 from logger import default_logger
+from type_hierarchy import type_hierarchy, union_types
+
+class TypeHierarchyChecker:
+    def __init__(self, hierarchy, unions):
+        self.hierarchy = hierarchy
+        self.unions = unions
+
+    def is_subtype(self, child, parent):
+        if child == parent:
+            return True
+
+        if parent in self.unions:
+            for member in self.unions[parent]:
+                if self.is_subtype(child, member):
+                    return True
+
+        if child not in self.hierarchy:
+            return False
+        
+        return self.is_subtype(self.hierarchy[child], parent)
+
+type_checker = TypeHierarchyChecker(type_hierarchy, union_types)
 
 class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def _matches_signature(self, actual_types: list[str], demanded_types: list[str]) -> bool:
+        default_logger.typecheck(f"_matches_signature: actual={actual_types}, demanded={demanded_types}")
         if demanded_types is None:
             return True # No specific demands, so it matches
         """Check if actual parameter types match the demanded signature"""
@@ -23,8 +46,10 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
             # "*" matches anything
             if demanded == "*" or actual == "*":
                 continue
-            if actual != demanded:
+            if not type_checker.is_subtype(actual, demanded):
+                default_logger.typecheck(f"_matches_signature: {actual} is not a subtype of {demanded}")
                 return False
+        default_logger.typecheck(f"_matches_signature: match! {actual_types} {demanded_types}")
         return True
 
     def resolve_convention(self, ctx: MacroContext, actual_arg_types: list[str] = None):
@@ -96,7 +121,7 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
                     continue
                 default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received}")
                 # TODO - this should point to the child node that we received from, actually...
-                ctx.compiler.assert_(received == demanded, ctx.node, f"argument {i} demands {demanded} and is given {received}", ErrorType.ARGUMENT_TYPE_MISMATCH)
+                ctx.compiler.assert_(type_checker.is_subtype(received, demanded), ctx.node, f"argument {i} demands {demanded} and is given {received}", ErrorType.ARGUMENT_TYPE_MISMATCH)
 
         return convention.returns or "*"
 

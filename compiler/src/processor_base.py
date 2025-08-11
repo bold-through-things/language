@@ -43,10 +43,14 @@ def _try_match_local(ctx: "MacroContext", name: str):
     if name in {desired_local_name, sane_local_name}:
         # Found the local definition, try to get its type from metadata
         from node import FieldDemandType
+        from logger import default_logger
+        default_logger.typecheck(f"_try_match_local: found {name} at {ctx.node.content}")
         try:
             demanded = ctx.compiler.get_metadata(ctx.node, FieldDemandType)
+            default_logger.typecheck(f"_try_match_local: found type {demanded} in metadata")
             return LocalMatchResult(ctx.node, str(demanded))
         except KeyError:
+            default_logger.typecheck(f"_try_match_local: no type in metadata")
             # Fall back to looking for type node
             type_node = seek_child_macro(ctx.node, "type")
             if type_node:

@@ -12,4 +12,6 @@ this is a complex system. you can't just *guess* from the error what the fix is.
 
 in general, prefer you clarify your fixes with me before you apply them. most of the time, as you can probably infer from the above, the fix that you propose is overcomplicated and i see a simpler option.
 
+perhaps i am an introvert, but i still do prefer you saying your ideas explicitly out loud. sometimes you do, sometimes you don't. i would prefer you always did. it helps me catch your mistakes sooner. do not be silent, talk to me.
+
 build quality software and always remember. our greatest enemy is our indifference.

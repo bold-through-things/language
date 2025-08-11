@@ -97,7 +97,7 @@ void (async () => {
             _0x10_decoder
             let _0x12_decoder = _0x10_decoder
             let _0x14__0x11_encoded = _0xb_encoded
-            const _0x20_decode = await AudioDecoder.prototype.decode.call(_0x12_decoder, _0x14__0x11_encoded)
+            const _0x20_decode = await TextDecoder.prototype.decode.call(_0x12_decoder, _0x14__0x11_encoded)
             let _0x13_decode = _0x20_decode
             let _0x15_decoded = _0x13_decode
             _0x15_decoded

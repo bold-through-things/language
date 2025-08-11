@@ -6,9 +6,11 @@ a print
 	a myURL pathname
 
 local encoder
+	67lang:auto_type
 	a TextEncoder
 
 local encoded
+	67lang:auto_type
 	an encoder encode
 		string "hello world"
 
@@ -16,9 +18,11 @@ a print
 	an encoded
 
 local decoder
+	67lang:auto_type
 	a TextDecoder
 
 local decoded
+	67lang:auto_type
 	a decoder decode
 		an encoded
 

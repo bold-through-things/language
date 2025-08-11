@@ -1,0 +1,87 @@
+67lang:file
+	local myURL
+		local _0x0_URL
+			67lang:call URL
+				string "https://example.com/path?query=123"
+
+			67lang:auto_type
+
+	local _0x4_print
+		67lang:call print
+			noscope
+				local _0x2_myURL
+					67lang:access_local myURL
+
+					67lang:auto_type
+
+			local _0x3_pathname
+				67lang:access_field _0x2_myURL pathname
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	local encoder
+		local _0x7_TextEncoder
+			67lang:call TextEncoder
+
+			67lang:auto_type
+
+	local encoded
+		noscope
+			local _0x9_encoder
+				67lang:access_local encoder
+
+				67lang:auto_type
+
+		local _0xa_encode
+			67lang:call encode
+				67lang:access_local _0x9_encoder
+
+				string "hello world"
+
+			67lang:auto_type
+
+	local _0xd_print
+		67lang:call print
+			local _0xc_encoded
+				67lang:access_local encoded
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	local decoder
+		local _0xf_TextDecoder
+			67lang:call TextDecoder
+
+			67lang:auto_type
+
+	local decoded
+		noscope
+			local _0x12_decoder
+				67lang:access_local decoder
+
+				67lang:auto_type
+
+		local _0x13_decode
+			67lang:call decode
+				67lang:access_local _0x12_decoder
+
+				local _0x11_encoded
+					67lang:access_local encoded
+
+					67lang:auto_type
+
+			67lang:auto_type
+
+	local _0x17_print
+		67lang:call print
+			local _0x16_decoded
+				67lang:access_local decoded
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+

@@ -40,6 +40,30 @@ def idl_type_to_67lang_type(idl_type):
 
     return TYPE_MAPPING.get(type_name, type_name)
 
+def extract_type_hierarchy(idl_dir):
+    type_hierarchy = {}
+    for filename in os.listdir(idl_dir):
+        if filename.endswith(".json"):
+            with open(os.path.join(idl_dir, filename)) as f:
+                data = json.load(f)
+                if "idlparsed" in data and "idlNames" in data["idlparsed"]:
+                    for name, definition in data["idlparsed"]["idlNames"].items():
+                        if definition["type"] == "interface" and definition.get("inheritance"):
+                            type_hierarchy[name] = definition["inheritance"]
+    return type_hierarchy
+
+def extract_union_types(idl_dir):
+    union_types = {}
+    for filename in os.listdir(idl_dir):
+        if filename.endswith(".json"):
+            with open(os.path.join(idl_dir, filename)) as f:
+                data = json.load(f)
+                if "idlparsed" in data and "idlNames" in data["idlparsed"]:
+                    for name, definition in data["idlparsed"]["idlNames"].items():
+                        if definition["type"] == "typedef" and definition["idlType"]["union"]:
+                            union_types[name] = [idl_type_to_67lang_type(t) for t in definition["idlType"]["idlType"]]
+    return union_types
+
 def main():
     parser = argparse.ArgumentParser(description='Import WebIDL definitions.')
     parser.add_argument('webref_path', help='Path to the webref directory')
@@ -47,6 +71,18 @@ def main():
 
     idl_dir = os.path.join(args.webref_path, "ed/idlparsed")
     
+    type_hierarchy = extract_type_hierarchy(idl_dir)
+    union_types = extract_union_types(idl_dir)
+
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    type_hierarchy_path = os.path.join(script_dir, "type_hierarchy.py")
+    with open(type_hierarchy_path, "w") as f:
+        f.write("type_hierarchy = ")
+        f.write(repr(type_hierarchy))
+        f.write("\n\n")
+        f.write("union_types = ")
+        f.write(repr(union_types))
+
     generated_builtins = {}
 
     for filename in os.listdir(idl_dir):
@@ -90,14 +126,13 @@ def main():
                                                 instance_demands = [name] + demands
                                                 call = PrototypeCall(constructor=name, fn=member["name"], demands=instance_demands, returns=returns)
                                             
-                                            key = member["name"].lower()
+                                            key = member["name"]
                                             if key not in generated_builtins:
                                                 generated_builtins[key] = []
                                             generated_builtins[key].append(call)
                                 except KeyError as e:
                                     print(f"Skipping member of {name} due to missing key: {e}")
 
-    script_dir = os.path.dirname(os.path.realpath(__file__))
     output_path = os.path.join(script_dir, "webidl_builtins.py")
 
     with open(output_path, "w") as f:
@@ -109,6 +144,8 @@ def main():
                 f.write(f"        {call!r},\n")
             f.write("    ],\n")
         f.write("}\n")
+
+
 
 if __name__ == "__main__":
     main()
