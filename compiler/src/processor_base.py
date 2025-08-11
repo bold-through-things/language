@@ -74,7 +74,6 @@ class LocalMatchResult:
 
 # @print_with_callback(lambda ctx, name, ret: f"walk_upwards_for_local_definition {name} from node {ctx.node.pos.line} {ctx.node.content} finally returns {ret.node.content if ret else "None"}\n")
 def walk_upwards_for_local_definition(ctx: "MacroContext", name: str):
-    """Walk upwards to find local variable definitions using the new metadata system"""
     current = ctx.node
     compiler = ctx.compiler
     while current:

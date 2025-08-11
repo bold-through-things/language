@@ -144,6 +144,14 @@ class Access_local_macro_provider(Macro_emission_provider, Macro_typecheck_provi
 
 class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider):
     def preprocess(self, ctx: MacroContext):
+        # Process children first
+        with default_logger.indent("macro", f"preprocessing children of {ctx.node.content}"):
+            for i, child in enumerate(ctx.node.children):
+                with default_logger.indent("macro", f"child {i}: {child.content}"):
+                    with ctx.compiler.safely:
+                        child_ctx = replace(ctx, node=child)
+                        ctx.current_step.process_node(child_ctx)
+
         desired_name = get_single_arg(ctx)
         actual_name = ctx.compiler.get_new_ident(desired_name)
         ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)

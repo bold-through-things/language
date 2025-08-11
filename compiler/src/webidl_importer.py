@@ -69,6 +69,10 @@ def main():
     parser.add_argument('webref_path', help='Path to the webref directory')
     args = parser.parse_args()
 
+    includes_map = {}
+    generated_builtins = {}
+    mixin_operations = {}
+
     idl_dir = os.path.join(args.webref_path, "ed/idlparsed")
     
     type_hierarchy = extract_type_hierarchy(idl_dir)
@@ -83,8 +87,39 @@ def main():
         f.write("union_types = ")
         f.write(repr(union_types))
 
-    generated_builtins = {}
+    
 
+    # NEW: Populate includes_map and mixin_operations in a first pass
+    for filename in os.listdir(idl_dir):
+        if filename.endswith(".json"):
+            with open(os.path.join(idl_dir, filename)) as f:
+                data = json.load(f)
+                if "idlparsed" in data:
+                    if "includes" in data["idlparsed"]:
+                        for interface_name, mixins in data["idlparsed"]["includes"].items():
+                            if interface_name not in includes_map:
+                                includes_map[interface_name] = []
+                            includes_map[interface_name].extend(mixins)
+                    
+                    if "idlNames" in data["idlparsed"]:
+                        for name, definition in data["idlparsed"]["idlNames"].items():
+                            if "mixin" in definition["type"]: # Correctly identify mixins
+                                if name not in mixin_operations:
+                                    mixin_operations[name] = []
+                                for member in definition["members"]:
+                                    if member["type"] == "operation":
+                                        mixin_operations[name].append(member)
+    
+    print(f"includes_map (after first pass): {includes_map}") # DEBUG
+    print(f"mixin_operations (after first pass): {mixin_operations}") # DEBUG
+
+    # Manually add implicit inclusions not present in the IDL JSON
+    if "Window" in includes_map:
+        includes_map["Window"].append("WindowOrWorkerGlobalScope")
+    else:
+        includes_map["Window"] = ["WindowOrWorkerGlobalScope"]
+
+    # Second pass: Generate builtins
     for filename in os.listdir(idl_dir):
         if filename.endswith(".json"):
             with open(os.path.join(idl_dir, filename)) as f:
@@ -92,6 +127,7 @@ def main():
                 if "idlparsed" in data and "idlNames" in data["idlparsed"]:
                     for name, definition in data["idlparsed"]["idlNames"].items():
                         if definition["type"] == "interface":
+                            # Process interface's own members
                             for member in definition["members"]:
                                 try:
                                     if member["type"] == "constructor":
@@ -119,10 +155,11 @@ def main():
                                             demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
                                             returns = idl_type_to_67lang_type(member["idlType"])
                                             
-                                            if "static" in member.get("special", ""):
+                                            if name == "Window": # All non-static methods of Window are treated as global DirectCalls
+                                                call = DirectCall(fn=member["name"], receiver=None, demands=demands, returns=returns)
+                                            elif "static" in member.get("special", ""):
                                                 call = DirectCall(fn=member["name"], receiver=name, demands=demands, returns=returns)
                                             else:
-                                                # Prepend self type to demands for instance methods
                                                 instance_demands = [name] + demands
                                                 call = PrototypeCall(constructor=name, fn=member["name"], demands=instance_demands, returns=returns)
                                             
@@ -132,10 +169,70 @@ def main():
                                             generated_builtins[key].append(call)
                                 except KeyError as e:
                                     print(f"Skipping member of {name} due to missing key: {e}")
+                            
+                            # Process included mixin members
+                            if name in includes_map:
+                                for mixin_name in includes_map[name]:
+                                    if mixin_name in mixin_operations:
+                                        print(f"Processing mixin {mixin_name} for interface {name} (second pass)") # DEBUG
+                                        for member in mixin_operations[mixin_name]:
+                                            if member["type"] == "operation":
+                                                print(f"  Processing operation {member['name']} from mixin {mixin_name} (second pass)") # DEBUG
+                                                arguments = member["arguments"]
+                                                min_args = 0
+                                                for arg in arguments:
+                                                    if not arg["optional"]:
+                                                        min_args += 1
+                                                
+                                                for i in range(min_args, len(arguments) + 1):
+                                                    demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
+                                                    returns = idl_type_to_67lang_type(member["idlType"])
+                                                    
+                                                    if name == "Window": # All non-static methods of Window are treated as global DirectCalls
+                                                        call = DirectCall(fn=member["name"], receiver=None, demands=demands, returns=returns)
+                                                    else:
+                                                        instance_demands = [name] + demands # 'name' is the including interface
+                                                        call = PrototypeCall(constructor=name, fn=member["name"], demands=instance_demands, returns=returns)
+                                                    
+                                                    key = member["name"]
+                                                    if key not in generated_builtins:
+                                                        generated_builtins[key] = []
+                                                    generated_builtins[key].append(call)
+
+    print(f"includes_map: {includes_map}") # DEBUG
+    print(f"mixin_operations: {mixin_operations}") # DEBUG
+
+    # Process mixin inclusions
+    for interface_name, mixin_names in includes_map.items():
+        for mixin_name in mixin_names:
+            if mixin_name in mixin_operations:
+                print(f"Processing mixin {mixin_name} for interface {interface_name}") # DEBUG
+                for member in mixin_operations[mixin_name]:
+                    if member["type"] == "operation":
+                        print(f"  Processing operation {member['name']} from mixin {mixin_name}") # DEBUG
+                        arguments = member["arguments"]
+                        min_args = 0
+                        for arg in arguments:
+                            if not arg["optional"]:
+                                min_args += 1
+                        
+                        for i in range(min_args, len(arguments) + 1):
+                            demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
+                            returns = idl_type_to_67lang_type(member["idlType"])
+                            
+                            # Mixin operations become prototype calls on the including interface
+                            instance_demands = [interface_name] + demands
+                            call = PrototypeCall(constructor=interface_name, fn=member["name"], demands=instance_demands, returns=returns)
+                            
+                            key = member["name"]
+                            if key not in generated_builtins:
+                                generated_builtins[key] = []
+                            generated_builtins[key].append(call)
 
     output_path = os.path.join(script_dir, "webidl_builtins.py")
 
     with open(output_path, "w") as f:
+        f.write("# This file is automatically generated. Do not edit directly.\n")
         f.write("from processor_base import PrototypeCall, DirectCall, NewCall\n\n")
         f.write("webidl_calls = {\n")
         for name, calls in generated_builtins.items():

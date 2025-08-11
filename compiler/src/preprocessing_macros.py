@@ -26,14 +26,6 @@ class PreprocessingStep(MacroProcessingStep):
                 ErrorType.INVALID_INDENTATION)
             # Don't return early - let the processing continue so we don't break the pipeline
         
-        # Process children first
-        with default_logger.indent("macro", f"preprocessing children of {ctx.node.content}"):
-            for i, child in enumerate(ctx.node.children):
-                with default_logger.indent("macro", f"child {i}: {child.content}"):
-                    with ctx.compiler.safely:
-                        child_ctx = replace(ctx, node=child)
-                        self.process_node(child_ctx)
-        
         # Process current node  
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_preprocessors = self.macros.all()
@@ -45,3 +37,10 @@ class PreprocessingStep(MacroProcessingStep):
                 all_preprocessors[macro](ctx)
         else:
             default_logger.macro(f"no preprocessor for macro: {macro}")
+            # Process children if no specific preprocessor is found for the current node
+            with default_logger.indent("macro", f"preprocessing children of {ctx.node.content}"):
+                for i, child in enumerate(ctx.node.children):
+                    with default_logger.indent("macro", f"child {i}: {child.content}"):
+                        with ctx.compiler.safely:
+                            child_ctx = replace(ctx, node=child)
+                            self.process_node(child_ctx)

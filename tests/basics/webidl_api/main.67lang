@@ -5,26 +5,62 @@ local myURL
 a print
 	a myURL pathname
 
+a print
+	string "\n--- Testing TextEncoder/TextDecoder ---"
+
 local encoder
 	67lang:auto_type
 	a TextEncoder
-
-local encoded
-	67lang:auto_type
-	an encoder encode
-		string "hello world"
-
-a print
-	an encoded
 
 local decoder
 	67lang:auto_type
 	a TextDecoder
 
-local decoded
-	67lang:auto_type
-	a decoder decode
-		an encoded
+local text_tests
+	list
+		string "ASCII text"
+		string "Unicode: 🦕 Deno"
+		string "Numbers: 42"
+
+for text in
+	a text_tests
+do
+	
+	
+	local bytes
+		an encoder encode
+			a text
+
+	local restored
+		a decoder decode
+			a bytes
+
+	a print
+		string `Text: "`
+		a text
+		string `" -> Bytes: [`
+		a bytes
+		string `] -> Restored: "`
+		a restored
 
 a print
-	a decoded
+	string "\n--- Testing atob/btoa ---"
+
+local testString
+	string "Hello World"
+
+local encodedString
+	a btoa
+		a testString
+
+local decodedString
+	a atob
+		a encodedString
+
+a print
+	string "Original: "
+	a testString
+	string " -> Encoded: "
+	a encodedString
+	string " -> Decoded: "
+	a decodedString

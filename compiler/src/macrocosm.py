@@ -43,8 +43,8 @@ class Macrocosm:
         
         # Initialize the processing pipeline
         self.processing_steps: list[MacroProcessingStep] = [
-            PreprocessingStep(preprocess_registry),
             CodeBlockLinkingStep(code_linking_registry), 
+            PreprocessingStep(preprocess_registry),
             TypeCheckingStep(typecheck_registry),
             JavaScriptEmissionStep(emission_registry),
             MustCompileErrorVerificationStep()

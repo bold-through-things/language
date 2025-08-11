@@ -73,19 +73,19 @@ void (async () => {
             let _0x1_my_obj = _0x0_my_obj
 
             _0x1_my_obj.name = "gemini"
-            const _0xa__0x1_my_obj_name = await _0x1_my_obj.name
-            let _0x2_name = _0xa__0x1_my_obj_name
+            const _0x8__0x1_my_obj_name = await _0x1_my_obj.name
+            let _0x2_name = _0x8__0x1_my_obj_name
             _0x2_name
             let _0x3_my_list = []
             _0x3_my_list
-            let _0x6_my_list = _0x3_my_list
+            let _0x4_my_list = _0x3_my_list
 
-            let _0x8__0x4_my_obj = _0x0_my_obj
-            const _0xc__0x8__0x4_my_obj_name = await _0x8__0x4_my_obj.name
-            let _0x9__0x5_name = _0xc__0x8__0x4_my_obj_name
-            const _0xb_push = await Array.prototype.push.call(_0x6_my_list, _0x9__0x5_name)
-            let _0x7_push = _0xb_push
-            _0x7_push
+            let _0x6_my_obj = _0x0_my_obj
+            const _0xa__0x6_my_obj_name = await _0x6_my_obj.name
+            let _0x7_name = _0xa__0x6_my_obj_name
+            const _0x9_push = await Array.prototype.push.call(_0x4_my_list, _0x7_name)
+            let _0x5_push = _0x9_push
+            _0x5_push
         }
     } 
 })();

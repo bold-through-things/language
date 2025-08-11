@@ -14,6 +14,7 @@ class For_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         name = args[0] # TODO - this won't support any identifier, it probably should!
 
         # print("processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
+        
         ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
         # print("done processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
 

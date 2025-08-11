@@ -1,7 +1,20 @@
 /path
-Uint8Array(11) [
-  104, 101, 108, 108,
-  111,  32, 119, 111,
-  114, 108, 100
-]
-hello world
+
+--- Testing TextEncoder/TextDecoder ---
+Text: " ASCII text " -> Bytes: [ Uint8Array(10) [
+  65,  83,  67,  73,  73,
+  32, 116, 101, 120, 116
+] ] -> Restored: " ASCII text
+Text: " Unicode: 🦕 Deno " -> Bytes: [ Uint8Array(18) [
+   85, 110, 105,  99, 111, 100,
+  101,  58,  32, 240, 159, 166,
+  149,  32,  68, 101, 110, 111
+] ] -> Restored: " Unicode: 🦕 Deno
+Text: " Numbers: 42 " -> Bytes: [ Uint8Array(11) [
+   78, 117, 109, 98, 101,
+  114, 115,  58, 32,  52,
+   50
+] ] -> Restored: " Numbers: 42
+
+--- Testing atob/btoa ---
+Original:  Hello World  -> Encoded:  SGVsbG8gV29ybGQ=  -> Decoded:  Hello World
