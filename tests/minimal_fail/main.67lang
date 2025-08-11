@@ -1,0 +1,11 @@
+local my_obj
+	dict
+
+a my_obj name
+	string "gemini"
+
+local my_list
+	list
+
+a my_list push
+	a my_obj name

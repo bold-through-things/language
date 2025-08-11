@@ -60,15 +60,121 @@
     "line": 52,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: argument 1 demands str and is given bool",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error": "failed to assert: could not find a matching overload for split with arguments ['bool']",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      }
+    ]
   },
   {
     "recoverable": false,
     "line": 54,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: argument 1 demands str and is given list",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error": "failed to assert: could not find a matching overload for split with arguments ['list']",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      }
+    ]
   }
 ]

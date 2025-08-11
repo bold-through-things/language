@@ -230,19 +230,29 @@ class NewCall:
 
 
 builtin_calls = {
+    # TODO - in theory 99% of these should come from the WebIDL spec. TODO, investigate if we can clear this.
     "length": [FieldCall(field="length", demands=["list"], returns="str")],
-    "join": [PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")],
+    "join": [
+        PrototypeCall(constructor="Array", fn="join", demands=["list"], returns="str"),
+        PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")
+    ],
     "sort": [PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list")],
     "push": [PrototypeCall(constructor="Array", fn="push", demands=["list", "*"], returns="list")], # TODO - does it actually return..?
     "reverse": [PrototypeCall(constructor="Array", fn="reverse", demands=["list"], returns="list")],
     "split": [
+        # oh gods what the fuck even
+        PrototypeCall(constructor="String", fn="split", demands=["str"], returns="list"),
         PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
         PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
         PrototypeCall(constructor="String", fn="split", demands=["str", "str", "int"], returns="list"),
         PrototypeCall(constructor="String", fn="split", demands=["str", "regex", "int"], returns="list"),
     ],
     "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
-    "slice": [PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list")],
+    "slice": [
+        PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list"),
+        PrototypeCall(constructor="Array", fn="slice", demands=["list", "int"], returns="list"),
+        PrototypeCall(constructor="Array", fn="slice", demands=["list", "int", "int"], returns="list")
+    ],
 
     # Explicitly define built-ins that map to operators
     "concat": [NaryOperatorCall(operator="+", demands=None, returns=None)],

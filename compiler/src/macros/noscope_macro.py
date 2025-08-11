@@ -7,3 +7,7 @@ class Noscope_macro_provider(Macro_emission_provider):
         for child in ctx.node.children:
             out = IndentedStringIO()
             ctx.current_step.process_node(replace(ctx, node=child, expression_out=out))
+
+    # DEFINITELY NOT! if you do this it will prevent children from being inspected. trouble!
+    def NOT_typecheck(self, ctx: MacroContext):
+        return None

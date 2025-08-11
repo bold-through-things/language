@@ -402,7 +402,7 @@ must_compile_error FIELD_TYPE_MISMATCH=+1
 note that it is a work in progress, but even already it's remarkably powerful. write 
 	quality software with confidence. that's arguably the entire point of this language.
 
-must_compile_error ARGUMENT_TYPE_MISMATCH=+1
+must_compile_error NO_MATCHING_OVERLOAD=+1
 	a where? split split split
 
 must_compile_error FIELD_TYPE_MISMATCH=+1

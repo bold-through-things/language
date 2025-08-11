@@ -1,6 +1,9 @@
-from macro_registry import Macro_emission_provider, MacroContext
+from macro_registry import Macro_emission_provider, Macro_typecheck_provider, MacroContext
 
-class List_macro_provider(Macro_emission_provider):
+class List_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
+    def typecheck(self, ctx: MacroContext):
+        return "list"
+
     def emission(self, ctx: MacroContext):
         """Handle list macro - iterate all children, collect their expressions, emit [expr1, expr2, expr3...]"""
         if not ctx.node.children:

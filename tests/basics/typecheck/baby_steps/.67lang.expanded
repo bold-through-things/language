@@ -1,4 +1,4 @@
-PIL:file
+67lang:file
 	# these are expected to pass
 
 	do
@@ -10,37 +10,37 @@ PIL:file
 		local test_1
 			type int
 
-			local _0x0__test
-				PIL:access_local test
+			local _0x1_test
+				67lang:access_local test
 
-				PIL:auto_type
+				67lang:auto_type
 
-		local _0x2__test
-			PIL:access_local test
-				local _0x1__test_1
-					PIL:access_local test_1
+		local _0x4_test
+			67lang:access_local test
+				local _0x3_test_1
+					67lang:access_local test_1
 
-					PIL:auto_type
+					67lang:auto_type
 
-			PIL:auto_type
+			67lang:auto_type
 
 		do
 			local test_1
 				type int
 
-				local _0x3__test
-					PIL:access_local test
+				local _0x6_test
+					67lang:access_local test
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x5__test
-				PIL:access_local test
-					local _0x4__test_1
-						PIL:access_local test_1
+			local _0x9_test
+				67lang:access_local test
+					local _0x8_test_1
+						67lang:access_local test_1
 
-						PIL:auto_type
+						67lang:auto_type
 
-				PIL:auto_type
+				67lang:auto_type
 
 	# these are expected to fail
 
@@ -59,97 +59,97 @@ PIL:file
 		local test_int
 			type int
 
-			local _0x6__test_str
-				PIL:access_local test_str
+			local _0xd_test_str
+				67lang:access_local test_str
 
-				PIL:auto_type
+				67lang:auto_type
 
-		local _0x8__test_int
-			PIL:access_local test_int
-				local _0x7__test_str
-					PIL:access_local test_str
+		local _0x10_test_int
+			67lang:access_local test_int
+				local _0xf_test_str
+					67lang:access_local test_str
 
-					PIL:auto_type
+					67lang:auto_type
 
-			PIL:auto_type
+			67lang:auto_type
 
 		do
-			local _0x9__test_str
-				PIL:access_local test_str
+			local _0x12_test_str
+				67lang:access_local test_str
 					int 0
 
-				PIL:auto_type
+				67lang:auto_type
 
 			local test_bool
 				type bool
 
-				local _0xa__test_str
-					PIL:access_local test_str
+				local _0x13_test_str
+					67lang:access_local test_str
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0xf__test_bool
-				PIL:access_local test_bool
+			local _0x19_test_bool
+				67lang:access_local test_bool
 					noscope
-						local _0xb__test_str
-							PIL:access_local test_str
+						local _0x15_test_str
+							67lang:access_local test_str
 
-							PIL:auto_type
+							67lang:auto_type
 
-						local _0xc__split
-							PIL:call split
-								PIL:access_local _0xb__test_str
+						local _0x16_split
+							67lang:call split
+								67lang:access_local _0x15_test_str
 
-							PIL:auto_type
+							67lang:auto_type
 
-						local _0xd__sort
-							PIL:call sort
-								PIL:access_local _0xc__split
+						local _0x17_sort
+							67lang:call sort
+								67lang:access_local _0x16_split
 
-							PIL:auto_type
+							67lang:auto_type
 
-					local _0xe__join
-						PIL:call join
-							PIL:access_local _0xd__sort
+					local _0x18_join
+						67lang:call join
+							67lang:access_local _0x17_sort
 
-						PIL:auto_type
+						67lang:auto_type
 
-				PIL:auto_type
-
-			noscope
-				local _0x10__test_bool
-					PIL:access_local test_bool
-
-					PIL:auto_type
-
-			local _0x11__split
-				PIL:call split
-					PIL:access_local _0x10__test_bool
-
-				PIL:auto_type
+				67lang:auto_type
 
 			noscope
-				local _0x12__test_str
-					PIL:access_local test_str
+				local _0x1e_test_bool
+					67lang:access_local test_bool
 
-					PIL:auto_type
+					67lang:auto_type
 
-				local _0x13__split
-					PIL:call split
-						PIL:access_local _0x12__test_str
+			local _0x1f_split
+				67lang:call split
+					67lang:access_local _0x1e_test_bool
 
-					PIL:auto_type
+				67lang:auto_type
 
-				local _0x14__split
-					PIL:call split
-						PIL:access_local _0x13__split
+			noscope
+				local _0x20_test_str
+					67lang:access_local test_str
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x15__split
-				PIL:call split
-					PIL:access_local _0x14__split
+				local _0x21_split
+					67lang:call split
+						67lang:access_local _0x20_test_str
 
-				PIL:auto_type
+					67lang:auto_type
+
+				local _0x22_split
+					67lang:call split
+						67lang:access_local _0x21_split
+
+					67lang:auto_type
+
+			local _0x23_split
+				67lang:call split
+					67lang:access_local _0x22_split
+
+				67lang:auto_type
 
 

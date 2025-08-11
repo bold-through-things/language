@@ -1,4 +1,4 @@
-from dataclasses import replace
+from dataclasses import asdict, replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
     builtins, builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
@@ -46,7 +46,12 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
                             break
                     else:
                         # No matching overload found
-                        ctx.compiler.assert_(False, ctx.node, f"could not find a matching overload for {fn} with arguments {actual_arg_types}", ErrorType.NO_MATCHING_OVERLOAD)
+                        def overload_to_dict(o):
+                            d = asdict(o)
+                            d["convention"] = type(o).__name__
+                            return d
+                        available_overloads = [overload_to_dict(o) for o in overloads]
+                        ctx.compiler.assert_(False, ctx.node, f"could not find a matching overload for {fn} with arguments {actual_arg_types}", ErrorType.NO_MATCHING_OVERLOAD, extra_fields={"visible_overloads": available_overloads})
                 else:
                     # No type information available, use first overload
                     convention = overloads[0]

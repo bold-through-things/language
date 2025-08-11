@@ -49,19 +49,11 @@
   },
   {
     "recoverable": false,
-    "line": 50,
+    "line": 49,
     "char": 0,
-    "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments ['str']",
-    "error_type": "NO_MATCHING_OVERLOAD"
-  },
-  {
-    "recoverable": false,
-    "line": 50,
-    "char": 0,
-    "content": "67lang:call join",
-    "error": "failed to assert: could not find a matching overload for join with arguments ['list']",
-    "error_type": "NO_MATCHING_OVERLOAD"
+    "content": "67lang:access_local test_bool",
+    "error": "failed to assert: field demands bool but is given str",
+    "error_type": "FIELD_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
@@ -69,30 +61,120 @@
     "char": 0,
     "content": "67lang:call split",
     "error": "failed to assert: could not find a matching overload for split with arguments ['bool']",
-    "error_type": "NO_MATCHING_OVERLOAD"
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      }
+    ]
   },
   {
     "recoverable": false,
     "line": 54,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments ['str']",
-    "error_type": "NO_MATCHING_OVERLOAD"
-  },
-  {
-    "recoverable": false,
-    "line": 54,
-    "char": 0,
-    "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments ['*']",
-    "error_type": "NO_MATCHING_OVERLOAD"
-  },
-  {
-    "recoverable": false,
-    "line": 54,
-    "char": 0,
-    "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments ['*']",
-    "error_type": "NO_MATCHING_OVERLOAD"
+    "error": "failed to assert: could not find a matching overload for split with arguments ['list']",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "regex",
+          "int"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      }
+    ]
   }
 ]

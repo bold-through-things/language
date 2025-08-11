@@ -119,15 +119,15 @@ class Macrocosm:
     def register(self, node: Node):
         self.nodes.append(node)
 
-    def assert_(self, must_be_true: bool, node: Node, message: str, error_type: str = None):
+    def assert_(self, must_be_true: bool, node: Node, message: str, error_type: str = None, extra_fields: dict[str, Any] = None):
         if not must_be_true:
             from error_types import ErrorType
             if error_type is None:
                 error_type = ErrorType.ASSERTION_FAILED
-            self.compile_error(node, f"failed to assert: {message}", error_type)
+            self.compile_error(node, f"failed to assert: {message}", error_type, extra_fields)
             raise MacroAssertFailed(message)
 
-    def compile_error(self, node: Node, error: str, error_type: str):
+    def compile_error(self, node: Node, error: str, error_type: str, extra_fields: dict[str, Any] = None):
         """Add a compile error with explicit error type."""
         pos = node.pos or Position(0, 0)
         entry: dict[str, Any] = { # TODO dataclass
@@ -138,6 +138,8 @@ class Macrocosm:
             "error": error,
             "error_type": error_type
         }
+        if extra_fields:
+            entry.update(extra_fields)
         self.compile_errors.append(entry)
 
     def compile(self):

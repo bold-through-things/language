@@ -61,7 +61,10 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
             ctx.current_step.process_node(inner_ctx)
         ctx.statement_out.write("}")
 
-class Access_field_macro_provider(Macro_emission_provider):
+class Access_field_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
+    def typecheck(self, ctx: MacroContext):
+        return "*"
+
     def emission(self, ctx: MacroContext):
         name, field = get_two_args(ctx, "first argument is object, second is field")
         res = walk_upwards_for_local_definition(ctx, name)
@@ -79,6 +82,9 @@ class Access_field_macro_provider(Macro_emission_provider):
         ctx.expression_out.write(ident)
 
 class Access_index_macro_provider(Macro_emission_provider):
+    def typecheck(self, ctx: MacroContext):
+        return "*"
+    
     def emission(self, ctx: MacroContext):
         name = get_single_arg(ctx, "single argument, the object into which we should index")
         res = walk_upwards_for_local_definition(ctx, name)
@@ -124,16 +130,16 @@ class Access_local_macro_provider(Macro_emission_provider, Macro_typecheck_provi
         res = walk_upwards_for_local_definition(ctx, first)
         ctx.compiler.assert_(res != None, ctx.node, f"{first} must access a defined local", ErrorType.NO_SUCH_LOCAL)
         demanded = res.type
-        
+        received = None
+
+        default_logger.typecheck(f"{ctx.node.content} demanded {demanded or 'None'}")
         if demanded and demanded != "*":
             if len(types) > 0:
                 # TODO - support multiple arguments
                 ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)", ErrorType.WRONG_ARG_COUNT)
                 received = types[0]
                 ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
-            default_logger.typecheck(f"{ctx.node.content} demanded {demanded}")
-            return demanded or "*"
-        return "*"
+        return demanded or received or "*"
 
 
 class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider):
@@ -166,7 +172,7 @@ class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Ma
         if not type_node:
             # TODO. this should be mandatory.
             if not seek_child_macro(ctx.node, "67lang:auto_type") or not received:
-                return received
+                return received or "*"
             type_node = Node(f"type {received}", ctx.node.pos, [])
         
         _, demanded = cut(type_node.content, " ")
