@@ -5,6 +5,18 @@ note this file here is intended as a crash course into the 67lang
 
 
 
+note 67lang is very strict and quite particular. we will not parse spaces
+	as indentation, it will compile error. the indentation is key for our
+	structure. if you screw up with it, your code will obviously fail
+	to compile in all kinds of unexpected ways. no different from Python,
+	in that sense.
+	
+	just think of it as what it is, a Concrete Syntax Tree. you are just writing
+	the code tree by hand. if you do not indent the nodes correctly, you
+	won't assign them to the proper parent.
+
+
+
 local name
 	string "Alice"
 
