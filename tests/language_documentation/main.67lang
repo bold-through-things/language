@@ -208,8 +208,8 @@ note in this chapter number four (4) we dare index some dictionaries
 local 67lang.features
 	dict
 
-a 67lang.features name
-	where name is
+a 67lang.features #
+	where # takes
 		string "the access macro"
 	string 
 		a powerful and flexible method chaining "syntax sugar" with clear branching
@@ -220,8 +220,8 @@ a 67lang.features name
 note what a mouthful. but there are obviously other features here. let's mention
 	the previously outlined flexibility.
 	
-a 67lang.features added
-	where added is
+a 67lang.features #
+	where # takes
 		string "the flexibility of identifiers"
 	string
 		anything can be an identifier. there is only whitespace and non whitespace. this 
@@ -233,8 +233,8 @@ a 67lang.features added
 note that was too much yapping. let's truncate it a little.
 
 a print
-	a 67lang.features described slice join
-		where described is
+	a 67lang.features # slice join
+		where # takes
 			string "the flexibility of identifiers"
 		where slice takes
 			int 0

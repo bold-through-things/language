@@ -28,13 +28,16 @@ do
 				inside
 					a groups
 	then
-		a groups key
-			where key is
+		a groups #
+			where # takes
+				a key
 			list
 
-	a groups key push
-		where key is
-		a word
+	a groups # push
+		where # takes
+			a key
+		where push takes
+			a word
 
 for group in
 	a values

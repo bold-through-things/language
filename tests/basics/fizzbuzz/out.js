@@ -113,21 +113,21 @@ void (async () => {
                     _0xc_input
 
                     let _0x10_input = _0xb_input
-                    const _0x3a__0x10_input = await _0x10_input[0]
-                    let _0x11_key = _0x3a__0x10_input
-                    _0x0_fizz_divisor = _0x11_key
+                    const _0x3a__hash_ = await _0x10_input[0]
+                    let _0x11__hash_ = _0x3a__hash_
+                    _0x0_fizz_divisor = _0x11__hash_
                     let _0xf_fizz_divisor = _0x0_fizz_divisor
                     _0xf_fizz_divisor
                     let _0x13_input = _0xb_input
-                    const _0x3b__0x13_input = await _0x13_input[1]
-                    let _0x14_key = _0x3b__0x13_input
-                    _0x1_buzz_divisor = _0x14_key
+                    const _0x3b__hash_ = await _0x13_input[1]
+                    let _0x14__hash_ = _0x3b__hash_
+                    _0x1_buzz_divisor = _0x14__hash_
                     let _0x12_buzz_divisor = _0x1_buzz_divisor
                     _0x12_buzz_divisor
                     let _0x16_input = _0xb_input
-                    const _0x3c__0x16_input = await _0x16_input[2]
-                    let _0x17_key = _0x3c__0x16_input
-                    _0x2_n = _0x17_key
+                    const _0x3c__hash_ = await _0x16_input[2]
+                    let _0x17__hash_ = _0x3c__hash_
+                    _0x2_n = _0x17__hash_
                     let _0x15_n = _0x2_n
                     _0x15_n
                 }

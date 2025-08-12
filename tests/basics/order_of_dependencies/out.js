@@ -148,10 +148,9 @@ void (async () => {
                         const _0x6e__0x1e_module_id = await _0x1e_module.id
                         let _0x1f_id = _0x6e__0x1e_module_id
                         let _0x20_module = _0x7_module
-                        _0x1c_modules[_0x1f_id] = _0x20_module
-                        const _0x6d__0x1c_modules = await _0x1c_modules[_0x1f_id]
-                        let _0x1d_id = _0x6d__0x1c_modules
-                        _0x1d_id
+                        const _0x6d__hash_ = await (_0x1c_modules[_0x1f_id] = _0x20_module)
+                        let _0x1d__hash_ = _0x6d__hash_
+                        _0x1d__hash_
                     }
                 } }
 
@@ -284,10 +283,10 @@ void (async () => {
                                             const scope = _67lang.scope(parent_scope)
                                             let _0x48_modules = _0x5_modules
                                             let _0x4a_dep_id = dep_id
-                                            const _0x81__0x48_modules = await _0x48_modules[_0x4a_dep_id]
-                                            let _0x49_id = _0x81__0x48_modules
+                                            const _0x81__hash_ = await _0x48_modules[_0x4a_dep_id]
+                                            let _0x49__hash_ = _0x81__hash_
                                             let _0x4b_next_chain = _0x2b_next_chain
-                                            const _0x80_visit = await _0x24_visit(_0x49_id, _0x4b_next_chain)
+                                            const _0x80_visit = await _0x24_visit(_0x49__hash_, _0x4b_next_chain)
                                             let _0x47_visit = _0x80_visit
                                             _0x47_visit
                                         }

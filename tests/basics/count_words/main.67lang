@@ -18,19 +18,19 @@ do
 				inside
 					a count
 	then
-		a count key
-			where key is
+		a count #
+			where # takes
 				a word
 			int 0
 	note and TODO following line must not be empty here...
 	
-	a count key
-		where key is
+	a count #
+		where # takes
 			a word
 		a add
 			int 1
-			a count key
-				where key is
+			a count #
+				where # takes
 					a word
 
 a print

@@ -102,10 +102,9 @@ void (async () => {
                                     let _0xa_count = _0x5_count
 
                                     let _0xc_word = word
-                                    _0xa_count[_0xc_word] = 0
-                                    const _0x1b__0xa_count = await _0xa_count[_0xc_word]
-                                    let _0xb_key = _0x1b__0xa_count
-                                    _0xb_key
+                                    const _0x1b__hash_ = await (_0xa_count[_0xc_word] = 0)
+                                    let _0xb__hash_ = _0x1b__hash_
+                                    _0xb__hash_
                                 }
                             } }
 
@@ -114,14 +113,13 @@ void (async () => {
                         let _0xf_word = word
                         let _0x11_count = _0x5_count
                         let _0x13_word = word
-                        const _0x1e__0x11_count = await _0x11_count[_0x13_word]
-                        let _0x12_key = _0x1e__0x11_count
-                        const _0x1d_add = await (1 + _0x12_key)
+                        const _0x1e__hash_ = await _0x11_count[_0x13_word]
+                        let _0x12__hash_ = _0x1e__hash_
+                        const _0x1d_add = await (1 + _0x12__hash_)
                         let _0x10_add = _0x1d_add
-                        _0xd_count[_0xf_word] = _0x10_add
-                        const _0x1c__0xd_count = await _0xd_count[_0xf_word]
-                        let _0xe_key = _0x1c__0xd_count
-                        _0xe_key
+                        const _0x1c__hash_ = await (_0xd_count[_0xf_word] = _0x10_add)
+                        let _0xe__hash_ = _0x1c__hash_
+                        _0xe__hash_
                     }
                 } }
             let _0x15_count = _0x5_count

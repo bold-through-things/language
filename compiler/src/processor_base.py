@@ -231,8 +231,21 @@ class NewCall:
     def compile(self, args: list[str]):
         return f"new {self.constructor}({', '.join(args)})"
 
+@dataclass
+class IndexAccessCall:
+    """obj[index] or obj[index] = value"""
+    demands: list[str] | None
+    returns: str | None
+
+    def compile(self, args: list[str]):
+        receiver, index, *value = args
+        if value:
+            return f'({receiver}[{index}] = {value[0]})'
+        return f'{receiver}[{index}]'
+
 
 builtin_calls = {
+    "#": [IndexAccessCall(demands=None, returns=None)],
     # TODO - in theory 99% of these should come from the WebIDL spec. TODO, investigate if we can clear this.
     "length": [FieldCall(field="length", demands=["list"], returns="str")],
     "join": [

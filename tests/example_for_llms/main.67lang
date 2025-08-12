@@ -69,7 +69,7 @@ a print
 	
 a print
 	a numbers #
-		where # is
+		where # takes
 			a sub
 				a numbers length
 				int 1

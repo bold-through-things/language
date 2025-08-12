@@ -123,8 +123,8 @@ void (async () => {
             let _0x17_length = _0x32_length
             const _0x31_sub = await (_0x17_length - 1)
             let _0x15_sub = _0x31_sub
-            const _0x30__0x13_numbers = await _0x13_numbers[_0x15_sub]
-            let _0x14__hash_ = _0x30__0x13_numbers
+            const _0x30__hash_ = await _0x13_numbers[_0x15_sub]
+            let _0x14__hash_ = _0x30__hash_
             const _0x2f_print = await console.log(_0x14__hash_)
             let _0x12_print = _0x2f_print
             _0x12_print

@@ -44,8 +44,8 @@ do
 		for kv in
 			a zipped_data
 		do
-			a row key
-				where key is
+			a row #
+				where # takes
 					a kv 0
 				a kv 1
 		

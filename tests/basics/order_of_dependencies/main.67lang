@@ -34,8 +34,8 @@ do
 		a module deps
 			list
 	
-	a modules id
-		where id is
+	a modules #
+		where # takes
 			a module id
 		a module
 
@@ -103,8 +103,8 @@ do
 					string " → "
 		else
 			a visit
-				a modules id
-					where id is
+				a modules #
+					where # takes
 						a dep_id
 				a next_chain
 

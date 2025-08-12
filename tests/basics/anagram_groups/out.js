@@ -114,19 +114,18 @@ void (async () => {
                                     let _0xf_groups = _0x5_groups
 
                                     let _0x11_key = _0xb_key
-                                    _0xf_groups[_0x11_key] = []
-                                    const _0x24__0xf_groups = await _0xf_groups[_0x11_key]
-                                    let _0x10_key = _0x24__0xf_groups
-                                    _0x10_key
+                                    const _0x24__hash_ = await (_0xf_groups[_0x11_key] = [])
+                                    let _0x10__hash_ = _0x24__hash_
+                                    _0x10__hash_
                                 }
                             } }
                         let _0x12_groups = _0x5_groups
                         let _0x15_key = _0xb_key
-                        const _0x25__0x12_groups = await _0x12_groups[_0x15_key]
-                        let _0x13_key = _0x25__0x12_groups
+                        const _0x25__hash_ = await _0x12_groups[_0x15_key]
+                        let _0x13__hash_ = _0x25__hash_
 
                         let _0x16_word = word
-                        const _0x26_push = await Array.prototype.push.call(_0x13_key, _0x16_word)
+                        const _0x26_push = await Array.prototype.push.call(_0x13__hash_, _0x16_word)
                         let _0x14_push = _0x26_push
                         _0x14_push
                     }

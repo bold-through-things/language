@@ -185,22 +185,20 @@ void (async () => {
             _0x2a__67lang_dot_features
             let _0x2b__67lang_dot_features = _0x2a__67lang_dot_features
 
-            _0x2b__67lang_dot_features["the access macro"] = "noscope\nlocal _0x36_branching\neliminating the pain of using brackets and having to erase or insert the bracket\nat the beginning and then at the end inherently by being part of 67lang\nwhere indentation rules all."
-            const _0x7f__0x2b__67lang_dot_features = await _0x2b__67lang_dot_features["the access macro"]
-            let _0x2c_name = _0x7f__0x2b__67lang_dot_features
-            _0x2c_name
+            const _0x7f__hash_ = await (_0x2b__67lang_dot_features["the access macro"] = "noscope\nlocal _0x36_branching\neliminating the pain of using brackets and having to erase or insert the bracket\nat the beginning and then at the end inherently by being part of 67lang\nwhere indentation rules all.")
+            let _0x2c__hash_ = _0x7f__hash_
+            _0x2c__hash_
 
             let _0x37__67lang_dot_features = _0x2a__67lang_dot_features
 
-            _0x37__67lang_dot_features["the flexibility of identifiers"] = "anything can be an identifier. there is only whitespace and non whitespace. this \nfrees programmers to express their ideas in a truly direct and unleashed way.\nif you desire to have a variable named `$`, `,`, `?`, or even `true`, we are\nnot here to stop you. if you are stupid, you will certainly misuse this and obliterate\nyour foot. if you are smart, you will write the most readable code ever written."
-            const _0x80__0x37__67lang_dot_features = await _0x37__67lang_dot_features["the flexibility of identifiers"]
-            let _0x38_added = _0x80__0x37__67lang_dot_features
-            _0x38_added
+            const _0x80__hash_ = await (_0x37__67lang_dot_features["the flexibility of identifiers"] = "anything can be an identifier. there is only whitespace and non whitespace. this \nfrees programmers to express their ideas in a truly direct and unleashed way.\nif you desire to have a variable named `$`, `,`, `?`, or even `true`, we are\nnot here to stop you. if you are stupid, you will certainly misuse this and obliterate\nyour foot. if you are smart, you will write the most readable code ever written.")
+            let _0x38__hash_ = _0x80__hash_
+            _0x38__hash_
 
             let _0x3a__67lang_dot_features = _0x2a__67lang_dot_features
-            const _0x82__0x3a__67lang_dot_features = await _0x3a__67lang_dot_features["the flexibility of identifiers"]
-            let _0x3b_described = _0x82__0x3a__67lang_dot_features
-            const _0x83_slice = await Array.prototype.slice.call(_0x3b_described, 0, 67)
+            const _0x82__hash_ = await _0x3a__67lang_dot_features["the flexibility of identifiers"]
+            let _0x3b__hash_ = _0x82__hash_
+            const _0x83_slice = await Array.prototype.slice.call(_0x3b__hash_, 0, 67)
             let _0x3c_slice = _0x83_slice
             const _0x84_join = await Array.prototype.join.call(_0x3c_slice, "")
             let _0x3d_join = _0x84_join

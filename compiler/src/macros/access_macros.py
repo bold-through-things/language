@@ -81,29 +81,6 @@ class Access_field_macro_provider(Macro_emission_provider, Macro_typecheck_provi
         ctx.statement_out.write(f"const {ident} = await {name}{field_access}\n")
         ctx.expression_out.write(ident)
 
-class Access_index_macro_provider(Macro_emission_provider):
-    def typecheck(self, ctx: MacroContext):
-        return "*"
-    
-    def emission(self, ctx: MacroContext):
-        name = get_single_arg(ctx, "single argument, the object into which we should index")
-        res = walk_upwards_for_local_definition(ctx, name)
-        ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
-        name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
-        ident = ctx.compiler.get_new_ident(name) # TODO - pass index name too (doable...)
-
-        args: list[str] = collect_child_expressions(ctx)
-
-        ctx.compiler.assert_(len(args) >= 1, ctx.node, "first child used as indexing key")
-        key = args[0]
-
-        if len(args) > 1:
-            ctx.compiler.assert_(len(args) == 2, ctx.node, "second child used for assignment")
-            ctx.statement_out.write(f"{name}[{key}] = {args[1]}\n")
-
-        ctx.statement_out.write(f"const {ident} = await {name}[{key}]\n")
-        ctx.expression_out.write(ident)
-
 class Access_local_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def emission(self, ctx: MacroContext):
         desired_name = get_single_arg(ctx)
@@ -246,31 +223,12 @@ class Access_macro_provider(Macro_preprocess_provider):
         assert ctx.node.content.split(" ")[0] in {"a", "an", "access"}, ctx.node.content
         
         # contextually process substituting and calling modifiers among children
-        indexers = {}
         callers = {}
         other_children = []
         
         for child in ctx.node.children:
             macro, _ = cut(child.content, " ")
-            if macro == "where" and "is" in child.content:
-                # New syntax: "where $id is"
-                parts = child.content.split(" ")
-                if len(parts) >= 3 and parts[2] == "is":
-                    key = parts[1]
-                else:
-                    ctx.compiler.assert_(False, child, "where clause must be 'where $id is' or 'where $id takes'")
-                
-                default_logger.macro(f"substituting '{key}'")
-                
-                if len(child.children) >= 1:
-                    default_logger.debug(f"substituting '{key}' with {len(child.children)} child nodes")
-                    indexers[key] = child.children
-                else:
-                    # shortcut for when the substitution is literal (i.e. most cases)
-                    default_logger.debug(f"substituting '{key}' with literal access")
-                    access = ctx.compiler.make_node(f"a {key}", ctx.node.pos or Position(0, 0), children=None)
-                    indexers[key] = [access]
-            elif macro == "where" and "takes" in child.content:
+            if macro == "where" and "takes" in child.content:
                 # New syntax: "where $id takes"
                 parts = child.content.split(" ")
                 if len(parts) >= 3 and parts[2] == "takes":
@@ -286,7 +244,6 @@ class Access_macro_provider(Macro_preprocess_provider):
                 other_children.append(child)
         
         steps: list[str] = args.split(" ")
-        subs = indexers | callers
         last_chain_ident = None
         replace_with: list[Node] = []
         p0 = Position(0, 0)
@@ -308,17 +265,13 @@ class Access_macro_provider(Macro_preprocess_provider):
             step_needs_call = (not local_def and step in builtin_calls) or (step_is_last and len(children) > 1) or step in callers
             
             args1: list[Node] = []
-            if step in subs:
-                args1 = subs[step]
+            if step in callers:
+                args1 = callers[step]
             if step_is_last:
                 args1 += other_children
 
             local: list[Node] = []
-            if step in indexers:
-                # index
-                local.append(ctx.compiler.make_node(f"67lang:access_index {last_chain_ident}", ctx.node.pos or p0, args1))
-                nodes_to_process.extend(args1)
-            elif step_needs_call:
+            if step_needs_call:
                 # call or set
                 self_arg = []
                 if last_chain_ident:
@@ -338,7 +291,6 @@ class Access_macro_provider(Macro_preprocess_provider):
             replace_with.append(local_node)
             
         replace_with = list(filter(None, [ctx.compiler.make_node("noscope", ctx.node.pos or p0, replace_with[:-1]) if len(replace_with) > 1 else None, replace_with[-1]]))
-        # print(f"replace child {ctx.node.content} of {parent.content} with {[c.content for c in replace_with]}")
         parent.replace_child(ctx.node, replace_with)
 
         for node in nodes_to_process:
