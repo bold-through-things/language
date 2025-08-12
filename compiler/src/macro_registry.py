@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from io import StringIO
 from typing import TYPE_CHECKING, Callable, Union, TypeVar, Protocol, cast, Any
 
@@ -19,6 +19,13 @@ class MacroContext:
 
     compiler: "Macrocosm"
     current_step: "MacroProcessingStep | None" = None
+
+    def sub_compile_expression(self, node: Node) -> "MacroContext":
+        from dataclasses import replace
+        expression_out = IndentedStringIO()
+        child_ctx = replace(self, node=node, expression_out=expression_out)
+        self.current_step.process_node(child_ctx)
+        return child_ctx
 
 class Macro_preprocess_provider(Protocol):
     def preprocess(self, ctx: MacroContext): ...

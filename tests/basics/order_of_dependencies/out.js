@@ -178,7 +178,7 @@ void (async () => {
                                 const parent_scope = scope
                                 {
                                     const scope = _67lang.scope(parent_scope)
-                                    return
+                                    return;
                                 }
                             } }
                         let _0x27_module = module

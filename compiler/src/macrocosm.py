@@ -14,6 +14,7 @@ from macros.solution_macro import Solution_macro_provider
 from macros.error_macros import Must_compile_error_macro_provider
 from macros.comment_macros import Comment_macro_provider, COMMENT_MACROS
 from macros.builtin_macros import Builtin_macro_provider
+from macros.return_macro import Return_macro_provider
 from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
@@ -243,6 +244,7 @@ def create_macrocosm() -> Macrocosm:
         "an": Access_macro_provider(),
         "access": Access_macro_provider(),
         "noscope": Noscope_macro_provider(),
+        "return": Return_macro_provider(),
     }
 
     for macro in COMMENT_MACROS:
@@ -259,8 +261,7 @@ def create_macrocosm() -> Macrocosm:
         "false": "false",
         "break": "break",
         "continue": "continue",
-        "dict": "{}",
-        "return": "return"
+        "dict": "{}"
     }
 
     # TODO, this should be... elsewhere.
