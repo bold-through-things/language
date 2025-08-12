@@ -14,4 +14,14 @@ in general, prefer you clarify your fixes with me before you apply them. most of
 
 perhaps i am an introvert, but i still do prefer you saying your ideas explicitly out loud. sometimes you do, sometimes you don't. i would prefer you always did. it helps me catch your mistakes sooner. do not be silent, talk to me.
 
+do not assume you have it figured out. you tend to often "guess" at the solution. this works quite rarely. i would prefer if you prioritized careful and step by step analysis. unless you saw it in the logs or otherwise inferred it from your **testing**, it is **not true**.
+
+`./test` to ensure things don't break.
+
+`./test --glob partial_test_na` to run specific tests and save our time. it is a pleasant filter, very flexible.
+
+`./test -- --log debug` lets you filter the logging. you'd need to leverage the logging tag to actually print anything.
+
+if you must write in 67lang, check the `example_for_llms` test. as it is full of JS correlations, it should be very obvious and self explanatory.
+
 build quality software and always remember. our greatest enemy is our indifference.

@@ -46,8 +46,12 @@ do
 		do
 			a row #
 				where # takes
-					a kv 0
-				a kv 1
+					a kv #
+						where # takes
+							int 0
+				a kv #
+					where # takes
+						int 1
 		
 		a rows push
 			a row
@@ -72,7 +76,9 @@ do
 		note TODO - the test case should probably strain this asc
 			on what happens if age is 30
 		a asc
-			a row age
+			a row #
+				where # takes
+					string "age"
 			int 30
 	then
 		access age_over_30

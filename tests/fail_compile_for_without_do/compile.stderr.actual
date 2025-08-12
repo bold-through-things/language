@@ -11,9 +11,9 @@
     "recoverable": false,
     "line": 9,
     "char": 0,
-    "content": "67lang:access_local i",
-    "error": "failed to assert: i must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
+    "content": "67lang:call i",
+    "error": "failed to assert: i must refer to a defined function or local",
+    "error_type": "NO_MATCHING_OVERLOAD"
   },
   {
     "recoverable": false,
@@ -27,8 +27,8 @@
     "recoverable": false,
     "line": 9,
     "char": 0,
-    "content": "67lang:access_local i",
-    "error": "failed to assert: i must access a defined local",
-    "error_type": "NO_SUCH_LOCAL"
+    "content": "67lang:call i",
+    "error": "failed to assert: i must refer to a defined function or local",
+    "error_type": "NO_MATCHING_OVERLOAD"
   }
 ]

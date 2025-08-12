@@ -5,17 +5,17 @@
 
 			67lang:auto_type
 
-	local _0x4_lines
-		67lang:access_local lines
+	local _0x3_lines
+		67lang:call lines
 			noscope
-				local _0x2_lines
-					67lang:access_local lines
+				local _0x4_lines
+					67lang:call lines
 
 					67lang:auto_type
 
-			local _0x3_split
+			local _0x5_split
 				67lang:call split
-					67lang:access_local _0x2_lines
+					67lang:call _0x4_lines
 
 					string "\n"
 
@@ -29,8 +29,8 @@
 	for line in
 		67lang:assume_local_exists line
 
-		local _0x8_lines
-			67lang:access_local lines
+		local _0xc_lines
+			67lang:call lines
 
 			67lang:auto_type
 
@@ -40,14 +40,14 @@
 
 			local kv
 				noscope
-					local _0xb_line
-						67lang:access_local line
+					local _0xf_line
+						67lang:call line
 
 						67lang:auto_type
 
-				local _0xc_split
+				local _0x10_split
 					67lang:call split
-						67lang:access_local _0xb_line
+						67lang:call _0xf_line
 
 						string ":"
 
@@ -56,60 +56,74 @@
 					67lang:auto_type
 
 			noscope
-				local _0x11_module
-					67lang:access_local module
+				local _0x14_module
+					67lang:call module
 
 					67lang:auto_type
 
-			local _0x12_id
-				67lang:access_field _0x11_module id
+			local _0x15__hash_
+				67lang:call #
+					67lang:call _0x14_module
+
+					string "id"
+
 					noscope
-						local _0xe_kv
-							67lang:access_local kv
+						local _0x17_kv
+							67lang:call kv
 
 							67lang:auto_type
 
-						local _0xf__0
-							67lang:access_field _0xe_kv 0
+						local _0x18__hash_
+							67lang:call #
+								67lang:call _0x17_kv
+
+								int 0
 
 							67lang:auto_type
 
-					local _0x10_trim
+					local _0x19_trim
 						67lang:call trim
-							67lang:access_local _0xf__0
+							67lang:call _0x18__hash_
 
 						67lang:auto_type
 
 				67lang:auto_type
 
 			noscope
-				local _0x1a_module
-					67lang:access_local module
+				local _0x21_module
+					67lang:call module
 
 					67lang:auto_type
 
-			local _0x1b_deps
-				67lang:access_field _0x1a_module deps
+			local _0x22__hash_
+				67lang:call #
+					67lang:call _0x21_module
+
+					string "deps"
+
 					noscope
-						local _0x16_kv
-							67lang:access_local kv
+						local _0x24_kv
+							67lang:call kv
 
 							67lang:auto_type
 
-						local _0x17__1
-							67lang:access_field _0x16_kv 1
+						local _0x25__hash_
+							67lang:call #
+								67lang:call _0x24_kv
+
+								int 1
 
 							67lang:auto_type
 
-						local _0x18_trim
+						local _0x26_trim
 							67lang:call trim
-								67lang:access_local _0x17__1
+								67lang:call _0x25__hash_
 
 							67lang:auto_type
 
-					local _0x19_split
+					local _0x27_split
 						67lang:call split
-							67lang:access_local _0x18_trim
+							67lang:call _0x26_trim
 
 							regex /\s+/
 
@@ -120,22 +134,25 @@
 			# TODO - this ought to be a macro.
 
 			if
-				local _0x23_eq
+				local _0x31_eq
 					67lang:call eq
 						noscope
-							local _0x20_kv
-								67lang:access_local kv
+							local _0x32_kv
+								67lang:call kv
 
 								67lang:auto_type
 
-							local _0x21__1
-								67lang:access_field _0x20_kv 1
+							local _0x33__hash_
+								67lang:call #
+									67lang:call _0x32_kv
+
+									int 1
 
 								67lang:auto_type
 
-						local _0x22_trim
+						local _0x34_trim
 							67lang:call trim
-								67lang:access_local _0x21__1
+								67lang:call _0x33__hash_
 
 							67lang:auto_type
 
@@ -145,46 +162,55 @@
 
 				then
 					noscope
-						local _0x27_module
-							67lang:access_local module
+						local _0x3c_module
+							67lang:call module
 
 							67lang:auto_type
 
-					local _0x28_deps
-						67lang:access_field _0x27_module deps
+					local _0x3d__hash_
+						67lang:call #
+							67lang:call _0x3c_module
+
+							string "deps"
+
 							list
 
 						67lang:auto_type
 
 			noscope
-				local _0x2c_modules
-					67lang:access_local modules
+				local _0x40_modules
+					67lang:call modules
 
 					67lang:auto_type
 
-			local _0x2d_id
-				67lang:access_index _0x2c_modules
+			local _0x41__hash_
+				67lang:call #
+					67lang:call _0x40_modules
+
 					noscope
-						local _0x29_module
-							67lang:access_local module
+						local _0x43_module
+							67lang:call module
 
 							67lang:auto_type
 
-					local _0x2a_id
-						67lang:access_field _0x29_module id
+					local _0x44_id
+						67lang:call id
+							67lang:call _0x43_module
 
 						67lang:auto_type
 
-					local _0x2b_module
-						67lang:access_local module
+					local _0x47_module
+						67lang:call module
 
 						67lang:auto_type
+
+				67lang:auto_type
 
 	# print
 		string "modules"
 
-		local _0x31_modules
-			67lang:access_local modules
+		local _0x4d_modules
+			67lang:call modules
 
 			67lang:auto_type
 
@@ -214,13 +240,17 @@
 		do
 			if 
 				noscope
-					local _0x35_module
-						67lang:access_local module
+					local _0x52_module
+						67lang:call module
 
 						67lang:auto_type
 
-				local _0x36_visited
-					67lang:access_field _0x35_module visited
+				local _0x53__hash_
+					67lang:call #
+						67lang:call _0x52_module
+
+						where # is
+							string "visited"
 
 					67lang:auto_type
 
@@ -228,13 +258,17 @@
 					return
 
 			noscope
-				local _0x37_module
-					67lang:access_local module
+				local _0x56_module
+					67lang:call module
 
 					67lang:auto_type
 
-			local _0x38_visited
-				67lang:access_field _0x37_module visited
+			local _0x57__hash_
+				67lang:call #
+					67lang:call _0x56_module
+
+					string "visited"
+
 					true
 
 				67lang:auto_type
@@ -243,35 +277,36 @@
 
 			local next_chain
 				noscope
-					local _0x39_chain
-						67lang:access_local chain
+					local _0x5a_chain
+						67lang:call chain
 
 						67lang:auto_type
 
-				local _0x3a_slice
+				local _0x5b_slice
 					67lang:call slice
-						67lang:access_local _0x39_chain
+						67lang:call _0x5a_chain
 
 					67lang:auto_type
 
 			noscope
-				local _0x3e_next_chain
-					67lang:access_local next_chain
+				local _0x5f_next_chain
+					67lang:call next_chain
 
 					67lang:auto_type
 
-			local _0x3f_push
+			local _0x60_push
 				67lang:call push
-					67lang:access_local _0x3e_next_chain
+					67lang:call _0x5f_next_chain
 
 					noscope
-						local _0x3c_module
-							67lang:access_local module
+						local _0x62_module
+							67lang:call module
 
 							67lang:auto_type
 
-					local _0x3d_id
-						67lang:access_field _0x3c_module id
+					local _0x63_id
+						67lang:call id
+							67lang:call _0x62_module
 
 						67lang:auto_type
 
@@ -281,27 +316,30 @@
 				67lang:assume_local_exists dep_id
 
 				noscope
-					local _0x42_module
-						67lang:access_local module
+					local _0x69_module
+						67lang:call module
 
 						67lang:auto_type
 
-				local _0x43_deps
-					67lang:access_field _0x42_module deps
+				local _0x6a__hash_
+					67lang:call #
+						67lang:call _0x69_module
+
+						string "deps"
 
 					67lang:auto_type
 
 				do
 					if
 						exists
-							local _0x46_dep_id
-								67lang:access_local dep_id
+							local _0x6d_dep_id
+								67lang:call dep_id
 
 								67lang:auto_type
 
 							inside
-								local _0x47_next_chain
-									67lang:access_local next_chain
+								local _0x6f_next_chain
+									67lang:call next_chain
 
 									67lang:auto_type
 
@@ -310,17 +348,17 @@
 								list
 
 							noscope
-								local _0x4a_dep_loop
-									67lang:access_local dep_loop
+								local _0x72_dep_loop
+									67lang:call dep_loop
 
 									67lang:auto_type
 
-							local _0x4b_push
+							local _0x73_push
 								67lang:call push
-									67lang:access_local _0x4a_dep_loop
+									67lang:call _0x72_dep_loop
 
-									local _0x49_dep_id
-										67lang:access_local dep_id
+									local _0x75_dep_id
+										67lang:call dep_id
 
 										67lang:auto_type
 
@@ -330,51 +368,51 @@
 								67lang:assume_local_exists chain_dep_id
 
 								noscope
-									local _0x4d_next_chain
-										67lang:access_local next_chain
+									local _0x79_next_chain
+										67lang:call next_chain
 
 										67lang:auto_type
 
-									local _0x4e_slice
+									local _0x7a_slice
 										67lang:call slice
-											67lang:access_local _0x4d_next_chain
+											67lang:call _0x79_next_chain
 
 										67lang:auto_type
 
-								local _0x4f_reverse
+								local _0x7b_reverse
 									67lang:call reverse
-										67lang:access_local _0x4e_slice
+										67lang:call _0x7a_slice
 
 									67lang:auto_type
 
 								do
 									noscope
-										local _0x54_dep_loop
-											67lang:access_local dep_loop
+										local _0x7f_dep_loop
+											67lang:call dep_loop
 
 											67lang:auto_type
 
-									local _0x55_push
+									local _0x80_push
 										67lang:call push
-											67lang:access_local _0x54_dep_loop
+											67lang:call _0x7f_dep_loop
 
-											local _0x53_chain_dep_id
-												67lang:access_local chain_dep_id
+											local _0x82_chain_dep_id
+												67lang:call chain_dep_id
 
 												67lang:auto_type
 
 										67lang:auto_type
 
 									if
-										local _0x59_eq
+										local _0x86_eq
 											67lang:call eq
-												local _0x57_chain_dep_id
-													67lang:access_local chain_dep_id
+												local _0x87_chain_dep_id
+													67lang:call chain_dep_id
 
 													67lang:auto_type
 
-												local _0x58_dep_id
-													67lang:access_local dep_id
+												local _0x89_dep_id
+													67lang:call dep_id
 
 													67lang:auto_type
 
@@ -384,36 +422,36 @@
 											break
 
 							noscope
-								local _0x5c_dep_loop
-									67lang:access_local dep_loop
+								local _0x8e_dep_loop
+									67lang:call dep_loop
 
 									67lang:auto_type
 
-							local _0x5d_reverse
+							local _0x8f_reverse
 								67lang:call reverse
-									67lang:access_local _0x5c_dep_loop
+									67lang:call _0x8e_dep_loop
 
 								67lang:auto_type
 
 							noscope
-								local _0x60_dep_loops
-									67lang:access_local dep_loops
+								local _0x92_dep_loops
+									67lang:call dep_loops
 
 									67lang:auto_type
 
-							local _0x61_push
+							local _0x93_push
 								67lang:call push
-									67lang:access_local _0x60_dep_loops
+									67lang:call _0x92_dep_loops
 
 									noscope
-										local _0x5e_dep_loop
-											67lang:access_local dep_loop
+										local _0x95_dep_loop
+											67lang:call dep_loop
 
 											67lang:auto_type
 
-									local _0x5f_join
+									local _0x96_join
 										67lang:call join
-											67lang:access_local _0x5e_dep_loop
+											67lang:call _0x95_dep_loop
 
 											string " → "
 
@@ -422,46 +460,51 @@
 								67lang:auto_type
 
 					else
-						local _0x69_visit
+						local _0x9c_visit
 							67lang:call visit
 								noscope
-									local _0x65_modules
-										67lang:access_local modules
+									local _0x9d_modules
+										67lang:call modules
 
 										67lang:auto_type
 
-								local _0x66_id
-									67lang:access_index _0x65_modules
-										local _0x64_dep_id
-											67lang:access_local dep_id
+								local _0x9e__hash_
+									67lang:call #
+										67lang:call _0x9d_modules
+
+										local _0xa0_dep_id
+											67lang:call dep_id
 
 											67lang:auto_type
 
-								local _0x68_next_chain
-									67lang:access_local next_chain
+									67lang:auto_type
+
+								local _0xa4_next_chain
+									67lang:call next_chain
 
 									67lang:auto_type
 
 							67lang:auto_type
 
 			noscope
-				local _0x70_build_order
-					67lang:access_local build_order
+				local _0xab_build_order
+					67lang:call build_order
 
 					67lang:auto_type
 
-			local _0x71_push
+			local _0xac_push
 				67lang:call push
-					67lang:access_local _0x70_build_order
+					67lang:call _0xab_build_order
 
 					noscope
-						local _0x6e_module
-							67lang:access_local module
+						local _0xae_module
+							67lang:call module
 
 							67lang:auto_type
 
-					local _0x6f_id
-						67lang:access_field _0x6e_module id
+					local _0xaf_id
+						67lang:call id
+							67lang:call _0xae_module
 
 						67lang:auto_type
 
@@ -470,20 +513,20 @@
 	for module in
 		67lang:assume_local_exists module
 
-		local _0x75_values
+		local _0xb5_values
 			67lang:call values
-				local _0x74_modules
-					67lang:access_local modules
+				local _0xb6_modules
+					67lang:call modules
 
 					67lang:auto_type
 
 			67lang:auto_type
 
 		do
-			local _0x7a_visit
+			local _0xba_visit
 				67lang:call visit
-					local _0x79_module
-						67lang:access_local module
+					local _0xbb_module
+						67lang:call module
 
 						67lang:auto_type
 
@@ -492,40 +535,40 @@
 				67lang:auto_type
 
 	if
-		local _0x7e_nondesc
+		local _0xbf_nondesc
 			67lang:call nondesc
 				int 1
 
 				noscope
-					local _0x7c_dep_loops
-						67lang:access_local dep_loops
+					local _0xc0_dep_loops
+						67lang:call dep_loops
 
 						67lang:auto_type
 
-				local _0x7d_length
+				local _0xc1_length
 					67lang:call length
-						67lang:access_local _0x7c_dep_loops
+						67lang:call _0xc0_dep_loops
 
 					67lang:auto_type
 
 			67lang:auto_type
 
 		then
-			local _0x86_print
+			local _0xc7_print
 				67lang:call print
-					local _0x83_concat
+					local _0xc8_concat
 						67lang:call concat
 							string "ERROR: there are dependency loops.\n"
 
 							noscope
-								local _0x81_dep_loops
-									67lang:access_local dep_loops
+								local _0xc9_dep_loops
+									67lang:call dep_loops
 
 									67lang:auto_type
 
-							local _0x82_join
+							local _0xca_join
 								67lang:call join
-									67lang:access_local _0x81_dep_loops
+									67lang:call _0xc9_dep_loops
 
 									string "\n"
 
@@ -536,17 +579,17 @@
 				67lang:auto_type
 
 	else
-		local _0x8c_print
+		local _0xd4_print
 			67lang:call print
 				noscope
-					local _0x8a_build_order
-						67lang:access_local build_order
+					local _0xd5_build_order
+						67lang:call build_order
 
 						67lang:auto_type
 
-				local _0x8b_join
+				local _0xd6_join
 					67lang:call join
-						67lang:access_local _0x8a_build_order
+						67lang:call _0xd5_build_order
 
 						string "\n"
 

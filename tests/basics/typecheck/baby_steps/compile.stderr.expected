@@ -27,17 +27,17 @@
     "recoverable": false,
     "line": 38,
     "char": 0,
-    "content": "67lang:access_local test_int",
-    "error": "failed to assert: field demands int but is given str",
-    "error_type": "FIELD_TYPE_MISMATCH"
+    "content": "67lang:call test_int",
+    "error": "failed to assert: argument 1 demands int and is given str",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
     "line": 42,
     "char": 0,
-    "content": "67lang:access_local test_str",
-    "error": "failed to assert: field demands str but is given int",
-    "error_type": "FIELD_TYPE_MISMATCH"
+    "content": "67lang:call test_str",
+    "error": "failed to assert: argument 1 demands str and is given int",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
@@ -51,9 +51,9 @@
     "recoverable": false,
     "line": 49,
     "char": 0,
-    "content": "67lang:access_local test_bool",
-    "error": "failed to assert: field demands bool but is given str",
-    "error_type": "FIELD_TYPE_MISMATCH"
+    "content": "67lang:call test_bool",
+    "error": "failed to assert: argument 1 demands bool and is given str",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
   },
   {
     "recoverable": false,

@@ -2,7 +2,7 @@ from dataclasses import asdict, replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
     builtins, builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
-    walk_upwards_for_local_definition
+    walk_upwards_for_local_definition, LocalAccessCall
 )
 from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
 from strutil import IndentedStringIO, Joiner
@@ -60,7 +60,18 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         fn = args[0]
 
         convention = None
-        if fn in builtin_calls:
+        res = walk_upwards_for_local_definition(ctx, fn)
+        if res:
+            from processor_base import LocalAccessCall
+            macro = ctx.compiler.get_metadata(res.node, Macro)
+            if macro == "fn":
+                fn = ctx.compiler.get_metadata(res.node, SaneIdentifier)
+                convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
+            elif macro in {"local", "67lang:assume_local_exists"}:
+                name = get_single_arg(replace(ctx, node=res.node))
+                fn = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
+                convention = LocalAccessCall(fn=fn, demands=[res.type], returns=res.type)
+        elif fn in builtin_calls:
             overloads = builtin_calls[fn]
             if isinstance(overloads, list):
                 # Multiple overloads - need to match by parameter types
@@ -86,10 +97,8 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         elif fn in builtins:
             convention = DirectCall(fn=builtins[fn], demands=None, receiver="_67lang", returns=None)
         else:
-            res = walk_upwards_for_local_definition(ctx, fn)
-            ctx.compiler.assert_(res != None, ctx.node, f"{fn} must refer to a defined function")
-            fn = ctx.compiler.get_metadata(res.node, SaneIdentifier)
-            convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
+            # TODO should use a different ErrorType..?
+            ctx.compiler.assert_(False, ctx.node, f"{fn} must refer to a defined function or local", ErrorType.NO_MATCHING_OVERLOAD)
 
         return convention
 
@@ -112,6 +121,7 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         # Store the resolved convention in metadata for later use during compilation
         ctx.compiler.set_metadata(ctx.node, ResolvedConvention, ResolvedConvention(convention=convention))
 
+        # TODO: add assertion for argument count
         if convention.demands:
             i = 0
             for received, demanded in zip(args, convention.demands):

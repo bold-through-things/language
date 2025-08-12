@@ -74,136 +74,156 @@ void (async () => {
             _0x1_buzz_divisor
             let _0x2_n
             _0x2_n
-            const _0x34_is_tty = await _67lang.is_tty()
-            let _0x3_is_tty = _0x34_is_tty
-            if (_0x3_is_tty) {{
+            const _0x85_is_tty = await _67lang.is_tty()
+            let _0x4__0x3_is_tty = _0x85_is_tty
+            if (_0x4__0x3_is_tty) {{
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        const _0x35_prompt = await _67lang.prompt("fizz? ")
-                        let _0x5_prompt = _0x35_prompt
-                        _0x0_fizz_divisor = _0x5_prompt
-                        let _0x4_fizz_divisor = _0x0_fizz_divisor
-                        _0x4_fizz_divisor
-                        const _0x36_prompt = await _67lang.prompt("buzz? ")
-                        let _0x7_prompt = _0x36_prompt
-                        _0x1_buzz_divisor = _0x7_prompt
-                        let _0x6_buzz_divisor = _0x1_buzz_divisor
-                        _0x6_buzz_divisor
-                        const _0x37_prompt = await _67lang.prompt("n? ")
-                        let _0x9_prompt = _0x37_prompt
-                        _0x2_n = _0x9_prompt
-                        let _0x8_n = _0x2_n
-                        _0x8_n
+                        const _0x87_prompt = await _67lang.prompt("fizz? ")
+                        let _0x8__0x6_prompt = _0x87_prompt
+                        const _0x86_fizz_divisor = await (_0x0_fizz_divisor = _0x8__0x6_prompt)
+                        let _0x9__0x5_fizz_divisor = _0x86_fizz_divisor
+                        _0x9__0x5_fizz_divisor
+                        const _0x89_prompt = await _67lang.prompt("buzz? ")
+                        let _0xd__0xb_prompt = _0x89_prompt
+                        const _0x88_buzz_divisor = await (_0x1_buzz_divisor = _0xd__0xb_prompt)
+                        let _0xe__0xa_buzz_divisor = _0x88_buzz_divisor
+                        _0xe__0xa_buzz_divisor
+                        const _0x8b_prompt = await _67lang.prompt("n? ")
+                        let _0x12__0x10_prompt = _0x8b_prompt
+                        const _0x8a_n = await (_0x2_n = _0x12__0x10_prompt)
+                        let _0x13__0xf_n = _0x8a_n
+                        _0x13__0xf_n
                     }
                 } }
             else {
                 const parent_scope = scope
                 {
                     const scope = _67lang.scope(parent_scope)
-                    const _0x38_stdin = await _67lang.stdin()
-                    let _0xa_stdin = _0x38_stdin
-                    let _0xb_input = _0xa_stdin
-                    _0xb_input
-                    let _0xd_input = _0xb_input
-                    const _0x39_split = await String.prototype.split.call(_0xd_input, "\n")
-                    let _0xe_split = _0x39_split
-                    _0xb_input = _0xe_split
-                    let _0xc_input = _0xb_input
-                    _0xc_input
+                    const _0x8c_stdin = await _67lang.stdin()
+                    let _0x15__0x14_stdin = _0x8c_stdin
+                    let _0x16_input = _0x15__0x14_stdin
+                    _0x16_input
+                    const _0x8e_input = await _0x16_input
+                    let _0x1c__0x18_input = _0x8e_input
+                    const _0x90__0x18_input = await _0x1c__0x18_input
+                    const _0x8f_split = await String.prototype.split.call(_0x90__0x18_input, "\n")
+                    let _0x1d__0x19_split = _0x8f_split
+                    const _0x8d_input = await (_0x16_input = _0x1d__0x19_split)
+                    let _0x1e__0x17_input = _0x8d_input
+                    _0x1e__0x17_input
 
-                    let _0x10_input = _0xb_input
-                    const _0x3a__hash_ = await _0x10_input[0]
-                    let _0x11__hash_ = _0x3a__hash_
-                    _0x0_fizz_divisor = _0x11__hash_
-                    let _0xf_fizz_divisor = _0x0_fizz_divisor
-                    _0xf_fizz_divisor
-                    let _0x13_input = _0xb_input
-                    const _0x3b__hash_ = await _0x13_input[1]
-                    let _0x14__hash_ = _0x3b__hash_
-                    _0x1_buzz_divisor = _0x14__hash_
-                    let _0x12_buzz_divisor = _0x1_buzz_divisor
-                    _0x12_buzz_divisor
-                    let _0x16_input = _0xb_input
-                    const _0x3c__hash_ = await _0x16_input[2]
-                    let _0x17__hash_ = _0x3c__hash_
-                    _0x2_n = _0x17__hash_
-                    let _0x15_n = _0x2_n
-                    _0x15_n
+                    const _0x92_input = await _0x16_input
+                    let _0x24__0x20_input = _0x92_input
+                    const _0x94__0x20_input = await _0x24__0x20_input
+                    const _0x93__hash_ = await _0x94__0x20_input[0]
+                    let _0x25__0x21__hash_ = _0x93__hash_
+                    const _0x91_fizz_divisor = await (_0x0_fizz_divisor = _0x25__0x21__hash_)
+                    let _0x26__0x1f_fizz_divisor = _0x91_fizz_divisor
+                    _0x26__0x1f_fizz_divisor
+                    const _0x96_input = await _0x16_input
+                    let _0x2c__0x28_input = _0x96_input
+                    const _0x98__0x28_input = await _0x2c__0x28_input
+                    const _0x97__hash_ = await _0x98__0x28_input[1]
+                    let _0x2d__0x29__hash_ = _0x97__hash_
+                    const _0x95_buzz_divisor = await (_0x1_buzz_divisor = _0x2d__0x29__hash_)
+                    let _0x2e__0x27_buzz_divisor = _0x95_buzz_divisor
+                    _0x2e__0x27_buzz_divisor
+                    const _0x9a_input = await _0x16_input
+                    let _0x34__0x30_input = _0x9a_input
+                    const _0x9c__0x30_input = await _0x34__0x30_input
+                    const _0x9b__hash_ = await _0x9c__0x30_input[2]
+                    let _0x35__0x31__hash_ = _0x9b__hash_
+                    const _0x99_n = await (_0x2_n = _0x35__0x31__hash_)
+                    let _0x36__0x2f_n = _0x99_n
+                    _0x36__0x2f_n
                 }
             } 
-            let _0x18_i = 0
-            _0x18_i
-            while(true) {let _0x1a_i = _0x18_i
-                let _0x1b_n = _0x2_n
-                const _0x3d_nondesc = await (_0x1a_i <= _0x1b_n)
-                let _0x19_nondesc = _0x3d_nondesc
-                if (!_0x19_nondesc) { break; }
+            let _0x37_i = 0
+            _0x37_i
+            while(true) {const _0x9e_i = await _0x37_i
+                let _0x3d__0x39_i = _0x9e_i
+                const _0x9f_n = await _0x2_n
+                let _0x3e__0x3b_n = _0x9f_n
+                const _0x9d_nondesc = await (_0x3d__0x39_i <= _0x3e__0x3b_n)
+                let _0x3f__0x38_nondesc = _0x9d_nondesc
+                if (!_0x3f__0x38_nondesc) { break; }
                 {
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        let _0x1c_out = ""
-                        _0x1c_out
-                        let _0x1f_i = _0x18_i
-                        let _0x20_fizz_divisor = _0x0_fizz_divisor
-                        const _0x3f_mod = await (_0x1f_i % _0x20_fizz_divisor)
-                        let _0x1e_mod = _0x3f_mod
-                        const _0x3e_eq = await (_0x1e_mod === 0)
-                        let _0x1d_eq = _0x3e_eq
-                        if (_0x1d_eq) {{
+                        let _0x40_out = ""
+                        _0x40_out
+                        const _0xa2_i = await _0x37_i
+                        let _0x4a__0x43_i = _0xa2_i
+                        const _0xa3_fizz_divisor = await _0x0_fizz_divisor
+                        let _0x4b__0x45_fizz_divisor = _0xa3_fizz_divisor
+                        const _0xa1_mod = await (_0x4a__0x43_i % _0x4b__0x45_fizz_divisor)
+                        let _0x4c__0x42_mod = _0xa1_mod
+                        const _0xa0_eq = await (_0x4c__0x42_mod === 0)
+                        let _0x4d__0x41_eq = _0xa0_eq
+                        if (_0x4d__0x41_eq) {{
                                 const parent_scope = scope
                                 {
                                     const scope = _67lang.scope(parent_scope)
-                                    let _0x23_out = _0x1c_out
-                                    const _0x40_concat = await (_0x23_out + "fizz")
-                                    let _0x22_concat = _0x40_concat
-                                    _0x1c_out = _0x22_concat
-                                    let _0x21_out = _0x1c_out
-                                    _0x21_out
+                                    const _0xa6_out = await _0x40_out
+                                    let _0x54__0x50_out = _0xa6_out
+                                    const _0xa5_concat = await (_0x54__0x50_out + "fizz")
+                                    let _0x55__0x4f_concat = _0xa5_concat
+                                    const _0xa4_out = await (_0x40_out = _0x55__0x4f_concat)
+                                    let _0x56__0x4e_out = _0xa4_out
+                                    _0x56__0x4e_out
                                 }
                             } }
-                        let _0x26_i = _0x18_i
-                        let _0x27_buzz_divisor = _0x1_buzz_divisor
-                        const _0x42_mod = await (_0x26_i % _0x27_buzz_divisor)
-                        let _0x25_mod = _0x42_mod
-                        const _0x41_eq = await (_0x25_mod === 0)
-                        let _0x24_eq = _0x41_eq
-                        if (_0x24_eq) {{
+                        const _0xa9_i = await _0x37_i
+                        let _0x60__0x59_i = _0xa9_i
+                        const _0xaa_buzz_divisor = await _0x1_buzz_divisor
+                        let _0x61__0x5b_buzz_divisor = _0xaa_buzz_divisor
+                        const _0xa8_mod = await (_0x60__0x59_i % _0x61__0x5b_buzz_divisor)
+                        let _0x62__0x58_mod = _0xa8_mod
+                        const _0xa7_eq = await (_0x62__0x58_mod === 0)
+                        let _0x63__0x57_eq = _0xa7_eq
+                        if (_0x63__0x57_eq) {{
                                 const parent_scope = scope
                                 {
                                     const scope = _67lang.scope(parent_scope)
-                                    let _0x2a_out = _0x1c_out
-                                    const _0x43_concat = await (_0x2a_out + "buzz")
-                                    let _0x29_concat = _0x43_concat
-                                    _0x1c_out = _0x29_concat
-                                    let _0x28_out = _0x1c_out
-                                    _0x28_out
+                                    const _0xad_out = await _0x40_out
+                                    let _0x6a__0x66_out = _0xad_out
+                                    const _0xac_concat = await (_0x6a__0x66_out + "buzz")
+                                    let _0x6b__0x65_concat = _0xac_concat
+                                    const _0xab_out = await (_0x40_out = _0x6b__0x65_concat)
+                                    let _0x6c__0x64_out = _0xab_out
+                                    _0x6c__0x64_out
                                 }
                             } }
-                        let _0x2c_out = _0x1c_out
-                        const _0x44_eq = await (_0x2c_out === "")
-                        let _0x2b_eq = _0x44_eq
-                        if (_0x2b_eq) {{
+                        const _0xaf_out = await _0x40_out
+                        let _0x70__0x6e_out = _0xaf_out
+                        const _0xae_eq = await (_0x70__0x6e_out === "")
+                        let _0x71__0x6d_eq = _0xae_eq
+                        if (_0x71__0x6d_eq) {{
                                 const parent_scope = scope
                                 {
                                     const scope = _67lang.scope(parent_scope)
-                                    let _0x2e_i = _0x18_i
-                                    _0x1c_out = _0x2e_i
-                                    let _0x2d_out = _0x1c_out
-                                    _0x2d_out
+                                    const _0xb1_i = await _0x37_i
+                                    let _0x75__0x73_i = _0xb1_i
+                                    const _0xb0_out = await (_0x40_out = _0x75__0x73_i)
+                                    let _0x76__0x72_out = _0xb0_out
+                                    _0x76__0x72_out
                                 }
                             } }
-                        let _0x30_out = _0x1c_out
-                        const _0x45_print = await console.log(_0x30_out)
-                        let _0x2f_print = _0x45_print
-                        _0x2f_print
-                        let _0x33_i = _0x18_i
-                        const _0x46_add = await (_0x33_i + 1)
-                        let _0x32_add = _0x46_add
-                        _0x18_i = _0x32_add
-                        let _0x31_i = _0x18_i
-                        _0x31_i
+                        const _0xb3_out = await _0x40_out
+                        let _0x7a__0x78_out = _0xb3_out
+                        const _0xb2_print = await console.log(_0x7a__0x78_out)
+                        let _0x7b__0x77_print = _0xb2_print
+                        _0x7b__0x77_print
+                        const _0xb6_i = await _0x37_i
+                        let _0x82__0x7e_i = _0xb6_i
+                        const _0xb5_add = await (_0x82__0x7e_i + 1)
+                        let _0x83__0x7d_add = _0xb5_add
+                        const _0xb4_i = await (_0x37_i = _0x83__0x7d_add)
+                        let _0x84__0x7c_i = _0xb4_i
+                        _0x84__0x7c_i
                     }
                 } }
         }

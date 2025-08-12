@@ -70,22 +70,27 @@ void (async () => {
             const scope = _67lang.scope(parent_scope)
             let _0x0_my_obj = {}
             _0x0_my_obj
-            let _0x1_my_obj = _0x0_my_obj
+            const _0x10_my_obj = await _0x0_my_obj
+            let _0x3__0x1_my_obj = _0x10_my_obj
 
-            _0x1_my_obj.name = "gemini"
-            const _0x8__0x1_my_obj_name = await _0x1_my_obj.name
-            let _0x2_name = _0x8__0x1_my_obj_name
-            _0x2_name
-            let _0x3_my_list = []
-            _0x3_my_list
-            let _0x4_my_list = _0x3_my_list
+            const _0x12__0x1_my_obj = await _0x3__0x1_my_obj
+            const _0x11_name = await (_0x12__0x1_my_obj.name = ("gemini"))
+            let _0x4__0x2_name = _0x11_name
+            _0x4__0x2_name
+            let _0x5_my_list = []
+            _0x5_my_list
+            const _0x13_my_list = await _0x5_my_list
+            let _0x8__0x6_my_list = _0x13_my_list
 
-            let _0x6_my_obj = _0x0_my_obj
-            const _0xa__0x6_my_obj_name = await _0x6_my_obj.name
-            let _0x7_name = _0xa__0x6_my_obj_name
-            const _0x9_push = await Array.prototype.push.call(_0x4_my_list, _0x7_name)
-            let _0x5_push = _0x9_push
-            _0x5_push
+            const _0x15__0x6_my_list = await _0x8__0x6_my_list
+            const _0x16_my_obj = await _0x0_my_obj
+            let _0xd__0x9_my_obj = _0x16_my_obj
+            const _0x18__0x9_my_obj = await _0xd__0x9_my_obj
+            const _0x17_name = await (_0x18__0x9_my_obj.name)
+            let _0xe__0xa_name = _0x17_name
+            const _0x14_push = await Array.prototype.push.call(_0x15__0x6_my_list, _0xe__0xa_name)
+            let _0xf__0x7_push = _0x14_push
+            _0xf__0x7_push
         }
     } 
 })();

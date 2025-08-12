@@ -65,7 +65,9 @@ a numbers push
 	int 6
 
 a print
-	a numbers 0
+	a numbers #
+		where # takes
+			int 0
 	
 a print
 	a numbers #
@@ -88,13 +90,19 @@ local user
 	dict
 
 note we must populate the dict manually for now
-a user name
+a user #
+	where # takes
+		string "name"
 	string "Bob"
 
-a user age
+a user #
+	where # takes
+		string "age"
 	int 30
 
-a user city
+a user #
+	where # takes
+		string "city"
 	string "New York"
 
 a print

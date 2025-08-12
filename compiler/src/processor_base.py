@@ -9,8 +9,7 @@ from typing import Callable
 from utils import *
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-
-# ERASED_NODE removed - no longer needed
+from logger import default_logger
 
 def unroll_parent_chain(n: Node | None) -> list[Node]:
     rv: list[Node] = []
@@ -43,7 +42,6 @@ def _try_match_local(ctx: "MacroContext", name: str):
     if name in {desired_local_name, sane_local_name}:
         # Found the local definition, try to get its type from metadata
         from node import FieldDemandType
-        from logger import default_logger
         default_logger.typecheck(f"_try_match_local: found {name} at {ctx.node.content}")
         try:
             demanded = ctx.compiler.get_metadata(ctx.node, FieldDemandType)
@@ -73,6 +71,8 @@ class LocalMatchResult:
     type: str
 
 # @print_with_callback(lambda ctx, name, ret: f"walk_upwards_for_local_definition {name} from node {ctx.node.pos.line} {ctx.node.content} finally returns {ret.node.content if ret else "None"}\n")
+
+
 def walk_upwards_for_local_definition(ctx: "MacroContext", name: str):
     current = ctx.node
     compiler = ctx.compiler
@@ -167,7 +167,7 @@ class FieldCall:
             # TODO - assert one arg (need context for compile errors...)
             #  or just this i guess..? what even happens lmfao
             maybe_assign = f" = ({",".join(args)})"
-        return f"{receiver}.{self.field}{maybe_assign}"
+        return f"({receiver}.{self.field}{maybe_assign})"
 
 @dataclass
 class PrototypeCall:
@@ -191,6 +191,18 @@ class DirectCall:
         if self.receiver:
             receiver = f"{self.receiver}."
         return f"{receiver}{self.fn}({", ".join(args)})"
+
+@dataclass
+class LocalAccessCall:
+    """just returns the identifier"""
+    fn: str
+    demands: list[str] | None
+    returns: str | None
+    def compile(self, args: list[str]):
+        if len(args) > 0:
+            return f"({self.fn} = {",".join(args)})"
+        return self.fn
+
 
 @dataclass
 class NaryOperatorCall:
@@ -229,7 +241,7 @@ class NewCall:
     demands: list[str] | None
     returns: str | None
     def compile(self, args: list[str]):
-        return f"new {self.constructor}({', '.join(args)})"
+        return f"(new {self.constructor}({', '.join(args)}))"
 
 @dataclass
 class IndexAccessCall:

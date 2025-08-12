@@ -61,62 +61,7 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
             ctx.current_step.process_node(inner_ctx)
         ctx.statement_out.write("}")
 
-class Access_field_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
-    def typecheck(self, ctx: MacroContext):
-        return "*"
 
-    def emission(self, ctx: MacroContext):
-        name, field = get_two_args(ctx, "first argument is object, second is field")
-        res = walk_upwards_for_local_definition(ctx, name)
-        ctx.compiler.assert_(res != None, ctx.node, f"{name} must access a defined function", ErrorType.NO_SUCH_LOCAL)
-        name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
-        field_access = js_field_access(field)
-        ident = ctx.compiler.get_new_ident("_".join([name, field]))
-
-        args = collect_child_expressions(ctx)
-
-        if len(args) > 0:
-            ctx.compiler.assert_(len(args) == 1, ctx.node, "single child node for assignment")
-            ctx.statement_out.write(f"{name}{field_access} = {args[-1]}\n")
-        ctx.statement_out.write(f"const {ident} = await {name}{field_access}\n")
-        ctx.expression_out.write(ident)
-
-class Access_local_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
-    def emission(self, ctx: MacroContext):
-        desired_name = get_single_arg(ctx)
-        res = walk_upwards_for_local_definition(ctx, desired_name)
-        ctx.compiler.assert_(res != None, ctx.node, f"{desired_name} must access a defined local", ErrorType.NO_SUCH_LOCAL)
-        actual_name = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or desired_name
-
-        args = collect_child_expressions(ctx)
-
-        if len(args) > 0:
-            ctx.compiler.assert_(len(args) == 1, ctx.node, "single child used for assignment")
-            ctx.statement_out.write(f"{actual_name} = {args[-1]}\n")
-
-        ctx.expression_out.write(actual_name)
-
-    def typecheck(self, ctx: MacroContext):
-        first = get_single_arg(ctx, "single argument, the name of local")
-
-        # Use utility function to collect child types
-        types = collect_child_types(ctx)
-
-        # Use upward walking to find local variable definition
-        from processor_base import walk_upwards_for_local_definition
-        res = walk_upwards_for_local_definition(ctx, first)
-        ctx.compiler.assert_(res != None, ctx.node, f"{first} must access a defined local", ErrorType.NO_SUCH_LOCAL)
-        demanded = res.type
-        received = None
-
-        default_logger.typecheck(f"{ctx.node.content} demanded {demanded or 'None'}")
-        if demanded and demanded != "*":
-            if len(types) > 0:
-                # TODO - support multiple arguments
-                ctx.compiler.assert_(len(types) == 1, ctx.node, f"only support one argument for now (TODO!)", ErrorType.WRONG_ARG_COUNT)
-                received = types[0]
-                ctx.compiler.assert_(received in {demanded, "*"}, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
-        return demanded or received or "*"
 
 
 class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider):
@@ -255,14 +200,6 @@ class Access_macro_provider(Macro_preprocess_provider):
         for i, step in enumerate(steps):
             ident = ctx.compiler.get_new_ident(step)
             step_is_last = step == steps[-1]
-            children = list(filter(lambda n: not n.content.startswith("noscope"), other_children))
-            
-            is_first_step = i == 0
-            local_def = None
-            if is_first_step:
-                local_def = walk_upwards_for_local_definition(ctx, step)
-
-            step_needs_call = (not local_def and step in builtin_calls) or (step_is_last and len(children) > 1) or step in callers
             
             args1: list[Node] = []
             if step in callers:
@@ -271,22 +208,17 @@ class Access_macro_provider(Macro_preprocess_provider):
                 args1 += other_children
 
             local: list[Node] = []
-            if step_needs_call:
-                # call or set
-                self_arg = []
-                if last_chain_ident:
-                    self_arg = [ctx.compiler.make_node(f"67lang:access_local {last_chain_ident}", ctx.node.pos or p0, [])]
-                local.append(ctx.compiler.make_node(f"67lang:call {step}", ctx.node.pos or p0, self_arg + args1))
-                local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
-                nodes_to_process.extend(args1)
-            else:
-                # static field
-                access = f"access_field {last_chain_ident}" if last_chain_ident else "access_local"
-                local.append(ctx.compiler.make_node(f"67lang:{access} {step}", ctx.node.pos or p0, args1))
-                local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
-                nodes_to_process.extend(args1)
+            
+            self_arg = []
+            if last_chain_ident:
+                self_arg = [ctx.compiler.make_node(f"67lang:call {last_chain_ident}", ctx.node.pos or p0, [])]
+            
+            local.append(ctx.compiler.make_node(f"67lang:call {step}", ctx.node.pos or p0, self_arg + args1))
+            local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
+            nodes_to_process.extend(args1)
 
             local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)
+            nodes_to_process.append(local_node)
             last_chain_ident = ident
             replace_with.append(local_node)
             

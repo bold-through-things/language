@@ -18,20 +18,32 @@ do
 			string ":"
 			int 2
 	
-	a module id
-		a kv 0 trim
+	a module #
+		where # takes
+			string "id"
+		a kv # trim
+			where # takes
+				int 0
 	
-	a module deps
-		a kv 1 trim split
+	a module #
+		where # takes
+			string "deps"
+		a kv # trim split
+			where # takes
+				int 1
 			regex /\s+/
 	
 	# TODO - this ought to be a macro.
 	if
 		a eq
-			a kv 1 trim
+			a kv # trim
+				where # takes
+					int 1
 			string ""
 	then
-		a module deps
+		a module #
+			where # takes
+				string "deps"
 			list
 	
 	a modules #
@@ -59,11 +71,15 @@ fn visit
 	param chain
 do
 	if 
-		a module visited
+		a module #
+			where # takes
+				string "visited"
 	then
 		return
-	a module visited
-		true
+	a module #
+		where # takes
+			string "visited"
+			true
 
 	# TODO - this shouldn't be using slice. we need a dedicated copy command
 	local next_chain
@@ -72,7 +88,9 @@ do
 		a module id
 
 	for dep_id in
-		a module deps
+		a module #
+			where # takes
+				string "deps"
 	do
 		if
 			exists

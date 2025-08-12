@@ -68,81 +68,98 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x24_URL = await new URL("https://example.com/path?query=123")
-            let _0x0_URL = _0x24_URL
-            let _0x1_myURL = _0x0_URL
-            _0x1_myURL
-            let _0x3_myURL = _0x1_myURL
-            const _0x26__0x3_myURL_pathname = await _0x3_myURL.pathname
-            let _0x4_pathname = _0x26__0x3_myURL_pathname
-            const _0x25_print = await console.log(_0x4_pathname)
-            let _0x2_print = _0x25_print
-            _0x2_print
-            const _0x27_print = await console.log("\n--- Testing TextEncoder/TextDecoder ---")
-            let _0x5_print = _0x27_print
-            _0x5_print
-            const _0x28_TextEncoder = await new TextEncoder()
-            let _0x6_TextEncoder = _0x28_TextEncoder
-            let _0x7_encoder = _0x6_TextEncoder
-            _0x7_encoder
-            const _0x29_TextDecoder = await new TextDecoder()
-            let _0x8_TextDecoder = _0x29_TextDecoder
-            let _0x9_decoder = _0x8_TextDecoder
-            _0x9_decoder
-            let _0xa_text_tests = ["ASCII text", "Unicode: 🦕 Deno", "Numbers: 42"]
-            _0xa_text_tests
-            let _0xb_text_tests = _0xa_text_tests
+            const _0x4b_URL = await (new URL("https://example.com/path?query=123"))
+            let _0x1__0x0_URL = _0x4b_URL
+            let _0x2_myURL = _0x1__0x0_URL
+            _0x2_myURL
+            const _0x4d_myURL = await _0x2_myURL
+            let _0x8__0x4_myURL = _0x4d_myURL
+            const _0x4f__0x4_myURL = await _0x8__0x4_myURL
+            const _0x4e_pathname = await (_0x4f__0x4_myURL.pathname)
+            let _0x9__0x5_pathname = _0x4e_pathname
+            const _0x4c_print = await console.log(_0x9__0x5_pathname)
+            let _0xa__0x3_print = _0x4c_print
+            _0xa__0x3_print
+            const _0x50_print = await console.log("\n--- Testing TextEncoder/TextDecoder ---")
+            let _0xc__0xb_print = _0x50_print
+            _0xc__0xb_print
+            const _0x51_TextEncoder = await (new TextEncoder())
+            let _0xe__0xd_TextEncoder = _0x51_TextEncoder
+            let _0xf_encoder = _0xe__0xd_TextEncoder
+            _0xf_encoder
+            const _0x52_TextDecoder = await (new TextDecoder())
+            let _0x11__0x10_TextDecoder = _0x52_TextDecoder
+            let _0x12_decoder = _0x11__0x10_TextDecoder
+            _0x12_decoder
+            let _0x13_text_tests = ["ASCII text", "Unicode: 🦕 Deno", "Numbers: 42"]
+            _0x13_text_tests
+            const _0x53_text_tests = await _0x13_text_tests
+            let _0x15__0x14_text_tests = _0x53_text_tests
 
-            const _0x2a_iter = _0xb_text_tests[Symbol.iterator]();
+            const _0x54_iter = _0x15__0x14_text_tests[Symbol.iterator]();
             while (true) {
-                const { value, done } = _0x2a_iter.next();
+                const { value, done } = _0x54_iter.next();
                 if (done) { break; }
                 let text = value;
                 {
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
-                        let _0xc_encoder = _0x7_encoder
-                        let _0xe_text = text
-                        const _0x2b_encode = await TextEncoder.prototype.encode.call(_0xc_encoder, _0xe_text)
-                        let _0xd_encode = _0x2b_encode
-                        let _0xf_bytes = _0xd_encode
-                        _0xf_bytes
-                        let _0x10_decoder = _0x9_decoder
-                        let _0x12_bytes = _0xf_bytes
-                        const _0x2c_decode = await TextDecoder.prototype.decode.call(_0x10_decoder, _0x12_bytes)
-                        let _0x11_decode = _0x2c_decode
-                        let _0x13_restored = _0x11_decode
-                        _0x13_restored
-                        let _0x15_text = text
-                        let _0x16_bytes = _0xf_bytes
-                        let _0x17_restored = _0x13_restored
-                        const _0x2d_print = await console.log("Text: \"", _0x15_text, "\" -> Bytes: [", _0x16_bytes, "] -> Restored: \"", _0x17_restored)
-                        let _0x14_print = _0x2d_print
-                        _0x14_print
+                        const _0x55_encoder = await _0xf_encoder
+                        let _0x18__0x16_encoder = _0x55_encoder
+                        const _0x57__0x16_encoder = await _0x18__0x16_encoder
+                        const _0x58_text = await text
+                        let _0x1b__0x19_text = _0x58_text
+                        const _0x56_encode = await TextEncoder.prototype.encode.call(_0x57__0x16_encoder, _0x1b__0x19_text)
+                        let _0x1c__0x17_encode = _0x56_encode
+                        let _0x1d_bytes = _0x1c__0x17_encode
+                        _0x1d_bytes
+                        const _0x59_decoder = await _0x12_decoder
+                        let _0x20__0x1e_decoder = _0x59_decoder
+                        const _0x5b__0x1e_decoder = await _0x20__0x1e_decoder
+                        const _0x5c_bytes = await _0x1d_bytes
+                        let _0x23__0x21_bytes = _0x5c_bytes
+                        const _0x5a_decode = await TextDecoder.prototype.decode.call(_0x5b__0x1e_decoder, _0x23__0x21_bytes)
+                        let _0x24__0x1f_decode = _0x5a_decode
+                        let _0x25_restored = _0x24__0x1f_decode
+                        _0x25_restored
+                        const _0x5e_text = await text
+                        let _0x2d__0x27_text = _0x5e_text
+                        const _0x5f_bytes = await _0x1d_bytes
+                        let _0x2e__0x29_bytes = _0x5f_bytes
+                        const _0x60_restored = await _0x25_restored
+                        let _0x2f__0x2b_restored = _0x60_restored
+                        const _0x5d_print = await console.log("Text: \"", _0x2d__0x27_text, "\" -> Bytes: [", _0x2e__0x29_bytes, "] -> Restored: \"", _0x2f__0x2b_restored)
+                        let _0x30__0x26_print = _0x5d_print
+                        _0x30__0x26_print
                     }
                 } }
-            const _0x2e_print = await console.log("\n--- Testing atob/btoa ---")
-            let _0x18_print = _0x2e_print
-            _0x18_print
-            let _0x19_testString = "Hello World"
-            _0x19_testString
-            let _0x1b_testString = _0x19_testString
-            const _0x2f_btoa = await btoa(_0x1b_testString)
-            let _0x1a_btoa = _0x2f_btoa
-            let _0x1c_encodedString = _0x1a_btoa
-            _0x1c_encodedString
-            let _0x1e_encodedString = _0x1c_encodedString
-            const _0x30_atob = await atob(_0x1e_encodedString)
-            let _0x1d_atob = _0x30_atob
-            let _0x1f_decodedString = _0x1d_atob
-            _0x1f_decodedString
-            let _0x21_testString = _0x19_testString
-            let _0x22_encodedString = _0x1c_encodedString
-            let _0x23_decodedString = _0x1f_decodedString
-            const _0x31_print = await console.log("Original: ", _0x21_testString, " -> Encoded: ", _0x22_encodedString, " -> Decoded: ", _0x23_decodedString)
-            let _0x20_print = _0x31_print
-            _0x20_print
+            const _0x61_print = await console.log("\n--- Testing atob/btoa ---")
+            let _0x32__0x31_print = _0x61_print
+            _0x32__0x31_print
+            let _0x33_testString = "Hello World"
+            _0x33_testString
+            const _0x63_testString = await _0x33_testString
+            let _0x37__0x35_testString = _0x63_testString
+            const _0x62_btoa = await btoa(_0x37__0x35_testString)
+            let _0x38__0x34_btoa = _0x62_btoa
+            let _0x39_encodedString = _0x38__0x34_btoa
+            _0x39_encodedString
+            const _0x65_encodedString = await _0x39_encodedString
+            let _0x3d__0x3b_encodedString = _0x65_encodedString
+            const _0x64_atob = await atob(_0x3d__0x3b_encodedString)
+            let _0x3e__0x3a_atob = _0x64_atob
+            let _0x3f_decodedString = _0x3e__0x3a_atob
+            _0x3f_decodedString
+            const _0x67_testString = await _0x33_testString
+            let _0x47__0x41_testString = _0x67_testString
+            const _0x68_encodedString = await _0x39_encodedString
+            let _0x48__0x43_encodedString = _0x68_encodedString
+            const _0x69_decodedString = await _0x3f_decodedString
+            let _0x49__0x45_decodedString = _0x69_decodedString
+            const _0x66_print = await console.log("Original: ", _0x47__0x41_testString, " -> Encoded: ", _0x48__0x43_encodedString, " -> Decoded: ", _0x49__0x45_decodedString)
+            let _0x4a__0x40_print = _0x66_print
+            _0x4a__0x40_print
         }
     } 
 })();
