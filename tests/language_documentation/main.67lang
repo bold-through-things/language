@@ -395,7 +395,7 @@ local where?
 	type str
 	string "not even in Nebraska."
 
-must_compile_error ARGUMENT_TYPE_MISMATCH=+1
+must_compile_error NO_MATCHING_OVERLOAD=+1
 	a where?
 		a 2347
 

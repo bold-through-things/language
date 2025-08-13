@@ -1,4 +1,5 @@
 from dataclasses import replace
+from google_ai_research_sucks import NEWLINE_FUCK
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
     builtin_calls, DirectCall, seek_child_macro, seek_all_child_macros, cut, to_valid_js_ident,
@@ -17,6 +18,11 @@ from preprocessing_macros import PreprocessingStep
 
 class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
     def preprocess(self, ctx: MacroContext):
+        # Hoist fn definitions to the root
+        if ctx.node.parent and ctx.node.parent != ctx.compiler.root_node:
+            # Prepend to root children (this will also remove it from its old parent)
+            ctx.compiler.root_node.prepend_child(ctx.node)
+
         desired_name = get_single_arg(ctx)
         actual_name = ctx.compiler.get_new_ident(desired_name)
         ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
@@ -33,18 +39,18 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         name = get_single_arg(ctx)
         name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
         ctx.statement_out.write(f"const {name} = async function (")
-        joiner = Joiner(ctx.statement_out, ", \n")
+        joiner = Joiner(ctx.statement_out, ", " + NEWLINE_FUCK)
         params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
         params = params_metadata.mapping.items()
         if len(params) > 0:
-            ctx.statement_out.write("\n")
+            ctx.statement_out.write(NEWLINE_FUCK)
         with ctx.statement_out:
             for k, _ in params:
                 with joiner:
                     # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
                     ctx.statement_out.write(k)
         if len(params) > 0:
-            ctx.statement_out.write("\n")
+            ctx.statement_out.write(NEWLINE_FUCK)
         ctx.statement_out.write(") ")
         next = seek_child_macro(ctx.node, "do")
 
@@ -56,10 +62,10 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         with ctx.statement_out:
             # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
             for k, _ in params:
-                inject.code.append(f"{k} = {k}\n")
+                inject.code.append(f"{k} = {k}" + NEWLINE_FUCK)
             inner_ctx = replace(ctx, node=next)
             ctx.current_step.process_node(inner_ctx)
-        ctx.statement_out.write("}")
+        ctx.statement_out.write("}" + NEWLINE_FUCK)
 
 
 
@@ -87,7 +93,7 @@ class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Ma
         ctx.statement_out.write(f"let {name}")
         if len(args) > 0:
             ctx.statement_out.write(f" = {args[-1]}")
-        ctx.statement_out.write(f"\n")
+        ctx.statement_out.write(NEWLINE_FUCK)
         ctx.expression_out.write(name)
 
     def typecheck(self, ctx: MacroContext):

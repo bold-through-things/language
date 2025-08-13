@@ -28,16 +28,48 @@
     "line": 38,
     "char": 0,
     "content": "67lang:call test_int",
-    "error": "failed to assert: argument 1 demands int and is given str",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error": "failed to assert: could not find a matching overload for test_int with arguments ['str']",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "fn": "_0x15_test_int",
+        "demands": [],
+        "returns": "int",
+        "convention": "LocalAccessCall"
+      },
+      {
+        "fn": "_0x15_test_int",
+        "demands": [
+          "int"
+        ],
+        "returns": "int",
+        "convention": "LocalAccessCall"
+      }
+    ]
   },
   {
     "recoverable": false,
     "line": 42,
     "char": 0,
     "content": "67lang:call test_str",
-    "error": "failed to assert: argument 1 demands str and is given int",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error": "failed to assert: could not find a matching overload for test_str with arguments ['int']",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "fn": "_0x12_test_str",
+        "demands": [],
+        "returns": "str",
+        "convention": "LocalAccessCall"
+      },
+      {
+        "fn": "_0x12_test_str",
+        "demands": [
+          "str"
+        ],
+        "returns": "str",
+        "convention": "LocalAccessCall"
+      }
+    ]
   },
   {
     "recoverable": false,
@@ -52,8 +84,24 @@
     "line": 49,
     "char": 0,
     "content": "67lang:call test_bool",
-    "error": "failed to assert: argument 1 demands bool and is given str",
-    "error_type": "ARGUMENT_TYPE_MISMATCH"
+    "error": "failed to assert: could not find a matching overload for test_bool with arguments ['str']",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "fn": "_0x1f_test_bool",
+        "demands": [],
+        "returns": "bool",
+        "convention": "LocalAccessCall"
+      },
+      {
+        "fn": "_0x1f_test_bool",
+        "demands": [
+          "bool"
+        ],
+        "returns": "bool",
+        "convention": "LocalAccessCall"
+      }
+    ]
   },
   {
     "recoverable": false,

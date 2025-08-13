@@ -52,53 +52,75 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         default_logger.typecheck(f"_matches_signature: match! {actual_types} {demanded_types}")
         return True
 
-    def resolve_convention(self, ctx: MacroContext, actual_arg_types: list[str] = None):
-        args_str = ctx.compiler.get_metadata(ctx.node, Args)
-        args = args_str.split(" ")
-        ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the function to call")
-        
-        fn = args[0]
-
-        convention = None
+    def _resolve_local_definition(self, ctx: MacroContext, fn: str) -> list:
         res = walk_upwards_for_local_definition(ctx, fn)
         if res:
             from processor_base import LocalAccessCall
             macro = ctx.compiler.get_metadata(res.node, Macro)
             if macro == "fn":
                 fn = ctx.compiler.get_metadata(res.node, SaneIdentifier)
-                convention = DirectCall(fn=fn, receiver=None, demands=None, returns=None)
+                return [DirectCall(fn=fn, receiver=None, demands=None, returns=None)]
             elif macro in {"local", "67lang:assume_local_exists"}:
                 name = get_single_arg(replace(ctx, node=res.node))
                 fn = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
-                convention = LocalAccessCall(fn=fn, demands=[res.type], returns=res.type)
-        elif fn in builtin_calls:
+                return [
+                    # get
+                    LocalAccessCall(fn=fn, demands=[], returns=res.type),
+                    # set
+                    LocalAccessCall(fn=fn, demands=[res.type], returns=res.type)
+                ]
+        return []
+
+    def _resolve_builtin_call(self, ctx: MacroContext, fn: str) -> list:
+        if fn in builtin_calls:
             overloads = builtin_calls[fn]
             if isinstance(overloads, list):
-                # Multiple overloads - need to match by parameter types
-                if actual_arg_types:
-                    for overload in overloads:
-                        if self._matches_signature(actual_arg_types, overload.demands):
-                            convention = overload
-                            break
-                    else:
-                        # No matching overload found
-                        def overload_to_dict(o):
-                            d = asdict(o)
-                            d["convention"] = type(o).__name__
-                            return d
-                        available_overloads = [overload_to_dict(o) for o in overloads]
-                        ctx.compiler.assert_(False, ctx.node, f"could not find a matching overload for {fn} with arguments {actual_arg_types}", ErrorType.NO_MATCHING_OVERLOAD, extra_fields={"visible_overloads": available_overloads})
-                else:
-                    # No type information available, use first overload
-                    convention = overloads[0]
+                return overloads
             else:
-                # Legacy single overload
-                convention = overloads
-        elif fn in builtins:
-            convention = DirectCall(fn=builtins[fn], demands=None, receiver="_67lang", returns=None)
+                return [overloads]
+        return []
+
+    def _resolve_dynamic_convention(self, ctx: MacroContext, fn: str) -> list:
+        if fn in ctx.compiler._dynamic_conventions:
+            overloads = ctx.compiler._dynamic_conventions[fn]
+            if isinstance(overloads, list):
+                return overloads
+            else:
+                return [overloads]
+        return []
+
+    def resolve_convention(self, ctx: MacroContext, actual_arg_types: list[str] = None):
+        args_str = ctx.compiler.get_metadata(ctx.node, Args)
+        args = args_str.split(" ")
+        ctx.compiler.assert_(len(args) == 1, ctx.node, "single argument, the function to call")
+
+        fn = args[0]
+
+        all_possible_conventions = []
+        all_possible_conventions.extend(self._resolve_local_definition(ctx, fn))
+        all_possible_conventions.extend(self._resolve_builtin_call(ctx, fn))
+        all_possible_conventions.extend(self._resolve_dynamic_convention(ctx, fn))
+
+        default_logger.log("testing_123", f"all_possible_conventions: {repr(all_possible_conventions)}")
+
+        convention = None
+        if actual_arg_types:
+            for conv in all_possible_conventions:
+                if self._matches_signature(actual_arg_types, conv.demands):
+                    convention = conv
+                    break
         else:
-            # TODO should use a different ErrorType..?
-            ctx.compiler.assert_(False, ctx.node, f"{fn} must refer to a defined function or local", ErrorType.NO_MATCHING_OVERLOAD)
+            # If no type information, and there are conventions, pick the first one
+            if all_possible_conventions:
+                convention = all_possible_conventions[0]
+
+        if not convention:
+            def overload_to_dict(o):
+                d = asdict(o)
+                d["convention"] = type(o).__name__
+                return d
+            available_overloads = [overload_to_dict(o) for o in all_possible_conventions]
+            ctx.compiler.assert_(False, ctx.node, f"could not find a matching overload for {fn} with arguments {actual_arg_types}", ErrorType.NO_MATCHING_OVERLOAD, extra_fields={"visible_overloads": available_overloads})
 
         return convention
 

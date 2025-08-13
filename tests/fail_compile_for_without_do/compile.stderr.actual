@@ -6,5 +6,31 @@
     "content": "for i in",
     "error": "failed to assert: expected 'do' after 'for' but found 'then'",
     "error_type": "EXPECTED_DO_AFTER"
+  },
+  {
+    "recoverable": false,
+    "line": 9,
+    "char": 0,
+    "content": "67lang:call i",
+    "error": "failed to assert: could not find a matching overload for i with arguments []",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": []
+  },
+  {
+    "recoverable": false,
+    "line": 2,
+    "char": 0,
+    "content": "for i in",
+    "error": "failed to assert: must have a `do` block",
+    "error_type": "ASSERTION_FAILED"
+  },
+  {
+    "recoverable": false,
+    "line": 9,
+    "char": 0,
+    "content": "67lang:call i",
+    "error": "failed to assert: could not find a matching overload for i with arguments None",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": []
   }
 ]

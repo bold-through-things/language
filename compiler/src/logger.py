@@ -131,6 +131,10 @@ class Logger:
     def registry(self, message: str):
         """convenience method for macro registry messages."""
         self.log("registry", message)
+        
+    def metadata_debug(self, message: str):
+        """convenience method for metadata messages."""
+        self.log("metadata_debug", message)
 
 # global logger instance that can be configured
 default_logger = Logger()

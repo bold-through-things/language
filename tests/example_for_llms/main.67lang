@@ -18,9 +18,11 @@ note 67lang is very strict and quite particular. we will not parse spaces
 
 
 local name
+	type str
 	string "Alice"
 
 local age
+	type int
 	int 25
 
 note we prefer snake_case.
@@ -161,6 +163,54 @@ note the above is roughly equivalent to following JS
 	for (let number of numbers) {
 		console.log(number);
 	}
+
+
+
+type Person is heap_entry
+	has name
+		type str
+	has age
+		type int
+
+local alice
+	a Person
+		string "Alice"
+		int 30
+		
+	note this shouldn't be needed, but type checking
+		is a work in progress
+	type Person
+
+a print
+	a alice name
+a print
+	a alice age
+
+a alice name
+	string "Alicia"
+
+a print
+	a alice name
+
+note both are the "name" getter, but it is intelligently
+	matched by type. ad hoc polymorphism now saves the day!
+a print
+	a name
+
+note the above is roughly equivalent to following JS
+
+	function Person(name, age) {
+		this.name = name;
+		this.age = age;
+	}
+
+	let alice = new Person("Alice", 30);
+	console.log(alice.name);
+	console.log(alice.age);
+
+	alice.name = "Alicia";
+	console.log(alice.name);
+	console.log(name);
 
 
 
@@ -345,3 +395,5 @@ note these things aren't supported (yet?)
 	const fibSeq = [...fibonacci(100)];
 	observableObject.test = "value";
 	const result = complexOperation(5); // ((5 + 1) * 2)^2 = 144
+
+

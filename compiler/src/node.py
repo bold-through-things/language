@@ -60,6 +60,11 @@ class Node:
 
         for child in reversed(replacement):
             assert isinstance(child, Node) # internal assert
+            if child.parent:
+                # Detach from old parent
+                if child in child.parent._children:
+                    child.parent._children.remove(child)
+                child.parent = None
             child.parent = self
             self._children.insert(index, child)
 
@@ -108,6 +113,10 @@ class SaneIdentifier(str): pass
 
 @dataclass
 class FieldDemandType(str): pass
+
+@dataclass
+class TypeFieldNames:
+    names: list[str] = field(default_factory=list)
 
 @dataclass 
 class ResolvedConvention:

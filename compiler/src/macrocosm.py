@@ -15,6 +15,7 @@ from macros.error_macros import Must_compile_error_macro_provider
 from macros.comment_macros import Comment_macro_provider, COMMENT_MACROS
 from macros.return_macro import Return_macro_provider
 from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
+from macros.type_macro import Type_macro_provider # Added import
 from node import Node, Position, Macro, Args
 from strutil import IndentedStringIO, Joiner
 from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
@@ -39,6 +40,11 @@ class Macrocosm:
         
         # Metadata tracking system to replace TypeMap
         self._node_metadata: dict[int, dict[type, Any]] = {}
+
+        # Dynamic call conventions for user-defined types
+        self._dynamic_conventions: dict[str, list[Any]] = {}
+
+        self.root_node: Node | None = None
         
         # Initialize the processing pipeline
         self.processing_steps: list[MacroProcessingStep] = [
@@ -148,6 +154,7 @@ class Macrocosm:
                 self.__discover_macros(node)
             
         solution_node = self.make_node("67lang:solution", Position(0, 0), self.nodes or [])
+        self.root_node = solution_node # Set the root_node attribute
             
         # Execute the processing pipeline
         for step in self.processing_steps:
@@ -177,6 +184,11 @@ class Macrocosm:
         n = Node(content, pos, children)
         self.__discover_macros(n)
         return n
+
+    def add_dynamic_convention(self, name: str, convention: Any):
+        if name not in self._dynamic_conventions:
+            self._dynamic_conventions[name] = []
+        self._dynamic_conventions[name].append(convention)
 
     # TODO - probably time to nuke this one...
     def compile_fn_call(self, ctx: MacroContext, call: str, nodes: Sequence[Node], ident:bool=True):
@@ -232,7 +244,7 @@ def create_macrocosm() -> Macrocosm:
         "67lang:call": Call_macro_provider(),
         "exists": Exists_macro_provider(),
         "noop": Noop_macro_provider(),
-        "type": Noop_macro_provider(),
+        "type": Type_macro_provider(),
         "67lang:auto_type": Noop_macro_provider(),
         "67lang:assume_local_exists": Noop_macro_provider(),
         "67lang:solution": Solution_macro_provider(),

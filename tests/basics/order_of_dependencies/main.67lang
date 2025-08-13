@@ -59,17 +59,17 @@ do
 # TODO - support a  way to convert a dict keys to a set cleanly
 # (old code removed)
 
-local build_order
-	list
-
-local dep_loops
-	list
-
 fn visit
+	param unroller_in
 	param module
 	# chain of dependencies currently being inspected - used to detect loops
 	param chain
 do
+	local unroller
+		note needed temporarily while param doesn't support typing
+		type DAG_unroller
+		an unroller_in
+	
 	if 
 		a module #
 			where # takes
@@ -116,38 +116,57 @@ do
 
 			a dep_loop reverse
 
-			a dep_loops push
+			an unroller dep_loops push
 				a dep_loop join
 					string " → "
 		else
 			a visit
-				a modules #
+				an unroller
+				an unroller modules #
 					where # takes
 						a dep_id
 				a next_chain
 
-	a build_order push
+	an unroller build_order push
 		a module id
+
+note that this class must currently be declared after `visit`
+	which makes absolutely no sense whatsoever. we need to fix this!
+type DAG_unroller is heap_entry
+	has dep_loops
+		type list
+	has build_order
+		type list
+	has modules
+		type list
+
+local unroller
+	type DAG_unroller
+	a DAG_unroller
+		list
+		list
+		a modules
 
 for module in
 	a values
 		a modules
 do
 	a visit
+		an unroller
 		a module
 		list
 
 if
 	a nondesc
 		int 1
-		a dep_loops length
+		an unroller dep_loops length
 then
 	a print
 		a concat
 			string "ERROR: there are dependency loops.\n"
-			a dep_loops join
+			an unroller dep_loops join
 				string "\n"
 else
 	a print
-		a build_order join
+		an unroller build_order join
 			string "\n"

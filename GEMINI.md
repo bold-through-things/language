@@ -2,7 +2,7 @@ refactoring. prioritize small incremental changes, run `./test` after each chang
 
 my dear, please do identify your looping. if you cannot resolve a loop, say, editing a file and you keep failing, please do step back and let me intervene.
 
-you should actively use the file `implementation_details.md` to leave and review notes about exactly how the system works here. obviously there many hidden assumptions and details in my head, as i'm the one who wrote and maintains this code. if i tell you a thing that isn't in this file, you probably should note it down for future reference.
+**we finally did fill this file with valuables. it may be a good idea generally to begin your work by reading it.** you should actively use the `implementation_details.md` to leave and review notes about exactly how the system works here. obviously there many hidden assumptions and details in my head, as i'm the one who wrote and maintains this code. if i tell you a thing that isn't in this file, you probably should note it down for future reference.
 
 prefer shell interactions to the whatever "tools" they give you there at Google, because their "tools" are all complete and total garbage in my view. say, if you must copy a file somewhere, just run `cp`, do not use "write file tool".
 
