@@ -82,7 +82,9 @@ with default_logger.indent("compile", "single-step compilation"):
 
 if args.expand:
     # Write .67lang.expanded instead of .js
-    # TODO - might need to think about this. might need to make this opt-in, it's useful
+    # 
+    # TODO what happens if we had compile errors?
+    #  might need to think about this. might need to make this opt-in, it's useful
     #  to write out the expansion for debugging but it is very much an invalid expansion.
     #  oh! i know. wrap it in a `67lang.invalid_solution` which causes a compile error!
     default_logger.compile(f"expand mode: writing expanded form to {args.output_file}")

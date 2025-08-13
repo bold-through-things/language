@@ -1,0 +1,5 @@
+67lang:file
+	definitely_not_a_real_macro_name
+		string "this should not compile"
+
+

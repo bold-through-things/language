@@ -1,0 +1,22 @@
+67lang:file
+	for i in
+		67lang:assume_local_exists i
+
+		list
+			int 1
+
+			int 2  
+
+			int 3
+
+	then
+		local _0x0_print
+			67lang:call print
+				local _0x1_i
+					67lang:call i
+
+					67lang:auto_type
+
+			67lang:auto_type
+
+

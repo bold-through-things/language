@@ -43,8 +43,6 @@ note the above is roughly equivalent to following JS
 
 fn greet
 	param person
-	note this, a bug in the compiler. TODO!
-	param dummy_param
 do
 	return
 		a concat
@@ -54,7 +52,6 @@ do
 a print
 	a greet
 		string "Alice"
-		false
 
 note the above is roughly equivalent to following JS
 

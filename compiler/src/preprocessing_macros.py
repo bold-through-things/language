@@ -1,7 +1,7 @@
 from dataclasses import replace
 from processor_base import MacroProcessingStep, seek_all_child_macros, seek_child_macro, singleton, unroll_parent_chain
 from macro_registry import MacroContext, MacroRegistry
-from node import Indexers, Callers, Macro, Args, SaneIdentifier, Target, Params, Position, Node
+from node import Indexers, Callers, Macro, Args, SaneIdentifier, Params, Position, Node
 from common_utils import get_single_arg
 from logger import default_logger
 from strutil import cut

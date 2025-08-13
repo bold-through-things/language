@@ -10,11 +10,6 @@ class CodeBlockAssociator:
         # This runs on every node type to check for code block associations
         self.all_macros = set()
         
-    def register_for_all_macros(self):
-        """Register this processor for all possible macro types"""
-        # Code block association is handled by the CodeBlockLinkingStep
-        pass
-        
     def process_code_blocks(self, node: Node, compiler):
         """Process code block associations for a node"""
         # associate code blocks with relevant headers

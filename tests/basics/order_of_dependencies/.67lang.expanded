@@ -249,8 +249,7 @@
 					67lang:call #
 						67lang:call _0x52_module
 
-						where # is
-							string "visited"
+						string "visited"
 
 					67lang:auto_type
 

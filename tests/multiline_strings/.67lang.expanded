@@ -1,0 +1,22 @@
+67lang:file
+	string
+		this is a statement-level multiline string.
+
+		it should act like a comment - not produce any output.
+
+	local _0x0_print
+		67lang:call print
+			string
+				this is an expression-level multiline string.
+
+				it should produce a string value.
+
+		67lang:auto_type
+
+	local _0x2_print
+		67lang:call print
+			string "hello world"
+
+		67lang:auto_type
+
+

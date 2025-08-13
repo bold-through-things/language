@@ -1,0 +1,603 @@
+67lang:file
+	note this file here is intended as a crash course into the 67lang
+		syntax and semantics. it leverages a correlational approach,
+
+		showcasing the very familiar JS and its translation into our
+
+		language.
+
+	note 67lang is very strict and quite particular. we will not parse spaces
+		as indentation, it will compile error. the indentation is key for our
+
+		structure. if you screw up with it, your code will obviously fail
+
+		to compile in all kinds of unexpected ways. no different from Python,
+
+		in that sense.
+
+		just think of it as what it is, a Concrete Syntax Tree. you are just writing
+
+		the code tree by hand. if you do not indent the nodes correctly, you
+
+		won't assign them to the proper parent.
+
+	local name
+		string "Alice"
+
+	local age
+		int 25
+
+	note we prefer snake_case.
+
+	local is_active
+		true
+
+	local _0x3_print
+		67lang:call print
+			local _0x4_name
+				67lang:call name
+
+				67lang:auto_type
+
+			local _0x6_age
+				67lang:call age
+
+				67lang:auto_type
+
+			local _0x8_is_active
+				67lang:call is_active
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	note the above is roughly equivalent to following JS
+		let name = "Alice";
+
+		const age = 25;
+
+		var isActive = true;
+
+		console.log(name, age, isActive);
+
+	fn greet
+		67lang:assume_local_exists dummy_param
+
+		67lang:assume_local_exists person
+
+		param person
+
+		note this, a bug in the compiler. TODO!
+
+		param dummy_param
+
+		do
+			return
+				local _0xf_concat
+					67lang:call concat
+						string "Hello, "
+
+						local _0x10_person
+							67lang:call person
+
+							67lang:auto_type
+
+					67lang:auto_type
+
+	local _0x14_print
+		67lang:call print
+			local _0x15_greet
+				67lang:call greet
+					string "Alice"
+
+					false
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	note the above is roughly equivalent to following JS
+		function greet(person, dummy_param) {
+			return "Hello, " + person;
+
+		}
+
+		console.log("Alice", false);
+
+	local numbers
+		list
+			int 1
+
+			int 2
+
+			int 3
+
+			int 4
+
+			int 5
+
+	noscope
+		local _0x1a_numbers
+			67lang:call numbers
+
+			67lang:auto_type
+
+	local _0x1b_push
+		67lang:call push
+			67lang:call _0x1a_numbers
+
+			int 6
+
+		67lang:auto_type
+
+	local _0x1e_print
+		67lang:call print
+			noscope
+				local _0x1f_numbers
+					67lang:call numbers
+
+					67lang:auto_type
+
+			local _0x20__hash_
+				67lang:call #
+					67lang:call _0x1f_numbers
+
+					int 0
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	local _0x26_print
+		67lang:call print
+			noscope
+				local _0x27_numbers
+					67lang:call numbers
+
+					67lang:auto_type
+
+			local _0x28__hash_
+				67lang:call #
+					67lang:call _0x27_numbers
+
+					local _0x2a_sub
+						67lang:call sub
+							noscope
+								local _0x2b_numbers
+									67lang:call numbers
+
+									67lang:auto_type
+
+							local _0x2c_length
+								67lang:call length
+									67lang:call _0x2b_numbers
+
+								67lang:auto_type
+
+							int 1
+
+						67lang:auto_type
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	note the above is roughly equivalent to following JS
+		let numbers = [1, 2, 3, 4, 5];
+
+		numbers.push(6);
+
+		console.log(numbers[0]);
+
+		console.log(numbers[numbers.length - 1]);
+
+	local user
+		note no inline entries yet. TODO!
+
+		dict
+
+	note we must populate the dict manually for now
+
+	noscope
+		local _0x3d_user
+			67lang:call user
+
+			67lang:auto_type
+
+	local _0x3e__hash_
+		67lang:call #
+			67lang:call _0x3d_user
+
+			string "name"
+
+			string "Bob"
+
+		67lang:auto_type
+
+	noscope
+		local _0x41_user
+			67lang:call user
+
+			67lang:auto_type
+
+	local _0x42__hash_
+		67lang:call #
+			67lang:call _0x41_user
+
+			string "age"
+
+			int 30
+
+		67lang:auto_type
+
+	noscope
+		local _0x45_user
+			67lang:call user
+
+			67lang:auto_type
+
+	local _0x46__hash_
+		67lang:call #
+			67lang:call _0x45_user
+
+			string "city"
+
+			string "New York"
+
+		67lang:auto_type
+
+	local _0x49_print
+		67lang:call print
+			local _0x4a_user
+				67lang:call user
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	note the above is roughly equivalent to following JS
+		let user = {
+			name: "Bob",
+
+			age: 30,
+
+			city: "New York"
+
+		};
+
+		console.log(user);
+
+	if
+		local _0x4e_nondesc
+			67lang:call nondesc
+				int 18
+
+				local _0x4f_age
+					67lang:call age
+
+					67lang:auto_type
+
+			67lang:auto_type
+
+		then
+			local _0x53_print
+				67lang:call print
+					string "Adult"
+
+				67lang:auto_type
+
+	else
+		local _0x55_print
+			67lang:call print
+				string "Minor"
+
+			67lang:auto_type
+
+	note the above is roughly equivalent to following JS
+		if (age >= 18) {
+			console.log("Adult");
+
+		} else {
+			console.log("Minor");
+
+		}
+
+	for number in
+		67lang:assume_local_exists number
+
+		local _0x57_numbers
+			67lang:call numbers
+
+			67lang:auto_type
+
+		do
+			local _0x59_print
+				67lang:call print
+					local _0x5a_number
+						67lang:call number
+
+						67lang:auto_type
+
+				67lang:auto_type
+
+	note the above is roughly equivalent to following JS
+		for (let number of numbers) {
+			67lang:assume_local_exists (let
+
+			console.log(number);
+
+		}
+
+	note these things aren't supported (yet?)
+		// Simple loop
+
+		for (let i = 0; i < 3; i++) {
+			67lang:assume_local_exists (let
+
+			console.log(i);
+
+		}
+
+		// Arrow functions and array methods
+
+		const evenNumbers = numbers.filter(n => n % 2 === 0);
+
+		const doubled = numbers.map(n => n * 2);
+
+		const sum = numbers.reduce((acc, n) => acc + n, 0);
+
+		// Object destructuring
+
+		const {name: userName, age: userAge} = user;
+
+		// Template literals
+
+		const message = `User ${userName} is ${userAge} years old`;
+
+		// Default parameters and rest operator
+
+		function createUser(name, age = 18, ...hobbies) {
+			return {
+				name,
+
+				age,
+
+				hobbies
+
+			};
+
+		}
+
+		// Promises and async operations
+
+		function fetchData(url) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					if (url) {
+						resolve(`Data from ${url}`);
+
+					} else {
+						reject(new Error("No URL provided"));
+
+					}
+
+				}, 1000);
+
+			});
+
+		}
+
+		// Async/await
+
+		async function getData() {
+			try {
+				const data = await fetchData("https://api.example.com");
+
+				return data;
+
+			} catch (error) {
+				console.error("Error:", error.message);
+
+				return null;
+
+			}
+
+		}
+
+		// Classes with inheritance
+
+		class Animal {
+			constructor(name) {
+				this.name = name;
+
+			}
+
+			speak() {
+				return `${this.name} makes a sound`;
+
+			}
+
+		}
+
+		class Dog extends Animal {
+			constructor(name, breed) {
+				super(name);
+
+				this.breed = breed;
+
+			}
+
+			speak() {
+				return `${this.name} barks`;
+
+			}
+
+			static getBestFriend() {
+				return "Human";
+
+			}
+
+		}
+
+		// Closures and higher-order functions
+
+		function createCounter() {
+			let count = 0;
+
+			return function() {
+				return ++count;
+
+			};
+
+		}
+
+		const counter = createCounter();
+
+		// Function composition
+
+		const pipe = (...fns) => (value) => fns.reduce((acc, fn) => fn(acc), value);
+
+		const addOne = x => x + 1;
+
+		const multiplyByTwo = x => x * 2;
+
+		const square = x => x * x;
+
+		const complexOperation = pipe(addOne, multiplyByTwo, square);
+
+		// Proxies for meta-programming
+
+		const observableObject = new Proxy({}, {
+			set(target, property, value) {
+				console.log(`Setting ${property} to ${value}`);
+
+				target[property] = value;
+
+				return true;
+
+			},
+
+			get(target, property) {
+				console.log(`Getting ${property}`);
+
+				return target[property];
+
+			}
+
+		});
+
+		// Generators
+
+		function* fibonacci(limit) {
+			let a = 0, b = 1;
+
+			while (a < limit) {
+				yield a;
+
+				[a, b] = [b, a + b];
+
+			}
+
+		}
+
+		// Symbol usage for private-like properties
+
+		const _private = Symbol('private');
+
+		class SecureClass {
+			constructor(value) {
+				this[_private] = value;
+
+			}
+
+			getValue() {
+				return this[_private];
+
+			}
+
+		}
+
+		// Advanced async patterns - concurrent execution
+
+		async function processMultipleRequests(urls) {
+			const promises = urls.map(url => fetchData(url));
+
+			const results = await Promise.allSettled(promises);
+
+			return results.map((result, index) => ({
+				url: urls[index],
+
+				status: result.status,
+
+				data: result.status === 'fulfilled' ? result.value : null,
+
+				error: result.status === 'rejected' ? result.reason.message : null
+
+			}));
+
+		}
+
+		// WeakMap for memory-efficient associations
+
+		const privateData = new WeakMap();
+
+		class DataContainer {
+			constructor(data) {
+				privateData.set(this, data);
+
+			}
+
+			getData() {
+				return privateData.get(this);
+
+			}
+
+		}
+
+		// Custom error handling
+
+		class ValidationError extends Error {
+			constructor(message, field) {
+				super(message);
+
+				this.name = 'ValidationError';
+
+				this.field = field;
+
+			}
+
+		}
+
+		// Decorator pattern (experimental)
+
+		function measureTime(target, propertyKey, descriptor) {
+			const originalMethod = descriptor.value;
+
+			descriptor.value = function(...args) {
+				const start = performance.now();
+
+				const result = originalMethod.apply(this, args);
+
+				const end = performance.now();
+
+				console.log(`${propertyKey} took ${end - start} milliseconds`);
+
+				return result;
+
+			};
+
+			return descriptor;
+
+		}
+
+		// Usage examples
+
+		const dog = new Dog("Rex", "Golden Retriever");
+
+		const fibSeq = [...fibonacci(100)];
+
+		observableObject.test = "value";
+
+		const result = complexOperation(5); // ((5 + 1) * 2)^2 = 144
+
+

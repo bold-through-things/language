@@ -13,8 +13,8 @@
 
 		then
 			local _0x5_fizz_divisor
-				67lang:access_local fizz_divisor
-					local _0x4_prompt
+				67lang:call fizz_divisor
+					local _0x6_prompt
 						67lang:call prompt
 							string "fizz? "
 
@@ -22,9 +22,9 @@
 
 				67lang:auto_type
 
-			local _0x8_buzz_divisor
-				67lang:access_local buzz_divisor
-					local _0x7_prompt
+			local _0xa_buzz_divisor
+				67lang:call buzz_divisor
+					local _0xb_prompt
 						67lang:call prompt
 							string "buzz? "
 
@@ -32,9 +32,9 @@
 
 				67lang:auto_type
 
-			local _0xb_n
-				67lang:access_local n
-					local _0xa_prompt
+			local _0xf_n
+				67lang:call n
+					local _0x10_prompt
 						67lang:call prompt
 							string "n? "
 
@@ -44,24 +44,22 @@
 
 	else
 		local input
-			type str
-
-			local _0xd_stdin
+			local _0x14_stdin
 				67lang:call stdin
 
 				67lang:auto_type
 
-		local _0x11_input
+		local _0x17_input
 			67lang:call input
 				noscope
-					local _0xf_input
+					local _0x18_input
 						67lang:call input
 
 						67lang:auto_type
 
-				local _0x10_split
+				local _0x19_split
 					67lang:call split
-						67lang:access_local _0xf_input
+						67lang:call _0x18_input
 
 						string "\n"
 
@@ -71,45 +69,57 @@
 
 		# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
 
-		local _0x16_fizz_divisor
-			67lang:access_local fizz_divisor
+		local _0x1f_fizz_divisor
+			67lang:call fizz_divisor
 				noscope
-					local _0x14_input
+					local _0x20_input
 						67lang:call input
 
 						67lang:auto_type
 
-				local _0x15_key
-					67lang:access_index _0x14_input
+				local _0x21__hash_
+					67lang:call #
+						67lang:call _0x20_input
+
 						int 0
 
+					67lang:auto_type
+
 			67lang:auto_type
 
-		local _0x1b_buzz_divisor
-			67lang:access_local buzz_divisor
+		local _0x27_buzz_divisor
+			67lang:call buzz_divisor
 				noscope
-					local _0x19_input
+					local _0x28_input
 						67lang:call input
 
 						67lang:auto_type
 
-				local _0x1a_key
-					67lang:access_index _0x19_input
+				local _0x29__hash_
+					67lang:call #
+						67lang:call _0x28_input
+
 						int 1
 
+					67lang:auto_type
+
 			67lang:auto_type
 
-		local _0x20_n
-			67lang:access_local n
+		local _0x2f_n
+			67lang:call n
 				noscope
-					local _0x1e_input
+					local _0x30_input
 						67lang:call input
 
 						67lang:auto_type
 
-				local _0x1f_key
-					67lang:access_index _0x1e_input
+				local _0x31__hash_
+					67lang:call #
+						67lang:call _0x30_input
+
 						int 2
+
+					67lang:auto_type
 
 			67lang:auto_type
 
@@ -117,15 +127,15 @@
 		int 0
 
 	while
-		local _0x26_nondesc
+		local _0x38_nondesc
 			67lang:call nondesc
-				local _0x24_i
-					67lang:access_local i
+				local _0x39_i
+					67lang:call i
 
 					67lang:auto_type
 
-				local _0x25_n
-					67lang:access_local n
+				local _0x3b_n
+					67lang:call n
 
 					67lang:auto_type
 
@@ -136,17 +146,17 @@
 				string ""
 
 			if
-				local _0x2f_eq
+				local _0x41_eq
 					67lang:call eq
-						local _0x2c_mod
+						local _0x42_mod
 							67lang:call mod
-								local _0x2a_i
-									67lang:access_local i
+								local _0x43_i
+									67lang:call i
 
 									67lang:auto_type
 
-								local _0x2b_fizz_divisor
-									67lang:access_local fizz_divisor
+								local _0x45_fizz_divisor
+									67lang:call fizz_divisor
 
 									67lang:auto_type
 
@@ -157,12 +167,12 @@
 					67lang:auto_type
 
 				then
-					local _0x36_out
-						67lang:access_local out
-							local _0x34_concat
+					local _0x4e_out
+						67lang:call out
+							local _0x4f_concat
 								67lang:call concat
-									local _0x33_out
-										67lang:access_local out
+									local _0x50_out
+										67lang:call out
 
 										67lang:auto_type
 
@@ -173,17 +183,17 @@
 						67lang:auto_type
 
 			if
-				local _0x3e_eq
+				local _0x57_eq
 					67lang:call eq
-						local _0x3b_mod
+						local _0x58_mod
 							67lang:call mod
-								local _0x39_i
-									67lang:access_local i
+								local _0x59_i
+									67lang:call i
 
 									67lang:auto_type
 
-								local _0x3a_buzz_divisor
-									67lang:access_local buzz_divisor
+								local _0x5b_buzz_divisor
+									67lang:call buzz_divisor
 
 									67lang:auto_type
 
@@ -194,12 +204,12 @@
 					67lang:auto_type
 
 				then
-					local _0x45_out
-						67lang:access_local out
-							local _0x43_concat
+					local _0x64_out
+						67lang:call out
+							local _0x65_concat
 								67lang:call concat
-									local _0x42_out
-										67lang:access_local out
+									local _0x66_out
+										67lang:call out
 
 										67lang:auto_type
 
@@ -210,10 +220,10 @@
 						67lang:auto_type
 
 			if
-				local _0x49_eq
+				local _0x6d_eq
 					67lang:call eq
-						local _0x48_out
-							67lang:access_local out
+						local _0x6e_out
+							67lang:call out
 
 							67lang:auto_type
 
@@ -222,30 +232,30 @@
 					67lang:auto_type
 
 				then
-					local _0x4c_out
-						67lang:access_local out
-							local _0x4b_i
-								67lang:access_local i
+					local _0x72_out
+						67lang:call out
+							local _0x73_i
+								67lang:call i
 
 								67lang:auto_type
 
 						67lang:auto_type
 
-			local _0x4f_print
+			local _0x77_print
 				67lang:call print
-					local _0x4e_out
-						67lang:access_local out
+					local _0x78_out
+						67lang:call out
 
 						67lang:auto_type
 
 				67lang:auto_type
 
-			local _0x54_i
-				67lang:access_local i
-					local _0x52_add
+			local _0x7c_i
+				67lang:call i
+					local _0x7d_add
 						67lang:call add
-							local _0x51_i
-								67lang:access_local i
+							local _0x7e_i
+								67lang:call i
 
 								67lang:auto_type
 

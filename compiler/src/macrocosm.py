@@ -13,7 +13,6 @@ from macros.utility_macros import Noop_macro_provider
 from macros.solution_macro import Solution_macro_provider
 from macros.error_macros import Must_compile_error_macro_provider
 from macros.comment_macros import Comment_macro_provider, COMMENT_MACROS
-from macros.builtin_macros import Builtin_macro_provider
 from macros.return_macro import Return_macro_provider
 from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from node import Node, Position, Macro, Args
@@ -26,7 +25,6 @@ from typecheck_macros import TypeCheckingStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
-from processor_base import builtins
 
 class Macrocosm:
     def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry, preprocess_registry: MacroRegistry):
@@ -250,9 +248,6 @@ def create_macrocosm() -> Macrocosm:
     for macro in COMMENT_MACROS:
         macro_providers[macro] = Comment_macro_provider()
 
-    for builtin in builtins.keys():
-        macro_providers[builtin] = Builtin_macro_provider()
-
     for macro in SCOPE_MACRO:
         macro_providers[macro] = Scope_macro_provider()
 
@@ -303,11 +298,7 @@ def create_macrocosm() -> Macrocosm:
         preprocess.add_fn(getattr(provider, "preprocess", None), macro)
         typecheck.add_fn(getattr(provider, "typecheck", None), macro)
         emission.add_fn(getattr(provider, "emission", None), macro)
-        code_linking_registry.add_fn(getattr(provider, "code_linking", None), macro)
-
-    # TODO - this should not be needed
-    
-    
+        code_linking_registry.add_fn(getattr(provider, "code_linking", None), macro)  
     
     rv = Macrocosm(emission, typecheck, code_linking_registry, preprocess)
     rv.registries.update(registries)

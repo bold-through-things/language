@@ -1,0 +1,9 @@
+67lang:file
+	local _0x0_print
+		67lang:call print
+
+		67lang:auto_type
+
+	    string hello world
+
+

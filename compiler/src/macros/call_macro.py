@@ -1,12 +1,12 @@
 from dataclasses import asdict, replace
 from processor_base import (
     MacroProcessingStep, singleton, js_field_access, 
-    builtins, builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
+    builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
     walk_upwards_for_local_definition, LocalAccessCall
 )
 from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
 from strutil import IndentedStringIO, Joiner
-from node import Args, Macro, Params, Inject_code_start, SaneIdentifier, Target, ResolvedConvention
+from node import Args, Macro, Params, Inject_code_start, SaneIdentifier, ResolvedConvention
 from common_utils import collect_child_expressions, get_single_arg, get_two_args
 from error_types import ErrorType
 from logger import default_logger

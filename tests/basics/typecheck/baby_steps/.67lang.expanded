@@ -11,14 +11,14 @@
 			type int
 
 			local _0x1_test
-				67lang:access_local test
+				67lang:call test
 
 				67lang:auto_type
 
 		local _0x4_test
-			67lang:access_local test
-				local _0x3_test_1
-					67lang:access_local test_1
+			67lang:call test
+				local _0x5_test_1
+					67lang:call test_1
 
 					67lang:auto_type
 
@@ -28,15 +28,15 @@
 			local test_1
 				type int
 
-				local _0x6_test
-					67lang:access_local test
+				local _0x9_test
+					67lang:call test
 
 					67lang:auto_type
 
-			local _0x9_test
-				67lang:access_local test
-					local _0x8_test_1
-						67lang:access_local test_1
+			local _0xc_test
+				67lang:call test
+					local _0xd_test_1
+						67lang:call test_1
 
 						67lang:auto_type
 
@@ -59,23 +59,23 @@
 		local test_int
 			type int
 
-			local _0xd_test_str
-				67lang:access_local test_str
+			local _0x13_test_str
+				67lang:call test_str
 
 				67lang:auto_type
 
-		local _0x10_test_int
-			67lang:access_local test_int
-				local _0xf_test_str
-					67lang:access_local test_str
+		local _0x16_test_int
+			67lang:call test_int
+				local _0x17_test_str
+					67lang:call test_str
 
 					67lang:auto_type
 
 			67lang:auto_type
 
 		do
-			local _0x12_test_str
-				67lang:access_local test_str
+			local _0x1b_test_str
+				67lang:call test_str
 					int 0
 
 				67lang:auto_type
@@ -83,72 +83,72 @@
 			local test_bool
 				type bool
 
-				local _0x13_test_str
-					67lang:access_local test_str
+				local _0x1d_test_str
+					67lang:call test_str
 
 					67lang:auto_type
 
-			local _0x19_test_bool
-				67lang:access_local test_bool
+			local _0x20_test_bool
+				67lang:call test_bool
 					noscope
-						local _0x15_test_str
-							67lang:access_local test_str
+						local _0x21_test_str
+							67lang:call test_str
 
 							67lang:auto_type
 
-						local _0x16_split
+						local _0x22_split
 							67lang:call split
-								67lang:access_local _0x15_test_str
+								67lang:call _0x21_test_str
 
 							67lang:auto_type
 
-						local _0x17_sort
+						local _0x23_sort
 							67lang:call sort
-								67lang:access_local _0x16_split
+								67lang:call _0x22_split
 
 							67lang:auto_type
 
-					local _0x18_join
+					local _0x24_join
 						67lang:call join
-							67lang:access_local _0x17_sort
+							67lang:call _0x23_sort
 
 						67lang:auto_type
 
 				67lang:auto_type
 
 			noscope
-				local _0x1e_test_bool
-					67lang:access_local test_bool
+				local _0x2e_test_bool
+					67lang:call test_bool
 
 					67lang:auto_type
 
-			local _0x1f_split
+			local _0x2f_split
 				67lang:call split
-					67lang:access_local _0x1e_test_bool
+					67lang:call _0x2e_test_bool
 
 				67lang:auto_type
 
 			noscope
-				local _0x20_test_str
-					67lang:access_local test_str
+				local _0x32_test_str
+					67lang:call test_str
 
 					67lang:auto_type
 
-				local _0x21_split
+				local _0x33_split
 					67lang:call split
-						67lang:access_local _0x20_test_str
+						67lang:call _0x32_test_str
 
 					67lang:auto_type
 
-				local _0x22_split
+				local _0x34_split
 					67lang:call split
-						67lang:access_local _0x21_split
+						67lang:call _0x33_split
 
 					67lang:auto_type
 
-			local _0x23_split
+			local _0x35_split
 				67lang:call split
-					67lang:access_local _0x22_split
+					67lang:call _0x34_split
 
 				67lang:auto_type
 

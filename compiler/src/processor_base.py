@@ -3,7 +3,7 @@ import re
 from typing import Any, TypeVar, cast
 from pathlib import Path
 from common_utils import get_single_arg, print_with_callback
-from node import Args, Macro, Node, SaneIdentifier, Scope
+from node import Args, Macro, Node, SaneIdentifier
 from strutil import cut
 from typing import Callable
 from utils import *
@@ -17,12 +17,6 @@ def unroll_parent_chain(n: Node | None) -> list[Node]:
         rv.append(n)
         n = n.parent
     return rv
-
-def seek_parent_scope(n: Node) -> Scope | None:
-    # Implement upward walking to find scope information
-    # For now, return None to disable scope tracking completely
-    # TODO: Implement proper scope walking as mentioned in problem statement
-    return None
 
 # TODO. the code you wrote here is ass. i fixed it somewhat but it absolutely can be simplified further
 # @print_with_callback(lambda ctx, name, ret: f"_try_match_local {name} {ctx.node.pos.line} {ctx.node.content} returns {ret.node.content if ret else "None"}")
@@ -146,9 +140,6 @@ def filter_child_macros(n: Node):
     return [c for c in n.children if get_macro(c) not in TYPICAL_IGNORED_MACROS]
 
 js_lib = open(Path(__file__).parent.joinpath("stdlib/lib.js")).read()
-
-builtins = {
-}
 
 # "call conventions" are our sane way to emit JavaScript from arguments
 # provided by child nodes

@@ -69,6 +69,7 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
+
             let _0x0_name = "Alice"
             _0x0_name
             let _0x1_age = 25
@@ -87,14 +88,12 @@ void (async () => {
             _0xd__0x3_print
 
             const _0xe_greet = async function (
-                person, 
-                dummy_param
+                person
             ) {{
                     const parent_scope = scope
                     {
                         const scope = _67lang.scope(parent_scope)
                         person = person
-                        dummy_param = dummy_param
                         const _0x63_person = await person
                         let _0x12__0x10_person = _0x63_person
                         const _0x62_concat = await ("Hello, " + _0x12__0x10_person)
@@ -102,7 +101,7 @@ void (async () => {
                         return _0x13__0xf_concat;
                     }
                 } }
-            const _0x65_greet = await _0xe_greet("Alice", false)
+            const _0x65_greet = await _0xe_greet("Alice")
             let _0x17__0x15_greet = _0x65_greet
             const _0x64_print = await console.log(_0x17__0x15_greet)
             let _0x18__0x14_print = _0x64_print

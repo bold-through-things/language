@@ -1,65 +1,123 @@
-PIL:file
+67lang:file
 	local input
-		stdin
+		local _0x0_stdin
+			67lang:call stdin
+
+			67lang:auto_type
 
 	local words
 		noscope
-			local _0x0__input
-				PIL:access_local input
+			local _0x3_input
+				67lang:call input
 
-				PIL:auto_type
+				67lang:auto_type
 
-		local _0x1__split
-			PIL:call split
-				PIL:access_local _0x0__input
+		local _0x4_split
+			67lang:call split
+				67lang:call _0x3_input
 
 				string "\n"
 
-			PIL:auto_type
+			67lang:auto_type
 
 	local count
 		dict
 
 	for word in
-		local _0x2__words
-			PIL:access_local words
+		67lang:assume_local_exists word
 
-			PIL:auto_type
+		local _0x9_words
+			67lang:call words
+
+			67lang:auto_type
 
 		do
+			if
+				local _0xb_none
+					67lang:call none
+						exists
+							local _0xc_word
+								67lang:call word
+
+								67lang:auto_type
+
+							inside
+								local _0xe_count
+									67lang:call count
+
+									67lang:auto_type
+
+					67lang:auto_type
+
+				then
+					noscope
+						local _0x13_count
+							67lang:call count
+
+							67lang:auto_type
+
+					local _0x14__hash_
+						67lang:call #
+							67lang:call _0x13_count
+
+							local _0x16_word
+								67lang:call word
+
+								67lang:auto_type
+
+							int 0
+
+						67lang:auto_type
+
+			note and TODO following line must not be empty here...
+
 			noscope
-				local _0x7__count
-					PIL:access_local count
+				local _0x1a_count
+					67lang:call count
 
-					PIL:auto_type
+					67lang:auto_type
 
-			local _0x8__key
-				PIL:access_index _0x7__count
-					local _0x3__word
-						PIL:access_local word
+			local _0x1b__hash_
+				67lang:call #
+					67lang:call _0x1a_count
 
-						PIL:auto_type
+					local _0x1d_word
+						67lang:call word
 
-					add
-						int 1
+						67lang:auto_type
 
-						noscope
-							local _0x5__count
-								PIL:access_local count
+					local _0x1f_add
+						67lang:call add
+							int 1
 
-								PIL:auto_type
+							noscope
+								local _0x20_count
+									67lang:call count
 
-						local _0x6__key
-							PIL:access_index _0x5__count
-								local _0x4__word
-									PIL:access_local word
+									67lang:auto_type
 
-									PIL:auto_type
+							local _0x21__hash_
+								67lang:call #
+									67lang:call _0x20_count
 
-	print
-		local _0x9__count
-			PIL:access_local count
+									local _0x23_word
+										67lang:call word
 
-			PIL:auto_type
+										67lang:auto_type
+
+								67lang:auto_type
+
+						67lang:auto_type
+
+				67lang:auto_type
+
+	local _0x31_print
+		67lang:call print
+			local _0x32_count
+				67lang:call count
+
+				67lang:auto_type
+
+		67lang:auto_type
 
 

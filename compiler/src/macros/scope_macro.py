@@ -1,5 +1,4 @@
 from dataclasses import replace
-from processor_base import seek_child_macro, seek_parent_scope
 from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider
 from node import Inject_code_start
 from common_utils import process_children_with_context
@@ -31,7 +30,6 @@ class Scope_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         ctx.statement_out.write("} ")
 
     def typecheck(self, ctx: MacroContext):
-        parent = seek_parent_scope(ctx.node)
         # Temporarily disable scope metadata - implement walking upwards approach later
         # ctx.compiler.set_metadata(ctx.node, Scope, Scope(parent=parent))
         process_children_with_context(ctx, ctx.current_step)

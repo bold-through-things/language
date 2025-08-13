@@ -1,19 +1,11 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep, seek_child_macro, seek_parent_scope
+from processor_base import MacroProcessingStep, seek_child_macro
 from macro_registry import MacroContext, MacroRegistry
 from strutil import cut
 from node import Node, Macro
 from common_utils import collect_child_types, get_single_arg, process_children_with_context
 from logger import default_logger
 from error_types import ErrorType
-
-
-
-
-
-
-
-
 
 class TypeCheckingStep(MacroProcessingStep):
     """Handles type checking"""

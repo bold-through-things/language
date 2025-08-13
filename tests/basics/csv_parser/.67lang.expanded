@@ -13,21 +13,24 @@
 		Count how many rows have "age" > 30, assuming one of the columns is age.
 
 	local lines
-		stdin
+		local _0x0_stdin
+			67lang:call stdin
+
+			67lang:auto_type
 
 		# okay i am seeing a reason to stop treating builtins as special, or at the very least to expose them in the scope object
 
 	local _0x3_lines
-		67lang:access_local lines
+		67lang:call lines
 			noscope
-				local _0x1_lines
-					67lang:access_local lines
+				local _0x4_lines
+					67lang:call lines
 
 					67lang:auto_type
 
-			local _0x2_split
+			local _0x5_split
 				67lang:call split
-					67lang:access_local _0x1_lines
+					67lang:call _0x4_lines
 
 					string "\n"
 
@@ -47,33 +50,36 @@
 	for line in
 		67lang:assume_local_exists line
 
-		local _0x9_lines
-			67lang:access_local lines
+		local _0xe_lines
+			67lang:call lines
 
 			67lang:auto_type
 
 		do
 			if
-				eq
-					local _0xb_i
-						67lang:access_local i
+				local _0x10_eq
+					67lang:call eq
+						local _0x11_i
+							67lang:call i
 
-						67lang:auto_type
+							67lang:auto_type
 
-					int 0
+						int 0
+
+					67lang:auto_type
 
 				then
-					local _0xe_header
-						67lang:access_local header
+					local _0x15_header
+						67lang:call header
 							noscope
-								local _0xc_line
-									67lang:access_local line
+								local _0x16_line
+									67lang:call line
 
 									67lang:auto_type
 
-							local _0xd_split
+							local _0x17_split
 								67lang:call split
-									67lang:access_local _0xc_line
+									67lang:call _0x16_line
 
 									string ","
 
@@ -82,26 +88,29 @@
 						67lang:auto_type
 
 			else
-				local zip
-					zip
-						local _0x11_header
-							67lang:access_local header
-
-							67lang:auto_type
-
-						noscope
-							local _0x12_line
-								67lang:access_local line
+				local zipped_data
+					local _0x1d_zip
+						67lang:call zip
+							local _0x1e_header
+								67lang:call header
 
 								67lang:auto_type
 
-						local _0x13_split
-							67lang:call split
-								67lang:access_local _0x12_line
+							noscope
+								local _0x20_line
+									67lang:call line
 
-								string ","
+									67lang:auto_type
 
-							67lang:auto_type
+							local _0x21_split
+								67lang:call split
+									67lang:call _0x20_line
+
+									string ","
+
+								67lang:auto_type
+
+						67lang:auto_type
 
 				local row
 					dict
@@ -109,94 +118,108 @@
 				for kv in
 					67lang:assume_local_exists kv
 
-					local _0x16_zip
-						67lang:access_local zip
+					local _0x2a_zipped_data
+						67lang:call zipped_data
 
 						67lang:auto_type
 
 					do
 						noscope
-							local _0x1c_row
-								67lang:access_local row
+							local _0x2c_row
+								67lang:call row
 
 								67lang:auto_type
 
-						local _0x1d_key
-							67lang:access_index _0x1c_row
+						local _0x2d__hash_
+							67lang:call #
+								67lang:call _0x2c_row
+
 								noscope
-									local _0x18_kv
-										67lang:access_local kv
+									local _0x2f_kv
+										67lang:call kv
 
 										67lang:auto_type
 
-								local _0x19__0
-									67lang:access_field _0x18_kv 0
+								local _0x30__hash_
+									67lang:call #
+										67lang:call _0x2f_kv
+
+										int 0
 
 									67lang:auto_type
 
 								noscope
-									local _0x1a_kv
-										67lang:access_local kv
+									local _0x33_kv
+										67lang:call kv
 
 										67lang:auto_type
 
-								local _0x1b__1
-									67lang:access_field _0x1a_kv 1
+								local _0x34__hash_
+									67lang:call #
+										67lang:call _0x33_kv
+
+										int 1
 
 									67lang:auto_type
+
+							67lang:auto_type
 
 				noscope
-					local _0x23_rows
-						67lang:access_local rows
+					local _0x3c_rows
+						67lang:call rows
 
 						67lang:auto_type
 
-				local _0x24_push
+				local _0x3d_push
 					67lang:call push
-						67lang:access_local _0x23_rows
+						67lang:call _0x3c_rows
 
-						local _0x22_row
-							67lang:access_local row
+						local _0x3f_row
+							67lang:call row
 
 							67lang:auto_type
 
 					67lang:auto_type
 
-			local _0x27_i
-				67lang:access_local i
-					add
-						local _0x26_i
-							67lang:access_local i
+			local _0x43_i
+				67lang:call i
+					local _0x44_add
+						67lang:call add
+							local _0x45_i
+								67lang:call i
 
-							67lang:auto_type
+								67lang:auto_type
 
-						int 1
+							int 1
+
+						67lang:auto_type
 
 				67lang:auto_type
 
 	for row in
-		local _0x2a_i
-			67lang:access_local i
+		67lang:assume_local_exists row
 
-			67lang:auto_type
-
-		local _0x29_rows
-			67lang:access_local rows
+		local _0x4c_rows
+			67lang:call rows
 
 			67lang:auto_type
 
 		do
-			print
-				noscope
-					local _0x2c_row
-						67lang:access_local row
+			local _0x4e_print
+				67lang:call print
+					noscope
+						local _0x4f_row
+							67lang:call row
+
+							67lang:auto_type
+
+					local _0x50_name
+						67lang:call name
+							67lang:call _0x4f_row
 
 						67lang:auto_type
 
-				local _0x2d_name
-					67lang:access_field _0x2c_row name
-
-					67lang:auto_type
+				67lang:auto_type
 
 	local age_over_30
 		int 0
@@ -204,44 +227,59 @@
 	for row in
 		67lang:assume_local_exists row
 
-		local _0x2f_rows
-			67lang:access_local rows
+		local _0x57_rows
+			67lang:call rows
 
 			67lang:auto_type
 
 		do
 			if
-				asc
-					noscope
-						local _0x31_row
-							67lang:access_local row
+				note TODO - the test case should probably strain this asc
+					on what happens if age is 30
+
+				local _0x59_asc
+					67lang:call asc
+						noscope
+							local _0x5a_row
+								67lang:call row
+
+								67lang:auto_type
+
+						local _0x5b__hash_
+							67lang:call #
+								67lang:call _0x5a_row
+
+								string "age"
 
 							67lang:auto_type
 
-					local _0x32_age
-						67lang:access_field _0x31_row age
+						int 30
 
-						67lang:auto_type
-
-					int 30
+					67lang:auto_type
 
 				then
-					local _0x34_age_over_30
-						67lang:access_local age_over_30
-							add
-								local _0x33_age_over_30
-									67lang:access_local age_over_30
+					local _0x61_age_over_30
+						67lang:call age_over_30
+							local _0x62_add
+								67lang:call add
+									local _0x63_age_over_30
+										67lang:call age_over_30
 
-									67lang:auto_type
+										67lang:auto_type
 
-								int 1
+									int 1
+
+								67lang:auto_type
 
 						67lang:auto_type
 
-	print
-		local _0x36_age_over_30
-			67lang:access_local age_over_30
+	local _0x6a_print
+		67lang:call print
+			local _0x6b_age_over_30
+				67lang:call age_over_30
 
-			67lang:auto_type
+				67lang:auto_type
+
+		67lang:auto_type
 
 

@@ -6,79 +6,171 @@
 
 			67lang:auto_type
 
-	local _0x4_print
+	local _0x3_print
 		67lang:call print
 			noscope
-				local _0x2_myURL
-					67lang:access_local myURL
+				local _0x4_myURL
+					67lang:call myURL
 
 					67lang:auto_type
 
-			local _0x3_pathname
-				67lang:access_field _0x2_myURL pathname
+			local _0x5_pathname
+				67lang:call pathname
+					67lang:call _0x4_myURL
 
 				67lang:auto_type
+
+		67lang:auto_type
+
+	local _0xb_print
+		67lang:call print
+			string "\n--- Testing TextEncoder/TextDecoder ---"
 
 		67lang:auto_type
 
 	local encoder
-		local _0x7_TextEncoder
+		67lang:auto_type
+
+		local _0xd_TextEncoder
 			67lang:call TextEncoder
 
 			67lang:auto_type
 
-	local encoded
-		noscope
-			local _0x9_encoder
-				67lang:access_local encoder
-
-				67lang:auto_type
-
-		local _0xa_encode
-			67lang:call encode
-				67lang:access_local _0x9_encoder
-
-				string "hello world"
-
-			67lang:auto_type
-
-	local _0xd_print
-		67lang:call print
-			local _0xc_encoded
-				67lang:access_local encoded
-
-				67lang:auto_type
-
+	local decoder
 		67lang:auto_type
 
-	local decoder
-		local _0xf_TextDecoder
+		local _0x10_TextDecoder
 			67lang:call TextDecoder
 
 			67lang:auto_type
 
-	local decoded
-		noscope
-			local _0x12_decoder
-				67lang:access_local decoder
+	local text_tests
+		list
+			string "ASCII text"
+
+			string "Unicode: 🦕 Deno"
+
+			string "Numbers: 42"
+
+	for text in
+		67lang:assume_local_exists text
+
+		local _0x14_text_tests
+			67lang:call text_tests
+
+			67lang:auto_type
+
+		do
+			local bytes
+				noscope
+					local _0x16_encoder
+						67lang:call encoder
+
+						67lang:auto_type
+
+				local _0x17_encode
+					67lang:call encode
+						67lang:call _0x16_encoder
+
+						local _0x19_text
+							67lang:call text
+
+							67lang:auto_type
+
+					67lang:auto_type
+
+			local restored
+				noscope
+					local _0x1e_decoder
+						67lang:call decoder
+
+						67lang:auto_type
+
+				local _0x1f_decode
+					67lang:call decode
+						67lang:call _0x1e_decoder
+
+						local _0x21_bytes
+							67lang:call bytes
+
+							67lang:auto_type
+
+					67lang:auto_type
+
+			local _0x26_print
+				67lang:call print
+					string `Text: "`
+
+					local _0x27_text
+						67lang:call text
+
+						67lang:auto_type
+
+					string `" -> Bytes: [`
+
+					local _0x29_bytes
+						67lang:call bytes
+
+						67lang:auto_type
+
+					string `] -> Restored: "`
+
+					local _0x2b_restored
+						67lang:call restored
+
+						67lang:auto_type
 
 				67lang:auto_type
 
-		local _0x13_decode
-			67lang:call decode
-				67lang:access_local _0x12_decoder
+	local _0x31_print
+		67lang:call print
+			string "\n--- Testing atob/btoa ---"
 
-				local _0x11_encoded
-					67lang:access_local encoded
+		67lang:auto_type
+
+	local testString
+		string "Hello World"
+
+	local encodedString
+		local _0x34_btoa
+			67lang:call btoa
+				local _0x35_testString
+					67lang:call testString
 
 					67lang:auto_type
 
 			67lang:auto_type
 
-	local _0x17_print
+	local decodedString
+		local _0x3a_atob
+			67lang:call atob
+				local _0x3b_encodedString
+					67lang:call encodedString
+
+					67lang:auto_type
+
+			67lang:auto_type
+
+	local _0x40_print
 		67lang:call print
-			local _0x16_decoded
-				67lang:access_local decoded
+			string "Original: "
+
+			local _0x41_testString
+				67lang:call testString
+
+				67lang:auto_type
+
+			string " -> Encoded: "
+
+			local _0x43_encodedString
+				67lang:call encodedString
+
+				67lang:auto_type
+
+			string " -> Decoded: "
+
+			local _0x45_decodedString
+				67lang:call decodedString
 
 				67lang:auto_type
 

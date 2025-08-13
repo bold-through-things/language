@@ -8,7 +8,9 @@
 
 		by existing test expectations. write the best tutorial possible, then make
 
-		the tests match the output, not the other way around.
+		the tests match the output, not the other way around. 
+
+		we have other autotests for that.
 
 	note this will be an indoctrination. before you read this, repeat the following six times:
 		OUR GREATEST ENEMY IS OUR INDIFFERENCE.
@@ -17,7 +19,7 @@
 
 		free, of the Big YACC brainwashing and decades of institutionalized bullshit. if so, there is
 
-		actually a tiny but realistic chance that you will be receptive to the ideas that follow.
+		actually a tiny but realistic chance that you will be receptive to the ideas hereby following.
 
 		and the ideas that follow, define a very real, a very "wrong" and "heretical", a very usable,
 
@@ -40,13 +42,19 @@
 	note in this chapter number one (1) we shall discuss basic types.
 		much as i hate "hello world" as a concept, here it is, dipshits.
 
-	print
-		string "hello world"
+	local _0x0_print
+		67lang:call print
+			string "hello world"
+
+		67lang:auto_type
 
 	note that you can create and print strings. crazy, i know. are we computing yet? wow.
 
-	print
-		string ""hello world" is a fucking stupid non argument."
+	local _0x2_print
+		67lang:call print
+			string ""hello world" is a fucking stupid non argument."
+
+		67lang:auto_type
 
 	note what happened there. did you forget to escape quotes? no, it's perfectly valid. it will
 		indeed print:
@@ -55,49 +63,78 @@
 
 		but how come?! well, a riddle for you to solve. allow me to give you some hints, though:
 
-	print
-		string "this literally cannot be true... yet it is: "
+	# TODO - assert instead of printing (need a new macro)
 
-		all
-			eq
-				string "new year's eve"
+	local _0x4_print
+		67lang:call print
+			string "this literally cannot be true... yet it is: "
 
-				concat 
-					string "new year's "
+			local _0x5_all
+				67lang:call all
+					local _0x6_eq
+						67lang:call eq
+							string "new year's eve"
 
-					string level
+							local _0x7_concat
+								67lang:call concat
+									string "new year's "
 
-			eq
-				string "a very scary error"
+									string level
 
-				concat
-					string "a very "
+								67lang:auto_type
 
-					string !scary !
+						67lang:auto_type
 
-					string -error-
+					local _0xb_eq
+						67lang:call eq
+							string "a very scary error"
 
-			eq
-				string "your regex should be stored into the regex variable."
+							local _0xc_concat
+								67lang:call concat
+									string "a very "
 
-				concat
-					string /your regex/
+									string !scary !
 
-					string " should be stored into the "
+									string -error-
 
-					string `regex`
+								67lang:auto_type
 
-					string " variable."
+						67lang:auto_type
+
+					local _0x10_eq
+						67lang:call eq
+							string "your regex should be stored into the regex variable."
+
+							local _0x11_concat
+								67lang:call concat
+									string /your regex/
+
+									string " should be stored into the "
+
+									string `regex`
+
+									string " variable."
+
+								67lang:auto_type
+
+						67lang:auto_type
+
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that i completely solved the need to escape quotes. moving on to escaping newlines now:
 
-	print
-		string
-			just write the newlines naturally and 
+	local _0x24_print
+		67lang:call print
+			string
+				just write the newlines naturally and 
 
-			they will appear in the output, meaning
+				they will appear in the output, meaning
 
-			what you see is what you get.
+				what you see is what you get.
+
+		67lang:auto_type
 
 	note that we didn't escape shit. no, wait, that's untrue. we didn't escape the newlines,
 		but what we did escape is the need to escape them. and we did that by escaping established,
@@ -106,56 +143,74 @@
 
 	note that doing math is arguably the entire point of computers.
 
-	print
-		add
-			int 2
+	local _0x26_print
+		67lang:call print
+			local _0x27_add
+				67lang:call add
+					int 2
 
-			float 0
+					float 0
 
-			int 2
+					int 2
 
-	print
-		asc
-			int 0
+				67lang:auto_type
 
-			int 1
+		67lang:auto_type
 
-			int 2
+	local _0x2b_print
+		67lang:call print
+			local _0x2c_asc
+				67lang:call asc
+					int 0
+
+					int 1
+
+					int 2
+
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that did just say 0 < 1 < 2, yes. trivially. Python would never.
 
 	note in this chapter number two (2) we shall discuss the tasty stuff.
-		variables. being able to declare a slot in memory and store a value in it.
+		variables, of course. being able to declare a slot in memory and store a value in it.
 
 		manipulating memory is arguably the entire point of computers.
 
 	local age
 		int 23
 
-	print
-		string "my age is"
+	local _0x31_print
+		67lang:call print
+			string "my age is"
 
-		local _0x1_age
-			67lang:access_local age
+			local _0x32_age
+				67lang:call age
 
-			67lang:auto_type
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that i lied. my age is not currently 23. let's address that by opening a ticket
 		on our JIRA and spending 3 story points.
 
-	local _0x2_age
-		67lang:access_local age
+	local _0x36_age
+		67lang:call age
 			int 25
 
 		67lang:auto_type
 
-	print
-		string "actually, i lied. my age is"
+	local _0x38_print
+		67lang:call print
+			string "actually, i lied. my age is"
 
-		local _0x3_age
-			67lang:access_local age
+			local _0x39_age
+				67lang:call age
 
-			67lang:auto_type
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that we were able to close this ticket within 5 story points. good, let's move on to
 		list some more perfectly sensible examples.
@@ -163,27 +218,33 @@
 	local 0
 		int 0
 
-	note what the fuck did we just do. wait, hold on. this won't compile. right?
+	note what the fuck did we just do?! wait, hold on. this won't compile. right?
 
-	print
-		local _0x5__0
-			67lang:access_local 0
+	local _0x3e_print
+		67lang:call print
+			local _0x3f__0
+				67lang:call 0
 
-			67lang:auto_type
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that no, it actually does. hm, weird. but what if...
 
-	local _0x6__0
-		67lang:access_local 0
+	local _0x43__0
+		67lang:call 0
 			int 2347
 
 		67lang:auto_type
 
-	print
-		local _0x7__0
-			67lang:access_local 0
+	local _0x45_print
+		67lang:call print
+			local _0x46__0
+				67lang:call 0
 
-			67lang:auto_type
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that this just printed 2347. why? what's going on here? let's investigate...
 
@@ -199,25 +260,28 @@
 	local ,
 		true
 
-	print
-		local _0xc__comma_
-			67lang:access_local ,
+	local _0x4e_print
+		67lang:call print
+			local _0x4f__comma_
+				67lang:call ,
 
-			67lang:auto_type
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that this language might actually be unhinged. Lisp would never.
 
 	note in this chapter number three (3) we shall discuss the really tasty stuff.
-		the access macro.
+		the access macro, of course.
 
-		previous examples already hinted at it, but let's explore it in greater detail:
+		previous examples already hinted at it, but let's explore it in far greater detail:
 
-	local _0x10__comma_
-		67lang:access_local ,
-			local _0xe__comma_
-				67lang:access_local ,
-					local _0xd__comma_
-						67lang:access_local ,
+	local _0x53__comma_
+		67lang:call ,
+			local _0x54__comma_
+				67lang:call ,
+					local _0x55__comma_
+						67lang:call ,
 
 						67lang:auto_type
 
@@ -237,34 +301,37 @@
 	local 2347
 		string "wow, very helpful."
 
-	print
-		noscope
-			local _0x14__2347
-				67lang:access_local 2347
+	local _0x5d_print
+		67lang:call print
+			noscope
+				local _0x5e__2347
+					67lang:call 2347
+
+					67lang:auto_type
+
+				local _0x5f_split
+					67lang:call split
+						67lang:call _0x5e__2347
+
+						string | |
+
+					67lang:auto_type
+
+				local _0x60_sort
+					67lang:call sort
+						67lang:call _0x5f_split
+
+					67lang:auto_type
+
+			local _0x61_join
+				67lang:call join
+					67lang:call _0x60_sort
+
+					string ", "
 
 				67lang:auto_type
 
-			local _0x15_split
-				67lang:call split
-					67lang:access_local _0x14__2347
-
-					string | |
-
-				67lang:auto_type
-
-			local _0x16_sort
-				67lang:call sort
-					67lang:access_local _0x15_split
-
-				67lang:auto_type
-
-		local _0x17_join
-			67lang:call join
-				67lang:access_local _0x16_sort
-
-				string ", "
-
-			67lang:auto_type
+		67lang:auto_type
 
 	note this will split the phrase into words, sort them, and then join them with commas, 
 		afterwards printing them.
@@ -273,7 +340,7 @@
 
 		`_2347.split(" ").sort().join(", ")`
 
-		not compelling enough? fine, let's take a look at indexing.
+		not compelling enough still? fine, let's take a look at indexing.
 
 	note in this chapter number four (4) we dare index some dictionaries
 		can't really index empty space, though. let's create a dictionary, then.
@@ -282,64 +349,75 @@
 		dict
 
 	noscope
-		local _0x23__67lang_dot_features
-			67lang:access_local 67lang.features
+		local _0x6c__67lang_dot_features
+			67lang:call 67lang.features
 
 			67lang:auto_type
 
-	local _0x24_name
-		67lang:access_index _0x23__67lang_dot_features
+	local _0x6d__hash_
+		67lang:call #
+			67lang:call _0x6c__67lang_dot_features
+
 			string "the access macro"
 
 			string 
 				noscope
-					local _0x19_powerful
-						67lang:access_local powerful
+					local _0x6f_powerful
+						67lang:call powerful
 
 						67lang:auto_type
 
-					local _0x1a_and
-						67lang:access_field _0x19_powerful and
+					local _0x70_and
+						67lang:call and
+							67lang:call _0x6f_powerful
 
 						67lang:auto_type
 
-					local _0x1b_flexible
-						67lang:access_field _0x1a_and flexible
+					local _0x71_flexible
+						67lang:call flexible
+							67lang:call _0x70_and
 
 						67lang:auto_type
 
-					local _0x1c_method
-						67lang:access_field _0x1b_flexible method
+					local _0x72_method
+						67lang:call method
+							67lang:call _0x71_flexible
 
 						67lang:auto_type
 
-					local _0x1d_chaining
-						67lang:access_field _0x1c_method chaining
+					local _0x73_chaining
+						67lang:call chaining
+							67lang:call _0x72_method
 
 						67lang:auto_type
 
-					local _0x1e__quot_syntax
-						67lang:access_field _0x1d_chaining "syntax
+					local _0x74__quot_syntax
+						67lang:call "syntax
+							67lang:call _0x73_chaining
 
 						67lang:auto_type
 
-					local _0x1f_sugar_quot_
-						67lang:access_field _0x1e__quot_syntax sugar"
+					local _0x75_sugar_quot_
+						67lang:call sugar"
+							67lang:call _0x74__quot_syntax
 
 						67lang:auto_type
 
-					local _0x20_with
-						67lang:access_field _0x1f_sugar_quot_ with
+					local _0x76_with
+						67lang:call with
+							67lang:call _0x75_sugar_quot_
 
 						67lang:auto_type
 
-					local _0x21_clear
-						67lang:access_field _0x20_with clear
+					local _0x77_clear
+						67lang:call clear
+							67lang:call _0x76_with
 
 						67lang:auto_type
 
-				local _0x22_branching
-					67lang:access_field _0x21_clear branching
+				local _0x78_branching
+					67lang:call branching
+						67lang:call _0x77_clear
 
 					67lang:auto_type
 
@@ -349,17 +427,21 @@
 
 				where indentation rules all.
 
+		67lang:auto_type
+
 	note what a mouthful. but there are obviously other features here. let's mention
 		the previously outlined flexibility.
 
 	noscope
-		local _0x2f__67lang_dot_features
-			67lang:access_local 67lang.features
+		local _0x8e__67lang_dot_features
+			67lang:call 67lang.features
 
 			67lang:auto_type
 
-	local _0x30_added
-		67lang:access_index _0x2f__67lang_dot_features
+	local _0x8f__hash_
+		67lang:call #
+			67lang:call _0x8e__67lang_dot_features
+
 			string "the flexibility of identifiers"
 
 			string
@@ -373,43 +455,67 @@
 
 				your foot. if you are smart, you will write the most readable code ever written.
 
+		67lang:auto_type
+
 	note that was too much yapping. let's truncate it a little.
 
-	print
-		noscope
-			local _0x31__67lang_dot_features
-				67lang:access_local 67lang.features
+	local _0x92_print
+		67lang:call print
+			noscope
+				local _0x93__67lang_dot_features
+					67lang:call 67lang.features
+
+					67lang:auto_type
+
+				local _0x94__hash_
+					67lang:call #
+						67lang:call _0x93__67lang_dot_features
+
+						string "the flexibility of identifiers"
+
+					67lang:auto_type
+
+				local _0x95_slice
+					67lang:call slice
+						67lang:call _0x94__hash_
+
+						int 0
+
+						int 67
+
+					67lang:auto_type
+
+			local _0x96_join
+				67lang:call join
+					67lang:call _0x95_slice
+
+					string ""
 
 				67lang:auto_type
 
-			local _0x32_described
-				67lang:access_index _0x31__67lang_dot_features
-					string "the flexibility of identifiers"
-
-		local _0x33_slice
-			67lang:call slice
-				67lang:access_local _0x32_described
-
-				int 0
-
-				int 67
-
-			67lang:auto_type
+		67lang:auto_type
 
 	note that if by this point you are not barely holding back the urge to install the compiler
-		and write similar code yourself, you might be a lost cause.
+		and write similar code yourself, you might be a lost cause. consider closing this documentation
+
+		and going back to your beloved Java.
 
 	note in this chapter number five (5) we shall do some conditioning and looping
-		naturally you'd eventually want to `do` some branching and repetition. obviously, since
+		naturally you'd eventually want to `do` something useful, such as perhaps branching 
 
-		branching and repetition is arguably the entire point of computers.
+		and repetition. obviously, since branching and repetition is arguably the entire 
+
+		point of computers.
 
 	if
 		true
 
 		then
-			print
-				string "big"
+			local _0xa0_print
+				67lang:call print
+					string "big"
+
+				67lang:auto_type
 
 	note that is absolutely big if true.
 		but what if it was not?
@@ -418,12 +524,18 @@
 		false
 
 		then
-			print
-				string "big"
+			local _0xa2_print
+				67lang:call print
+					string "big"
+
+				67lang:auto_type
 
 	else
-		print
-			string "my disappointment is immeasurable and my day is ruined."
+		local _0xa4_print
+			67lang:call print
+				string "my disappointment is immeasurable and my day is ruined."
+
+			67lang:auto_type
 
 	note that my disappointment in programming languages is indeed immeasurable.
 		we should probably list my disappointments with programming languages, then.
@@ -444,22 +556,28 @@
 	for angy in
 		67lang:assume_local_exists angy
 
-		local _0x35_i_hate_this_trash_bang_
-			67lang:access_local i_hate_this_trash!
+		local _0xa7_i_hate_this_trash_bang_
+			67lang:call i_hate_this_trash!
 
 			67lang:auto_type
 
 		do
-			print
-				concat
-					local _0x37_angy
-						67lang:access_local angy
+			local _0xa9_print
+				67lang:call print
+					local _0xaa_concat
+						67lang:call concat
+							local _0xab_angy
+								67lang:call angy
+
+								67lang:auto_type
+
+							string "!!!"
 
 						67lang:auto_type
 
-					string "!!!"
+				67lang:auto_type
 
-	note that i feel much better now. it's good to vent frustration at times, i suppose.
+	note that i feel much better now. it is good to vent frustration at times, i suppose.
 		let's `do` some work.
 
 	# TODO update this once 67lang is production grade (give it two three months...)
@@ -468,17 +586,20 @@
 		false
 
 	while
-		local _0x39_does_a_decent_programming_language_exist_q_
-			67lang:access_local does_a_decent_programming_language_exist?
+		local _0xb3_does_a_decent_programming_language_exist_q_
+			67lang:call does_a_decent_programming_language_exist?
 
 			67lang:auto_type
 
 		do
-			print
-				string `code for quality software`
+			local _0xb5_print
+				67lang:call print
+					string `code for quality software`
+
+				67lang:auto_type
 
 	note that we failed to do any meaningful work. that's great. that's enterprise. create another
-		3 story points ticket please and we'll get this blocker resolved.
+		3 story points ticket please and we'll get this blocker resolved with velocity.
 
 	note in this chapter number six (6) we shall point out the obvious
 		this isn't a language. there is no parser. this is all just a trick to teach you
@@ -500,13 +621,14 @@
 		how large of a parser do you need to comprehend Java? go call Big YACC and ask them for 
 
 		noscope
-			local _0x3a_sales
-				67lang:access_local sales
+			local _0xb7_sales
+				67lang:call sales
 
 				67lang:auto_type
 
-		local _0x3b_pitch_dot_
-			67lang:access_field _0x3a_sales pitch.
+		local _0xb8_pitch_dot_
+			67lang:call pitch.
+				67lang:call _0xb7_sales
 
 			67lang:auto_type
 
@@ -524,61 +646,85 @@
 
 		every node can have many children. why restrict them all to two, then?
 
-	print
-		string "false: "
+	local _0xbb_print
+		67lang:call print
+			string "false: "
 
-		all
-			true
+			local _0xbc_all
+				67lang:call all
+					true
 
-			true
+					true
 
-			false
+					false
 
-	print
-		string "true: "
+				67lang:auto_type
 
-		any
-			true
+		67lang:auto_type
 
-			false
+	local _0xc0_print
+		67lang:call print
+			string "true: "
 
-			false
+			local _0xc1_any
+				67lang:call any
+					true
 
-	print
-		string "true: "
+					false
 
-		none
-			false
+					false
 
-			false
+				67lang:auto_type
 
-			false
+		67lang:auto_type
 
-	print
-		string "6: "
+	local _0xc5_print
+		67lang:call print
+			string "true: "
 
-		add
-			int 1
+			local _0xc6_none
+				67lang:call none
+					false
 
-			int 1
+					false
 
-			int 1
+					false
 
-			int 1
+				67lang:auto_type
 
-			int 1
+		67lang:auto_type
 
-			int 1
+	local _0xca_print
+		67lang:call print
+			string "6: "
+
+			local _0xcb_add
+				67lang:call add
+					int 1
+
+					int 1
+
+					int 1
+
+					int 1
+
+					int 1
+
+					int 1
+
+				67lang:auto_type
+
+		67lang:auto_type
 
 	note that when you say the incantation "binary operation", you summon chains that limit you. there is never
 		need for a binary operation. aggregate. summarize. simplify.
 
 	note in this chapter number seven (7) we point out that Java is better than JavaScript
-		no, i really can't say that with a straight face. it's physically impossible to say that
+		no, i really can't say that with a straight face! it's physically impossible to say that
 
 		and not cringe. write once, run everywhere? Java would never.
 
-		we emit JavaScript. for Deno. and for browser. no, we don't emit for Node. if you're a Node loser,
+		we emit JavaScript. for Deno, and for browser. no, we don't emit for Node. if you're a Node loser,
 
 		bring your own shims.
 
@@ -596,11 +742,11 @@
 
 		string "not even in Nebraska."
 
-	must_compile_error FIELD_TYPE_MISMATCH=+1
-		local _0x3f_where_q_
-			67lang:access_local where?
-				local _0x3e__2347
-					67lang:access_local 2347
+	must_compile_error ARGUMENT_TYPE_MISMATCH=+1
+		local _0xd1_where_q_
+			67lang:call where?
+				local _0xd2__2347
+					67lang:call 2347
 
 					67lang:auto_type
 
@@ -609,28 +755,28 @@
 	note that it is a work in progress, but even already it's remarkably powerful. write 
 		quality software with confidence. that's arguably the entire point of this language.
 
-	must_compile_error ARGUMENT_TYPE_MISMATCH=+1
+	must_compile_error NO_MATCHING_OVERLOAD=+1
 		noscope
-			local _0x41_where_q_
-				67lang:access_local where?
+			local _0xd6_where_q_
+				67lang:call where?
 
 				67lang:auto_type
 
-			local _0x42_split
+			local _0xd7_split
 				67lang:call split
-					67lang:access_local _0x41_where_q_
+					67lang:call _0xd6_where_q_
 
 				67lang:auto_type
 
-			local _0x43_split
+			local _0xd8_split
 				67lang:call split
-					67lang:access_local _0x42_split
+					67lang:call _0xd7_split
 
 				67lang:auto_type
 
-		local _0x44_split
+		local _0xd9_split
 			67lang:call split
-				67lang:access_local _0x43_split
+				67lang:call _0xd8_split
 
 			67lang:auto_type
 
@@ -639,22 +785,22 @@
 			type int
 
 			noscope
-				local _0x45_where_q_
-					67lang:access_local where?
+				local _0xde_where_q_
+					67lang:call where?
 
 					67lang:auto_type
 
-				local _0x46_split
+				local _0xdf_split
 					67lang:call split
-						67lang:access_local _0x45_where_q_
+						67lang:call _0xde_where_q_
 
 						string " "
 
 					67lang:auto_type
 
-			local _0x47_join
+			local _0xe0_join
 				67lang:call join
-					67lang:access_local _0x46_split
+					67lang:call _0xdf_split
 
 					string "-"
 
@@ -675,7 +821,7 @@
 
 		that we ship for you, the user, to leverage exactly the same way. assert your software. assert 
 
-		how it works. that's easy. most languages let you do that.
+		how it works. that's easy... most languages let you do that.
 
 		assert how it doesn't. assert how it must not be used.
 
@@ -693,31 +839,43 @@
 		param TODO_i_cant_even_use_periods_in_this_param_name
 
 		do
-			print
-				string "fuck!"
+			local _0xe6_print
+				67lang:call print
+					string "fuck!"
+
+				67lang:auto_type
 
 			if
-				asc
-					0
+				local _0xe8_nondesc
+					67lang:call nondesc
+						int 0
 
-					fucks_given
+						local _0xe9_fucks_given
+							67lang:call fucks_given
+
+							67lang:auto_type
+
+					67lang:auto_type
 
 				then
-					local _0x4b_fuck_bang_
+					local _0xed_fuck_bang_
 						67lang:call fuck!
-							add
-								local _0x4a_fucks_given
-									67lang:access_local fucks_given
+							local _0xee_add
+								67lang:call add
+									local _0xef_fucks_given
+										67lang:call fucks_given
 
-									67lang:auto_type
+										67lang:auto_type
 
-								int -1
+									int -1
+
+								67lang:auto_type
 
 							string "TODO..."
 
 						67lang:auto_type
 
-	local _0x4d_fuck_bang_
+	local _0xf6_fuck_bang_
 		67lang:call fuck!
 			int 6
 
@@ -726,6 +884,8 @@
 
 				it's a local if you don't pass two arguments. horrible!
 
+				should be easy to fix! just check if it's a local or a function!
+
 		67lang:auto_type
 
 	note that speaks for itself.
@@ -733,15 +893,15 @@
 	note in this chapter i can't be bothered to count because it is the conclusion
 		i know what you're tempted to say here. no, it's not a toy or an experimental language.
 
-		it exists by necessity. it is verbose, we will fix that. it isn't yet production ready,
+		it exists by necessity. it is verbose - we will fix that. it isn't yet production ready -
 
-		we will fix that. it doesn't have a community... maybe we will fix that.
+		we will fix that. it doesn't have a community... maybe we will fix that too.
 
 		maybe we won't fix that. maybe we don't want to fix that. maybe this is a language made
 
 		by a certain silly little compiler witch who tried for half a decade, or possibly even longer,
 
-		to find something that works, something expressive enough, something that lets you write
+		to find something that actually works, something expressive enough, something that lets you write
 
 		quality software.
 
@@ -759,7 +919,9 @@
 
 		first, nothing will stop me. not even sanity itself.
 
-		67.8% Language. 67lang. by @statuscallh8r. initially written on 3rd Aug 2025.
+		67.8% Language. 67lang. by @statuscallh8r and @copilot. 
+
+		documentation initially written on 3rd Aug 2025.
 
 	note ______________________________________________
 		simplicity really is the absolute virtue.

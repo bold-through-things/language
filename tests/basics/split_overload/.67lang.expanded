@@ -1,0 +1,45 @@
+67lang:file
+	local str
+		string "testing"
+
+	# calls the (str, str) overload
+
+	local _0x1_print
+		67lang:call print
+			noscope
+				local _0x2_str
+					67lang:call str
+
+					67lang:auto_type
+
+			local _0x3_split
+				67lang:call split
+					67lang:call _0x2_str
+
+					string "t"
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+	# calls the (str, regex) overload
+
+	local _0x9_print
+		67lang:call print
+			noscope
+				local _0xa_str
+					67lang:call str
+
+					67lang:auto_type
+
+			local _0xb_split
+				67lang:call split
+					67lang:call _0xa_str
+
+					regex /t/
+
+				67lang:auto_type
+
+		67lang:auto_type
+
+

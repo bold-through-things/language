@@ -7,14 +7,14 @@
 
 	local words
 		noscope
-			local _0x2_input
-				67lang:access_local input
+			local _0x3_input
+				67lang:call input
 
 				67lang:auto_type
 
-		local _0x3_split
+		local _0x4_split
 			67lang:call split
-				67lang:access_local _0x2_input
+				67lang:call _0x3_input
 
 				string "\n"
 
@@ -26,36 +26,36 @@
 	for word in
 		67lang:assume_local_exists word
 
-		local _0x6_words
-			67lang:access_local words
+		local _0x9_words
+			67lang:call words
 
 			67lang:auto_type
 
 		do
 			local key
 				noscope
-					local _0x8_word
-						67lang:access_local word
+					local _0xb_word
+						67lang:call word
 
 						67lang:auto_type
 
-					local _0x9_split
+					local _0xc_split
 						67lang:call split
-							67lang:access_local _0x8_word
+							67lang:call _0xb_word
 
 							string ""
 
 						67lang:auto_type
 
-					local _0xa_sort
+					local _0xd_sort
 						67lang:call sort
-							67lang:access_local _0x9_split
+							67lang:call _0xc_split
 
 						67lang:auto_type
 
-				local _0xb_join
+				local _0xe_join
 					67lang:call join
-						67lang:access_local _0xa_sort
+						67lang:call _0xd_sort
 
 						string ""
 
@@ -68,17 +68,17 @@
 			#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
 
 			if
-				local _0xf_none
+				local _0x14_none
 					67lang:call none
 						exists
-							local _0xd_key
-								67lang:access_local key
+							local _0x15_key
+								67lang:call key
 
 								67lang:auto_type
 
 							inside
-								local _0xe_groups
-									67lang:access_local groups
+								local _0x17_groups
+									67lang:call groups
 
 									67lang:auto_type
 
@@ -86,39 +86,47 @@
 
 				then
 					noscope
-						local _0x12_groups
-							67lang:access_local groups
+						local _0x1c_groups
+							67lang:call groups
 
 							67lang:auto_type
 
-					local _0x13_key
-						67lang:access_index _0x12_groups
-							local _0x14_key
+					local _0x1d__hash_
+						67lang:call #
+							67lang:call _0x1c_groups
+
+							local _0x1f_key
 								67lang:call key
 
 								67lang:auto_type
 
 							list
 
+						67lang:auto_type
+
 			noscope
-				local _0x16_groups
-					67lang:access_local groups
+				local _0x23_groups
+					67lang:call groups
 
 					67lang:auto_type
 
-				local _0x17_key
-					67lang:access_index _0x16_groups
-						local _0x18_key
+				local _0x24__hash_
+					67lang:call #
+						67lang:call _0x23_groups
+
+						local _0x27_key
 							67lang:call key
 
 							67lang:auto_type
 
-			local _0x19_push
-				67lang:call push
-					67lang:access_local _0x17_key
+					67lang:auto_type
 
-					local _0x15_word
-						67lang:access_local word
+			local _0x25_push
+				67lang:call push
+					67lang:call _0x24__hash_
+
+					local _0x2b_word
+						67lang:call word
 
 						67lang:auto_type
 
@@ -127,27 +135,27 @@
 	for group in
 		67lang:assume_local_exists group
 
-		local _0x1c_values
+		local _0x2f_values
 			67lang:call values
-				local _0x1b_groups
-					67lang:access_local groups
+				local _0x30_groups
+					67lang:call groups
 
 					67lang:auto_type
 
 			67lang:auto_type
 
 		do
-			local _0x22_print
+			local _0x34_print
 				67lang:call print
 					noscope
-						local _0x20_group
-							67lang:access_local group
+						local _0x35_group
+							67lang:call group
 
 							67lang:auto_type
 
-					local _0x21_join
+					local _0x36_join
 						67lang:call join
-							67lang:access_local _0x20_group
+							67lang:call _0x35_group
 
 							string " "
 
