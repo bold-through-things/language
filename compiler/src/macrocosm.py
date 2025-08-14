@@ -23,12 +23,13 @@ from macro_registry import Macro_emission_provider, MacroContext, Macro_provider
 from preprocessing_macros import PreprocessingStep
 from code_block_linking import CodeBlockLinkingStep  
 from typecheck_macros import TypeCheckingStep
+from type_registration_macros import TypeRegistrationStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
 from literal_macros import JavaScriptEmissionStep
 from logger import default_logger
 
 class Macrocosm:
-    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry, preprocess_registry: MacroRegistry):
+    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry, preprocess_registry: MacroRegistry, type_registration_registry: MacroRegistry):
         self.nodes: list[Node] = []
         # TODO. incremental is good enough for now, but we'll have to stabilize it.
         #  the last thing you would want is the entire output changing because you added a statement. that's a lot of
@@ -50,6 +51,7 @@ class Macrocosm:
         self.processing_steps: list[MacroProcessingStep] = [
             CodeBlockLinkingStep(code_linking_registry), 
             PreprocessingStep(preprocess_registry),
+            TypeRegistrationStep(type_registration_registry),
             TypeCheckingStep(typecheck_registry),
             JavaScriptEmissionStep(emission_registry),
             MustCompileErrorVerificationStep()
@@ -154,7 +156,7 @@ class Macrocosm:
                 self.__discover_macros(node)
             
         solution_node = self.make_node("67lang:solution", Position(0, 0), self.nodes or [])
-        self.root_node = solution_node # Set the root_node attribute
+        self.root_node = solution_node
             
         # Execute the processing pipeline
         for step in self.processing_steps:
@@ -299,6 +301,7 @@ def create_macrocosm() -> Macrocosm:
     preprocess = create_registry("preprocess")
     typecheck = create_registry("typecheck")
     emission = create_registry("emission")
+    type_registration = create_registry("type_registration")
     
     # this is the new way of doing things
     # we still need to bridge this to the old way, for now
@@ -310,9 +313,10 @@ def create_macrocosm() -> Macrocosm:
         preprocess.add_fn(getattr(provider, "preprocess", None), macro)
         typecheck.add_fn(getattr(provider, "typecheck", None), macro)
         emission.add_fn(getattr(provider, "emission", None), macro)
+        type_registration.add_fn(getattr(provider, "register_type", None), macro)
         code_linking_registry.add_fn(getattr(provider, "code_linking", None), macro)  
     
-    rv = Macrocosm(emission, typecheck, code_linking_registry, preprocess)
+    rv = Macrocosm(emission, typecheck, code_linking_registry, preprocess, type_registration)
     rv.registries.update(registries)
     return rv
     

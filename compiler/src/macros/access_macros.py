@@ -39,6 +39,16 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         for child in ctx.node.children:
             ctx.current_step.process_node(replace(ctx, node=child))
 
+    def register_type(self, ctx: MacroContext):
+        desired_name = get_single_arg(ctx)
+        actual_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
+
+        param_demands = []
+        for child in seek_all_child_macros(ctx.node, "param"):
+            param_demands.append("*") # Add a demand for each parameter
+
+        ctx.compiler.add_dynamic_convention(desired_name, DirectCall(fn=actual_name, receiver=None, demands=param_demands, returns="*"))
+
     def emission(self, ctx: MacroContext):
         name = get_single_arg(ctx)
         name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
@@ -148,7 +158,7 @@ class Exists_macro_provider(Macro_emission_provider):
                 ctx.compiler.assert_(args_str.strip() == "", child, "inside must have no arguments")
                 ctx.compiler.assert_(len(child.children) == 1, child, "inside must have one child")
                 target = child.children[0]
-                default_logger.macro(f"inside modifier found, target set to: {target.content}")
+                
             else:
                 other_children.append(child)
         
@@ -160,7 +170,7 @@ class Param_macro_provider(Macro_preprocess_provider):
         args = get_single_arg(ctx, "param must have one argument - the name")
         parent = ctx.node.parent
         
-        default_logger.macro(f"param '{args}'")
+        
         
         assert parent != None
         ctx.compiler.assert_(len(ctx.node.children) == 0, ctx.node, "param must have no children")
@@ -191,7 +201,7 @@ class Access_macro_provider(Macro_preprocess_provider):
                 else:
                     ctx.compiler.assert_(False, child, "where clause must be 'where $id is' or 'where $id takes'")
                 
-                default_logger.macro(f"calling '{key}' with {len(child.children)} children")
+                
                 
                 ctx.compiler.assert_(len(child.children) >= 1, child, "calling must have at least one child")
                 callers[key] = child.children

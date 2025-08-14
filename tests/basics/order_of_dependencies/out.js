@@ -64,11 +64,6 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-    function DAG_unroller(dep_loops, build_order, modules) {
-        this.dep_loops = dep_loops;
-        this.build_order = build_order;
-        this.modules = modules;
-    }
     const _0x4f_visit = async function (
         unroller_in, 
         module, 
@@ -266,6 +261,11 @@ void (async () => {
                 _0xbf__0xb6_push
             }
         } }
+    function DAG_unroller(dep_loops, build_order, modules) {
+        this.dep_loops = dep_loops;
+        this.build_order = build_order;
+        this.modules = modules;
+    }
     {
         const parent_scope = scope
         {
@@ -378,7 +378,6 @@ void (async () => {
                         _0x4c__0x41__hash_
                     }
                 } }
-
 
 
 
