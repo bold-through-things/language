@@ -57,10 +57,7 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         if res:
             from processor_base import LocalAccessCall
             macro = ctx.compiler.get_metadata(res.node, Macro)
-            if macro == "fn":
-                fn = ctx.compiler.get_metadata(res.node, SaneIdentifier)
-                return [DirectCall(fn=fn, receiver=None, demands=None, returns=None)]
-            elif macro in {"local", "67lang:assume_local_exists"}:
+            if macro in {"local", "67lang:assume_local_exists"}:
                 name = get_single_arg(replace(ctx, node=res.node))
                 fn = ctx.compiler.maybe_metadata(res.node, SaneIdentifier) or name
                 return [

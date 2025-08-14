@@ -26,7 +26,7 @@ def _try_match_local(ctx: "MacroContext", name: str):
     macro = ctx.compiler.get_metadata(ctx.node, Macro)
     if macro == "local":
         desired_local_name = get_single_arg(ctx)
-    elif macro in {"67lang:assume_local_exists", "fn"}: # TODO - i hate this hack. find a better way!
+    elif macro == "67lang:assume_local_exists": # TODO - i hate this hack. find a better way!
         desired_local_name = get_single_arg(ctx)
     else:
         return None

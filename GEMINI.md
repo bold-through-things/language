@@ -16,6 +16,8 @@ perhaps i am an introvert, but i still do prefer you saying your ideas explicitl
 
 do not assume you have it figured out. you tend to often "guess" at the solution. this works quite rarely. i would prefer if you prioritized careful and step by step analysis. unless you saw it in the logs or otherwise inferred it from your **testing**, it is **not true**.
 
+**avoid comments that clearly accomplish nothing, they really piss me off.** a real example from you recently. `self.root_node = solution_node # Set the root_node attribute`. why?! how does this even help?!
+
 `./test` to ensure things don't break.
 
 `./test --glob partial_test_na` to run specific tests and save our time. it is a pleasant filter, very flexible.

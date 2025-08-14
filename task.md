@@ -1,33 +1,17 @@
-# now feel we need classes badly.
+# current hoisting approach is total garbage!
 
-the need for classes is a potent pain far sooner than expected. the recent `access` macro syntax rework made our dictionary access rather tedious, and here we are! i am the one who defers always. can't now defer it any longer.
+hoisting of functions and classes that would be.
 
-so here is the task then.
+oh yeah, our so called "classes" are actually handled via `type`.
 
-1. hoist function definitions to the top.
+1. indeed the functions are stupid themselves.
 
-this is perhaps a rather strange thing to begin with, but it is needed for consistency. i do not want the functions to remain as closures. we will a new syntax for that at some point, but functions must remain distinct and... "pure"? there is a reason for this goal and it is literate programming, actually. you should be able to define a function anywhere and then just have it hoisted to the top, thus usable also anywhere.
+they are being handled by `walk_upwards...` now, but why..? what does that actually accomplish? that's correct, exactly nothing. **we should remove `fn` from our upwalker.** they should instead be tracked via "dynamic call conventions" recently introduced for classes.
 
-now, "to the top" does mean the top of the top node. that would be `67lang:solution`, though you should probably encode it more generically just checking for no parent. the function then is moved to be the first child of this node. this would probably need to happen during the preprocessing, i guess..? let's try that. it might turn out to not be valid and we would need to add a new step instead.
+2. two step type checking now unavoidable.
 
-the macro which we hoist is the `fn`, obviously, as it is the one which lets us define functions.
+we need to split that step into now two. first would then register them, and second would type check internals. see `order_of_dependencies` for a dumb case where this does matter. because that `visit` actually "depends" on `DAG_unroller`, and due to the way hoisting works, it actually does matter that they appear through *reverse order*, which is the most insane thing ever. no, order shouldn't matter. a fix is trivial. scan everything to register, then scan again to do type checking.
 
-2. the actual new object type definitions.
+3. just clean up code around here.
 
-here is the syntax that we want:
-
-```
-type Person is heap_entry
-	has name
-		type string
-	has age
-		type int
-```
-
-this should then generate several call conventions (and obviously store them somewhere). probably makes the most sense to do that during the type checking? the type definition node should also be hoisted to top of the entire solution. particularly, here the call conventions we would need:
-- a function (named simply `Person` in this case) including all the fields for object creation as parameters
-- a `FieldCall` for every field within the class
-
-3. then update just a single test
-
-one should be fine for now. `example_for_llms` probably makes the most sense. it uses a few dictionaries. we shouldn't outright remove those current examples but we should certainly add new alterternatives with classes.
+there is a lot of garbage that we left behind. the useless comments (i hate those!), some debug logging, and generally badly written code. improvements very welcome. build quality software.
