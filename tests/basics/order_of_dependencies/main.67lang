@@ -59,6 +59,14 @@ do
 # TODO - support a  way to convert a dict keys to a set cleanly
 # (old code removed)
 
+type DAG_unroller is heap_entry
+	has dep_loops
+		type list
+	has build_order
+		type list
+	has modules
+		type list
+
 fn visit
 	param unroller_in
 	param module
@@ -129,16 +137,6 @@ do
 
 	an unroller build_order push
 		a module id
-
-note that this class must currently be declared after `visit`
-	which makes absolutely no sense whatsoever. we need to fix this!
-type DAG_unroller is heap_entry
-	has dep_loops
-		type list
-	has build_order
-		type list
-	has modules
-		type list
 
 local unroller
 	type DAG_unroller

@@ -442,7 +442,6 @@ note in this chapter number nine (9) we curse recursively
 
 fn fuck!
 	param fucks_given
-	param TODO_i_cant_even_use_periods_in_this_param_name
 do
 	a print
 		string "fuck!"
@@ -455,14 +454,9 @@ do
 			access add
 				a fucks_given
 				int -1
-			string "TODO..."
 
 a fuck!
 	int 6
-	string 
-		TODO. the compiler code is garbage actually and assumes 
-		it's a local if you don't pass two arguments. horrible!
-		should be easy to fix! just check if it's a local or a function!
 
 note that speaks for itself.
 

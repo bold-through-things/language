@@ -65,14 +65,12 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     const _0xe5_fuck_bang_ = async function (
-        fucks_given, 
-        TODO_i_cant_even_use_periods_in_this_param_name
+        fucks_given
     ) {{
             const parent_scope = scope
             {
                 const scope = _67lang.scope(parent_scope)
                 fucks_given = fucks_given
-                TODO_i_cant_even_use_periods_in_this_param_name = TODO_i_cant_even_use_periods_in_this_param_name
                 const _0xf8_print = await console.log("fuck!")
                 let _0xe7__0xe6_print = _0xf8_print
                 _0xe7__0xe6_print
@@ -88,7 +86,7 @@ void (async () => {
                             let _0xf3__0xef_fucks_given = _0xfd_fucks_given
                             const _0xfc_add = await (_0xf3__0xef_fucks_given + -1)
                             let _0xf4__0xee_add = _0xfc_add
-                            const _0xfb_fuck_bang_ = await _0xe5_fuck_bang_(_0xf4__0xee_add, "TODO...")
+                            const _0xfb_fuck_bang_ = await _0xe5_fuck_bang_(_0xf4__0xee_add)
                             let _0xf5__0xed_fuck_bang_ = _0xfb_fuck_bang_
                             _0xf5__0xed_fuck_bang_
                         }
@@ -359,7 +357,7 @@ void (async () => {
 
 
 
-            const _0x152_fuck_bang_ = await _0xe5_fuck_bang_(6, "TODO. the compiler code is garbage actually and assumes \nit's a local if you don't pass two arguments. horrible!\nshould be easy to fix! just check if it's a local or a function!")
+            const _0x152_fuck_bang_ = await _0xe5_fuck_bang_(6)
             let _0xf7__0xf6_fuck_bang_ = _0x152_fuck_bang_
             _0xf7__0xf6_fuck_bang_
 
