@@ -32,7 +32,8 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         for child in seek_all_child_macros(ctx.node, "param"):
             name = get_single_arg(replace(ctx, node=child))
             param_demands.append("*") # Add a demand for each parameter
-            ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
+            new_node = ctx.compiler.make_node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[])
+            ctx.node.prepend_child(new_node)
         
         ctx.compiler.add_dynamic_convention(desired_name, DirectCall(fn=actual_name, receiver=None, demands=param_demands, returns="*"))
 

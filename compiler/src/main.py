@@ -45,9 +45,9 @@ def write_json(inspections: list[dict[str, Any]], output: TextIO) -> None:
 
 default_logger.compile("starting compilation process")
 with default_logger.indent("compile", "initialization"):
-    os.chdir(args.input_dir)
-    rglob = "*.67lang.expanded" if args.rte else "*.67lang"
-    result = list(Path(".").rglob("*.67lang"))
+    input_path = Path(args.input_dir)
+    file_pattern = "*.67lang.expanded" if args.rte else "*.67lang"
+    result = list(input_path.rglob(file_pattern))
     default_logger.compile(f"found {len(result)} .67lang files: {[str(f) for f in result]}")
     its_just_macros = create_macrocosm()
     

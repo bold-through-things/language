@@ -15,7 +15,8 @@ class For_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
 
         # print("processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
         
-        ctx.node.prepend_child(Node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[]))
+        new_node = ctx.compiler.make_node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[])
+        ctx.node.prepend_child(new_node)
         # print("done processing", ctx.node.content, "with children", [c.content for c in ctx.node.children])
 
         for child in ctx.node.children:

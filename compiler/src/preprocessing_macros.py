@@ -29,7 +29,10 @@ class PreprocessingStep(MacroProcessingStep):
         # Process current node  
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         all_preprocessors = self.macros.all()
-        
+
+        default_logger.macro(f"  -> Current node macro: {macro}")
+        default_logger.macro(f"  -> Available preprocessors: {list(all_preprocessors.keys())}")
+
         if macro in all_preprocessors:
             default_logger.macro(f"applying preprocessor for macro: {macro}")
             # print(f"macro for {ctx.node.content} seems to be {macro}")

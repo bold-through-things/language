@@ -74,9 +74,9 @@ class Macrocosm:
         # Auto-compute Macro and Args if not present
 
         # TODO. why. why does that need to be commented out. this doesn't make any sense. explain. i beg you explain.
-        if metadata_type in [Macro, Args]: # and (node_id not in self._node_metadata or metadata_type not in self._node_metadata[node_id]):
+        if metadata_type in [Macro, Args] and (node_id not in self._node_metadata or metadata_type not in self._node_metadata[node_id]):
             self._ensure_macro_args_computed(node)
-        
+
         if node_id in self._node_metadata and metadata_type in self._node_metadata[node_id]:
             return self._node_metadata[node_id][metadata_type]
         
