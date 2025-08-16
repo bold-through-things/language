@@ -1,5 +1,9 @@
 # Import all macro modules to ensure they register with the unified registry
-from . import access_macros
+from . import local_macro
+from . import fn_macro
+from . import exists_macro
+from . import param_macro
+from . import access_chain_macro
 from . import collection_macros
 from . import comment_macros
 from . import error_macros

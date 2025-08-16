@@ -1,5 +1,5 @@
 from dataclasses import asdict, replace
-from pipeline.steps import MacroProcessingStep, singleton, seek_child_macro
+from pipeline.steps import MacroProcessingStep, seek_child_macro
 from pipeline.builtin_calls import builtin_calls, DirectCall, LocalAccessCall, js_field_access
 from pipeline.js_conversion import to_valid_js_ident
 from pipeline.local_lookup import walk_upwards_for_local_definition

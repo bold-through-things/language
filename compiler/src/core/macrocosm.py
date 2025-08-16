@@ -7,7 +7,11 @@ from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
 from macros.while_macro import While_macro_provider
 from macros.for_macro import For_macro_provider
-from macros.access_macros import Local_macro_provider, Fn_macro_provider, Exists_macro_provider, Param_macro_provider, Access_macro_provider
+from macros.local_macro import Local_macro_provider
+from macros.fn_macro import Fn_macro_provider
+from macros.exists_macro import Exists_macro_provider
+from macros.param_macro import Param_macro_provider
+from macros.access_chain_macro import Access_macro_provider
 from macros.call_macro import Call_macro_provider
 from macros.utility_macros import Noop_macro_provider
 from macros.solution_macro import Solution_macro_provider
@@ -18,7 +22,8 @@ from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from macros.type_macro import Type_macro_provider # Added import
 from core.node import Node, Position, Macro, Args
 from utils.strutil import IndentedStringIO, Joiner
-from pipeline.steps import MacroProcessingStep, MacroAssertFailed
+from pipeline.steps import MacroProcessingStep
+from core.exceptions import MacroAssertFailed
 from pipeline.js_conversion import to_valid_js_ident
 from core.macro_registry import Macro_emission_provider, MacroContext, Macro_provider, MacroRegistry
 from pipeline.steps import PreprocessingStep
