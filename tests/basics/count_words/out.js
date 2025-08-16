@@ -98,19 +98,20 @@ void (async () => {
                         const _0x2f_await__67lang_dot_exists_inside_lp_ = await _67lang.exists_inside(_0xd__0xc_pipeline_result, _0xb__0xa_pipeline_result)
                         const _0x2c_none = await !(_0x2f_await__67lang_dot_exists_inside_lp_)
                         let _0xe__0x9_pipeline_result = _0x2c_none
-                        if (_0xe__0x9_pipeline_result) {{
-                                const parent_scope = scope
-                                {
-                                    const scope = _67lang.scope(parent_scope)
-                                    const _0x31_count = await _0x6_count
-                                    let _0x11__0x10_pipeline_result = _0x31_count
-                                    const _0x32_word = await word
-                                    let _0x13__0x12_pipeline_result = _0x32_word
-                                    const _0x30__hash_ = await (_0x11__0x10_pipeline_result[_0x13__0x12_pipeline_result] = 0)
-                                    let _0x14__0xf_pipeline_result = _0x30__hash_
-                                    _0x14__0xf_pipeline_result
-                                }
-                            } }
+                        if (_0xe__0x9_pipeline_result)
+                        {
+                            const parent_scope = scope
+                            {
+                                const scope = _67lang.scope(parent_scope)
+                                const _0x31_count = await _0x6_count
+                                let _0x11__0x10_pipeline_result = _0x31_count
+                                const _0x32_word = await word
+                                let _0x13__0x12_pipeline_result = _0x32_word
+                                const _0x30__hash_ = await (_0x11__0x10_pipeline_result[_0x13__0x12_pipeline_result] = 0)
+                                let _0x14__0xf_pipeline_result = _0x30__hash_
+                                _0x14__0xf_pipeline_result
+                            }
+                        } 
 
                         const _0x34_count = await _0x6_count
                         let _0x17__0x16_pipeline_result = _0x34_count

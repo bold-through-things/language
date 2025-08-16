@@ -1,59 +1,61 @@
 local lines
-	a stdin
+	do stdin
 
 local lines
-	a lines split
+	do split the lines
 		string "\n"
 
 local modules
 	dict
 for line in
-	a lines
+	get lines
 do
 	local module
 		dict
 
 	local kv
-		a line split
+		do split the line
 			string ":"
 			int 2
+
+	do # the kv
+		int 0
+	then do trim as id
+	do # the module
+		string "id"
+		get id
 	
-	a module #
-		where # takes
-			string "id"
-		a kv # trim
-			where # takes
-				int 0
-	
-	a module #
-		where # takes
-			string "deps"
-		a kv # trim split
-			where # takes
-				int 1
-			regex /\s+/
+	do # the kv
+		int 1
+	then do trim
+	then do split as deps
+		regex /\s+/
+	do # the module
+		string "deps"
+		get deps
 	
 	# TODO - this ought to be a macro.
+	do # the kv
+		int 1
 	if
-		a eq
-			a kv # trim
-				where # takes
-					int 1
+		do eq
+			then do trim
 			string ""
 	then
-		a module #
-			where # takes
-				string "deps"
+		do # the module
+			string "deps"
 			list
 	
-	a modules #
-		where # takes
-			a module id
-		a module
+	note now that is is honestly phenomenal. we are now thankfully 
+		about to nuke it.
+	do # the modules
+		do # the module
+			string "id"
+		get module
 
 # print
 	string "modules"
-	a modules
+	get modules
 
 # TODO - support set initializers
 # TODO - support a  way to convert a dict keys to a set cleanly
@@ -65,7 +67,7 @@ type DAG_unroller is heap_entry
 	has build_order
 		type list
 	has modules
-		type list
+		type dict
 
 fn visit
 	param unroller_in
@@ -76,95 +78,97 @@ do
 	local unroller
 		note needed temporarily while param doesn't support typing
 		type DAG_unroller
-		an unroller_in
+		get unroller_in
 	
 	if 
-		a module #
-			where # takes
-				string "visited"
+		do # the module
+			string "visited"
 	then
 		return
-	a module #
-		where # takes
-			string "visited"
-			true
+	do # the module
+		string "visited"
+		true
 
 	# TODO - this shouldn't be using slice. we need a dedicated copy command
 	local next_chain
-		a chain slice
-	a next_chain push
-		a module id
+		do slice the chain
+	do push the next_chain
+		do # the module
+			string "id"
 
 	for dep_id in
-		a module #
-			where # takes
-				string "deps"
+		do # the module
+			string "deps"
 	do
 		if
 			exists
-				a dep_id
+				get dep_id
 				inside
-					a next_chain
+					get next_chain
 		then
 			local dep_loop
 				list
-			a dep_loop push
-				a dep_id
+			do push the dep_loop
+				get dep_id
+			do slice the next_chain
 			for chain_dep_id in
-				a next_chain slice reverse
+				then do reverse
 			do
-				a dep_loop push
-					a chain_dep_id
+				do push the dep_loop
+					get chain_dep_id
 				if
-					a eq
-						a chain_dep_id
-						a dep_id
+					do eq
+						get chain_dep_id
+						get dep_id
 				then
 					break
 
-			a dep_loop reverse
+			do reverse the dep_loop
 
-			an unroller dep_loops push
-				a dep_loop join
+			do push
+				get dep_loops from unroller
+				do join the dep_loop
 					string " → "
 		else
-			a visit
-				an unroller
-				an unroller modules #
-					where # takes
-						a dep_id
-				a next_chain
+			do visit
+				get unroller
+				do #
+					get modules from unroller
+					get dep_id
+				get next_chain
 
-	an unroller build_order push
-		a module id
+	do push
+		get build_order from unroller
+		do # the module
+			string "id"
 
 local unroller
 	type DAG_unroller
-	a DAG_unroller
+	do DAG_unroller
 		list
 		list
-		a modules
+		get modules
 
 for module in
-	a values
-		a modules
+	get values from modules
 do
-	a visit
-		an unroller
-		a module
+	do visit
+		get unroller
+		get module
 		list
 
+get unroller
 if
-	a nondesc
+	do nondesc
 		int 1
-		an unroller dep_loops length
+		then chain dep_loops length
 then
-	a print
-		a concat
+	do print
+		do concat
 			string "ERROR: there are dependency loops.\n"
-			an unroller dep_loops join
+			then chain dep_loops join
 				string "\n"
 else
-	a print
-		an unroller build_order join
+	do print
+		then chain build_order join
 			string "\n"

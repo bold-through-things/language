@@ -14,7 +14,6 @@ class CodeBlockAssociator:
         """Process code block associations for a node"""
         # associate code blocks with relevant headers
         CODE_BLOCK_HEADERS = {
-            "if": "then",
             "while": "do", 
             "for": "do",
             "fn": "do"

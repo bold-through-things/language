@@ -290,23 +290,26 @@ def create_macrocosm() -> Macrocosm:
         macro_providers[macro] = Scope_macro_provider()
 
     literally = {
-        "true": "true",
-        "false": "false",
-        "break": "break",
-        "continue": "continue",
-        "dict": "{}"
+        "true": ("true", "bool"),
+        "false": ("false", "bool"), 
+        "break": ("break", None),
+        "continue": ("continue", None),
+        "dict": ("{}", "dict")
     }
 
     # TODO, this should be... elsewhere.
     class Literal_macro_provider(Macro_emission_provider):
-        def __init__(self, value: str):
+        def __init__(self, value: str, type_name: str = None):
             self.value = value
+            self.type_name = type_name
         def emission(self, ctx: MacroContext):
             ctx.expression_out.write(self.value)
-        # TODO, type checking, for booleans...
+        def typecheck(self, ctx: MacroContext):
+            if self.type_name:
+                return self.type_name
     
-    for k, v in literally.items():
-        macro_providers[k] = Literal_macro_provider(v)
+    for k, (value, type_name) in literally.items():
+        macro_providers[k] = Literal_macro_provider(value, type_name)
 
     for name, provider in macro_providers.items():
         default_logger.registry(f"registering macro '{name}' -> {provider.__class__.__name__}")

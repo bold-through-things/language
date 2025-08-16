@@ -113,19 +113,20 @@ void (async () => {
                         const _0x38_await__67lang_dot_exists_inside_lp_ = await _67lang.exists_inside(_0x12__0x11_pipeline_result, _0x10__0xf_pipeline_result)
                         const _0x35_none = await !(_0x38_await__67lang_dot_exists_inside_lp_)
                         let _0x13__0xe_pipeline_result = _0x35_none
-                        if (_0x13__0xe_pipeline_result) {{
-                                const parent_scope = scope
-                                {
-                                    const scope = _67lang.scope(parent_scope)
-                                    const _0x3a_groups = await _0x6_groups
-                                    let _0x16__0x15_pipeline_result = _0x3a_groups
-                                    const _0x3b_key = await _0xd_key
-                                    let _0x18__0x17_pipeline_result = _0x3b_key
-                                    const _0x39__hash_ = await (_0x16__0x15_pipeline_result[_0x18__0x17_pipeline_result] = [])
-                                    let _0x19__0x14_pipeline_result = _0x39__hash_
-                                    _0x19__0x14_pipeline_result
-                                }
-                            } }
+                        if (_0x13__0xe_pipeline_result)
+                        {
+                            const parent_scope = scope
+                            {
+                                const scope = _67lang.scope(parent_scope)
+                                const _0x3a_groups = await _0x6_groups
+                                let _0x16__0x15_pipeline_result = _0x3a_groups
+                                const _0x3b_key = await _0xd_key
+                                let _0x18__0x17_pipeline_result = _0x3b_key
+                                const _0x39__hash_ = await (_0x16__0x15_pipeline_result[_0x18__0x17_pipeline_result] = [])
+                                let _0x19__0x14_pipeline_result = _0x39__hash_
+                                _0x19__0x14_pipeline_result
+                            }
+                        } 
                         const _0x3d_groups = await _0x6_groups
                         let _0x1c__0x1b_pipeline_result = _0x3d_groups
                         const _0x3e_key = await _0xd_key

@@ -16,10 +16,5 @@ class If_macro_provider(Macro_emission_provider):
                 args.append(e.getvalue())
 
         ctx.statement_out.write(f"if ({args[-1]})")
-        ctx.statement_out.write(" {")
-        with ctx.statement_out:
-            node = seek_child_macro(ctx.node, "then")
-            ctx.compiler.assert_(node != None, ctx.node, "must have a `then` block")
-            inner_ctx = replace(ctx, node=node)
-            ctx.current_step.process_node(inner_ctx)
-        ctx.statement_out.write("}")
+        # TODO: validate that 'then' follows immediately as sibling
+        # For now, if macro only processes the condition - then/else handled separately

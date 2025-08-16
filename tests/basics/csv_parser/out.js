@@ -102,20 +102,21 @@ void (async () => {
                         let _0x10__0xe_i = _0x73_i
                         const _0x72_eq = await (_0x10__0xe_i === 0)
                         let _0x11__0xd_eq = _0x72_eq
-                        if (_0x11__0xd_eq) {{
-                                const parent_scope = scope
-                                {
-                                    const scope = _67lang.scope(parent_scope)
-                                    const _0x75_line = await line
-                                    let _0x17__0x13_line = _0x75_line
-                                    const _0x77__0x13_line = await _0x17__0x13_line
-                                    const _0x76_split = await String.prototype.split.call(_0x77__0x13_line, ",")
-                                    let _0x18__0x14_split = _0x76_split
-                                    const _0x74_header = await (_0x9_header = _0x18__0x14_split)
-                                    let _0x19__0x12_header = _0x74_header
-                                    _0x19__0x12_header
-                                }
-                            } }
+                        if (_0x11__0xd_eq)
+                        {
+                            const parent_scope = scope
+                            {
+                                const scope = _67lang.scope(parent_scope)
+                                const _0x75_line = await line
+                                let _0x17__0x13_line = _0x75_line
+                                const _0x77__0x13_line = await _0x17__0x13_line
+                                const _0x76_split = await String.prototype.split.call(_0x77__0x13_line, ",")
+                                let _0x18__0x14_split = _0x76_split
+                                const _0x74_header = await (_0x9_header = _0x18__0x14_split)
+                                let _0x19__0x12_header = _0x74_header
+                                _0x19__0x12_header
+                            }
+                        } 
                         else {
                             const parent_scope = scope
                             {
@@ -227,19 +228,20 @@ void (async () => {
                         let _0x5c__0x58__hash_ = _0x99__hash_
                         const _0x97_asc = await (_0x5c__0x58__hash_ < 30)
                         let _0x5d__0x56_asc = _0x97_asc
-                        if (_0x5d__0x56_asc) {{
-                                const parent_scope = scope
-                                {
-                                    const scope = _67lang.scope(parent_scope)
-                                    const _0x9d_age_over_30 = await _0x53_age_over_30
-                                    let _0x64__0x60_age_over_30 = _0x9d_age_over_30
-                                    const _0x9c_add = await (_0x64__0x60_age_over_30 + 1)
-                                    let _0x65__0x5f_add = _0x9c_add
-                                    const _0x9b_age_over_30 = await (_0x53_age_over_30 = _0x65__0x5f_add)
-                                    let _0x66__0x5e_age_over_30 = _0x9b_age_over_30
-                                    _0x66__0x5e_age_over_30
-                                }
-                            } }
+                        if (_0x5d__0x56_asc)
+                        {
+                            const parent_scope = scope
+                            {
+                                const scope = _67lang.scope(parent_scope)
+                                const _0x9d_age_over_30 = await _0x53_age_over_30
+                                let _0x64__0x60_age_over_30 = _0x9d_age_over_30
+                                const _0x9c_add = await (_0x64__0x60_age_over_30 + 1)
+                                let _0x65__0x5f_add = _0x9c_add
+                                const _0x9b_age_over_30 = await (_0x53_age_over_30 = _0x65__0x5f_add)
+                                let _0x66__0x5e_age_over_30 = _0x9b_age_over_30
+                                _0x66__0x5e_age_over_30
+                            }
+                        } 
                     }
                 } }
             const _0x9f_age_over_30 = await _0x53_age_over_30

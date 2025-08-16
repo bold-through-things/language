@@ -178,15 +178,16 @@ void (async () => {
             let _0x51__0x4f_age = _0xa5_age
             const _0xa4_nondesc = await (18 <= _0x51__0x4f_age)
             let _0x52__0x4e_nondesc = _0xa4_nondesc
-            if (_0x52__0x4e_nondesc) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0xa6_print = await console.log("Adult")
-                        let _0x54__0x53_print = _0xa6_print
-                        _0x54__0x53_print
-                    }
-                } }
+            if (_0x52__0x4e_nondesc)
+            {
+                const parent_scope = scope
+                {
+                    const scope = _67lang.scope(parent_scope)
+                    const _0xa6_print = await console.log("Adult")
+                    let _0x54__0x53_print = _0xa6_print
+                    _0x54__0x53_print
+                }
+            } 
             else {
                 const parent_scope = scope
                 {

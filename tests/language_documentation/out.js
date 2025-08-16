@@ -78,19 +78,20 @@ void (async () => {
                 let _0xeb__0xe9_fucks_given = _0xfa_fucks_given
                 const _0xf9_nondesc = await (0 <= _0xeb__0xe9_fucks_given)
                 let _0xec__0xe8_nondesc = _0xf9_nondesc
-                if (_0xec__0xe8_nondesc) {{
-                        const parent_scope = scope
-                        {
-                            const scope = _67lang.scope(parent_scope)
-                            const _0xfd_fucks_given = await fucks_given
-                            let _0xf3__0xef_fucks_given = _0xfd_fucks_given
-                            const _0xfc_add = await (_0xf3__0xef_fucks_given + -1)
-                            let _0xf4__0xee_add = _0xfc_add
-                            const _0xfb_fuck_bang_ = await _0xe5_fuck_bang_(_0xf4__0xee_add)
-                            let _0xf5__0xed_fuck_bang_ = _0xfb_fuck_bang_
-                            _0xf5__0xed_fuck_bang_
-                        }
-                    } }
+                if (_0xec__0xe8_nondesc)
+                {
+                    const parent_scope = scope
+                    {
+                        const scope = _67lang.scope(parent_scope)
+                        const _0xfd_fucks_given = await fucks_given
+                        let _0xf3__0xef_fucks_given = _0xfd_fucks_given
+                        const _0xfc_add = await (_0xf3__0xef_fucks_given + -1)
+                        let _0xf4__0xee_add = _0xfc_add
+                        const _0xfb_fuck_bang_ = await _0xe5_fuck_bang_(_0xf4__0xee_add)
+                        let _0xf5__0xed_fuck_bang_ = _0xfb_fuck_bang_
+                        _0xf5__0xed_fuck_bang_
+                    }
+                } 
             }
         } }
     {
@@ -254,25 +255,27 @@ void (async () => {
             _0x9f__0x92_print
 
 
-            if (true) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x132_print = await console.log("big")
-                        let _0xa1__0xa0_print = _0x132_print
-                        _0xa1__0xa0_print
-                    }
-                } }
+            if (true)
+            {
+                const parent_scope = scope
+                {
+                    const scope = _67lang.scope(parent_scope)
+                    const _0x132_print = await console.log("big")
+                    let _0xa1__0xa0_print = _0x132_print
+                    _0xa1__0xa0_print
+                }
+            } 
 
-            if (false) {{
-                    const parent_scope = scope
-                    {
-                        const scope = _67lang.scope(parent_scope)
-                        const _0x133_print = await console.log("big")
-                        let _0xa3__0xa2_print = _0x133_print
-                        _0xa3__0xa2_print
-                    }
-                } }
+            if (false)
+            {
+                const parent_scope = scope
+                {
+                    const scope = _67lang.scope(parent_scope)
+                    const _0x133_print = await console.log("big")
+                    let _0xa3__0xa2_print = _0x133_print
+                    _0xa3__0xa2_print
+                }
+            } 
             else {
                 const parent_scope = scope
                 {

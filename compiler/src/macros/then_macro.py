@@ -219,11 +219,6 @@ class Pipeline_macro_provider(Macro_preprocess_provider):
             # Get the identifier of the last_then_local
             source_value_name = get_single_arg(replace(ctx, node=last_then_result.node))
             
-            # Remove the 67lang:last_then marker from the previous local (if not into)
-            if not parsed['assign_name']:
-                if (len(last_then_result.node.children) > 0 and 
-                    last_then_result.node.children[0].content == "67lang:last_then"):
-                    last_then_result.node.replace_child(last_then_result.node.children[0], None)
         else:
             # Use source variable from command parsing (set by the/from/in commands)
             source_value_name = parsed['source_variable']
