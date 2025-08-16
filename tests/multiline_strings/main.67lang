@@ -2,10 +2,10 @@ string
 	this is a statement-level multiline string.
 	it should act like a comment - not produce any output.
 
-a print
+do print
 	string
 		this is an expression-level multiline string.
 		it should produce a string value.
 
-a print
+do print
 	string "hello world"

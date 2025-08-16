@@ -1,11 +1,11 @@
 local my_obj
 	dict
 
-a my_obj name
+do name the my_obj
 	string "gemini"
 
 local my_list
 	list
 
-a my_list push
-	a my_obj name
+do push the my_list
+	get name from my_obj

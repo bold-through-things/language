@@ -17,5 +17,5 @@ do
 	then into final_count do toString
 
 note print the result
-a print
-	a final_count
+do print
+	get final_count

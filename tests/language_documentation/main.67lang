@@ -34,12 +34,12 @@ note in this chapter number one (1) we shall discuss basic types.
 	
 	much as i hate "hello world" as a concept, here it is, dipshits.
 
-a print
+do print
 	string "hello world"
 
 note that you can create and print strings. crazy, i know. are we computing yet? wow.
 
-a print
+do print
 	string ""hello world" is a fucking stupid non argument."
 
 note what happened there. did you forget to escape quotes? no, it's perfectly valid. it will
@@ -50,23 +50,23 @@ note what happened there. did you forget to escape quotes? no, it's perfectly va
 	but how come?! well, a riddle for you to solve. allow me to give you some hints, though:
 
 # TODO - assert instead of printing (need a new macro)
-a print
+do print
 	string "this literally cannot be true... yet it is: "
-	a all
-		a eq
+	do all
+		do eq
 			string "new year's eve"
-			access concat
+			do concat
 				string "new year's "
 				string level
-		a eq
+		do eq
 			string "a very scary error"
-			access concat
+			do concat
 				string "a very "
 				string !scary !
 				string -error-
-		a eq
+		do eq
 			string "your regex should be stored into the regex variable."
-			access concat
+			do concat
 				string /your regex/
 				string " should be stored into the "
 				string `regex`
@@ -74,7 +74,7 @@ a print
 
 note that i completely solved the need to escape quotes. moving on to escaping newlines now:
 
-a print
+do print
 	string
 		just write the newlines naturally and 
 		they will appear in the output, meaning
@@ -86,14 +86,14 @@ note that we didn't escape shit. no, wait, that's untrue. we didn't escape the n
 
 note that doing math is arguably the entire point of computers.
 
-a print
-	access add
+do print
+	get add
 		int 2
 		float 0
 		int 2
 
-a print
-	access asc
+do print
+	get asc
 		int 0
 		int 1
 		int 2
@@ -110,19 +110,19 @@ note in this chapter number two (2) we shall discuss the tasty stuff.
 local age
 	int 23
 
-a print
+do print
 	string "my age is"
-	an age
+	get age
 
 note that i lied. my age is not currently 23. let's address that by opening a ticket
 	on our JIRA and spending 3 story points.
 
-an age
+get age
 	int 25
 
-a print
+do print
 	string "actually, i lied. my age is"
-	an age
+	get age
 
 note that we were able to close this ticket within 5 story points. good, let's move on to
 	list some more perfectly sensible examples.
@@ -132,16 +132,16 @@ local 0
 
 note what the fuck did we just do?! wait, hold on. this won't compile. right?
 
-a print
-	a 0
+do print
+	get 0
 
 note that no, it actually does. hm, weird. but what if...
 
-a 0
+get 0
 	int 2347
 
-a print
-	a 0
+do print
+	get 0
 
 note that this just printed 2347. why? what's going on here? let's investigate...
 
@@ -157,8 +157,8 @@ local (2347)
 local ,
 	true
 
-a print
-	a ,
+do print
+	get ,
 
 note that this language might actually be unhinged. Lisp would never.
 
@@ -166,13 +166,13 @@ note that this language might actually be unhinged. Lisp would never.
 
 note in this chapter number three (3) we shall discuss the really tasty stuff.
 
-	the access macro, of course.
+	the get macro, of course.
 
 	previous examples already hinted at it, but let's explore it in far greater detail:
 
-a ,
-	an ,
-		access ,
+get ,
+	get ,
+		get ,
 
 note that did literally nothing. incredible. so what did it even do, then? why, it's obvious.
 	you just tried to do `, = , = ,` and it happily did assign `,` to the `,` the value of which
@@ -184,11 +184,12 @@ note that did literally nothing. incredible. so what did it even do, then? why, 
 local 2347
 	string "wow, very helpful."
 
-a print
-	a 2347 split sort join
-		where split takes
-			string | |
-		string ", "
+do split the 2347
+	string | |
+then do sort
+then do join
+	string ", "
+then do print
 
 note this will split the phrase into words, sort them, and then join them with commas, 
 	afterwards printing them.
@@ -208,9 +209,8 @@ note in this chapter number four (4) we dare index some dictionaries
 local 67lang.features
 	dict
 
-a 67lang.features #
-	where # takes
-		string "the access macro"
+do # the 67lang.features
+	string "the get macro"
 	string 
 		a powerful and flexible method chaining "syntax sugar" with clear branching
 		eliminating the pain of using brackets and having to erase or insert the bracket
@@ -220,9 +220,8 @@ a 67lang.features #
 note what a mouthful. but there are obviously other features here. let's mention
 	the previously outlined flexibility.
 	
-a 67lang.features #
-	where # takes
-		string "the flexibility of identifiers"
+do # the 67lang.features
+	string "the flexibility of identifiers"
 	string
 		anything can be an identifier. there is only whitespace and non whitespace. this 
 		frees programmers to express their ideas in a truly direct and unleashed way.
@@ -232,14 +231,14 @@ a 67lang.features #
 
 note that was too much yapping. let's truncate it a little.
 
-a print
-	a 67lang.features # slice join
-		where # takes
-			string "the flexibility of identifiers"
-		where slice takes
-			int 0
-			int 67
-		string ""
+do # the 67lang.features
+	string "the flexibility of identifiers"
+then do slice
+	int 0
+	int 67
+then do join
+	string ""
+then do print
 
 note that if by this point you are not barely holding back the urge to install the compiler
 	and write similar code yourself, you might be a lost cause. consider closing this documentation
@@ -256,7 +255,7 @@ note in this chapter number five (5) we shall do some conditioning and looping
 if
 	true
 then
-	a print
+	do print
 		string "big"
 
 note that is absolutely big if true.
@@ -266,10 +265,10 @@ note that is absolutely big if true.
 if
 	false
 then
-	a print
+	do print
 		string "big"
 else
-	a print
+	do print
 		string "my disappointment is immeasurable and my day is ruined."
 
 note that my disappointment in programming languages is indeed immeasurable.
@@ -287,11 +286,11 @@ note that keeping a list like that is great, but it really does deserve to be sh
 	into the world as loudly as possible.
 
 for angy in
-	an i_hate_this_trash!
+	get i_hate_this_trash!
 do
-	a print
-		access concat
-			an angy
+	do print
+		get concat
+			get angy
 			string "!!!"
 
 note that i feel much better now. it is good to vent frustration at times, i suppose.
@@ -303,9 +302,9 @@ local does_a_decent_programming_language_exist?
 	false
 
 while
-	a does_a_decent_programming_language_exist?
+	get does_a_decent_programming_language_exist?
 do
-	a print
+	do print
 		string `code for quality software`
 
 note that we failed to do any meaningful work. that's great. that's enterprise. create another
@@ -339,30 +338,30 @@ note in this chapter number six (6) we shall point out the obvious
 
 	every node can have many children. why restrict them all to two, then?
 
-a print
+do print
 	string "false: "
-	access all
+	get all
 		true
 		true
 		false
 
-a print
+do print
 	string "true: "
-	access any
+	get any
 		true
 		false
 		false
 
-a print
+do print
 	string "true: "
-	access none
+	get none
 		false
 		false
 		false
 
-a print
+do print
 	string "6: "
-	access add
+	get add
 		int 1
 		int 1
 		int 1
@@ -396,23 +395,23 @@ local where?
 	string "not even in Nebraska."
 
 must_compile_error NO_MATCHING_OVERLOAD=+1
-	a where?
-		a 2347
+	do where?
+		get 2347
 
 note that it is a work in progress, but even already it's remarkably powerful. write 
 	quality software with confidence. that's arguably the entire point of this language.
 
+get where?
 must_compile_error NO_MATCHING_OVERLOAD=+1
-	a where? split split split
+	then chain split split split
 
+do split the where?
+	string " "
 must_compile_error FIELD_TYPE_MISMATCH=+1
 	local number_of_words
 		type int
-		a where? split join
-			where split takes
-				string " "
-			where join takes
-				string "-"
+		then do join
+			string "-"
 
 
 
@@ -443,19 +442,19 @@ note in this chapter number nine (9) we curse recursively
 fn fuck!
 	param fucks_given
 do
-	a print
+	do print
 		string "fuck!"
 	if
-		access nondesc
+		get nondesc
 			int 0
-			a fucks_given
+			get fucks_given
 	then
-		access fuck!
-			access add
-				a fucks_given
+		get fuck!
+			get add
+				get fucks_given
 				int -1
 
-a fuck!
+do fuck!
 	int 6
 
 note that speaks for itself.
