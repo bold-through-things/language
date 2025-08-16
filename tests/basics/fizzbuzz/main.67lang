@@ -3,91 +3,81 @@ local buzz_divisor
 local n
 
 if
-	a is_tty
+	do is_tty
 then
-	access fizz_divisor
-		a prompt
-			string "fizz? "
-	access buzz_divisor
-		a prompt
-			string "buzz? "
-	access n
-		a prompt
-			string "n? "
+	do prompt into fizz_divisor
+		string "fizz? "
+	do prompt into buzz_divisor
+		string "buzz? "
+	do prompt into n
+		string "n? "
 else
 	local input
-		a stdin
+		do stdin
 	
 	local input
-		access input split
+		do split the input
 			string "\n"
 	
 	# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
 
-	a fizz_divisor
-		an input #
-			where # takes
-				int 0
+	do # into fizz_divisor
+		get input
+		int 0
 
-	a buzz_divisor
-		an input #
-			where # takes
-				int 1
+	do # into buzz_divisor
+		get input
+		int 1
 
-	an n
-		an input #
-			where # takes
-				int 2
+	do # into n
+		get input
+		int 2
 
 local i
 	int 0
 while
-	a nondesc
-		access i
-		access n
+	do nondesc
+		get i
+		get n
 do
 	local out
 		string ""
 	
 	if
-		a eq
-			a mod
-				access i
-				access fizz_divisor
+		do eq
+			do mod
+				get i
+				get fizz_divisor
 			int 0
 	then
-		access out
-			a concat
-				access out
-				string "fizz"
+		do concat into out
+			get out
+			string "fizz"
 
 	if
-		a eq
-			a mod
-				access i
-				access buzz_divisor
+		do eq
+			do mod
+				get i
+				get buzz_divisor
 			int 0
 	then
-		access out
-			a concat
-				access out
-				string "buzz"
+		do concat into out
+			get out
+			string "buzz"
 	
 	if
-		a eq
-			access out
+		do eq
+			get out
 			string ""
 	then
-		access out
-			a concat
-				note TODO why is this needed
-				string ""
-				access i
+		do concat into out
+			note TODO why is this needed
+			string ""
+			get i
 
-	a print
-		access out
+	do print
+		get out
 	
-	access i
-		a add
-			access i
-			int 1
+	do add into i
+		get i
+		int 1

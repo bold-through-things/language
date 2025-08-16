@@ -1,40 +1,40 @@
 local input
-	a stdin
+	do stdin
 
 local words
-	an input split
+	do split the input
 		string "\n"
 
 local count
 	dict
 
 for word in
-	access words
+	get words
 do
 	if
-		a none
+		do none
 			exists
-				a word
+				get word
 				inside
-					a count
+					get count
 	then
-		a count #
-			where # takes
-				a word
+		do #
+			get count
+			get word
 			int 0
 	note and TODO following line must not be empty here...
 	
-	a count #
-		where # takes
-			a word
-		a add
+	do #
+		get count
+		get word
+		do add
 			int 1
-			a count #
-				where # takes
-					a word
+			do #
+				get count
+				get word
 
-a print
-	a count
+do print
+	get count
 
 
 
