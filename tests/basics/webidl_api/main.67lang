@@ -1,18 +1,18 @@
 local myURL
-	a URL
+	do URL
 		string "https://example.com/path?query=123"
 
-a print
-	a myURL pathname
+do print
+	get pathname from myURL
 
-a print
+do print
 	string "\n--- Testing TextEncoder/TextDecoder ---"
 
 local encoder
-	a TextEncoder
+	do TextEncoder
 
 local decoder
-	a TextDecoder
+	do TextDecoder
 
 local text_tests
 	list
@@ -21,44 +21,44 @@ local text_tests
 		string "Numbers: 42"
 
 for text in
-	a text_tests
+	get text_tests
 do
 	
 	
 	local bytes
-		an encoder encode
-			a text
+		do encode the encoder
+			get text
 
 	local restored
-		a decoder decode
-			a bytes
+		do decode the decoder
+			get bytes
 
-	a print
+	do print
 		string `Text: "`
-		a text
+		get text
 		string `" -> Bytes: [`
-		a bytes
+		get bytes
 		string `] -> Restored: "`
-		a restored
+		get restored
 
-a print
+do print
 	string "\n--- Testing atob/btoa ---"
 
 local testString
 	string "Hello World"
 
 local encodedString
-	a btoa
-		a testString
+	do btoa
+		get testString
 
 local decodedString
-	a atob
-		a encodedString
+	do atob
+		get encodedString
 
-a print
+do print
 	string "Original: "
-	a testString
+	get testString
 	string " -> Encoded: "
-	a encodedString
+	get encodedString
 	string " -> Decoded: "
-	a decodedString
+	get decodedString

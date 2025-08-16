@@ -6,18 +6,18 @@ do
 
 	local test_1
 		type int
-		a test
+		get test
 
-	a test
-		a test_1
+	do test
+		get test_1
 
 	do
 		local test_1
 			type int
-			a test
+			get test
 
-		a test
-			a test_1
+		do test
+			get test_1
 
 # these are expected to fail
 do
@@ -32,22 +32,24 @@ do
 		
 	local test_int
 		type int
-		a test_str
+		get test_str
 
-	a test_int
-		a test_str
+	do test_int
+		get test_str
 
 	do
-		a test_str
+		do test_str
 			int 0
 
 		local test_bool
 			type bool
-			a test_str
+			get test_str
 
-		a test_bool
-			a test_str split sort join
+		get test_str
+		do test_bool
+			then chain split sort join
 
-		a test_bool split
+		do split the test_bool
 
-		a test_str split split split
+		get test_str
+		then chain split split split

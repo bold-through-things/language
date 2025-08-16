@@ -71,23 +71,19 @@ void (async () => {
             let _0x0_str = "testing"
             _0x0_str
 
-            const _0x12_str = await _0x0_str
-            let _0x6__0x2_str = _0x12_str
-            const _0x14__0x2_str = await _0x6__0x2_str
-            const _0x13_split = await String.prototype.split.call(_0x14__0x2_str, "t")
-            let _0x7__0x3_split = _0x13_split
-            const _0x11_print = await console.log(_0x7__0x3_split)
-            let _0x8__0x1_print = _0x11_print
-            _0x8__0x1_print
+            const _0xb_str = await _0x0_str
+            const _0xa_split = await String.prototype.split.call(_0xb_str, "t")
+            let _0x3__0x2_pipeline_result = _0xa_split
+            const _0x9_print = await console.log(_0x3__0x2_pipeline_result)
+            let _0x4__0x1_pipeline_result = _0x9_print
+            _0x4__0x1_pipeline_result
 
-            const _0x16_str = await _0x0_str
-            let _0xe__0xa_str = _0x16_str
-            const _0x18__0xa_str = await _0xe__0xa_str
-            const _0x17_split = await String.prototype.split.call(_0x18__0xa_str, /t/)
-            let _0xf__0xb_split = _0x17_split
-            const _0x15_print = await console.log(_0xf__0xb_split)
-            let _0x10__0x9_print = _0x15_print
-            _0x10__0x9_print
+            const _0xe_str = await _0x0_str
+            const _0xd_split = await String.prototype.split.call(_0xe_str, /t/)
+            let _0x7__0x6_pipeline_result = _0xd_split
+            const _0xc_print = await console.log(_0x7__0x6_pipeline_result)
+            let _0x8__0x5_pipeline_result = _0xc_print
+            _0x8__0x5_pipeline_result
         }
     } 
 })();

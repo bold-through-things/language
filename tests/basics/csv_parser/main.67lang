@@ -7,11 +7,11 @@ note the task given
 	Count how many rows have "age" > 30, assuming one of the columns is age.
 
 local lines
-	a stdin
+	do stdin
 	# okay i am seeing a reason to stop treating builtins as special, or at the very least to expose them in the scope object
 
 local lines
-	a lines split
+	do split the lines
 		string "\n"
 
 local i
@@ -21,70 +21,63 @@ local header
 local rows
 	list
 for line in
-	access lines
+	get lines
 do
 	if
-		a eq
-			access i
+		do eq
+			get i
 			int 0
 	then
-		a header
-			a line split
-				string ","
+		do split the line into header
+			string ","
 	else
 		local zipped_data
-			access zip
-				a header
-				a line split
+			do zip
+				get header
+				do split the line
 					string ","
 		
 		local row
 			dict
 		
 		for kv in
-			a zipped_data
+			get zipped_data
 		do
-			a row #
-				where # takes
-					a kv #
-						where # takes
-							int 0
-				a kv #
-					where # takes
-						int 1
+			do # the row
+				do # the kv
+					int 0
+				do # the kv
+					int 1
 		
-		a rows push
-			a row
+		do push the rows
+			get row
 	
-	access i
-		a add
-			access i
-			int 1
+	do add into i
+		get i
+		int 1
 
 for row in
-	a rows
+	get rows
 do
-	a print
-		a row name
+	do print
+		get name from row
 
 local age_over_30
 	int 0
 for row in
-	a rows
+	get rows
 do
 	if
 		note TODO - the test case should probably strain this asc
 			on what happens if age is 30
-		a asc
-			a row #
-				where # takes
-					string "age"
+		do asc
+			do # the row
+				string "age"
 			int 30
 	then
-		access age_over_30
-			a add
-				access age_over_30
-				int 1
+		do add into age_over_30
+			get age_over_30
+			int 1
 
-a print
-	access age_over_30
+do print
+	get age_over_30

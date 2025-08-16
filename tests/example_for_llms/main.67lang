@@ -29,10 +29,10 @@ note we prefer snake_case.
 local is_active
 	true
 
-a print
-	a name
-	an age
-	an is_active
+do print
+	get name
+	get age
+	get is_active
 
 note the above is roughly equivalent to following JS
 	
@@ -47,12 +47,12 @@ fn greet
 	param person
 do
 	return
-		a concat
+		do concat
 			string "Hello, "
-			a person
+			get person
 
-a print
-	a greet
+do print
+	do greet
 		string "Alice"
 
 note the above is roughly equivalent to following JS
@@ -72,20 +72,18 @@ local numbers
 		int 4
 		int 5
 
-a numbers push
+do push the numbers
 	int 6
 
-a print
-	a numbers #
-		where # takes
-			int 0
+do print
+	do # the numbers
+		int 0
 	
-a print
-	a numbers #
-		where # takes
-			a sub
-				a numbers length
-				int 1
+do print
+	do # the numbers
+		do sub
+			get length from numbers
+			int 1
 
 note the above is roughly equivalent to following JS
 	
@@ -101,23 +99,20 @@ local user
 	dict
 
 note we must populate the dict manually for now
-a user #
-	where # takes
-		string "name"
+do # the user
+	string "name"
 	string "Bob"
 
-a user #
-	where # takes
-		string "age"
+do # the user
+	string "age"
 	int 30
 
-a user #
-	where # takes
-		string "city"
+do # the user
+	string "city"
 	string "New York"
 
-a print
-	a user
+do print
+	get user
 
 note the above is roughly equivalent to following JS
 	
@@ -132,14 +127,14 @@ note the above is roughly equivalent to following JS
 
 
 if
-	a nondesc
+	do nondesc
 		int 18
-		an age
+		get age
 then
-	a print
+	do print
 		string "Adult"
 else
-	a print
+	do print
 		string "Minor"
 
 note the above is roughly equivalent to following JS
@@ -153,10 +148,10 @@ note the above is roughly equivalent to following JS
 
 
 for number in
-	a numbers
+	get numbers
 do
-	a print
-		a number
+	do print
+		get number
 
 note the above is roughly equivalent to following JS
 	
@@ -173,7 +168,7 @@ type Person is heap_entry
 		type int
 
 local alice
-	a Person
+	do Person
 		string "Alice"
 		int 30
 		
@@ -181,21 +176,21 @@ local alice
 		is a work in progress
 	type Person
 
-a print
-	a alice name
-a print
-	a alice age
+do print
+	get name from alice
+do print
+	get age from alice
 
-a alice name
+do name the alice
 	string "Alicia"
 
-a print
-	a alice name
+do print
+	get name from alice
 
 note both are the "name" getter, but it is intelligently
 	matched by type. ad hoc polymorphism now saves the day!
-a print
-	a name
+do print
+	get name
 
 note the above is roughly equivalent to following JS
 

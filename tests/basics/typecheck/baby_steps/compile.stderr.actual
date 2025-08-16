@@ -32,13 +32,13 @@
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "fn": "_0x15_test_int",
+        "fn": "_0x13_test_int",
         "demands": [],
         "returns": "int",
         "convention": "LocalAccessCall"
       },
       {
-        "fn": "_0x15_test_int",
+        "fn": "_0x13_test_int",
         "demands": [
           "int"
         ],
@@ -56,13 +56,13 @@
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "fn": "_0x12_test_str",
+        "fn": "_0x10_test_str",
         "demands": [],
         "returns": "str",
         "convention": "LocalAccessCall"
       },
       {
-        "fn": "_0x12_test_str",
+        "fn": "_0x10_test_str",
         "demands": [
           "str"
         ],
@@ -81,20 +81,20 @@
   },
   {
     "recoverable": false,
-    "line": 49,
+    "line": 50,
     "char": 0,
     "content": "67lang:call test_bool",
     "error": "failed to assert: could not find a matching overload for test_bool with arguments ['str']",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "fn": "_0x1f_test_bool",
+        "fn": "_0x1c_test_bool",
         "demands": [],
         "returns": "bool",
         "convention": "LocalAccessCall"
       },
       {
-        "fn": "_0x1f_test_bool",
+        "fn": "_0x1c_test_bool",
         "demands": [
           "bool"
         ],
@@ -105,7 +105,7 @@
   },
   {
     "recoverable": false,
-    "line": 52,
+    "line": 53,
     "char": 0,
     "content": "67lang:call split",
     "error": "failed to assert: could not find a matching overload for split with arguments ['bool']",
@@ -166,7 +166,7 @@
   },
   {
     "recoverable": false,
-    "line": 54,
+    "line": 56,
     "char": 0,
     "content": "67lang:call split",
     "error": "failed to assert: could not find a matching overload for split with arguments ['list']",

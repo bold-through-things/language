@@ -2,11 +2,11 @@ local str
 	string "testing"
 
 # calls the (str, str) overload
-a print
-	a str split
+do print
+	do split the str
 		string "t"
 
 # calls the (str, regex) overload
-a print
-	a str split
+do print
+	do split the str
 		regex /t/
