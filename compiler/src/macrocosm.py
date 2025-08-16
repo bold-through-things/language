@@ -247,7 +247,6 @@ def create_macrocosm() -> Macrocosm:
         "exists": Exists_macro_provider(),
         "noop": Noop_macro_provider(),
         "type": Type_macro_provider(),
-        "67lang:auto_type": Noop_macro_provider(),
         "67lang:assume_local_exists": Noop_macro_provider(),
         "67lang:solution": Solution_macro_provider(),
         "must_compile_error": Must_compile_error_macro_provider(),

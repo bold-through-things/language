@@ -121,10 +121,11 @@ class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Ma
             received = typecheck_step.process_node(replace(ctx, node=child)) or received
 
         if not type_node:
-            # TODO. this should be mandatory.
-            if not seek_child_macro(ctx.node, "67lang:auto_type") or not received:
+            # Type inference is now always enabled
+            if received:
+                type_node = Node(f"type {received}", ctx.node.pos, [])
+            else:
                 return received or "*"
-            type_node = Node(f"type {received}", ctx.node.pos, [])
         
         _, demanded = cut(type_node.content, " ")
         default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received} (children {[c.content for c in ctx.node.children]})")
@@ -235,7 +236,6 @@ class Access_macro_provider(Macro_preprocess_provider):
                 self_arg = [ctx.compiler.make_node(f"67lang:call {last_chain_ident}", ctx.node.pos or p0, [])]
             
             local.append(ctx.compiler.make_node(f"67lang:call {step}", ctx.node.pos or p0, self_arg + args1))
-            local.append(ctx.compiler.make_node("67lang:auto_type", ctx.node.pos or p0, []))
             nodes_to_process.extend(args1)
 
             local_node = ctx.compiler.make_node(f"local {ident}", ctx.node.pos or p0, children=local)

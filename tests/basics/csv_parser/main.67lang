@@ -10,7 +10,7 @@ local lines
 	a stdin
 	# okay i am seeing a reason to stop treating builtins as special, or at the very least to expose them in the scope object
 
-access lines
+local lines
 	a lines split
 		string "\n"
 

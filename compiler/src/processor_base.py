@@ -73,13 +73,6 @@ def walk_upwards_for_local_definition(ctx: "MacroContext", name: str):
     while current:
         ctx = replace(ctx, node=current)
         # print(f"walking {[c.content for c in current.children]}")
-        # Check if current node is a local definition
-        try:
-            maybe_result = _try_match_local(ctx, name)
-            if maybe_result:
-                return maybe_result
-        except KeyError:
-            pass
         
         # Check siblings that come before this node
         if current.parent:
@@ -132,7 +125,7 @@ def js_field_access(s: str) -> str:
         return f'.{s}'
     return f'["{s}"]'
 
-TYPICAL_IGNORED_MACROS = {"type", "noscope", "67lang:auto_type"}
+TYPICAL_IGNORED_MACROS = {"type", "noscope"}
 def filter_child_macros(n: Node):
     def get_macro(n: Node): 
         macro, _ = cut(n.content, " ")

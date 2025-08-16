@@ -9,11 +9,9 @@ a print
 	string "\n--- Testing TextEncoder/TextDecoder ---"
 
 local encoder
-	67lang:auto_type
 	a TextEncoder
 
 local decoder
-	67lang:auto_type
 	a TextDecoder
 
 local text_tests

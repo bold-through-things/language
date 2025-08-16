@@ -1,7 +1,7 @@
 local lines
 	a stdin
 
-a lines
+local lines
 	a lines split
 		string "\n"
 
