@@ -1,0 +1,21 @@
+note testing basic pipeline syntax
+
+note create a test string
+local phrase
+	string "hello world"
+
+note create target for into assignment
+local final_count
+	string "0"
+
+do
+	note start pipeline with get
+	get phrase
+	then do split
+		string " "
+	then as words do length
+	then into final_count do toString
+
+note print the result
+a print
+	a final_count

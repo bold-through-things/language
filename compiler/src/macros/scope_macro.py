@@ -3,7 +3,7 @@ from core.macro_registry import MacroContext, Macro_emission_provider, Macro_typ
 from core.node import Inject_code_start
 from utils.common_utils import process_children_with_context
 
-SCOPE_MACRO = ["do", "then", "else", "67lang:file"]
+SCOPE_MACRO = ["else", "67lang:file"]
 
 class Scope_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def emission(self, ctx: MacroContext):

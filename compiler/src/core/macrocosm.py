@@ -12,6 +12,8 @@ from macros.fn_macro import Fn_macro_provider
 from macros.exists_macro import Exists_macro_provider
 from macros.param_macro import Param_macro_provider
 from macros.access_chain_macro import Access_macro_provider
+from macros.then_macro import Then_macro_provider, Pipeline_macro_provider
+from macros.multi_provider import Multi_provider
 from macros.call_macro import Call_macro_provider
 from macros.utility_macros import Noop_macro_provider
 from macros.solution_macro import Solution_macro_provider
@@ -235,6 +237,13 @@ class Macrocosm:
 
 def create_macrocosm() -> Macrocosm:
     # creates it with all the necessary macros registered
+    
+    def has_arguments(ctx: MacroContext) -> bool:
+        """Matcher function: returns True if the macro has arguments"""
+        from core.node import Args
+        args = ctx.compiler.get_metadata(ctx.node, Args)
+        return bool(args.strip())
+    
     macro_providers: dict[str, Macro_provider] = {
         "while": While_macro_provider(),
         "for": For_macro_provider(),
@@ -254,12 +263,22 @@ def create_macrocosm() -> Macrocosm:
         "noop": Noop_macro_provider(),
         "type": Type_macro_provider(),
         "67lang:assume_local_exists": Noop_macro_provider(),
+        "67lang:last_then": Noop_macro_provider(),
         "67lang:solution": Solution_macro_provider(),
         "must_compile_error": Must_compile_error_macro_provider(),
         "param": Param_macro_provider(),
         "a": Access_macro_provider(),
         "an": Access_macro_provider(),
         "access": Access_macro_provider(),
+        "then": Multi_provider([
+            (has_arguments, Pipeline_macro_provider()),
+            (None, Scope_macro_provider())
+        ]),
+        "do": Multi_provider([
+            (has_arguments, Pipeline_macro_provider()),
+            (None, Scope_macro_provider())
+        ]),
+        "get": Pipeline_macro_provider(),
         "noscope": Noscope_macro_provider(),
         "return": Return_macro_provider(),
     }

@@ -125,7 +125,7 @@ class IndexAccessCall:
 builtin_calls = {
     "#": [IndexAccessCall(demands=None, returns=None)],
     # TODO - in theory 99% of these should come from the WebIDL spec. TODO, investigate if we can clear this.
-    "length": [FieldCall(field="length", demands=["list"], returns="str")],
+    "length": [FieldCall(field="length", demands=["list"], returns="int")],
     "join": [
         PrototypeCall(constructor="Array", fn="join", demands=["list"], returns="str"),
         PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")
@@ -142,6 +142,7 @@ builtin_calls = {
         PrototypeCall(constructor="String", fn="split", demands=["str", "regex", "int"], returns="list"),
     ],
     "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
+    "toString": [DirectCall(fn="String", receiver=None, demands=["*"], returns="str")],
     "slice": [
         PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list"),
         PrototypeCall(constructor="Array", fn="slice", demands=["list", "int"], returns="list"),
