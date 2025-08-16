@@ -283,7 +283,7 @@ builtin_calls = {
     "eq": [ChainedComparisonCall(operator="===", demands=None, returns=None)], 
 
     "values": [DirectCall(fn="values", receiver="Object", demands=None, returns=None)],
-    "keys": [DirectCall(fn="values", receiver="keys", demands=None, returns=None)],
+    "keys": [DirectCall(fn="keys", receiver="Object", demands=None, returns=None)],
     "print": [DirectCall(fn="log", receiver="console", demands=None, returns=None)],
 
     # TODO ideally we would eliminate the `_67lang` shim, although i doubt that will be possible

@@ -34,8 +34,8 @@ class Node:
 
         index = matches[0]
         # detach old
-        target.parent = None
         self._children.remove(target)
+        target.parent = None
         self.__insert_child(index, new)
         
         # Notify about tree changes for metadata invalidation
