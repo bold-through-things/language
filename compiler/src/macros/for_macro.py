@@ -1,14 +1,14 @@
 from dataclasses import replace
-from processor_base import seek_child_macro
-from macro_registry import MacroContext, Macro_emission_provider, Macro_preprocess_provider
-from strutil import IndentedStringIO
-from error_types import ErrorType
+from pipeline.steps import seek_child_macro
+from core.macro_registry import MacroContext, Macro_emission_provider, Macro_preprocess_provider
+from utils.strutil import IndentedStringIO
+from utils.error_types import ErrorType
 
 class For_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
     def preprocess(self, ctx: MacroContext):
         # TODO. yes i really do hate this hack. really what we should just do is unroll `for` into the
         #  manual while true early into the processing
-        from node import Args, Node
+        from core.node import Args, Node
         args = ctx.compiler.get_metadata(ctx.node, Args)
         args = args.split(" ")
         name = args[0] # TODO - this won't support any identifier, it probably should!

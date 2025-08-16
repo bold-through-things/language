@@ -1,4 +1,4 @@
-from macro_registry import Macro_emission_provider, Macro_typecheck_provider, MacroContext
+from core.macro_registry import Macro_emission_provider, Macro_typecheck_provider, MacroContext
 
 class List_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def typecheck(self, ctx: MacroContext):
@@ -10,7 +10,7 @@ class List_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
             ctx.expression_out.write("[]")
             return
         
-        from common_utils import collect_child_expressions
+        from utils.common_utils import collect_child_expressions
         expressions = collect_child_expressions(ctx)
         ctx.expression_out.write(f"[{', '.join(expressions)}]")
     

@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any, Sequence, Union
 
 # Keep TypeMap import for backwards compatibility with existing registrations
-from utils import TypeMap
+from utils.utils import TypeMap
 
 
 @dataclass

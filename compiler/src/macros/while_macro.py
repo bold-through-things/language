@@ -1,7 +1,7 @@
 from dataclasses import replace
-from processor_base import seek_child_macro
-from macro_registry import Macro_emission_provider, MacroContext
-from strutil import IndentedStringIO
+from pipeline.steps import seek_child_macro
+from core.macro_registry import Macro_emission_provider, MacroContext
+from utils.strutil import IndentedStringIO
 
 class While_macro_provider(Macro_emission_provider):
     def emission(self, ctx: MacroContext):

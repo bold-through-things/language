@@ -2,9 +2,9 @@ from dataclasses import dataclass, replace
 from io import StringIO
 from typing import TYPE_CHECKING, Callable, Union, TypeVar, Protocol, cast, Any
 
-from node import Node
-from strutil import IndentedStringIO
-from logger import default_logger
+from core.node import Node
+from utils.strutil import IndentedStringIO
+from utils.logger import default_logger
 
 if TYPE_CHECKING:
     from processor import MacroProcessingStep

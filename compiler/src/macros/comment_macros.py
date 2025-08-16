@@ -1,4 +1,4 @@
-from macro_registry import Macro_code_linking_provider, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
+from core.macro_registry import Macro_code_linking_provider, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
 
 COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
 

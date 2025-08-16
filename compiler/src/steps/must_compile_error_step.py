@@ -1,8 +1,8 @@
-from processor_base import MacroProcessingStep
-from macro_registry import MacroContext
+from pipeline.steps import MacroProcessingStep
+from core.macro_registry import MacroContext
 from dataclasses import replace
-from strutil import IndentedStringIO
-from logger import default_logger
+from utils.strutil import IndentedStringIO
+from utils.logger import default_logger
 
 
 class MustCompileErrorVerificationStep(MacroProcessingStep):
@@ -14,7 +14,7 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
         
     def process_node(self, ctx: MacroContext) -> None:
         """Process node using standard tree walking, handling must_compile_error nodes as we encounter them."""
-        from node import Macro
+        from core.node import Macro
         
         # Handle current node if it's must_compile_error
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
@@ -39,8 +39,8 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
         
     def _extract_expectations_from_node(self, ctx: MacroContext, node):
         """Extract expected errors from a must_compile_error node."""
-        from error_types import ErrorType
-        from node import Args
+        from utils.error_types import ErrorType
+        from core.node import Args
         
         args = ctx.compiler.get_metadata(node, Args)
         default_logger.macro(f"must_compile_error with args: '{args}'")
@@ -77,7 +77,7 @@ class MustCompileErrorVerificationStep(MacroProcessingStep):
     
     def _verify_expectations(self, ctx: MacroContext, expectations):
         """Verify that expected errors from must_compile_error macros occurred."""
-        from error_types import ErrorType
+        from utils.error_types import ErrorType
         
         for expectation in expectations:
             node = expectation['node']

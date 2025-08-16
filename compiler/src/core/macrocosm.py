@@ -16,17 +16,18 @@ from macros.comment_macros import Comment_macro_provider, COMMENT_MACROS
 from macros.return_macro import Return_macro_provider
 from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from macros.type_macro import Type_macro_provider # Added import
-from node import Node, Position, Macro, Args
-from strutil import IndentedStringIO, Joiner
-from processor_base import MacroProcessingStep, MacroAssertFailed, to_valid_js_ident
-from macro_registry import Macro_emission_provider, MacroContext, Macro_provider, MacroRegistry
-from preprocessing_macros import PreprocessingStep
-from code_block_linking import CodeBlockLinkingStep  
-from typecheck_macros import TypeCheckingStep
-from type_registration_macros import TypeRegistrationStep
+from core.node import Node, Position, Macro, Args
+from utils.strutil import IndentedStringIO, Joiner
+from pipeline.steps import MacroProcessingStep, MacroAssertFailed
+from pipeline.js_conversion import to_valid_js_ident
+from core.macro_registry import Macro_emission_provider, MacroContext, Macro_provider, MacroRegistry
+from pipeline.steps import PreprocessingStep
+from linking.code_block_linking import CodeBlockLinkingStep  
+from pipeline.steps import TypeCheckingStep
+from pipeline.steps import TypeRegistrationStep
 from steps.must_compile_error_step import MustCompileErrorVerificationStep
-from literal_macros import JavaScriptEmissionStep
-from logger import default_logger
+from pipeline.steps import JavaScriptEmissionStep
+from utils.logger import default_logger
 
 class Macrocosm:
     def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry, preprocess_registry: MacroRegistry, type_registration_registry: MacroRegistry):
@@ -81,7 +82,7 @@ class Macrocosm:
             return self._node_metadata[node_id][metadata_type]
         
         # Check if there's a default factory from the old TypeMap system
-        from utils import TypeMap
+        from utils.utils import TypeMap
         if metadata_type in TypeMap._default_factories:
             value = TypeMap._default_factories[metadata_type]()
             self.set_metadata(node, metadata_type, value)
@@ -116,8 +117,8 @@ class Macrocosm:
 
     def _ensure_macro_args_computed(self, node: Node):
         """Ensure Macro and Args metadata is computed for a node"""
-        from node import Macro, Args
-        from strutil import cut
+        from core.node import Macro, Args
+        from utils.strutil import cut
         
         macro, args = cut(node.content, " ")
         self.set_metadata(node, Macro, macro)
@@ -128,7 +129,7 @@ class Macrocosm:
 
     def assert_(self, must_be_true: bool, node: Node, message: str, error_type: str = None, extra_fields: dict[str, Any] = None):
         if not must_be_true:
-            from error_types import ErrorType
+            from utils.error_types import ErrorType
             if error_type is None:
                 error_type = ErrorType.ASSERTION_FAILED
             self.compile_error(node, f"failed to assert: {message}", error_type, extra_fields)

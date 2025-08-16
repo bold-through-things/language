@@ -1,10 +1,11 @@
 from dataclasses import replace # Added import
-from google_ai_research_sucks import NEWLINE_FUCK
-from macro_registry import MacroContext, Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider
-from common_utils import get_single_arg
-from node import Node, SaneIdentifier, TypeFieldNames
-from processor_base import seek_child_macro, DirectCall, FieldCall, NewCall
-from logger import default_logger
+from pipeline.js_conversion import NEWLINE
+from core.macro_registry import MacroContext, Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider
+from utils.common_utils import get_single_arg
+from core.node import Node, SaneIdentifier, TypeFieldNames
+from pipeline.steps import seek_child_macro
+from pipeline.builtin_calls import DirectCall, FieldCall, NewCall
+from utils.logger import default_logger
 
 class Type_macro_provider(Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider):
     def preprocess(self, ctx: MacroContext):
@@ -20,7 +21,7 @@ class Type_macro_provider(Macro_emission_provider, Macro_preprocess_provider, Ma
         if not " is " in ctx.node.content:
             return
 
-        from strutil import cut
+        from utils.strutil import cut
         
 
         # Parse 'type Name is Clause'
@@ -77,8 +78,8 @@ class Type_macro_provider(Macro_emission_provider, Macro_preprocess_provider, Ma
         if not " is " in ctx.node.content:
             return
         
-        from node import SaneIdentifier, TypeFieldNames
-        from strutil import Joiner
+        from core.node import SaneIdentifier, TypeFieldNames
+        from utils.strutil import Joiner
 
         type_name = ctx.compiler.get_metadata(ctx.node, SaneIdentifier)
         field_names_metadata = ctx.compiler.get_metadata(ctx.node, TypeFieldNames)
@@ -89,8 +90,8 @@ class Type_macro_provider(Macro_emission_provider, Macro_preprocess_provider, Ma
         for field_name in field_names:
             with joiner:
                 ctx.statement_out.write(field_name)
-        ctx.statement_out.write(") {" + NEWLINE_FUCK)
+        ctx.statement_out.write(") {" + NEWLINE)
         with ctx.statement_out:
             for field_name in field_names:
-                ctx.statement_out.write(f"this.{field_name} = {field_name};" + NEWLINE_FUCK)
-        ctx.statement_out.write("}" + NEWLINE_FUCK)
+                ctx.statement_out.write(f"this.{field_name} = {field_name};" + NEWLINE)
+        ctx.statement_out.write("}" + NEWLINE)

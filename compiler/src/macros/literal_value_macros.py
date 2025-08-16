@@ -1,7 +1,7 @@
 from typing import Literal, Type, Union
-from error_types import ErrorType
-from macro_registry import Macro_code_linking_provider, Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider, MacroContext
-from node import Args
+from utils.error_types import ErrorType
+from core.macro_registry import Macro_code_linking_provider, Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider, MacroContext
+from core.node import Args
 
 class Number_macro_provider(
         Macro_preprocess_provider,

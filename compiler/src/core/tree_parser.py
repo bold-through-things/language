@@ -4,10 +4,10 @@ from dataclasses import dataclass, field
 from typing import Iterator
 from io import StringIO
 from pathlib import Path
-from strutil import cut, extract_indent
-from node import Node, Position
+from utils.strutil import cut, extract_indent
+from core.node import Node, Position
 from typing import Generic, List, TypeVar
-from logger import default_logger
+from utils.logger import default_logger
 
 T = TypeVar("T")
 

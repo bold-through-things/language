@@ -4,10 +4,10 @@ common utility functions to reduce code duplication across the compiler.
 
 from dataclasses import replace
 from typing import List, Optional
-from strutil import IndentedStringIO, cut
-from macro_registry import MacroContext
-from node import Args
-from logger import default_logger
+from utils.strutil import IndentedStringIO, cut
+from core.macro_registry import MacroContext
+from core.node import Args
+from utils.logger import default_logger
 
 def collect_child_expressions(ctx: MacroContext) -> List[str]:
     """
@@ -48,7 +48,7 @@ def collect_child_types(ctx: MacroContext) -> List[str]:
     Returns:
         list of type strings from children
     """
-    from typecheck_macros import TypeCheckingStep
+    from pipeline.steps import TypeCheckingStep
     
     assert isinstance(ctx.current_step, TypeCheckingStep), "collect_child_types called outside TypeCheckingStep"
         

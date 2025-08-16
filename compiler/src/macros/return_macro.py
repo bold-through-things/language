@@ -1,5 +1,5 @@
-from macro_registry import MacroContext, Macro_emission_provider
-from node import Node, Position, Macro, Args
+from core.macro_registry import MacroContext, Macro_emission_provider
+from core.node import Node, Position, Macro, Args
 
 class Return_macro_provider(Macro_emission_provider):
     def emission(self, ctx: MacroContext):

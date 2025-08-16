@@ -8,7 +8,7 @@ import os
 import sys
 import traceback
 from typing import Any, TextIO
-from logger import configure_logger_from_args, default_logger
+from utils.logger import configure_logger_from_args, default_logger
 
 # Parse args first to configure logging before any macro registrations
 parser = argparse.ArgumentParser()
@@ -25,8 +25,8 @@ args = parser.parse_args()
 configure_logger_from_args(args.log)
 
 # Now import modules that register macros (these will respect the logging configuration)
-from tree_parser import TreeParser
-from macrocosm import Macrocosm, create_macrocosm
+from core.tree_parser import TreeParser
+from core.macrocosm import Macrocosm, create_macrocosm
 
 def human_readable(inspections: list[dict[str, Any]]) -> None:
     for i, entry in enumerate(reversed(inspections), 1):

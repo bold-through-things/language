@@ -1,5 +1,5 @@
 from dataclasses import replace
-from macro_registry import MacroContext, Macro_emission_provider
+from core.macro_registry import MacroContext, Macro_emission_provider
 
 class Solution_macro_provider(Macro_emission_provider):
     def emission(self, ctx: MacroContext):

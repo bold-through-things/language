@@ -1,16 +1,16 @@
 from dataclasses import asdict, replace
-from processor_base import (
-    MacroProcessingStep, singleton, js_field_access, 
-    builtin_calls, DirectCall, seek_child_macro, cut, to_valid_js_ident,
-    walk_upwards_for_local_definition, LocalAccessCall
-)
-from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
-from strutil import IndentedStringIO, Joiner
-from node import Args, Macro, Params, Inject_code_start, SaneIdentifier, ResolvedConvention
-from common_utils import collect_child_expressions, get_single_arg, get_two_args
-from error_types import ErrorType
-from logger import default_logger
-from type_hierarchy import type_hierarchy, union_types
+from pipeline.steps import MacroProcessingStep, singleton, seek_child_macro
+from pipeline.builtin_calls import builtin_calls, DirectCall, LocalAccessCall, js_field_access
+from pipeline.js_conversion import to_valid_js_ident
+from pipeline.local_lookup import walk_upwards_for_local_definition
+from utils.strutil import cut
+from core.macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
+from utils.strutil import IndentedStringIO, Joiner
+from core.node import Args, Macro, Params, Inject_code_start, SaneIdentifier, ResolvedConvention
+from utils.common_utils import collect_child_expressions, get_single_arg, get_two_args
+from utils.error_types import ErrorType
+from utils.logger import default_logger
+from compiler_types.type_hierarchy import type_hierarchy, union_types
 
 class TypeHierarchyChecker:
     def __init__(self, hierarchy, unions):
@@ -55,7 +55,7 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def _resolve_local_definition(self, ctx: MacroContext, fn: str) -> list:
         res = walk_upwards_for_local_definition(ctx, fn)
         if res:
-            from processor_base import LocalAccessCall
+            from pipeline.builtin_calls import LocalAccessCall
             macro = ctx.compiler.get_metadata(res.node, Macro)
             if macro in {"local", "67lang:assume_local_exists"}:
                 name = get_single_arg(replace(ctx, node=res.node))
@@ -128,7 +128,7 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
             # Find the typecheck step to handle type checking
             typecheck_step = ctx.current_step
             # Import here to avoid circular imports
-            from typecheck_macros import TypeCheckingStep
+            from pipeline.steps import TypeCheckingStep
             assert isinstance(typecheck_step, TypeCheckingStep)
             received = typecheck_step.process_node(replace(ctx, node=child))
             args.append(received)

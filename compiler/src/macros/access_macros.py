@@ -1,18 +1,18 @@
 from dataclasses import replace
-from google_ai_research_sucks import NEWLINE_FUCK
-from processor_base import (
-    MacroProcessingStep, singleton, js_field_access, 
-    builtin_calls, DirectCall, seek_child_macro, seek_all_child_macros, cut, to_valid_js_ident,
-    walk_upwards_for_local_definition
-)
-from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider, MacroRegistry
-from strutil import IndentedStringIO, Joiner
-from node import Args, Macro, Params, Inject_code_start, SaneIdentifier, ResolvedConvention, Node, Position
-from common_utils import collect_child_expressions, get_single_arg, get_two_args, collect_child_types
-from error_types import ErrorType
-from logger import default_logger
-from typecheck_macros import TypeCheckingStep
-from preprocessing_macros import PreprocessingStep
+from pipeline.js_conversion import NEWLINE
+from pipeline.steps import MacroProcessingStep, singleton, seek_child_macro, seek_all_child_macros
+from pipeline.builtin_calls import builtin_calls, DirectCall, js_field_access
+from pipeline.js_conversion import to_valid_js_ident
+from pipeline.local_lookup import walk_upwards_for_local_definition
+from utils.strutil import cut
+from core.macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider, MacroRegistry
+from utils.strutil import IndentedStringIO, Joiner
+from core.node import Args, Macro, Params, Inject_code_start, SaneIdentifier, ResolvedConvention, Node, Position
+from utils.common_utils import collect_child_expressions, get_single_arg, get_two_args, collect_child_types
+from utils.error_types import ErrorType
+from utils.logger import default_logger
+from pipeline.steps import TypeCheckingStep
+from pipeline.steps import PreprocessingStep
 
 
 
@@ -54,18 +54,18 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         name = get_single_arg(ctx)
         name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or name
         ctx.statement_out.write(f"const {name} = async function (")
-        joiner = Joiner(ctx.statement_out, ", " + NEWLINE_FUCK)
+        joiner = Joiner(ctx.statement_out, ", " + NEWLINE)
         params_metadata = ctx.compiler.get_metadata(ctx.node, Params)
         params = params_metadata.mapping.items()
         if len(params) > 0:
-            ctx.statement_out.write(NEWLINE_FUCK)
+            ctx.statement_out.write(NEWLINE)
         with ctx.statement_out:
             for k, _ in params:
                 with joiner:
                     # just the name for now - this is JavaScript. in future we'd probably want JSDoc here too
                     ctx.statement_out.write(k)
         if len(params) > 0:
-            ctx.statement_out.write(NEWLINE_FUCK)
+            ctx.statement_out.write(NEWLINE)
         ctx.statement_out.write(") ")
         next = seek_child_macro(ctx.node, "do")
 
@@ -77,10 +77,10 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         with ctx.statement_out:
             # TODO. this is absolute legacy. i'm fairly sure this does nothing by now
             for k, _ in params:
-                inject.code.append(f"{k} = {k}" + NEWLINE_FUCK)
+                inject.code.append(f"{k} = {k}" + NEWLINE)
             inner_ctx = replace(ctx, node=next)
             ctx.current_step.process_node(inner_ctx)
-        ctx.statement_out.write("}" + NEWLINE_FUCK)
+        ctx.statement_out.write("}" + NEWLINE)
 
 
 
@@ -108,7 +108,7 @@ class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Ma
         ctx.statement_out.write(f"let {name}")
         if len(args) > 0:
             ctx.statement_out.write(f" = {args[-1]}")
-        ctx.statement_out.write(NEWLINE_FUCK)
+        ctx.statement_out.write(NEWLINE)
         ctx.expression_out.write(name)
 
     def typecheck(self, ctx: MacroContext):
@@ -131,7 +131,7 @@ class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Ma
         default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received} (children {[c.content for c in ctx.node.children]})")
         
         # Store the local variable type information in compiler metadata for upward walking
-        from node import FieldDemandType
+        from core.node import FieldDemandType
         ctx.compiler.set_metadata(ctx.node, FieldDemandType, demanded)
         
         # Also verify type matching if we have demanded type
@@ -215,7 +215,7 @@ class Access_macro_provider(Macro_preprocess_provider):
         replace_with: list[Node] = []
         p0 = Position(0, 0)
         
-        from processor_base import builtin_calls
+        from pipeline.builtin_calls import builtin_calls
         
         nodes_to_process: list[Node] = []
 

@@ -1,9 +1,9 @@
 from dataclasses import replace
-from processor_base import MacroProcessingStep
-from macro_registry import MacroContext, MacroRegistry
-from node import Node, Macro
-from logger import default_logger
-from error_types import ErrorType
+from pipeline.steps import MacroProcessingStep
+from core.macro_registry import MacroContext, MacroRegistry
+from core.node import Node, Macro
+from utils.logger import default_logger
+from utils.error_types import ErrorType
 
 class CodeBlockAssociator:
     def __init__(self):
@@ -60,7 +60,7 @@ class CodeBlockLinkingStep(MacroProcessingStep):
         default_logger.codegen(f"processing code block linking for: {ctx.node.content}")
         
         # Skip comment macros entirely using the shared registry
-        from node import Macro
+        from core.node import Macro
         macro = str(ctx.compiler.get_metadata(ctx.node, Macro))
         if macro in self.macros.all():
             self.macros.get(macro)(ctx)

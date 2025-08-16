@@ -1,6 +1,6 @@
 from dataclasses import replace
-from macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider
-from strutil import IndentedStringIO
+from core.macro_registry import MacroContext, Macro_emission_provider, Macro_typecheck_provider
+from utils.strutil import IndentedStringIO
 
 class Must_compile_error_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def emission(self, ctx: MacroContext):

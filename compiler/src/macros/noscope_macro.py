@@ -1,6 +1,6 @@
 from dataclasses import replace
-from macro_registry import Macro_emission_provider, MacroContext
-from strutil import IndentedStringIO
+from core.macro_registry import Macro_emission_provider, MacroContext
+from utils.strutil import IndentedStringIO
 
 class Noscope_macro_provider(Macro_emission_provider):
     def emission(self, ctx: MacroContext):
