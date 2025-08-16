@@ -5,6 +5,7 @@ from .preprocessing import PreprocessingStep
 from .type_registration import TypeRegistrationStep
 from .typechecking import TypeCheckingStep
 from .emission import JavaScriptEmissionStep
+from .must_compile_error_step import MustCompileErrorVerificationStep
 from .utils import (
     unroll_parent_chain, 
     seek_child_macro, 
@@ -19,6 +20,7 @@ __all__ = [
     'TypeRegistrationStep', 
     'TypeCheckingStep',
     'JavaScriptEmissionStep',
+    'MustCompileErrorVerificationStep',
     'unroll_parent_chain',
     'seek_child_macro',
     'seek_all_child_macros', 

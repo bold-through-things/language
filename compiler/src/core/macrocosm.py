@@ -30,7 +30,7 @@ from pipeline.steps import PreprocessingStep
 from linking.code_block_linking import CodeBlockLinkingStep  
 from pipeline.steps import TypeCheckingStep
 from pipeline.steps import TypeRegistrationStep
-from steps.must_compile_error_step import MustCompileErrorVerificationStep
+from pipeline.steps import MustCompileErrorVerificationStep
 from pipeline.steps import JavaScriptEmissionStep
 from utils.logger import default_logger
 
