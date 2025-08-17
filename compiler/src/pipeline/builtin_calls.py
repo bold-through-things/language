@@ -171,6 +171,7 @@ builtin_calls = {
 
     # TODO ideally we would eliminate the `_67lang` shim, although i doubt that will be possible
     "zip": [DirectCall(fn="zip", receiver="_67lang", demands=None, returns=None)],
+    "new_set": [DirectCall(fn="new_set", receiver="_67lang", demands=None, returns="set")],
     # TODO. this is awaited because NodeJS fucking sucks and doesn't give us a proper, 
     #  blocking prompt function. in future should probably write such a function
     #  and remove unnecessary await. 

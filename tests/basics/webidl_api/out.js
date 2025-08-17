@@ -15,6 +15,9 @@ globalThis._67lang = {
             return arrays.map(array => array[i]);
         });
     },
+    new_set: (...args) => {
+        return new Set(args);
+    },
 
     scope(parent) {
         const scope = Object.create(parent || globalThis);

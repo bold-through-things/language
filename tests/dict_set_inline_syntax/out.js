@@ -71,22 +71,38 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_str = "testing"
-            _0x0_str
 
-            const _0xb_str = await _0x0_str
-            const _0xa_split = await String.prototype.split.call(_0xb_str, "t")
-            let _0x3__0x2_pipeline_result = _0xa_split
-            const _0x9_print = await console.log(_0x3__0x2_pipeline_result)
-            let _0x4__0x1_pipeline_result = _0x9_print
+            let _0x0_user = {["name"]: "Bob", ["age"]: 30, ["city"]: "New York"}
+            _0x0_user
+            const _0x17_user = await _0x0_user
+            let _0x3__0x2_pipeline_result = _0x17_user
+            const _0x16_print = await console.log(_0x3__0x2_pipeline_result)
+            let _0x4__0x1_pipeline_result = _0x16_print
             _0x4__0x1_pipeline_result
+            const _0x18_new_set = await _67lang.new_set("apple", "banana", "cherry")
+            let _0x6__0x5_pipeline_result = _0x18_new_set
+            let _0x7_my_set = _0x6__0x5_pipeline_result
+            _0x7_my_set
+            const _0x1a_my_set = await _0x7_my_set
+            let _0xa__0x9_pipeline_result = _0x1a_my_set
+            const _0x19_print = await console.log(_0xa__0x9_pipeline_result)
+            let _0xb__0x8_pipeline_result = _0x19_print
+            _0xb__0x8_pipeline_result
+            let _0xc_my_list = [-2, -1, 0, 1, 2, 3]
+            _0xc_my_list
+            const _0x1c_my_list = await _0xc_my_list
+            let _0xf__0xe_pipeline_result = _0x1c_my_list
+            const _0x1b_print = await console.log(_0xf__0xe_pipeline_result)
+            let _0x10__0xd_pipeline_result = _0x1b_print
+            _0x10__0xd_pipeline_result
 
-            const _0xe_str = await _0x0_str
-            const _0xd_split = await String.prototype.split.call(_0xe_str, /t/)
-            let _0x7__0x6_pipeline_result = _0xd_split
-            const _0xc_print = await console.log(_0x7__0x6_pipeline_result)
-            let _0x8__0x5_pipeline_result = _0xc_print
-            _0x8__0x5_pipeline_result
+            let _0x11_simple_list = [1, 2, 3]
+            _0x11_simple_list
+            const _0x1e_simple_list = await _0x11_simple_list
+            let _0x14__0x13_pipeline_result = _0x1e_simple_list
+            const _0x1d_print = await console.log(_0x14__0x13_pipeline_result)
+            let _0x15__0x12_pipeline_result = _0x1d_print
+            _0x15__0x12_pipeline_result
         }
     } 
 })();

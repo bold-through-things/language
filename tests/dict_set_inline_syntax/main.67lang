@@ -1,0 +1,52 @@
+note test the new dict and set inline syntax
+
+local user
+	dict
+		entry
+			string "name"
+			string "Bob"
+		entry
+			string "age"
+			int 30
+		entry
+			string "city"
+			string "New York"
+
+do print
+	get user
+
+local my_set
+	do new_set
+		string "apple"
+		string "banana"
+		string "cherry"
+
+do print
+	get my_set
+
+local my_list
+	list
+		note this one is implicit append
+		int 0
+		append
+			int 1
+		prepend
+			int -2
+		insert_after_index 0
+			int -1
+		note again append implicitly
+		int 2
+		int 3
+
+do print
+	get my_list
+
+note test simple list (no operations)
+local simple_list
+	list
+		int 1
+		int 2
+		int 3
+
+do print
+	get simple_list

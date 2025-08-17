@@ -2,7 +2,7 @@ from contextlib import contextmanager
 from typing import Any, Sequence
 from io import StringIO
 from macros.noscope_macro import Noscope_macro_provider
-from macros.collection_macros import List_macro_provider
+from macros.collection_macros import List_macro_provider, Dict_macro_provider
 from macros.if_macro import If_macro_provider
 from macros.literal_value_macros import Number_macro_provider, String_macro_provider
 from macros.while_macro import While_macro_provider
@@ -253,6 +253,7 @@ def create_macrocosm() -> Macrocosm:
         "regex": String_macro_provider("regex"),
         "if": If_macro_provider(),
         "list": List_macro_provider(),
+        "dict": Dict_macro_provider(),
         "local": Local_macro_provider(),
         "fn": Fn_macro_provider(),
         
@@ -282,6 +283,14 @@ def create_macrocosm() -> Macrocosm:
         "catch": Catch_macro_provider(),
         "finally": Finally_macro_provider(),
         "throw": Throw_macro_provider(),
+        
+        # List operation macros (handled by List_macro_provider)
+        "append": Noop_macro_provider(),
+        "prepend": Noop_macro_provider(),
+        "insert_after_index": Noop_macro_provider(),
+        
+        # Dict entry macro (handled by Dict_macro_provider)
+        "entry": Noop_macro_provider(),
     }
 
     for macro in COMMENT_MACROS:
@@ -294,8 +303,7 @@ def create_macrocosm() -> Macrocosm:
         "true": ("true", "bool"),
         "false": ("false", "bool"), 
         "break": ("break", None),
-        "continue": ("continue", None),
-        "dict": ("{}", "dict")
+        "continue": ("continue", None)
     }
 
     # TODO, this should be... elsewhere.
