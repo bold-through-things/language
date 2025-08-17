@@ -80,6 +80,11 @@ do
 		type DAG_unroller
 		get unroller_in
 	
+	local chain
+		note needed temporarily while param doesn't support typing
+		type list
+		get chain
+	
 	if 
 		do # the module
 			string "visited"

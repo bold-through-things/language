@@ -60,7 +60,8 @@ for row in
 	get rows
 do
 	do print
-		get name from row
+		get # from row
+			string "name"
 
 local age_over_30
 	int 0

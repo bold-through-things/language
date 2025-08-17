@@ -84,13 +84,13 @@ void (async () => {
                 const parent_scope = scope
                 {
                     const scope = _67lang.scope(parent_scope)
-                    const _0x3b_prompt = await _67lang.prompt("fizz? ")
+                    const _0x3b_prompt = await prompt("fizz? ")
                     const _0x3a_fizz_divisor = await (_0x0_fizz_divisor = _0x3b_prompt)
                     _0x3a_fizz_divisor
-                    const _0x3d_prompt = await _67lang.prompt("buzz? ")
+                    const _0x3d_prompt = await prompt("buzz? ")
                     const _0x3c_buzz_divisor = await (_0x1_buzz_divisor = _0x3d_prompt)
                     _0x3c_buzz_divisor
-                    const _0x3f_prompt = await _67lang.prompt("n? ")
+                    const _0x3f_prompt = await prompt("n? ")
                     const _0x3e_n = await (_0x2_n = _0x3f_prompt)
                     _0x3e_n
                 }

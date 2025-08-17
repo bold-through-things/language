@@ -24,4 +24,13 @@ Original object -> JSON:  {"name":"Claude","type":"AI","version":42}
 Parsed back -> name:  Claude
 
 --- Testing fetch (data URL) ---
-fetch() call successful - returned a Promise
+Response {
+  body: ReadableStream { locked: true },
+  bodyUsed: true,
+  headers: Headers { "content-type": "application/json" },
+  ok: true,
+  redirected: false,
+  status: 200,
+  statusText: "OK",
+  url: 'data:application/json,{"67lang": "is fucking awesome"}'
+} { "67lang": "is fucking awesome" }

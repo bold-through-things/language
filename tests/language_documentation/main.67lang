@@ -442,6 +442,11 @@ note in this chapter number nine (9) we curse recursively
 fn fuck!
 	param fucks_given
 do
+	local fucks_given
+		note needed temporarily while param doesn't support typing
+		type int
+		get fucks_given
+		
 	do print
 		string "fuck!"
 	if

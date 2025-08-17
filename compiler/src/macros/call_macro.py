@@ -102,10 +102,38 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
 
         convention = None
         if actual_arg_types:
+            matching_conventions = []
             for conv in all_possible_conventions:
                 if self._matches_signature(actual_arg_types, conv.demands):
-                    convention = conv
-                    break
+                    matching_conventions.append(conv)
+            
+            if len(matching_conventions) > 1:
+                # Choose the most specific match based on demand specificity
+                def specificity_score(conv):
+                    if not hasattr(conv, 'demands') or not conv.demands:
+                        return (0, 0)  # No demands, least specific
+                    # Count non-wildcard types (higher score = more specific)
+                    specific_count = sum(1 for d in conv.demands if d != "*")
+                    # Tie-breaker: prefer shorter signatures when specificity is equal
+                    return (specific_count, -len(conv.demands))
+                
+                most_specific = max(matching_conventions, key=specificity_score)
+                max_score = specificity_score(most_specific)
+                
+                # Check if there are multiple conventions with the same highest specificity
+                equally_specific = [conv for conv in matching_conventions if specificity_score(conv) == max_score]
+                
+                if len(equally_specific) > 1:
+                    def overload_to_dict(o):
+                        d = asdict(o)
+                        d["convention"] = type(o).__name__
+                        return d
+                    matching_overloads = [overload_to_dict(o) for o in equally_specific]
+                    ctx.compiler.assert_(False, ctx.node, f"multiple equally specific overloads match for {fn} with arguments {actual_arg_types}", ErrorType.AMBIGUOUS_OVERLOAD, extra_fields={"matching_overloads": matching_overloads})
+                else:
+                    convention = most_specific
+            elif len(matching_conventions) == 1:
+                convention = matching_conventions[0]
         else:
             # If no type information, and there are conventions, pick the first one
             if all_possible_conventions:

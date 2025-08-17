@@ -92,16 +92,17 @@ do print
 
 do print
 	string "Parsed back -> name: "
-	get name from parsedObj
+	do # the parsedObj
+		string "name"
 
 do print
 	string "\n--- Testing fetch (data URL) ---"
 
-local fetchPromise
-	do fetch
-		string "data:text/plain,Hello%20from%20fetch!"
-		note the params
-		dict
+do fetch as response
+	string "data:application/json,{"67lang": "is fucking awesome"}"
+	note the params
+	dict
 
 do print
-	string "fetch() call successful - returned a Promise"
+	get response
+	get json from response

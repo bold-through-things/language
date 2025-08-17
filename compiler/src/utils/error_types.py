@@ -20,6 +20,7 @@ _ERROR_TYPES = [
     "MISSING_TYPE",                # Field demands type but given None
     "NO_SUCH_LOCAL",
     "NO_MATCHING_OVERLOAD",        # No matching overload found for function call
+    "AMBIGUOUS_OVERLOAD",          # Multiple overloads match for function call
     
     # Structure/argument errors  
     "WRONG_ARG_COUNT",             # Wrong number of arguments

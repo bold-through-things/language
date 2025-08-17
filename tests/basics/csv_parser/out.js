@@ -181,8 +181,8 @@ void (async () => {
                     {
                         const scope = _67lang.scope(parent_scope)
                         const _0x58_row = await row
-                        const _0x57_name = await (_0x58_row.name)
-                        let _0x29__0x28_pipeline_result = _0x57_name
+                        const _0x57__hash_ = await _0x58_row["name"]
+                        let _0x29__0x28_pipeline_result = _0x57__hash_
                         const _0x56_print = await console.log(_0x29__0x28_pipeline_result)
                         let _0x2a__0x27_pipeline_result = _0x56_print
                         _0x2a__0x27_pipeline_result

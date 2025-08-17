@@ -30,7 +30,7 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
             new_node = ctx.compiler.make_node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[])
             ctx.node.prepend_child(new_node)
         
-        ctx.compiler.add_dynamic_convention(desired_name, DirectCall(fn=actual_name, receiver=None, demands=param_demands, returns="*"))
+        # Registration moved to register_type method to avoid duplicates
 
         for child in ctx.node.children:
             ctx.current_step.process_node(replace(ctx, node=child))
