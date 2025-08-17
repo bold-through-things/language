@@ -22,6 +22,7 @@ from macros.return_macro import Return_macro_provider
 from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from macros.type_macro import Type_macro_provider # Added import
 from macros.try_catch_macro import Try_macro_provider, Catch_macro_provider, Finally_macro_provider, Throw_macro_provider
+from macros.bind_macro import Bind_macro_provider
 from core.node import Node, Position, Macro, Args
 from utils.strutil import IndentedStringIO, Joiner
 from pipeline.steps import MacroProcessingStep
@@ -256,7 +257,7 @@ def create_macrocosm() -> Macrocosm:
         "dict": Dict_macro_provider(),
         "local": Local_macro_provider(),
         "fn": Fn_macro_provider(),
-        
+        "bind": Bind_macro_provider(),
         
         
         "67lang:call": Call_macro_provider(),

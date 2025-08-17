@@ -124,9 +124,20 @@ class IndexAccessCall:
             return f'({receiver}[{index}] = {value[0]})'
         return f'{receiver}[{index}]'
 
+@dataclass
+class CallableInvokeCall:
+    """fn(args...) - invokes a callable/function"""
+    demands: list[str] | None
+    returns: str | None
+
+    def compile(self, args: list[str]):
+        fn, *fn_args = args
+        return f"{fn}({', '.join(fn_args)})"
+
 
 builtin_calls = {
     "#": [IndexAccessCall(demands=None, returns=None)],
+    "~": [CallableInvokeCall(demands=None, returns=None)],
     # TODO - in theory 99% of these should come from the WebIDL spec. TODO, investigate if we can clear this.
     "length": [FieldCall(field="length", demands=["list"], returns="int")],
     "join": [

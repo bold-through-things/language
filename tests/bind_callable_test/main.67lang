@@ -1,0 +1,47 @@
+note Testing bind macro for creating partial function applications
+
+fn handle_message
+	param bot
+	param message
+	param is_trusted
+do
+	do print
+		string "Bot: "
+		get bot
+		string ", Message: "
+		get message
+		string ", Trusted: "
+		get is_trusted
+
+do print
+	string "=== Testing bind callable ==="
+
+note test basic partial application
+local bound_handler
+	bind fn handle_message as callable
+		string "MyBot"
+		_
+		true
+
+do ~ the bound_handler
+	string "Hello from bind test!"
+
+note test multiple unbound parameters
+local multi_bound
+	bind fn handle_message as callable
+		_
+		_
+		false
+
+do ~ the multi_bound
+	string "AnotherBot"
+	string "Multiple unbound test"
+
+note test all parameters bound (no unbound parameters)
+local fully_bound
+	bind fn handle_message as callable
+		string "FullyBoundBot"
+		string "This message is pre-bound"
+		true
+
+do ~ the fully_bound
