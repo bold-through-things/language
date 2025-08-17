@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import pprint
 from io import StringIO
 import json
 from pathlib import Path
@@ -33,7 +34,10 @@ def human_readable(inspections: list[dict[str, Any]]) -> None:
         out = StringIO()
         print(f"\n\n{i}:")
         for k, v in entry.items():
-            out.write(f"{k} = {v}\n")
+            pprint.pprint(k, indent=2, stream=out)
+            out.write(" = ")
+            pprint.pprint(v, indent=2, stream=out)
+            out.write("\n")
         print(out.getvalue())
 
 def write_json(inspections: list[dict[str, Any]], output: TextIO) -> None:

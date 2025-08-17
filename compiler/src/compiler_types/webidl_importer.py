@@ -18,27 +18,46 @@ TYPE_MAPPING = {
     "octet": "int",
     "void": "None",
     "any": "*",
+    # Fetch API types
+    "RequestInfo": "*",  # TODO: Union type (Request | USVString) - add proper union support
     "undefined": "None",
     "DOMHighResTimeStamp": "float",
     "double": "float",
     "unrestricted double": "float",
 }
 
-def idl_type_to_67lang_type(idl_type):
+def idl_type_to_67lang_type(idl_type, type_definitions=None):
     if isinstance(idl_type, list):
         # For now, just take the first type in a sequence
-        return idl_type_to_67lang_type(idl_type[0])
+        return idl_type_to_67lang_type(idl_type[0], type_definitions)
     
     if not isinstance(idl_type, dict):
         # Handle simple string types
-        return TYPE_MAPPING.get(idl_type, idl_type)
+        type_str = TYPE_MAPPING.get(idl_type, idl_type)
+        
+        # Check if this is a dictionary type that we should resolve
+        if type_definitions and idl_type in type_definitions:
+            typedef_def = type_definitions[idl_type]
+            if typedef_def.get("type") == "dictionary":
+                return "dict"
+        
+        return type_str
 
     type_name = idl_type.get("idlType")
     if isinstance(type_name, list):
         # Handle union types, for now just take the first one
-        return idl_type_to_67lang_type(type_name[0])
+        return idl_type_to_67lang_type(type_name[0], type_definitions)
 
-    return TYPE_MAPPING.get(type_name, type_name)
+    # Check basic type mapping first
+    mapped_type = TYPE_MAPPING.get(type_name, type_name)
+    
+    # Check if this is a dictionary type that we should resolve  
+    if type_definitions and type_name in type_definitions:
+        typedef_def = type_definitions[type_name]
+        if typedef_def.get("type") == "dictionary":
+            return "dict"
+    
+    return mapped_type
 
 def extract_type_hierarchy(idl_dir):
     type_hierarchy = {}
@@ -95,11 +114,15 @@ def main():
             with open(os.path.join(idl_dir, filename)) as f:
                 data = json.load(f)
                 if "idlparsed" in data:
-                    if "includes" in data["idlparsed"]:
-                        for interface_name, mixins in data["idlparsed"]["includes"].items():
-                            if interface_name not in includes_map:
-                                includes_map[interface_name] = []
-                            includes_map[interface_name].extend(mixins)
+                    # Process includes from idlExtendedNames
+                    if "idlExtendedNames" in data["idlparsed"]:
+                        for interface_name, extended_list in data["idlparsed"]["idlExtendedNames"].items():
+                            for extended_def in extended_list:
+                                if extended_def.get("type") == "includes" and "includes" in extended_def:
+                                    mixin_name = extended_def["includes"]
+                                    if interface_name not in includes_map:
+                                        includes_map[interface_name] = []
+                                    includes_map[interface_name].append(mixin_name)
                     
                     if "idlNames" in data["idlparsed"]:
                         for name, definition in data["idlparsed"]["idlNames"].items():
@@ -109,9 +132,30 @@ def main():
                                 for member in definition["members"]:
                                     if member["type"] == "operation":
                                         mixin_operations[name].append(member)
+                    
+                    # Also check idlExtendedNames for partial mixin definitions
+                    if "idlExtendedNames" in data["idlparsed"]:
+                        for name, extended_list in data["idlparsed"]["idlExtendedNames"].items():
+                            for extended_def in extended_list:
+                                if "mixin" in extended_def.get("type", ""):
+                                    if name not in mixin_operations:
+                                        mixin_operations[name] = []
+                                    for member in extended_def.get("members", []):
+                                        if member["type"] == "operation":
+                                            mixin_operations[name].append(member)
     
     print(f"includes_map (after first pass): {includes_map}") # DEBUG
     print(f"mixin_operations (after first pass): {mixin_operations}") # DEBUG
+    
+    # Collect all type definitions for automatic type mapping
+    type_definitions = {}
+    for filename in os.listdir(idl_dir):
+        if filename.endswith(".json"):
+            with open(os.path.join(idl_dir, filename)) as f:
+                data = json.load(f)
+                if "idlparsed" in data and "idlNames" in data["idlparsed"]:
+                    for name, definition in data["idlparsed"]["idlNames"].items():
+                        type_definitions[name] = definition
 
     # Manually add implicit inclusions not present in the IDL JSON
     if "Window" in includes_map:
@@ -138,7 +182,7 @@ def main():
                                                 min_args += 1
 
                                         for i in range(min_args, len(arguments) + 1):
-                                            demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
+                                            demands = [idl_type_to_67lang_type(arg["idlType"], type_definitions) for arg in arguments[:i]]
                                             returns = name
                                             call = NewCall(constructor=name, demands=demands, returns=returns)
                                             if name not in generated_builtins:
@@ -152,8 +196,8 @@ def main():
                                                 min_args += 1
                                         
                                         for i in range(min_args, len(arguments) + 1):
-                                            demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
-                                            returns = idl_type_to_67lang_type(member["idlType"])
+                                            demands = [idl_type_to_67lang_type(arg["idlType"], type_definitions) for arg in arguments[:i]]
+                                            returns = idl_type_to_67lang_type(member["idlType"], type_definitions)
                                             
                                             if name == "Window": # All non-static methods of Window are treated as global DirectCalls
                                                 call = DirectCall(fn=member["name"], receiver=None, demands=demands, returns=returns)
@@ -169,7 +213,7 @@ def main():
                                             generated_builtins[key].append(call)
                                     elif member["type"] == "attribute":
                                         key = member["name"]
-                                        returns = idl_type_to_67lang_type(member["idlType"])
+                                        returns = idl_type_to_67lang_type(member["idlType"], type_definitions)
                                         
                                         # For readonly attributes, we only generate a getter
                                         # For other attributes, we generate a getter and a setter
@@ -206,8 +250,8 @@ def main():
                                                         min_args += 1
                                                 
                                                 for i in range(min_args, len(arguments) + 1):
-                                                    demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
-                                                    returns = idl_type_to_67lang_type(member["idlType"])
+                                                    demands = [idl_type_to_67lang_type(arg["idlType"], type_definitions) for arg in arguments[:i]]
+                                                    returns = idl_type_to_67lang_type(member["idlType"], type_definitions)
                                                     
                                                     if name == "Window": # All non-static methods of Window are treated as global DirectCalls
                                                         call = DirectCall(fn=member["name"], receiver=None, demands=demands, returns=returns)
@@ -238,8 +282,8 @@ def main():
                                 min_args += 1
                         
                         for i in range(min_args, len(arguments) + 1):
-                            demands = [idl_type_to_67lang_type(arg["idlType"]) for arg in arguments[:i]]
-                            returns = idl_type_to_67lang_type(member["idlType"])
+                            demands = [idl_type_to_67lang_type(arg["idlType"], type_definitions) for arg in arguments[:i]]
+                            returns = idl_type_to_67lang_type(member["idlType"], type_definitions)
                             
                             # Mixin operations become prototype calls on the including interface
                             instance_demands = [interface_name] + demands

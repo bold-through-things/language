@@ -62,3 +62,46 @@ do print
 	get encodedString
 	string " -> Decoded: "
 	get decodedString
+
+do print
+	string "\n--- Testing JSON.stringify/parse ---"
+
+local testObj
+	dict
+		entry
+			string "name"
+			string "Claude"
+		entry
+			string "type"
+			string "AI"
+		entry
+			string "version"
+			int 42
+
+local jsonString
+	do JSON.stringify
+		get testObj
+
+local parsedObj
+	do JSON.parse
+		get jsonString
+
+do print
+	string "Original object -> JSON: "
+	get jsonString
+
+do print
+	string "Parsed back -> name: "
+	get name from parsedObj
+
+do print
+	string "\n--- Testing fetch (data URL) ---"
+
+local fetchPromise
+	do fetch
+		string "data:text/plain,Hello%20from%20fetch!"
+		note the params
+		dict
+
+do print
+	string "fetch() call successful - returned a Promise"
