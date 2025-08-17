@@ -1,0 +1,43 @@
+note testing file reading functionality and working directory
+
+do print
+	string "Current working directory:"
+
+do print
+	do cwd
+
+do print
+	string "Reading sample.txt:"
+
+try
+	local content
+		do read_file
+			string "sample.txt"
+	
+	do print
+		get content
+
+catch error
+	do print
+		string "Error reading file:"
+	do print
+		get error
+
+do print
+	string "File reading test complete"
+
+note the above is roughly equivalent to following JS
+
+	console.log("Current working directory:");
+	console.log(Deno.cwd());
+	console.log("Reading sample.txt:");
+
+	try {
+		const content = await Deno.readTextFile("sample.txt");
+		console.log(content);
+	} catch (error) {
+		console.log("Error reading file:");
+		console.log(error);
+	}
+
+	console.log("File reading test complete");

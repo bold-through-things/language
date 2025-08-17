@@ -47,8 +47,8 @@ DENO_PATH = find_deno_executable()
 
 def read_file(path: Path) -> Optional[str]:
     return path.read_text(encoding="utf-8") if path.exists() else None
-def run_with_input(exec_cmd: List[str], stdin: str, line_delayed: bool = True) -> Tuple[int, str, str]:
-    proc = Popen(exec_cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True, bufsize=1)
+def run_with_input(exec_cmd: List[str], stdin: str, line_delayed: bool = True, cwd: Path = None) -> Tuple[int, str, str]:
+    proc = Popen(exec_cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, text=True, bufsize=1, cwd=cwd)
 
     output_lines: List[str] = []
     error_lines: List[str] = []
@@ -283,10 +283,10 @@ def make_test_method(tc: TestCase, args):
             if args.run:
                 fuck_you_python = lambda arg, if_cond: arg if if_cond else None
                 
-                exec_cmd = [DENO_PATH.absolute(), "run", fuck_you_python("--inspect-brk=127.0.0.1:9229", args.debug), out_path.absolute()]
+                exec_cmd = [DENO_PATH.absolute(), "run", "--allow-read", fuck_you_python("--inspect-brk=127.0.0.1:9229", args.debug), out_path.absolute()]
                 exec_cmd = list(filter(None, exec_cmd))
                 print(f"{case_dir}: running... {exec_cmd}")
-                returncode, stdout, stderr = run_with_input(exec_cmd, stdin=stdin_text, line_delayed=False)
+                returncode, stdout, stderr = run_with_input(exec_cmd, stdin=stdin_text, line_delayed=False, cwd=case_dir)
                 print(f"{case_dir}: complete.")
                 print(stdout)
 
@@ -303,6 +303,9 @@ def make_test_method(tc: TestCase, args):
                         self.assertNotEqual(returncode, 0, msg="Expected runtime failure")
                     else:
                         expected_out = expected_stdout.strip() if expected_stdout else ""
+                        # Substitute test suite placeholders
+                        script_dir = Path(__file__).parent.absolute()
+                        expected_out = expected_out.replace("67lang:test_suite:project_path", str(script_dir))
                         is_equal, error_msg = diff_reporter.compare_text(
                             stdout.strip(), expected_out, "runtime_stdout"
                         )

@@ -21,6 +21,7 @@ from macros.comment_macros import Comment_macro_provider, COMMENT_MACROS
 from macros.return_macro import Return_macro_provider
 from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from macros.type_macro import Type_macro_provider # Added import
+from macros.try_catch_macro import Try_macro_provider, Catch_macro_provider, Finally_macro_provider, Throw_macro_provider
 from core.node import Node, Position, Macro, Args
 from utils.strutil import IndentedStringIO, Joiner
 from pipeline.steps import MacroProcessingStep
@@ -277,6 +278,10 @@ def create_macrocosm() -> Macrocosm:
         "get": Pipeline_macro_provider(),
         "noscope": Noscope_macro_provider(),
         "return": Return_macro_provider(),
+        "try": Try_macro_provider(),
+        "catch": Catch_macro_provider(),
+        "finally": Finally_macro_provider(),
+        "throw": Throw_macro_provider(),
     }
 
     for macro in COMMENT_MACROS:

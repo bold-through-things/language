@@ -1,0 +1,50 @@
+note testing try/catch/finally/throw functionality
+
+do print
+	string "Starting execution"
+
+try
+	do print
+		string "Inside try block"
+	
+	do print
+		string "About to throw"
+	
+	throw
+		string "Test error message"
+	
+	do print
+		string "This should not print"
+
+catch error
+	do print
+		string "Caught error:"
+	do print
+		get error
+
+finally
+	do print
+		string "Finally block executed"
+	do print
+		string "Many statements"
+
+do print
+	string "Execution complete"
+
+note the above is roughly equivalent to following JS
+
+	console.log("Starting execution");
+
+	try {
+		console.log("Inside try block");
+		console.log("About to throw");
+		throw "Test error message";
+		console.log("This should not print");
+	} catch (error) {
+		console.log("Caught error:");
+		console.log(error);
+	} finally {
+		console.log("Finally block executed");
+	}
+
+	console.log("Execution complete");

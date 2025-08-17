@@ -16,3 +16,4 @@ from . import scope_macro
 from . import solution_macro
 from . import utility_macros
 from . import while_macro
+from . import try_catch_macro

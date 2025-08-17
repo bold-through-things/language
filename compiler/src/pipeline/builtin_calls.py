@@ -179,6 +179,10 @@ builtin_calls = {
     "prompt": [DirectCall(fn="prompt", receiver="_67lang", demands=None, returns=None)],
     "stdin": [DirectCall(fn="stdin", receiver="_67lang", demands=None, returns="str")],
     "is_tty": [DirectCall(fn="is_tty", receiver="_67lang", demands=None, returns=None)],
+    
+    # TODO: Deno-specific builtins - won't work on browsers. Need compile targets for validation.
+    "read_file": [DirectCall(fn="readTextFile", receiver="Deno", demands=["str"], returns="str")],
+    "cwd": [DirectCall(fn="cwd", receiver="Deno", demands=None, returns="str")],
 }
 
 # Load WebIDL builtins if available
