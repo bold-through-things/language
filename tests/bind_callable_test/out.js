@@ -78,14 +78,14 @@ void (async () => {
                 bot = bot
                 message = message
                 is_trusted = is_trusted
-                const _0x15_bot = await bot
-                let _0x3__0x2_pipeline_result = _0x15_bot
-                const _0x16_message = await message
-                let _0x5__0x4_pipeline_result = _0x16_message
-                const _0x17_is_trusted = await is_trusted
-                let _0x7__0x6_pipeline_result = _0x17_is_trusted
-                const _0x14_print = await console.log("Bot: ", _0x3__0x2_pipeline_result, ", Message: ", _0x5__0x4_pipeline_result, ", Trusted: ", _0x7__0x6_pipeline_result)
-                let _0x8__0x1_pipeline_result = _0x14_print
+                const _0x19_bot = await bot
+                let _0x3__0x2_pipeline_result = _0x19_bot
+                const _0x1a_message = await message
+                let _0x5__0x4_pipeline_result = _0x1a_message
+                const _0x1b_is_trusted = await is_trusted
+                let _0x7__0x6_pipeline_result = _0x1b_is_trusted
+                const _0x18_print = await console.log("Bot: ", _0x3__0x2_pipeline_result, ", Message: ", _0x5__0x4_pipeline_result, ", Trusted: ", _0x7__0x6_pipeline_result)
+                let _0x8__0x1_pipeline_result = _0x18_print
                 _0x8__0x1_pipeline_result
             }
         } }
@@ -94,30 +94,36 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
-            const _0x18_print = await console.log("=== Testing bind callable ===")
-            let _0xa__0x9_pipeline_result = _0x18_print
+            const _0x1c_print = await console.log("=== Testing bind callable ===")
+            let _0xa__0x9_pipeline_result = _0x1c_print
             _0xa__0x9_pipeline_result
 
-            let _0xb_bound_handler = (arg0) => _0x0_handle_message("MyBot", arg0, true)
+            let _0xb_bound_handler = ((arg0) => _0x0_handle_message("MyBot", arg0, true))
             _0xb_bound_handler
-            const _0x1a_bound_handler = await _0xb_bound_handler
-            const _0x19__tilde_ = await _0x1a_bound_handler("Hello from bind test!")
-            let _0xd__0xc_pipeline_result = _0x19__tilde_
+            const _0x1e_bound_handler = await _0xb_bound_handler
+            const _0x1d__tilde_ = await _0x1e_bound_handler("Hello from bind test!")
+            let _0xd__0xc_pipeline_result = _0x1d__tilde_
             _0xd__0xc_pipeline_result
 
-            let _0xe_multi_bound = (arg0, arg1) => _0x0_handle_message(arg0, arg1, false)
+            let _0xe_multi_bound = ((arg0, arg1) => _0x0_handle_message(arg0, arg1, false))
             _0xe_multi_bound
-            const _0x1c_multi_bound = await _0xe_multi_bound
-            const _0x1b__tilde_ = await _0x1c_multi_bound("AnotherBot", "Multiple unbound test")
-            let _0x10__0xf_pipeline_result = _0x1b__tilde_
+            const _0x20_multi_bound = await _0xe_multi_bound
+            const _0x1f__tilde_ = await _0x20_multi_bound("AnotherBot", "Multiple unbound test")
+            let _0x10__0xf_pipeline_result = _0x1f__tilde_
             _0x10__0xf_pipeline_result
 
-            let _0x11_fully_bound = () => _0x0_handle_message("FullyBoundBot", "This message is pre-bound", true)
+            let _0x11_fully_bound = (() => _0x0_handle_message("FullyBoundBot", "This message is pre-bound", true))
             _0x11_fully_bound
-            const _0x1e_fully_bound = await _0x11_fully_bound
-            const _0x1d__tilde_ = await _0x1e_fully_bound()
-            let _0x13__0x12_pipeline_result = _0x1d__tilde_
+            const _0x22_fully_bound = await _0x11_fully_bound
+            const _0x21__tilde_ = await _0x22_fully_bound()
+            let _0x13__0x12_pipeline_result = _0x21__tilde_
             _0x13__0x12_pipeline_result
+            const _0x23_print = await console.log("print manually")
+            let _0x15__0x14_pipeline_result = _0x23_print
+            _0x15__0x14_pipeline_result
+            const _0x24__tilde_ = await (() => console.log("or a bound print"))()
+            let _0x17__0x16_pipeline_result = _0x24__tilde_
+            _0x17__0x16_pipeline_result
         }
     } 
 })();

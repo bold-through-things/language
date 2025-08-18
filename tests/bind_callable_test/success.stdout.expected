@@ -2,3 +2,5 @@
 Bot:  MyBot , Message:  Hello from bind test! , Trusted:  true
 Bot:  AnotherBot , Message:  Multiple unbound test , Trusted:  false
 Bot:  FullyBoundBot , Message:  This message is pre-bound , Trusted:  true
+print manually
+or a bound print

@@ -45,3 +45,12 @@ local fully_bound
 		true
 
 do ~ the fully_bound
+
+do print
+	string "print manually"
+
+do ~
+	bind fn print as callable
+		string "or a bound print"
+
+

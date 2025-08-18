@@ -80,7 +80,7 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x6_setTimeout = await setTimeout(() => _0x0_test_fn(), 100)
+            const _0x6_setTimeout = await setTimeout((() => _0x0_test_fn()), 100)
             let _0x4__0x3_pipeline_result = _0x6_setTimeout
             _0x4__0x3_pipeline_result
         }

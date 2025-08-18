@@ -93,16 +93,16 @@ void (async () => {
                 _0xf__0xa_pipeline_result
 
                 const _0x1d_ws = await _0x4_ws
-                const _0x1c_onmessage = await (_0x1d_ws.onmessage = ((arg0) => _0x0_message_handler(arg0)))
+                const _0x1c_onmessage = await (_0x1d_ws.onmessage = (((arg0) => _0x0_message_handler(arg0))))
                 let _0x11__0x10_pipeline_result = _0x1c_onmessage
                 _0x11__0x10_pipeline_result
 
                 const _0x1f_ws = await _0x4_ws
-                const _0x1e_onopen = await (_0x1f_ws.onopen = ((arg0) => _0x0_message_handler(arg0)))
+                const _0x1e_onopen = await (_0x1f_ws.onopen = (((arg0) => _0x0_message_handler(arg0))))
                 let _0x13__0x12_pipeline_result = _0x1e_onopen
                 _0x13__0x12_pipeline_result
                 const _0x21_ws = await _0x4_ws
-                const _0x20_onclose = await (_0x21_ws.onclose = ((arg0) => _0x0_message_handler(arg0)))
+                const _0x20_onclose = await (_0x21_ws.onclose = (((arg0) => _0x0_message_handler(arg0))))
                 let _0x15__0x14_pipeline_result = _0x20_onclose
                 _0x15__0x14_pipeline_result
 
