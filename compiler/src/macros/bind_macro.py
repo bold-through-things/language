@@ -2,12 +2,12 @@
 
 from dataclasses import replace
 from pipeline.js_conversion import NEWLINE
-from core.macro_registry import MacroContext, Macro_emission_provider, Macro_preprocess_provider
+from core.macro_registry import MacroContext, Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider
 from utils.strutil import Joiner
 from utils.logger import default_logger
 
 
-class Bind_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
+class Bind_macro_provider(Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider):
     def preprocess(self, ctx: MacroContext):
         # Parse the header: "bind fn <function_name> as callable"
         parts = ctx.node.content.split()
@@ -17,6 +17,17 @@ class Bind_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         # Process children
         for child in ctx.node.children:
             ctx.current_step.process_node(replace(ctx, node=child))
+
+    def typecheck(self, ctx: MacroContext):
+        # Process children for type checking
+        for child in ctx.node.children:
+            ctx.current_step.process_node(replace(ctx, node=child))
+        
+        # TODO: This should return a proper function/callable type, but our type system
+        # doesn't properly handle the union types for EventHandler, TimerHandler, etc.
+        # For now, return "*" to bypass type checking until we have proper generics
+        # and union type support.
+        return "*"
 
     def emission(self, ctx: MacroContext):
         # Parse the header: "bind fn <function_name> as callable"

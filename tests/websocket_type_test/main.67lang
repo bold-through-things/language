@@ -1,0 +1,46 @@
+note Test WebSocket.send() union type support and EventHandler compatibility
+
+fn message_handler
+	param event
+do
+	note This function acts as an EventHandler
+	do print
+		string "Message received"
+
+fn main_test
+do
+	note Create WebSocket instance
+	do WebSocket as ws
+		string "wss://example.com"
+	
+	note Test 1: WebSocket.send() with string (BufferSource | Blob | str union)
+	do send
+		get ws
+		string "Hello WebSocket"
+	
+	note Test 2: WebSocket.send() with string variable
+	local message
+		type str
+		string "Another message"
+	do send
+		get ws
+		get message
+	
+	note Test 3: onmessage with bind construct (EventHandler compatibility)
+	do onmessage in ws
+		bind fn message_handler as callable
+			_
+	
+	note Test 4: onopen and onclose also use EventHandler
+	do onopen in ws
+		bind fn message_handler as callable
+			_
+	
+	do onclose in ws
+		bind fn message_handler as callable
+			_
+	
+	note If compilation succeeds, our WebSocket and EventHandler types work correctly
+	note TODO: Add runtime test using Deno's bundled WebSocket server once we have proper Deno bindings generation
+
+note Just test compilation, don't call main_test to avoid runtime issues

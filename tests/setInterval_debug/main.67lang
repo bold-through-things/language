@@ -1,0 +1,11 @@
+fn test_fn
+do
+	do print
+		string "test"
+
+do setTimeout
+	bind fn test_fn as callable
+	int 100
+
+
+

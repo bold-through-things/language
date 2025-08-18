@@ -711,6 +711,7 @@ webidl_calls = {
     ],
     "importKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='importKey', demands=['SubtleCrypto', 'KeyFormat', 'BufferSource', 'AlgorithmIdentifier', 'bool', 'KeyUsage'], returns='CryptoKey'),
+        PrototypeCall(constructor='SubtleCrypto', fn='importKey', demands=['SubtleCrypto', 'KeyFormat', 'dict', 'AlgorithmIdentifier', 'bool', 'KeyUsage'], returns='CryptoKey'),
     ],
     "exportKey": [
         PrototypeCall(constructor='SubtleCrypto', fn='exportKey', demands=['SubtleCrypto', 'KeyFormat', 'CryptoKey'], returns='ArrayBuffer'),
@@ -790,6 +791,7 @@ webidl_calls = {
         PrototypeCall(constructor='Headers', fn='set', demands=['Headers', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='URLSearchParams', fn='set', demands=['URLSearchParams', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='StylePropertyMap', fn='set', demands=['StylePropertyMap', 'str', 'CSSStyleValue'], returns='None'),
+        PrototypeCall(constructor='StylePropertyMap', fn='set', demands=['StylePropertyMap', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='CSSFontFeatureValuesMap', fn='set', demands=['CSSFontFeatureValuesMap', 'CSSOMString', 'int'], returns='None'),
         PrototypeCall(constructor='FormData', fn='set', demands=['FormData', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='FormData', fn='set', demands=['FormData', 'str', 'Blob'], returns='None'),
@@ -1978,15 +1980,35 @@ webidl_calls = {
     ],
     "multiDrawArraysWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLint', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLint', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
     ],
     "multiDrawElementsWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei'], returns='None'),
     ],
     "multiDrawArraysInstancedWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLint', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLint', 'int', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLint', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawArraysInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLint', 'int', 'GLsizei', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
     ],
     "multiDrawElementsInstancedWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw', fn='multiDrawElementsInstancedWEBGL', demands=['WEBGL_multi_draw', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'GLsizei'], returns='None'),
     ],
     "hasFeature": [
         PrototypeCall(constructor='EpubReadingSystem', fn='hasFeature', demands=['EpubReadingSystem', 'str'], returns='bool'),
@@ -3525,9 +3547,17 @@ webidl_calls = {
         PrototypeCall(constructor='RdfDataset', fn='add', demands=['RdfDataset', 'str', 'RdfGraph'], returns='None'),
         PrototypeCall(constructor='RdfGraph', fn='add', demands=['RdfGraph', 'RdfTriple'], returns='None'),
         PrototypeCall(constructor='HTMLOptionsCollection', fn='add', demands=['HTMLOptionsCollection', 'HTMLOptionElement'], returns='None'),
+        PrototypeCall(constructor='HTMLOptionsCollection', fn='add', demands=['HTMLOptionsCollection', 'HTMLOptGroupElement'], returns='None'),
         PrototypeCall(constructor='HTMLOptionsCollection', fn='add', demands=['HTMLOptionsCollection', 'HTMLOptionElement', 'HTMLElement'], returns='None'),
+        PrototypeCall(constructor='HTMLOptionsCollection', fn='add', demands=['HTMLOptionsCollection', 'HTMLOptionElement', 'int'], returns='None'),
+        PrototypeCall(constructor='HTMLOptionsCollection', fn='add', demands=['HTMLOptionsCollection', 'HTMLOptGroupElement', 'HTMLElement'], returns='None'),
+        PrototypeCall(constructor='HTMLOptionsCollection', fn='add', demands=['HTMLOptionsCollection', 'HTMLOptGroupElement', 'int'], returns='None'),
         PrototypeCall(constructor='HTMLSelectElement', fn='add', demands=['HTMLSelectElement', 'HTMLOptionElement'], returns='None'),
+        PrototypeCall(constructor='HTMLSelectElement', fn='add', demands=['HTMLSelectElement', 'HTMLOptGroupElement'], returns='None'),
         PrototypeCall(constructor='HTMLSelectElement', fn='add', demands=['HTMLSelectElement', 'HTMLOptionElement', 'HTMLElement'], returns='None'),
+        PrototypeCall(constructor='HTMLSelectElement', fn='add', demands=['HTMLSelectElement', 'HTMLOptionElement', 'int'], returns='None'),
+        PrototypeCall(constructor='HTMLSelectElement', fn='add', demands=['HTMLSelectElement', 'HTMLOptGroupElement', 'HTMLElement'], returns='None'),
+        PrototypeCall(constructor='HTMLSelectElement', fn='add', demands=['HTMLSelectElement', 'HTMLOptGroupElement', 'int'], returns='None'),
         PrototypeCall(constructor='DataTransferItemList', fn='add', demands=['DataTransferItemList', 'str', 'str'], returns='DataTransferItem'),
         PrototypeCall(constructor='DataTransferItemList', fn='add', demands=['DataTransferItemList', 'File'], returns='DataTransferItem'),
         PrototypeCall(constructor='CSSNumericValue', fn='add', demands=['CSSNumericValue', 'CSSNumberish'], returns='CSSNumericValue'),
@@ -4249,6 +4279,7 @@ webidl_calls = {
         PrototypeCall(constructor='Headers', fn='append', demands=['Headers', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='URLSearchParams', fn='append', demands=['URLSearchParams', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='StylePropertyMap', fn='append', demands=['StylePropertyMap', 'str', 'CSSStyleValue'], returns='None'),
+        PrototypeCall(constructor='StylePropertyMap', fn='append', demands=['StylePropertyMap', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='FormData', fn='append', demands=['FormData', 'str', 'str'], returns='None'),
         PrototypeCall(constructor='FormData', fn='append', demands=['FormData', 'str', 'Blob'], returns='None'),
         PrototypeCall(constructor='FormData', fn='append', demands=['FormData', 'str', 'Blob', 'str'], returns='None'),
@@ -4256,8 +4287,11 @@ webidl_calls = {
         PrototypeCall(constructor='SharedStorage', fn='append', demands=['SharedStorage', 'str', 'str'], returns='*'),
         PrototypeCall(constructor='SharedStorage', fn='append', demands=['SharedStorage', 'str', 'str', 'dict'], returns='*'),
         PrototypeCall(constructor='Document', fn='append', demands=['Document', 'Node'], returns='None'),
+        PrototypeCall(constructor='Document', fn='append', demands=['Document', 'str'], returns='None'),
         PrototypeCall(constructor='DocumentFragment', fn='append', demands=['DocumentFragment', 'Node'], returns='None'),
+        PrototypeCall(constructor='DocumentFragment', fn='append', demands=['DocumentFragment', 'str'], returns='None'),
         PrototypeCall(constructor='Element', fn='append', demands=['Element', 'Node'], returns='None'),
+        PrototypeCall(constructor='Element', fn='append', demands=['Element', 'str'], returns='None'),
     ],
     "getSetCookie": [
         PrototypeCall(constructor='Headers', fn='getSetCookie', demands=['Headers'], returns='str'),
@@ -5351,7 +5385,9 @@ webidl_calls = {
     "register": [
         PrototypeCall(constructor='SyncManager', fn='register', demands=['SyncManager', 'str'], returns='None'),
         PrototypeCall(constructor='ServiceWorkerContainer', fn='register', demands=['ServiceWorkerContainer', 'TrustedScriptURL'], returns='ServiceWorkerRegistration'),
+        PrototypeCall(constructor='ServiceWorkerContainer', fn='register', demands=['ServiceWorkerContainer', 'str'], returns='ServiceWorkerRegistration'),
         PrototypeCall(constructor='ServiceWorkerContainer', fn='register', demands=['ServiceWorkerContainer', 'TrustedScriptURL', 'dict'], returns='ServiceWorkerRegistration'),
+        PrototypeCall(constructor='ServiceWorkerContainer', fn='register', demands=['ServiceWorkerContainer', 'str', 'dict'], returns='ServiceWorkerRegistration'),
         PrototypeCall(constructor='RTCIdentityProviderRegistrar', fn='register', demands=['RTCIdentityProviderRegistrar', 'dict'], returns='None'),
         PrototypeCall(constructor='PeriodicSyncManager', fn='register', demands=['PeriodicSyncManager', 'str'], returns='None'),
         PrototypeCall(constructor='PeriodicSyncManager', fn='register', demands=['PeriodicSyncManager', 'str', 'dict'], returns='None'),
@@ -5628,6 +5664,7 @@ webidl_calls = {
     ],
     "createObjectURL": [
         PrototypeCall(constructor='StorageAccessHandle', fn='createObjectURL', demands=['StorageAccessHandle', 'Blob'], returns='str'),
+        PrototypeCall(constructor='StorageAccessHandle', fn='createObjectURL', demands=['StorageAccessHandle', 'MediaSource'], returns='str'),
     ],
     "revokeObjectURL": [
         PrototypeCall(constructor='StorageAccessHandle', fn='revokeObjectURL', demands=['StorageAccessHandle', 'str'], returns='None'),
@@ -5639,6 +5676,7 @@ webidl_calls = {
     "SharedWorker": [
         PrototypeCall(constructor='StorageAccessHandle', fn='SharedWorker', demands=['StorageAccessHandle', 'str'], returns='SharedWorker'),
         PrototypeCall(constructor='StorageAccessHandle', fn='SharedWorker', demands=['StorageAccessHandle', 'str', 'str'], returns='SharedWorker'),
+        PrototypeCall(constructor='StorageAccessHandle', fn='SharedWorker', demands=['StorageAccessHandle', 'str', 'dict'], returns='SharedWorker'),
         NewCall(constructor='SharedWorker', demands=['TrustedScriptURL'], returns='SharedWorker'),
         NewCall(constructor='SharedWorker', demands=['TrustedScriptURL', 'str'], returns='SharedWorker'),
     ],
@@ -6204,6 +6242,7 @@ webidl_calls = {
     "getCharacteristic": [
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getCharacteristic', demands=['BluetoothRemoteGATTService', 'BluetoothCharacteristicUUID'], returns='BluetoothRemoteGATTCharacteristic'),
         DirectCall(fn='getCharacteristic', receiver='BluetoothUUID', demands=['str'], returns='UUID'),
+        DirectCall(fn='getCharacteristic', receiver='BluetoothUUID', demands=['int'], returns='UUID'),
     ],
     "getCharacteristics": [
         PrototypeCall(constructor='BluetoothRemoteGATTService', fn='getCharacteristics', demands=['BluetoothRemoteGATTService'], returns='BluetoothRemoteGATTCharacteristic'),
@@ -6225,6 +6264,7 @@ webidl_calls = {
     "getDescriptor": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='getDescriptor', demands=['BluetoothRemoteGATTCharacteristic', 'BluetoothDescriptorUUID'], returns='BluetoothRemoteGATTDescriptor'),
         DirectCall(fn='getDescriptor', receiver='BluetoothUUID', demands=['str'], returns='UUID'),
+        DirectCall(fn='getDescriptor', receiver='BluetoothUUID', demands=['int'], returns='UUID'),
     ],
     "getDescriptors": [
         PrototypeCall(constructor='BluetoothRemoteGATTCharacteristic', fn='getDescriptors', demands=['BluetoothRemoteGATTCharacteristic'], returns='BluetoothRemoteGATTDescriptor'),
@@ -6276,6 +6316,7 @@ webidl_calls = {
     ],
     "getService": [
         DirectCall(fn='getService', receiver='BluetoothUUID', demands=['str'], returns='UUID'),
+        DirectCall(fn='getService', receiver='BluetoothUUID', demands=['int'], returns='UUID'),
     ],
     "canonicalUUID": [
         DirectCall(fn='canonicalUUID', receiver='BluetoothUUID', demands=['int'], returns='UUID'),
@@ -7046,9 +7087,12 @@ webidl_calls = {
         PrototypeCall(constructor='RTCDataChannel', fn='send', demands=['RTCDataChannel', 'ArrayBufferView'], returns='None'),
         PrototypeCall(constructor='XMLHttpRequest', fn='send', demands=['XMLHttpRequest'], returns='None'),
         PrototypeCall(constructor='XMLHttpRequest', fn='send', demands=['XMLHttpRequest', 'Document'], returns='None'),
+        PrototypeCall(constructor='XMLHttpRequest', fn='send', demands=['XMLHttpRequest', 'XMLHttpRequestBodyInit'], returns='None'),
         PrototypeCall(constructor='MIDIOutput', fn='send', demands=['MIDIOutput', 'int'], returns='None'),
         PrototypeCall(constructor='MIDIOutput', fn='send', demands=['MIDIOutput', 'int', 'float'], returns='None'),
         PrototypeCall(constructor='WebSocket', fn='send', demands=['WebSocket', 'BufferSource'], returns='None'),
+        PrototypeCall(constructor='WebSocket', fn='send', demands=['WebSocket', 'Blob'], returns='None'),
+        PrototypeCall(constructor='WebSocket', fn='send', demands=['WebSocket', 'str'], returns='None'),
         PrototypeCall(constructor='PresentationConnection', fn='send', demands=['PresentationConnection', 'str'], returns='None'),
         PrototypeCall(constructor='PresentationConnection', fn='send', demands=['PresentationConnection', 'Blob'], returns='None'),
         PrototypeCall(constructor='PresentationConnection', fn='send', demands=['PresentationConnection', 'ArrayBuffer'], returns='None'),
@@ -7351,6 +7395,7 @@ webidl_calls = {
     "togglePopover": [
         PrototypeCall(constructor='HTMLElement', fn='togglePopover', demands=['HTMLElement'], returns='bool'),
         PrototypeCall(constructor='HTMLElement', fn='togglePopover', demands=['HTMLElement', 'dict'], returns='bool'),
+        PrototypeCall(constructor='HTMLElement', fn='togglePopover', demands=['HTMLElement', 'bool'], returns='bool'),
     ],
     "popover": [
         FieldCall(field='popover', demands=['HTMLElement'], returns='str'),
@@ -8571,6 +8616,7 @@ webidl_calls = {
     ],
     "assign": [
         PrototypeCall(constructor='HTMLSlotElement', fn='assign', demands=['HTMLSlotElement', 'Element'], returns='None'),
+        PrototypeCall(constructor='HTMLSlotElement', fn='assign', demands=['HTMLSlotElement', 'Text'], returns='None'),
         PrototypeCall(constructor='Location', fn='assign', demands=['Location', 'str'], returns='None'),
     ],
     "HTMLCanvasElement": [
@@ -8834,12 +8880,16 @@ webidl_calls = {
     "roundRect": [
         PrototypeCall(constructor='CanvasRenderingContext2D', fn='roundRect', demands=['CanvasRenderingContext2D', 'float', 'float', 'float', 'float'], returns='None'),
         PrototypeCall(constructor='CanvasRenderingContext2D', fn='roundRect', demands=['CanvasRenderingContext2D', 'float', 'float', 'float', 'float', 'float'], returns='None'),
+        PrototypeCall(constructor='CanvasRenderingContext2D', fn='roundRect', demands=['CanvasRenderingContext2D', 'float', 'float', 'float', 'float', 'dict'], returns='None'),
         PrototypeCall(constructor='Path2D', fn='roundRect', demands=['Path2D', 'float', 'float', 'float', 'float'], returns='None'),
         PrototypeCall(constructor='Path2D', fn='roundRect', demands=['Path2D', 'float', 'float', 'float', 'float', 'float'], returns='None'),
+        PrototypeCall(constructor='Path2D', fn='roundRect', demands=['Path2D', 'float', 'float', 'float', 'float', 'dict'], returns='None'),
         PrototypeCall(constructor='OffscreenCanvasRenderingContext2D', fn='roundRect', demands=['OffscreenCanvasRenderingContext2D', 'float', 'float', 'float', 'float'], returns='None'),
         PrototypeCall(constructor='OffscreenCanvasRenderingContext2D', fn='roundRect', demands=['OffscreenCanvasRenderingContext2D', 'float', 'float', 'float', 'float', 'float'], returns='None'),
+        PrototypeCall(constructor='OffscreenCanvasRenderingContext2D', fn='roundRect', demands=['OffscreenCanvasRenderingContext2D', 'float', 'float', 'float', 'float', 'dict'], returns='None'),
         PrototypeCall(constructor='PaintRenderingContext2D', fn='roundRect', demands=['PaintRenderingContext2D', 'float', 'float', 'float', 'float'], returns='None'),
         PrototypeCall(constructor='PaintRenderingContext2D', fn='roundRect', demands=['PaintRenderingContext2D', 'float', 'float', 'float', 'float', 'float'], returns='None'),
+        PrototypeCall(constructor='PaintRenderingContext2D', fn='roundRect', demands=['PaintRenderingContext2D', 'float', 'float', 'float', 'float', 'dict'], returns='None'),
     ],
     "arc": [
         PrototypeCall(constructor='CanvasRenderingContext2D', fn='arc', demands=['CanvasRenderingContext2D', 'float', 'float', 'float', 'float', 'float'], returns='None'),
@@ -8944,7 +8994,17 @@ webidl_calls = {
     ],
     "setFormValue": [
         PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'File'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'str'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'FormData'], returns='None'),
         PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'File', 'File'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'File', 'str'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'File', 'FormData'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'str', 'File'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'str', 'str'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'str', 'FormData'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'FormData', 'File'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'FormData', 'str'], returns='None'),
+        PrototypeCall(constructor='ElementInternals', fn='setFormValue', demands=['ElementInternals', 'FormData', 'FormData'], returns='None'),
     ],
     "setValidity": [
         PrototypeCall(constructor='ElementInternals', fn='setValidity', demands=['ElementInternals'], returns='None'),
@@ -9101,98 +9161,56 @@ webidl_calls = {
     "fetch": [
         DirectCall(fn='fetch', receiver=None, demands=['*'], returns='Response'),
         DirectCall(fn='fetch', receiver=None, demands=['*', 'dict'], returns='Response'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='fetch', demands=['WorkerGlobalScope', '*'], returns='Response'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='fetch', demands=['WorkerGlobalScope', '*', 'dict'], returns='Response'),
         PrototypeCall(constructor='BackgroundFetchManager', fn='fetch', demands=['BackgroundFetchManager', 'str', '*'], returns='BackgroundFetchRegistration'),
         PrototypeCall(constructor='BackgroundFetchManager', fn='fetch', demands=['BackgroundFetchManager', 'str', '*', 'dict'], returns='BackgroundFetchRegistration'),
-        PrototypeCall(constructor='Window', fn='fetch', demands=['Window', '*'], returns='Response'),
-        PrototypeCall(constructor='Window', fn='fetch', demands=['Window', '*', 'dict'], returns='Response'),
     ],
     "reportError": [
         DirectCall(fn='reportError', receiver=None, demands=['*'], returns='None'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='reportError', demands=['WorkerGlobalScope', '*'], returns='None'),
-        PrototypeCall(constructor='Window', fn='reportError', demands=['Window', '*'], returns='None'),
     ],
     "btoa": [
         DirectCall(fn='btoa', receiver=None, demands=['str'], returns='str'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='btoa', demands=['WorkerGlobalScope', 'str'], returns='str'),
-        PrototypeCall(constructor='Window', fn='btoa', demands=['Window', 'str'], returns='str'),
     ],
     "atob": [
         DirectCall(fn='atob', receiver=None, demands=['str'], returns='str'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='atob', demands=['WorkerGlobalScope', 'str'], returns='str'),
-        PrototypeCall(constructor='Window', fn='atob', demands=['Window', 'str'], returns='str'),
     ],
     "setTimeout": [
         DirectCall(fn='setTimeout', receiver=None, demands=['TimerHandler', 'int'], returns='int'),
         DirectCall(fn='setTimeout', receiver=None, demands=['TimerHandler', 'int', '*'], returns='int'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='setTimeout', demands=['WorkerGlobalScope', 'TimerHandler', 'int'], returns='int'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='setTimeout', demands=['WorkerGlobalScope', 'TimerHandler', 'int', '*'], returns='int'),
-        PrototypeCall(constructor='Window', fn='setTimeout', demands=['Window', 'TimerHandler', 'int'], returns='int'),
-        PrototypeCall(constructor='Window', fn='setTimeout', demands=['Window', 'TimerHandler', 'int', '*'], returns='int'),
     ],
     "clearTimeout": [
         DirectCall(fn='clearTimeout', receiver=None, demands=[], returns='None'),
         DirectCall(fn='clearTimeout', receiver=None, demands=['int'], returns='None'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='clearTimeout', demands=['WorkerGlobalScope'], returns='None'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='clearTimeout', demands=['WorkerGlobalScope', 'int'], returns='None'),
-        PrototypeCall(constructor='Window', fn='clearTimeout', demands=['Window'], returns='None'),
-        PrototypeCall(constructor='Window', fn='clearTimeout', demands=['Window', 'int'], returns='None'),
     ],
     "setInterval": [
         DirectCall(fn='setInterval', receiver=None, demands=['TimerHandler', 'int'], returns='int'),
         DirectCall(fn='setInterval', receiver=None, demands=['TimerHandler', 'int', '*'], returns='int'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='setInterval', demands=['WorkerGlobalScope', 'TimerHandler', 'int'], returns='int'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='setInterval', demands=['WorkerGlobalScope', 'TimerHandler', 'int', '*'], returns='int'),
-        PrototypeCall(constructor='Window', fn='setInterval', demands=['Window', 'TimerHandler', 'int'], returns='int'),
-        PrototypeCall(constructor='Window', fn='setInterval', demands=['Window', 'TimerHandler', 'int', '*'], returns='int'),
     ],
     "clearInterval": [
         DirectCall(fn='clearInterval', receiver=None, demands=[], returns='None'),
         DirectCall(fn='clearInterval', receiver=None, demands=['int'], returns='None'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='clearInterval', demands=['WorkerGlobalScope'], returns='None'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='clearInterval', demands=['WorkerGlobalScope', 'int'], returns='None'),
-        PrototypeCall(constructor='Window', fn='clearInterval', demands=['Window'], returns='None'),
-        PrototypeCall(constructor='Window', fn='clearInterval', demands=['Window', 'int'], returns='None'),
     ],
     "queueMicrotask": [
         DirectCall(fn='queueMicrotask', receiver=None, demands=['VoidFunction'], returns='None'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='queueMicrotask', demands=['WorkerGlobalScope', 'VoidFunction'], returns='None'),
-        PrototypeCall(constructor='Window', fn='queueMicrotask', demands=['Window', 'VoidFunction'], returns='None'),
     ],
     "createImageBitmap": [
         DirectCall(fn='createImageBitmap', receiver=None, demands=['ImageBitmapSource'], returns='ImageBitmap'),
         DirectCall(fn='createImageBitmap', receiver=None, demands=['ImageBitmapSource', 'dict'], returns='ImageBitmap'),
         DirectCall(fn='createImageBitmap', receiver=None, demands=['ImageBitmapSource', 'int', 'int', 'int', 'int'], returns='ImageBitmap'),
         DirectCall(fn='createImageBitmap', receiver=None, demands=['ImageBitmapSource', 'int', 'int', 'int', 'int', 'dict'], returns='ImageBitmap'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='createImageBitmap', demands=['WorkerGlobalScope', 'ImageBitmapSource'], returns='ImageBitmap'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='createImageBitmap', demands=['WorkerGlobalScope', 'ImageBitmapSource', 'dict'], returns='ImageBitmap'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='createImageBitmap', demands=['WorkerGlobalScope', 'ImageBitmapSource', 'int', 'int', 'int', 'int'], returns='ImageBitmap'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='createImageBitmap', demands=['WorkerGlobalScope', 'ImageBitmapSource', 'int', 'int', 'int', 'int', 'dict'], returns='ImageBitmap'),
-        PrototypeCall(constructor='Window', fn='createImageBitmap', demands=['Window', 'ImageBitmapSource'], returns='ImageBitmap'),
-        PrototypeCall(constructor='Window', fn='createImageBitmap', demands=['Window', 'ImageBitmapSource', 'dict'], returns='ImageBitmap'),
-        PrototypeCall(constructor='Window', fn='createImageBitmap', demands=['Window', 'ImageBitmapSource', 'int', 'int', 'int', 'int'], returns='ImageBitmap'),
-        PrototypeCall(constructor='Window', fn='createImageBitmap', demands=['Window', 'ImageBitmapSource', 'int', 'int', 'int', 'int', 'dict'], returns='ImageBitmap'),
     ],
     "structuredClone": [
         DirectCall(fn='structuredClone', receiver=None, demands=['*'], returns='*'),
         DirectCall(fn='structuredClone', receiver=None, demands=['*', 'dict'], returns='*'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='structuredClone', demands=['WorkerGlobalScope', '*'], returns='*'),
-        PrototypeCall(constructor='WorkerGlobalScope', fn='structuredClone', demands=['WorkerGlobalScope', '*', 'dict'], returns='*'),
-        PrototypeCall(constructor='Window', fn='structuredClone', demands=['Window', '*'], returns='*'),
-        PrototypeCall(constructor='Window', fn='structuredClone', demands=['Window', '*', 'dict'], returns='*'),
     ],
     "requestAnimationFrame": [
         DirectCall(fn='requestAnimationFrame', receiver=None, demands=['FrameRequestCallback'], returns='int'),
         PrototypeCall(constructor='DedicatedWorkerGlobalScope', fn='requestAnimationFrame', demands=['DedicatedWorkerGlobalScope', 'FrameRequestCallback'], returns='int'),
         PrototypeCall(constructor='XRSession', fn='requestAnimationFrame', demands=['XRSession', 'XRFrameRequestCallback'], returns='int'),
-        PrototypeCall(constructor='Window', fn='requestAnimationFrame', demands=['Window', 'FrameRequestCallback'], returns='int'),
     ],
     "cancelAnimationFrame": [
         DirectCall(fn='cancelAnimationFrame', receiver=None, demands=['int'], returns='None'),
         PrototypeCall(constructor='DedicatedWorkerGlobalScope', fn='cancelAnimationFrame', demands=['DedicatedWorkerGlobalScope', 'int'], returns='None'),
         PrototypeCall(constructor='XRSession', fn='cancelAnimationFrame', demands=['XRSession', 'int'], returns='None'),
-        PrototypeCall(constructor='Window', fn='cancelAnimationFrame', demands=['Window', 'int'], returns='None'),
     ],
     "visible": [
         FieldCall(field='visible', demands=['BarProp'], returns='bool'),
@@ -9387,6 +9405,7 @@ webidl_calls = {
     ],
     "parseFromString": [
         PrototypeCall(constructor='DOMParser', fn='parseFromString', demands=['DOMParser', 'TrustedHTML', 'DOMParserSupportedType'], returns='Document'),
+        PrototypeCall(constructor='DOMParser', fn='parseFromString', demands=['DOMParser', 'str', 'DOMParserSupportedType'], returns='Document'),
     ],
     "XMLSerializer": [
         NewCall(constructor='XMLSerializer', demands=[], returns='XMLSerializer'),
@@ -9470,6 +9489,7 @@ webidl_calls = {
     ],
     "importScripts": [
         PrototypeCall(constructor='WorkerGlobalScope', fn='importScripts', demands=['WorkerGlobalScope', 'TrustedScriptURL'], returns='None'),
+        PrototypeCall(constructor='WorkerGlobalScope', fn='importScripts', demands=['WorkerGlobalScope', 'str'], returns='None'),
     ],
     "onlanguagechange": [
         FieldCall(field='onlanguagechange', demands=['WorkerGlobalScope'], returns='EventHandler'),
@@ -10863,6 +10883,7 @@ webidl_calls = {
     ],
     "setSinkId": [
         PrototypeCall(constructor='AudioContext', fn='setSinkId', demands=['AudioContext', 'str'], returns='None'),
+        PrototypeCall(constructor='AudioContext', fn='setSinkId', demands=['AudioContext', 'dict'], returns='None'),
     ],
     "createMediaElementSource": [
         PrototypeCall(constructor='AudioContext', fn='createMediaElementSource', demands=['AudioContext', 'HTMLMediaElement'], returns='MediaElementAudioSourceNode'),
@@ -11298,8 +11319,11 @@ webidl_calls = {
     "prepend": [
         PrototypeCall(constructor='GroupEffect', fn='prepend', demands=['GroupEffect', 'AnimationEffect'], returns='None'),
         PrototypeCall(constructor='Document', fn='prepend', demands=['Document', 'Node'], returns='None'),
+        PrototypeCall(constructor='Document', fn='prepend', demands=['Document', 'str'], returns='None'),
         PrototypeCall(constructor='DocumentFragment', fn='prepend', demands=['DocumentFragment', 'Node'], returns='None'),
+        PrototypeCall(constructor='DocumentFragment', fn='prepend', demands=['DocumentFragment', 'str'], returns='None'),
         PrototypeCall(constructor='Element', fn='prepend', demands=['Element', 'Node'], returns='None'),
+        PrototypeCall(constructor='Element', fn='prepend', demands=['Element', 'str'], returns='None'),
     ],
     "SequenceEffect": [
         NewCall(constructor='SequenceEffect', demands=['AnimationEffect'], returns='SequenceEffect'),
@@ -13655,9 +13679,55 @@ webidl_calls = {
     ],
     "multiDrawArraysInstancedBaseInstanceWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLsizei', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLsizei', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'Int32Array', 'int', 'GLsizei', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'Int32Array', 'int', 'GLsizei', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'GLsizei', 'int', 'GLsizei', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawArraysInstancedBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLint', 'int', 'GLsizei', 'int', 'GLsizei', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
     ],
     "multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL": [
         PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'Int32Array', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'Int32Array', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'Int32Array', 'int', 'GLsizei', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'Int32Array', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'Int32Array', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'GLint', 'int', 'Uint32Array', 'int', 'GLsizei'], returns='None'),
+        PrototypeCall(constructor='WEBGL_multi_draw_instanced_base_vertex_base_instance', fn='multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL', demands=['WEBGL_multi_draw_instanced_base_vertex_base_instance', 'GLenum', 'GLsizei', 'int', 'GLenum', 'GLsizei', 'int', 'GLsizei', 'int', 'GLint', 'int', 'GLuint', 'int', 'GLsizei'], returns='None'),
     ],
     "probeSpace": [
         FieldCall(field='probeSpace', demands=['XRLightProbe'], returns='XRSpace'),
@@ -14264,10 +14334,12 @@ webidl_calls = {
     "addEventListener": [
         PrototypeCall(constructor='EventTarget', fn='addEventListener', demands=['EventTarget', 'str', 'EventListener'], returns='None'),
         PrototypeCall(constructor='EventTarget', fn='addEventListener', demands=['EventTarget', 'str', 'EventListener', 'dict'], returns='None'),
+        PrototypeCall(constructor='EventTarget', fn='addEventListener', demands=['EventTarget', 'str', 'EventListener', 'bool'], returns='None'),
     ],
     "removeEventListener": [
         PrototypeCall(constructor='EventTarget', fn='removeEventListener', demands=['EventTarget', 'str', 'EventListener'], returns='None'),
         PrototypeCall(constructor='EventTarget', fn='removeEventListener', demands=['EventTarget', 'str', 'EventListener', 'dict'], returns='None'),
+        PrototypeCall(constructor='EventTarget', fn='removeEventListener', demands=['EventTarget', 'str', 'EventListener', 'bool'], returns='None'),
     ],
     "dispatchEvent": [
         PrototypeCall(constructor='EventTarget', fn='dispatchEvent', demands=['EventTarget', 'Event'], returns='bool'),
@@ -14419,10 +14491,12 @@ webidl_calls = {
     "createElement": [
         PrototypeCall(constructor='Document', fn='createElement', demands=['Document', 'str'], returns='Element'),
         PrototypeCall(constructor='Document', fn='createElement', demands=['Document', 'str', 'str'], returns='Element'),
+        PrototypeCall(constructor='Document', fn='createElement', demands=['Document', 'str', 'dict'], returns='Element'),
     ],
     "createElementNS": [
         PrototypeCall(constructor='Document', fn='createElementNS', demands=['Document', 'str', 'str'], returns='Element'),
         PrototypeCall(constructor='Document', fn='createElementNS', demands=['Document', 'str', 'str', 'str'], returns='Element'),
+        PrototypeCall(constructor='Document', fn='createElementNS', demands=['Document', 'str', 'str', 'dict'], returns='Element'),
     ],
     "createDocumentFragment": [
         PrototypeCall(constructor='Document', fn='createDocumentFragment', demands=['Document'], returns='DocumentFragment'),
@@ -14442,6 +14516,7 @@ webidl_calls = {
     "importNode": [
         PrototypeCall(constructor='Document', fn='importNode', demands=['Document', 'Node'], returns='Node'),
         PrototypeCall(constructor='Document', fn='importNode', demands=['Document', 'Node', 'bool'], returns='Node'),
+        PrototypeCall(constructor='Document', fn='importNode', demands=['Document', 'Node', 'dict'], returns='Node'),
     ],
     "adoptNode": [
         PrototypeCall(constructor='Document', fn='adoptNode', demands=['Document', 'Node'], returns='Node'),
@@ -14476,8 +14551,11 @@ webidl_calls = {
     ],
     "replaceChildren": [
         PrototypeCall(constructor='Document', fn='replaceChildren', demands=['Document', 'Node'], returns='None'),
+        PrototypeCall(constructor='Document', fn='replaceChildren', demands=['Document', 'str'], returns='None'),
         PrototypeCall(constructor='DocumentFragment', fn='replaceChildren', demands=['DocumentFragment', 'Node'], returns='None'),
+        PrototypeCall(constructor='DocumentFragment', fn='replaceChildren', demands=['DocumentFragment', 'str'], returns='None'),
         PrototypeCall(constructor='Element', fn='replaceChildren', demands=['Element', 'Node'], returns='None'),
+        PrototypeCall(constructor='Element', fn='replaceChildren', demands=['Element', 'str'], returns='None'),
     ],
     "moveBefore": [
         PrototypeCall(constructor='Document', fn='moveBefore', demands=['Document', 'Node', 'Node'], returns='None'),
@@ -14536,18 +14614,27 @@ webidl_calls = {
     ],
     "before": [
         PrototypeCall(constructor='DocumentType', fn='before', demands=['DocumentType', 'Node'], returns='None'),
+        PrototypeCall(constructor='DocumentType', fn='before', demands=['DocumentType', 'str'], returns='None'),
         PrototypeCall(constructor='Element', fn='before', demands=['Element', 'Node'], returns='None'),
+        PrototypeCall(constructor='Element', fn='before', demands=['Element', 'str'], returns='None'),
         PrototypeCall(constructor='CharacterData', fn='before', demands=['CharacterData', 'Node'], returns='None'),
+        PrototypeCall(constructor='CharacterData', fn='before', demands=['CharacterData', 'str'], returns='None'),
     ],
     "after": [
         PrototypeCall(constructor='DocumentType', fn='after', demands=['DocumentType', 'Node'], returns='None'),
+        PrototypeCall(constructor='DocumentType', fn='after', demands=['DocumentType', 'str'], returns='None'),
         PrototypeCall(constructor='Element', fn='after', demands=['Element', 'Node'], returns='None'),
+        PrototypeCall(constructor='Element', fn='after', demands=['Element', 'str'], returns='None'),
         PrototypeCall(constructor='CharacterData', fn='after', demands=['CharacterData', 'Node'], returns='None'),
+        PrototypeCall(constructor='CharacterData', fn='after', demands=['CharacterData', 'str'], returns='None'),
     ],
     "replaceWith": [
         PrototypeCall(constructor='DocumentType', fn='replaceWith', demands=['DocumentType', 'Node'], returns='None'),
+        PrototypeCall(constructor='DocumentType', fn='replaceWith', demands=['DocumentType', 'str'], returns='None'),
         PrototypeCall(constructor='Element', fn='replaceWith', demands=['Element', 'Node'], returns='None'),
+        PrototypeCall(constructor='Element', fn='replaceWith', demands=['Element', 'str'], returns='None'),
         PrototypeCall(constructor='CharacterData', fn='replaceWith', demands=['CharacterData', 'Node'], returns='None'),
+        PrototypeCall(constructor='CharacterData', fn='replaceWith', demands=['CharacterData', 'str'], returns='None'),
     ],
     "DocumentFragment": [
         NewCall(constructor='DocumentFragment', demands=[], returns='DocumentFragment'),
@@ -14652,6 +14739,7 @@ webidl_calls = {
     "animate": [
         PrototypeCall(constructor='Element', fn='animate', demands=['Element', 'object'], returns='Animation'),
         PrototypeCall(constructor='Element', fn='animate', demands=['Element', 'object', 'float'], returns='Animation'),
+        PrototypeCall(constructor='Element', fn='animate', demands=['Element', 'object', 'dict'], returns='Animation'),
     ],
     "getRegionFlowRanges": [
         PrototypeCall(constructor='Element', fn='getRegionFlowRanges', demands=['Element'], returns='Range'),
