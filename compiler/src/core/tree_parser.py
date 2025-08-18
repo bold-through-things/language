@@ -63,7 +63,7 @@ class TreeParser:
         for line in lines:
             line_num += 1 # at the start - assumes above \n{code}\n
             
-            line, indent = extract_indent(line)
+            line, indent = extract_indent(line, max=len(scope) - 1)
 
             # simplifies code. all the top-level lines are indent-1, belonging to a fake top-level Node
             # which is at indent-0

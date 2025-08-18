@@ -34,12 +34,17 @@ class Number_macro_provider(
         ctx.expression_out.write(str(args))
 
 class String_macro_provider(
+        Macro_preprocess_provider,
         Macro_typecheck_provider,
         Macro_emission_provider,
         Macro_code_linking_provider
     ):
     def __init__(self, kind: Literal["string", "regex"]):
         self.kind = kind
+
+    def preprocess(self, ctx: MacroContext):
+        # Allow multiline string content to start with whitespace (preserved indentation)
+        pass
 
     def typecheck(self, ctx: MacroContext):
         return "str" if self.kind == "string" else "regex"
@@ -50,11 +55,19 @@ class String_macro_provider(
     def emission(self, ctx: MacroContext):
         s: str = ctx.compiler.get_metadata(ctx.node, Args)
         if len(s) == 0:
-            # multiline string: collect content from children
+            # multiline string: collect content from entire subtree, reconstructing indentation
             lines = []
+            
+            def collect_content(node, depth=0):
+                if node.content:
+                    # Reconstruct original indentation by prepending tabs based on depth
+                    indented_content = '\t' * depth + node.content
+                    lines.append(indented_content)
+                for child in node.children:
+                    collect_content(child, depth + 1)
+            
             for child in ctx.node.children:
-                if child.content:
-                    lines.append(child.content)
+                collect_content(child, 0)
             s = "\n".join(lines)
         else:
             delim = s[0]

@@ -249,7 +249,10 @@ builtin_calls = {
     "findIndex": [PrototypeCall(constructor="Array", fn="findIndex", demands=["list", "*"], returns="int")],
     "some": [PrototypeCall(constructor="Array", fn="some", demands=["list", "*"], returns="bool")],
     "every": [PrototypeCall(constructor="Array", fn="every", demands=["list", "*"], returns="bool")],
-    "includes": [PrototypeCall(constructor="Array", fn="includes", demands=["list", "*"], returns="bool")],
+    "includes": [
+    	PrototypeCall(constructor="Array", fn="includes", demands=["list", "*"], returns="bool"),
+    	PrototypeCall(constructor="String", fn="includes", demands=["str", "str"], returns="bool"),
+    ],
     "indexOf": [
         PrototypeCall(constructor="Array", fn="indexOf", demands=["list", "*"], returns="int"),
         PrototypeCall(constructor="Array", fn="indexOf", demands=["list", "*", "int"], returns="int"),

@@ -6,6 +6,8 @@ do print
 	string
 		this is an expression-level multiline string.
 		it should produce a string value.
+								it can contain indented values.
+		trivially.
 
 do print
 	string "hello world"
