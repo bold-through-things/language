@@ -70,20 +70,13 @@ type DAG_unroller is heap_entry
 		type dict
 
 fn visit
-	param unroller_in
-	param module
-	# chain of dependencies currently being inspected - used to detect loops
-	param chain
-do
-	local unroller
-		note needed temporarily while param doesn't support typing
+	param unroller
 		type DAG_unroller
-		get unroller_in
-	
-	local chain
-		note needed temporarily while param doesn't support typing
+	param module
+	param chain
 		type list
-		get chain
+		# chain of dependencies currently being inspected - used to detect loops
+do
 	
 	if 
 		do # the module

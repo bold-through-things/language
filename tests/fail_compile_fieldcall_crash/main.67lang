@@ -1,0 +1,21 @@
+type Heartbeat is heap_entry
+	has heartbeat_interval
+		type int
+	has sequence_number
+		type int
+
+local heartbeat
+	type Heartbeat
+	get Heartbeat
+		int 0
+		int 0
+
+note this one also fails as i nuked the `data`
+get # from event as data
+	string "data"
+
+note that `fn` is not a closure, which means that it does not
+	see the `heartbeat`
+fn send_heartbeat
+do
+	get sequence_number from heartbeat

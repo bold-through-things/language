@@ -84,6 +84,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Minimize dependencies (supply chain security)
 - Keep documentation in executable tests, not separate files
 - **Avoid meaningless comments** - no comments that just restate the code
+- **NEVER place .67lang files in the project root** - the compiler recursively processes all .67lang files in the directory tree, including tests
 
 ### Type Checking
 - Run type checker in strict mode

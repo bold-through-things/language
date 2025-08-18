@@ -2,7 +2,6 @@
 from . import local_macro
 from . import fn_macro
 from . import exists_macro
-from . import param_macro
 from . import access_chain_macro
 from . import then_macro
 from . import collection_macros

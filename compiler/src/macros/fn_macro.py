@@ -12,6 +12,19 @@ from utils.logger import default_logger
 
 
 class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
+    def _get_param_demands(self, ctx: MacroContext):
+        """Extract parameter type demands from param children."""
+        param_demands = []
+        for child in seek_all_child_macros(ctx.node, "param"):
+            # Look for type child in the param
+            type_node = seek_child_macro(child, "type")
+            if type_node:
+                from utils.strutil import cut
+                _, param_type = cut(type_node.content, " ")
+                param_demands.append(param_type)
+            else:
+                param_demands.append("*")  # Default type
+        return param_demands
     def preprocess(self, ctx: MacroContext):
         # Hoist fn definitions to the root
         if ctx.node.parent and ctx.node.parent != ctx.compiler.root_node:
@@ -22,13 +35,32 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         actual_name = ctx.compiler.get_new_ident(desired_name)
         ctx.compiler.set_metadata(ctx.node, SaneIdentifier, actual_name)
         
-        param_demands = []
+        # Set up Params metadata
+        params = Params()
+        ctx.compiler.set_metadata(ctx.node, Params, params)
+        
         # TODO - also hate this hack.
         for child in seek_all_child_macros(ctx.node, "param"):
             name = get_single_arg(replace(ctx, node=child))
-            param_demands.append("*") # Add a demand for each parameter
-            new_node = ctx.compiler.make_node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[])
-            ctx.node.prepend_child(new_node)
+            params.mapping[name] = True
+            
+            # Check if param has a type child and add it to assume_local_exists
+            assume_local_node = ctx.compiler.make_node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[])
+            type_node = seek_child_macro(child, "type")
+            if type_node:
+                from utils.strutil import cut
+                from core.node import FieldDemandType
+                
+                # Copy the type node to the assume_local_exists node
+                # TODO - when we do generics and unions, we'll need to handle type_node.children properly
+                type_copy = ctx.compiler.make_node(type_node.content, pos=type_node.pos, children=[])
+                assume_local_node.children.append(type_copy)
+                
+                # Also set FieldDemandType metadata like local_macro does
+                _, param_type = cut(type_node.content, " ")
+                ctx.compiler.set_metadata(assume_local_node, FieldDemandType, param_type)
+            
+            ctx.node.prepend_child(assume_local_node)
         
         # Registration moved to register_type method to avoid duplicates
 
@@ -39,9 +71,7 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         desired_name = get_single_arg(ctx)
         actual_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) or desired_name
 
-        param_demands = []
-        for child in seek_all_child_macros(ctx.node, "param"):
-            param_demands.append("*") # Add a demand for each parameter
+        param_demands = self._get_param_demands(ctx)
 
         ctx.compiler.add_dynamic_convention(desired_name, DirectCall(fn=actual_name, receiver=None, demands=param_demands, returns="*"))
 

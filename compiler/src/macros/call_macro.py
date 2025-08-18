@@ -135,9 +135,20 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
             elif len(matching_conventions) == 1:
                 convention = matching_conventions[0]
         else:
-            # If no type information, and there are conventions, pick the first one
+            # If no type information, filter by argument count and pick the first one
             if all_possible_conventions:
-                convention = all_possible_conventions[0]
+                # Filter conventions that match the argument count
+                arg_count = len(ctx.node.children)
+                count_matching_conventions = []
+                for conv in all_possible_conventions:
+                    if conv.demands is None or len(conv.demands) == arg_count:
+                        count_matching_conventions.append(conv)
+                
+                if count_matching_conventions:
+                    convention = count_matching_conventions[0]
+                else:
+                    # No conventions match the argument count
+                    convention = None
 
         if not convention:
             def overload_to_dict(o):
@@ -183,21 +194,30 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
         return convention.returns or "*"
 
     def emission(self, ctx: MacroContext):
-        args_str = ctx.compiler.get_metadata(ctx.node, Args)
-        args1 = args_str.split(" ")
-        ident = ctx.compiler.get_new_ident("_".join(args1))
-        
-        # Try to get the resolved convention from metadata first
         try:
-            resolved_conv = ctx.compiler.get_metadata(ctx.node, ResolvedConvention)
-            convention = resolved_conv.convention
-        except KeyError:
-            # Fallback to the old method if metadata not available
-            convention = self.resolve_convention(ctx)
-        
-        args = collect_child_expressions(ctx)
+            args_str = ctx.compiler.get_metadata(ctx.node, Args)
+            args1 = args_str.split(" ")
+            ident = ctx.compiler.get_new_ident("_".join(args1))
+            
+            # Try to get the resolved convention from metadata first
+            try:
+                resolved_conv = ctx.compiler.get_metadata(ctx.node, ResolvedConvention)
+                convention = resolved_conv.convention
+            except KeyError:
+                # Fallback to the old method if metadata not available
+                convention = self.resolve_convention(ctx)
+            
+            args = collect_child_expressions(ctx)
 
-        call = convention.compile(args)
+            call = convention.compile(args)
 
-        ctx.statement_out.write(f"const {ident} = await {call}\n")
-        ctx.expression_out.write(ident)
+            ctx.statement_out.write(f"const {ident} = await {call}\n")
+            ctx.expression_out.write(ident)
+        except Exception as e:
+            # If the entire call emission fails, produce invalid JavaScript to prevent cascading crashes
+            default_logger.debug(f"Call emission failed for {ctx.node.content}: {e}, producing error marker")
+            args_str = ctx.compiler.get_metadata(ctx.node, Args)
+            args1 = args_str.split(" ")
+            ident = ctx.compiler.get_new_ident("_".join(args1))
+            ctx.statement_out.write(f"const {ident} = ??????COMPILE_ERROR;\n")
+            ctx.expression_out.write(ident)

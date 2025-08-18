@@ -10,7 +10,6 @@ from macros.for_macro import For_macro_provider
 from macros.local_macro import Local_macro_provider
 from macros.fn_macro import Fn_macro_provider
 from macros.exists_macro import Exists_macro_provider
-from macros.param_macro import Param_macro_provider
 from macros.then_macro import Then_macro_provider, Pipeline_macro_provider
 from macros.multi_provider import Multi_provider
 from macros.call_macro import Call_macro_provider
@@ -268,7 +267,6 @@ def create_macrocosm() -> Macrocosm:
         "67lang:last_then": Noop_macro_provider(),
         "67lang:solution": Solution_macro_provider(),
         "must_compile_error": Must_compile_error_macro_provider(),
-        "param": Param_macro_provider(),
         "then": Multi_provider([
             (has_arguments, Pipeline_macro_provider()),
             (None, Scope_macro_provider())
