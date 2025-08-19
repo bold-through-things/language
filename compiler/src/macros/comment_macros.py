@@ -1,13 +1,12 @@
-from core.macro_registry import Macro_code_linking_provider, Macro_emission_provider, Macro_typecheck_provider, MacroRegistry
+from core.macro_registry import MacroRegistry
 
 COMMENT_MACROS = ["#", "//", "/*", "--", "note"]
 
-class Comment_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Macro_code_linking_provider):
-    def emission(self, _):
-        pass
-
-    def typecheck(self, _):
-        pass
-
-    def code_linking(self, _):
-        pass
+class Comment_macro_provider:
+    """Dynamic provider that shadows all processing steps for comment macros"""
+    
+    def __getattr__(self, step_name: str):
+        """Dynamically return no-op function for any step name"""
+        def no_op(_):
+            pass
+        return no_op
