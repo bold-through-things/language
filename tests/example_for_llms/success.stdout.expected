@@ -1,8 +1,16 @@
 Alice 25 true
+Aris
+Aris
 Hello, Alice
 1
 6
-{ name: "Bob", age: 30, city: "New York" }
+{
+  employed: true,
+  company: "67.8%",
+  address: { city: "New York", oblast: "Donetsk Oblast" },
+  name: "Bob",
+  age: 30
+}
 Adult
 1
 2
@@ -13,4 +21,8 @@ Adult
 Alice
 30
 Alicia
-Alice
+Aris
+3
+2
+2
+everything.

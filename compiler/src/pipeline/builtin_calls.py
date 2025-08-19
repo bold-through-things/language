@@ -139,7 +139,10 @@ builtin_calls = {
     "#": [IndexAccessCall(demands=None, returns=None)],
     "~": [CallableInvokeCall(demands=None, returns=None)],
     # TODO - in theory 99% of these should come from the WebIDL spec. TODO, investigate if we can clear this.
-    "length": [FieldCall(field="length", demands=["list"], returns="int")],
+    "length": [
+        FieldCall(field="length", demands=["list"], returns="int"),
+        FieldCall(field="length", demands=["str"], returns="int")
+    ],
     "join": [
         PrototypeCall(constructor="Array", fn="join", demands=["list"], returns="str"),
         PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")

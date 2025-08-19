@@ -43,6 +43,52 @@ note the above is roughly equivalent to following JS
 
 
 
+note here is a **key** idea. here in our realm, you must
+	remember one thing only. here **everything** is functions.
+	**even the fields. even the locals too!**
+
+	so now, to name the Alice yet again, you simply do...
+
+do name
+	string "Aris"
+
+do print
+	get name
+
+note the above is roughly equivalent to following JS
+
+	name = "Aris";
+	console.log(name);
+
+note why then an assignment there? it's simple, **all in arity.**
+	each `local` makes two """functions""" visible. they technically
+	behave a little differently (think scopes) but generally you use
+	them the same way as any other function.
+
+	so `local name` simply created...
+	
+	- a `name()` getter
+	- a `name(value)` setter
+
+	and now to prove that they are functions, let's change up all the words
+	a little.
+
+get print
+	do name
+
+note that still works. how come?! the `do` and `get` are aliases.
+	why would they not be?! it's all functions. you as the user know
+	much better what's a getter, what's a setter.
+
+	and then again, is this a `do`? or is it `get`?
+
+	do ? the database
+		string "SELECT * FROM ..."
+	get ? from database
+		string "SELECT * FROM ..."
+
+
+
 fn greet
 	param person
 do
@@ -95,10 +141,20 @@ note the above is roughly equivalent to following JS
 
 
 local user
-	note no inline entries yet. TODO!
 	dict
+		entry
+			string "employed"
+			true
+		entry
+			string "company"
+			string "67.8%"
+		entry
+			string "address"
+			dict
+				entry
+					string "city"
+					string "New York"
 
-note we must populate the dict manually for now
 do # the user
 	string "name"
 	string "Bob"
@@ -108,8 +164,10 @@ do # the user
 	int 30
 
 do # the user
-	string "city"
-	string "New York"
+	string "address"
+then do #
+	string "oblast"
+	string "Donetsk Oblast"
 
 do print
 	get user
@@ -117,10 +175,16 @@ do print
 note the above is roughly equivalent to following JS
 	
 	let user = {
-		name: "Bob",
-		age: 30,
-		city: "New York"
+		"employed": true,
+		"company": "67.8%"
+		"address": {
+			"city": "New York"
+		}
 	};
+
+	user["name"] = "Bob"
+	user["age"] = 30
+	user["address"]["oblast"] = "Donetsk Oblast"
 	
 	console.log(user);
 
@@ -206,6 +270,252 @@ note the above is roughly equivalent to following JS
 	alice.name = "Alicia";
 	console.log(alice.name);
 	console.log(name);
+
+
+
+note the pipelining syntax.
+
+	perhaps the greatest thing about this language?
+	you can write things imperatively, and still avoid the
+	`local` spam.
+
+local 1
+	int 1
+
+get 1 as ?
+then do add
+	get ?
+	int 1
+then do print
+
+note that just printed 3. indeed, as 1 + 1 is... wait, what even?!
+
+	oh right, we passed things manually and automatically. consider
+	what it actually compiled to...
+
+	const _last_0x1 = age;
+	const _question = age;
+	const _last_0x2 = add(_last_0x1, _question, 10);
+	console.log(_last_0x2);
+
+	this is the **key**. the previous computed value becomes the **first** argument.
+	that is the `then` semantics. if you omit the `then`...
+
+get 1 as ?
+do add
+	get ?
+	int 1
+then do print
+
+note then you get a 2, as you'd expect. or otherwise...
+
+get 1 as ?
+then do add
+	int 1
+then do print
+
+note this prints 2 as well. it is quite flexible. but even better!
+
+local things_to_say
+	list
+		string "67lang is awesome"
+		string "67lang is flexible as fuck"
+		string "67lang is all you ever need"
+		string "67lang is on the brink"
+		string "67lang is good enough to write a Discord bot"
+		string "67lang is almost good enough for everything."
+
+local max_characters
+	int 0
+local found_word
+	string ""
+
+for thing in
+	get things_to_say
+do
+	for word in
+		do split the thing
+			string " "
+	do
+		note this is needed temporarily... TODO! bad type inference!
+		local word
+			type str
+			get word
+		note this crazy `then` nonsense!
+		get length from word
+		if
+			then get desc
+				get max_characters
+		then
+			note this assigns max_characters!
+			then do max_characters
+			note `into` to set variables...
+			get word into found_word
+			note you could also just...
+			get found_word from word
+
+do print
+	get found_word
+
+note the above is roughly equivalent to following JS
+
+	let things_to_say = [/* a bunch of strings */];
+	let max_characters = 0;
+	let found_word = "";
+	for (let thing of things_to_say) {
+		for (let word of thing.split(" ")) {
+			if (word.length > max_characters) {
+				max_characters = word.length;
+				found_word = word;
+				found_word = word;
+			}
+		}
+	}
+	console.log(found_word);
+
+
+
+do print
+	string "Bob's city"
+	get # from user
+		string "address"
+	then get #
+		string "city"
+
+note no, no, wait! that will not work. it will instead print:
+
+	Bob's city {the entire address object} New York
+
+	you have to be aware of this, my dear. all those pipelining steps do actually
+	"return" their values up the tree. instead...
+
+get # from user
+	string "address"
+do print
+	string "Bob's city"
+	then get #
+		string "city"
+
+
+
+note that we also have this beast...
+
+get # from things_to_say
+	int 0
+then do split
+	string " "
+then chain sort join print
+	string " - what words!"
+
+note the `sort join print` is quite contrived. the main use case
+	for this is probably to access deeply nested values. but i would
+	need to then define several `heap_entry` types and i... can not
+	be arsed!
+
+	the syntax is rock simple:
+
+	`then chain step0 step1 step2 ... last_step`
+
+	one thing which we must note is that you can pass arguments...
+	but only to the step which is `last_step`. all steps implicitly
+	also receive a single argument, which then becomes their firstmost 
+	argument. whatever we are piping.
+
+
+
+note that, oh yeah, you can now do closures! kind of.
+
+	you can now bind the functions.
+
+fn create_counter
+do
+	note you do need a class or dict
+		as the bound values are literals.
+		the Java problem. we will fix it later.
+	note oh good, great, we can't use : in class names.
+		bug! TODO!
+		and in param names too i guess. TODO!
+	type create_counter_store is heap_entry
+		has count
+			type int
+	local _
+		get create_counter_store
+			int 0
+	fn create_counter::count
+		param _
+			type create_counter_store
+	do
+		do add as new
+			get count from _
+			int 1
+		return
+			do count the _
+				get new
+
+	return
+		bind fn create_counter::count as callable
+			get _
+
+local counter
+	do create_counter
+
+do print
+	string "wow, counting!"
+	do ~ the counter
+	do ~ the counter
+	do ~ the counter
+	do ~ the counter
+	do ~ the counter
+	do ~ the counter
+
+note that is rather tedious and quite verbose! but you should
+	celebrate we have it to begin with. we'll get proper closures
+	eventually, with JavaScript it's harder not to!
+
+
+
+note `bind` is far more flexible...
+
+fn bool_printer
+	param value
+		type bool
+	param if_true
+		type str
+	param if_false
+		type str
+do
+	if
+		get value
+	then
+		do print the if_true
+	else
+		do print the if_false
+
+local politely_agree
+	bind fn bool_printer as callable
+		_
+		string "i would indeed like to agree."
+		_
+
+do ~ the politely_agree
+	true
+	string "what?! utter BULLSHIT!"
+
+do ~ the politely_agree
+	false
+	string "what?! utter BULLSHIT!"
+
+
+
+note the above is roughly equivalent to following JS
+	
+	function createCounter() {
+		let count = 0;
+		return function() {
+			return ++count;
+		};
+	}
+
 
 
 
