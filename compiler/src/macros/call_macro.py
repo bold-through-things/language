@@ -29,7 +29,13 @@ class TypeHierarchyChecker:
         if child not in self.hierarchy:
             return False
         
-        return self.is_subtype(self.hierarchy[child], parent)
+        # Check all parent types (hierarchy[child] is now a list)
+        parent_types = self.hierarchy[child]
+        for parent_type in parent_types:
+            if self.is_subtype(parent_type, parent):
+                return True
+        
+        return False
 
 type_checker = TypeHierarchyChecker(type_hierarchy, union_types)
 
@@ -112,8 +118,15 @@ class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
                 def specificity_score(conv):
                     if not hasattr(conv, 'demands') or not conv.demands:
                         return (0, 0)  # No demands, least specific
-                    # Count non-wildcard types (higher score = more specific)
-                    specific_count = sum(1 for d in conv.demands if d != "*")
+                    
+                    # Only count specificity for positions where the actual argument is NOT "*"
+                    # If the caller provides "*", it means "we don't know the type", so we shouldn't
+                    # use that position to prefer one overload over another
+                    specific_count = 0
+                    for i, (actual, demanded) in enumerate(zip(actual_arg_types, conv.demands)):
+                        if actual != "*" and demanded != "*":
+                            specific_count += 1
+                    
                     # Tie-breaker: prefer shorter signatures when specificity is equal
                     return (specific_count, -len(conv.demands))
                 

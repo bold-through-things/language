@@ -1,6 +1,9 @@
 local fizz_divisor
+	string ""
 local buzz_divisor
+	string ""
 local n
+	string ""
 
 if
 	do is_tty
@@ -29,9 +32,12 @@ else
 		get input
 		int 1
 
-	do # into n
-		get input
-		int 2
+	do n
+		local _generics_please_i_beg_you_help
+			type str
+			do #
+				get input
+				int 2
 
 local i
 	int 0
@@ -78,6 +84,9 @@ do
 	do print
 		get out
 	
-	do add into i
-		get i
-		int 1
+	do i
+		local _fix_the_fucking_add_return_type
+			type int
+			do add
+				get i
+				int 1

@@ -155,7 +155,7 @@ void (async () => {
                 person = person
                 const _0xd4_person = await person
                 let _0x18__0x17_pipeline_result = _0xd4_person
-                const _0xd3_concat = await ("Hello, " + _0x18__0x17_pipeline_result)
+                const _0xd3_concat = await String.prototype.concat.call("Hello, ", _0x18__0x17_pipeline_result)
                 let _0x19__0x16_pipeline_result = _0xd3_concat
                 return _0x19__0x16_pipeline_result;
             }

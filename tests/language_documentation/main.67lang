@@ -231,9 +231,11 @@ do # the 67lang.features
 
 note that was too much yapping. let's truncate it a little.
 
-do # the 67lang.features
-	string "the flexibility of identifiers"
-then do slice
+local _we_really_needed_the_generics_yesterday!
+	type list
+	do # the 67lang.features
+		string "the flexibility of identifiers"
+do slice the _we_really_needed_the_generics_yesterday!
 	int 0
 	int 67
 then do join

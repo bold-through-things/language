@@ -112,19 +112,17 @@
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "constructor": "String",
-        "fn": "split",
+        "field": "split",
         "demands": [
-          "str"
+          "SymbolConstructor"
         ],
-        "returns": "list",
-        "convention": "PrototypeCall"
+        "returns": "uniquesymbol",
+        "convention": "FieldCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
           "str"
         ],
         "returns": "list",
@@ -145,8 +143,8 @@
         "fn": "split",
         "demands": [
           "str",
-          "str",
-          "int"
+          "regex",
+          "float"
         ],
         "returns": "list",
         "convention": "PrototypeCall"
@@ -156,8 +154,18 @@
         "fn": "split",
         "demands": [
           "str",
-          "regex",
-          "int"
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str",
+          "float"
         ],
         "returns": "list",
         "convention": "PrototypeCall"
@@ -173,19 +181,17 @@
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "constructor": "String",
-        "fn": "split",
+        "field": "split",
         "demands": [
-          "str"
+          "SymbolConstructor"
         ],
-        "returns": "list",
-        "convention": "PrototypeCall"
+        "returns": "uniquesymbol",
+        "convention": "FieldCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
           "str"
         ],
         "returns": "list",
@@ -206,8 +212,8 @@
         "fn": "split",
         "demands": [
           "str",
-          "str",
-          "int"
+          "regex",
+          "float"
         ],
         "returns": "list",
         "convention": "PrototypeCall"
@@ -217,8 +223,18 @@
         "fn": "split",
         "demands": [
           "str",
-          "regex",
-          "int"
+          "str"
+        ],
+        "returns": "list",
+        "convention": "PrototypeCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          "str",
+          "str",
+          "float"
         ],
         "returns": "list",
         "convention": "PrototypeCall"

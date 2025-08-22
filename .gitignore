@@ -17,4 +17,4 @@ test_diffs/
 *.tmp
 
 # TODO remove me (should probably download into a temp dir)
-webref
+typescript_defs

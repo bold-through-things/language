@@ -52,9 +52,12 @@ do
 		do push the rows
 			get row
 	
-	do add into i
-		get i
-		int 1
+	do i
+		local _please_fix_the_fucking_varargs_add
+			type int
+			do add
+				get i
+				int 1
 
 for row in
 	get rows

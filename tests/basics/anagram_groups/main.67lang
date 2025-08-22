@@ -42,7 +42,10 @@ for group in
 	do values the groups
 do
 	do print
-		do join the group
+		do join
+			local group_typed
+				type list
+				get group
 			string " "
 
 

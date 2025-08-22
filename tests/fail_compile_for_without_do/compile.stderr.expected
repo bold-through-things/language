@@ -14,7 +14,25 @@
     "content": "67lang:call i",
     "error": "failed to assert: could not find a matching overload for i with arguments []",
     "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": []
+    "visible_overloads": [
+      {
+        "field": "i",
+        "demands": [
+          "HTMLElementTagNameMap"
+        ],
+        "returns": "HTMLElement",
+        "convention": "FieldCall"
+      },
+      {
+        "field": "i",
+        "demands": [
+          "HTMLElementTagNameMap",
+          "HTMLElement"
+        ],
+        "returns": "None",
+        "convention": "FieldCall"
+      }
+    ]
   },
   {
     "recoverable": false,
@@ -31,6 +49,24 @@
     "content": "67lang:call i",
     "error": "failed to assert: could not find a matching overload for i with arguments None",
     "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": []
+    "visible_overloads": [
+      {
+        "field": "i",
+        "demands": [
+          "HTMLElementTagNameMap"
+        ],
+        "returns": "HTMLElement",
+        "convention": "FieldCall"
+      },
+      {
+        "field": "i",
+        "demands": [
+          "HTMLElementTagNameMap",
+          "HTMLElement"
+        ],
+        "returns": "None",
+        "convention": "FieldCall"
+      }
+    ]
   }
 ]

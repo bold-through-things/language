@@ -139,32 +139,7 @@ builtin_calls = {
     "#": [IndexAccessCall(demands=None, returns=None)],
     "~": [CallableInvokeCall(demands=None, returns=None)],
     # TODO - in theory 99% of these should come from the WebIDL spec. TODO, investigate if we can clear this.
-    "length": [
-        FieldCall(field="length", demands=["list"], returns="int"),
-        FieldCall(field="length", demands=["str"], returns="int")
-    ],
-    "join": [
-        PrototypeCall(constructor="Array", fn="join", demands=["list"], returns="str"),
-        PrototypeCall(constructor="Array", fn="join", demands=["list", "str"], returns="str")
-    ],
-    "sort": [PrototypeCall(constructor="Array", fn="sort", demands=["list"], returns="list")],
-    "push": [PrototypeCall(constructor="Array", fn="push", demands=["list", "*"], returns="list")], # TODO - does it actually return..?
-    "reverse": [PrototypeCall(constructor="Array", fn="reverse", demands=["list"], returns="list")],
-    "split": [
-        # oh gods what the fuck even
-        PrototypeCall(constructor="String", fn="split", demands=["str"], returns="list"),
-        PrototypeCall(constructor="String", fn="split", demands=["str", "str"], returns="list"),
-        PrototypeCall(constructor="String", fn="split", demands=["str", "regex"], returns="list"),
-        PrototypeCall(constructor="String", fn="split", demands=["str", "str", "int"], returns="list"),
-        PrototypeCall(constructor="String", fn="split", demands=["str", "regex", "int"], returns="list"),
-    ],
-    "trim": [PrototypeCall(constructor="String", fn="trim", demands=["str"], returns="str")],
-    "toString": [DirectCall(fn="String", receiver=None, demands=["*"], returns="str")],
-    "slice": [
-        PrototypeCall(constructor="Array", fn="slice", demands=["list"], returns="list"),
-        PrototypeCall(constructor="Array", fn="slice", demands=["list", "int"], returns="list"),
-        PrototypeCall(constructor="Array", fn="slice", demands=["list", "int", "int"], returns="list")
-    ],
+    # Note: length, push, reverse, trim, slice, toString are now provided by TypeScript builtins
 
     # Explicitly define built-ins that map to operators
     "concat": [NaryOperatorCall(operator="+", demands=None, returns=None)],
@@ -194,7 +169,7 @@ builtin_calls = {
     #  and remove unnecessary await. 
     #  then again, considering this is almost guaranteed to only be used for debugging...
     #  does it matter?
-    "prompt": [DirectCall(fn="prompt", receiver="_67lang", demands=None, returns=None)],
+    "prompt": [DirectCall(fn="prompt", receiver="_67lang", demands=None, returns="str")],
     "stdin": [DirectCall(fn="stdin", receiver="_67lang", demands=None, returns="str")],
     "is_tty": [DirectCall(fn="is_tty", receiver="_67lang", demands=None, returns=None)],
     
@@ -442,15 +417,27 @@ builtin_calls = {
     "finally": [PrototypeCall(constructor="Promise", fn="finally", demands=["Promise", "*"], returns="Promise")],
 }
 
-# Load WebIDL builtins if available
+# Load TypeScript builtins if available
 try:
-    from compiler_types.webidl_builtins import webidl_calls
-    for name, calls in webidl_calls.items():
+    from compiler_types.typescript_builtins import typescript_calls
+    for name, calls in typescript_calls.items():
         if name in builtin_calls:
             builtin_calls[name].extend(calls)
         else:
             builtin_calls[name] = calls
 except ImportError as e:
-    # It's ok if the file doesn't exist
-    print(e)
+    # It's ok if the file doesn't exist - TypeScript builtins are generated separately
+    print(f"TypeScript builtins not found: {e}")
     pass
+
+# Commented out WebIDL builtins - now using TypeScript definitions instead
+# try:
+#     from compiler_types.webidl_builtins import webidl_calls
+#     for name, calls in webidl_calls.items():
+#         if name in builtin_calls:
+#             builtin_calls[name].extend(calls)
+#         else:
+#             builtin_calls[name] = calls
+# except ImportError:
+#     # It's ok if the file doesn't exist
+#     pass

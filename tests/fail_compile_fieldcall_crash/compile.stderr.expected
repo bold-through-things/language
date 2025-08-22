@@ -15,7 +15,33 @@
     "content": "67lang:call event",
     "error": "failed to assert: could not find a matching overload for event with arguments []",
     "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": []
+    "visible_overloads": [
+      {
+        "field": "event",
+        "demands": [
+          "HTMLScriptElement"
+        ],
+        "returns": "str",
+        "convention": "FieldCall"
+      },
+      {
+        "field": "event",
+        "demands": [
+          "HTMLScriptElement",
+          "str"
+        ],
+        "returns": "None",
+        "convention": "FieldCall"
+      },
+      {
+        "field": "event",
+        "demands": [
+          "Window"
+        ],
+        "returns": "Event",
+        "convention": "FieldCall"
+      }
+    ]
   },
   {
     "recoverable": false,
@@ -33,6 +59,32 @@
     "content": "67lang:call event",
     "error": "failed to assert: could not find a matching overload for event with arguments None",
     "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": []
+    "visible_overloads": [
+      {
+        "field": "event",
+        "demands": [
+          "HTMLScriptElement"
+        ],
+        "returns": "str",
+        "convention": "FieldCall"
+      },
+      {
+        "field": "event",
+        "demands": [
+          "HTMLScriptElement",
+          "str"
+        ],
+        "returns": "None",
+        "convention": "FieldCall"
+      },
+      {
+        "field": "event",
+        "demands": [
+          "Window"
+        ],
+        "returns": "Event",
+        "convention": "FieldCall"
+      }
+    ]
   }
 ]

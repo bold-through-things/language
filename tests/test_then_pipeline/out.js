@@ -95,7 +95,7 @@ void (async () => {
                     let _0x6_words = _0xe_length
                     _0x6_words
                     const _0x12_words = await _0x6_words
-                    const _0x11_toString = await String(_0x12_words)
+                    const _0x11_toString = await Number.prototype.toString.call(_0x12_words)
                     const _0x10_final_count = await (_0x1_final_count = _0x11_toString)
                     _0x10_final_count
                 }

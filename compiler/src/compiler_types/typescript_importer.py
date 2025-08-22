@@ -1,0 +1,561 @@
+#!/usr/bin/env python3
+"""
+Import TypeScript definition files and extract builtin types/functions.
+
+This script replaces the WebIDL importer to handle JavaScript builtins,
+DOM APIs, and Deno APIs from TypeScript definition files.
+"""
+
+import json
+import os
+import argparse
+import sys
+import re
+import urllib.request
+import pprint
+from typing import Dict, List, Optional, Any
+from dataclasses import dataclass
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+from pipeline.builtin_calls import PrototypeCall, DirectCall, NewCall, FieldCall, IndexAccessCall
+from typescript_parser import (
+    parse_typescript_content, TSParameter, TSFunction, TSProperty, 
+    TSInterface, TSTypeAlias, TSDeclare, TSConstructor
+)
+from typescript_corrections import apply_typescript_corrections
+
+# Repository configurations for automatic file discovery
+REPO_CONFIGS = [
+    {
+        "name": "TypeScript",
+        "api_url": "https://api.github.com/repos/microsoft/TypeScript/contents/src/lib",
+        "base_url": "https://raw.githubusercontent.com/microsoft/TypeScript/main/src/lib",
+        "patterns": ["*full.d.ts", "dom*.d.ts", "es202*.d.ts"]  # Full libs, DOM APIs, modern ES
+    },
+    {
+        "name": "Deno", 
+        "api_url": "https://api.github.com/repos/denoland/deno/contents/cli/tsc/dts",
+        "base_url": "https://raw.githubusercontent.com/denoland/deno/main/cli/tsc/dts",
+        "patterns": ["lib.deno*.d.ts", "lib.dom*.d.ts", "lib.es202*.d.ts"]  # All Deno APIs and modern ES
+    }
+]
+
+# Type mapping from TypeScript to 67lang types
+TYPE_MAPPING = {
+    "string": "str",
+    "number": "float",
+    "boolean": "bool",
+    "void": "None",
+    "undefined": "None",
+    "null": "None",
+    "any": "*",
+    "unknown": "*",
+    "object": "dict",
+    "Array": "list",
+    "Promise": "Promise",
+    "RegExp": "regex",
+    "Date": "Date",
+    "Error": "Error",
+    "Function": "*",
+    # Constructor to primitive mappings
+    "String": "str",
+    "Number": "float", 
+    "Boolean": "bool",
+    # DOM specific
+    "Element": "Element",
+    "Document": "Document",
+    "Window": "Window",
+    "HTMLElement": "HTMLElement",
+    "Event": "Event",
+    "Node": "Node",
+    # TODO: Parsing complex TypeScript interface types like Symbol methods would require
+    # implementing a full TypeScript type system. For now, map this complex type to regex.
+    "{[Symbol.split](string:string,limit?:number):string[];}": "regex",
+}
+
+def download_file_if_missing(url: str, filepath: str, file_sources: dict = None) -> None:
+    """Download TypeScript definition file if it doesn't exist locally."""
+    if not os.path.exists(filepath):
+        print(f"Downloading {url} to {filepath}")
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        try:
+            urllib.request.urlretrieve(url, filepath)
+            print(f"Successfully downloaded {filepath}")
+        except Exception as e:
+            # Find which file triggered this download
+            filename = os.path.basename(filepath)
+            source_file = file_sources.get(filename, "unknown") if file_sources else "unknown"
+            print(f"FATAL ERROR: Failed to download {url}: {e}")
+            print(f"CONTEXT: Download of {filename} was triggered by reference in: {source_file}")
+            raise
+    else:
+        print(f"Using cached {filepath}")
+
+def ts_type_to_67lang_type(ts_type: str, constructor_context: str = None) -> str:
+    """Convert TypeScript type to 67lang type."""
+    # Handle TypeScript 'this' type - resolve to constructor context
+    if ts_type.strip() == "this":
+        if constructor_context is None:
+            raise RuntimeError(f"Encountered TypeScript 'this' type without constructor context")
+        return TYPE_MAPPING.get(constructor_context, constructor_context)
+    
+    # Handle union types - take the first non-undefined type
+    if "|" in ts_type:
+        types = [t.strip() for t in ts_type.split("|")]
+        for t in types:
+            if t not in ["undefined", "null"]:
+                return TYPE_MAPPING.get(t, t)
+        return TYPE_MAPPING.get(types[0], types[0])
+    
+    # Handle array types
+    if ts_type.endswith("[]"):
+        return "list"
+    
+    # Handle generic types
+    if "<" in ts_type and ">" in ts_type:
+        base_type = ts_type.split("<")[0]
+        if base_type == "Array":
+            return "list"
+        if base_type == "Promise":
+            # 67lang is async by default - unwrap Promise<T> to T
+            inner_type = ts_type[ts_type.find("<")+1:ts_type.rfind(">")]
+            return ts_type_to_67lang_type(inner_type, constructor_context)
+        return TYPE_MAPPING.get(base_type, base_type)
+    
+    return TYPE_MAPPING.get(ts_type, ts_type)
+
+
+def is_dictionary_like_interface(interface_def: TSInterface) -> bool:
+    """Check if an interface is dictionary-like (all properties are optional and no methods)."""
+    if not interface_def or not interface_def.members:
+        return False
+    
+    # Check if all members are optional properties (no methods)
+    for member in interface_def.members:
+        if isinstance(member, TSFunction):
+            return False
+        if isinstance(member, TSProperty) and not member.optional:
+            return False
+    
+    return True
+
+def extract_builtins_from_declarations(declarations: list) -> tuple[Dict[str, List], Dict[str, List], List[str], Dict[str, List], set[str]]:
+    """Extract builtin definitions and type information from parsed TypeScript declarations.
+    
+    TODO: Replace these insane tuple returns with a proper dataclass! This is getting ridiculous.
+    """
+    builtins = {}
+    union_types = {}
+    dictionary_interfaces = []
+    interface_inheritance = {}  # Maps interface_name -> list of parent interfaces
+    concrete_constructors = set()  # Track which types have actual constructors
+    
+    for declaration in declarations:
+        if isinstance(declaration, TSTypeAlias):
+            # Handle union types like BufferSource = ArrayBufferView | ArrayBuffer
+            if declaration.members:  # Union type
+                union_types[declaration.name] = declaration.members
+            # For non-union type aliases, we could add them to type mappings if needed
+            
+        elif isinstance(declaration, TSConstructor):
+            # Handle constructor declarations from 'declare var' statements
+            constructor_name = declaration.name
+            
+            # Generate overloads for optional parameters
+            min_args = sum(1 for p in declaration.parameters if not p.optional)
+            for arg_count in range(min_args, len(declaration.parameters) + 1):
+                param_types = ["*" if p.name.startswith("...") else ts_type_to_67lang_type(p.type) for p in declaration.parameters[:arg_count]]
+                return_type = ts_type_to_67lang_type(declaration.return_type)
+                
+                call = NewCall(constructor=constructor_name, demands=param_types, returns=return_type)
+                
+                if constructor_name not in builtins:
+                    builtins[constructor_name] = []
+                builtins[constructor_name].append(call)
+                
+                # Track that this type has a concrete constructor
+                concrete_constructors.add(constructor_name)
+                
+        elif isinstance(declaration, TSInterface):
+            interface_name = declaration.name
+            
+            # Collect inheritance relationships
+            if declaration.extends:
+                interface_inheritance[interface_name] = declaration.extends
+            
+            # Check if this is a dictionary-like interface
+            if is_dictionary_like_interface(declaration):
+                dictionary_interfaces.append(interface_name)
+            
+            # Generate methods and properties
+            for member in declaration.members:
+                if isinstance(member, TSFunction):
+                    name = member.name
+                    params = member.parameters
+                    # Resolve 'this' return type to the concrete interface type
+                    return_type = ts_type_to_67lang_type(member.return_type, interface_name)
+                    
+                    # Generate overloads for optional parameters
+                    min_args = sum(1 for p in params if not p.optional)
+                    for arg_count in range(min_args, len(params) + 1):
+                        
+                        # Special handling for global interfaces and functions
+                        if interface_name in ["Window", "WindowOrWorkerGlobalScope", "WorkerGlobalScope"]:
+                            # These interface methods are global functions
+                            param_types = ["*" if p.name.startswith("...") else ts_type_to_67lang_type(p.type, interface_name) for p in params[:arg_count]]
+                            call = DirectCall(fn=name, receiver=None, demands=param_types, returns=return_type)
+                        else:
+                            # Regular interface methods
+                            param_types = ["*" if p.name.startswith("...") else ts_type_to_67lang_type(p.type, interface_name) for p in params[:arg_count]]
+                            demands = [interface_name] + param_types
+                            call = PrototypeCall(constructor=interface_name, fn=name, demands=demands, returns=return_type)
+                        
+                        if name not in builtins:
+                            builtins[name] = []
+                        builtins[name].append(call)
+                
+                elif isinstance(member, TSProperty):
+                    # Generate property getters and setters
+                    prop_name = member.name
+                    # Resolve 'this' property type to the concrete interface type
+                    prop_type = ts_type_to_67lang_type(member.property_type, interface_name)
+                    
+                    # Properties use FieldCall for both getting and setting
+                    # Getter: FieldCall with just the object type returns the property value
+                    getter_call = FieldCall(field=prop_name, demands=[interface_name], returns=prop_type)
+                    
+                    if prop_name not in builtins:
+                        builtins[prop_name] = []
+                    builtins[prop_name].append(getter_call)
+                    
+                    # Generate setter if property is settable
+                    if member.settable:
+                        setter_call = FieldCall(field=prop_name, demands=[interface_name, prop_type], returns="None")
+                        builtins[prop_name].append(setter_call)
+                
+                elif isinstance(member, TSIndexSignature):
+                    # Generate index access calls for [key: type]: value patterns
+                    key_type = ts_type_to_67lang_type(member.key_type, interface_name)
+                    value_type = ts_type_to_67lang_type(member.value_type, interface_name)
+                    
+                    # Index access getter: obj[key] -> value
+                    getter_call = IndexAccessCall(demands=[interface_name, key_type], returns=value_type)
+                    
+                    # Index access setter: obj[key] = value -> void
+                    setter_call = IndexAccessCall(demands=[interface_name, key_type, value_type], returns="None")
+                    
+                    if "#" not in builtins:
+                        builtins["#"] = []
+                    builtins["#"].extend([getter_call, setter_call])
+    
+    return builtins, union_types, dictionary_interfaces, interface_inheritance, concrete_constructors
+
+def discover_and_filter_files():
+    """Discover TypeScript definition files using glob patterns and follow reference directives."""
+    import json
+    import fnmatch
+    import re
+    
+    all_files = {}
+    file_sources = {}  # Maps filename -> source_file that referenced it
+    cache_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'typescript_defs')
+    
+    for repo_config in REPO_CONFIGS:
+        print(f"Discovering files from {repo_config['name']} repository...")
+        
+        try:
+            response = urllib.request.urlopen(repo_config["api_url"])
+            files_list = json.loads(response.read().decode())
+            
+            for file_info in files_list:
+                filename = file_info["name"]
+                if filename.endswith(".d.ts"):
+                    # Check if filename matches any of our glob patterns
+                    for pattern in repo_config["patterns"]:
+                        if fnmatch.fnmatch(filename, pattern):
+                            download_url = f"{repo_config['base_url']}/{filename}"
+                            all_files[filename] = download_url
+                            file_sources[filename] = "initial_discovery"
+                            print(f"  Found: {filename}")
+                            break
+            
+        except Exception as e:
+            print(f"FATAL ERROR: Could not fetch file list from {repo_config['name']}: {e}")
+            raise
+    
+    # Process reference directives in downloaded files to find additional libs
+    processed_files = set()
+    while True:
+        new_refs_found = False
+        
+        for filename, url in list(all_files.items()):
+            if filename in processed_files:
+                continue
+                
+            filepath = os.path.join(cache_dir, filename)
+            download_file_if_missing(url, filepath, file_sources)
+            processed_files.add(filename)
+            
+            # Parse reference directives
+            with open(filepath, 'r', encoding='utf-8') as f:
+                content = f.read()
+                
+            # Extract lib references like /// <reference lib="es5" />
+            ref_matches = re.findall(r'///\s*<reference\s+lib="([^"]+)"\s*/>', content)
+            for lib_name in ref_matches:
+                # Try multiple filename patterns
+                lib_name_underscore = lib_name.replace(".", "_")
+                possible_filenames = [
+                    f"{lib_name}.d.ts", 
+                    f"{lib_name}.generated.d.ts",
+                    f"lib.{lib_name}.d.ts",
+                    f"lib.{lib_name_underscore}.d.ts"
+                ]
+                
+                # Check if we already have any of these files
+                already_have_file = any(ref_filename in all_files for ref_filename in possible_filenames)
+                if already_have_file:
+                    continue
+                
+                # Try to find which file actually exists by checking HTTP status
+                found_file = False
+                for ref_filename in possible_filenames:
+                    for repo_config in REPO_CONFIGS:
+                        ref_url = f"{repo_config['base_url']}/{ref_filename}"
+                        try:
+                            # Check if file exists without downloading
+                            req = urllib.request.Request(ref_url, method='HEAD')
+                            urllib.request.urlopen(req)
+                            # If we get here, file exists
+                            all_files[ref_filename] = ref_url
+                            file_sources[ref_filename] = filename
+                            print(f"  Found reference: {ref_filename} -> {ref_url}")
+                            new_refs_found = True
+                            found_file = True
+                            break
+                        except:
+                            # File doesn't exist, try next pattern
+                            continue
+                    if found_file:
+                        break
+                
+                if not found_file:
+                    print(f"FATAL ERROR: Could not find any file for reference lib='{lib_name}' from {filename}")
+                    print(f"TRIED: {possible_filenames}")
+                    raise FileNotFoundError(f"No matching file found for lib reference '{lib_name}'")
+        
+        if not new_refs_found:
+            break
+    
+    return all_files
+
+def main():
+    parser = argparse.ArgumentParser(description='Import TypeScript definitions to generate builtins.')
+    parser.add_argument('--cache-dir', default='typescript_defs', help='Directory to cache TypeScript definition files')
+    args = parser.parse_args()
+
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    cache_dir = os.path.join(script_dir, args.cache_dir)
+    
+    # Discover all files matching our patterns
+    typescript_files = discover_and_filter_files()
+    print(f"\nFound {len(typescript_files)} TypeScript definition files to process")
+    
+    # Step 1: Parse all TypeScript files
+    all_declarations = []
+    for filename, url in typescript_files.items():
+        filepath = os.path.join(cache_dir, filename)
+        download_file_if_missing(url, filepath)
+        
+        print(f"Parsing {filename}...")
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+        declarations = parse_typescript_content(content, filepath)
+        all_declarations.extend(declarations)
+    
+    # Step 2: Apply corrections to Microsoft's broken TypeScript types
+    print("\nApplying corrections to Microsoft's broken TypeScript definitions...")
+    all_declarations = apply_typescript_corrections(all_declarations)
+    
+    # Step 3: Extract builtins from corrected declarations
+    print("Extracting builtins from corrected declarations...")
+    all_builtins, all_union_types, all_dictionary_interfaces, all_interface_inheritance, all_concrete_constructors = extract_builtins_from_declarations(all_declarations)
+    
+    # Unroll interface methods into concrete constructor overloads
+    def unroll_interface_methods():
+        """Replace PrototypeCall with interface constructors with concrete constructor overloads."""
+        new_builtins = {}
+        
+        for method_name, calls in all_builtins.items():
+            new_calls = []
+            for call in calls:
+                if isinstance(call, PrototypeCall):
+                    # Find concrete constructors that implement this interface
+                    interface_name = call.constructor
+                    concrete_implementors = []
+                    
+                    # Check if the interface itself has a constructor
+                    if interface_name in all_concrete_constructors:
+                        concrete_implementors.append(interface_name)
+                    
+                    # Find concrete constructors that extend this interface
+                    for concrete_constructor in all_concrete_constructors:
+                        if concrete_constructor in all_interface_inheritance:
+                            parents = all_interface_inheritance[concrete_constructor]
+                            if interface_name in parents:
+                                concrete_implementors.append(concrete_constructor)
+                    
+                    # If we found concrete implementors, create overloads for each
+                    if concrete_implementors:
+                        for concrete_constructor in concrete_implementors:
+                            # Replace the first demand (receiver type) with concrete constructor
+                            new_demands = call.demands[:]  # Copy the list
+                            if new_demands and new_demands[0] == interface_name:
+                                new_demands[0] = concrete_constructor
+                            
+                            # Create new PrototypeCall with concrete constructor and updated demands
+                            concrete_call = PrototypeCall(
+                                constructor=concrete_constructor,
+                                fn=call.fn,
+                                demands=new_demands,
+                                returns=call.returns
+                            )
+                            new_calls.append(concrete_call)
+                    else:
+                        # No concrete implementors found, keep original (may fail at runtime)
+                        new_calls.append(call)
+                else:
+                    # Not a PrototypeCall, keep as-is
+                    new_calls.append(call)
+            
+            new_builtins[method_name] = new_calls
+        
+        return new_builtins
+    
+    # Apply the unrolling
+    all_builtins = unroll_interface_methods()
+    
+    # Build a map of equivalent union types (same members in possibly different order)
+    def get_union_signature(union_name):
+        """Get a normalized signature for a union type for comparison"""
+        if union_name in all_union_types:
+            # Sort members to normalize order
+            return tuple(sorted(all_union_types[union_name]))
+        return (union_name,)  # Not a union, just the type itself
+    
+    # Find groups of equivalent union types
+    union_equivalence = {}  # Maps union type name to canonical representative
+    processed_unions = set()
+    for union_name in all_union_types:
+        if union_name in processed_unions:
+            continue
+        sig = get_union_signature(union_name)
+        # Find all unions with the same signature
+        equivalent_unions = [name for name in all_union_types 
+                           if get_union_signature(name) == sig]
+        # Use the first one alphabetically as canonical
+        canonical = sorted(equivalent_unions)[0]
+        for name in equivalent_unions:
+            union_equivalence[name] = canonical
+            processed_unions.add(name)
+    
+    # Helper to normalize demands using canonical union types and type mappings
+    def normalize_demands(demands):
+        if demands is None:
+            return None
+        normalized = []
+        for d in demands:
+            # First apply union equivalence
+            d = union_equivalence.get(d, d)
+            # Then apply type mapping normalization
+            d = ts_type_to_67lang_type(d)
+            normalized.append(d)
+        return normalized
+    
+    # Deduplicate calls considering equivalent union types and normalize the original calls
+    for name, calls in all_builtins.items():
+        seen = []
+        seen_normalized = []
+        for call in calls:
+            # Normalize the demands in the original call
+            if hasattr(call, 'demands') and call.demands:
+                call.demands = normalize_demands(call.demands)
+            
+            # Check if we've seen an equivalent overload
+            if call not in seen_normalized:
+                seen.append(call)
+                seen_normalized.append(call)
+        all_builtins[name] = seen
+    
+    # Write builtin calls output file
+    output_path = os.path.join(script_dir, "typescript_builtins.py")
+    with open(output_path, "w") as f:
+        f.write("# This file is automatically generated. Do not edit directly.\n")
+        f.write("from pipeline.builtin_calls import PrototypeCall, DirectCall, NewCall, FieldCall\n\n")
+        f.write("typescript_calls = {\n")
+        for name, calls in sorted(all_builtins.items()):
+            f.write(f'    "{name}": [\n')
+            for call in calls:
+                f.write(f"        {call!r},\n")
+            f.write("    ],\n")
+        f.write("}\n")
+    
+    # Generate new type hierarchy from scratch - now supports multiple parents per type
+    type_hierarchy = {
+        # Basic numeric subtyping - int is a subtype of float
+        "int": ["float"],
+    }
+    
+    # Add interface inheritance relationships
+    for child_interface, parent_interfaces in all_interface_inheritance.items():
+        if child_interface not in type_hierarchy:
+            type_hierarchy[child_interface] = []
+        type_hierarchy[child_interface].extend(parent_interfaces)
+    
+    # Add union type relationships - member types are subtypes of the union
+    for union_name, member_types in all_union_types.items():
+        for member_type in member_types:
+            # Apply type mapping to ensure consistency with 67lang types
+            mapped_member_type = ts_type_to_67lang_type(member_type)
+            mapped_union_name = ts_type_to_67lang_type(union_name)
+            
+            if mapped_member_type not in type_hierarchy:
+                type_hierarchy[mapped_member_type] = []
+            type_hierarchy[mapped_member_type].append(mapped_union_name)
+    
+    # TODO: Parse TypedArray inheritance from TypeScript properly instead of hardcoding
+    # TypeScript uses structural typing and implicit relationships that should be extractable
+    # from the type definitions. Look for patterns like shared properties or declaration merging.
+    # Add TypedArray inheritance relationships (TypeScript doesn't declare these with explicit extends)
+    typed_arrays = [
+        "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", 
+        "Int32Array", "Uint32Array", "Float32Array", "Float64Array", 
+        "BigInt64Array", "BigUint64Array", "DataView"
+    ]
+    for typed_array in typed_arrays:
+        if typed_array not in type_hierarchy:
+            type_hierarchy[typed_array] = []
+        type_hierarchy[typed_array].append("ArrayBufferView")
+    
+    # Use the collected dictionary-like interfaces that dict should be compatible with
+    if all_dictionary_interfaces:
+        type_hierarchy["dict"] = list(set(all_dictionary_interfaces))  # Remove duplicates
+    
+    # Write type hierarchy file with pretty formatting
+    type_hierarchy_path = os.path.join(script_dir, "type_hierarchy.py")
+    with open(type_hierarchy_path, "w") as f:
+        f.write("# This file is automatically generated. Do not edit directly.\n")
+        f.write("# type_hierarchy: dict[str, list[str]] - each type can have multiple supertypes\n")
+        f.write("type_hierarchy = ")
+        pprint.pprint(type_hierarchy, stream=f, sort_dicts=True)
+        f.write("\n\n")
+        f.write("union_types = ")
+        pprint.pprint(all_union_types, stream=f, sort_dicts=True)
+        f.write("\n")
+    
+    print(f"Generated {len(all_builtins)} builtin definitions in {output_path}")
+    print(f"Generated new type hierarchy with {len(type_hierarchy)} types and {len(all_union_types)} unions")
+
+if __name__ == "__main__":
+    main()
