@@ -208,6 +208,8 @@ note in this chapter number four (4) we dare index some dictionaries
 
 local 67lang.features
 	dict
+		type str for K
+		type str for V
 
 do # the 67lang.features
 	string "the get macro"
@@ -233,6 +235,7 @@ note that was too much yapping. let's truncate it a little.
 
 local _we_really_needed_the_generics_yesterday!
 	type list
+		type str
 	do # the 67lang.features
 		string "the flexibility of identifiers"
 do slice the _we_really_needed_the_generics_yesterday!
@@ -279,6 +282,7 @@ note that my disappointment in programming languages is indeed immeasurable.
 
 local i_hate_this_trash!
 	list
+		type str
 		string "Python? insufferable import semantics, no macros, optional correctness."
 		string "Lisp? does not run on JS proper, insufferable syntax, indentation is demanded yet optional."
 		string "Java? [statement removed due to violating Terms of Service]"

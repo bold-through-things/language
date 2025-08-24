@@ -20,7 +20,7 @@ Text: " Numbers: 42 " -> Bytes: [ Uint8Array(11) [
 Original:  Hello World  -> Encoded:  SGVsbG8gV29ybGQ=  -> Decoded:  Hello World
 
 --- Testing JSON.stringify/parse ---
-Original object -> JSON:  {"name":"Claude","type":"AI","version":42}
+Original object -> JSON:  {"name":"Claude","type":"AI","version":"42"}
 Parsed back -> name:  Claude
 
 --- Testing fetch (data URL) ---

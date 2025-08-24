@@ -72,7 +72,7 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
-            let _0x0_user = {["name"]: "Bob", ["age"]: 30, ["city"]: "New York"}
+            let _0x0_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"}
             _0x0_user
             const _0x17_user = await _0x0_user
             let _0x3__0x2_pipeline_result = _0x17_user

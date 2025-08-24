@@ -1,6 +1,7 @@
 fn process_list
 	param my_list
 		type list
+			type str
 do
 	# Test that we can call slice on a typed list parameter
 	# This should resolve the ambiguous overload issue
@@ -16,6 +17,7 @@ do
 # Test the function with a list
 local test_list
 	list
+		type str
 		string "a"
 		string "b"
 		string "c"

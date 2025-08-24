@@ -119,6 +119,7 @@ class TSProperty:
 @dataclass
 class TSInterface:
     name: str
+    type_params: List[str]  # e.g., ["T"] for Array<T>
     extends: List[str]
     members: List[Any]
 
@@ -281,10 +282,22 @@ class TypeScriptParser:
         # Get interface name
         interface_name = self.expect_token(TokenType.IDENTIFIER).value
         
-        # Skip generic type parameters if present
+        # Parse generic type parameters if present
+        type_params = []
         if isinstance(self.current_item(), BracketNode):
             item = self.current_item()
-            if item.opener.value == "<":
+            if item.opener and item.opener.value == "<":
+                # Parse type parameters using sub-parser
+                param_parser = TypeScriptParser(item, self.filename)
+                while param_parser.current_item():
+                    token = param_parser.current_token()
+                    if token and token.type == TokenType.IDENTIFIER:
+                        type_params.append(token.value)
+                        param_parser.advance()
+                    elif token and token.value == ",":
+                        param_parser.advance()  # skip comma
+                    else:
+                        break
                 self.advance()  # consume the angle bracket node
         
         # Handle optional 'extends' clause
@@ -343,6 +356,7 @@ class TypeScriptParser:
         
         return TSInterface(
             name=interface_name,
+            type_params=type_params,
             extends=parent_interfaces,
             members=members
         )

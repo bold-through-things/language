@@ -2,13 +2,14 @@
 
 from dataclasses import replace
 from pipeline.js_conversion import NEWLINE
-from pipeline.steps import seek_child_macro, seek_all_child_macros
+from pipeline.steps import seek_child_macro, seek_all_child_macros, TypeCheckingStep
 from pipeline.builtin_calls import DirectCall
 from core.macro_registry import MacroContext, Macro_emission_provider, Macro_preprocess_provider
 from utils.strutil import Joiner
 from core.node import Params, Inject_code_start, SaneIdentifier
 from utils.common_utils import get_single_arg
 from utils.logger import default_logger
+from compiler_types.proper_types import Type, TypeParameter
 
 
 class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
@@ -39,33 +40,39 @@ class Fn_macro_provider(Macro_emission_provider, Macro_preprocess_provider):
         params = Params()
         ctx.compiler.set_metadata(ctx.node, Params, params)
         
-        # TODO - also hate this hack.
+        # Find the do block - functions must have bodies
+        do_block = seek_child_macro(ctx.node, "do")
+        ctx.compiler.assert_(do_block is not None, ctx.node, "function must have a do block")
+        
+        # Create proper local declarations for parameters inside the do block
         for child in seek_all_child_macros(ctx.node, "param"):
             name = get_single_arg(replace(ctx, node=child))
             params.mapping[name] = True
             
-            # Check if param has a type child and add it to assume_local_exists
-            assume_local_node = ctx.compiler.make_node(f"67lang:assume_local_exists {name}", pos=ctx.node.pos, children=[])
+            # Create a local declaration for this parameter
+            local_node = ctx.compiler.make_node(f"local {name}", pos=child.pos, children=[])
+            
+            # Add type information if present
             type_node = seek_child_macro(child, "type")
             if type_node:
-                from utils.strutil import cut
-                from core.node import FieldDemandType
-                
-                # Copy the type node to the assume_local_exists node
-                # TODO - when we do generics and unions, we'll need to handle type_node.children properly
-                type_copy = ctx.compiler.make_node(type_node.content, pos=type_node.pos, children=[])
-                assume_local_node.children.append(type_copy)
-                
-                # Also set FieldDemandType metadata like local_macro does
-                _, param_type = cut(type_node.content, " ")
-                ctx.compiler.set_metadata(assume_local_node, FieldDemandType, param_type)
+                type_copy = type_node.copy_recursive()
+                local_node.append_child(type_copy)
             
-            ctx.node.prepend_child(assume_local_node)
+            # Add obtain_param_value to get the parameter value
+            obtain_value_node = ctx.compiler.make_node(f"67lang:obtain_param_value {name}", pos=child.pos, children=[])
+            local_node.append_child(obtain_value_node)
+            
+            # Inject the local declaration at the beginning of the do block
+            do_block.prepend_child(local_node)
         
         # Registration moved to register_type method to avoid duplicates
 
+        # Only process non-param children (param children are handled above)
         for child in ctx.node.children:
-            ctx.current_step.process_node(replace(ctx, node=child))
+            from core.node import Macro
+            child_macro = ctx.compiler.get_metadata(child, Macro)
+            if child_macro != "param":
+                ctx.current_step.process_node(replace(ctx, node=child))
 
     def register_type(self, ctx: MacroContext):
         desired_name = get_single_arg(ctx)

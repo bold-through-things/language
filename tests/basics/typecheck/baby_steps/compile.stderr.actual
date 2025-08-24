@@ -34,15 +34,21 @@
       {
         "fn": "_0x13_test_int",
         "demands": [],
-        "returns": "int",
+        "returns": {
+          "name": "int"
+        },
         "convention": "LocalAccessCall"
       },
       {
         "fn": "_0x13_test_int",
         "demands": [
-          "int"
+          {
+            "name": "int"
+          }
         ],
-        "returns": "int",
+        "returns": {
+          "name": "int"
+        },
         "convention": "LocalAccessCall"
       }
     ]
@@ -52,7 +58,7 @@
     "line": 42,
     "char": 0,
     "content": "67lang:call test_str",
-    "error": "failed to assert: could not find a matching overload for test_str with arguments ['int']",
+    "error": "failed to assert: could not find a matching overload for test_str with arguments [PrimitiveType(name='int')]",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
@@ -84,21 +90,27 @@
     "line": 50,
     "char": 0,
     "content": "67lang:call test_bool",
-    "error": "failed to assert: could not find a matching overload for test_bool with arguments ['str']",
+    "error": "failed to assert: could not find a matching overload for test_bool with arguments [PrimitiveType(name='str')]",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
         "fn": "_0x1c_test_bool",
         "demands": [],
-        "returns": "bool",
+        "returns": {
+          "name": "bool"
+        },
         "convention": "LocalAccessCall"
       },
       {
         "fn": "_0x1c_test_bool",
         "demands": [
-          "bool"
+          {
+            "name": "bool"
+          }
         ],
-        "returns": "bool",
+        "returns": {
+          "name": "bool"
+        },
         "convention": "LocalAccessCall"
       }
     ]
@@ -108,7 +120,7 @@
     "line": 53,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments ['bool']",
+    "error": "failed to assert: could not find a matching overload for split with arguments [PrimitiveType(name='bool')]",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
@@ -123,51 +135,148 @@
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str"
+          {
+            "name": "str"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "regex"
+          {
+            "name": "str"
+          },
+          {
+            "name": "regex"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "regex",
-          "float"
+          {
+            "name": "str"
+          },
+          {
+            "name": "regex"
+          },
+          {
+            "name": "float"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "str"
+          {
+            "name": "str"
+          },
+          {
+            "name": "str"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "str",
-          "float"
+          {
+            "name": "str"
+          },
+          {
+            "name": "str"
+          },
+          {
+            "name": "float"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       }
     ]
@@ -177,7 +286,7 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments ['list']",
+    "error": "failed to assert: could not find a matching overload for split with arguments [ComplexType(name='list', type_params=(PrimitiveType(name='str'),), fields=(('length', PrimitiveType(name='int')),))]",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
@@ -192,51 +301,192 @@
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str"
+          {
+            "name": "str"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "regex"
+          {
+            "name": "str"
+          },
+          {
+            "name": "regex"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "regex",
-          "float"
+          {
+            "name": "str"
+          },
+          {
+            "name": "regex"
+          },
+          {
+            "name": "float"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "str"
+          {
+            "name": "str"
+          },
+          {
+            "name": "str"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       },
       {
         "constructor": "String",
         "fn": "split",
         "demands": [
-          "str",
-          "str",
-          "float"
+          {
+            "name": "str"
+          },
+          {
+            "name": "str"
+          },
+          {
+            "name": "float"
+          }
         ],
-        "returns": "list",
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
+        "convention": "PrototypeCall"
+      }
+    ]
+  },
+  {
+    "recoverable": false,
+    "line": 56,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments ['*']",
+    "error_type": "AMBIGUOUS_OVERLOAD",
+    "matching_overloads": [
+      {
+        "field": "split",
+        "demands": [
+          "SymbolConstructor"
+        ],
+        "returns": "uniquesymbol",
+        "convention": "FieldCall"
+      },
+      {
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          {
+            "name": "str"
+          }
+        ],
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str"
+            }
+          ],
+          "fields": [
+            [
+              "length",
+              {
+                "name": "int"
+              }
+            ]
+          ]
+        },
         "convention": "PrototypeCall"
       }
     ]

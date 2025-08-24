@@ -1,4 +1,4 @@
-{ name: "Bob", age: 30, city: "New York" }
+{ name: "Bob", age: "30", city: "New York" }
 Set(3) { "apple", "banana", "cherry" }
 [ -2, -1, 0, 1, 2, 3 ]
 [ 1, 2, 3 ]

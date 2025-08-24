@@ -83,29 +83,33 @@ void (async () => {
                 {
                     const scope = _67lang.scope(parent_scope)
 
-                    const _0xb_phrase = await _0x0_phrase
-                    let _0x3__0x2_pipeline_result = _0xb_phrase
+                    const _0xe_phrase = await _0x0_phrase
+                    let _0x3__0x2_pipeline_result = _0xe_phrase
                     _0x3__0x2_pipeline_result
-                    const _0xd__0x2_pipeline_result = await _0x3__0x2_pipeline_result
-                    const _0xc_split = await String.prototype.split.call(_0xd__0x2_pipeline_result, " ")
-                    let _0x5__0x4_pipeline_result = _0xc_split
+                    const _0x10__0x2_pipeline_result = await _0x3__0x2_pipeline_result
+                    const _0xf_split = await String.prototype.split.call(_0x10__0x2_pipeline_result, " ")
+                    let _0x5__0x4_pipeline_result = _0xf_split
                     _0x5__0x4_pipeline_result
-                    const _0xf__0x4_pipeline_result = await _0x5__0x4_pipeline_result
-                    const _0xe_length = await (_0xf__0x4_pipeline_result.length)
-                    let _0x6_words = _0xe_length
+                    const _0x12__0x4_pipeline_result = await _0x5__0x4_pipeline_result
+                    const _0x11_length = await (_0x12__0x4_pipeline_result.length)
+                    let _0x6_words = _0x11_length
                     _0x6_words
-                    const _0x12_words = await _0x6_words
-                    const _0x11_toString = await Number.prototype.toString.call(_0x12_words)
-                    const _0x10_final_count = await (_0x1_final_count = _0x11_toString)
-                    _0x10_final_count
+                    const _0x15_words = await _0x6_words
+                    const _0x14_toString = await Number.prototype.toString.call(_0x15_words)
+                    const _0x13_final_count = await (_0x1_final_count = _0x14_toString)
+                    _0x13_final_count
+                    const _0x16_words = await _0x6_words
+                    let _0x8__0x7_pipeline_result = _0x16_words
+                    let _0x9_test = _0x8__0x7_pipeline_result
+                    _0x9_test
                 }
             } 
 
-            const _0x14_final_count = await _0x1_final_count
-            let _0x9__0x8_pipeline_result = _0x14_final_count
-            const _0x13_print = await console.log(_0x9__0x8_pipeline_result)
-            let _0xa__0x7_pipeline_result = _0x13_print
-            _0xa__0x7_pipeline_result
+            const _0x18_final_count = await _0x1_final_count
+            let _0xc__0xb_pipeline_result = _0x18_final_count
+            const _0x17_print = await console.log(_0xc__0xb_pipeline_result)
+            let _0xd__0xa_pipeline_result = _0x17_print
+            _0xd__0xa_pipeline_result
         }
     } 
 })();

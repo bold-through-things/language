@@ -82,6 +82,14 @@ class Node:
             child.indented_repr(next_indent) for child in self._children
         )
 
+    def copy_recursive(self) -> "Node":
+        """Create a recursive copy of this node and all its children."""
+        new_node = Node(self.content, self.pos, [])
+        for child in self._children:
+            new_node._children.append(child.copy_recursive())
+            new_node._children[-1].parent = new_node
+        return new_node
+
 @dataclass
 class Indexers:
     mapping: dict[str, Any] = field(default_factory=dict)
@@ -111,8 +119,8 @@ class Macro(str): pass
 class Args(str): pass
 class SaneIdentifier(str): pass
 
-@dataclass
-class FieldDemandType(str): pass
+@dataclass  
+class FieldDemandType: pass  # TODO: Remove this class and store Type objects directly
 
 @dataclass
 class TypeFieldNames:

@@ -15,6 +15,9 @@ do
 		string " "
 	then as words do length
 	then into final_count do toString
+	local test
+		type int
+		get words
 
 note print the result
 do print

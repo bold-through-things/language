@@ -2,12 +2,14 @@ note test the new dict and set inline syntax
 
 local user
 	dict
+		type str for K
+		type str for V
 		entry
 			string "name"
 			string "Bob"
 		entry
 			string "age"
-			int 30
+			string "30"
 		entry
 			string "city"
 			string "New York"
@@ -26,6 +28,7 @@ do print
 
 local my_list
 	list
+		type int
 		note this one is implicit append
 		int 0
 		append
@@ -44,6 +47,7 @@ do print
 note test simple list (no operations)
 local simple_list
 	list
+		type int
 		int 1
 		int 2
 		int 3

@@ -4,13 +4,6 @@ Aris
 Hello, Alice
 1
 6
-{
-  employed: true,
-  company: "67.8%",
-  address: { city: "New York", oblast: "Donetsk Oblast" },
-  name: "Bob",
-  age: 30
-}
 Adult
 1
 2
@@ -26,8 +19,6 @@ Aris
 2
 2
 everything.
-Bob's city { city: "New York", oblast: "Donetsk Oblast" } New York
-Bob's city New York
 67lang,awesome,is  - what words!
 wow, counting! 1 2 3 4 5 6
 i would indeed like to agree.

@@ -22,6 +22,7 @@ from macros.scope_macro import Scope_macro_provider, SCOPE_MACRO
 from macros.type_macro import Type_macro_provider # Added import
 from macros.try_catch_macro import Try_macro_provider, Catch_macro_provider, Finally_macro_provider, Throw_macro_provider
 from macros.bind_macro import Bind_macro_provider
+from macros.obtain_param_value_macro import Obtain_param_value_macro_provider
 from core.node import Node, Position, Macro, Args
 from utils.strutil import IndentedStringIO, Joiner
 from pipeline.steps import MacroProcessingStep
@@ -32,12 +33,13 @@ from pipeline.steps import PreprocessingStep
 from linking.code_block_linking import CodeBlockLinkingStep  
 from pipeline.steps import TypeCheckingStep
 from pipeline.steps import TypeRegistrationStep
+from pipeline.steps.type_registration import TypeDetailRegistrationStep
 from pipeline.steps import MustCompileErrorVerificationStep
 from pipeline.steps import JavaScriptEmissionStep
 from utils.logger import default_logger
 
 class Macrocosm:
-    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry, preprocess_registry: MacroRegistry, type_registration_registry: MacroRegistry):
+    def __init__(self, emission_registry: MacroRegistry, typecheck_registry: MacroRegistry, code_linking_registry: MacroRegistry, preprocess_registry: MacroRegistry, type_registration_registry: MacroRegistry, type_detail_registration_registry: MacroRegistry):
         self.nodes: list[Node] = []
         # TODO. incremental is good enough for now, but we'll have to stabilize it.
         #  the last thing you would want is the entire output changing because you added a statement. that's a lot of
@@ -47,8 +49,7 @@ class Macrocosm:
         self.compile_errors: list[dict[str, Any]] = []
         self._js_output: str = ""
         
-        # Metadata tracking system to replace TypeMap
-        self._node_metadata: dict[int, dict[type, Any]] = {}
+        # Metadata is now stored directly on Node objects via setattr
 
         # Dynamic call conventions for user-defined types
         self._dynamic_conventions: dict[str, list[Any]] = {}
@@ -59,7 +60,8 @@ class Macrocosm:
         self.processing_steps: list[MacroProcessingStep] = [
             CodeBlockLinkingStep(code_linking_registry), 
             PreprocessingStep(preprocess_registry),
-            TypeRegistrationStep(type_registration_registry),
+            TypeRegistrationStep(type_registration_registry),     # Pass 1: Register basic type shells
+            TypeDetailRegistrationStep(type_detail_registration_registry), # Pass 2: Fill in field details
             TypeCheckingStep(typecheck_registry),
             JavaScriptEmissionStep(emission_registry),
             MustCompileErrorVerificationStep()
@@ -76,17 +78,17 @@ class Macrocosm:
 
     def get_metadata(self, node: Node, metadata_type: type):
         """Get metadata for a node, auto-computing Macro and Args if missing"""
-        node_id = id(node)
-        default_logger.log("metadata", f"get metadata {str(metadata_type)} for {node_id} {node.content}")
+        default_logger.log("metadata", f"get metadata {str(metadata_type)} for {id(node)} {node.content}")
+        
+        # Use getattr to retrieve metadata directly from the node object
+        attr_name = f"_metadata_{metadata_type.__name__}"
         
         # Auto-compute Macro and Args if not present
-
-        # TODO. why. why does that need to be commented out. this doesn't make any sense. explain. i beg you explain.
-        if metadata_type in [Macro, Args] and (node_id not in self._node_metadata or metadata_type not in self._node_metadata[node_id]):
+        if metadata_type in [Macro, Args] and not hasattr(node, attr_name):
             self._ensure_macro_args_computed(node)
-
-        if node_id in self._node_metadata and metadata_type in self._node_metadata[node_id]:
-            return self._node_metadata[node_id][metadata_type]
+        
+        if hasattr(node, attr_name):
+            return getattr(node, attr_name)
         
         # Check if there's a default factory from the old TypeMap system
         from utils.utils import TypeMap
@@ -106,17 +108,17 @@ class Macrocosm:
 
     def set_metadata(self, node: Node, metadata_type: type, value: Any):
         """Set metadata for a node"""
-        node_id = id(node)
-        if node_id not in self._node_metadata:
-            self._node_metadata[node_id] = {}
-        self._node_metadata[node_id][metadata_type] = value
+        # Use setattr to store metadata directly on the node object
+        attr_name = f"_metadata_{metadata_type.__name__}"
+        setattr(node, attr_name, value)
         default_logger.log("metadata", f"set metadata {str(metadata_type)} {str(value)} for {id(node)} {node.content}")
 
     def invalidate_metadata(self, node: Node):
         """Invalidate metadata for a node and all its descendants when tree changes"""
-        node_id = id(node)
-        if node_id in self._node_metadata:
-            del self._node_metadata[node_id]
+        # Remove all metadata attributes from the node
+        attrs_to_remove = [attr for attr in dir(node) if attr.startswith('_metadata_')]
+        for attr in attrs_to_remove:
+            delattr(node, attr)
         
         # Recursively invalidate children
         for child in node.children:
@@ -264,6 +266,7 @@ def create_macrocosm() -> Macrocosm:
         "noop": Noop_macro_provider(),
         "type": Type_macro_provider(),
         "67lang:assume_local_exists": Noop_macro_provider(),
+        "67lang:obtain_param_value": Obtain_param_value_macro_provider(),
         "67lang:last_then": Noop_macro_provider(),
         "67lang:solution": Solution_macro_provider(),
         "must_compile_error": Must_compile_error_macro_provider(),
@@ -337,6 +340,7 @@ def create_macrocosm() -> Macrocosm:
     typecheck = create_registry("typecheck")
     emission = create_registry("emission")
     type_registration = create_registry("type_registration")
+    type_detail_registration = create_registry("type_detail_registration")
     
     # this is the new way of doing things
     # we still need to bridge this to the old way, for now
@@ -349,9 +353,10 @@ def create_macrocosm() -> Macrocosm:
         typecheck.add_fn(getattr(provider, "typecheck", None), macro)
         emission.add_fn(getattr(provider, "emission", None), macro)
         type_registration.add_fn(getattr(provider, "register_type", None), macro)
+        type_detail_registration.add_fn(getattr(provider, "register_type_details", None), macro)
         code_linking_registry.add_fn(getattr(provider, "code_linking", None), macro)  
     
-    rv = Macrocosm(emission, typecheck, code_linking_registry, preprocess, type_registration)
+    rv = Macrocosm(emission, typecheck, code_linking_registry, preprocess, type_registration, type_detail_registration)
     rv.registries.update(registries)
     return rv
     

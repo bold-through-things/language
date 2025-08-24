@@ -21,14 +21,18 @@
         "demands": [
           "HTMLScriptElement"
         ],
-        "returns": "str",
+        "returns": {
+          "name": "str"
+        },
         "convention": "FieldCall"
       },
       {
         "field": "event",
         "demands": [
           "HTMLScriptElement",
-          "str"
+          {
+            "name": "str"
+          }
         ],
         "returns": "None",
         "convention": "FieldCall"
@@ -36,9 +40,17 @@
       {
         "field": "event",
         "demands": [
-          "Window"
+          {
+            "name": "Window",
+            "type_params": [],
+            "fields": []
+          }
         ],
-        "returns": "Event",
+        "returns": {
+          "name": "Event",
+          "type_params": [],
+          "fields": []
+        },
         "convention": "FieldCall"
       }
     ]
@@ -65,14 +77,18 @@
         "demands": [
           "HTMLScriptElement"
         ],
-        "returns": "str",
+        "returns": {
+          "name": "str"
+        },
         "convention": "FieldCall"
       },
       {
         "field": "event",
         "demands": [
           "HTMLScriptElement",
-          "str"
+          {
+            "name": "str"
+          }
         ],
         "returns": "None",
         "convention": "FieldCall"
@@ -80,9 +96,17 @@
       {
         "field": "event",
         "demands": [
-          "Window"
+          {
+            "name": "Window",
+            "type_params": [],
+            "fields": []
+          }
         ],
-        "returns": "Event",
+        "returns": {
+          "name": "Event",
+          "type_params": [],
+          "fields": []
+        },
         "convention": "FieldCall"
       }
     ]

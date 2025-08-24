@@ -18,8 +18,12 @@ local i
 	int 0
 local header
 	list
+		type str
 local rows
 	list
+		type dict
+			type str for K
+			type str for V
 for line in
 	get lines
 do
@@ -39,6 +43,8 @@ do
 		
 		local row
 			dict
+				type str for K
+				type str for V
 		
 		for kv in
 			get zipped_data

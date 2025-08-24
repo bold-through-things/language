@@ -56,7 +56,7 @@ class LocalNameSearchStrategy:
             try:
                 demanded = ctx.compiler.get_metadata(ctx.node, FieldDemandType)
                 default_logger.typecheck(f"LocalNameSearchStrategy: found type {demanded} in metadata")
-                return UpwalkerResult(ctx.node, str(demanded))
+                return UpwalkerResult(ctx.node, demanded)  # Keep as Type object
             except KeyError:
                 default_logger.typecheck(f"LocalNameSearchStrategy: no type in metadata")
                 # Fall back to looking for type node

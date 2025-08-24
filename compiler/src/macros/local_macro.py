@@ -9,7 +9,8 @@ from utils.common_utils import collect_child_expressions, get_single_arg
 from utils.logger import default_logger
 from utils.error_types import ErrorType
 from utils.strutil import cut
-
+from compiler_types.proper_types import Type, TypeParameter
+from core.exceptions import graceful_typecheck
 
 class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider):
     def preprocess(self, ctx: MacroContext):
@@ -31,41 +32,57 @@ class Local_macro_provider(Macro_emission_provider, Macro_typecheck_provider, Ma
         
         args = collect_child_expressions(ctx) if len(ctx.node.children) > 0 else []
         
+        
         ctx.statement_out.write(f"let {name}")
         if len(args) > 0:
             ctx.statement_out.write(f" = {args[-1]}")
         ctx.statement_out.write(NEWLINE)
         ctx.expression_out.write(name)
 
+    @graceful_typecheck
     def typecheck(self, ctx: MacroContext):
-        type_node = seek_child_macro(ctx.node, "type")
-
-        received = None
+        # Collect type parameter and received type from children
+        demanded_type = None
+        received_type = None
+        
         typecheck_step = ctx.current_step
         assert isinstance(typecheck_step, TypeCheckingStep)
+        
         for child in ctx.node.children:
-            received = typecheck_step.process_node(replace(ctx, node=child)) or received
+            child_result = typecheck_step.process_node(replace(ctx, node=child))
+            
+            if isinstance(child_result, TypeParameter):
+                # This is a type declaration
+                demanded_type = child_result.type_expr
+            elif isinstance(child_result, Type):
+                # This is a value with a type
+                received_type = child_result
+            elif child_result is not None:
+                # Legacy string type - need to handle during transition
+                default_logger.typecheck(f"Warning: got legacy string type {child_result}")
+                # For now, just use the received value for compatibility
+                received_type = child_result
 
-        if not type_node:
-            # Type inference is now always enabled
-            if received:
-                type_node = Node(f"type {received}", ctx.node.pos, [])
-            else:
-                return received or "*"
+        # Always error if no value provided (avoid Billion Dollar Mistake)
+        if received_type is None:
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded_type or 'a value'} but is given None", ErrorType.MISSING_TYPE)
         
-        _, demanded = cut(type_node.content, " ")
-        default_logger.typecheck(f"{ctx.node.content} demanded {demanded} and was given {received} (children {[c.content for c in ctx.node.children]})")
+        # Type inference if no explicit type declared
+        if demanded_type is None:
+            demanded_type = received_type
         
-        # Store the local variable type information in compiler metadata for upward walking
+        default_logger.typecheck(f"{ctx.node.content} demanded {demanded_type} and was given {received_type}")
+        
+        # Store the local variable type information for upward walking
         from core.node import FieldDemandType
-        ctx.compiler.set_metadata(ctx.node, FieldDemandType, demanded)
+        ctx.compiler.set_metadata(ctx.node, FieldDemandType, demanded_type)
         
-        # Also verify type matching if we have demanded type
-        if demanded:
-            if received is None:
-                # If we have a demanded type but no received value, that's an error
-                ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given None", ErrorType.MISSING_TYPE)
-            elif received not in {"*", demanded}:
-                ctx.compiler.assert_(False, ctx.node, f"field demands {demanded} but is given {received}", ErrorType.FIELD_TYPE_MISMATCH)
+        # Verify type compatibility
+        if isinstance(received_type, Type) and isinstance(demanded_type, Type):
+            if not received_type.is_assignable_to(demanded_type):
+                ctx.compiler.assert_(False, ctx.node, f"field demands {demanded_type} but is given {received_type}", ErrorType.FIELD_TYPE_MISMATCH)
+        elif str(received_type) != str(demanded_type) and str(received_type) != "*":
+            # Legacy string comparison for transition
+            ctx.compiler.assert_(False, ctx.node, f"field demands {demanded_type} but is given {received_type}", ErrorType.FIELD_TYPE_MISMATCH)
         
-        return demanded or received or "*"
+        return demanded_type

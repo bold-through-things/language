@@ -78,15 +78,21 @@ void (async () => {
                 bot = bot
                 message = message
                 is_trusted = is_trusted
-                const _0x19_bot = await bot
-                let _0x3__0x2_pipeline_result = _0x19_bot
-                const _0x1a_message = await message
-                let _0x5__0x4_pipeline_result = _0x1a_message
-                const _0x1b_is_trusted = await is_trusted
-                let _0x7__0x6_pipeline_result = _0x1b_is_trusted
-                const _0x18_print = await console.log("Bot: ", _0x3__0x2_pipeline_result, ", Message: ", _0x5__0x4_pipeline_result, ", Trusted: ", _0x7__0x6_pipeline_result)
-                let _0x8__0x1_pipeline_result = _0x18_print
-                _0x8__0x1_pipeline_result
+                let _0x1_is_trusted = is_trusted
+                _0x1_is_trusted
+                let _0x2_message = message
+                _0x2_message
+                let _0x3_bot = bot
+                _0x3_bot
+                const _0x1c_bot = await _0x3_bot
+                let _0x6__0x5_pipeline_result = _0x1c_bot
+                const _0x1d_message = await _0x2_message
+                let _0x8__0x7_pipeline_result = _0x1d_message
+                const _0x1e_is_trusted = await _0x1_is_trusted
+                let _0xa__0x9_pipeline_result = _0x1e_is_trusted
+                const _0x1b_print = await console.log("Bot: ", _0x6__0x5_pipeline_result, ", Message: ", _0x8__0x7_pipeline_result, ", Trusted: ", _0xa__0x9_pipeline_result)
+                let _0xb__0x4_pipeline_result = _0x1b_print
+                _0xb__0x4_pipeline_result
             }
         } }
     {
@@ -94,36 +100,36 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
-            const _0x1c_print = await console.log("=== Testing bind callable ===")
-            let _0xa__0x9_pipeline_result = _0x1c_print
-            _0xa__0x9_pipeline_result
-
-            let _0xb_bound_handler = ((arg0) => _0x0_handle_message("MyBot", arg0, true))
-            _0xb_bound_handler
-            const _0x1e_bound_handler = await _0xb_bound_handler
-            const _0x1d__tilde_ = await _0x1e_bound_handler("Hello from bind test!")
-            let _0xd__0xc_pipeline_result = _0x1d__tilde_
+            const _0x1f_print = await console.log("=== Testing bind callable ===")
+            let _0xd__0xc_pipeline_result = _0x1f_print
             _0xd__0xc_pipeline_result
 
-            let _0xe_multi_bound = ((arg0, arg1) => _0x0_handle_message(arg0, arg1, false))
-            _0xe_multi_bound
-            const _0x20_multi_bound = await _0xe_multi_bound
-            const _0x1f__tilde_ = await _0x20_multi_bound("AnotherBot", "Multiple unbound test")
-            let _0x10__0xf_pipeline_result = _0x1f__tilde_
+            let _0xe_bound_handler = ((arg0) => _0x0_handle_message("MyBot", arg0, true))
+            _0xe_bound_handler
+            const _0x21_bound_handler = await _0xe_bound_handler
+            const _0x20__tilde_ = await _0x21_bound_handler("Hello from bind test!")
+            let _0x10__0xf_pipeline_result = _0x20__tilde_
             _0x10__0xf_pipeline_result
 
-            let _0x11_fully_bound = (() => _0x0_handle_message("FullyBoundBot", "This message is pre-bound", true))
-            _0x11_fully_bound
-            const _0x22_fully_bound = await _0x11_fully_bound
-            const _0x21__tilde_ = await _0x22_fully_bound()
-            let _0x13__0x12_pipeline_result = _0x21__tilde_
+            let _0x11_multi_bound = ((arg0, arg1) => _0x0_handle_message(arg0, arg1, false))
+            _0x11_multi_bound
+            const _0x23_multi_bound = await _0x11_multi_bound
+            const _0x22__tilde_ = await _0x23_multi_bound("AnotherBot", "Multiple unbound test")
+            let _0x13__0x12_pipeline_result = _0x22__tilde_
             _0x13__0x12_pipeline_result
-            const _0x23_print = await console.log("print manually")
-            let _0x15__0x14_pipeline_result = _0x23_print
-            _0x15__0x14_pipeline_result
-            const _0x24__tilde_ = await (() => console.log("or a bound print"))()
-            let _0x17__0x16_pipeline_result = _0x24__tilde_
-            _0x17__0x16_pipeline_result
+
+            let _0x14_fully_bound = (() => _0x0_handle_message("FullyBoundBot", "This message is pre-bound", true))
+            _0x14_fully_bound
+            const _0x25_fully_bound = await _0x14_fully_bound
+            const _0x24__tilde_ = await _0x25_fully_bound()
+            let _0x16__0x15_pipeline_result = _0x24__tilde_
+            _0x16__0x15_pipeline_result
+            const _0x26_print = await console.log("print manually")
+            let _0x18__0x17_pipeline_result = _0x26_print
+            _0x18__0x17_pipeline_result
+            const _0x27__tilde_ = await (() => console.log("or a bound print"))()
+            let _0x1a__0x19_pipeline_result = _0x27__tilde_
+            _0x1a__0x19_pipeline_result
         }
     } 
 })();

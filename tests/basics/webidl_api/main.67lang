@@ -16,6 +16,7 @@ local decoder
 
 local text_tests
 	list
+		type str
 		string "ASCII text"
 		string "Unicode: 🦕 Deno"
 		string "Numbers: 42"
@@ -68,6 +69,8 @@ do print
 
 local testObj
 	dict
+		type str for K
+		type str for V
 		entry
 			string "name"
 			string "Claude"
@@ -76,7 +79,7 @@ local testObj
 			string "AI"
 		entry
 			string "version"
-			int 42
+			string "42"
 
 local jsonString
 	do JSON.stringify
@@ -102,6 +105,8 @@ do fetch as response
 	string "data:application/json,{"67lang": "is fucking awesome"}"
 	note the params
 	dict
+		type str for K
+		type str for V
 
 do print
 	get response

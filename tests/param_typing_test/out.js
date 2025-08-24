@@ -74,21 +74,23 @@ void (async () => {
             {
                 const scope = _67lang.scope(parent_scope)
                 my_list = my_list
+                let _0x1_my_list = my_list
+                _0x1_my_list
 
 
-                const _0x13_my_list = await my_list
-                const _0x12_slice = await Array.prototype.slice.call(_0x13_my_list)
-                let _0x2__0x1_pipeline_result = _0x12_slice
-                let _0x3_copied_list = _0x2__0x1_pipeline_result
-                _0x3_copied_list
+                const _0x14_my_list = await _0x1_my_list
+                const _0x13_slice = await Array.prototype.slice.call(_0x14_my_list)
+                let _0x3__0x2_pipeline_result = _0x13_slice
+                let _0x4_copied_list = _0x3__0x2_pipeline_result
+                _0x4_copied_list
 
-                const _0x15_copied_list = await _0x3_copied_list
-                const _0x14_reverse = await Array.prototype.reverse.call(_0x15_copied_list)
-                let _0x5__0x4_pipeline_result = _0x14_reverse
-                _0x5__0x4_pipeline_result
-                const _0x16_copied_list = await _0x3_copied_list
-                let _0x7__0x6_pipeline_result = _0x16_copied_list
-                return _0x7__0x6_pipeline_result;
+                const _0x16_copied_list = await _0x4_copied_list
+                const _0x15_reverse = await Array.prototype.reverse.call(_0x16_copied_list)
+                let _0x6__0x5_pipeline_result = _0x15_reverse
+                _0x6__0x5_pipeline_result
+                const _0x17_copied_list = await _0x4_copied_list
+                let _0x8__0x7_pipeline_result = _0x17_copied_list
+                return _0x8__0x7_pipeline_result;
             }
         } }
     {
@@ -96,19 +98,19 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
-            let _0x8_test_list = ["a", "b", "c"]
-            _0x8_test_list
-            const _0x18_test_list = await _0x8_test_list
-            let _0xb__0xa_pipeline_result = _0x18_test_list
-            const _0x17_process_list = await _0x0_process_list(_0xb__0xa_pipeline_result)
-            let _0xc__0x9_pipeline_result = _0x17_process_list
-            let _0xd_result = _0xc__0x9_pipeline_result
-            _0xd_result
-            const _0x1a_result = await _0xd_result
-            let _0x10__0xf_pipeline_result = _0x1a_result
-            const _0x19_print = await console.log(_0x10__0xf_pipeline_result)
-            let _0x11__0xe_pipeline_result = _0x19_print
-            _0x11__0xe_pipeline_result
+            let _0x9_test_list = ["a", "b", "c"]
+            _0x9_test_list
+            const _0x19_test_list = await _0x9_test_list
+            let _0xc__0xb_pipeline_result = _0x19_test_list
+            const _0x18_process_list = await _0x0_process_list(_0xc__0xb_pipeline_result)
+            let _0xd__0xa_pipeline_result = _0x18_process_list
+            let _0xe_result = _0xd__0xa_pipeline_result
+            _0xe_result
+            const _0x1b_result = await _0xe_result
+            let _0x11__0x10_pipeline_result = _0x1b_result
+            const _0x1a_print = await console.log(_0x11__0x10_pipeline_result)
+            let _0x12__0xf_pipeline_result = _0x1a_print
+            _0x12__0xf_pipeline_result
         }
     } 
 })();

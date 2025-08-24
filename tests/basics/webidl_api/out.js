@@ -160,7 +160,7 @@ void (async () => {
             const _0x73_print = await console.log("\n--- Testing JSON.stringify/parse ---")
             let _0x3a__0x39_pipeline_result = _0x73_print
             _0x3a__0x39_pipeline_result
-            let _0x3b_testObj = {["name"]: "Claude", ["type"]: "AI", ["version"]: 42}
+            let _0x3b_testObj = {["name"]: "Claude", ["type"]: "AI", ["version"]: "42"}
             _0x3b_testObj
             const _0x75_testObj = await _0x3b_testObj
             let _0x3e__0x3d_pipeline_result = _0x75_testObj

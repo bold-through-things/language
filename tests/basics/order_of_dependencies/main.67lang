@@ -7,11 +7,19 @@ local lines
 
 local modules
 	dict
+		type str for K
+		type Module for V
 for line in
 	get lines
 do
-	local module
-		dict
+	type Module is heap_entry
+		has id
+			type str
+		has deps
+			type list
+				type str
+		has visited
+			type bool
 
 	local kv
 		do split the line
@@ -21,36 +29,33 @@ do
 	do # the kv
 		int 0
 	then do trim as id
-	do # the module
-		string "id"
-		get id
+
+	local module
+		do Module
+			get id
+			list
+				type str
+			false
+
 	
-	do # the kv
+	do # the kv as
 		int 1
-	then do trim
-	then do split as deps
-		regex /\s+/
-	do # the module
-		string "deps"
-		get deps
+	then do trim as deps_str
 	
 	# TODO - this ought to be a macro.
-	do # the kv
-		int 1
 	if
-		do eq
-			then do trim
-			string ""
+		do none
+			do eq the deps_str
+				string ""
 	then
-		do # the module
-			string "deps"
-			list
+		do trim the deps_str
+		then do split as deps
+			regex /\s+/
+		do deps the module
+			get deps
 	
-	note now that is is honestly phenomenal. we are now thankfully 
-		about to nuke it.
 	do # the modules
-		do # the module
-			string "id"
+		get id from module
 		get module
 
 # print
@@ -64,39 +69,49 @@ do
 type DAG_unroller is heap_entry
 	has dep_loops
 		type list
+			type str
 	has build_order
 		type list
+			type str
 	has modules
 		type dict
+			type str for K
+			type Module for V
 
 fn visit
 	param unroller
 		type DAG_unroller
 	param module
+		type Module
 	param chain
 		type list
+			type str
 		# chain of dependencies currently being inspected - used to detect loops
 do
 	
 	if 
-		do # the module
-			string "visited"
+		get visited the module
 	then
 		return
-	do # the module
-		string "visited"
+	do visited the module
 		true
+
+	if
+		false
+	then
+		note just testing TODO please remove me.
+		do slice the chain
+		then do push
+			do id the module
 
 	# TODO - this shouldn't be using slice. we need a dedicated copy command
 	local next_chain
 		do slice the chain
 	do push the next_chain
-		do # the module
-			string "id"
+		do id the module
 
 	for dep_id in
-		do # the module
-			string "deps"
+		do deps the module
 	do
 		if
 			exists
@@ -106,6 +121,7 @@ do
 		then
 			local dep_loop
 				list
+					type str
 			do push the dep_loop
 				get dep_id
 			do slice the next_chain
@@ -137,14 +153,15 @@ do
 
 	do push
 		get build_order from unroller
-		do # the module
-			string "id"
+		do id the module
 
 local unroller
 	type DAG_unroller
 	do DAG_unroller
 		list
+			type str
 		list
+			type str
 		get modules
 
 for module in
@@ -154,6 +171,7 @@ do
 		get unroller
 		get module
 		list
+			type str
 
 get unroller
 if
@@ -170,3 +188,4 @@ else
 	do print
 		then chain build_order join
 			string "\n"
+

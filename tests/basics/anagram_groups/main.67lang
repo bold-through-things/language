@@ -7,6 +7,9 @@ local words
 
 local groups
 	dict
+		type str for K
+		type list for V
+			type str
 
 for word in
 	get words
@@ -31,6 +34,7 @@ do
 			get groups
 			get key
 			list
+				type str
 
 	do #
 		get groups

@@ -9,7 +9,7 @@
   },
   {
     "recoverable": false,
-    "line": 9,
+    "line": 10,
     "char": 0,
     "content": "67lang:call i",
     "error": "failed to assert: could not find a matching overload for i with arguments []",
@@ -20,14 +20,22 @@
         "demands": [
           "HTMLElementTagNameMap"
         ],
-        "returns": "HTMLElement",
+        "returns": {
+          "name": "HTMLElement",
+          "type_params": [],
+          "fields": []
+        },
         "convention": "FieldCall"
       },
       {
         "field": "i",
         "demands": [
           "HTMLElementTagNameMap",
-          "HTMLElement"
+          {
+            "name": "HTMLElement",
+            "type_params": [],
+            "fields": []
+          }
         ],
         "returns": "None",
         "convention": "FieldCall"
@@ -44,7 +52,7 @@
   },
   {
     "recoverable": false,
-    "line": 9,
+    "line": 10,
     "char": 0,
     "content": "67lang:call i",
     "error": "failed to assert: could not find a matching overload for i with arguments None",
@@ -55,14 +63,22 @@
         "demands": [
           "HTMLElementTagNameMap"
         ],
-        "returns": "HTMLElement",
+        "returns": {
+          "name": "HTMLElement",
+          "type_params": [],
+          "fields": []
+        },
         "convention": "FieldCall"
       },
       {
         "field": "i",
         "demands": [
           "HTMLElementTagNameMap",
-          "HTMLElement"
+          {
+            "name": "HTMLElement",
+            "type_params": [],
+            "fields": []
+          }
         ],
         "returns": "None",
         "convention": "FieldCall"

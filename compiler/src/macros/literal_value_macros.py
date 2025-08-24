@@ -27,7 +27,8 @@ class Number_macro_provider(
             )
 
     def typecheck(self, ctx: MacroContext):
-        return self.number_type.__name__
+        from compiler_types.proper_types import INT, FLOAT
+        return INT if self.number_type is int else FLOAT
 
     def emission(self, ctx: MacroContext):
         args = ctx.compiler.get_metadata(ctx.node, Args)
@@ -47,7 +48,8 @@ class String_macro_provider(
         pass
 
     def typecheck(self, ctx: MacroContext):
-        return "str" if self.kind == "string" else "regex"
+        from compiler_types.proper_types import STRING
+        return STRING if self.kind == "string" else "regex"  # TODO: Create proper regex type
 
     def code_linking(self, _):
         pass

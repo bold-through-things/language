@@ -195,7 +195,7 @@ void (async () => {
                                 const scope = _67lang.scope(parent_scope)
                                 const _0x6b_i = await _0x16_i
                                 let _0x37__0x36_pipeline_result = _0x6b_i
-                                const _0x6a_concat = await String.prototype.concat.call("", _0x37__0x36_pipeline_result)
+                                const _0x6a_concat = await ("" + _0x37__0x36_pipeline_result)
                                 const _0x69_out = await (_0x1d_out = _0x6a_concat)
                                 _0x69_out
                             }

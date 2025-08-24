@@ -112,6 +112,7 @@ note the above is roughly equivalent to following JS
 
 local numbers
 	list
+		type int
 		int 1
 		int 2
 		int 3
@@ -140,37 +141,50 @@ note the above is roughly equivalent to following JS
 
 
 
-local user
-	dict
-		entry
-			string "employed"
-			true
-		entry
-			string "company"
-			string "67.8%"
-		entry
-			string "address"
-			dict
-				entry
-					string "city"
-					string "New York"
+note i commented out this code because
+	`type * for V` conundrum is unclear.
 
-do # the user
-	string "name"
-	string "Bob"
+	we probably will not support that actually...
+	instead i'd rather force the users to know all their dicts
+	by heart.
 
-do # the user
-	string "age"
-	int 30
+	and that's to say, auto `heap_entry` mapping.
+	
+	local user
+		dict
+			type str for K
+			type * for V
+			entry
+				string "employed"
+				true
+			entry
+				string "company"
+				string "67.8%"
+			entry
+				string "address"
+				dict
+					type str for K
+					type str for V
+					entry
+						string "city"
+						string "New York"
 
-do # the user
-	string "address"
-then do #
-	string "oblast"
-	string "Donetsk Oblast"
+	do # the user
+		string "name"
+		string "Bob"
 
-do print
-	get user
+	do # the user
+		string "age"
+		int 30
+
+	do # the user
+		string "address"
+	then do #
+		string "oblast"
+		string "Donetsk Oblast"
+
+	do print
+		get user
 
 note the above is roughly equivalent to following JS
 	
@@ -318,6 +332,7 @@ note this prints 2 as well. it is quite flexible. but even better!
 
 local things_to_say
 	list
+		type str
 		string "67lang is awesome"
 		string "67lang is flexible as fuck"
 		string "67lang is all you ever need"
@@ -375,12 +390,13 @@ note the above is roughly equivalent to following JS
 
 
 
-do print
-	string "Bob's city"
-	get # from user
-		string "address"
-	then get #
-		string "city"
+note also commented out, TODO!
+	do print
+		string "Bob's city"
+		get # from user
+			string "address"
+		then get #
+			string "city"
 
 note no, no, wait! that will not work. it will instead print:
 
@@ -389,12 +405,12 @@ note no, no, wait! that will not work. it will instead print:
 	you have to be aware of this, my dear. all those pipelining steps do actually
 	"return" their values up the tree. instead...
 
-get # from user
-	string "address"
-do print
-	string "Bob's city"
-	then get #
-		string "city"
+	get # from user
+		string "address"
+	do print
+		string "Bob's city"
+		then get #
+			string "city"
 
 
 
