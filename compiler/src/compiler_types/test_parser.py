@@ -3,22 +3,19 @@
 
 import sys
 import os
+import unittest
 from pathlib import Path
 from typescript_parser import parse_typescript_content
 
-def test_all_files():
-    """Test all .d.ts files in typescript_defs - crash hard on first failure."""
-    typescript_defs_dir = Path("typescript_defs")
-    if not typescript_defs_dir.exists():
-        raise RuntimeError(f"Directory {typescript_defs_dir} does not exist")
-    
-    files = list(typescript_defs_dir.glob("*.d.ts"))
-    if not files:
-        raise RuntimeError(f"No .d.ts files found in {typescript_defs_dir}")
-    
-    print(f"Testing {len(files)} TypeScript definition files...")
-    
-    for filepath in sorted(files):
+
+class TypeScriptParserTest(unittest.TestCase):
+    """Test the TypeScript parser functionality."""
+    pass
+
+
+def make_file_test(filepath: Path):
+    """Create a test method for a specific TypeScript file."""
+    def test_method(self):
         print(f"Testing {filepath}...")
         with open(filepath) as f:
             content = f.read()
@@ -26,20 +23,27 @@ def test_all_files():
         # CRASH HARD: Any parsing failure is fatal
         declarations = parse_typescript_content(content, str(filepath))
         print(f"✓ Successfully parsed {len(declarations)} declarations")
+        
+        # Basic assertion that we got something
+        self.assertIsInstance(declarations, list)
     
-    print("✓ All files parsed successfully")
+    return test_method
+
+
+# Dynamically add test methods for each .d.ts file
+typescript_defs_dir = Path(__file__).parent / "typescript_defs"
+if not typescript_defs_dir.exists():
+    raise RuntimeError(f"Directory {typescript_defs_dir} does not exist")
+
+files = list(typescript_defs_dir.glob("*.d.ts"))
+if not files:
+    raise RuntimeError(f"No .d.ts files found in {typescript_defs_dir}")
+
+for filepath in sorted(files):
+    # Create a safe method name from the filename
+    method_name = f"test_{filepath.stem.replace('-', '_').replace('.', '_')}"
+    setattr(TypeScriptParserTest, method_name, make_file_test(filepath))
+
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        # No arguments - test all files, crash hard on first failure
-        test_all_files()
-    else:
-        # Specific file provided
-        filepath = sys.argv[1]
-        print(f"Testing {filepath}...")
-        with open(filepath) as f:
-            content = f.read()
-        
-        # CRASH HARD: Any parsing failure is fatal
-        declarations = parse_typescript_content(content, filepath)
-        print(f"✓ Successfully parsed {len(declarations)} declarations")
+    unittest.main()

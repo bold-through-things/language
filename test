@@ -23,6 +23,7 @@ from subprocess import Popen, PIPE
 from typing import List
 
 from test_diff_reporter import create_test_diff_reporter
+from unit_test_discovery import discover_unit_tests
 
 TEST_ROOT = Path("tests")
 EXECUTABLE = "out.js"
@@ -392,6 +393,8 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--debug", action='store_true', help="execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="skip compilation. assume the tests are already compiled, and only run the existing output")
     parser.add_argument("--expand", action='store_true', help="test two-step compilation: `.67lang → .67lang.expanded → .js` WIP and expected to fail currently!")
+    parser.add_argument("--unit", action='store_true', help="run only unit tests")
+    parser.add_argument("--e2e", action='store_true', help="run only end-to-end tests")
 
     # Parse known args first, then treat everything after -- as compiler args
     if "--" in sys.argv:
@@ -408,6 +411,18 @@ if __name__ == "__main__":
     # Store compiler args on the args object
     args.compiler_args = compiler_args
 
+    # Determine which test types to run
+    run_e2e = True
+    run_unit = True
+    
+    if args.unit and not args.e2e:
+        run_e2e = False
+        run_unit = True
+    elif args.e2e and not args.unit:
+        run_e2e = True
+        run_unit = False
+    # If both or neither specified, run both
+    
     if not args.compile and not args.run:
         # default behavior
         args.run = True
@@ -421,29 +436,69 @@ if __name__ == "__main__":
                 "contain the scawy dinosaurs into this workspace:\n curl -fsSL https://deno.land/install.sh | DENO_INSTALL=.deno sh"
             )
     
-    # Add discovered tests
-    for tc in discover_tests(args):
-        setattr(MyLangTestCase, tc.name, make_test_method(tc, args))
+    # Add discovered e2e tests
+    if run_e2e:
+        for tc in discover_tests(args):
+            setattr(MyLangTestCase, tc.name, make_test_method(tc, args))
     
-    # Add silent compilation tests if they match the glob
+    # Add discovered unit tests
+    if run_unit:
+        unit_tests = discover_unit_tests()
+        for test_name, test_class, test_method_name in unit_tests:
+            # Create a method that runs the specific test method
+            
+            def make_unit_test_method(test_cls, method_name):
+                def unit_test(self):
+                    # Create an instance of the test class and run the method
+                    test_instance = test_cls()
+                    test_method = getattr(test_instance, method_name)
+                    test_method()
+                return unit_test
+            
+            method = make_unit_test_method(test_class, test_method_name)
+            method._is_unit_test = True
+            # Ensure unittest can find it by prefixing with test_
+            unittest_name = f"test_{test_name}" if not test_name.startswith('test_') else test_name
+            setattr(MyLangTestCase, unittest_name, method)
+    
+    # Apply glob filter to ALL tests at the end
     import re
     glob_filter = lambda x: True
     if args.glob:
         pattern = fnmatch.translate(f"**{args.glob}**")
         glob_filter = re.compile(pattern).match
     
-    # Check if silent compilation tests should be included
-    if glob_filter("test_silent_compilation"):
-        pass  # already defined as method
-    else:
-        print(f"ignoring `test_silent_compilation` per midglob `{args.glob}`")
-        delattr(MyLangTestCase, 'test_silent_compilation')
+    # Filter all test methods based on glob and test type flags
+    all_test_methods = [name for name in dir(MyLangTestCase) if name.startswith('test_') or name.startswith('unit_')]
+    for test_method_name in all_test_methods:
+        should_keep = True
         
-    if glob_filter("test_verbose_compilation"):
-        pass  # already defined as method  
-    else:
-        print(f"ignoring `test_verbose_compilation` per midglob `{args.glob}`")
-        delattr(MyLangTestCase, 'test_verbose_compilation')
+        # Check test type filtering
+        test_method = getattr(MyLangTestCase, test_method_name)
+        is_unit_test = hasattr(test_method, '_is_unit_test')
+        
+        if is_unit_test:
+            if not run_unit:
+                should_keep = False
+                print(f"ignoring `{test_method_name}` (unit test, running e2e only)")
+        else:
+            # It's an e2e test (including silent/verbose compilation tests)
+            if not run_e2e:
+                should_keep = False
+                print(f"ignoring `{test_method_name}` (e2e test, running unit only)")
+        
+        # Check glob filtering
+        if should_keep and not glob_filter(test_method_name):
+            should_keep = False
+            print(f"ignoring `{test_method_name}` per midglob `{args.glob}`")
+        
+        # Remove test if it shouldn't be kept
+        if not should_keep:
+            delattr(MyLangTestCase, test_method_name)
     
-    unittest.main()
+    if __name__ == "__main__":
+        loader = unittest.TestLoader()
+        suite = loader.loadTestsFromTestCase(MyLangTestCase)
+        runner = unittest.TextTestRunner()
+        runner.run(suite)
 
