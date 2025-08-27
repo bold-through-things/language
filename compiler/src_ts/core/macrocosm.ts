@@ -4,7 +4,7 @@
  */
 
 import { Node, Position, Macro, Args } from "./node.ts";
-import { MacroRegistry } from "./macro_registry.ts";
+import { MacroRegistry, MacroContext } from "./macro_registry.ts";
 import { defaultLogger } from "../utils/logger.ts";
 import { MacroAssertFailed } from "./exceptions.ts";
 import { ErrorType } from "../utils/error_types.ts";
@@ -14,6 +14,13 @@ import { registerLiteralMacros } from "../macros/literal_value_macros.ts";
 import { registerUtilityMacros } from "../macros/utility_macros.ts";
 import { registerCommentMacros } from "../macros/comment_macros.ts";
 import { registerSolutionMacro } from "../macros/solution_macro.ts";
+import { registerControlFlowMacros } from "../macros/control_flow_macros.ts";
+import { registerLocalMacro } from "../macros/local_macro.ts";
+import { registerSystemMacros } from "../macros/system_macros.ts";
+import { PreprocessingStep } from "../pipeline/preprocessing.ts";
+import { TypeCheckingStep } from "../pipeline/typechecking.ts";
+import { JavaScriptEmissionStep } from "../pipeline/emission.ts";
+import { IndentedStringIO } from "../utils/strutil.ts";
 
 export interface CompileError {
 	[key: string]: unknown;
@@ -24,6 +31,7 @@ export class Macrocosm {
 	public incrementalId = 0;
 	public compileErrors: CompileError[] = [];
 	public rootNode: Node | null = null;
+	private jsOutput = "";
 
 	public readonly registries: {
 		emission: MacroRegistry;
@@ -33,6 +41,8 @@ export class Macrocosm {
 		typeRegistration: MacroRegistry;
 		typeDetailRegistration: MacroRegistry;
 	};
+
+	private readonly processingSteps: Array<{ new (registry: MacroRegistry): { processNode(ctx: MacroContext): void } }>;
 
 	constructor(
 		emissionRegistry: MacroRegistry,
@@ -51,16 +61,16 @@ export class Macrocosm {
 			typeDetailRegistration: typeDetailRegistrationRegistry,
 		};
 
-		// TODO: Initialize the processing pipeline
-		// this.processingSteps = [
-		//     new CodeBlockLinkingStep(codeLinkingRegistry),
-		//     new PreprocessingStep(preprocessRegistry),
-		//     new TypeRegistrationStep(typeRegistrationRegistry),
-		//     new TypeDetailRegistrationStep(typeDetailRegistrationRegistry),
-		//     new TypeCheckingStep(typecheckRegistry),
-		//     new JavaScriptEmissionStep(emissionRegistry),
-		//     new MustCompileErrorVerificationStep()
-		// ];
+		// Initialize the processing pipeline
+		this.processingSteps = [
+			// TODO: CodeBlockLinkingStep,
+			PreprocessingStep,
+			// TODO: TypeRegistrationStep,
+			// TODO: TypeDetailRegistrationStep,
+			TypeCheckingStep,
+			JavaScriptEmissionStep,
+			// TODO: MustCompileErrorVerificationStep
+		];
 	}
 
 	public getNewIdent(name?: string): string {
@@ -161,12 +171,81 @@ export class Macrocosm {
 	}
 
 	public compile(): string {
-		// TODO: Implement full compilation pipeline
-		// This is a placeholder that needs to be implemented with the pipeline steps
-		defaultLogger.compile("compilation started");
+		// Discover macros first
+		const discoverCleanup = defaultLogger.indent("compile", "discovering macros");
+		try {
+			for (const node of this.nodes) {
+				this.discoverMacros(node);
+			}
+		} finally {
+			discoverCleanup();
+		}
 
-		// For now, return empty JS output
-		return "// TODO: Implement compilation pipeline\n";
+		// Create solution node
+		const solutionNode = this.makeNode("67lang:solution", new Position(0, 0), this.nodes || []);
+		this.rootNode = solutionNode;
+
+		// Execute the processing pipeline
+		for (const StepClass of this.processingSteps) {
+			const stepName = StepClass.name;
+			const stepCleanup = defaultLogger.indent("compile", `processing step: ${stepName}`);
+			
+			try {
+				// Create appropriate registry for this step
+				let registry: MacroRegistry;
+				if (stepName.includes("Preprocessing")) {
+					registry = this.registries.preprocess;
+				} else if (stepName.includes("TypeChecking")) {
+					registry = this.registries.typecheck;
+				} else if (stepName.includes("Emission")) {
+					registry = this.registries.emission;
+				} else {
+					registry = new MacroRegistry(); // fallback
+				}
+
+				const step = new StepClass(registry);
+				
+				// Create context for processing
+				const statementOut = new IndentedStringIO();
+				const expressionOut = new IndentedStringIO();
+				
+				const ctx: MacroContext = {
+					statementOut,
+					expressionOut,
+					node: solutionNode,
+					compiler: this,
+					currentStep: step,
+				};
+				
+				step.processNode(ctx);
+				
+				// For emission step, capture the output
+				if (stepName.includes("Emission")) {
+					this.jsOutput = statementOut.getvalue();
+				}
+			} finally {
+				stepCleanup();
+			}
+		}
+
+		if (this.compileErrors.length > 0) {
+			return ""; // Return empty string if compilation failed
+		}
+
+		return this.jsOutput;
+	}
+
+	private discoverMacros(node: Node): void {
+		this.ensureMacroArgsComputed(node);
+		for (const child of node.children) {
+			this.discoverMacros(child);
+		}
+	}
+
+	public makeNode(content: string, pos: Position, children: Node[] | null): Node {
+		const node = new Node(content, pos, children);
+		this.discoverMacros(node);
+		return node;
 	}
 
 	public nextIncrementalId(): number {
@@ -201,6 +280,15 @@ export function createMacrocosm(): Macrocosm {
 	
 	// Register solution macro
 	registerSolutionMacro(emissionRegistry, typecheckRegistry, preprocessRegistry);
+	
+	// Register control flow macros
+	registerControlFlowMacros(emissionRegistry, typecheckRegistry, preprocessRegistry);
+	
+	// Register local variable macro
+	registerLocalMacro(emissionRegistry, typecheckRegistry, preprocessRegistry);
+	
+	// Register system macros (file, etc.)
+	registerSystemMacros(emissionRegistry, typecheckRegistry, preprocessRegistry);
 
 	// TODO: Register all other macro providers
 	// This needs to be implemented once all macro providers are migrated
