@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    // Strictest TypeScript mode
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    
+    // Enable all checks
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    
+    // Deno specific
+    "lib": ["deno.ns", "ES2022", "DOM"]
+  },
+  
+  "tasks": {
+    "compile": "deno run --allow-read --allow-write compiler/src/main.ts",
+    "test": "deno run --allow-read --allow-write --allow-run test.ts"
+  },
+  
+  "fmt": {
+    "useTabs": true,
+    "lineWidth": 120,
+    "semiColons": true,
+    "singleQuote": false,
+    "proseWrap": "preserve"
+  },
+  
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}
