@@ -17,6 +17,7 @@ import { registerSolutionMacro } from "../macros/solution_macro.ts";
 import { registerControlFlowMacros } from "../macros/control_flow_macros.ts";
 import { registerLocalMacro } from "../macros/local_macro.ts";
 import { registerSystemMacros } from "../macros/system_macros.ts";
+import { registerStatementMacros } from "../macros/statement_macros.ts";
 import { PreprocessingStep } from "../pipeline/preprocessing.ts";
 import { TypeCheckingStep } from "../pipeline/typechecking.ts";
 import { JavaScriptEmissionStep } from "../pipeline/emission.ts";
@@ -289,6 +290,9 @@ export function createMacrocosm(): Macrocosm {
 	
 	// Register system macros (file, etc.)
 	registerSystemMacros(emissionRegistry, typecheckRegistry, preprocessRegistry);
+	
+	// Register statement macros (return, scope, etc.)
+	registerStatementMacros(emissionRegistry, typecheckRegistry, preprocessRegistry);
 
 	// TODO: Register all other macro providers
 	// This needs to be implemented once all macro providers are migrated

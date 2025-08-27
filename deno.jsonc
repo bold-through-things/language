@@ -22,7 +22,8 @@
   },
   
   "tasks": {
-    "compile": "deno run --allow-read --allow-write compiler/src/main.ts",
+    "compile": "deno run --allow-read --allow-write compiler/src_ts/main.ts",
+    "compile-py": "python3 compiler/src/main.py",
     "test": "deno run --allow-read --allow-write --allow-run test.ts"
   },
   
