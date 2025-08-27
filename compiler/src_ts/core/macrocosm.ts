@@ -10,6 +10,10 @@ import { MacroAssertFailed } from "./exceptions.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { cut } from "../utils/strutil.ts";
 import { toValidJsIdent } from "../utils/utils.ts";
+import { registerLiteralMacros } from "../macros/literal_value_macros.ts";
+import { registerUtilityMacros } from "../macros/utility_macros.ts";
+import { registerCommentMacros } from "../macros/comment_macros.ts";
+import { registerSolutionMacro } from "../macros/solution_macro.ts";
 
 export interface CompileError {
 	[key: string]: unknown;
@@ -85,6 +89,15 @@ export class Macrocosm {
 
 		// TODO: Check for default factories from TypeMap system
 		throw new Error(`No metadata of type ${metadataType.name} for node`);
+	}
+
+	// Type-safe overloads for Macro and Args
+	public getMacro(node: Node): Macro {
+		return this.getMetadata(node, Macro as unknown as new (...args: unknown[]) => Macro);
+	}
+
+	public getArgs(node: Node): Args {
+		return this.getMetadata(node, Args as unknown as new (...args: unknown[]) => Args);
 	}
 
 	public maybeMetadata<T>(node: Node, metadataType: new (...args: unknown[]) => T): T | null {
@@ -177,7 +190,19 @@ export function createMacrocosm(): Macrocosm {
 	const typeRegistrationRegistry = new MacroRegistry();
 	const typeDetailRegistrationRegistry = new MacroRegistry();
 
-	// TODO: Register all macro providers
+	// Register literal value macros
+	registerLiteralMacros(emissionRegistry, typecheckRegistry, preprocessRegistry, codeLinkingRegistry);
+	
+	// Register utility macros
+	registerUtilityMacros(emissionRegistry, typecheckRegistry, preprocessRegistry);
+	
+	// Register comment macros
+	registerCommentMacros(emissionRegistry, typecheckRegistry, preprocessRegistry);
+	
+	// Register solution macro
+	registerSolutionMacro(emissionRegistry, typecheckRegistry, preprocessRegistry);
+
+	// TODO: Register all other macro providers
 	// This needs to be implemented once all macro providers are migrated
 
 	return new Macrocosm(

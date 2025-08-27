@@ -1,85 +1,137 @@
 /**
- * Simple example macro providers - TypeScript equivalent pattern
- * This demonstrates how macro providers would be implemented in TypeScript
+ * Literal value macro providers - TypeScript equivalent of literal_value_macros.py
+ * Handles string, int, and float literals in 67lang
  */
 
-import { MacroContext, MacroEmissionProvider, MacroTypecheckProvider, MacroPreprocessProvider } from "../core/macro_registry.ts";
-
-export class StringMacroProvider implements MacroPreprocessProvider, MacroTypecheckProvider, MacroEmissionProvider {
-	
-	preprocess(ctx: MacroContext): void {
-		// Basic validation of string literal syntax
-		const content = ctx.node.content;
-		if (!content.startsWith("string ")) {
-			throw new Error(`Invalid string macro: ${content}`);
-		}
-	}
-
-	typecheck(_ctx: MacroContext): string | null {
-		// Return the type this macro produces
-		return "string";
-	}
-
-	emission(ctx: MacroContext): void {
-		// Generate JavaScript code for this string literal
-		const content = ctx.node.content;
-		const stringValue = content.substring("string ".length).trim();
-		
-		// Simple string literal emission - would need proper escaping in real implementation
-		ctx.expressionOut.write(`${stringValue}`);
-	}
-}
+import { MacroContext, MacroEmissionProvider, MacroTypecheckProvider, MacroPreprocessProvider, MacroCodeLinkingProvider } from "../core/macro_registry.ts";
+import { Macrocosm } from "../core/macrocosm.ts";
+import { ErrorType } from "../utils/error_types.ts";
 
 export class NumberMacroProvider implements MacroPreprocessProvider, MacroTypecheckProvider, MacroEmissionProvider {
 	
-	constructor(private numberType: "int" | "float") {}
+	constructor(private numberType: typeof Int | typeof Float) {}
 
 	preprocess(ctx: MacroContext): void {
-		const content = ctx.node.content;
-		const prefix = `${this.numberType} `;
-		if (!content.startsWith(prefix)) {
-			throw new Error(`Invalid ${this.numberType} macro: ${content}`);
-		}
+		const compiler = ctx.compiler as Macrocosm;
+		const args = compiler.getArgs(ctx.node);
 		
-		const numberStr = content.substring(prefix.length).trim();
-		const value = this.numberType === "int" ? parseInt(numberStr, 10) : parseFloat(numberStr);
-		
-		if (isNaN(value)) {
-			throw new Error(`${numberStr} must be a valid ${this.numberType} string.`);
+		try {
+			if (this.numberType === Int) {
+				const parsed = parseInt(args.toString(), 10);
+				if (isNaN(parsed) || !Number.isInteger(parsed)) {
+					throw new Error("Not a valid integer");
+				}
+			} else {
+				const parsed = parseFloat(args.toString());
+				if (isNaN(parsed)) {
+					throw new Error("Not a valid float");
+				}
+			}
+		} catch {
+			const errorType = this.numberType === Int ? ErrorType.INVALID_INT : ErrorType.INVALID_FLOAT;
+			compiler.assert(
+				false,
+				ctx.node,
+				`${args} must be a valid ${this.numberType === Int ? "int" : "float"} string.`,
+				errorType,
+			);
 		}
 	}
 
 	typecheck(_ctx: MacroContext): string | null {
-		return this.numberType === "int" ? "number" : "number"; // Both map to JS number
+		// TODO: Import proper types once available
+		return this.numberType === Int ? "INT" : "FLOAT";
 	}
 
 	emission(ctx: MacroContext): void {
-		const content = ctx.node.content;
-		const prefix = `${this.numberType} `;
-		const numberStr = content.substring(prefix.length).trim();
-		
-		// Emit the number literal directly
-		ctx.expressionOut.write(numberStr);
+		const compiler = ctx.compiler as Macrocosm;
+		const args = compiler.getArgs(ctx.node);
+		ctx.expressionOut.write(args.toString());
 	}
 }
 
-// Example of how macros would be registered
-export function registerLiteralMacros(emissionRegistry: any, typecheckRegistry: any, preprocessRegistry: any): void {
-	const stringMacro = new StringMacroProvider();
-	const intMacro = new NumberMacroProvider("int");
-	const floatMacro = new NumberMacroProvider("float");
+export class StringMacroProvider implements MacroPreprocessProvider, MacroTypecheckProvider, MacroEmissionProvider, MacroCodeLinkingProvider {
+	
+	constructor(private kind: "string" | "regex") {}
+
+	preprocess(_ctx: MacroContext): void {
+		// Allow multiline string content to start with whitespace (preserved indentation)
+		// The Python version does nothing here, so we follow suit
+	}
+
+	typecheck(_ctx: MacroContext): string | null {
+		// TODO: Import proper types once available
+		return this.kind === "string" ? "STRING" : "REGEX";
+	}
+
+	emission(ctx: MacroContext): void {
+		const compiler = ctx.compiler as Macrocosm;
+		const args = compiler.getArgs(ctx.node);
+		
+		if (this.kind === "string") {
+			// TODO: Implement proper string delim handling like Python version
+			// For now, simple implementation
+			ctx.expressionOut.write(`"${args.toString()}"`);
+		} else {
+			// regex
+			ctx.expressionOut.write(`/${args.toString()}/`);
+		}
+	}
+
+	codeLinking(_ctx: MacroContext): void {
+		// TODO: Implement code linking if needed
+	}
+}
+
+// Placeholder classes for type safety - will be replaced with proper types
+class Int {
+	static toString() { return "int"; }
+}
+
+class Float {
+	static toString() { return "float"; }
+}
+
+/**
+ * Register literal value macros with the given registries
+ */
+export function registerLiteralMacros(
+	emissionRegistry: any, 
+	typecheckRegistry: any, 
+	preprocessRegistry: any,
+	codeLinkingRegistry?: any
+): void {
+	// Number macros
+	const intMacro = new NumberMacroProvider(Int);
+	const floatMacro = new NumberMacroProvider(Float);
+	
+	// String macros  
+	const stringMacro = new StringMacroProvider("string");
+	const regexMacro = new StringMacroProvider("regex");
+
+	// Register int macro
+	emissionRegistry.addFn(intMacro, "int");
+	typecheckRegistry.addFn(intMacro, "int"); 
+	preprocessRegistry.addFn(intMacro, "int");
+
+	// Register float macro
+	emissionRegistry.addFn(floatMacro, "float");
+	typecheckRegistry.addFn(floatMacro, "float");
+	preprocessRegistry.addFn(floatMacro, "float");
 
 	// Register string macro
-	emissionRegistry.addFn(stringMacro.emission.bind(stringMacro), "string");
-	typecheckRegistry.addFn(stringMacro.typecheck.bind(stringMacro), "string");
-	preprocessRegistry.addFn(stringMacro.preprocess.bind(stringMacro), "string");
+	emissionRegistry.addFn(stringMacro, "string");
+	typecheckRegistry.addFn(stringMacro, "string");
+	preprocessRegistry.addFn(stringMacro, "string");
+	if (codeLinkingRegistry) {
+		codeLinkingRegistry.addFn(stringMacro, "string");
+	}
 
-	// Register number macros
-	emissionRegistry.addFn(intMacro.emission.bind(intMacro), "int");
-	typecheckRegistry.addFn(intMacro.typecheck.bind(intMacro), "int");
-	preprocessRegistry.addFn(intMacro.preprocess.bind(intMacro), "int");
-
-	emissionRegistry.addFn(floatMacro.emission.bind(floatMacro), "float");
-	typecheckRegistry.addFn(floatMacro.typecheck.bind(floatMacro), "float");
-	preprocessRegistry.addFn(floatMacro.preprocess.bind(floatMacro), "float");
+	// Register regex macro
+	emissionRegistry.addFn(regexMacro, "regex");
+	typecheckRegistry.addFn(regexMacro, "regex");
+	preprocessRegistry.addFn(regexMacro, "regex");
+	if (codeLinkingRegistry) {
+		codeLinkingRegistry.addFn(regexMacro, "regex");
+	}
 }
