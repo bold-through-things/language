@@ -51,3 +51,51 @@ export class TypeMap {
 		TypeMap.defaultFactories.set(key as Constructor<unknown>, factory);
 	}
 }
+
+/**
+ * Convert a string to a valid JavaScript identifier
+ */
+export function toValidJsIdent(name: string): string {
+	// Enhanced character mapping for better readability
+	const charMap: Record<string, string> = {
+		" ": "_",
+		".": "_dot_",
+		"$": "_dollar_",
+		"%": "_percent_",
+		"+": "_plus_",
+		"-": "_minus_",
+		"*": "_star_",
+		"/": "_slash_",
+		"=": "_eq_",
+		"!": "_bang_",
+		"?": "_question_",
+		":": "_colon_",
+		";": "_semicolon_",
+		",": "_comma_",
+		"<": "_lt_",
+		">": "_gt_",
+		"(": "_lparen_",
+		")": "_rparen_",
+		"[": "_lbracket_",
+		"]": "_rbracket_",
+		"{": "_lbrace_",
+		"}": "_rbrace_",
+		"#": "_hash_",
+		"@": "_at_",
+		"&": "_amp_",
+		"|": "_pipe_",
+		"^": "_caret_",
+		"~": "_tilde_",
+		"`": "_backtick_",
+		"'": "_quote_",
+		'"': "_dblquote_",
+		"\\": "_backslash_",
+	};
+
+	return name.replace(/./g, (c) => {
+		if (/[a-zA-Z0-9_]/.test(c)) {
+			return c;
+		}
+		return charMap[c] || `_${c.charCodeAt(0).toString(16).padStart(2, "0")}_`;
+	});
+}

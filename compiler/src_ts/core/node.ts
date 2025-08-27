@@ -7,7 +7,7 @@ import { TypeMap } from "../utils/utils.ts";
 export class Position {
 	constructor(
 		public line: number,
-		public char: number = 0,
+		public column: number = 0,
 	) {}
 }
 
