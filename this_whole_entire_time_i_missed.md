@@ -11,3 +11,9 @@ confirm with `./test | tail -n 10` that all tests are passing. then translate th
 - strictest mode we can establish!
 - tests all pass by end of effort
 - no `.py` files within the project
+
+some obvious (somehow not obvious to *you*) requirements along the way...
+
+- `contextmanager` should be converted into callbacks, since TypeScript is ass and does not offer `with`
+- use latest libraries and target `jsr.io`
+- **do not touch `./test`** except to make it run our new TypeScript solution. we are not removing Python end to end.
