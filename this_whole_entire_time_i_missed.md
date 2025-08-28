@@ -17,6 +17,8 @@ got that? no, fuck all that.
 
 # TypeScript is still not good enough. 
 
-it is all optional and has no `int`. we're going with OCaml.
+it is all optional and has no `int`. we're going with OCaml. 
+
+no! OCaml?! no build system?! we are now going with a certain Crystal.
 
 if i hear a single whine from you that "this is all complex" or "taking a long time" i will crash out i swear. i'm the one who's paying for these tokens. **burn them.** make it work. this is all trivial, you're not creating, just translating. what is your excuse?!
