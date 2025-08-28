@@ -211,7 +211,10 @@ def make_test_method(tc: TestCase, args):
             shutil.copytree(case_dir, tmpdir, dirs_exist_ok=True)
 
             if args.compile:
-                compiler_path = Path("compiler/src/main.py")
+                if args.backend_cr:
+                    compiler_cmd = [str(Path("compiler/src_cr/_67lang").absolute())]
+                else:
+                    compiler_cmd = ["python3", str(Path("compiler/src/main.py").absolute())]
                 
                 if args.expand:
                     # Two-step compilation: .67lang → .67lang.expanded → .js
@@ -219,7 +222,7 @@ def make_test_method(tc: TestCase, args):
                     
                     # Step 1: .67lang → .67lang.expanded
                     expanded_path = code_dir / ".67lang.expanded"
-                    step1_cmd = [compiler_path.absolute(), code_dir.absolute(), expanded_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--expand"]
+                    step1_cmd = compiler_cmd + [str(code_dir.absolute()), str(expanded_path.absolute()), "--errors-file", str(compile_err_actual.absolute()), "--expand"]
                     
                     # Add any additional compiler arguments to step 1
                     if args.compiler_args:
@@ -244,7 +247,7 @@ def make_test_method(tc: TestCase, args):
                         return
                     
                     
-                    step2_cmd = [compiler_path.absolute(), code_dir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute(), "--rte"]
+                    step2_cmd = compiler_cmd + [str(code_dir.absolute()), str(out_path.absolute()), "--errors-file", str(compile_err_actual.absolute()), "--rte"]
                     
                     # Add any additional compiler arguments to step 2
                     if args.compiler_args:
@@ -259,7 +262,7 @@ def make_test_method(tc: TestCase, args):
                 else:
                     # Single-step compilation: .67lang → .js
                     print(f"{case_dir}: single-step compilation...")
-                    compile_cmd = [compiler_path.absolute(), tmpdir.absolute(), out_path.absolute(), "--errors-file", compile_err_actual.absolute()]
+                    compile_cmd = compiler_cmd + [str(tmpdir.absolute()), str(out_path.absolute()), "--errors-file", str(compile_err_actual.absolute())]
                     
                     # Add any additional compiler arguments
                     if args.compiler_args:
@@ -393,6 +396,7 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--debug", action='store_true', help="execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="skip compilation. assume the tests are already compiled, and only run the existing output")
     parser.add_argument("--expand", action='store_true', help="test two-step compilation: `.67lang → .67lang.expanded → .js` WIP and expected to fail currently!")
+    parser.add_argument("--backend-cr", action='store_true', help="use Crystal backend instead of Python")
     parser.add_argument("--unit", action='store_true', help="run only unit tests")
     parser.add_argument("--e2e", action='store_true', help="run only end-to-end tests")
 
@@ -410,6 +414,15 @@ if __name__ == "__main__":
     
     # Store compiler args on the args object
     args.compiler_args = compiler_args
+    
+    # Build Crystal compiler if using Crystal backend
+    if args.backend_cr:
+        print("Building Crystal compiler...")
+        build_proc = subprocess.run(["crystal", "build", "src/main.cr", "-o", "_67lang"], 
+                                   cwd="compiler/src_cr", capture_output=True, text=True)
+        if build_proc.returncode != 0:
+            print(f"Crystal compiler build failed: {build_proc.stderr}")
+            sys.exit(1)
 
     # Determine which test types to run
     run_e2e = True
