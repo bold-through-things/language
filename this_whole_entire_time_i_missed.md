@@ -9,11 +9,14 @@ TypeScript!
 confirm with `./test | tail -n 10` that all tests are passing. then translate the system. really, it is trivial. deliverables thus demanded:
 
 - strictest mode we can establish!
-- tests all pass by end of effort
-- no `.py` files within the project
+- tests all pass by end of effort (`./test --backend-ts --e2e`)
+- new directory, `compiler/src_ts`, which implements the full compiler
+- no `.py` files within the project (except `./test`, we do not touch it!)
 
-some obvious (somehow not obvious to *you*) requirements along the way...
+got that? no, fuck all that.
 
-- `contextmanager` should be converted into callbacks, since TypeScript is ass and does not offer `with`
-- use latest libraries and target `jsr.io`
-- **do not touch `./test`** except to make it run our new TypeScript solution. we are not removing Python end to end.
+# TypeScript is still not good enough. 
+
+it is all optional and has no `int`. we're going with OCaml.
+
+if i hear a single whine from you that "this is all complex" or "taking a long time" i will crash out i swear. i'm the one who's paying for these tokens. **burn them.** make it work. this is all trivial, you're not creating, just translating. what is your excuse?!
