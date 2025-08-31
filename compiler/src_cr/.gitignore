@@ -1,0 +1,6 @@
+/docs/
+/lib/
+/bin/
+/.shards/
+*.dwarf
+_67lang

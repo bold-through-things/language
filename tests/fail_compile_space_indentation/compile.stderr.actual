@@ -6,5 +6,30 @@
     "content": "    string hello world",
     "error": "this language only accepts tabs for indentation, not spaces! spaces are like, totally uncool. use tabs instead, they're way more precise and semantic.",
     "error_type": "INVALID_INDENTATION"
+  },
+  {
+    "recoverable": false,
+    "line": 2,
+    "char": 0,
+    "content": "67lang:call print",
+    "error": "failed to assert: multiple equally specific overloads match for print with arguments []",
+    "error_type": "AMBIGUOUS_OVERLOAD",
+    "matching_overloads": [
+      {
+        "convention": "DirectCall",
+        "fn": "log",
+        "receiver": "console"
+      },
+      {
+        "convention": "DirectCall",
+        "fn": "print",
+        "demands": [],
+        "returns": {
+          "name": "void",
+          "type_params": [],
+          "fields": []
+        }
+      }
+    ]
   }
 ]

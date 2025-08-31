@@ -1,3 +1,4 @@
+
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -64,6 +65,7 @@ if (typeof window === "undefined") {
 }
 
 
+
 void (async () => {
     'use strict';
     const scope = globalThis;
@@ -89,7 +91,6 @@ void (async () => {
             _0x8_rows
             const _0x40_lines = await _0x5_lines
             let _0xa__0x9_pipeline_result = _0x40_lines
-
             const _0x41_iter = _0xa__0x9_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0x41_iter.next();
@@ -131,7 +132,6 @@ void (async () => {
                                 _0x16_row
                                 const _0x4b_zipped_data = await _0x15_zipped_data
                                 let _0x18__0x17_pipeline_result = _0x4b_zipped_data
-
                                 const _0x4c_iter = _0x18__0x17_pipeline_result[Symbol.iterator]();
                                 while (true) {
                                     const { value, done } = _0x4c_iter.next();
@@ -173,7 +173,6 @@ void (async () => {
                 } }
             const _0x59_rows = await _0x8_rows
             let _0x2b__0x2a_pipeline_result = _0x59_rows
-
             const _0x5a_iter = _0x2b__0x2a_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0x5a_iter.next();
@@ -195,7 +194,6 @@ void (async () => {
             _0x30_age_over_30
             const _0x5e_rows = await _0x8_rows
             let _0x32__0x31_pipeline_result = _0x5e_rows
-
             const _0x5f_iter = _0x32__0x31_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0x5f_iter.next();

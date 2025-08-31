@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from typing import List, Dict, Optional, Set, Union
 from abc import ABC, abstractmethod
 
+from utils.common_utils import print_with_callback
+
 
 class Type(ABC):
     """Base class for all types in the 67lang type system."""
@@ -112,6 +114,7 @@ class ComplexType(Type):
         args_str = ", ".join(str(param) for param in self.type_params)
         return f"{self.name}<{args_str}>"
     
+    @print_with_callback(lambda self, other, rv: f"assign {self} to {other}: {rv}")
     def is_assignable_to(self, other: Type) -> bool:
         # Handle compatibility with legacy string types (for built-in functions)
         if isinstance(other, str):

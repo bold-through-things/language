@@ -1,3 +1,4 @@
+
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -62,6 +63,7 @@ if (typeof window === "undefined") {
 
     _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
+
 
 
 void (async () => {

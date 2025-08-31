@@ -439,6 +439,122 @@ def discover_and_filter_files():
     
     return all_files
 
+# --- add near top-level helpers in your importer ---
+
+def to_json_type(t):
+    """
+    Types schema:
+      {"k":"wild"}
+      {"k":"ref","id":"INT|FLOAT|STRING|BOOL|VOID|LIST_TYPE|DICT_TYPE"}  # canonical singletons/templates
+      {"k":"prim","n":"int|float|str|bool|void"}                         # real primitive Type instances
+      {"k":"cx","n":"Name","p":[...]}                                    # ComplexType(name, params)
+      {"k":"name","n":"Window"}                                          # bare name (fallback)
+    """
+    from compiler_types.proper_types import Type, PrimitiveType, ComplexType
+
+    if t in ("*", "any", "unknown"):
+        return {"k": "wild"}
+
+    # <<< change here: keep TypeReference as canonical ref >>>
+    if isinstance(t, TypeReference):
+        return {"k": "ref", "id": t.name}  # e.g. INT, LIST_TYPE, DICT_TYPE
+
+    if isinstance(t, PrimitiveType):
+        return {"k": "prim", "n": t.name}
+
+    if isinstance(t, ComplexType):
+        params = [to_json_type(p) for p in getattr(t, "type_params", [])]
+        return {"k": "cx", "n": t.name, "p": params}
+
+
+    from compiler_types.proper_types import TypeVariable
+    if isinstance(t, TypeVariable):
+        return {"k": "tv", "n": t.name}
+
+    if isinstance(t, Type):
+        return {"k": "cx", "n": t.name, "p": []}
+
+    if isinstance(t, str):
+        return {"k": "name", "n": t}
+
+    raise RuntimeError(f"unknown type node: {t!r}")
+
+
+
+def to_json_call(call):
+    """
+    Encode a call convention.
+    kind: DirectCall | PrototypeCall | NewCall | FieldCall | IndexAccessCall
+    """
+    cls = call.__class__.__name__
+    base = {"kind": cls}
+    if hasattr(call, "demands") and call.demands is not None:
+        base["demands"] = [to_json_type(d) for d in call.demands]
+    if hasattr(call, "returns") and call.returns is not None:
+        base["returns"] = to_json_type(call.returns)
+
+    if cls == "DirectCall":
+        base["fn"] = call.fn
+        if getattr(call, "receiver", None):
+            base["receiver"] = call.receiver
+        return base
+    if cls == "PrototypeCall":
+        base["constructor"] = call.constructor
+        base["fn"] = call.fn
+        return base
+    if cls == "NewCall":
+        base["constructor"] = call.constructor
+        return base
+    if cls == "FieldCall":
+        base["field"] = call.field
+        return base
+    if cls == "IndexAccessCall":
+        return base
+
+    raise RuntimeError(f"Unknown call class: {cls}")
+
+
+def write_builtins_json(all_builtins: dict, out_path: str) -> str:
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    payload = {
+        "builtins": {
+            name: [to_json_call(c) for c in calls]
+            for name, calls in sorted(all_builtins.items())
+        }
+    }
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+        f.write("\n")
+    return out_path
+
+
+def write_type_hierarchy_json(type_hierarchy: dict, unions: dict, out_path: str) -> str:
+    """
+    Store as strings to keep file small. Loader will map names to Types.
+    Example:
+      {"type_hierarchy":{"int":["float"], "HTMLElement":["Element"]},
+       "unions":{"BufferSource":["ArrayBufferView","ArrayBuffer"]}}
+    """
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+
+    def as_name(x):
+        from compiler_types.proper_types import ComplexType, PrimitiveType, Type
+        if isinstance(x, str): return x
+        if isinstance(x, PrimitiveType): return x.name
+        if isinstance(x, ComplexType): return x.name
+        # generic Type fallback
+        if hasattr(x, "name"): return x.name
+        return str(x)
+
+    th = {as_name(k): [as_name(p) for p in v] for (k, v) in type_hierarchy.items()}
+    un = {str(name): [as_name(m) for m in members] for (name, members) in unions.items()}
+
+    payload = {"type_hierarchy": th, "unions": un}
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+        f.write("\n")
+    return out_path
+
 def main():
     parser = argparse.ArgumentParser(description='Import TypeScript definitions to generate builtins.')
     parser.add_argument('--cache-dir', default='typescript_defs', help='Directory to cache TypeScript definition files')
@@ -647,6 +763,19 @@ def main():
         f.write("union_types = ")
         pprint.pprint(all_union_types, stream=f, sort_dicts=True)
         f.write("\n")
+    
+    # ... after all_builtins = unroll_interface_methods() and dedup ...
+
+    # 1) builtins JSON
+    builtins_json_path = os.path.join(script_dir, "..", "..", "src_cr", "src", "assets", "typescript_builtins.json")
+    out1 = write_builtins_json(all_builtins, builtins_json_path)
+    print(f"Wrote builtins JSON: {out1}")
+
+    # 2) type hierarchy JSON
+    hier_json_path = os.path.join(script_dir, "..", "..", "src_cr", "src", "assets", "type_hierarchy.json")
+    out2 = write_type_hierarchy_json(type_hierarchy, all_union_types, hier_json_path)
+    print(f"Wrote type hierarchy JSON: {out2}")
+
     
     print(f"Generated {len(all_builtins)} builtin definitions in {output_path}")
     print(f"Generated new type hierarchy with {len(type_hierarchy)} types and {len(all_union_types)} unions")

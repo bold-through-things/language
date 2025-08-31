@@ -1,3 +1,4 @@
+
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -62,6 +63,7 @@ if (typeof window === "undefined") {
 
     _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
+
 
 
 void (async () => {
@@ -268,7 +270,6 @@ void (async () => {
 
             const _0xdb_numbers = await _0x1f_numbers
             let _0x37__0x36_pipeline_result = _0xdb_numbers
-
             const _0xdc_iter = _0x37__0x36_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0xdc_iter.next();
@@ -369,7 +370,6 @@ void (async () => {
             _0x67_found_word
             const _0xfd_things_to_say = await _0x65_things_to_say
             let _0x69__0x68_pipeline_result = _0xfd_things_to_say
-
             const _0xfe_iter = _0x69__0x68_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0xfe_iter.next();
@@ -382,7 +382,6 @@ void (async () => {
                         const _0x100_thing = await thing
                         const _0xff_split = await String.prototype.split.call(_0x100_thing, " ")
                         let _0x6b__0x6a_pipeline_result = _0xff_split
-
                         const _0x101_iter = _0x6b__0x6a_pipeline_result[Symbol.iterator]();
                         while (true) {
                             const { value, done } = _0x101_iter.next();

@@ -1,3 +1,4 @@
+
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -62,6 +63,7 @@ if (typeof window === "undefined") {
 
     _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
+
 
 
 void (async () => {
@@ -299,7 +301,6 @@ void (async () => {
 
             const _0xdb_i_hate_this_trash_bang_ = await _0x5f_i_hate_this_trash_bang_
             let _0x61__0x60_pipeline_result = _0xdb_i_hate_this_trash_bang_
-
             const _0xdc_iter = _0x61__0x60_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0xdc_iter.next();
@@ -322,7 +323,8 @@ void (async () => {
 
             let _0x68_does_a_decent_programming_language_exist_q_ = false
             _0x68_does_a_decent_programming_language_exist_q_
-            while(true) {const _0xe0_does_a_decent_programming_language_exist_q_ = await _0x68_does_a_decent_programming_language_exist_q_
+            while(true) {
+                const _0xe0_does_a_decent_programming_language_exist_q_ = await _0x68_does_a_decent_programming_language_exist_q_
                 let _0x6a__0x69_pipeline_result = _0xe0_does_a_decent_programming_language_exist_q_
                 if (!_0x6a__0x69_pipeline_result) { break; }
                 {

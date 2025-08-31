@@ -1,0 +1,13 @@
+name: src_cr
+version: 0.1.0
+
+authors:
+  - status.call.h8r <222740670+statuscallh8r@users.noreply.github.com>
+
+targets:
+  src_cr:
+    main: src/main.cr
+
+crystal: '>= 1.17.0'
+
+license: AGPL

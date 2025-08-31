@@ -1,3 +1,4 @@
+
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -64,6 +65,7 @@ if (typeof window === "undefined") {
 }
 
 
+
 void (async () => {
     'use strict';
     const scope = globalThis;
@@ -84,7 +86,6 @@ void (async () => {
             _0x6_groups
             const _0x30_words = await _0x5_words
             let _0x8__0x7_pipeline_result = _0x30_words
-
             const _0x31_iter = _0x8__0x7_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0x31_iter.next();
@@ -148,7 +149,6 @@ void (async () => {
             const _0x46_groups = await _0x6_groups
             const _0x45_values = await Object.values(_0x46_groups)
             let _0x25__0x24_pipeline_result = _0x45_values
-
             const _0x47_iter = _0x25__0x24_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0x47_iter.next();

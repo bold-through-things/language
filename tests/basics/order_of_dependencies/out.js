@@ -1,3 +1,4 @@
+
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -62,6 +63,7 @@ if (typeof window === "undefined") {
 
     _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
+
 
 
 void (async () => {
@@ -134,7 +136,6 @@ void (async () => {
                 const _0x9e_module = await _0x2a_module
                 const _0x9d_deps = await (_0x9e_module.deps)
                 let _0x3e__0x3d_pipeline_result = _0x9d_deps
-
                 const _0x9f_iter = _0x3e__0x3d_pipeline_result[Symbol.iterator]();
                 while (true) {
                     const { value, done } = _0x9f_iter.next();
@@ -169,7 +170,6 @@ void (async () => {
                                     const _0xa9__0x48_pipeline_result = await _0x49__0x48_pipeline_result
                                     const _0xa8_reverse = await Array.prototype.reverse.call(_0xa9__0x48_pipeline_result)
                                     let _0x4b__0x4a_pipeline_result = _0xa8_reverse
-
                                     const _0xaa_iter = _0x4b__0x4a_pipeline_result[Symbol.iterator]();
                                     while (true) {
                                         const { value, done } = _0xaa_iter.next();
@@ -276,7 +276,6 @@ void (async () => {
             _0x6_modules
             const _0xc7_lines = await _0x5_lines
             let _0x8__0x7_pipeline_result = _0xc7_lines
-
             const _0xc8_iter = _0x8__0x7_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0xc8_iter.next();
@@ -364,7 +363,6 @@ void (async () => {
             const _0xe7_modules = await _0x6_modules
             const _0xe6_values = await Object.values(_0xe7_modules)
             let _0x76__0x75_pipeline_result = _0xe6_values
-
             const _0xe8_iter = _0x76__0x75_pipeline_result[Symbol.iterator]();
             while (true) {
                 const { value, done } = _0xe8_iter.next();

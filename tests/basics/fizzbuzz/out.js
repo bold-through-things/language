@@ -1,3 +1,4 @@
+
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -62,6 +63,7 @@ if (typeof window === "undefined") {
 
     _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
 }
+
 
 
 void (async () => {
@@ -131,7 +133,8 @@ void (async () => {
             } 
             let _0x16_i = 0
             _0x16_i
-            while(true) {const _0x57_i = await _0x16_i
+            while(true) {
+                const _0x57_i = await _0x16_i
                 let _0x19__0x18_pipeline_result = _0x57_i
                 const _0x58_n = await _0x2_n
                 let _0x1b__0x1a_pipeline_result = _0x58_n
