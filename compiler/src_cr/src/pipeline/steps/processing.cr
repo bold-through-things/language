@@ -13,7 +13,7 @@ class PreprocessingStep < MacroProcessingStep
     if !ctx.node.content.empty? && ctx.node.content[0].whitespace?
       ctx.compiler.compile_error(
         ctx.node,
-        "this language only accepts tabs for indentation, not spaces! spaces are like, totally uncool. use tabs instead, they're way more precise and semantic.",
+        "oh spaces? yea? how many, two, or four, or maybe six?!",
         ErrorType::INVALID_INDENTATION
       )
       # don't early-return; continue pipeline

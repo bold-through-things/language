@@ -1,0 +1,81 @@
+{
+  "$items": [
+    {
+      "recoverable": false,
+      "line": 25,
+      "char": 0,
+      "content": { "$contains": "local test" },
+      "error_type": "FIELD_TYPE_MISMATCH"
+    },
+    {
+      "recoverable": false,
+      "line": 30,
+      "char": 0,
+      "content": { "$contains": "local test_str" },
+      "error_type": "MISSING_TYPE"
+    },
+    {
+      "recoverable": false,
+      "line": 34,
+      "char": 0,
+      "content": { "$contains": "local test_int" },
+      "error_type": "FIELD_TYPE_MISMATCH"
+    },
+    {
+      "recoverable": false,
+      "line": 38,
+      "char": 0,
+      "content": { "$contains": "call test_int" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": 2 }
+    },
+    {
+      "recoverable": false,
+      "line": 42,
+      "char": 0,
+      "content": { "$contains": "call test_str" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": 2 }
+    },
+    {
+      "recoverable": false,
+      "line": 45,
+      "char": 0,
+      "content": { "$contains": "local test_bool" },
+      "error_type": "FIELD_TYPE_MISMATCH"
+    },
+    {
+      "recoverable": false,
+      "line": 50,
+      "char": 0,
+      "content": { "$contains": "call test_bool" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": 2 }
+    },
+    {
+      "recoverable": false,
+      "line": 53,
+      "char": 0,
+      "content": { "$contains": "call split" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": { "$ge": 2 } }
+    },
+    {
+      "recoverable": false,
+      "line": 56,
+      "char": 0,
+      "content": { "$contains": "call split" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": { "$ge": 2 } }
+    },
+    {
+      "recoverable": false,
+      "line": 56,
+      "char": 0,
+      "content": { "$contains": "call split" },
+      "error_type": "AMBIGUOUS_OVERLOAD",
+      "matching_overloads": { "$len": 2 }
+    }
+  ],
+  "$order": "any"
+}

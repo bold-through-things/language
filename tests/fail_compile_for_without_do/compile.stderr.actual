@@ -44,41 +44,6 @@
   },
   {
     "recoverable": false,
-    "line": 10,
-    "char": 0,
-    "content": "67lang:call i",
-    "error": "failed to assert: could not find a matching overload for i with arguments []",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": [
-      {
-        "convention": "FieldCall",
-        "field": "i",
-        "demands": [
-          "HTMLElementTagNameMap"
-        ],
-        "returns": {
-          "name": "HTMLElement",
-          "type_params": [],
-          "fields": []
-        }
-      },
-      {
-        "convention": "FieldCall",
-        "field": "i",
-        "demands": [
-          "HTMLElementTagNameMap",
-          {
-            "name": "HTMLElement",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": "None"
-      }
-    ]
-  },
-  {
-    "recoverable": false,
     "line": 2,
     "char": 0,
     "content": "for i in",

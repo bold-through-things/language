@@ -1,0 +1,37 @@
+{
+  "$items": [
+    {
+      "recoverable": false,
+      "line": 22,
+      "char": 0,
+      "content": { "$contains": "call heartbeat" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": 0 }
+    },
+    {
+      "recoverable": false,
+      "line": 15,
+      "char": 0,
+      "content": { "$contains": "call event" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": 3 }
+    },
+    {
+      "recoverable": false,
+      "line": 22,
+      "char": 0,
+      "content": { "$contains": "call heartbeat" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": 0 }
+    },
+    {
+      "recoverable": false,
+      "line": 15,
+      "char": 0,
+      "content": { "$contains": "call event" },
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": 3 }
+    }
+  ],
+  "$order": "any"
+}

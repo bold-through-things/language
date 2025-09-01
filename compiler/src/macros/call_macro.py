@@ -138,7 +138,6 @@ def types_equivalent(type1: Type, type2: Type) -> bool:
 class Call_macro_provider(Macro_emission_provider, Macro_typecheck_provider):
     def _matches_signature(self, actual_types: list, demanded_types: list) -> bool:
         default_logger.typecheck(f"_matches_signature: actual={actual_types}, demanded={demanded_types}")
-        print(f"matching signature for {actual_types}, {demanded_types}")
         if demanded_types is None:
             return True # No specific demands, so it matches
         

@@ -10,66 +10,6 @@
   },
   {
     "recoverable": false,
-    "line": 22,
-    "char": 0,
-    "content": "67lang:call heartbeat",
-    "error": "failed to assert: could not find a matching overload for heartbeat with arguments []",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": []
-  },
-  {
-    "recoverable": false,
-    "line": 15,
-    "char": 0,
-    "content": "67lang:call event",
-    "error": "failed to assert: could not find a matching overload for event with arguments []",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": [
-      {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          "HTMLScriptElement"
-        ],
-        "returns": {
-          "name": "str",
-          "type_params": [],
-          "fields": []
-        }
-      },
-      {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          "HTMLScriptElement",
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": "None"
-      },
-      {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          {
-            "name": "Window",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "Event",
-          "type_params": [],
-          "fields": []
-        }
-      }
-    ]
-  },
-  {
-    "recoverable": false,
     "line": 15,
     "char": 0,
     "content": "67lang:call event",

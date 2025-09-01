@@ -1,2 +1,4 @@
-do print
+do concat
     string hello world
+
+note and TODO i think we were supposed to actually distinguish? whether it's indent or not...

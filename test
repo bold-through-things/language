@@ -24,6 +24,7 @@ from typing import List
 
 from test_diff_reporter import create_test_diff_reporter
 from unit_test_discovery import discover_unit_tests
+from json_matcher import *
 
 TEST_ROOT = Path("tests")
 EXECUTABLE = "out.js"
@@ -192,7 +193,9 @@ def make_test_method(tc: TestCase, args):
         # create improved diff reporter
         diff_reporter = create_test_diff_reporter(tc)
         
-        expected_compile_err = read_file(code_dir / "compile.stderr.expected")
+        # we now expect SPEC JSON at code_dir / "compile.stderr.expected.json"
+        spec_path = code_dir / "compile.stderr.expected.json"
+        expected_compile_err = read_file(spec_path)
         expected_runtime_err = read_file(case_dir / "runtime.stderr.expected")
         expected_stdout = read_file(case_dir / "success.stdout.expected")
         if args.stdin:
@@ -236,17 +239,7 @@ def make_test_method(tc: TestCase, args):
                     print(step1_proc.stderr)
                     
                     if step1_proc.returncode != 0:
-                        if expected_compile_err is not None:
-                            actual_compile_err = read_file(compile_err_actual) or ""
-                            is_equal, error_msg = diff_reporter.compare_text(
-                                actual_compile_err, expected_compile_err, "compile_stderr"
-                            )
-                            self.assertTrue(is_equal, msg=error_msg or "Compile stderr mismatch")
-                            self.assertNotEqual(step1_proc.returncode, 0, msg="Expected compile to fail")
-                            return
-                        self.assertEqual(step1_proc.returncode, 0, msg=f"Step 1 (expand) failed unexpectedly\n{step1_proc.stderr}")
-                        return
-                    
+                        raise ValueError("isn't being used just yet in either way. fix me! assert the errors here")                    
                     
                     step2_cmd = compiler_cmd + ["--errors-file", str(compile_err_actual.absolute()), "--rte", str(code_dir.absolute()), str(out_path.absolute())]
                     
@@ -275,12 +268,21 @@ def make_test_method(tc: TestCase, args):
                     print(compile_proc.stdout)
                     print(compile_proc.stderr)
 
+                def write_failure_artifacts(tc: TestCase, label: str, report: str, actual_json_pretty: str) -> None:
+                    out_dir = tc.case_path / "test_diffs"
+                    out_dir.mkdir(parents=True, exist_ok=True)
+                    (out_dir / f"{label}.report.txt").write_text(report, encoding="utf-8")
+                    (out_dir / f"{label}.actual.json").write_text(actual_json_pretty, encoding="utf-8")
+
+
                 if expected_compile_err is not None:
                     actual_compile_err = read_file(compile_err_actual) or ""
-                    is_equal, error_msg = diff_reporter.compare_text(
-                        actual_compile_err, expected_compile_err, "compile_stderr"
-                    )
-                    self.assertTrue(is_equal, msg=error_msg or "Compile stderr mismatch")
+                    ok, report, pretty_actual = validate_json_spec(actual_compile_err, expected_compile_err)
+
+                    if not ok:
+                        write_failure_artifacts(tc, "compile_errors_spec", report, pretty_actual)
+
+                    self.assertTrue(ok, msg=report)
                     self.assertNotEqual(compile_proc.returncode, 0, msg="Expected compile to fail")
                     return
 

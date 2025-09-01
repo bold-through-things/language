@@ -1,0 +1,12 @@
+{
+  "$items": [
+    {
+      "recoverable": false,
+      "line": 3,
+      "char": 0,
+      "content": { "$contains": "string hello world" },
+      "error_type": "INVALID_INDENTATION"
+    }
+  ],
+  "$order": "any"
+}

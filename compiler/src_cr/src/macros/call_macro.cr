@@ -253,8 +253,12 @@ class Call_macro_provider
       step = ctx.current_step
       raise "missing step" unless step
       ctx.node.children.each do |ch|
-        tc = step.process_node(ctx.clone_with(node: ch)).as((Type | String)?) if (t = step.process_node(ctx.clone_with(node: ch)))
-        args << tc
+        tc = step.process_node(ctx.clone_with(node: ch))
+        if tc.is_a? TypeParameter
+          ctx.compiler.assert_(false, ch, "nonsense type parameter", ErrorType::ARGUMENT_TYPE_MISMATCH)
+        else
+          args << tc
+        end
       end
       args = args.compact
 
