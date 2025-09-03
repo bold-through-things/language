@@ -11,7 +11,7 @@ class While_macro_provider
 
     so.write("while(true) {\n")
     so.with_indent do
-      ctx.compiler.assert_(ctx.node.children.size == 2, ctx.node, "must have two children")
+      ctx.compiler.assert_(ctx.node.children.size == 2, ctx.node, "must have two children, got #{ctx.node.children.map {|ch| ch.content}}")
 
       # condition
       cond_node = ctx.node.children[0]

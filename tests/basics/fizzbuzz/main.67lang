@@ -1,20 +1,22 @@
 local fizz_divisor
-	string ""
+	int 0
 local buzz_divisor
-	string ""
+	int 0
 local n
-	string ""
+	int 0
 
-if
-	do is_tty
-then
-	do prompt into fizz_divisor
-		string "fizz? "
-	do prompt into buzz_divisor
-		string "buzz? "
-	do prompt into n
-		string "n? "
-else
+note TODO add prompting tests...
+	if
+		do is_tty
+	then
+		do prompt into fizz_divisor
+			string "fizz? "
+		do prompt into buzz_divisor
+			string "buzz? "
+		do prompt into n
+			string "n? "
+	else
+do
 	local input
 		do stdin
 	
@@ -24,20 +26,20 @@ else
 	
 	# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
 
-	do # into fizz_divisor
+	do #
 		get input
 		int 0
+	then do parseInt into fizz_divisor
 
-	do # into buzz_divisor
+	do #
 		get input
 		int 1
+	then do parseInt into buzz_divisor
 
-	do n
-		local _generics_please_i_beg_you_help
-			type str
-			do #
-				get input
-				int 2
+	do #
+		get input
+		int 2
+	then do parseInt into n
 
 local i
 	int 0
@@ -79,7 +81,7 @@ do
 		do concat into out
 			note TODO why is this needed
 			string ""
-			get i
+			do toString the i
 
 	do print
 		get out

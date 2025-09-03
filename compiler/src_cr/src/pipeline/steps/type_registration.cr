@@ -17,6 +17,7 @@ class TypeRegistrationStep < MacroProcessingStep
       all[macro_name].call(ctx)
     end
 
+    # TODO. this seems like trouble. should we only handle children if not matched?
     ctx.node.children.each do |child|
       child_ctx = ctx.clone_with(node: child)
       process_node(child_ctx)
@@ -44,5 +45,29 @@ class TypeDetailRegistrationStep < MacroProcessingStep
       process_node(child_ctx)
     end
     nil
+  end
+end
+
+
+class FunctionRegistrationStep < MacroProcessingStep
+  getter macros : MacroRegistry
+
+  def initialize(@macros : MacroRegistry)
+    # super()
+  end
+
+  def process_node(ctx : MacroContext) : TCResult
+    macro_name = ctx.compiler.get_metadata(ctx.node, Macro).to_s
+    all = @macros.all
+    rv = nil
+    if all.has_key?(macro_name)
+      rv = all[macro_name].call(ctx)
+    end
+
+    ctx.node.children.each do |child|
+      child_ctx = ctx.clone_with(node: child)
+      process_node(child_ctx)
+    end
+    rv
   end
 end

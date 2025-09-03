@@ -12,9 +12,9 @@ require "../compiler_types/proper_types"
 # Result of finding a definition via upwalking
 class UpwalkerResult
   getter node : Node
-  getter type_value : (Type | String)
+  getter type_value : Type?
 
-  def initialize(@node : Node, @type_value : (Type | String))
+  def initialize(@node : Node, @type_value : Type?)
   end
 end
 
@@ -42,22 +42,12 @@ class LocalNameSearchStrategy < SearchStrategy
     sane_local_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier).to_s
     if @name == desired_local_name || (sane_local_name && @name == sane_local_name)
       default_logger.typecheck("LocalNameSearchStrategy: found #{@name} at #{ctx.node.content}")
-      # try metadata first
-      begin
-        demanded = ctx.compiler.get_metadata(ctx.node, FieldDemandType)
-        default_logger.typecheck("LocalNameSearchStrategy: found type #{demanded} in metadata")
-        return UpwalkerResult.new(ctx.node, demanded.tc.as(Type | String))
-      rescue ex
-        default_logger.typecheck("LocalNameSearchStrategy: no type in metadata (#{ex})")
+      demanded = ctx.compiler.maybe_metadata(ctx.node, FieldDemandType).try &.tc
+      default_logger.typecheck("LocalNameSearchStrategy: found type #{demanded} in metadata")
+      if demanded.is_a? TypeParameter
+        raise "wtf" # should actually emit compile error
       end
-
-      # fallback to explicit `type` child
-      if type_node = seek_child_macro(ctx.node, "type")
-        _, demanded = cut(type_node.content, " ")
-        return UpwalkerResult.new(ctx.node, demanded)
-      end
-
-      return UpwalkerResult.new(ctx.node, "*")
+      return UpwalkerResult.new(ctx.node, demanded)
     end
 
     nil
@@ -79,7 +69,13 @@ class LastThenSearchStrategy < SearchStrategy
       mname = ctx.compiler.get_metadata(ctx.node, Macro).to_s
       if mname == "local"
         if ctx.node.children.size > 0 && ctx.node.children[0].content == "67lang:last_then"
-          return UpwalkerResult.new(ctx.node, "*")
+          default_logger.typecheck("LastThenSearchStrategy: found #{ctx.node.content}")
+          demanded = ctx.compiler.maybe_metadata(ctx.node, FieldDemandType).try &.tc
+          default_logger.typecheck("LastThenSearchStrategy: found type #{demanded} in metadata")
+          if demanded.is_a? TypeParameter
+            raise "wtf" # should actually emit compile error
+          end
+          return UpwalkerResult.new(ctx.node, demanded)
         end
       end
     rescue

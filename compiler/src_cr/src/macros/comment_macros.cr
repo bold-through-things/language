@@ -15,7 +15,7 @@ class Comment_macro_provider
   def register_type(ctx : MacroContext) : Nil; end
   def register_type_details(ctx : MacroContext) : Nil; end
 
-  def typecheck(ctx : MacroContext)
+  def typecheck(ctx : MacroContext) : TCResult
     nil
   end
 end

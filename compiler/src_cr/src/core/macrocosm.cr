@@ -114,13 +114,15 @@ class Macrocosm
     code_linking_registry : MacroRegistry,
     preprocess_registry : MacroRegistry,
     type_registration_registry : MacroRegistry,
-    type_detail_registration_registry : MacroRegistry
+    type_detail_registration_registry : MacroRegistry,
+    function_registration : MacroRegistry
   )
     @processing_steps = [
       CodeBlockLinkingStep.new(code_linking_registry),
       PreprocessingStep.new(preprocess_registry),
       TypeRegistrationStep.new(type_registration_registry),
       TypeDetailRegistrationStep.new(type_detail_registration_registry),
+      FunctionRegistrationStep.new(function_registration),
       TypeCheckingStep.new(typecheck_registry),
       JavaScriptEmissionStep.new(emission_registry),
       MustCompileErrorVerificationStep.new(MacroRegistry.new),
@@ -271,13 +273,25 @@ end
 
 class Literal_macro_provider 
   include Macro_emission_provider
-  def initialize(@value : String, @type_name : String?)
+  # TODO - ensure that if we don't include we get rejected at compile
+  include Macro_typecheck_provider
+  def initialize(@value : String, @t : Type?)
   end
   def emission(ctx : MacroContext) : Nil
     ctx.expression_out << @value
   end
-  def typecheck(ctx : MacroContext)
-    @type_name
+  def typecheck(ctx : MacroContext) : TCResult
+    @t
+  end
+end
+
+class Object
+  def is_not_a!(type : T.class) forall T
+    if self.is_a?(T)
+      raise "bad #{T}"
+    else
+      self
+    end
   end
 end
 
@@ -305,6 +319,7 @@ def create_macrocosm : Macrocosm
   macro_providers["noop"]      = Noop_macro_provider.new
   macro_providers["type"]      = Type_macro_provider.new
   macro_providers["67lang:assume_local_exists"] = Noop_macro_provider.new
+  macro_providers["67lang:assume_type_valid"] = Noop_macro_provider.new
   macro_providers["67lang:obtain_param_value"]  = Obtain_param_value_macro_provider.new
   macro_providers["67lang:last_then"]           = Noop_macro_provider.new
   macro_providers["67lang:solution"]            = Solution_macro_provider.new
@@ -328,8 +343,8 @@ def create_macrocosm : Macrocosm
   COMMENT_MACROS.each { |m| macro_providers[m] = Comment_macro_provider.new }
   SCOPE_MACRO.each   { |m| macro_providers[m] = Scope_macro_provider.new }
 
-  { "true" => {"true",  "bool"},
-    "false" => {"false","bool"},
+  { "true" => {"true",  BOOL},
+    "false" => {"false", BOOL},
     "break" => {"break", nil},
     "continue" => {"continue", nil}
   }.each do |k, tup|
@@ -353,18 +368,28 @@ def create_macrocosm : Macrocosm
   emission                 = create_registry.call("emission")
   type_registration        = create_registry.call("type_registration")
   type_detail_registration = create_registry.call("type_detail_registration")
+  function_registration = create_registry.call("function_registration")
   code_linking_registry    = create_registry.call("code_linking")
 
   macro_providers.each do |macro_name, provider|
     preprocess.add_fn(provider.responds_to?(:preprocess) ? ->(c : MacroContext){ provider.preprocess(c) } : nil, macro_name)
-    typecheck.add_fn(provider.responds_to?(:typecheck)  ? ->(c : MacroContext) : TCResult { provider.typecheck(c) }  : nil, macro_name)
+    typecheck.add_fn(provider.is_a?(Macro_typecheck_provider)  ? ->(c : MacroContext) : TCResult { 
+      rv = provider.typecheck(c)
+      raise "String... #{rv} is_a? String #{rv.is_a? String}" if rv.is_a?(String)
+      rv
+    }  : nil, macro_name)
+    function_registration.add_fn(provider.responds_to?(:register_functions)  ? ->(c : MacroContext) : TCResult { 
+      rv = provider.register_functions(c)
+      raise "String... #{rv} is_a? String #{rv.is_a? String}" if rv.is_a?(String)
+      rv
+    }  : nil, macro_name)
     emission.add_fn(provider.responds_to?(:emission)   ? ->(c : MacroContext){ provider.emission(c) }   : nil, macro_name)
     code_linking_registry.add_fn(provider.responds_to?(:code_linking) ? ->(c : MacroContext){ provider.code_linking(c) } : nil, macro_name)
     type_registration.add_fn(provider.responds_to?(:register_type) ? ->(c : MacroContext){ provider.register_type(c) } : nil, macro_name)
     type_detail_registration.add_fn(provider.responds_to?(:register_type_details) ? ->(c : MacroContext){ provider.register_type_details(c) } : nil, macro_name)
   end
 
-  rv = Macrocosm.new(emission, typecheck, code_linking_registry, preprocess, type_registration, type_detail_registration)
+  rv = Macrocosm.new(emission, typecheck, code_linking_registry, preprocess, type_registration, type_detail_registration, function_registration)
   rv.registries.merge!(registries)
   rv
 end

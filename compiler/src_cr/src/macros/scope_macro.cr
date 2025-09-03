@@ -38,7 +38,7 @@ class Scope_macro_provider
     ctx.statement_out << "} "
   end
 
-  def typecheck(ctx : MacroContext)
+  def typecheck(ctx : MacroContext) : TCResult
     process_children_with_context(ctx, ctx.current_step.not_nil!)
     nil
   end

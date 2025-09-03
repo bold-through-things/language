@@ -444,7 +444,6 @@ def discover_and_filter_files():
 def to_json_type(t):
     """
     Types schema:
-      {"k":"wild"}
       {"k":"ref","id":"INT|FLOAT|STRING|BOOL|VOID|LIST_TYPE|DICT_TYPE"}  # canonical singletons/templates
       {"k":"prim","n":"int|float|str|bool|void"}                         # real primitive Type instances
       {"k":"cx","n":"Name","p":[...]}                                    # ComplexType(name, params)
@@ -453,7 +452,8 @@ def to_json_type(t):
     from compiler_types.proper_types import Type, PrimitiveType, ComplexType
 
     if t in ("*", "any", "unknown"):
-        return {"k": "wild"}
+        # TODO. a major h*ck. for now.
+        t = ComplexType("Object")
 
     # <<< change here: keep TypeReference as canonical ref >>>
     if isinstance(t, TypeReference):

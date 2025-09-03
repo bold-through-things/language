@@ -1,9 +1,9 @@
 [
   {
     "recoverable": false,
-    "line": 3,
+    "line": 4,
     "char": 0,
-    "content": "    string hello world",
+    "content": "    string \"world\"",
     "error": "oh spaces? yea? how many, two, or four, or maybe six?!",
     "error_type": "INVALID_INDENTATION"
   }

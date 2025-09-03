@@ -59,7 +59,7 @@ class Multi_provider
     dispatch_void(ctx) { |e| e.register_type_details }
   end
 
-  def typecheck(ctx : MacroContext)
+  def typecheck(ctx : MacroContext) : TCResult
     @entries.each do |e|
       if (m = e.matcher).nil? || m.not_nil!.call(ctx)
         if proc = e.typecheck

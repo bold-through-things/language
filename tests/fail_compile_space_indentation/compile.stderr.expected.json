@@ -2,9 +2,9 @@
   "$items": [
     {
       "recoverable": false,
-      "line": 3,
+      "line": 4,
       "char": 0,
-      "content": { "$contains": "string hello world" },
+      "content": { "$contains": "string \"world\"" },
       "error_type": "INVALID_INDENTATION"
     }
   ],

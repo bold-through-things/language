@@ -74,42 +74,43 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
-            const _0x17_print = await console.log("Current working directory:")
-            let _0x1__0x0_pipeline_result = _0x17_print
+            const _0x18_print = await console.log("Current working directory:")
+            let _0x1__0x0_pipeline_result = _0x18_print
             _0x1__0x0_pipeline_result
-            const _0x19_cwd = await Deno.cwd()
-            let _0x4__0x3_pipeline_result = _0x19_cwd
-            const _0x18_print = await console.log(_0x4__0x3_pipeline_result)
-            let _0x5__0x2_pipeline_result = _0x18_print
+            const _0x1a_cwd = await Deno.cwd()
+            let _0x4__0x3_pipeline_result = _0x1a_cwd
+            const _0x19_print = await console.log(_0x4__0x3_pipeline_result)
+            let _0x5__0x2_pipeline_result = _0x19_print
             _0x5__0x2_pipeline_result
-            const _0x1a_print = await console.log("Reading sample.txt:")
-            let _0x7__0x6_pipeline_result = _0x1a_print
+            const _0x1b_print = await console.log("Reading sample.txt:")
+            let _0x7__0x6_pipeline_result = _0x1b_print
             _0x7__0x6_pipeline_result
             try {
-                const _0x1b_read_file = await Deno.readTextFile("sample.txt")
-                let _0x9__0x8_pipeline_result = _0x1b_read_file
+                const _0x1c_read_file = await Deno.readTextFile("sample.txt")
+                let _0x9__0x8_pipeline_result = _0x1c_read_file
                 let _0xa_content = _0x9__0x8_pipeline_result
                 _0xa_content
-                const _0x1d_content = await _0xa_content
-                let _0xd__0xc_pipeline_result = _0x1d_content
-                const _0x1c_print = await console.log(_0xd__0xc_pipeline_result)
-                let _0xe__0xb_pipeline_result = _0x1c_print
+                const _0x1e_content = await _0xa_content
+                let _0xd__0xc_pipeline_result = _0x1e_content
+                const _0x1d_print = await console.log(_0xd__0xc_pipeline_result)
+                let _0xe__0xb_pipeline_result = _0x1d_print
                 _0xe__0xb_pipeline_result
             }
             catch (error) {
-
-                const _0x1e_print = await console.log("Error reading file:")
-                let _0x10__0xf_pipeline_result = _0x1e_print
-                _0x10__0xf_pipeline_result
-                const _0x20_error = await error
-                let _0x13__0x12_pipeline_result = _0x20_error
-                const _0x1f_print = await console.log(_0x13__0x12_pipeline_result)
-                let _0x14__0x11_pipeline_result = _0x1f_print
-                _0x14__0x11_pipeline_result
+                let _0xf_error = error
+                _0xf_error
+                const _0x1f_print = await console.log("Error reading file:")
+                let _0x11__0x10_pipeline_result = _0x1f_print
+                _0x11__0x10_pipeline_result
+                const _0x21_error = await _0xf_error
+                let _0x14__0x13_pipeline_result = _0x21_error
+                const _0x20_print = await console.log(_0x14__0x13_pipeline_result)
+                let _0x15__0x12_pipeline_result = _0x20_print
+                _0x15__0x12_pipeline_result
             }
-            const _0x21_print = await console.log("File reading test complete")
-            let _0x16__0x15_pipeline_result = _0x21_print
-            _0x16__0x15_pipeline_result
+            const _0x22_print = await console.log("File reading test complete")
+            let _0x17__0x16_pipeline_result = _0x22_print
+            _0x17__0x16_pipeline_result
 
         }
     } 

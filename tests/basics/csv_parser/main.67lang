@@ -50,10 +50,8 @@ do
 			get zipped_data
 		do
 			do # the row
-				do # the kv
-					int 0
-				do # the kv
-					int 1
+				get 0 from kv
+				get 1 from kv
 		
 		do push the rows
 			get row
@@ -81,8 +79,9 @@ do
 		note TODO - the test case should probably strain this asc
 			on what happens if age is 30
 		do asc
-			do # the row
-				string "age"
+			do parseInt
+				do # the row
+					string "age"
 			int 30
 	then
 		do add into age_over_30

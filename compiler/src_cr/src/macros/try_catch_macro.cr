@@ -27,12 +27,12 @@ class Catch_macro_provider
     args = ctx.compiler.get_metadata(ctx.node, Args).to_s
     error_var = args.strip.empty? ? "error" : args.strip
 
-    new_node = ctx.compiler.make_node(
-      "67lang:assume_local_exists #{error_var}",
-      pos: ctx.node.pos,
-      children: [] of Node
-    )
-    ctx.node.prepend_child(new_node)
+    local_node = ctx.compiler.make_node("local #{error_var}", pos: ctx.node.pos, children: [
+      ctx.compiler.make_node("67lang:obtain_param_value #{error_var}", pos: ctx.node.pos, children: [] of Node),
+      ctx.compiler.make_node("type Error", pos: ctx.node.pos, children: [] of Node)
+    ] of Node)
+
+    ctx.node.prepend_child(local_node)
 
     ctx.node.children.each do |child|
       child_ctx = ctx.clone_with(node: child)

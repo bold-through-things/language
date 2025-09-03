@@ -1,599 +1,226 @@
 67lang:file
 	local lines
-		local _0x0_stdin
+		local _0x0_pipeline_result
+			67lang:last_then
 			67lang:call stdin
-
-			67lang:auto_type
-
-	local _0x3_lines
-		67lang:call lines
-			noscope
-				local _0x4_lines
-					67lang:call lines
-
-					67lang:auto_type
-
-			local _0x5_split
-				67lang:call split
-					67lang:call _0x4_lines
-
-					string "\n"
-
-				67lang:auto_type
-
-		67lang:auto_type
-
+	local lines
+		local _0x3_pipeline_result
+			67lang:last_then
+			67lang:call split
+				67lang:call lines
+				string "\n"
 	local modules
 		dict
-
-	for line in
-		67lang:assume_local_exists line
-
-		local _0xc_lines
-			67lang:call lines
-
-			67lang:auto_type
-
-		do
-			local module
-				dict
-
-			local kv
-				noscope
-					local _0xf_line
-						67lang:call line
-
-						67lang:auto_type
-
-				local _0x10_split
-					67lang:call split
-						67lang:call _0xf_line
-
-						string ":"
-
-						int 2
-
-					67lang:auto_type
-
-			noscope
-				local _0x14_module
-					67lang:call module
-
-					67lang:auto_type
-
-			local _0x15__hash_
-				67lang:call #
-					67lang:call _0x14_module
-
-					string "id"
-
-					noscope
-						local _0x17_kv
-							67lang:call kv
-
-							67lang:auto_type
-
-						local _0x18__hash_
-							67lang:call #
-								67lang:call _0x17_kv
-
-								int 0
-
-							67lang:auto_type
-
-					local _0x19_trim
-						67lang:call trim
-							67lang:call _0x18__hash_
-
-						67lang:auto_type
-
-				67lang:auto_type
-
-			noscope
-				local _0x21_module
-					67lang:call module
-
-					67lang:auto_type
-
-			local _0x22__hash_
-				67lang:call #
-					67lang:call _0x21_module
-
-					string "deps"
-
-					noscope
-						local _0x24_kv
-							67lang:call kv
-
-							67lang:auto_type
-
-						local _0x25__hash_
-							67lang:call #
-								67lang:call _0x24_kv
-
-								int 1
-
-							67lang:auto_type
-
-						local _0x26_trim
-							67lang:call trim
-								67lang:call _0x25__hash_
-
-							67lang:auto_type
-
-					local _0x27_split
-						67lang:call split
-							67lang:call _0x26_trim
-
-							regex /\s+/
-
-						67lang:auto_type
-
-				67lang:auto_type
-
-			# TODO - this ought to be a macro.
-
-			if
-				local _0x31_eq
-					67lang:call eq
-						noscope
-							local _0x32_kv
-								67lang:call kv
-
-								67lang:auto_type
-
-							local _0x33__hash_
-								67lang:call #
-									67lang:call _0x32_kv
-
-									int 1
-
-								67lang:auto_type
-
-						local _0x34_trim
-							67lang:call trim
-								67lang:call _0x33__hash_
-
-							67lang:auto_type
-
-						string ""
-
-					67lang:auto_type
-
-				then
-					noscope
-						local _0x3c_module
-							67lang:call module
-
-							67lang:auto_type
-
-					local _0x3d__hash_
+			type str for K
+			type Module for V
+	do
+		local _0x7_for_line__index
+			int 0
+		local _0x8_for_line__list
+			local _0xa_pipeline_result
+				67lang:last_then
+				67lang:call lines
+		while
+			local _0xd_pipeline_result
+				67lang:last_then
+				67lang:call asc
+					local _0xe_pipeline_result
+						67lang:last_then
+						67lang:call _0x7_for_line__index
+					local _0x10_pipeline_result
+						67lang:last_then
+						67lang:call length
+							67lang:call _0x8_for_line__list
+			do
+				local line
+					local _0x13_pipeline_result
+						67lang:last_then
 						67lang:call #
-							67lang:call _0x3c_module
-
-							string "deps"
-
+							67lang:call _0x8_for_line__list
+							local _0x14_pipeline_result
+								67lang:last_then
+								67lang:call _0x7_for_line__index
+				local _0x18_pipeline_result
+					67lang:last_then
+					67lang:call _0x7_for_line__index
+						local _0x19_pipeline_result
+							67lang:last_then
+							67lang:call add
+								67lang:call _0x7_for_line__index
+								int 1
+				local kv
+					local _0x1c_pipeline_result
+						67lang:last_then
+						67lang:call split
+							67lang:call line
+							string ":"
+							int 2
+				local _0x1f_pipeline_result
+					67lang:last_then
+					67lang:call #
+						67lang:call kv
+						int 0
+				local id
+					67lang:last_then
+					67lang:call trim
+						67lang:call _0x1f_pipeline_result
+				local module
+					local _0x22_pipeline_result
+						67lang:last_then
+						67lang:call Module
+							local _0x23_pipeline_result
+								67lang:last_then
+								67lang:call id
 							list
-
-						67lang:auto_type
-
-			noscope
-				local _0x40_modules
-					67lang:call modules
-
-					67lang:auto_type
-
-			local _0x41__hash_
-				67lang:call #
-					67lang:call _0x40_modules
-
-					noscope
-						local _0x43_module
+								type str
+							false
+				local _0x27_pipeline_result
+					67lang:last_then
+					67lang:call #
+						67lang:call kv
+						int 1
+				local deps_str
+					67lang:last_then
+					67lang:call trim
+						67lang:call _0x27_pipeline_result
+				# TODO - this ought to be a macro.
+				if
+					local _0x2a_pipeline_result
+						67lang:last_then
+						67lang:call none
+							local _0x2b_pipeline_result
+								67lang:last_then
+								67lang:call eq
+									67lang:call deps_str
+									string ""
+				then
+					local _0x2e_pipeline_result
+						67lang:last_then
+						67lang:call trim
+							67lang:call deps_str
+					local deps
+						67lang:last_then
+						67lang:call split
+							67lang:call _0x2e_pipeline_result
+							regex /\s+/
+					local _0x31_pipeline_result
+						67lang:last_then
+						67lang:call deps
 							67lang:call module
-
-							67lang:auto_type
-
-					local _0x44_id
-						67lang:call id
-							67lang:call _0x43_module
-
-						67lang:auto_type
-
-					local _0x47_module
-						67lang:call module
-
-						67lang:auto_type
-
-				67lang:auto_type
-
+							local _0x32_pipeline_result
+								67lang:last_then
+								67lang:call deps
+				local _0x35_pipeline_result
+					67lang:last_then
+					67lang:call #
+						67lang:call modules
+						local _0x36_pipeline_result
+							67lang:last_then
+							67lang:call id
+								67lang:call module
+						local _0x38_pipeline_result
+							67lang:last_then
+							67lang:call module
 	# print
 		string "modules"
-
-		local _0x4d_modules
-			67lang:call modules
-
-			67lang:auto_type
-
+		get modules
 	# TODO - support set initializers
-
 	# TODO - support a  way to convert a dict keys to a set cleanly
-
 	# (old code removed)
-
-	local build_order
-		list
-
-	local dep_loops
-		list
-
-	fn visit
-		67lang:assume_local_exists chain
-
-		67lang:assume_local_exists module
-
-		param module
-
-		# chain of dependencies currently being inspected - used to detect loops
-
-		param chain
-
-		do
-			if 
-				noscope
-					local _0x52_module
-						67lang:call module
-
-						67lang:auto_type
-
-				local _0x53__hash_
-					67lang:call #
-						67lang:call _0x52_module
-
-						string "visited"
-
-					67lang:auto_type
-
-				then
-					return
-
-			noscope
-				local _0x56_module
-					67lang:call module
-
-					67lang:auto_type
-
-			local _0x57__hash_
-				67lang:call #
-					67lang:call _0x56_module
-
-					string "visited"
-
-					true
-
-				67lang:auto_type
-
-			# TODO - this shouldn't be using slice. we need a dedicated copy command
-
-			local next_chain
-				noscope
-					local _0x5a_chain
-						67lang:call chain
-
-						67lang:auto_type
-
-				local _0x5b_slice
-					67lang:call slice
-						67lang:call _0x5a_chain
-
-					67lang:auto_type
-
-			noscope
-				local _0x5f_next_chain
-					67lang:call next_chain
-
-					67lang:auto_type
-
-			local _0x60_push
-				67lang:call push
-					67lang:call _0x5f_next_chain
-
-					noscope
-						local _0x62_module
-							67lang:call module
-
-							67lang:auto_type
-
-					local _0x63_id
-						67lang:call id
-							67lang:call _0x62_module
-
-						67lang:auto_type
-
-				67lang:auto_type
-
-			for dep_id in
-				67lang:assume_local_exists dep_id
-
-				noscope
-					local _0x69_module
-						67lang:call module
-
-						67lang:auto_type
-
-				local _0x6a__hash_
-					67lang:call #
-						67lang:call _0x69_module
-
-						string "deps"
-
-					67lang:auto_type
-
-				do
-					if
-						exists
-							local _0x6d_dep_id
-								67lang:call dep_id
-
-								67lang:auto_type
-
-							inside
-								local _0x6f_next_chain
-									67lang:call next_chain
-
-									67lang:auto_type
-
-						then
-							local dep_loop
-								list
-
-							noscope
-								local _0x72_dep_loop
-									67lang:call dep_loop
-
-									67lang:auto_type
-
-							local _0x73_push
-								67lang:call push
-									67lang:call _0x72_dep_loop
-
-									local _0x75_dep_id
-										67lang:call dep_id
-
-										67lang:auto_type
-
-								67lang:auto_type
-
-							for chain_dep_id in
-								67lang:assume_local_exists chain_dep_id
-
-								noscope
-									local _0x79_next_chain
-										67lang:call next_chain
-
-										67lang:auto_type
-
-									local _0x7a_slice
-										67lang:call slice
-											67lang:call _0x79_next_chain
-
-										67lang:auto_type
-
-								local _0x7b_reverse
-									67lang:call reverse
-										67lang:call _0x7a_slice
-
-									67lang:auto_type
-
-								do
-									noscope
-										local _0x7f_dep_loop
-											67lang:call dep_loop
-
-											67lang:auto_type
-
-									local _0x80_push
-										67lang:call push
-											67lang:call _0x7f_dep_loop
-
-											local _0x82_chain_dep_id
-												67lang:call chain_dep_id
-
-												67lang:auto_type
-
-										67lang:auto_type
-
-									if
-										local _0x86_eq
-											67lang:call eq
-												local _0x87_chain_dep_id
-													67lang:call chain_dep_id
-
-													67lang:auto_type
-
-												local _0x89_dep_id
-													67lang:call dep_id
-
-													67lang:auto_type
-
-											67lang:auto_type
-
-										then
-											break
-
-							noscope
-								local _0x8e_dep_loop
-									67lang:call dep_loop
-
-									67lang:auto_type
-
-							local _0x8f_reverse
-								67lang:call reverse
-									67lang:call _0x8e_dep_loop
-
-								67lang:auto_type
-
-							noscope
-								local _0x92_dep_loops
-									67lang:call dep_loops
-
-									67lang:auto_type
-
-							local _0x93_push
-								67lang:call push
-									67lang:call _0x92_dep_loops
-
-									noscope
-										local _0x95_dep_loop
-											67lang:call dep_loop
-
-											67lang:auto_type
-
-									local _0x96_join
-										67lang:call join
-											67lang:call _0x95_dep_loop
-
-											string " → "
-
-										67lang:auto_type
-
-								67lang:auto_type
-
-					else
-						local _0x9c_visit
-							67lang:call visit
-								noscope
-									local _0x9d_modules
-										67lang:call modules
-
-										67lang:auto_type
-
-								local _0x9e__hash_
-									67lang:call #
-										67lang:call _0x9d_modules
-
-										local _0xa0_dep_id
-											67lang:call dep_id
-
-											67lang:auto_type
-
-									67lang:auto_type
-
-								local _0xa4_next_chain
-									67lang:call next_chain
-
-									67lang:auto_type
-
-							67lang:auto_type
-
-			noscope
-				local _0xab_build_order
-					67lang:call build_order
-
-					67lang:auto_type
-
-			local _0xac_push
-				67lang:call push
-					67lang:call _0xab_build_order
-
-					noscope
-						local _0xae_module
-							67lang:call module
-
-							67lang:auto_type
-
-					local _0xaf_id
-						67lang:call id
-							67lang:call _0xae_module
-
-						67lang:auto_type
-
-				67lang:auto_type
-
-	for module in
-		67lang:assume_local_exists module
-
-		local _0xb5_values
-			67lang:call values
-				local _0xb6_modules
+	local unroller
+		type DAG_unroller
+		local _0xa9_pipeline_result
+			67lang:last_then
+			67lang:call DAG_unroller
+				list
+					type str
+				list
+					type str
+				local _0xaa_pipeline_result
+					67lang:last_then
 					67lang:call modules
-
-					67lang:auto_type
-
-			67lang:auto_type
-
-		do
-			local _0xba_visit
-				67lang:call visit
-					local _0xbb_module
-						67lang:call module
-
-						67lang:auto_type
-
-					list
-
-				67lang:auto_type
-
+	do
+		local _0xae_for_module__index
+			int 0
+		local _0xaf_for_module__list
+			local _0xb1_pipeline_result
+				67lang:last_then
+				67lang:call values
+					67lang:call modules
+		while
+			local _0xb4_pipeline_result
+				67lang:last_then
+				67lang:call asc
+					local _0xb5_pipeline_result
+						67lang:last_then
+						67lang:call _0xae_for_module__index
+					local _0xb7_pipeline_result
+						67lang:last_then
+						67lang:call length
+							67lang:call _0xaf_for_module__list
+			do
+				local module
+					local _0xba_pipeline_result
+						67lang:last_then
+						67lang:call #
+							67lang:call _0xaf_for_module__list
+							local _0xbb_pipeline_result
+								67lang:last_then
+								67lang:call _0xae_for_module__index
+				local _0xbf_pipeline_result
+					67lang:last_then
+					67lang:call _0xae_for_module__index
+						local _0xc0_pipeline_result
+							67lang:last_then
+							67lang:call add
+								67lang:call _0xae_for_module__index
+								int 1
+				local _0xc3_pipeline_result
+					67lang:last_then
+					67lang:call visit
+						local _0xc4_pipeline_result
+							67lang:last_then
+							67lang:call unroller
+						local _0xc6_pipeline_result
+							67lang:last_then
+							67lang:call module
+						list
+							type str
+	local _0xc9_pipeline_result
+		67lang:last_then
+		67lang:call unroller
 	if
-		local _0xbf_nondesc
+		local _0xcb_pipeline_result
+			67lang:last_then
 			67lang:call nondesc
 				int 1
-
-				noscope
-					local _0xc0_dep_loops
-						67lang:call dep_loops
-
-						67lang:auto_type
-
-				local _0xc1_length
+				local _0xcc_pipeline_result
+					67lang:last_then
 					67lang:call length
-						67lang:call _0xc0_dep_loops
-
-					67lang:auto_type
-
-			67lang:auto_type
-
-		then
-			local _0xc7_print
-				67lang:call print
-					local _0xc8_concat
-						67lang:call concat
-							string "ERROR: there are dependency loops.\n"
-
-							noscope
-								local _0xc9_dep_loops
-									67lang:call dep_loops
-
-									67lang:auto_type
-
-							local _0xca_join
-								67lang:call join
-									67lang:call _0xc9_dep_loops
-
-									string "\n"
-
-								67lang:auto_type
-
-						67lang:auto_type
-
-				67lang:auto_type
-
-	else
-		local _0xd4_print
+						67lang:call dep_loops
+							67lang:call _0xc9_pipeline_result
+	then
+		local _0xcf_pipeline_result
+			67lang:last_then
 			67lang:call print
-				noscope
-					local _0xd5_build_order
-						67lang:call build_order
-
-						67lang:auto_type
-
-				local _0xd6_join
+				local _0xd0_pipeline_result
+					67lang:last_then
+					67lang:call concat
+						string "ERROR: there are dependency loops.\n"
+						local _0xd1_pipeline_result
+							67lang:last_then
+							67lang:call join
+								67lang:call dep_loops
+									67lang:call _0xc9_pipeline_result
+								string "\n"
+	else
+		local _0xd5_pipeline_result
+			67lang:last_then
+			67lang:call print
+				local _0xd6_pipeline_result
+					67lang:last_then
 					67lang:call join
-						67lang:call _0xd5_build_order
-
+						67lang:call build_order
+							67lang:call _0xc9_pipeline_result
 						string "\n"
-
-					67lang:auto_type
-
-			67lang:auto_type
-
 

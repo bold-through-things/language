@@ -17,110 +17,636 @@
   },
   {
     "recoverable": false,
-    "line": 34,
-    "char": 0,
-    "content": "local test_int",
-    "error": "failed to assert: field demands int but is given str",
-    "error_type": "FIELD_TYPE_MISMATCH"
-  },
-  {
-    "recoverable": false,
-    "line": 38,
-    "char": 0,
-    "content": "67lang:call test_int",
-    "error": "failed to assert: could not find a matching overload for test_int with arguments [\"str\"]",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": [
-      {
-        "convention": "LocalAccessCall",
-        "fn": "_0x13_test_int",
-        "demands": [],
-        "returns": {
-          "name": "int",
-          "type_params": [],
-          "fields": []
-        }
-      },
-      {
-        "convention": "LocalAccessCall",
-        "fn": "_0x13_test_int",
-        "demands": [
-          {
-            "name": "int",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "int",
-          "type_params": [],
-          "fields": []
-        }
-      }
-    ]
-  },
-  {
-    "recoverable": false,
     "line": 42,
     "char": 0,
     "content": "67lang:call test_str",
-    "error": "failed to assert: could not find a matching overload for test_str with arguments [#<PrimitiveType:0x7f179dadf660 @name=\"int\">]",
+    "error": "failed to assert: could not find a matching overload for test_str with arguments [#<PrimitiveType:0x7f30d9524d40 @name=\"int\">]",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "convention": "LocalAccessCall",
-        "fn": "_0x10_test_str",
-        "demands": [],
-        "returns": "str"
+        "convention": {
+          "convention": "LocalAccessCall",
+          "fn": "_0x10_test_str",
+          "demands": [],
+          "returns": "never"
+        },
+        "reasons": [
+          {
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 0,
+            "received_arity": 1
+          }
+        ]
       },
       {
-        "convention": "LocalAccessCall",
-        "fn": "_0x10_test_str",
-        "demands": [
-          "str"
-        ],
-        "returns": "str"
+        "convention": {
+          "convention": "LocalAccessCall",
+          "fn": "_0x10_test_str",
+          "demands": [
+            "never"
+          ],
+          "returns": "never"
+        },
+        "reasons": [
+          {
+            "reason_type": "ARG_MISMATCH",
+            "index": 0,
+            "demanded": "never",
+            "received": "int"
+          }
+        ]
       }
     ]
   },
   {
     "recoverable": false,
-    "line": 45,
+    "line": 51,
     "char": 0,
-    "content": "local test_bool",
-    "error": "failed to assert: field demands bool but is given str",
-    "error_type": "FIELD_TYPE_MISMATCH"
-  },
-  {
-    "recoverable": false,
-    "line": 50,
-    "char": 0,
-    "content": "67lang:call test_bool",
-    "error": "failed to assert: could not find a matching overload for test_bool with arguments [#<PrimitiveType:0x7f179dadf3c0 @name=\"str\">]",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": [
+    "content": "67lang:call split",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f30d9524de0 @name=\"never\">]",
+    "error_type": "AMBIGUOUS_OVERLOAD",
+    "matching_overloads": [
       {
-        "convention": "LocalAccessCall",
-        "fn": "_0x1c_test_bool",
-        "demands": [],
-        "returns": {
-          "name": "bool",
-          "type_params": [],
-          "fields": []
-        }
-      },
-      {
-        "convention": "LocalAccessCall",
-        "fn": "_0x1c_test_bool",
+        "convention": "FieldCall",
+        "field": "split",
         "demands": [
           {
-            "name": "bool",
+            "name": "SymbolConstructor",
             "type_params": [],
             "fields": []
           }
         ],
         "returns": {
-          "name": "bool",
+          "name": "uniquesymbol",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          {
+            "name": "str",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "fields": []
+        }
+      }
+    ]
+  },
+  {
+    "recoverable": false,
+    "line": 51,
+    "char": 0,
+    "content": "67lang:call sort",
+    "error": "failed to assert: multiple equally specific overloads match for sort with arguments [#<NeverType:0x7f30d9524de0 @name=\"never\">]",
+    "error_type": "AMBIGUOUS_OVERLOAD",
+    "matching_overloads": [
+      {
+        "convention": "PrototypeCall",
+        "constructor": "URLSearchParams",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "URLSearchParams",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "void",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "BigInt64Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "BigInt64Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "BigInt64Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "BigUint64Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "BigUint64Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "BigUint64Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "list",
+            "type_params": [
+              "T"
+            ],
+            "fields": [
+              {
+                "name": "length",
+                "type": {
+                  "name": "int",
+                  "type_params": [],
+                  "fields": []
+                }
+              }
+            ]
+          }
+        ],
+        "returns": {
+          "name": "list",
+          "type_params": [
+            "T"
+          ],
+          "fields": [
+            {
+              "name": "length",
+              "type": {
+                "name": "int",
+                "type_params": [],
+                "fields": []
+              }
+            }
+          ]
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Int8Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Int8Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Int8Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint8Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Uint8Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Uint8Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint8ClampedArray",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Uint8ClampedArray",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Uint8ClampedArray",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Int16Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Int16Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Int16Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint16Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Uint16Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Uint16Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Int32Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Int32Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Int32Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint32Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Uint32Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Uint32Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Float32Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Float32Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Float32Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Float64Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Float64Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Float64Array",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Float16Array",
+        "fn": "sort",
+        "demands": [
+          {
+            "name": "Float16Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "Float16Array",
+          "type_params": [],
+          "fields": []
+        }
+      }
+    ]
+  },
+  {
+    "recoverable": false,
+    "line": 51,
+    "char": 0,
+    "content": "67lang:call join",
+    "error": "failed to assert: multiple equally specific overloads match for join with arguments [#<NeverType:0x7f30d9524de0 @name=\"never\">]",
+    "error_type": "AMBIGUOUS_OVERLOAD",
+    "matching_overloads": [
+      {
+        "convention": "PrototypeCall",
+        "constructor": "BigInt64Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "BigInt64Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "BigUint64Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "BigUint64Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "ReadonlyArray",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "ReadonlyArray",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "ConcatArray",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "ConcatArray",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "list",
+            "type_params": [
+              "T"
+            ],
+            "fields": [
+              {
+                "name": "length",
+                "type": {
+                  "name": "int",
+                  "type_params": [],
+                  "fields": []
+                }
+              }
+            ]
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Int8Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Int8Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint8Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Uint8Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint8ClampedArray",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Uint8ClampedArray",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Int16Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Int16Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint16Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Uint16Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Int32Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Int32Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Uint32Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Uint32Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Float32Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Float32Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Float64Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Float64Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "Float16Array",
+        "fn": "join",
+        "demands": [
+          {
+            "name": "Float16Array",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "str",
           "type_params": [],
           "fields": []
         }
@@ -132,161 +658,225 @@
     "line": 53,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments [#<PrimitiveType:0x7f179dadf3a0 @name=\"bool\">]",
+    "error": "failed to assert: could not find a matching overload for split with arguments [#<PrimitiveType:0x7f30d9524cc0 @name=\"bool\">]",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "convention": "FieldCall",
-        "field": "split",
-        "demands": [
-          "SymbolConstructor"
-        ],
-        "returns": "uniquesymbol"
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
+        "convention": {
+          "convention": "FieldCall",
+          "field": "split",
+          "demands": [
+            {
+              "name": "SymbolConstructor",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "returns": {
+            "name": "uniquesymbol",
             "type_params": [],
             "fields": []
           }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
+        },
+        "reasons": [
+          {
+            "reason_type": "ARG_MISMATCH",
+            "index": 0,
+            "demanded": "SymbolConstructor",
+            "received": "bool"
+          }
+        ]
+      },
+      {
+        "convention": {
+          "convention": "PrototypeCall",
+          "constructor": "String",
+          "fn": "split",
+          "demands": [
             {
               "name": "str",
               "type_params": [],
               "fields": []
             }
           ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "regex",
-            "type_params": [],
+          "returns": {
+            "name": "list",
+            "type_params": [
+              {
+                "name": "str",
+                "type_params": [],
+                "fields": []
+              }
+            ],
             "fields": []
           }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
+        },
+        "reasons": [
+          {
+            "reason_type": "ARG_MISMATCH",
+            "index": 0,
+            "demanded": "str",
+            "received": "bool"
+          }
+        ]
+      },
+      {
+        "convention": {
+          "convention": "PrototypeCall",
+          "constructor": "String",
+          "fn": "split",
+          "demands": [
+            {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            },
+            {
+              "name": "regex",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "returns": {
+            "name": "list",
+            "type_params": [
+              {
+                "name": "str",
+                "type_params": [],
+                "fields": []
+              }
+            ],
+            "fields": []
+          }
+        },
+        "reasons": [
+          {
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 2,
+            "received_arity": 1
+          }
+        ]
+      },
+      {
+        "convention": {
+          "convention": "PrototypeCall",
+          "constructor": "String",
+          "fn": "split",
+          "demands": [
+            {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            },
+            {
+              "name": "regex",
+              "type_params": [],
+              "fields": []
+            },
+            {
+              "name": "float",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "returns": {
+            "name": "list",
+            "type_params": [
+              {
+                "name": "str",
+                "type_params": [],
+                "fields": []
+              }
+            ],
+            "fields": []
+          }
+        },
+        "reasons": [
+          {
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 3,
+            "received_arity": 1
+          }
+        ]
+      },
+      {
+        "convention": {
+          "convention": "PrototypeCall",
+          "constructor": "String",
+          "fn": "split",
+          "demands": [
+            {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            },
             {
               "name": "str",
               "type_params": [],
               "fields": []
             }
           ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "regex",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "float",
-            "type_params": [],
+          "returns": {
+            "name": "list",
+            "type_params": [
+              {
+                "name": "str",
+                "type_params": [],
+                "fields": []
+              }
+            ],
             "fields": []
           }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
+        },
+        "reasons": [
+          {
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 2,
+            "received_arity": 1
+          }
+        ]
+      },
+      {
+        "convention": {
+          "convention": "PrototypeCall",
+          "constructor": "String",
+          "fn": "split",
+          "demands": [
             {
               "name": "str",
               "type_params": [],
               "fields": []
-            }
-          ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
+            },
             {
               "name": "str",
               "type_params": [],
               "fields": []
-            }
-          ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "float",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
+            },
             {
-              "name": "str",
+              "name": "float",
               "type_params": [],
               "fields": []
             }
           ],
-          "fields": []
-        }
+          "returns": {
+            "name": "list",
+            "type_params": [
+              {
+                "name": "str",
+                "type_params": [],
+                "fields": []
+              }
+            ],
+            "fields": []
+          }
+        },
+        "reasons": [
+          {
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 3,
+            "received_arity": 1
+          }
+        ]
       }
     ]
   },
@@ -295,179 +885,122 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments [#<ComplexType:0x7f179aeab660 @name=\"list\", @type_params=[#<PrimitiveType:0x7f179dadf3c0 @name=\"str\">], @fields=[]>]",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": [
-      {
-        "convention": "FieldCall",
-        "field": "split",
-        "demands": [
-          "SymbolConstructor"
-        ],
-        "returns": "uniquesymbol"
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
-            {
-              "name": "str",
-              "type_params": [],
-              "fields": []
-            }
-          ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "regex",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
-            {
-              "name": "str",
-              "type_params": [],
-              "fields": []
-            }
-          ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "regex",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "float",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
-            {
-              "name": "str",
-              "type_params": [],
-              "fields": []
-            }
-          ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
-            {
-              "name": "str",
-              "type_params": [],
-              "fields": []
-            }
-          ],
-          "fields": []
-        }
-      },
-      {
-        "convention": "PrototypeCall",
-        "constructor": "String",
-        "fn": "split",
-        "demands": [
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "str",
-            "type_params": [],
-            "fields": []
-          },
-          {
-            "name": "float",
-            "type_params": [],
-            "fields": []
-          }
-        ],
-        "returns": {
-          "name": "list",
-          "type_params": [
-            {
-              "name": "str",
-              "type_params": [],
-              "fields": []
-            }
-          ],
-          "fields": []
-        }
-      }
-    ]
-  },
-  {
-    "recoverable": false,
-    "line": 56,
-    "char": 0,
-    "content": "67lang:call split",
-    "error": "failed to assert: multiple equally specific overloads match for split with arguments [\"*\"]",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f30d9524de0 @name=\"never\">]",
     "error_type": "AMBIGUOUS_OVERLOAD",
     "matching_overloads": [
       {
         "convention": "FieldCall",
         "field": "split",
         "demands": [
-          "SymbolConstructor"
+          {
+            "name": "SymbolConstructor",
+            "type_params": [],
+            "fields": []
+          }
         ],
-        "returns": "uniquesymbol"
+        "returns": {
+          "name": "uniquesymbol",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          {
+            "name": "str",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "fields": []
+        }
+      }
+    ]
+  },
+  {
+    "recoverable": false,
+    "line": 56,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f30d9524de0 @name=\"never\">]",
+    "error_type": "AMBIGUOUS_OVERLOAD",
+    "matching_overloads": [
+      {
+        "convention": "FieldCall",
+        "field": "split",
+        "demands": [
+          {
+            "name": "SymbolConstructor",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "uniquesymbol",
+          "type_params": [],
+          "fields": []
+        }
+      },
+      {
+        "convention": "PrototypeCall",
+        "constructor": "String",
+        "fn": "split",
+        "demands": [
+          {
+            "name": "str",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "list",
+          "type_params": [
+            {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "fields": []
+        }
+      }
+    ]
+  },
+  {
+    "recoverable": false,
+    "line": 56,
+    "char": 0,
+    "content": "67lang:call split",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f30d9524de0 @name=\"never\">]",
+    "error_type": "AMBIGUOUS_OVERLOAD",
+    "matching_overloads": [
+      {
+        "convention": "FieldCall",
+        "field": "split",
+        "demands": [
+          {
+            "name": "SymbolConstructor",
+            "type_params": [],
+            "fields": []
+          }
+        ],
+        "returns": {
+          "name": "uniquesymbol",
+          "type_params": [],
+          "fields": []
+        }
       },
       {
         "convention": "PrototypeCall",

@@ -9,11 +9,12 @@ class MacroAssertFailed < Exception
 end
 
 # graceful_typecheck: wraps a function to catch MacroAssertFailed
-# and return "*" to prevent cascading errors.
-def graceful_typecheck(&block : -> T) : T | String forall T
+# and return NEVER to prevent cascading errors.
+def graceful_typecheck(&block : -> T) : T forall T
   begin
-    yield
+    rv = yield
+    return rv
   rescue MacroAssertFailed
-    "*"
+    return NEVER
   end
 end

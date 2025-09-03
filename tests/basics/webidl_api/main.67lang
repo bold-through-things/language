@@ -86,6 +86,10 @@ local jsonString
 		get testObj
 
 local parsedObj
+	67lang:assume_type_valid
+	type dict
+		type str
+		type *
 	do JSON.parse
 		get jsonString
 

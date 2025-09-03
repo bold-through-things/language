@@ -6,8 +6,8 @@ class Obtain_param_value_macro_provider
   include Macro_emission_provider
   include Macro_typecheck_provider
 
-  def typecheck(ctx : MacroContext)
-    "*"
+  def typecheck(ctx : MacroContext) : TCResult
+    NEVER
   end
 
   def emission(ctx : MacroContext) : Nil

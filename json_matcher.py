@@ -248,7 +248,5 @@ def validate_json_spec(actual_json_text: str, spec_json_text: str) -> Tuple[bool
     lines = ["JSON spec mismatches:"]
     for e in errs:
         lines.append(f"  - {e}")
-    lines.append("\nActual JSON:")
-    lines.append(json.dumps(actual, indent=2, ensure_ascii=False, sort_keys=True))
     return False, "\n".join(lines), json.dumps(actual, indent=2, ensure_ascii=False, sort_keys=True)
 # ---- end JSON Spec Matcher v2 -------------------------------------

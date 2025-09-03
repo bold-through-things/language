@@ -44,13 +44,20 @@ class Local_macro_provider
     ctx.expression_out << (name)
   end
 
-  def typecheck(ctx : MacroContext)
-    graceful_typecheck do
+  def typecheck(ctx : MacroContext) : TCResult
+    type = graceful_typecheck do
       demanded_type = nil
       received_type = nil
 
+      assume_type = false
+
       step = ctx.current_step.not_nil!
       ctx.node.children.each do |child|
+        if child.content.starts_with?("67lang:assume_type_valid") # TODO this is just fucking horrible please nuke it
+          assume_type = true
+          next
+        end
+
         child_res = step.process_node(ctx.clone_with(node: child))
 
         case child_res
@@ -59,10 +66,7 @@ class Local_macro_provider
         when Type
           received_type = child_res
         else
-          unless child_res.nil?
-            default_logger.typecheck("Warning: got legacy string type #{child_res}")
-            received_type = child_res # may be "*", String, etc.
-          end
+          # guh
         end
       end
 
@@ -74,21 +78,15 @@ class Local_macro_provider
 
       default_logger.typecheck("#{ctx.node.content} demanded #{demanded_type} and was given #{received_type}")
 
-      ctx.compiler.set_metadata(ctx.node, FieldDemandType, FieldDemandType.new(demanded_type))
-
-      if received_type.is_a?(Type) && demanded_type.is_a?(Type)
-        unless received_type.is_assignable_to(demanded_type)
-          ctx.compiler.assert_(false, ctx.node, "field demands #{demanded_type} but is given #{received_type}", ErrorType::FIELD_TYPE_MISMATCH)
-        end
-      else
-        r = received_type.to_s
-        d = demanded_type.to_s
-        if r != d && r != "*"
-          ctx.compiler.assert_(false, ctx.node, "field demands #{demanded_type} but is given #{received_type}", ErrorType::FIELD_TYPE_MISMATCH)
-        end
+      unless received_type.not_nil!.is_assignable_to(demanded_type.not_nil!) || assume_type
+        ctx.compiler.assert_(false, ctx.node, "field demands #{demanded_type} but is given #{received_type}", ErrorType::FIELD_TYPE_MISMATCH)
       end
 
       demanded_type
     end
+
+    ctx.compiler.set_metadata(ctx.node, FieldDemandType, FieldDemandType.new(type))
+    
+    return type
   end
 end

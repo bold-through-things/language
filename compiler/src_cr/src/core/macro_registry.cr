@@ -4,7 +4,7 @@ require "../utils/strutil"
 require "../utils/logger"
 require "./node"
 
-alias TCResult = Type | String | Nil | TypeParameter
+alias TCResult = Type | Nil | TypeParameter
 
 # forward decls to avoid circular requires
 class Macrocosm; end
@@ -64,19 +64,20 @@ module Macro_preprocess_provider
 end
 
 module Macro_type_registration_provider
-  # return value is whatever your type system uses (e.g., Type or String "*")
   abstract def register_type(ctx : MacroContext)
 end
 
 
 module Macro_type_details_provider
-  # return value is whatever your type system uses (e.g., Type or String "*")
   abstract def register_type_details(ctx : MacroContext)
 end
 
+module Macro_functions_provider
+  abstract def register_functions(ctx : MacroContext) : TCResult
+end
+
 module Macro_typecheck_provider
-  # return value is whatever your type system uses (e.g., Type or String "*")
-  abstract def typecheck(ctx : MacroContext)
+  abstract def typecheck(ctx : MacroContext) : TCResult
 end
 
 module Macro_emission_provider
@@ -87,7 +88,14 @@ module Macro_code_linking_provider
   abstract def code_linking(ctx : MacroContext) : Nil
 end
 
-alias Macro_provider = Macro_preprocess_provider | Macro_code_linking_provider | Macro_typecheck_provider  | Macro_emission_provider | Macro_type_registration_provider | Macro_type_details_provider
+alias Macro_provider = 
+  Macro_preprocess_provider | 
+  Macro_code_linking_provider | 
+  Macro_typecheck_provider  | 
+  Macro_emission_provider | 
+  Macro_type_registration_provider | 
+  Macro_type_details_provider | 
+  Macro_functions_provider
 
 class MacroRegistry
   def initialize

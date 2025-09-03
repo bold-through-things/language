@@ -16,6 +16,7 @@ class Type_macro_provider
   include Macro_typecheck_provider
   include Macro_type_registration_provider
   include Macro_type_details_provider
+  include Macro_functions_provider
 
   def typecheck(ctx : MacroContext) : TypeParameter | Nil
     if ctx.node.content.includes?(" is ")
@@ -60,7 +61,7 @@ class Type_macro_provider
     end
 
     field_names = [] of String
-    constructor_demands = [] of (Type | String)
+    constructor_demands = [] of Type
 
     ctx.node.children.each do |child|
       macro_name, _ = cut(child.content, " ")
@@ -107,6 +108,11 @@ class Type_macro_provider
     ctx.statement_out.write "}#{NEWLINE}"
   end
 
+  def register_functions(ctx : MacroContext) : TCResult
+    # TODO. so fucking stupid...
+    self.typecheck(ctx)
+  end
+
   private def _handle_type_definition(ctx : MacroContext) : TypeParameter | Nil
     register_type(ctx)
     nil
@@ -135,7 +141,7 @@ class Type_macro_provider
     TypeParameter.new(resolved.not_nil!, param_name)
   end
 
-  private def _resolve_type_with_children(ctx : MacroContext, type_name : String) : Type | String | Nil
+  private def _resolve_type_with_children(ctx : MacroContext, type_name : String) : Type | Nil
     type_children = ctx.node.children.select { |ch| ch.content.starts_with?("type ") }
 
     if type_children.empty?

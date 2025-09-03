@@ -1,8 +1,10 @@
 # compiler_types/proper_types.cr
 # Proper type system for 67lang — objects, mandatory generics.
 
-require "./type_hierarchy" # expects `type_hierarchy` to exist
 require "json"
+
+TYPE_HIERARCHY = {} of Type => Array(Type)
+UNION_TYPES    = {} of String => Array(String)
 
 abstract class Type
   abstract def to_s(io : IO) : Nil
@@ -19,17 +21,10 @@ abstract class Type
   end
 end
 
-def is_transitive_subtype(current, target : String) : Bool
-  case current
-  when String
-    return true if current == target
-    if (parents = TYPE_HIERARCHY[current]?)
-      parents.any? { |p| is_transitive_subtype(p, target) }
-    else
-      false
-    end
-  when Type
-    is_transitive_subtype(current.to_s, target)
+def is_transitive_subtype(current : Type, target : Type) : Bool
+  return true if current == target
+  if (parents = TYPE_HIERARCHY[current]?)
+    parents.any? { |p| is_transitive_subtype(p, target) }
   else
     false
   end
@@ -46,28 +41,16 @@ class PrimitiveType < Type
   end
 
   def is_assignable_to(other : Type) : Bool
-    case other
-    when PrimitiveType
-      return true if @name == other.name
-      # subtype via hierarchy
-      if (parents = TYPE_HIERARCHY[self]?)
-        return parents.includes?(other) ||
-               parents.includes?(other.name) ||
-               parents.any? { |p| is_transitive_subtype(p, other.name) }
-      end
-      false
-    else
-      false
+    return true if other.name == "*" # TODO oblitefuckingrate me
+    return true if @name == other.name
+    return true if other.is_a?(TypeVariable) # i guess ?!
+    # subtype via hierarchy
+    if (parents = (empty_Array_unless TYPE_HIERARCHY[self]?)  + (empty_Array_unless TYPE_HIERARCHY[TYPE_REGISTRY.get_type(self.name)]?))
+      return parents.includes?(other) ||
+              parents.includes?(other.name) ||
+              parents.any? { |p| is_transitive_subtype(p, other) }
     end
-  end
-
-  def is_assignable_to(other : String) : Bool
-    return true if @name == other
-    if (parents = TYPE_HIERARCHY[self]?)
-      parents.includes?(other) || parents.any? { |p| is_transitive_subtype(p, other) }
-    else
-      false
-    end
+    false
   end
 
   def is_concrete : Bool
@@ -94,6 +77,7 @@ class TypeVariable < Type
   end
 
   def is_assignable_to(other : Type) : Bool
+    return true if other.name == "*" # TODO oblitefuckingrate me
     return true if other.is_a?(TypeVariable) && @name == other.name
     @constraints.any? { |c| c.is_assignable_to(other) }
   end
@@ -124,8 +108,17 @@ class ComplexType < Type
   end
 
   def is_assignable_to(other : Type) : Bool
+    return true if other.name == "*" # TODO oblitefuckingrate me
     case other
     when ComplexType
+      is_subtype =
+        if (parents = (empty_Array_unless TYPE_HIERARCHY[self]?)  + (empty_Array_unless TYPE_HIERARCHY[TYPE_REGISTRY.get_type(self.name)]?))
+          parents.includes?(other) ||
+          parents.any? { |p| is_transitive_subtype(p, other) }
+        else
+          false
+        end
+      return true if is_subtype # TODO this can't be right
       return false unless @name == other.name
       return false unless @type_params.size == other.type_params.size
       @type_params.zip(other.type_params).all? { |a, b| a.is_assignable_to(b) }
@@ -134,17 +127,6 @@ class ComplexType < Type
     else
       false
     end
-  end
-
-  # Legacy: allow comparing to string base-name via hierarchy
-  def is_assignable_to(other : String) : Bool
-    return true if @name == other
-    if (base = type_registry.get_type(@name))
-      if (parents = TYPE_HIERARCHY[base]?)
-        return parents.includes?(other)
-      end
-    end
-    false
   end
 
   def is_concrete : Bool
@@ -157,44 +139,30 @@ class ComplexType < Type
   end
 end
 
-# -------- Function --------
+# -------- Bottom / Never --------
 
-class FunctionType < Type
-  getter parameter_types : Array(Type)
-  getter return_type : Type
-
-  def initialize(@parameter_types : Array(Type), @return_type : Type)
-  end
+class NeverType < Type
+  getter name : String = "never"
 
   def to_s(io : IO) : Nil
-    if @parameter_types.empty?
-      io << "()" << " -> " << @return_type
-    else
-      io << "(" << @parameter_types.join(", ") << ") -> " << @return_type
-    end
+    io << "never"
   end
 
+  # never is a subtype of all types, so it's assignable-to anything
   def is_assignable_to(other : Type) : Bool
-    return false unless other.is_a?(FunctionType)
-    return false unless @parameter_types.size == other.parameter_types.size
-
-    params_ok = @parameter_types.zip(other.parameter_types).all? { |a, b| b.is_assignable_to(a) } # contravariant
-    ret_ok = @return_type.is_assignable_to(other.return_type) # covariant
-    params_ok && ret_ok
+    true
   end
 
+  # Legacy string path: also succeeds
+  def is_assignable_to(other : String) : Bool
+    true
+  end
+
+  # Treat as concrete so it doesn't cause extra "not concrete" noise
   def is_concrete : Bool
-    @parameter_types.all?(&.is_concrete) && @return_type.is_concrete
+    true
   end
 end
-
-# -------- Builtins --------
-
-INT    = PrimitiveType.new("int")
-FLOAT  = PrimitiveType.new("float")
-STRING = PrimitiveType.new("str")
-BOOL   = PrimitiveType.new("bool")
-VOID   = PrimitiveType.new("void")
 
 module BuiltinGenericTypes
   extend self
@@ -227,10 +195,6 @@ class TypeSubstitution
     when ComplexType
       new_params = type_expr.type_params.map { |t| apply(t) }
       ComplexType.new(type_expr.name, new_params, type_expr.fields)
-    when FunctionType
-      new_params = type_expr.parameter_types.map { |t| apply(t) }
-      new_ret = apply(type_expr.return_type)
-      FunctionType.new(new_params, new_ret)
     else
       type_expr
     end
@@ -240,29 +204,30 @@ end
 # -------- Registry --------
 
 class TypeRegistry
-  getter types : Hash(String, ComplexType)
+  getter types : Hash(String, Type)
 
   def initialize
-    @types = {} of String => ComplexType
-    register_builtins
+    @types = {} of String => Type
   end
 
-  private def register_builtins
-    list_t  = ComplexType.new("list", [TypeVariable.new("T")], [{"length", INT}])
-    dict_kv = ComplexType.new("dict", [TypeVariable.new("K"), TypeVariable.new("V")])
-    @types["list"] = list_t
-    @types["dict"] = dict_kv
-  end
-
-  def register_type(complex_type : ComplexType) : Nil
+  def register_type(complex_type : Type) : Nil
     @types[complex_type.name] = complex_type
+  end
+
+  def compute_type(name : String, &block : Proc(Type)) : Type?
+    t = get_type(name)
+    if t.nil? 
+      t = yield
+      # TODO - assert the type created has the name that matches
+      @types[t.name] = t
+    end
+    return t
   end
 
   def get_type(name : String) : Type?
     case name
     when "int"   then INT
     when "float" then FLOAT
-    when "str"   then STRING
     when "bool"  then BOOL
     when "void"  then VOID
     else
@@ -273,6 +238,7 @@ class TypeRegistry
   def instantiate_generic(name : String, type_args : Array(Type)) : ComplexType?
     tmpl = @types[name]?
     return nil unless tmpl
+    raise "??????" if !tmpl.is_a?(ComplexType)
     return nil unless type_args.size == tmpl.type_params.size
     ComplexType.new(tmpl.name, type_args.dup, tmpl.fields)
   end
@@ -280,6 +246,27 @@ end
 
 # Global type registry
 TYPE_REGISTRY = TypeRegistry.new
+
+NEVER = NeverType.new
+WILDCARD    = TYPE_REGISTRY.compute_type("*") { ComplexType.new("*") } # TODO please i beg you nuke me...
+INT    = PrimitiveType.new("int")
+FLOAT  = PrimitiveType.new("float")
+STRING = TYPE_REGISTRY.compute_type("str") { PrimitiveType.new("str") }
+REGEX = PrimitiveType.new("regex")
+BOOL   = PrimitiveType.new("bool")
+VOID   = PrimitiveType.new("void")
+LIST  = ComplexType.new("list", [TypeVariable.new("T")], [{"length", INT}])
+DICT = TYPE_REGISTRY.compute_type("dict") { ComplexType.new("dict", [TypeVariable.new("K"), TypeVariable.new("V")]) }
+SET = ComplexType.new("set", [TypeVariable.new("T")])
+CALLABLE = TYPE_REGISTRY.compute_type("callable") { ComplexType.new("callable", [TypeVariable.new("RV")]) }
+
+if CALLABLE.nil?
+  raise "fuck you"
+end
+
+# TODO register the others too
+TYPE_REGISTRY.register_type(LIST)
+TYPE_REGISTRY.register_type(SET)
 
 def type_registry : TypeRegistry
   TYPE_REGISTRY
@@ -302,3 +289,6 @@ class TypeParameter
     end
   end
 end
+
+# fuck TypeScript yo! `int` into `float`?!
+TYPE_REGISTRY.register_type(ComplexType.new("Error"))

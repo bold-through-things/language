@@ -12,12 +12,6 @@ struct Position
   end
 end
 
-macro assert(invariant)
-  if !({{invariant}})
-    raise("runtime_assert") 
-  end
-end
-
 class Node
   property content : String
   property pos : Position?

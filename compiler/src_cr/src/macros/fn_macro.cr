@@ -11,19 +11,33 @@ require "../pipeline/builtin_calls"
 class Fn_macro_provider
   include Macro_emission_provider
   include Macro_preprocess_provider
+  include Macro_functions_provider
 
   # Extract parameter type demands from `param` children.
   private def get_param_demands(ctx : MacroContext) : Array(TypeDemand)
     demands = [] of TypeDemand
     seek_all_child_macros(ctx.node, "param").each do |param_node|
       if type_node = seek_child_macro(param_node, "type")
-        _, param_type = cut(type_node.content, " ")
-        demands << param_type
+        child_res = ctx.current_step.not_nil!.process_node(ctx.clone_with(node: type_node))
+        raise "? #{ctx.current_step}" if !child_res.is_a?(TypeParameter)
+        demands << child_res.type_expr.not_nil!
       else
-        demands << "*"
+        ctx.compiler.compile_error(ctx.node, "no type provided for param", ErrorType::MISSING_TYPE)
       end
     end
     demands
+  end
+
+  private def get_return_type(ctx : MacroContext) : TypeDemand
+    if ret_node = seek_child_macro(ctx.node, "returns")
+      if type_node = seek_child_macro(ret_node, "type")
+        child_res = ctx.current_step.not_nil!.process_node(ctx.clone_with(node: type_node))
+        raise "? child_res=#{child_res}" if !child_res.is_a?(TypeParameter)
+        return child_res.type_expr.not_nil!
+      end
+    end
+    ctx.compiler.compile_error(ctx.node, "no type provided for return", ErrorType::MISSING_TYPE)
+    raise "???"
   end
 
   def preprocess(ctx : MacroContext) : Nil
@@ -76,13 +90,14 @@ class Fn_macro_provider
   end
 
   # Called during type registration phase (by your pipeline)
-  def register_type(ctx : MacroContext) : Nil
+  def register_functions(ctx : MacroContext) : TCResult
     desired_name = get_single_arg(ctx)
     actual_name  = (ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) || desired_name).to_s
     param_demands = get_param_demands(ctx)
+    return_type   = get_return_type(ctx)
 
-    # DirectCall(fn: actual, receiver: nil, demands: [...], returns: "*")
-    ctx.compiler.add_dynamic_convention(desired_name, DirectCall.new(fn: actual_name, receiver: nil, demands: param_demands, returns: "*"))
+    # DirectCall(fn: actual, receiver: nil, demands: [...], returns: ...)
+    ctx.compiler.add_dynamic_convention(desired_name, DirectCall.new(fn: actual_name, receiver: nil, demands: param_demands, returns: return_type))
   end
 
   def emission(ctx : MacroContext) : Nil

@@ -91,6 +91,9 @@ note that still works. how come?! the `do` and `get` are aliases.
 
 fn greet
 	param person
+		type str
+	returns
+		type str
 do
 	return
 		do concat
@@ -444,6 +447,9 @@ note that, oh yeah, you can now do closures! kind of.
 	you can now bind the functions.
 
 fn create_counter
+	returns
+		type callable
+			type int for RV
 do
 	note you do need a class or dict
 		as the bound values are literals.
@@ -460,6 +466,8 @@ do
 	fn create_counter::count
 		param _
 			type create_counter_store
+		returns
+			type int
 	do
 		do add as new
 			get count from _
@@ -477,12 +485,20 @@ local counter
 
 do print
 	string "wow, counting!"
-	do ~ the counter
-	do ~ the counter
-	do ~ the counter
-	do ~ the counter
-	do ~ the counter
-	do ~ the counter
+
+do print
+	do toString
+		do ~ the counter
+	do toString
+		do ~ the counter
+	do toString
+		do ~ the counter
+	do toString
+		do ~ the counter
+	do toString
+		do ~ the counter
+	do toString
+		do ~ the counter
 
 note that is rather tedious and quite verbose! but you should
 	celebrate we have it to begin with. we'll get proper closures
@@ -499,6 +515,8 @@ fn bool_printer
 		type str
 	param if_false
 		type str
+	returns
+		type void
 do
 	if
 		get value

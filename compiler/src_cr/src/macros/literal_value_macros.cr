@@ -40,7 +40,7 @@ class Number_macro_provider
     end
   end
 
-  def typecheck(ctx : MacroContext)
+  def typecheck(ctx : MacroContext) : TCResult
     @number_type == Int32 ? INT : FLOAT
   end
 
@@ -61,6 +61,7 @@ end
 
 class String_macro_provider
   include Macro_emission_provider
+  include Macro_typecheck_provider
   def initialize(@kind : String) # "string" | "regex"
   end
 
@@ -68,8 +69,8 @@ class String_macro_provider
     # allow multiline string content starting with whitespace; nothing to do here
   end
 
-  def typecheck(ctx : MacroContext)
-    @kind == "string" ? STRING : "regex" # TODO: create a proper Regex type
+  def typecheck(ctx : MacroContext) : TCResult
+    @kind == "string" ? STRING : REGEX
   end
 
   def code_linking(ctx : MacroContext) : Nil

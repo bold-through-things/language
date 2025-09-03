@@ -17,5 +17,7 @@ get # from event as data
 note that `fn` is not a closure, which means that it does not
 	see the `heartbeat`
 fn send_heartbeat
+	returns
+		type void
 do
 	get sequence_number from heartbeat

@@ -12,12 +12,6 @@ def type_to_meta(t : Type) : MetaValue
       "type_params" => t.type_params.map { |p| type_to_meta(p) }.as(MetaValue),
       "fields"      => t.fields.map { |(n, ty)| ({"name" => n, "type" => type_to_meta(ty)} of String => MetaValue).as(MetaValue) }.as(MetaValue),
     } of String => MetaValue
-  when FunctionType
-    {
-      "kind"   => "FunctionType",
-      "params" => t.parameter_types.map { |p| type_to_meta(p) }.as(MetaValue),
-      "returns"=> type_to_meta(t.return_type),
-    } of String => MetaValue
   else
     # last resort: printable string
     t.to_s

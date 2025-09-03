@@ -87,6 +87,8 @@ fn visit
 		type list
 			type str
 		# chain of dependencies currently being inspected - used to detect loops
+	returns
+		type void
 do
 	
 	if 

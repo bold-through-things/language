@@ -2,9 +2,6 @@
 require "./proper_types"
 require "json"
 
-TYPE_HIERARCHY = {} of (Type | String) => Array(Type | String)
-UNION_TYPES    = {} of String => Array(String)
-
 HIER_RAW = {{ read_file("#{__DIR__}/../assets/type_hierarchy.json") }}
 
 private def decode_h_value(x : JSON::Any) : (Type | String)
@@ -19,10 +16,10 @@ private def decode_h_value(x : JSON::Any) : (Type | String)
     "VOID" => VOID,
   }
   if (s = x.as_s?)
-    remap[s]? || TYPE_REGISTRY.get_type(s) || s
+    remap[s]? || TYPE_REGISTRY.compute_type(s) { ComplexType.new(s) }
   else
     s = x.to_s
-    remap[s]? || TYPE_REGISTRY.get_type(s) || s
+    remap[s]? || TYPE_REGISTRY.compute_type(s) { ComplexType.new(s) }
   end
 end
 
@@ -49,3 +46,9 @@ load_type_hierarchy_json(HIER_RAW)
 # p! ComplexType.new("dict", [STRING, STRING]).is_assignable_to("RequestInit")
 # p! ComplexType.new("dict", [STRING, STRING]).is_assignable_to(TYPE_REGISTRY.get_type("dict").not_nil!)
 # p! STRING.is_assignable_to("RequestInfo")
+
+# p! TYPE_REGISTRY.get_type("Uint8Array").not_nil!.is_assignable_to(TYPE_REGISTRY.get_type("AllowSharedBufferSource").not_nil!)
+
+# p! TYPE_REGISTRY.get_type("str").not_nil!.is_assignable_to(TYPE_REGISTRY.get_type("RequestInfo").not_nil!)
+# p! TYPE_REGISTRY.get_type("dict").not_nil!.is_assignable_to(TYPE_REGISTRY.get_type("RequestInit").not_nil!)
+# p! TYPE_REGISTRY.instantiate_generic("dict", [STRING, STRING]).not_nil!.is_assignable_to(TYPE_REGISTRY.get_type("RequestInit").not_nil!)

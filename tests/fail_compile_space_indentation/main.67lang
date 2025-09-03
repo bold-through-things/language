@@ -1,4 +1,5 @@
 do concat
-    string hello world
+	string "hello"
+    string "world"
 
 note and TODO i think we were supposed to actually distinguish? whether it's indent or not...

@@ -88,9 +88,13 @@ note that doing math is arguably the entire point of computers.
 
 do print
 	get add
-		int 2
+		note and TODO this used to say
+			int 2
+			float 0
+			int 2
+		float 2
 		float 0
-		int 2
+		float 2
 
 do print
 	get asc
@@ -234,15 +238,11 @@ do # the 67lang.features
 note that was too much yapping. let's truncate it a little.
 
 local _we_really_needed_the_generics_yesterday!
-	type list
-		type str
 	do # the 67lang.features
 		string "the flexibility of identifiers"
 do slice the _we_really_needed_the_generics_yesterday!
 	int 0
 	int 67
-then do join
-	string ""
 then do print
 
 note that if by this point you are not barely holding back the urge to install the compiler
@@ -447,6 +447,9 @@ note in this chapter number nine (9) we curse recursively
 
 fn fuck!
 	param fucks_given
+		type int
+	returns
+		type void
 do
 	local fucks_given
 		note needed temporarily while param doesn't support typing

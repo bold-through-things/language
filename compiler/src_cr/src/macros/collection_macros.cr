@@ -12,8 +12,9 @@ require "../compiler_types/proper_types"
 
 class List_macro_provider
   include Macro_emission_provider
+  include Macro_typecheck_provider
   # Typecheck all children and separate type params from values
-  def typecheck(ctx : MacroContext)
+  def typecheck(ctx : MacroContext) : TCResult
     type_params = [] of TypeParameter
     value_operations = [] of {Node, TCResult}
 
@@ -156,8 +157,9 @@ end
 
 class Dict_macro_provider
   include Macro_emission_provider
+  include Macro_typecheck_provider
   # Typecheck all children and separate type params from entries
-  def typecheck(ctx : MacroContext)
+  def typecheck(ctx : MacroContext) : TCResult
     type_params = [] of TypeParameter
     entry_ops = [] of {Node, TCResult, Node, TCResult}
 

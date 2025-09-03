@@ -47,9 +47,7 @@ for group in
 do
 	do print
 		do join
-			local group_typed
-				type list
-				get group
+			get group
 			string " "
 
 

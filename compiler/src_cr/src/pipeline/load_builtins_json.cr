@@ -22,12 +22,12 @@ private def ref_to_type(id : String) : Type
   end
 end
 
-# Decode a single TypeDemand (Type | String("*"))
+# Decode a single Type
 private def decode_type(node : JSON::Any) : TypeDemand
   h = node.as_h
   case h["k"].as_s
   when "wild"
-    "*"  # TypeDemand's String case
+    raise "not supported"
   when "ref"
     ref_to_type(h["id"].as_s)
   when "prim"
@@ -44,17 +44,10 @@ private def decode_type(node : JSON::Any) : TypeDemand
     name = h["n"].as_s
     ps_any = h["p"]?.try &.as_a || [] of JSON::Any
 
-    # Build Array(Type) safely; coerce "*" to an unconstrained type variable
     params = [] of Type
     ps_any.each do |pe|
       td = decode_type(pe)
-      case td
-      when String
-        # only wildcard should be String here
-        params << TypeVariable.new("_")
-      when Type
-        params << td
-      end
+      params << td
     end
 
     if params.empty?
@@ -64,7 +57,7 @@ private def decode_type(node : JSON::Any) : TypeDemand
     end
   when "name"
     name = h["n"].as_s
-    TYPE_REGISTRY.get_type(name) || name
+    TYPE_REGISTRY.get_type(name) || ComplexType.new(name)
   when "tv"
     name = h["n"].as_s
     TypeVariable.new(name)

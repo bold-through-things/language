@@ -1,4 +1,6 @@
 fn test_fn
+	returns
+		type void
 do
 	do print
 		string "test"

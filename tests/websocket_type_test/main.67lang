@@ -2,12 +2,17 @@ note Test WebSocket.send() union type support and EventHandler compatibility
 
 fn message_handler
 	param event
+		type *
+	returns
+		type void
 do
 	note This function acts as an EventHandler
 	do print
 		string "Message received"
 
 fn main_test
+	returns
+		type void
 do
 	note Create WebSocket instance
 	do WebSocket as ws

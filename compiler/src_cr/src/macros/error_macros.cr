@@ -15,7 +15,7 @@ class Must_compile_error_macro_provider
     end
   end
 
-  def typecheck(ctx : MacroContext)
+  def typecheck(ctx : MacroContext) : TCResult
     ctx.node.children.each do |child|
       child_ctx = ctx.clone_with(node: child)
       ctx.current_step.not_nil!.process_node(child_ctx)

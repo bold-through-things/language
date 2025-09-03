@@ -1,7 +1,7 @@
 [
   {
     "recoverable": false,
-    "line": 22,
+    "line": 24,
     "char": 0,
     "content": "67lang:call heartbeat",
     "error": "failed to assert: could not find a matching overload for heartbeat with arguments []",
@@ -17,105 +17,84 @@
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          "HTMLScriptElement"
-        ],
-        "returns": {
-          "name": "str",
-          "type_params": [],
-          "fields": []
-        }
-      },
-      {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          "HTMLScriptElement",
-          {
+        "convention": {
+          "convention": "FieldCall",
+          "field": "event",
+          "demands": [
+            {
+              "name": "HTMLScriptElement",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "returns": {
             "name": "str",
             "type_params": [],
             "fields": []
           }
-        ],
-        "returns": "None"
+        },
+        "reasons": [
+          {
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 1,
+            "received_arity": 0
+          }
+        ]
       },
       {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          {
-            "name": "Window",
+        "convention": {
+          "convention": "FieldCall",
+          "field": "event",
+          "demands": [
+            {
+              "name": "HTMLScriptElement",
+              "type_params": [],
+              "fields": []
+            },
+            {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "returns": {
+            "name": "None",
             "type_params": [],
             "fields": []
           }
-        ],
-        "returns": {
-          "name": "Event",
-          "type_params": [],
-          "fields": []
-        }
-      }
-    ]
-  },
-  {
-    "recoverable": false,
-    "line": 22,
-    "char": 0,
-    "content": "67lang:call heartbeat",
-    "error": "failed to assert: could not find a matching overload for heartbeat with arguments ",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": []
-  },
-  {
-    "recoverable": false,
-    "line": 15,
-    "char": 0,
-    "content": "67lang:call event",
-    "error": "failed to assert: could not find a matching overload for event with arguments ",
-    "error_type": "NO_MATCHING_OVERLOAD",
-    "visible_overloads": [
-      {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          "HTMLScriptElement"
-        ],
-        "returns": {
-          "name": "str",
-          "type_params": [],
-          "fields": []
-        }
+        },
+        "reasons": [
+          {
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 2,
+            "received_arity": 0
+          }
+        ]
       },
       {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
-          "HTMLScriptElement",
-          {
-            "name": "str",
+        "convention": {
+          "convention": "FieldCall",
+          "field": "event",
+          "demands": [
+            {
+              "name": "Window",
+              "type_params": [],
+              "fields": []
+            }
+          ],
+          "returns": {
+            "name": "Event",
             "type_params": [],
             "fields": []
           }
-        ],
-        "returns": "None"
-      },
-      {
-        "convention": "FieldCall",
-        "field": "event",
-        "demands": [
+        },
+        "reasons": [
           {
-            "name": "Window",
-            "type_params": [],
-            "fields": []
+            "reason_type": "ARITY_MISMATCH",
+            "demanded_arity": 1,
+            "received_arity": 0
           }
-        ],
-        "returns": {
-          "name": "Event",
-          "type_params": [],
-          "fields": []
-        }
+        ]
       }
     ]
   }

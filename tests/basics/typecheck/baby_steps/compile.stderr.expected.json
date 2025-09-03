@@ -16,21 +16,6 @@
     },
     {
       "recoverable": false,
-      "line": 34,
-      "char": 0,
-      "content": { "$contains": "local test_int" },
-      "error_type": "FIELD_TYPE_MISMATCH"
-    },
-    {
-      "recoverable": false,
-      "line": 38,
-      "char": 0,
-      "content": { "$contains": "call test_int" },
-      "error_type": "NO_MATCHING_OVERLOAD",
-      "visible_overloads": { "$len": 2 }
-    },
-    {
-      "recoverable": false,
       "line": 42,
       "char": 0,
       "content": { "$contains": "call test_str" },
@@ -39,18 +24,27 @@
     },
     {
       "recoverable": false,
-      "line": 45,
+      "line": 51,
       "char": 0,
-      "content": { "$contains": "local test_bool" },
-      "error_type": "FIELD_TYPE_MISMATCH"
+      "content": { "$contains": "call split" },
+      "error_type": "AMBIGUOUS_OVERLOAD",
+      "matching_overloads": { "$len": 2 }
     },
     {
       "recoverable": false,
-      "line": 50,
+      "line": 51,
       "char": 0,
-      "content": { "$contains": "call test_bool" },
-      "error_type": "NO_MATCHING_OVERLOAD",
-      "visible_overloads": { "$len": 2 }
+      "content": { "$contains": "call sort" },
+      "error_type": "AMBIGUOUS_OVERLOAD",
+      "matching_overloads": { "$len": 14 }
+    },
+    {
+      "recoverable": false,
+      "line": 51,
+      "char": 0,
+      "content": { "$contains": "call join" },
+      "error_type": "AMBIGUOUS_OVERLOAD",
+      "matching_overloads": { "$len": 15 }
     },
     {
       "recoverable": false,
@@ -65,8 +59,16 @@
       "line": 56,
       "char": 0,
       "content": { "$contains": "call split" },
-      "error_type": "NO_MATCHING_OVERLOAD",
-      "visible_overloads": { "$len": { "$ge": 2 } }
+      "error_type": "AMBIGUOUS_OVERLOAD",
+      "matching_overloads": { "$len": { "$ge": 2 } }
+    },
+    {
+      "recoverable": false,
+      "line": 56,
+      "char": 0,
+      "content": { "$contains": "call split" },
+      "error_type": "AMBIGUOUS_OVERLOAD",
+      "matching_overloads": { "$len": 2 }
     },
     {
       "recoverable": false,

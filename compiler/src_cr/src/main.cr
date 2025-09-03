@@ -7,6 +7,8 @@ require "option_parser"
 require "path"
 require "file_utils"
 
+require "./utils/if_i_can_crystal.cr"
+
 # configure logging before requiring modules that register macros
 require "./utils/logger"          # expects: configure_logger_from_args(String?) and default_logger
 configure_logger_from_args(nil)   # placeholder, will be overridden by --log if passed
