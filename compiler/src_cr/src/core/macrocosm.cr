@@ -39,7 +39,6 @@ require "../pipeline/steps/processing"
 require "../pipeline/steps/typechecking"
 require "../pipeline/steps/emission"
 require "../pipeline/steps/must_compile_error_step"
-require "../linking/code_block_linking"
 
 require "../pipeline/call_conventions"
 
@@ -118,7 +117,6 @@ class Macrocosm
     function_registration : MacroRegistry
   )
     @processing_steps = [
-      CodeBlockLinkingStep.new(code_linking_registry),
       PreprocessingStep.new(preprocess_registry),
       TypeRegistrationStep.new(type_registration_registry),
       TypeDetailRegistrationStep.new(type_detail_registration_registry),

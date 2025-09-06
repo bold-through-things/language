@@ -94,11 +94,11 @@ fn greet
 		type str
 	returns
 		type str
-do
-	return
-		do concat
-			string "Hello, "
-			get person
+	do
+		return
+			do concat
+				string "Hello, "
+				get person
 
 do print
 	do greet
@@ -230,9 +230,9 @@ note the above is roughly equivalent to following JS
 
 for number in
 	get numbers
-do
-	do print
-		get number
+	do
+		do print
+			get number
 
 note the above is roughly equivalent to following JS
 	
@@ -350,27 +350,27 @@ local found_word
 
 for thing in
 	get things_to_say
-do
-	for word in
-		do split the thing
-			string " "
 	do
-		note this is needed temporarily... TODO! bad type inference!
-		local word
-			type str
-			get word
-		note this crazy `then` nonsense!
-		get length from word
-		if
-			then get desc
-				get max_characters
-		then
-			note this assigns max_characters!
-			then do max_characters
-			note `into` to set variables...
-			get word into found_word
-			note you could also just...
-			get found_word from word
+		for word in
+			do split the thing
+				string " "
+			do
+				note this is needed temporarily... TODO! bad type inference!
+				local word
+					type str
+					get word
+				note this crazy `then` nonsense!
+				get length from word
+				if
+					then get desc
+						get max_characters
+				then
+					note this assigns max_characters!
+					then do max_characters
+					note `into` to set variables...
+					get word into found_word
+					note you could also just...
+					get found_word from word
 
 do print
 	get found_word
@@ -450,35 +450,35 @@ fn create_counter
 	returns
 		type callable
 			type int for RV
-do
-	note you do need a class or dict
-		as the bound values are literals.
-		the Java problem. we will fix it later.
-	note oh good, great, we can't use : in class names.
-		bug! TODO!
-		and in param names too i guess. TODO!
-	type create_counter_store is heap_entry
-		has count
-			type int
-	local _
-		get create_counter_store
-			int 0
-	fn create_counter::count
-		param _
-			type create_counter_store
-		returns
-			type int
 	do
-		do add as new
-			get count from _
-			int 1
-		return
-			do count the _
-				get new
+		note you do need a class or dict
+			as the bound values are literals.
+			the Java problem. we will fix it later.
+		note oh good, great, we can't use : in class names.
+			bug! TODO!
+			and in param names too i guess. TODO!
+		type create_counter_store is heap_entry
+			has count
+				type int
+		local _
+			get create_counter_store
+				int 0
+		fn create_counter::count
+			param _
+				type create_counter_store
+			returns
+				type int
+			do
+				do add as new
+					get count from _
+					int 1
+				return
+					do count the _
+						get new
 
-	return
-		bind fn create_counter::count as callable
-			get _
+		return
+			bind fn create_counter::count as callable
+				get _
 
 local counter
 	do create_counter
@@ -517,13 +517,13 @@ fn bool_printer
 		type str
 	returns
 		type void
-do
-	if
-		get value
-	then
-		do print the if_true
-	else
-		do print the if_false
+	do
+		if
+			get value
+		then
+			do print the if_true
+		else
+			do print the if_false
 
 local politely_agree
 	bind fn bool_printer as callable

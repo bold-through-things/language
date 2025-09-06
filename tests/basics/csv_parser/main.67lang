@@ -26,67 +26,67 @@ local rows
 			type str for V
 for line in
 	get lines
-do
-	if
-		do eq
-			get i
-			int 0
-	then
-		do split the line into header
-			string ","
-	else
-		local zipped_data
-			do zip
-				get header
-				do split the line
-					string ","
-		
-		local row
-			dict
-				type str for K
-				type str for V
-		
-		for kv in
-			get zipped_data
-		do
-			do # the row
-				get 0 from kv
-				get 1 from kv
-		
-		do push the rows
-			get row
-	
-	do i
-		local _please_fix_the_fucking_varargs_add
-			type int
-			do add
+	do
+		if
+			do eq
 				get i
-				int 1
+				int 0
+		then
+			do split the line into header
+				string ","
+		else
+			local zipped_data
+				do zip
+					get header
+					do split the line
+						string ","
+			
+			local row
+				dict
+					type str for K
+					type str for V
+			
+			for kv in
+				get zipped_data
+				do
+					do # the row
+						get 0 from kv
+						get 1 from kv
+			
+			do push the rows
+				get row
+		
+		do i
+			local _please_fix_the_fucking_varargs_add
+				type int
+				do add
+					get i
+					int 1
 
 for row in
 	get rows
-do
-	do print
-		get # from row
-			string "name"
+	do
+		do print
+			get # from row
+				string "name"
 
 local age_over_30
 	int 0
 for row in
 	get rows
-do
-	if
-		note TODO - the test case should probably strain this asc
-			on what happens if age is 30
-		do asc
-			do parseInt
-				do # the row
-					string "age"
-			int 30
-	then
-		do add into age_over_30
-			get age_over_30
-			int 1
+	do
+		if
+			note TODO - the test case should probably strain this asc
+				on what happens if age is 30
+			do asc
+				do parseInt
+					do # the row
+						string "age"
+				int 30
+		then
+			do add into age_over_30
+				get age_over_30
+				int 1
 
 do print
 	get age_over_30

@@ -11,52 +11,52 @@ local modules
 		type Module for V
 for line in
 	get lines
-do
-	type Module is heap_entry
-		has id
-			type str
-		has deps
-			type list
+	do
+		type Module is heap_entry
+			has id
 				type str
-		has visited
-			type bool
+			has deps
+				type list
+					type str
+			has visited
+				type bool
 
-	local kv
-		do split the line
-			string ":"
-			int 2
+		local kv
+			do split the line
+				string ":"
+				int 2
 
-	do # the kv
-		int 0
-	then do trim as id
+		do # the kv
+			int 0
+		then do trim as id
 
-	local module
-		do Module
-			get id
-			list
-				type str
-			false
+		local module
+			do Module
+				get id
+				list
+					type str
+				false
 
-	
-	do # the kv as
-		int 1
-	then do trim as deps_str
-	
-	# TODO - this ought to be a macro.
-	if
-		do none
-			do eq the deps_str
-				string ""
-	then
-		do trim the deps_str
-		then do split as deps
-			regex /\s+/
-		do deps the module
-			get deps
-	
-	do # the modules
-		get id from module
-		get module
+		
+		do # the kv as
+			int 1
+		then do trim as deps_str
+		
+		# TODO - this ought to be a macro.
+		if
+			do none
+				do eq the deps_str
+					string ""
+		then
+			do trim the deps_str
+			then do split as deps
+				regex /\s+/
+			do deps the module
+				get deps
+		
+		do # the modules
+			get id from module
+			get module
 
 # print
 	string "modules"
@@ -89,73 +89,73 @@ fn visit
 		# chain of dependencies currently being inspected - used to detect loops
 	returns
 		type void
-do
-	
-	if 
-		get visited the module
-	then
-		return
-	do visited the module
-		true
+	do
+		
+		if 
+			get visited the module
+		then
+			return
+		do visited the module
+			true
 
-	if
-		false
-	then
-		note just testing TODO please remove me.
-		do slice the chain
-		then do push
+		if
+			false
+		then
+			note just testing TODO please remove me.
+			do slice the chain
+			then do push
+				do id the module
+
+		# TODO - this shouldn't be using slice. we need a dedicated copy command
+		local next_chain
+			do slice the chain
+		do push the next_chain
 			do id the module
 
-	# TODO - this shouldn't be using slice. we need a dedicated copy command
-	local next_chain
-		do slice the chain
-	do push the next_chain
-		do id the module
-
-	for dep_id in
-		do deps the module
-	do
-		if
-			exists
-				get dep_id
-				inside
-					get next_chain
-		then
-			local dep_loop
-				list
-					type str
-			do push the dep_loop
-				get dep_id
-			do slice the next_chain
-			for chain_dep_id in
-				then do reverse
+		for dep_id in
+			do deps the module
 			do
-				do push the dep_loop
-					get chain_dep_id
 				if
-					do eq
-						get chain_dep_id
+					exists
 						get dep_id
+						inside
+							get next_chain
 				then
-					break
+					local dep_loop
+						list
+							type str
+					do push the dep_loop
+						get dep_id
+					do slice the next_chain
+					for chain_dep_id in
+						then do reverse
+						do
+							do push the dep_loop
+								get chain_dep_id
+							if
+								do eq
+									get chain_dep_id
+									get dep_id
+							then
+								break
 
-			do reverse the dep_loop
+					do reverse the dep_loop
 
-			do push
-				get dep_loops from unroller
-				do join the dep_loop
-					string " → "
-		else
-			do visit
-				get unroller
-				do #
-					get modules from unroller
-					get dep_id
-				get next_chain
+					do push
+						get dep_loops from unroller
+						do join the dep_loop
+							string " → "
+				else
+					do visit
+						get unroller
+						do #
+							get modules from unroller
+							get dep_id
+						get next_chain
 
-	do push
-		get build_order from unroller
-		do id the module
+		do push
+			get build_order from unroller
+			do id the module
 
 local unroller
 	type DAG_unroller
@@ -168,12 +168,12 @@ local unroller
 
 for module in
 	get values from modules
-do
-	do visit
-		get unroller
-		get module
-		list
-			type str
+	do
+		do visit
+			get unroller
+			get module
+			list
+				type str
 
 get unroller
 if

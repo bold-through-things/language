@@ -293,11 +293,11 @@ note that keeping a list like that is great, but it really does deserve to be sh
 
 for angy in
 	get i_hate_this_trash!
-do
-	do print
-		get concat
-			get angy
-			string "!!!"
+	do
+		do print
+			get concat
+				get angy
+				string "!!!"
 
 note that i feel much better now. it is good to vent frustration at times, i suppose.
 
@@ -309,9 +309,9 @@ local does_a_decent_programming_language_exist?
 
 while
 	get does_a_decent_programming_language_exist?
-do
-	do print
-		string `code for quality software`
+	do
+		do print
+			string `code for quality software`
 
 note that we failed to do any meaningful work. that's great. that's enterprise. create another
 	3 story points ticket please and we'll get this blocker resolved with velocity.
@@ -450,23 +450,23 @@ fn fuck!
 		type int
 	returns
 		type void
-do
-	local fucks_given
-		note needed temporarily while param doesn't support typing
-		type int
-		get fucks_given
-		
-	do print
-		string "fuck!"
-	if
-		get nondesc
-			int 0
+	do
+		local fucks_given
+			note needed temporarily while param doesn't support typing
+			type int
 			get fucks_given
-	then
-		get fuck!
-			get add
+			
+		do print
+			string "fuck!"
+		if
+			get nondesc
+				int 0
 				get fucks_given
-				int -1
+		then
+			get fuck!
+				get add
+					get fucks_given
+					int -1
 
 do fuck!
 	int 6

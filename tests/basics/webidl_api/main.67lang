@@ -23,24 +23,24 @@ local text_tests
 
 for text in
 	get text_tests
-do
-	
-	
-	local bytes
-		do encode the encoder
+	do
+		
+		
+		local bytes
+			do encode the encoder
+				get text
+
+		local restored
+			do decode the decoder
+				get bytes
+
+		do print
+			string `Text: "`
 			get text
-
-	local restored
-		do decode the decoder
+			string `" -> Bytes: [`
 			get bytes
-
-	do print
-		string `Text: "`
-		get text
-		string `" -> Bytes: [`
-		get bytes
-		string `] -> Restored: "`
-		get restored
+			string `] -> Restored: "`
+			get restored
 
 do print
 	string "\n--- Testing atob/btoa ---"

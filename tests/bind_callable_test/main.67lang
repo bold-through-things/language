@@ -9,14 +9,14 @@ fn handle_message
 		type bool
 	returns
 		type void
-do
-	do print
-		string "Bot: "
-		get bot
-		string ", Message: "
-		get message
-		string ", Trusted: "
-		get is_trusted
+	do
+		do print
+			string "Bot: "
+			get bot
+			string ", Message: "
+			get message
+			string ", Trusted: "
+			get is_trusted
 
 do print
 	string "=== Testing bind callable ==="

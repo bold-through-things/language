@@ -47,48 +47,48 @@ while
 	do nondesc
 		get i
 		get n
-do
-	local out
-		string ""
-	
-	if
-		do eq
-			do mod
-				get i
-				get fizz_divisor
-			int 0
-	then
-		do concat into out
-			get out
-			string "fizz"
-
-	if
-		do eq
-			do mod
-				get i
-				get buzz_divisor
-			int 0
-	then
-		do concat into out
-			get out
-			string "buzz"
-	
-	if
-		do eq
-			get out
+	do
+		local out
 			string ""
-	then
-		do concat into out
-			note TODO why is this needed
-			string ""
-			do toString the i
+		
+		if
+			do eq
+				do mod
+					get i
+					get fizz_divisor
+				int 0
+		then
+			do concat into out
+				get out
+				string "fizz"
 
-	do print
-		get out
-	
-	do i
-		local _fix_the_fucking_add_return_type
-			type int
-			do add
-				get i
-				int 1
+		if
+			do eq
+				do mod
+					get i
+					get buzz_divisor
+				int 0
+		then
+			do concat into out
+				get out
+				string "buzz"
+		
+		if
+			do eq
+				get out
+				string ""
+		then
+			do concat into out
+				note TODO why is this needed
+				string ""
+				do toString the i
+
+		do print
+			get out
+		
+		do i
+			local _fix_the_fucking_add_return_type
+				type int
+				do add
+					get i
+					int 1
