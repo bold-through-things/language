@@ -1,0 +1,16 @@
+fn my_split is PrototypeCall
+	constructor String
+	fn split
+	param s
+		type str
+	param sep
+		type str
+	returns
+		type list
+			type str
+
+local test
+	string "test"
+do my_split the test
+	string ""
+then do print

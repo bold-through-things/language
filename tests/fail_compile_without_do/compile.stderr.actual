@@ -17,14 +17,6 @@
   },
   {
     "recoverable": false,
-    "line": 12,
-    "char": 0,
-    "content": "fn name",
-    "error": "failed to assert: must have a do block",
-    "error_type": "ASSERTION_FAILED"
-  },
-  {
-    "recoverable": false,
     "line": 9,
     "char": 0,
     "content": "while",

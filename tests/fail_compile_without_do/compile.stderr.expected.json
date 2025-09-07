@@ -16,13 +16,6 @@
     },
     {
       "recoverable": false,
-      "line": 12,
-      "char": 0,
-      "content": { "$contains": "fn name" },
-      "error_type": "ASSERTION_FAILED"
-    },
-    {
-      "recoverable": false,
       "line": 9,
       "char": 0,
       "content": { "$contains": "while" },

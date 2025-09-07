@@ -145,7 +145,8 @@ class Macrocosm
              Params,
              Indexers,
              Callers,
-             FieldDemandType
+             FieldDemandType,
+             FnConventionName
 
   private def ensure_macro_args_computed(node : Node) : Nil
     # only compute once

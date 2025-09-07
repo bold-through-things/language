@@ -59,15 +59,13 @@ class FunctionRegistrationStep < MacroProcessingStep
   def process_node(ctx : MacroContext) : TCResult
     macro_name = ctx.compiler.get_metadata(ctx.node, Macro).to_s
     all = @macros.all
-    rv = nil
     if all.has_key?(macro_name)
-      rv = all[macro_name].call(ctx)
+      return all[macro_name].call(ctx)
     end
 
     ctx.node.children.each do |child|
       child_ctx = ctx.clone_with(node: child)
       process_node(child_ctx)
     end
-    rv
   end
 end
