@@ -223,6 +223,9 @@ export class NewCall {
   readonly demands: TypeDemand[] | null;
   readonly returns: TypeDemand | null;
 
+  // only used for classes we define ourselves
+  implementation: string | null = null;
+
   constructor(
     constructorName: string,
     demands: TypeDemand[] | null = null,

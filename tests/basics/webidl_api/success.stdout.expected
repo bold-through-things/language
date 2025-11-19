@@ -34,3 +34,10 @@ Response {
   statusText: "OK",
   url: 'data:application/json,{"67lang": "is fucking awesome"}'
 } { "67lang": "is fucking awesome" }
+
+--- Testing custom MyEncoder --- Uint8Array(22) [
+   67, 117, 115, 116, 111, 109,
+   32, 101, 110,  99, 111, 100,
+  105, 110, 103,  32, 119, 111,
+  114, 107, 115,  33
+]

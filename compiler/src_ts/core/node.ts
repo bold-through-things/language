@@ -289,14 +289,6 @@ export class FieldDemandType {
   }
 }
 
-export class TypeFieldNames {
-  names: string[];
-
-  constructor(names: string[]) {
-    this.names = names;
-  }
-}
-
 // Stores the resolved calling convention for a function call
 export class ResolvedConvention {
   convention: Call_convention; // Call_convention placeholder

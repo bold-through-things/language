@@ -115,3 +115,28 @@ do fetch as response
 do print
 	get response
 	get json from response
+
+type MyEncoder is JS:object
+	constructor TextEncoder
+
+type MyUint8Array is JS:object
+	constructor Uint8Array
+
+fn encode is PrototypeCall
+	constructor TextEncoder
+	fn encode
+	param self
+		type MyEncoder
+	param input
+		type str
+	returns
+		type MyUint8Array
+
+local encoder2
+	do MyEncoder
+
+do print
+	string "\n--- Testing custom MyEncoder ---"
+	do encode
+		get encoder2
+		string "Custom encoding works!"

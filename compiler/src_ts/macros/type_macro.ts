@@ -10,8 +10,8 @@ import {
   MacroContext,
   TCResult,
 } from "../core/macro_registry.ts";
-import { Node, SaneIdentifier, TypeFieldNames } from "../core/node.ts";
-import { cut } from "../utils/strutil.ts";
+import { SaneIdentifier } from "../core/node.ts";
+import { cut, IndentedStringIO } from "../utils/strutil.ts";
 import { get_single_arg } from "../utils/common_utils.ts";
 import { CommandParser, create_type_commands } from "../utils/command_parser.ts";
 import { seek_child_macro } from "../pipeline/steps/utils.ts";
@@ -19,9 +19,7 @@ import { Joiner } from "../utils/strutil.ts";
 import { NEWLINE } from "../pipeline/js_conversion.ts";
 import {
   FieldCall,
-  NewCall,
-  type Call_convention,
-  type TypeDemand,
+  NewCall
 } from "../pipeline/call_conventions.ts";
 import {
   type Type,
@@ -30,6 +28,33 @@ import {
   type_registry,
 } from "../compiler_types/proper_types.ts";
 import { ErrorType } from "../utils/error_types.ts";
+import { choose_single } from "../utils/utils.ts";
+
+/*
+should now support a way to bind existing types
+
+type My_Web_Socket is JS:object
+	constructor WebSocket
+	has on_message
+		alias onmessage
+		type callable
+			type Event
+			type void
+
+that's good enough for now. in future we will want to also have
+
+type My_plain is JS:object
+	plain
+	has param_name
+		alias paramName
+		type str
+	has param_value
+		alias paramValue
+		type str
+
+type My_marked is JS:object
+	marked EXTERNAL_SYMBOL_NAME
+*/
 
 export class Type_macro_provider
   implements
@@ -69,13 +94,21 @@ export class Type_macro_provider
     }
 
     const [, rest] = cut(ctx.node.content, " ");
-    let [type_name, _is_clause_full] = cut(rest, " is ");
+    let [type_name, mode] = cut(rest, " is ");
     type_name = type_name.trim();
+
+    const sane = ctx.compiler.get_new_ident(type_name);
+
+    ctx.compiler.assert_(
+      ["JS:object", "heap_entry"].includes(mode),
+      ctx.node,
+      `Unsupported type definition mode: ${mode}`,
+    );
 
     ctx.compiler.set_metadata(
       ctx.node,
       SaneIdentifier,
-      new SaneIdentifier(type_name),
+      new SaneIdentifier(sane),
     );
 
     const new_type = new ComplexType(type_name, [], []);
@@ -88,7 +121,7 @@ export class Type_macro_provider
     }
 
     const [, rest] = cut(ctx.node.content, " ");
-    let [type_name] = cut(rest, " is ");
+    let [type_name, mode] = cut(rest, " is ");
     type_name = type_name.trim();
 
     const new_type = type_registry().get_type(type_name);
@@ -144,44 +177,87 @@ export class Type_macro_provider
       }
     }
 
-    const ctor = new NewCall(type_name, constructor_demands, new_type);
-    ctx.compiler.add_dynamic_convention(type_name, ctor);
+    const sane = ctx.compiler.get_metadata(ctx.node, SaneIdentifier).value;
 
-    ctx.compiler.set_metadata(
-      ctx.node,
-      TypeFieldNames,
-      new TypeFieldNames(field_names),
-    );
-  }
-
-  emission(ctx: MacroContext): void {
-    if (!ctx.node.content.includes(" is ")) {
-      return;
-    }
-
-    const type_name = ctx.compiler.get_metadata(ctx.node, SaneIdentifier).value;
-    const field_meta = ctx.compiler.get_metadata(
-      ctx.node,
-      TypeFieldNames,
-    ) as TypeFieldNames;
-    const fields = field_meta.names;
-
-    ctx.statement_out.write(`function ${type_name}(`);
-    const joiner = new Joiner(ctx.statement_out, ", ");
-    for (const fname of fields) {
+    // TODO just skip this if we gonna drop it
+    let ctor = new NewCall(sane, constructor_demands, new_type);
+    const impl_out = new IndentedStringIO();
+    impl_out.write(`function ${sane}(`);
+    const joiner = new Joiner(impl_out, ", ");
+    for (const fname of field_names) {
       joiner.use(() => {
-        ctx.statement_out.write(fname);
+        impl_out.write(fname);
       });
     }
-    ctx.statement_out.write(`) {${NEWLINE}`);
-    ctx.statement_out.with_indent(() => {
-      for (const fname of fields) {
-        ctx.statement_out.write(
-          `this.${fname} = ${fname};${NEWLINE}`,
+    impl_out.write(`) {\n`);
+    impl_out.with_indent(() => {
+      for (const fname of field_names) {
+        impl_out.write(
+          `this.${fname} = ${fname};\n`,
         );
       }
     });
-    ctx.statement_out.write(`}${NEWLINE}`);
+    impl_out.write(`}\n`);
+    ctor.implementation = impl_out.to_string();
+
+    if (mode === "JS:object") {
+      const js_ctor = seek_child_macro(ctx.node, "constructor");
+      const plain = seek_child_macro(ctx.node, "plain");
+      const marked = seek_child_macro(ctx.node, "marked");
+      choose_single(ctx, [
+        [
+          js_ctor, () => {
+            const js_ctor_name = get_single_arg(ctx.clone_with({ node: js_ctor }));
+            ctor = new NewCall(
+              String(js_ctor_name),
+              constructor_demands,
+              new_type,
+            );
+            // no need to set implementation here because we're binding the existing one
+          }
+        ],
+        [
+          plain, () => {
+            ctor = new NewCall(
+              `plain_object_${sane}`,
+              constructor_demands,
+              new_type,
+            );
+            // this is a weird one since it's kind of binding, kind of not.
+            const plain_out = new IndentedStringIO();
+            plain_out.write(`function plain_object_${sane}(`);
+            const joiner = new Joiner(plain_out, ", ");
+            for (const fname of field_names) {
+              joiner.use(() => {
+                plain_out.write(fname);
+              });
+            }
+            plain_out.write(`) {\n`);
+            plain_out.with_indent(() => {
+              plain_out.write(`const obj = {\n`);
+              plain_out.with_indent(() => {
+                for (const fname of field_names) {
+                  // TODO i can't be arsed right now. needs `alias`
+                  plain_out.write(
+                    `${fname}: ${fname},\n`,
+                  );
+                }
+              });
+              plain_out.write(`};\n`);
+            });
+            plain_out.write(`}\n`);
+            ctor.implementation = plain_out.to_string();
+          }
+        ], 
+        // TODO i can't be arsed right now. needs `marked`
+      ]);
+    }
+
+    ctx.compiler.add_dynamic_convention(type_name, ctor);
+  }
+
+  emission(_ctx: MacroContext): void {
+    // handled by the step
   }
 
   register_functions(ctx: MacroContext): TCResult {

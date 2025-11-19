@@ -1,5 +1,5 @@
 67lang
-Copyright (C) 2025 status.call.h8r
+Copyright (C) 2025 bold-through-things
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

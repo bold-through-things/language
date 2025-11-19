@@ -7,14 +7,10 @@ import {
   Position,
   Macro,
   Args,
-  SaneIdentifier,
   Inject_code_start,
-  ResolvedConvention,
   Params,
   Indexers,
-  Callers,
-  FieldDemandType,
-  TypeFieldNames,
+  Callers
 } from "./node.ts";
 import { not_null, TypeMap } from "../utils/utils.ts";
 import { to_valid_js_ident } from "../pipeline/js_conversion.ts";
@@ -339,6 +335,14 @@ export class Macrocosm {
       return this.dynamic_conventions[name];
     }
     return undefined;
+  }
+
+  get conventions(): Call_convention[] {
+    const all: Call_convention[] = [];
+    for (const convs of Object.values(this.dynamic_conventions)) {
+      all.push(...convs);
+    }
+    return all;
   }
 
   compile_fn_call(

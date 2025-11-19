@@ -1,5 +1,9 @@
 // utils/utils.ts
 
+import { MacroAssertFailed } from "../core/exceptions.ts";
+import { MacroContext } from "../core/macro_registry.ts";
+import { ErrorType } from "./error_types.ts";
+
 type Constructor<T> = {
   new (...args: any[]): T;
   name: string;
@@ -88,4 +92,20 @@ export function not_null<T>(value: T | null | undefined): T {
     throw new Error("Unexpected null or undefined value");
   }
   return value;
+}
+
+// TODO i really do not like the MacroContext here
+//  perhaps a custom handler function?
+export function choose_single<T, TR>(ctx: MacroContext, options: [T, (v: T) => TR][]): TR {
+  const valid = options.filter(([v, _]) => v);
+  if (valid.length !== 1) {
+    ctx.compiler.assert_(
+      false,
+      ctx.node,
+      `Expected exactly one valid option, got ${valid.length}`,
+      ErrorType.INVALID_MACRO,
+    );
+  }
+  const [_v, f] = valid[0];
+  return f(_v);
 }

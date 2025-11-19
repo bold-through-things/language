@@ -7,6 +7,7 @@ import { ErrorType } from "../../utils/error_types.ts";
 import { IndentedStringIO } from "../../utils/strutil.ts";
 import { JS_LIB } from "../js_conversion.ts";
 import { Macro } from "../../core/node.ts";
+import { NewCall } from "../call_conventions.ts";
 
 export class JavaScriptEmissionStep extends MacroProcessingStep {
   constructor(public override macros: MacroRegistry) {
@@ -28,6 +29,12 @@ export class JavaScriptEmissionStep extends MacroProcessingStep {
 
       const obuf = new IndentedStringIO();
       obuf.write(JS_LIB + "\n\n");
+
+      for (const conv of ctx.compiler.conventions) {
+        if (conv instanceof NewCall && conv.implementation) {
+          obuf.write(`${conv.implementation}\n\n`);
+        }
+      }
 
       default_logger.codegen("adding async wrapper for browser compatibility");
       obuf.write(`void (async () => {\n`);
