@@ -70,8 +70,8 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     const _0xea_bool_printer = async function (
-        value, 
-        if_true, 
+        value,
+        if_true,
         if_false
     ) {{
             const parent_scope = scope

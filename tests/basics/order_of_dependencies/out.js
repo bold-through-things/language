@@ -70,8 +70,8 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     const _0x3b_visit = async function (
-        unroller, 
-        module, 
+        unroller,
+        module,
         chain
     ) {{
             const parent_scope = scope

@@ -20,7 +20,7 @@
     "line": 42,
     "char": 0,
     "content": "67lang:call test_str",
-    "error": "failed to assert: could not find a matching overload for test_str with arguments [#<PrimitiveType:0x7f4d01fefd40 @name=\"int\">]",
+    "error": "failed to assert: could not find a matching overload for test_str with arguments int",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
@@ -52,7 +52,11 @@
             "reason_type": "ARG_MISMATCH",
             "index": 0,
             "demanded": "never",
-            "received": "int"
+            "received": {
+              "name": "int",
+              "type_params": [],
+              "fields": []
+            }
           }
         ]
       }
@@ -63,7 +67,7 @@
     "line": 51,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f4d01fefde0 @name=\"never\">]",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments never",
     "error_type": "AMBIGUOUS_OVERLOAD",
     "matching_overloads": [
       {
@@ -84,7 +88,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "String",
         "fn": "split",
         "demands": [
           {
@@ -112,12 +115,11 @@
     "line": 51,
     "char": 0,
     "content": "67lang:call sort",
-    "error": "failed to assert: multiple equally specific overloads match for sort with arguments [#<NeverType:0x7f4d01fefde0 @name=\"never\">]",
+    "error": "failed to assert: multiple equally specific overloads match for sort with arguments never",
     "error_type": "AMBIGUOUS_OVERLOAD",
     "matching_overloads": [
       {
         "convention": "PrototypeCall",
-        "constructor": "URLSearchParams",
         "fn": "sort",
         "demands": [
           {
@@ -134,7 +136,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "BigInt64Array",
         "fn": "sort",
         "demands": [
           {
@@ -151,7 +152,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "BigUint64Array",
         "fn": "sort",
         "demands": [
           {
@@ -168,7 +168,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Array",
         "fn": "sort",
         "demands": [
           {
@@ -207,7 +206,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Int8Array",
         "fn": "sort",
         "demands": [
           {
@@ -224,7 +222,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint8Array",
         "fn": "sort",
         "demands": [
           {
@@ -241,7 +238,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint8ClampedArray",
         "fn": "sort",
         "demands": [
           {
@@ -258,7 +254,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Int16Array",
         "fn": "sort",
         "demands": [
           {
@@ -275,7 +270,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint16Array",
         "fn": "sort",
         "demands": [
           {
@@ -292,7 +286,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Int32Array",
         "fn": "sort",
         "demands": [
           {
@@ -309,7 +302,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint32Array",
         "fn": "sort",
         "demands": [
           {
@@ -326,7 +318,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Float32Array",
         "fn": "sort",
         "demands": [
           {
@@ -343,7 +334,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Float64Array",
         "fn": "sort",
         "demands": [
           {
@@ -360,7 +350,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Float16Array",
         "fn": "sort",
         "demands": [
           {
@@ -382,12 +371,11 @@
     "line": 51,
     "char": 0,
     "content": "67lang:call join",
-    "error": "failed to assert: multiple equally specific overloads match for join with arguments [#<NeverType:0x7f4d01fefde0 @name=\"never\">]",
+    "error": "failed to assert: multiple equally specific overloads match for join with arguments never",
     "error_type": "AMBIGUOUS_OVERLOAD",
     "matching_overloads": [
       {
         "convention": "PrototypeCall",
-        "constructor": "BigInt64Array",
         "fn": "join",
         "demands": [
           {
@@ -404,7 +392,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "BigUint64Array",
         "fn": "join",
         "demands": [
           {
@@ -421,7 +408,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "ReadonlyArray",
         "fn": "join",
         "demands": [
           {
@@ -438,7 +424,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "ConcatArray",
         "fn": "join",
         "demands": [
           {
@@ -455,7 +440,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Array",
         "fn": "join",
         "demands": [
           {
@@ -483,7 +467,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Int8Array",
         "fn": "join",
         "demands": [
           {
@@ -500,7 +483,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint8Array",
         "fn": "join",
         "demands": [
           {
@@ -517,7 +499,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint8ClampedArray",
         "fn": "join",
         "demands": [
           {
@@ -534,7 +515,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Int16Array",
         "fn": "join",
         "demands": [
           {
@@ -551,7 +531,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint16Array",
         "fn": "join",
         "demands": [
           {
@@ -568,7 +547,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Int32Array",
         "fn": "join",
         "demands": [
           {
@@ -585,7 +563,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Uint32Array",
         "fn": "join",
         "demands": [
           {
@@ -602,7 +579,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Float32Array",
         "fn": "join",
         "demands": [
           {
@@ -619,7 +595,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Float64Array",
         "fn": "join",
         "demands": [
           {
@@ -636,7 +611,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "Float16Array",
         "fn": "join",
         "demands": [
           {
@@ -658,7 +632,7 @@
     "line": 53,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments [#<PrimitiveType:0x7f4d01fefcc0 @name=\"bool\">]",
+    "error": "failed to assert: could not find a matching overload for split with arguments bool",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
@@ -682,15 +656,22 @@
           {
             "reason_type": "ARG_MISMATCH",
             "index": 0,
-            "demanded": "SymbolConstructor",
-            "received": "bool"
+            "demanded": {
+              "name": "SymbolConstructor",
+              "type_params": [],
+              "fields": []
+            },
+            "received": {
+              "name": "bool",
+              "type_params": [],
+              "fields": []
+            }
           }
         ]
       },
       {
         "convention": {
           "convention": "PrototypeCall",
-          "constructor": "String",
           "fn": "split",
           "demands": [
             {
@@ -715,15 +696,22 @@
           {
             "reason_type": "ARG_MISMATCH",
             "index": 0,
-            "demanded": "str",
-            "received": "bool"
+            "demanded": {
+              "name": "str",
+              "type_params": [],
+              "fields": []
+            },
+            "received": {
+              "name": "bool",
+              "type_params": [],
+              "fields": []
+            }
           }
         ]
       },
       {
         "convention": {
           "convention": "PrototypeCall",
-          "constructor": "String",
           "fn": "split",
           "demands": [
             {
@@ -760,7 +748,6 @@
       {
         "convention": {
           "convention": "PrototypeCall",
-          "constructor": "String",
           "fn": "split",
           "demands": [
             {
@@ -802,7 +789,6 @@
       {
         "convention": {
           "convention": "PrototypeCall",
-          "constructor": "String",
           "fn": "split",
           "demands": [
             {
@@ -839,7 +825,6 @@
       {
         "convention": {
           "convention": "PrototypeCall",
-          "constructor": "String",
           "fn": "split",
           "demands": [
             {
@@ -885,7 +870,7 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f4d01fefde0 @name=\"never\">]",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments never",
     "error_type": "AMBIGUOUS_OVERLOAD",
     "matching_overloads": [
       {
@@ -906,7 +891,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "String",
         "fn": "split",
         "demands": [
           {
@@ -934,7 +918,7 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f4d01fefde0 @name=\"never\">]",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments never",
     "error_type": "AMBIGUOUS_OVERLOAD",
     "matching_overloads": [
       {
@@ -955,7 +939,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "String",
         "fn": "split",
         "demands": [
           {
@@ -983,7 +966,7 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: multiple equally specific overloads match for split with arguments [#<NeverType:0x7f4d01fefde0 @name=\"never\">]",
+    "error": "failed to assert: multiple equally specific overloads match for split with arguments never",
     "error_type": "AMBIGUOUS_OVERLOAD",
     "matching_overloads": [
       {
@@ -1004,7 +987,6 @@
       },
       {
         "convention": "PrototypeCall",
-        "constructor": "String",
         "fn": "split",
         "demands": [
           {

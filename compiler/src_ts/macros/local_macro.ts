@@ -1,0 +1,124 @@
+// macros/local_macro.ts
+
+import {
+  Macro_emission_provider,
+  Macro_typecheck_provider,
+  Macro_preprocess_provider,
+  MacroContext,
+  TCResult
+} from "../core/macro_registry.ts";
+
+import { Node, 
+  SaneIdentifier,
+  FieldDemandType } from "../core/node.ts";
+import { default_logger } from "../utils/logger.ts";
+import { ErrorType } from "../utils/error_types.ts";
+
+import { graceful_typecheck } from "../core/exceptions.ts";
+import { collect_child_expressions, get_single_arg } from "../utils/common_utils.ts";
+import { Type, TypeParameter } from "../compiler_types/proper_types.ts";
+
+export class Local_macro_provider
+  implements
+    Macro_emission_provider,
+    Macro_typecheck_provider,
+    Macro_preprocess_provider
+{
+  preprocess(ctx: MacroContext): void {
+    default_logger.indent("macro", `preprocessing children of ${ctx.node.content}`, () => {
+      ctx.node.children.forEach((child, i) => {
+        default_logger.indent("macro", `child ${i}: ${child.content}`, () => {
+          ctx.compiler.safely(() => {
+            const cctx = ctx.clone_with({ node: child });
+            ctx.current_step!.process_node(cctx);
+          });
+        });
+      });
+    });
+
+    const desired = get_single_arg(ctx);
+    const actual = ctx.compiler.get_new_ident(desired);
+    ctx.compiler.set_metadata(ctx.node, SaneIdentifier, new SaneIdentifier(actual));
+  }
+
+  emission(ctx: MacroContext): void {
+    const desired = get_single_arg(ctx);
+    const actual =
+      ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.toString() ??
+      desired;
+
+    const args = ctx.node.children.length === 0
+      ? []
+      : collect_child_expressions(ctx);
+
+    ctx.statement_out.write(`let ${actual}`);
+    if (args.length > 0) {
+      ctx.statement_out.write(` = ${args[args.length - 1]}`);
+    }
+    ctx.statement_out.write("\n");
+
+    ctx.expression_out.write(actual);
+  }
+
+  typecheck(ctx: MacroContext) {
+    const t = graceful_typecheck(() => {
+      let demanded_type: TCResult = null;
+      let received_type: TCResult = null;
+      let assume_type = false;
+
+      const step = ctx.current_step!;
+
+      ctx.node.children.forEach((child) => {
+        if (child.content.startsWith("67lang:assume_type_valid")) {
+          assume_type = true;
+          return;
+        }
+
+        const res = step.process_node(ctx.clone_with({ node: child }));
+
+        if (res && res instanceof TypeParameter) {
+          demanded_type = res.type_expr;
+        } else if (res && res instanceof Type) {
+          received_type = res;
+        }
+      });
+
+      if (received_type == null) {
+        ctx.compiler.assert_(
+          false,
+          ctx.node,
+          `field demands ${demanded_type ?? "a value"} but is given None`,
+          ErrorType.MISSING_TYPE
+        );
+      }
+
+      if (demanded_type == null) {
+        demanded_type = received_type;
+      }
+
+      default_logger.typecheck(
+        `${ctx.node.content} demanded ${demanded_type} and was given ${received_type}`
+      );
+
+      if (!assume_type) {
+        const ok =
+          received_type.is_assignable_to &&
+          received_type.is_assignable_to(demanded_type);
+
+        if (!ok) {
+          ctx.compiler.assert_(
+            false,
+            ctx.node,
+            `field demands ${demanded_type} but is given ${received_type}`,
+            ErrorType.FIELD_TYPE_MISMATCH
+          );
+        }
+      }
+
+      return demanded_type;
+    });
+
+    ctx.compiler.set_metadata(ctx.node, FieldDemandType, new FieldDemandType(t));
+    return t;
+  }
+}

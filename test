@@ -215,7 +215,9 @@ def make_test_method(tc: TestCase, args):
             shutil.copytree(case_dir, tmpdir, dirs_exist_ok=True)
 
             if args.compile:
-                if not args.impl_py:
+                if args.impl_ts:
+                    compiler_cmd = ["deno", "run", "--check", "--allow-read", "--allow-write", str(Path("compiler/src_ts/main.ts").absolute())]
+                elif not args.impl_py:
                     compiler_cmd = [str(Path("compiler/src_cr/_67lang").absolute())]
                 else:
                     compiler_cmd = ["python3", str(Path("compiler/src/main.py").absolute())]
@@ -341,7 +343,9 @@ if __name__ == "__main__":
                 output_file = tmpdir_path / "out.js"
                 
                 # Run compiler without --log
-                if not args.impl_py:
+                if args.impl_ts:
+                    compiler_cmd = ["deno", "run", "--check", "--allow-read", "--allow-write", str(Path("compiler/src_ts/main.ts").absolute())]
+                elif not args.impl_py:
                     compiler_cmd = [str(Path("compiler/src_cr/_67lang").absolute())]
                 else:
                     compiler_cmd = ["python3", str(Path("compiler/src/main.py").absolute())]
@@ -380,7 +384,9 @@ if __name__ == "__main__":
                 output_file = tmpdir_path / "out.js"
                 
                 # Run compiler with --log registry
-                if not args.impl_py:
+                if args.impl_ts:
+                    compiler_cmd = ["deno", "run", "--check", "--allow-read", "--allow-write", str(Path("compiler/src_ts/main.ts").absolute())]
+                elif not args.impl_py:
                     compiler_cmd = [str(Path("compiler/src_cr/_67lang").absolute())]
                 else:
                     compiler_cmd = ["python3", str(Path("compiler/src/main.py").absolute())]
@@ -408,7 +414,8 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--debug", action='store_true', help="execute runtime in debug mode")
     parser.add_argument("-r", "--run", action='store_true', help="skip compilation. assume the tests are already compiled, and only run the existing output")
     parser.add_argument("--expand", action='store_true', help="test two-step compilation: `.67lang → .67lang.expanded → .js` WIP and expected to fail currently!")
-    parser.add_argument("--impl-py", action='store_true', help="use Python implementation instead of Crystal")
+    parser.add_argument("--impl-py", action='store_true', help="use Python implementation")
+    parser.add_argument("--impl-ts", action='store_true', help="use TypeScript implementation")
     parser.add_argument("--unit", action='store_true', help="run only unit tests")
     parser.add_argument("--e2e", action='store_true', help="run only end-to-end tests")
 
@@ -429,7 +436,7 @@ if __name__ == "__main__":
 
     args_global = args 
     
-    if not args.impl_py:
+    if not args.impl_py and not args.impl_ts:
         print("Building Crystal compiler...")
         build_proc = subprocess.run(["crystal", "build", "src/main.cr", "-o", "_67lang", '--error-trace'], 
                                    cwd="compiler/src_cr", capture_output=True, text=True)

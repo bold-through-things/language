@@ -19,7 +19,7 @@
       "line": 9,
       "char": 0,
       "content": { "$contains": "while" },
-      "error_type": "ASSERTION_FAILED"
+      "error_type": "INVALID_STRUCTURE"
     }
   ],
   "$order": "any"

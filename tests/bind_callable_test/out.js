@@ -70,8 +70,8 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     const _0x0_handle_message = async function (
-        bot, 
-        message, 
+        bot,
+        message,
         is_trusted
     ) {{
             const parent_scope = scope

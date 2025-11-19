@@ -20,7 +20,7 @@
     "line": 9,
     "char": 0,
     "content": "while",
-    "error": "failed to assert: must have two children, got [\"true\"]",
-    "error_type": "ASSERTION_FAILED"
+    "error": "failed to assert: must have two children, got true",
+    "error_type": "INVALID_STRUCTURE"
   }
 ]

@@ -1,0 +1,156 @@
+// core/macro_registry.ts
+
+import { IndentedStringIO } from "../utils/strutil.ts";
+import { default_logger } from "../utils/logger.ts";
+import type { Node } from "./node.ts";
+import type { Macrocosm } from "./macrocosm.ts";
+
+// TCResult = Type | null | TypeParameter
+export type TCResult = any; // real types filled in once proper_types.ts exists
+
+export type OutIO = IndentedStringIO | { 
+  write: (s: string) => void,
+  gets_to_end: () => string
+};
+
+// The union of call signatures used in Crystal:
+// Proc(MacroContext, TCResult) | Proc(MacroContext, Nil)
+export type Macro_ctx_proc =
+  | ((ctx: MacroContext) => TCResult)
+  | ((ctx: MacroContext) => void);
+
+// --------------------------------------
+// MacroContext
+// --------------------------------------
+
+export class MacroContext {
+  statement_out: IndentedStringIO;
+  expression_out: OutIO;
+  node: Node;
+  compiler: Macrocosm;
+  current_step: MacroProcessingStep | null;
+
+  constructor(
+    statement_out: IndentedStringIO,
+    expression_out: OutIO,
+    node: Node,
+    compiler: Macrocosm,
+    current_step: MacroProcessingStep | null = null,
+  ) {
+    this.statement_out = statement_out;
+    this.expression_out = expression_out;
+    this.node = node;
+    this.compiler = compiler;
+    this.current_step = current_step;
+  }
+
+  clone_with(opts: {
+    statement_out?: IndentedStringIO | null;
+    expression_out?: OutIO | null;
+    node?: Node | null;
+    compiler?: Macrocosm | null;
+    current_step?: MacroProcessingStep | null;
+  } = {}): MacroContext {
+    return new MacroContext(
+      opts.statement_out ?? this.statement_out,
+      opts.expression_out ?? this.expression_out,
+      opts.node ?? this.node,
+      opts.compiler ?? this.compiler,
+      opts.current_step ?? this.current_step,
+    );
+  }
+
+  sub_compile_expression(node: Node): MacroContext {
+    const child = this.clone_with({
+      node,
+      expression_out: new IndentedStringIO(),
+    });
+    if (child.current_step) {
+      child.current_step.process_node(child);
+    }
+    return child;
+  }
+}
+
+// --------------------------------------
+// Provider "interfaces"
+// --------------------------------------
+
+export interface Macro_preprocess_provider {
+  preprocess(ctx: MacroContext): void;
+}
+
+export interface Macro_type_registration_provider {
+  register_type(ctx: MacroContext): any;
+}
+
+export interface Macro_type_details_provider {
+  register_type_details(ctx: MacroContext): any;
+}
+
+export interface Macro_functions_provider {
+  register_functions(ctx: MacroContext): TCResult;
+}
+
+export interface Macro_typecheck_provider {
+  typecheck(ctx: MacroContext): TCResult;
+}
+
+export interface Macro_emission_provider {
+  emission(ctx: MacroContext): void;
+}
+
+export interface Macro_code_linking_provider {
+  code_linking(ctx: MacroContext): void;
+}
+
+export type Macro_provider =
+  | Macro_preprocess_provider
+  | Macro_code_linking_provider
+  | Macro_typecheck_provider
+  | Macro_emission_provider
+  | Macro_type_registration_provider
+  | Macro_type_details_provider
+  | Macro_functions_provider;
+
+// --------------------------------------
+// Processing step base class
+// --------------------------------------
+
+export abstract class MacroProcessingStep {
+  abstract process_node(ctx: MacroContext): void | TCResult;
+}
+
+// --------------------------------------
+// MacroRegistry
+// --------------------------------------
+
+export class MacroRegistry {
+  private registry: Record<string, Macro_ctx_proc>;
+
+  constructor() {
+    this.registry = {};
+  }
+
+  add_fn(fn: Macro_ctx_proc | null, ...names: string[]): void {
+    if (fn === null) {
+      return;
+    }
+    for (const name of names) {
+      this.registry[name] = fn;
+    }
+  }
+
+  get(name: string): Macro_ctx_proc {
+    const fn = this.registry[name];
+    if (!fn) {
+      default_logger.macro(`ERROR: unknown macro "${name}"`);
+      throw new Error(`Unknown macro: ${name}`);
+    }
+    return fn;
+  }
+
+  all(): Record<string, Macro_ctx_proc> {
+    return { ...this.registry };
+  }
+}
