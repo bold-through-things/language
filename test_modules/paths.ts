@@ -1,0 +1,21 @@
+// test_modules/paths.ts
+export const TEST_ROOT = "tests";
+export const EXECUTABLE = "out.js";
+
+export function readFile(path: string): string | null {
+    try {
+        return Deno.readTextFileSync(path);
+    } catch (_) {
+        return null;
+    }
+}
+
+export function fileExists(path: string): boolean {
+    try {
+        Deno.statSync(path);
+        return true;
+    } catch (_) {
+        return false;
+    }
+}
+
