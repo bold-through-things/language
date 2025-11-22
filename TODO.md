@@ -1,5 +1,6 @@
 a rough roadmap the way things stand.
 
+- clean up the mess of definitions for the types
 - remove the `if` instead use `match` and `when`
 - remove the overload for `do` instead begin pipelines with `pipe` or some
 - should drop the `for` instead approach the iteration through pipelines
