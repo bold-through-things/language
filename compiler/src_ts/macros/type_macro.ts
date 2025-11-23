@@ -13,7 +13,6 @@ import {
 import { SaneIdentifier } from "../core/node.ts";
 import { cut, IndentedStringIO } from "../utils/strutil.ts";
 import { get_single_arg } from "../utils/common_utils.ts";
-import { CommandParser, create_type_commands } from "../utils/command_parser.ts";
 import { seek_child_macro } from "../pipeline/steps/utils.ts";
 import { Joiner } from "../utils/strutil.ts";
 import { NEWLINE } from "../pipeline/js_conversion.ts";
@@ -28,7 +27,8 @@ import {
   type_registry,
 } from "../compiler_types/proper_types.ts";
 import { ErrorType } from "../utils/error_types.ts";
-import { choose_single } from "../utils/utils.ts";
+import { choose_single, try_catch } from "../utils/utils.ts";
+import { Fixed, parseTokens, Schema } from "../utils/new_parser.ts";
 
 /*
 should now support a way to bind existing types
@@ -55,6 +55,13 @@ type My_plain is JS:object
 type My_marked is JS:object
 	marked EXTERNAL_SYMBOL_NAME
 */
+
+
+const typeSchema = {
+  "type": new Fixed(1),                // type <type_expression>
+  "for":   new Fixed(1),                // for <parameter_name>
+  "is":    new Fixed(1),                // is <base_type>
+};
 
 export class Type_macro_provider
   implements
@@ -273,20 +280,14 @@ export class Type_macro_provider
   }
 
   private parse_type_expression(ctx: MacroContext): TypeParameter | null {
-    const content = ctx.node.content.replace(/^type /, "").trim();
-    const parser = new CommandParser(content, create_type_commands());
-    const parsed = parser.parse();
+    const content = ctx.node.content.trim();
+    const tokens = content.split(/\s+/).filter((x) => x.length > 0);
+    // TODO right now you could do stupid shit like `type MyType for param is JS:object is JS:object for other_param`
+    const parsed = try_catch(() => parseTokens(tokens, typeSchema), (e) => {
+      ctx.compiler.assert_(false, ctx.node, `Failed to parse type expression: ${e}`, ErrorType.INVALID_MACRO);
+    });
 
-    if (!parsed) {
-      ctx.compiler.compile_error(
-        ctx.node,
-        `Invalid type expression syntax: ${content}`,
-        ErrorType.INVALID_MACRO,
-      );
-      return null;
-    }
-
-    const type_name_raw = parsed["main"];
+    const type_name_raw = parsed.type[0].value;
     const type_name = type_name_raw ? String(type_name_raw) : "";
 
     if (!type_name) {
@@ -303,7 +304,7 @@ export class Type_macro_provider
       return null;
     }
 
-    const param_name_raw = parsed["parameter_name"];
+    const param_name_raw = parsed.for?.[0].value;
     const param_name =
       param_name_raw === undefined || param_name_raw === null
         ? undefined

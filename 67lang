@@ -1,0 +1,8 @@
+#!/usr/bin/env -S deno run --allow-run --allow-read --allow-write
+
+new Deno.Command("compiler/src_ts/main.ts", {
+  args: Deno.args,
+  stdin: "inherit",
+  stdout: "inherit",
+  stderr: "inherit",
+}).output().then(({ code }) => Deno.exit(code));

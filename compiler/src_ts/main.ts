@@ -19,17 +19,32 @@ import { MetaValue } from "./core/meta_value.ts";
 
 import "./pipeline/load_builtins_json.ts"; // side-effect: loads builtins into TYPE_REGISTRY
 import "./compiler_types/type_hierarchy.ts"; // side-effect: loads type hierarchy
+import { Fixed, parseTokens } from "./utils/new_parser.ts";
 
 // ---- CLI / usage ----
 
-const USAGE = `Usage: main [options] <input_dir> <output_file>
+const USAGE = `67lang compiler. readable clause centric CLI.
 
-Options:
-  --errors-file FILE   Write errors/warnings JSON to FILE
-  --log TAGS           Comma-separated log tags (e.g. typecheck,macro)
-  --expand             Two-step: write .67lang.expanded instead of .js
-  --rte                Compile from .67lang.expanded → .js (changes input pattern)
-  -h, --help           Show this help
+help
+  display this help
+in <input-dir>
+  directory to scan recursively for sources
+out <output-file>
+  the file to write the output to
+  JS unless expand then 67lang
+err <errors-file>
+  the file to write compiler errors to (if not provided, stdout)
+log <log-spec>
+  a comma-separated list of tags for logging "registry,compile"
+expand
+  instead of JavaScript provide the 67lang in Ready To Emit
+rte
+  consume the Ready To Emit and write JS
+
+example...
+  67lang in my_project/src out my_project/build/out.js err my_project/build/errors.json log compile,registry
+
+"wait, it's just SQL?!"
 `;
 
 type InspectionEntry = Record<string, MetaValue>;
@@ -57,7 +72,18 @@ function writeJson(inspections: unknown, output: { write(data: Uint8Array): void
   // no explicit flush needed; Deno handles it when closing
 }
 
-function parseArgs(args: string[]): {
+const argsSchema = {
+  in: new Fixed(1),
+  out: new Fixed(1),
+  err: new Fixed(1),
+  log: new Fixed(1),
+  expand: new Fixed(0),
+  rte: new Fixed(0),
+  help: new Fixed(0),
+  "--help": new Fixed(0),
+}
+
+function parseArgsNew(args: string[]): {
   inputDir: string;
   outputFile: string;
   errorsFile: string | null;
@@ -65,77 +91,46 @@ function parseArgs(args: string[]): {
   expand: boolean;
   rte: boolean;
 } {
-  let errorsFile: string | null = null;
-  let logSpec: string | null = null;
-  let expand = false;
-  let rte = false;
+  const parsed = parseTokens(args, argsSchema);
 
-  const positionals: string[] = [];
-
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-
-    if (arg === "--") {
-      for (let j = i + 1; j < args.length; j++) {
-        positionals.push(args[j]);
-      }
-      break;
+  function required(arg: keyof typeof parsed): string {
+    if (parsed[arg] && parsed[arg].length > 0) {
+      return parsed[arg][0].value.join("");
     }
+    throw new Error(`missing required argument: ${arg}`);
+  }
 
-    if (arg === "--errors-file") {
-      const next = args[++i];
-      if (!next) {
-        console.error("missing argument for --errors-file");
-        console.error(USAGE);
-        Deno.exit(2);
-      }
-      errorsFile = next;
-      continue;
+  function optional(arg: keyof typeof parsed): string | null {
+    if (parsed[arg] && parsed[arg].length > 0) {
+      return parsed[arg][0].value.join("");
     }
+    return null;
+  }
 
-    if (arg === "--log") {
-      const next = args[++i];
-      if (!next) {
-        console.error("missing argument for --log");
-        console.error(USAGE);
-        Deno.exit(2);
-      }
-      logSpec = next;
-      continue;
-    }
+  function flag(arg: keyof typeof parsed): boolean {  
+    return parsed[arg] && parsed[arg].length > 0;
+  }
 
-    if (arg === "--expand") {
-      expand = true;
-      continue;
-    }
+  if (flag("help")) {
+    console.log(USAGE);
+    Deno.exit(0);
+  }
 
-    if (arg === "--rte") {
-      rte = true;
-      continue;
-    }
-
-    if (arg === "-h" || arg === "--help") {
-      console.log(USAGE);
+  if (flag("--help")) {
+      console.log("this isn't Unix flags. try 'help'?");
       Deno.exit(0);
-    }
-
-    if (arg.startsWith("-")) {
-      console.error(`unknown option: ${arg}`);
-      console.error(USAGE);
-      Deno.exit(2);
-    }
-
-    positionals.push(arg);
   }
 
-  if (positionals.length !== 2) {
-    console.error(USAGE);
-    Deno.exit(2);
-  }
-
-  const [inputDir, outputFile] = positionals;
-  return { inputDir, outputFile, errorsFile, logSpec, expand, rte };
+  return {
+    inputDir: required("in"),
+    outputFile: required("out"),
+    errorsFile: optional("err"),
+    logSpec: optional("log"),
+    expand: flag("expand"),
+    rte: flag("rte"),
+  };
 }
+  
 
 function collect67Files(root: string, rte: boolean): string[] {
   const results: string[] = [];
@@ -171,7 +166,7 @@ function main(): void {
     logSpec,
     expand,
     rte,
-  } = parseArgs(Deno.args);
+  } = parseArgsNew(Deno.args);
 
   // reconfigure logging with the user-provided tags
   configureLoggerFromArgs(logSpec);

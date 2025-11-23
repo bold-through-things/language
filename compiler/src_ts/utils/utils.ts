@@ -109,3 +109,12 @@ export function choose_single<T, TR>(ctx: MacroContext, options: [T, (v: T) => T
   const [_v, f] = valid[0];
   return f(_v);
 }
+
+// i fucking love JS, the best
+export function try_catch<T>(f: () => T, on_err: (e: unknown) => T): T {
+  try {
+    return f();
+  } catch (e) {
+    return on_err(e);
+  }
+}

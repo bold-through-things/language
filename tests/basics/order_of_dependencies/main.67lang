@@ -38,7 +38,7 @@ for line in
 				false
 
 		
-		do # the kv as
+		do # the kv
 			int 1
 		then do trim as deps_str
 		

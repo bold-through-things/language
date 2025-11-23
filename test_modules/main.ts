@@ -6,6 +6,25 @@ import { buildMidglob, discoverTests, TestCase } from "./discovery.ts";
 import { validateJsonSpec } from "./json_matcher.ts";
 import { createTestDiffReporter } from "./test_diff_reporter.ts";
 import { getTestArtifacts } from "./test_artifacts.ts";
+import { Fixed, parseTokens, VarOrTerminated } from "../compiler/src_ts/utils/new_parser.ts";
+
+const USAGE = `67lang test runner.
+
+TODO
+`;
+
+const argsSchema = {
+    glob: new Fixed(1), // TODO i see the point for doing this varargs yes
+    stdin: new Fixed(0),
+    compile: new Fixed(0),
+    debug: new Fixed(0),
+    run: new Fixed(0),
+    expand: new Fixed(0),
+    help: new Fixed(0),
+    "--help": new Fixed(0),
+    pass: new VarOrTerminated(null, []),
+};
+
 
 interface CliArgs {
     glob: string | null;
@@ -14,7 +33,6 @@ interface CliArgs {
     debug: boolean;
     run: boolean;
     expand: boolean;
-    implTs: boolean;
     compilerArgs: string[];
 }
 
@@ -23,74 +41,64 @@ interface NamedTest {
     fn: (log: TestLog) => Promise<void>;
 }
 
-function parseArgs(argv: string[]): CliArgs {
-    let glob: string | null = null;
-    let stdin = false;
-    let compile = false;
-    let debug = false;
-    let run = false;
-    let expand = false;
-    let implTs = false;
-    const compilerArgs: string[] = [];
-
-    let i = 0;
-    let parsingTests = true;
-
-    while (i < argv.length) {
-        const a = argv[i];
-        if (parsingTests && a === "--") {
-            parsingTests = false;
-            i += 1;
-            continue;
+function parseArgsNew(args: string[]): CliArgs {
+    const parsed = parseTokens(args, argsSchema);
+    
+    function required(arg: keyof typeof parsed): string {
+        if (parsed[arg] && parsed[arg].length > 0) {
+            return parsed[arg][0].value.join("");
         }
-        if (!parsingTests) {
-            compilerArgs.push(a);
-            i += 1;
-            continue;
+        throw new Error(`missing required argument: ${arg}`);
+    }
+    
+    function optional(arg: keyof typeof parsed): string | null {
+        if (parsed[arg] && parsed[arg].length > 0) {
+            return parsed[arg][0].value.join("");
         }
-
-        if (a === "-g" || a === "--glob") {
-            glob = argv[i + 1] ?? null;
-            i += 2;
-        } else if (a === "-s" || a === "--stdin") {
-            stdin = true;
-            i += 1;
-        } else if (a === "-c" || a === "--compile") {
-            compile = true;
-            i += 1;
-        } else if (a === "-d" || a === "--debug") {
-            debug = true;
-            i += 1;
-        } else if (a === "-r" || a === "--run") {
-            run = true;
-            i += 1;
-        } else if (a === "--expand") {
-            expand = true;
-            i += 1;
-        } else if (a === "--impl-ts") {
-            implTs = true;
-            i += 1;
-        } else {
-            // unknown, ignore (Python forwarded to unittest; we don't care)
-            i += 1;
-        }
+        return null;
     }
 
-    if (!compile && !run) {
-        compile = true;
-        run = true;
+    function optional_many(arg: keyof typeof parsed): string[] {
+        if (parsed[arg] && parsed[arg].length > 0) {
+            const results: string[] = [];
+            for (const entry of parsed[arg]) {
+                results.push(...entry.value);
+            }
+            return results;
+        }
+        return [];
     }
 
-    return {
-        glob: glob,
-        stdin: stdin,
-        compile: compile,
-        debug: debug,
-        run: run,
-        expand: expand,
-        implTs: implTs,
-        compilerArgs: compilerArgs
+    function flag(arg: keyof typeof parsed): boolean {  
+        return parsed[arg] && parsed[arg].length > 0;
+    }
+    
+    if (flag("help")) {
+        console.log(USAGE);
+        Deno.exit(0);
+    }
+
+    if (flag("--help")) {
+        console.log("this isn't Unix flags. try 'help'?");
+        Deno.exit(0);
+    }
+
+    const rv = {
+        glob: optional("glob"),
+        stdin: flag("stdin"),
+        compile: flag("compile"),
+        debug: flag("debug"),
+        run: flag("run"),
+        expand: flag("expand"),
+        compilerArgs: optional_many("pass"),
     };
+
+    if (!rv.run && !rv.compile) {
+        rv.compile = true;
+        rv.run = true;
+    }
+
+    return rv;
 }
 
 async function readAllStdin(): Promise<string> {
@@ -137,26 +145,6 @@ function joinPath(...parts: string[]): string {
         return cleaned[0] + (cleaned.length > 1 ? "/" + cleaned.slice(1).join("/") : "");
     }
     return cleaned.join("/");
-}
-
-async function ensureCrystalBuilt(args: CliArgs): Promise<void> {
-    if (args.implTs) {
-        return;
-    }
-    console.log("Building Crystal compiler...");
-    const cmd = new Deno.Command("crystal", {
-        args: ["build", "src/main.cr", "-o", "_67lang", "--error-trace"],
-        cwd: "compiler/src_cr",
-        stdin: "null",
-        stdout: "piped",
-        stderr: "piped"
-    });
-    const out = await cmd.output();
-    const dec = new TextDecoder();
-    if (out.code !== 0) {
-        console.error(dec.decode(out.stderr));
-        throw new Error("Crystal compiler build failed");
-    }
 }
 
 async function copyTree(src: string, dest: string): Promise<void> {
@@ -214,21 +202,15 @@ async function validateGitignoreForTest(tc: TestCase): Promise<void> {
     }
 }
 
-function getCompilerCmd(argsObj: CliArgs): string[] {
-    let baseCmd: string[];
-    if (argsObj.implTs) {
-        baseCmd = [
-            "deno",
-            "run",
-            "--check",
-            "--allow-read",
-            "--allow-write",
-            joinPath(Deno.cwd(), "compiler/src_ts/main.ts")
-        ];
-    } else {
-        baseCmd = [joinPath(Deno.cwd(), "compiler/src_cr/_67lang")];
-    }
-    return baseCmd;
+function getCompilerCmd(_argsObj: CliArgs): string[] {
+    return [
+        "deno",
+        "run",
+        "--check",
+        "--allow-read",
+        "--allow-write",
+        joinPath(Deno.cwd(), "compiler/src_ts/main.ts")
+    ];
 }
 
 type CommandOutput = {
@@ -293,10 +275,12 @@ async function runSingleTest(tc: TestCase, args: CliArgs, stdinText: string | nu
 
             const step1Cmd = [
                 ...compilerCmd,
-                "--errors-file",
+                "err",
                 compileErrActualAbs,
-                "--expand",
+                "expand",
+                "in",
                 codeDirAbs,
+                "out",
                 expandedPathAbs,
                 ...args.compilerArgs
             ];
@@ -318,10 +302,12 @@ async function runSingleTest(tc: TestCase, args: CliArgs, stdinText: string | nu
 
             const step2Cmd = [
                 ...compilerCmd,
-                "--errors-file",
+                "err",
                 compileErrActualAbs,
-                "--rte",
+                "rte",
+                "in",
                 codeDirAbs,
+                "out",
                 outPathAbs,
                 ...args.compilerArgs
             ];
@@ -345,9 +331,11 @@ async function runSingleTest(tc: TestCase, args: CliArgs, stdinText: string | nu
 
             const compileCmd = [
                 ...compilerCmd,
-                "--errors-file",
+                "err",
                 compileErrActualAbs,
+                "in",
                 codeDirAbs,
+                "out",
                 outPathAbs,
                 ...args.compilerArgs
             ];
@@ -465,13 +453,15 @@ async function testSilentCompilation(args: CliArgs, log: TestLog): Promise<void>
     const tmpDir = await Deno.makeTempDir();
     const outFile = joinPath(tmpDir, "out.js");
 
-    const compilerCmd = getCompilerCmd(args);
+    const compilerCmd = getCompilerCmd(args).filter(it => it !== "--check");
 
     const cmd = [
         ...compilerCmd,
-        "--errors-file",
+        "err",
         "/dev/null", // not our concern
+        "in",
         testDir,
+        "out",
         outFile
     ];
 
@@ -523,11 +513,13 @@ async function testVerboseCompilation(args: CliArgs, log: TestLog): Promise<void
 
     const cmd = [
         ...compilerCmd,
-        "--errors-file",
+        "err",
         "/dev/null", // not our concern
+        "in",
         testDir,
+        "out",
         outFile,
-        "--log",
+        "log",
         "registry"
     ];
 
@@ -659,13 +651,9 @@ async function runAllTests(args: CliArgs, stdinText: string | null): Promise<num
 }
 
 export async function main(): Promise<void> {
-    const args = parseArgs(Deno.args);
+    const args = parseArgsNew(Deno.args);
 
     const stdinText = args.stdin ? await readAllStdin() : null;
-
-    if (!args.implTs) {
-        await ensureCrystalBuilt(args);
-    }
 
     const code = await runAllTests(args, stdinText);
     Deno.exit(code);
