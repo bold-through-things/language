@@ -17,19 +17,20 @@ export function jsFieldAccess(s: string): string {
 
 // --- Call conventions ---------------------------------------------------------
 
-export class FieldCall {
-  readonly field: string;
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
+export enum Async_mode {
+  MAYBE,
+  ASYNC,
+  SYNC,
+}
 
+export class FieldCall {
   constructor(
-    field: string,
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
-  ) {
-    this.field = field;
-    this.demands = demands;
-    this.returns = returns;
+    readonly field: string,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
+  ) { 
+    // ...
   }
 
   compile(args: string[]): string {
@@ -79,21 +80,14 @@ export class FieldCall {
 }
 
 export class PrototypeCall {
-  readonly constructorName: string;
-  readonly fn: string;
-  readonly demands: TypeDemand[];
-  readonly returns: TypeDemand;
-
   constructor(
-    constructorName: string,
-    fn: string,
-    demands: TypeDemand[],
-    returns: TypeDemand,
+    readonly constructorName: string,
+    readonly fn: string,
+    readonly demands: TypeDemand[],
+    readonly returns: TypeDemand,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.constructorName = constructorName;
-    this.fn = fn;
-    this.demands = demands;
-    this.returns = returns;
+    // ...
   }
 
   compile(args: string[]): string {
@@ -103,21 +97,15 @@ export class PrototypeCall {
 
 // fn(args...)  (or receiver.fn(args...) if receiver provided)
 export class DirectCall {
-  readonly fn: string;
-  readonly receiver: string | null;
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
 
   constructor(
-    fn: string,
-    receiver: string | null = null,
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
+    readonly fn: string,
+    readonly receiver: string | null = null,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.fn = fn;
-    this.receiver = receiver;
-    this.demands = demands;
-    this.returns = returns;
+    // ...
   }
 
   compile(args: string[]): string {
@@ -128,18 +116,13 @@ export class DirectCall {
 
 // just returns / assigns the identifier
 export class LocalAccessCall {
-  readonly fn: string;
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
-
   constructor(
-    fn: string,
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
+    readonly fn: string,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.fn = fn;
-    this.demands = demands;
-    this.returns = returns;
+    // ...
   }
 
   compile(args: string[]): string {
@@ -154,24 +137,15 @@ export class LocalAccessCall {
 // emits a direct JS operator for n-ary application (e.g., +, &&, ||)
 // optionally wraps the whole expression (e.g., "!" prefix)
 export class NaryOperatorCall {
-  readonly operator: string;
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
-  readonly is_async: boolean;
-  readonly wrapper: string | null;
-
   constructor(
-    operator: string,
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
-    is_async: boolean = false,
-    wrapper: string | null = null,
+    readonly operator: string,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly is_async: boolean = false,
+    readonly wrapper: string | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.operator = operator;
-    this.demands = demands;
-    this.returns = returns;
-    this.is_async = is_async;
-    this.wrapper = wrapper;
+    // ...
   }
 
   compile(args: string[]): string {
@@ -186,21 +160,13 @@ export class NaryOperatorCall {
 
 // emits chained comparisons: a < b && b < c
 export class ChainedComparisonCall {
-  readonly operator: string;
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
-  readonly is_async: boolean;
-
   constructor(
-    operator: string,
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
-    is_async: boolean = false,
+    readonly operator: string,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.operator = operator;
-    this.demands = demands;
-    this.returns = returns;
-    this.is_async = is_async;
+    // ...
   }
 
   compile(args: string[]): string {
@@ -219,21 +185,17 @@ export class ChainedComparisonCall {
 
 // new Constructor(a, b)
 export class NewCall {
-  readonly constructorName: string;
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
 
   // only used for classes we define ourselves
   implementation: string | null = null;
 
   constructor(
-    constructorName: string,
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
+    readonly constructorName: string,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.constructorName = constructorName;
-    this.demands = demands;
-    this.returns = returns;
+    // ...
   }
 
   compile(args: string[]): string {
@@ -243,15 +205,12 @@ export class NewCall {
 
 // obj[index]   or   obj[index] = value
 export class IndexAccessCall {
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
-
   constructor(
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.demands = demands;
-    this.returns = returns;
+    // ...
   }
 
   compile(args: string[]): string {
@@ -269,15 +228,12 @@ export class IndexAccessCall {
 
 // fn(args...) where the first arg is the callable
 export class CallableInvokeCall {
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
-
   constructor(
-    demands: TypeDemand[] | null = null,
-    returns: TypeDemand | null = null,
+    readonly demands: TypeDemand[] | null = null,
+    readonly returns: TypeDemand | null = null,
+    readonly async_mode: Async_mode = Async_mode.MAYBE,
   ) {
-    this.demands = demands;
-    this.returns = returns;
+    // ...
   }
 
   compile(args: string[]): string {

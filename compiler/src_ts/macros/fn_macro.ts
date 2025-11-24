@@ -20,7 +20,7 @@ import { seek_child_macro, seek_all_child_macros } from "../pipeline/steps/utils
 import { ErrorType } from "../utils/error_types.ts";
 import { NEWLINE } from "../pipeline/js_conversion.ts";
 import { IndentedStringIO } from "../utils/strutil.ts";
-import { Call_convention, DirectCall, FieldCall, NewCall, PrototypeCall, TypeDemand } from "../pipeline/call_conventions.ts";
+import { Async_mode, Call_convention, DirectCall, FieldCall, NewCall, PrototypeCall, TypeDemand } from "../pipeline/call_conventions.ts";
 import { TypeParameter } from "../compiler_types/proper_types.ts";
 import { if_ } from "../utils/utils.ts";
 
@@ -136,12 +136,35 @@ export class Fn_macro_provider
       return hnode ? get_single_arg(ctx.clone_with({ node: hnode })) : desired_name;
     }, () => actual_name);
 
+    const async_mode = if_(is_binding, () => {
+      const amode = seek_child_macro(ctx.node, "async");
+      const smode = seek_child_macro(ctx.node, "sync");
+
+      ctx.compiler.assert_(
+        !(amode && smode),
+        ctx.node,
+        "cannot have both async and sync modes",
+        ErrorType.INVALID_MACRO,
+      );
+
+      if (amode) {
+        return Async_mode.ASYNC;
+      }
+
+      if (smode) {
+        return Async_mode.SYNC;
+      }
+
+      return Async_mode.MAYBE;
+    }, () => Async_mode.MAYBE); // yes TODO we need to be quite smart with this
+
     if (conv_name === null) {
       return new DirectCall(
         emit_fn,
         null,
         param_demands,
         return_type,
+        async_mode,
       );
     }
 
@@ -162,6 +185,7 @@ export class Fn_macro_provider
         emit_fn,
         param_demands,
         return_type,
+        async_mode,
       );
     }
 
@@ -178,6 +202,7 @@ export class Fn_macro_provider
         recv,
         param_demands,
         return_type,
+        async_mode,
       );
     }
 
@@ -190,7 +215,7 @@ export class Fn_macro_provider
       );
 
       const field = get_single_arg(ctx.clone_with({ node: fnode! }));
-      return new FieldCall(field, param_demands, return_type);
+      return new FieldCall(field, param_demands, return_type, async_mode);
     }
 
     if (conv_name === "NewCall") {
@@ -205,7 +230,7 @@ export class Fn_macro_provider
         ctx.clone_with({ node: cnode! }),
       );
 
-      return new NewCall(constructor, param_demands, return_type);
+      return new NewCall(constructor, param_demands, return_type, async_mode);
     }
 
     ctx.compiler.assert_(

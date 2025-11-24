@@ -1,4 +1,3 @@
-
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -23,12 +22,27 @@ globalThis._67lang = {
     scope(parent) {
         const scope = Object.create(parent || globalThis);
         return (scope);
+    },
+
+    maybe_await: async function (value) {
+        // we expect the JIT will optimize this h*ck
+        // TODO benchmark as test
+        if (value instanceof Promise) {
+            return await value;
+        } else {
+            return value;
+        }
     }
 }
 
-if (typeof window === "undefined") {
-    // Deno environment
+const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
+const is_Deno = typeof Deno !== "undefined";
 
+if (is_browser == is_Deno) {
+    throw new Error("nonsense for environment " + JSON.stringify({is_browser, is_Deno}));
+}
+
+if (is_Deno) {
     _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
@@ -61,9 +75,8 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.stdin.isTerminal();
 }
-
 
 
 void (async () => {
@@ -73,7 +86,7 @@ void (async () => {
             const parent_scope = scope
             {
                 const scope = _67lang.scope(parent_scope)
-                const _0x42_print = await console.log("test")
+                const _0x42_print = await _67lang.maybe_await(console.log("test"))
                 let _0x30__0x2f_pipeline_result = _0x42_print
                 _0x30__0x2f_pipeline_result
             }
@@ -93,16 +106,12 @@ void (async () => {
 
 
 
-
-
-
-
         }
     } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x43_setTimeout = await setTimeout((() => _0x2e_test_fn()), 100)
+            const _0x43_setTimeout = await _67lang.maybe_await(setTimeout((() => _0x2e_test_fn()), 100))
             let _0x32__0x31_pipeline_result = _0x43_setTimeout
             _0x32__0x31_pipeline_result
         }

@@ -12,6 +12,7 @@ import {
   ComplexType,
 } from "../compiler_types/proper_types.ts";
 import {
+Async_mode,
   Call_convention,
   LocalAccessCall,
 } from "./call_conventions.ts";
@@ -125,8 +126,8 @@ function resolve_local_definition(
   }
 
   return [
-    new LocalAccessCall(resolved_name, [], type),
-    new LocalAccessCall(resolved_name, [type], type),
+    new LocalAccessCall(resolved_name, [], type, Async_mode.SYNC),
+    new LocalAccessCall(resolved_name, [type], type, Async_mode.SYNC),
   ];
 }
 

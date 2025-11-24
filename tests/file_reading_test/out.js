@@ -1,4 +1,3 @@
-
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -23,12 +22,27 @@ globalThis._67lang = {
     scope(parent) {
         const scope = Object.create(parent || globalThis);
         return (scope);
+    },
+
+    maybe_await: async function (value) {
+        // we expect the JIT will optimize this h*ck
+        // TODO benchmark as test
+        if (value instanceof Promise) {
+            return await value;
+        } else {
+            return value;
+        }
     }
 }
 
-if (typeof window === "undefined") {
-    // Deno environment
+const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
+const is_Deno = typeof Deno !== "undefined";
 
+if (is_browser == is_Deno) {
+    throw new Error("nonsense for environment " + JSON.stringify({is_browser, is_Deno}));
+}
+
+if (is_Deno) {
     _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
@@ -61,9 +75,8 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.stdin.isTerminal();
 }
-
 
 
 void (async () => {
@@ -84,51 +97,47 @@ void (async () => {
 
 
 
-
-
-
-
         }
     } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
 
-            const _0x55_print = await console.log("Current working directory:")
+            const _0x55_print = await _67lang.maybe_await(console.log("Current working directory:"))
             let _0x2f__0x2e_pipeline_result = _0x55_print
             _0x2f__0x2e_pipeline_result
-            const _0x57_cwd = await Deno.cwd()
+            const _0x57_cwd = Deno.cwd()
             let _0x32__0x31_pipeline_result = _0x57_cwd
-            const _0x56_print = await console.log(_0x32__0x31_pipeline_result)
+            const _0x56_print = await _67lang.maybe_await(console.log(_0x32__0x31_pipeline_result))
             let _0x33__0x30_pipeline_result = _0x56_print
             _0x33__0x30_pipeline_result
-            const _0x58_print = await console.log("Reading sample.txt:")
+            const _0x58_print = await _67lang.maybe_await(console.log("Reading sample.txt:"))
             let _0x35__0x34_pipeline_result = _0x58_print
             _0x35__0x34_pipeline_result
             try {
-                const _0x59_read_file = await Deno.readTextFile("sample.txt")
+                const _0x59_read_file = await (Deno.readTextFile("sample.txt"))
                 let _0x37__0x36_pipeline_result = _0x59_read_file
                 let _0x38_content = _0x37__0x36_pipeline_result
                 _0x38_content
-                const _0x5b_content = await _0x38_content
+                const _0x5b_content = _0x38_content
                 let _0x3b__0x3a_pipeline_result = _0x5b_content
-                const _0x5a_print = await console.log(_0x3b__0x3a_pipeline_result)
+                const _0x5a_print = await _67lang.maybe_await(console.log(_0x3b__0x3a_pipeline_result))
                 let _0x3c__0x39_pipeline_result = _0x5a_print
                 _0x3c__0x39_pipeline_result
             }
             catch (error) {
                 let _0x3d_error = error
                 _0x3d_error
-                const _0x5c_print = await console.log("Error reading file:")
+                const _0x5c_print = await _67lang.maybe_await(console.log("Error reading file:"))
                 let _0x3f__0x3e_pipeline_result = _0x5c_print
                 _0x3f__0x3e_pipeline_result
-                const _0x5e_error = await _0x3d_error
+                const _0x5e_error = _0x3d_error
                 let _0x42__0x41_pipeline_result = _0x5e_error
-                const _0x5d_print = await console.log(_0x42__0x41_pipeline_result)
+                const _0x5d_print = await _67lang.maybe_await(console.log(_0x42__0x41_pipeline_result))
                 let _0x43__0x40_pipeline_result = _0x5d_print
                 _0x43__0x40_pipeline_result
             }
-            const _0x5f_print = await console.log("File reading test complete")
+            const _0x5f_print = await _67lang.maybe_await(console.log("File reading test complete"))
             let _0x45__0x44_pipeline_result = _0x5f_print
             _0x45__0x44_pipeline_result
 

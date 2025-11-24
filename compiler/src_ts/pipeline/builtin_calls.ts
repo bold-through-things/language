@@ -12,6 +12,7 @@ import {
   IndexAccessCall,
   CallableInvokeCall,
   TypeDemand,
+  Async_mode,
 } from "./call_conventions.ts";
 
 import {
@@ -57,7 +58,7 @@ export function spread_nary(
   for (let n = 1; n <= max_arity; n++) {
     const demands: TypeDemand[] = Array.from({ length: n }, () => t as TypeDemand);
     out.push(
-      new NaryOperatorCall(operator, demands, t as TypeDemand, false, wrapper ?? undefined),
+      new NaryOperatorCall(operator, demands, t as TypeDemand, false, wrapper ?? undefined, Async_mode.SYNC),
     );
   }
   return out;
@@ -72,7 +73,7 @@ export function spread_chain(
   for (let n = 1; n <= max_arity; n++) {
     const demands: TypeDemand[] = Array.from({ length: n }, () => t as TypeDemand);
     out.push(
-      new ChainedComparisonCall(operator, demands, t as TypeDemand, false),
+      new ChainedComparisonCall(operator, demands, t as TypeDemand, Async_mode.SYNC),
     );
   }
   return out;
@@ -116,21 +117,25 @@ BUILTIN_CALLS["#"] = [
   new IndexAccessCall(
     [new ComplexType("list", [T]), INT] as TypeDemand[],
     T as TypeDemand,
+    Async_mode.SYNC,
   ),
   // list set
   new IndexAccessCall(
     [new ComplexType("list", [T]), INT, T] as TypeDemand[],
     T as TypeDemand,
+    Async_mode.SYNC,
   ),
   // dict get
   new IndexAccessCall(
     [new ComplexType("dict", [K, V]), K] as TypeDemand[],
     V as TypeDemand,
+    Async_mode.SYNC,
   ),
   // dict set
   new IndexAccessCall(
     [new ComplexType("dict", [K, V]), K, V] as TypeDemand[],
     V as TypeDemand,
+    Async_mode.SYNC,
   ),
 ];
 
@@ -146,6 +151,7 @@ for (let size = 0; size <= MAX_NARY; size++) {
     new CallableInvokeCall(
       [callable, ...args] as TypeDemand[],
       RV as TypeDemand,
+      Async_mode.MAYBE, // TODO
     ),
   ]);
 }
@@ -170,6 +176,7 @@ for (let size = 2; size <= MAX_NARY; size++) {
         fn,
         [new ComplexType("tuple", tvs)] as TypeDemand[],
         tv,
+        Async_mode.SYNC,
       ),
     );
 
@@ -179,6 +186,7 @@ for (let size = 2; size <= MAX_NARY; size++) {
         fn,
         [new ComplexType("tuple", tvs), tv] as TypeDemand[],
         tv,
+        Async_mode.SYNC,
       ),
     );
   }
@@ -224,19 +232,20 @@ BUILTIN_CALLS["zip"] = [
         new TypeVariable("B"),
       ]),
     ]) as TypeDemand,
+    Async_mode.SYNC,
   ),
 ];
 
 BUILTIN_CALLS["new_set"] = [
-  new DirectCall("new_set", "_67lang", undefined, SET as TypeDemand),
+  new DirectCall("new_set", "_67lang", undefined, SET as TypeDemand, Async_mode.SYNC),
 ];
 
 BUILTIN_CALLS["stdin"] = [
-  new DirectCall("stdin", "_67lang", undefined, STRING as TypeDemand),
+  new DirectCall("stdin", "_67lang", undefined, STRING as TypeDemand, Async_mode.ASYNC),
 ];
 
 BUILTIN_CALLS["is_tty"] = [
-  new DirectCall("is_tty", "_67lang", undefined, BOOL as TypeDemand),
+  new DirectCall("is_tty", "_67lang", undefined, BOOL as TypeDemand, Async_mode.SYNC),
 ];
 
 // Deno (target-specific)
@@ -246,11 +255,12 @@ BUILTIN_CALLS["read_file"] = [
     "Deno",
     [STRING as TypeDemand],
     STRING as TypeDemand,
+    Async_mode.ASYNC,
   ),
 ];
 
 BUILTIN_CALLS["cwd"] = [
-  new DirectCall("cwd", "Deno", undefined, STRING as TypeDemand),
+  new DirectCall("cwd", "Deno", undefined, STRING as TypeDemand, Async_mode.SYNC),
 ];
 
 // JSON

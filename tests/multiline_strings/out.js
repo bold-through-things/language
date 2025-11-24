@@ -1,4 +1,3 @@
-
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -23,12 +22,27 @@ globalThis._67lang = {
     scope(parent) {
         const scope = Object.create(parent || globalThis);
         return (scope);
+    },
+
+    maybe_await: async function (value) {
+        // we expect the JIT will optimize this h*ck
+        // TODO benchmark as test
+        if (value instanceof Promise) {
+            return await value;
+        } else {
+            return value;
+        }
     }
 }
 
-if (typeof window === "undefined") {
-    // Deno environment
+const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
+const is_Deno = typeof Deno !== "undefined";
 
+if (is_browser == is_Deno) {
+    throw new Error("nonsense for environment " + JSON.stringify({is_browser, is_Deno}));
+}
+
+if (is_Deno) {
     _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
@@ -61,9 +75,8 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.stdin.isTerminal();
 }
-
 
 
 void (async () => {
@@ -84,20 +97,16 @@ void (async () => {
 
 
 
-
-
-
-
         }
     } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
             "this is a statement-level multiline string.\nit should act like a comment - not produce any output."
-            const _0x41_print = await console.log("this is an expression-level multiline string.\nit should produce a string value.\n						it can contain indented values.\ntrivially.")
+            const _0x41_print = await _67lang.maybe_await(console.log("this is an expression-level multiline string.\nit should produce a string value.\n						it can contain indented values.\ntrivially."))
             let _0x2f__0x2e_pipeline_result = _0x41_print
             _0x2f__0x2e_pipeline_result
-            const _0x42_print = await console.log("hello world")
+            const _0x42_print = await _67lang.maybe_await(console.log("hello world"))
             let _0x31__0x30_pipeline_result = _0x42_print
             _0x31__0x30_pipeline_result
         }

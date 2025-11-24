@@ -1,4 +1,3 @@
-
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -23,12 +22,27 @@ globalThis._67lang = {
     scope(parent) {
         const scope = Object.create(parent || globalThis);
         return (scope);
+    },
+
+    maybe_await: async function (value) {
+        // we expect the JIT will optimize this h*ck
+        // TODO benchmark as test
+        if (value instanceof Promise) {
+            return await value;
+        } else {
+            return value;
+        }
     }
 }
 
-if (typeof window === "undefined") {
-    // Deno environment
+const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
+const is_Deno = typeof Deno !== "undefined";
 
+if (is_browser == is_Deno) {
+    throw new Error("nonsense for environment " + JSON.stringify({is_browser, is_Deno}));
+}
+
+if (is_Deno) {
     _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
@@ -61,9 +75,8 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.stdin.isTerminal();
 }
-
 
 
 void (async () => {
@@ -80,17 +93,17 @@ void (async () => {
                 _0x2f_my_list
 
 
-                const _0x51_my_list = await _0x2f_my_list
-                const _0x50_slice = await Array.prototype.slice.call(_0x51_my_list)
+                const _0x51_my_list = _0x2f_my_list
+                const _0x50_slice = Array.prototype.slice.call(_0x51_my_list)
                 let _0x31__0x30_pipeline_result = _0x50_slice
                 let _0x32_copied_list = _0x31__0x30_pipeline_result
                 _0x32_copied_list
 
-                const _0x53_copied_list = await _0x32_copied_list
-                const _0x52_reverse = await Array.prototype.reverse.call(_0x53_copied_list)
+                const _0x53_copied_list = _0x32_copied_list
+                const _0x52_reverse = Array.prototype.reverse.call(_0x53_copied_list)
                 let _0x34__0x33_pipeline_result = _0x52_reverse
                 _0x34__0x33_pipeline_result
-                const _0x54_copied_list = await _0x32_copied_list
+                const _0x54_copied_list = _0x32_copied_list
                 let _0x36__0x35_pipeline_result = _0x54_copied_list
                 return _0x36__0x35_pipeline_result;
             }
@@ -110,10 +123,6 @@ void (async () => {
 
 
 
-
-
-
-
         }
     } {
         const parent_scope = scope
@@ -122,15 +131,15 @@ void (async () => {
 
             let _0x37_test_list = ["a", "b", "c"]
             _0x37_test_list
-            const _0x56_test_list = await _0x37_test_list
+            const _0x56_test_list = _0x37_test_list
             let _0x3a__0x39_pipeline_result = _0x56_test_list
-            const _0x55_process_list = await _0x2e_process_list(_0x3a__0x39_pipeline_result)
+            const _0x55_process_list = await _67lang.maybe_await(_0x2e_process_list(_0x3a__0x39_pipeline_result))
             let _0x3b__0x38_pipeline_result = _0x55_process_list
             let _0x3c_result = _0x3b__0x38_pipeline_result
             _0x3c_result
-            const _0x58_result = await _0x3c_result
+            const _0x58_result = _0x3c_result
             let _0x3f__0x3e_pipeline_result = _0x58_result
-            const _0x57_print = await console.log(_0x3f__0x3e_pipeline_result)
+            const _0x57_print = await _67lang.maybe_await(console.log(_0x3f__0x3e_pipeline_result))
             let _0x40__0x3d_pipeline_result = _0x57_print
             _0x40__0x3d_pipeline_result
         }

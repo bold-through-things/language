@@ -22,6 +22,8 @@ import {
 import { graceful_typecheck } from "../core/exceptions.ts";
 import { collect_child_expressions } from "../utils/common_utils.ts";
 import { resolve_convention, unify_types } from "../pipeline/call_resolver.ts";
+import { Async_mode } from "../pipeline/call_conventions.ts";
+import { not_null } from "../utils/utils.ts";
 
 // -------------------------------------------------------------------
 // TypeHierarchyChecker
@@ -182,12 +184,29 @@ export class Call_macro_provider
       const ident = ctx.compiler.get_new_ident(parts.join("_"));
 
       const resolved = ctx.compiler.get_metadata(ctx.node, ResolvedConvention);
-      const conv = resolved.convention;
+      const conv = not_null(resolved.convention);
 
       const arg_exprs = collect_child_expressions(ctx);
-      const call_src = conv!.compile(arg_exprs);
+      const call_src = conv.compile(arg_exprs);
 
-      ctx.statement_out.write(`const ${ident} = await ${call_src}\n`);
+      const await_fn = {
+        [Async_mode.ASYNC]: (id: string) => `await (${id})`,
+        [Async_mode.SYNC]: (id: string) => id,
+        /* 
+        shout out to Claude for helping me benchmark this. yes, it's not that bad!
+
+        Without unnecessary awaits: 0.30ms
+        Smart conditional await: 0.40ms (1.33x slower) <-
+        With pointless awaits: 72.40ms (241.33x slower)
+
+        see the code below (at end of file)
+
+        i really fucking love the JIT.
+        */
+        [Async_mode.MAYBE]: (id: string) => `await _67lang.maybe_await(${id})`,
+      }
+      
+      ctx.statement_out.write(`const ${ident} = ${await_fn[conv.async_mode](call_src)}\n`);
       ctx.expression_out.write(ident);
     } catch (ex) {
       default_logger.debug(
@@ -202,3 +221,33 @@ export class Call_macro_provider
 
   // The shared resolver is provided by CallResolver (included)
 }
+
+/*
+  async function slowVersion() {
+      let sum = await 0;
+      for (let i = await 0; i < await 100000; i = await (i + 1)) {
+          sum = await (sum + await Math.sqrt(await i));
+      }
+      return await sum;
+  }
+
+  function maybeAwait(val) {
+      return val?.then ? val : Promise.resolve(val);
+  }
+
+  async function halfSlowVersion() {
+      let sum = await maybeAwait(0);
+      for (let i = await maybeAwait(0); i < 100000; i++) {
+          sum = sum + Math.sqrt(i);
+      }
+      return sum;
+  }
+
+  async function fastVersion() {
+      let sum = 0;
+      for (let i = 0; i < 100000; i++) {
+          sum = sum + Math.sqrt(i);
+      }
+      return sum;
+  }
+*/

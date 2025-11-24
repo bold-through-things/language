@@ -1,4 +1,3 @@
-
 globalThis._67lang = {
     // TODO eliminating this one probably next thing
     exists_inside: (inside, ...arr) => {
@@ -23,12 +22,27 @@ globalThis._67lang = {
     scope(parent) {
         const scope = Object.create(parent || globalThis);
         return (scope);
+    },
+
+    maybe_await: async function (value) {
+        // we expect the JIT will optimize this h*ck
+        // TODO benchmark as test
+        if (value instanceof Promise) {
+            return await value;
+        } else {
+            return value;
+        }
     }
 }
 
-if (typeof window === "undefined") {
-    // Deno environment
+const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
+const is_Deno = typeof Deno !== "undefined";
 
+if (is_browser == is_Deno) {
+    throw new Error("nonsense for environment " + JSON.stringify({is_browser, is_Deno}));
+}
+
+if (is_Deno) {
     _67lang.prompt = async function (msg) {
         await Deno.stdout.write(new TextEncoder().encode(msg));
         const buf = new Uint8Array(1024);
@@ -61,9 +75,8 @@ if (typeof window === "undefined") {
         return stdin_cached;
     };
 
-    _67lang.is_tty = () => Deno.isatty(Deno.stdin.rid);
+    _67lang.is_tty = () => Deno.stdin.isTerminal();
 }
-
 
 
 void (async () => {
@@ -84,10 +97,6 @@ void (async () => {
 
 
 
-
-
-
-
         }
     } {
         const parent_scope = scope
@@ -96,17 +105,17 @@ void (async () => {
             let _0x2e_str = "testing"
             _0x2e_str
 
-            const _0x48_str = await _0x2e_str
-            const _0x47_split = await String.prototype.split.call(_0x48_str, "t")
+            const _0x48_str = _0x2e_str
+            const _0x47_split = String.prototype.split.call(_0x48_str, "t")
             let _0x31__0x30_pipeline_result = _0x47_split
-            const _0x46_print = await console.log(_0x31__0x30_pipeline_result)
+            const _0x46_print = await _67lang.maybe_await(console.log(_0x31__0x30_pipeline_result))
             let _0x32__0x2f_pipeline_result = _0x46_print
             _0x32__0x2f_pipeline_result
 
-            const _0x4b_str = await _0x2e_str
-            const _0x4a_split = await String.prototype.split.call(_0x4b_str, /t/)
+            const _0x4b_str = _0x2e_str
+            const _0x4a_split = String.prototype.split.call(_0x4b_str, /t/)
             let _0x35__0x34_pipeline_result = _0x4a_split
-            const _0x49_print = await console.log(_0x35__0x34_pipeline_result)
+            const _0x49_print = await _67lang.maybe_await(console.log(_0x35__0x34_pipeline_result))
             let _0x36__0x33_pipeline_result = _0x49_print
             _0x36__0x33_pipeline_result
         }
