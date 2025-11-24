@@ -25,6 +25,7 @@ import {
   TypeParameter,
   ComplexType,
   type_registry,
+  TypeVariable,
 } from "../compiler_types/proper_types.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { choose_single, try_catch } from "../utils/utils.ts";
@@ -58,9 +59,10 @@ type My_marked is JS:object
 
 
 const typeSchema = {
-  "type": new Fixed(1),                // type <type_expression>
-  "for":   new Fixed(1),                // for <parameter_name>
-  "is":    new Fixed(1),                // is <base_type>
+  "type": new Fixed(1),
+  "for":   new Fixed(1),
+  "is":    new Fixed(1),
+  "var":  new Fixed(0),
 };
 
 export class Type_macro_provider
@@ -299,16 +301,20 @@ export class Type_macro_provider
       return null;
     }
 
-    const resolved = this.resolve_type_with_children(ctx, type_name);
-    if (!resolved) {
-      return null;
-    }
-
     const param_name_raw = parsed.for?.[0].value;
     const param_name =
       param_name_raw === undefined || param_name_raw === null
         ? undefined
         : String(param_name_raw);
+
+    if (parsed.var?.length > 0) {
+      return new TypeParameter(new TypeVariable(type_name), param_name);
+    }
+
+    const resolved = this.resolve_type_with_children(ctx, type_name);
+    if (!resolved) {
+      return null;
+    }
 
     return new TypeParameter(resolved, param_name);
   }

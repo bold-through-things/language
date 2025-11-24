@@ -118,3 +118,11 @@ export function try_catch<T>(f: () => T, on_err: (e: unknown) => T): T {
     return on_err(e);
   }
 }
+
+export function if_<T>(condition: boolean, f: () => T, fnot: () => T): T {
+  if (condition) {
+    return f();
+  } else {
+    return fnot();
+  }
+}

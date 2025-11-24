@@ -21,6 +21,8 @@ import { ErrorType } from "../utils/error_types.ts";
 import { NEWLINE } from "../pipeline/js_conversion.ts";
 import { IndentedStringIO } from "../utils/strutil.ts";
 import { Call_convention, DirectCall, FieldCall, NewCall, PrototypeCall, TypeDemand } from "../pipeline/call_conventions.ts";
+import { TypeParameter } from "../compiler_types/proper_types.ts";
+import { if_ } from "../utils/utils.ts";
 
 // -------- metadata carrier --------
 
@@ -86,7 +88,7 @@ export class Fn_macro_provider
         ctx.clone_with({ node: tnode }),
       );
 
-      if (!child_res || !("type_expr" in child_res)) {
+      if (!(child_res instanceof TypeParameter)) {
         throw new Error(`Expected TypeParameter, got ${child_res}`);
       }
 
@@ -128,10 +130,15 @@ export class Fn_macro_provider
     param_demands: TypeDemand[],
     return_type: TypeDemand,
   ): Call_convention {
+    const is_binding = ctx.node.content.includes(" is ")
+    const emit_fn = if_(is_binding, () => {
+      const hnode =  seek_child_macro(ctx.node, "fn");
+      return hnode ? get_single_arg(ctx.clone_with({ node: hnode })) : desired_name;
+    }, () => actual_name);
 
     if (conv_name === null) {
       return new DirectCall(
-        actual_name,
+        emit_fn,
         null,
         param_demands,
         return_type,
@@ -150,14 +157,9 @@ export class Fn_macro_provider
         ctx.clone_with({ node: cnode! }),
       );
 
-      const hnode = seek_child_macro(ctx.node, "fn");
-      const host_fn = hnode
-        ? get_single_arg(ctx.clone_with({ node: hnode }))
-        : desired_name;
-
       return new PrototypeCall(
         constructor,
-        host_fn,
+        emit_fn,
         param_demands,
         return_type,
       );
@@ -172,7 +174,7 @@ export class Fn_macro_provider
       }
 
       return new DirectCall(
-        actual_name,
+        emit_fn,
         recv,
         param_demands,
         return_type,
@@ -206,13 +208,12 @@ export class Fn_macro_provider
       return new NewCall(constructor, param_demands, return_type);
     }
 
-    ctx.compiler.compile_error(
+    ctx.compiler.assert_(
+      false,
       ctx.node,
       `unknown call convention: ${conv_name}`,
       ErrorType.INVALID_MACRO,
     );
-
-    throw new Error("unknown convention");
   }
 
   // ---------- preprocess ----------

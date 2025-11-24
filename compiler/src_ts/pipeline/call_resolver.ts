@@ -177,13 +177,13 @@ export function resolve_convention(
 
   if (actual_arg_types && actual_arg_types.length > 0) {
     const matching = candidates.filter((c) => {
-      const demands = (c as any).demands as Type[] | null | undefined;
+      const demands = c.demands;
       return matches_signature(fn, actual_arg_types, demands ?? null);
     });
 
     if (matching.length > 1) {
       const score = (c: Call_convention): [number, number] => {
-        const demands = (c as any).demands as Type[] | null | undefined;
+        const demands = c.demands;
         if (!demands) {
           return [0, 0];
         }

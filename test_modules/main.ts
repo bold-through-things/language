@@ -209,6 +209,7 @@ function getCompilerCmd(_argsObj: CliArgs): string[] {
         "--check",
         "--allow-read",
         "--allow-write",
+        "--unstable-raw-imports",
         joinPath(Deno.cwd(), "compiler/src_ts/main.ts")
     ];
 }

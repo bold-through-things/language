@@ -55,10 +55,6 @@ export function spread_nary(
 ): Call_convention[] {
   const out: Call_convention[] = [];
   for (let n = 1; n <= max_arity; n++) {
-    if (n === 2 && name === "concat") {
-      // same hack as in Crystal
-      continue;
-    }
     const demands: TypeDemand[] = Array.from({ length: n }, () => t as TypeDemand);
     out.push(
       new NaryOperatorCall(operator, demands, t as TypeDemand, false, wrapper ?? undefined),

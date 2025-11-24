@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write
+#!/usr/bin/env -S deno run --allow-read --allow-write --unstable-raw-imports
 
 // main.ts — entrypoint (ported from main.cr)
 
@@ -20,6 +20,8 @@ import { MetaValue } from "./core/meta_value.ts";
 import "./pipeline/load_builtins_json.ts"; // side-effect: loads builtins into TYPE_REGISTRY
 import "./compiler_types/type_hierarchy.ts"; // side-effect: loads type hierarchy
 import { Fixed, parseTokens } from "./utils/new_parser.ts";
+
+import bindings_code from "../../tests/bindings.67lang" with { type: "text" }
 
 // ---- CLI / usage ----
 
@@ -206,6 +208,10 @@ function main(): void {
   const parserInst = new TreeParser();
 
   default_logger.indent("compile", "parsing files", () => {
+    // TODO for now this works, in future we will need a macro that injects these bindings
+    const bindingsNode = parserInst.parseTree(bindings_code, itsJustMacros);
+    itsJustMacros.register(bindingsNode);
+
     for (const filename of files) {
       default_logger.compile(`parsing ${filename}`);
       const src = Deno.readTextFileSync(filename);

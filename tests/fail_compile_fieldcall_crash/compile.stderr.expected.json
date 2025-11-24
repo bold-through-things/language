@@ -14,8 +14,9 @@
       "char": 0,
       "content": { "$contains": "call event" },
       "error_type": "NO_MATCHING_OVERLOAD",
-      "visible_overloads": { "$len": 3 }
+      "visible_overloads": { "$len": 0 }
     }
   ],
-  "$order": "any"
+  "$order": "any",
+  "$key": ["line", "error_type"]
 }

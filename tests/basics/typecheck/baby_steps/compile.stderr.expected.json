@@ -27,24 +27,8 @@
       "line": 51,
       "char": 0,
       "content": { "$contains": "call split" },
-      "error_type": "AMBIGUOUS_OVERLOAD",
-      "matching_overloads": { "$len": 2 }
-    },
-    {
-      "recoverable": false,
-      "line": 51,
-      "char": 0,
-      "content": { "$contains": "call sort" },
-      "error_type": "AMBIGUOUS_OVERLOAD",
-      "matching_overloads": { "$len": 14 }
-    },
-    {
-      "recoverable": false,
-      "line": 51,
-      "char": 0,
-      "content": { "$contains": "call join" },
-      "error_type": "AMBIGUOUS_OVERLOAD",
-      "matching_overloads": { "$len": 15 }
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": { "$ge": 2 } }
     },
     {
       "recoverable": false,
@@ -59,25 +43,26 @@
       "line": 56,
       "char": 0,
       "content": { "$contains": "call split" },
-      "error_type": "AMBIGUOUS_OVERLOAD",
-      "matching_overloads": { "$len": { "$ge": 2 } }
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": { "$ge": 2 } }
     },
     {
       "recoverable": false,
       "line": 56,
       "char": 0,
       "content": { "$contains": "call split" },
-      "error_type": "AMBIGUOUS_OVERLOAD",
-      "matching_overloads": { "$len": 2 }
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": { "$ge": 2 } }
     },
     {
       "recoverable": false,
       "line": 56,
       "char": 0,
       "content": { "$contains": "call split" },
-      "error_type": "AMBIGUOUS_OVERLOAD",
-      "matching_overloads": { "$len": 2 }
+      "error_type": "NO_MATCHING_OVERLOAD",
+      "visible_overloads": { "$len": { "$ge": 2 } }
     }
   ],
-  "$order": "any"
+  "$order": "any",
+  "$key": ["line", "error_type"]
 }

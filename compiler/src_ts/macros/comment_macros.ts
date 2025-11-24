@@ -18,6 +18,7 @@ export class Comment_macro_provider
   preprocess(_ctx: MacroContext) {}
   emission(_ctx: MacroContext) {}
   code_linking(_ctx: MacroContext) {}
+  register_functions(_ctx: MacroContext) {}
   register_type(_ctx: MacroContext) {}
   register_type_details(_ctx: MacroContext) {}
   typecheck(_ctx: MacroContext): TCResult {

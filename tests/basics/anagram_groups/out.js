@@ -73,102 +73,122 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x52_stdin = await _67lang.stdin()
-            let _0x1__0x0_pipeline_result = _0x52_stdin
-            let _0x2_input = _0x1__0x0_pipeline_result
-            _0x2_input
-            const _0x54_input = await _0x2_input
-            const _0x53_split = await String.prototype.split.call(_0x54_input, "\n")
-            let _0x4__0x3_pipeline_result = _0x53_split
-            let _0x5_words = _0x4__0x3_pipeline_result
-            _0x5_words
-            let _0x6_groups = {}
-            _0x6_groups
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = _67lang.scope(parent_scope)
+            const _0x8f_stdin = await _67lang.stdin()
+            let _0x2f__0x2e_pipeline_result = _0x8f_stdin
+            let _0x30_input = _0x2f__0x2e_pipeline_result
+            _0x30_input
+            const _0x91_input = await _0x30_input
+            const _0x90_split = await String.prototype.split.call(_0x91_input, "\n")
+            let _0x32__0x31_pipeline_result = _0x90_split
+            let _0x33_words = _0x32__0x31_pipeline_result
+            _0x33_words
+            let _0x34_groups = {}
+            _0x34_groups
             {
                 const parent_scope = scope
                 {
                     const scope = _67lang.scope(parent_scope)
-                    let _0x9__0x7_for_word__index = 0
-                    _0x9__0x7_for_word__index
-                    const _0x55_words = await _0x5_words
-                    let _0xb__0xa_pipeline_result = _0x55_words
-                    let _0xc__0x8_for_word__list = _0xb__0xa_pipeline_result
-                    _0xc__0x8_for_word__list
+                    let _0x37__0x35_for_word__index = 0
+                    _0x37__0x35_for_word__index
+                    const _0x92_words = await _0x33_words
+                    let _0x39__0x38_pipeline_result = _0x92_words
+                    let _0x3a__0x36_for_word__list = _0x39__0x38_pipeline_result
+                    _0x3a__0x36_for_word__list
                     while(true) {
-                        const _0x57__0x7_for_word__index = await _0x9__0x7_for_word__index
-                        let _0xf__0xe_pipeline_result = _0x57__0x7_for_word__index
-                        const _0x59__0x8_for_word__list = await _0xc__0x8_for_word__list
-                        const _0x58_length = await (_0x59__0x8_for_word__list.length)
-                        let _0x11__0x10_pipeline_result = _0x58_length
-                        const _0x56_asc = await (_0xf__0xe_pipeline_result < _0x11__0x10_pipeline_result)
-                        let _0x12__0xd_pipeline_result = _0x56_asc
-                        if (!_0x12__0xd_pipeline_result) { break; }
+                        const _0x94__0x35_for_word__index = await _0x37__0x35_for_word__index
+                        let _0x3d__0x3c_pipeline_result = _0x94__0x35_for_word__index
+                        const _0x96__0x36_for_word__list = await _0x3a__0x36_for_word__list
+                        const _0x95_length = await (_0x96__0x36_for_word__list.length)
+                        let _0x3f__0x3e_pipeline_result = _0x95_length
+                        const _0x93_asc = await (_0x3d__0x3c_pipeline_result < _0x3f__0x3e_pipeline_result)
+                        let _0x40__0x3b_pipeline_result = _0x93_asc
+                        if (!_0x40__0x3b_pipeline_result) { break; }
                         {
                             const parent_scope = scope
                             {
                                 const scope = _67lang.scope(parent_scope)
-                                const _0x5b__0x8_for_word__list = await _0xc__0x8_for_word__list
-                                const _0x5c__0x7_for_word__index = await _0x9__0x7_for_word__index
-                                let _0x15__0x14_pipeline_result = _0x5c__0x7_for_word__index
-                                const _0x5a__hash_ = await _0x5b__0x8_for_word__list[_0x15__0x14_pipeline_result]
-                                let _0x16__0x13_pipeline_result = _0x5a__hash_
-                                let _0x17_word = _0x16__0x13_pipeline_result
-                                _0x17_word
-                                const _0x5f__0x7_for_word__index = await _0x9__0x7_for_word__index
-                                const _0x5e_add = await (_0x5f__0x7_for_word__index + 1)
-                                let _0x1a__0x19_pipeline_result = _0x5e_add
-                                const _0x5d__0x7_for_word__index = await (_0x9__0x7_for_word__index = _0x1a__0x19_pipeline_result)
-                                let _0x1b__0x18_pipeline_result = _0x5d__0x7_for_word__index
-                                _0x1b__0x18_pipeline_result
-                                const _0x61_word = await _0x17_word
-                                const _0x60_split = await String.prototype.split.call(_0x61_word, "")
-                                let _0x1d__0x1c_pipeline_result = _0x60_split
-                                _0x1d__0x1c_pipeline_result
-                                const _0x63__0x1c_pipeline_result = await _0x1d__0x1c_pipeline_result
-                                const _0x62_sort = await Array.prototype.sort.call(_0x63__0x1c_pipeline_result)
-                                let _0x1f__0x1e_pipeline_result = _0x62_sort
-                                _0x1f__0x1e_pipeline_result
-                                const _0x65__0x1e_pipeline_result = await _0x1f__0x1e_pipeline_result
-                                const _0x64_join = await Array.prototype.join.call(_0x65__0x1e_pipeline_result, "")
-                                let _0x20_key = _0x64_join
-                                _0x20_key
+                                const _0x98__0x36_for_word__list = await _0x3a__0x36_for_word__list
+                                const _0x99__0x35_for_word__index = await _0x37__0x35_for_word__index
+                                let _0x43__0x42_pipeline_result = _0x99__0x35_for_word__index
+                                const _0x97__hash_ = await _0x98__0x36_for_word__list[_0x43__0x42_pipeline_result]
+                                let _0x44__0x41_pipeline_result = _0x97__hash_
+                                let _0x45_word = _0x44__0x41_pipeline_result
+                                _0x45_word
+                                const _0x9c__0x35_for_word__index = await _0x37__0x35_for_word__index
+                                const _0x9b_add = await (_0x9c__0x35_for_word__index + 1)
+                                let _0x48__0x47_pipeline_result = _0x9b_add
+                                const _0x9a__0x35_for_word__index = await (_0x37__0x35_for_word__index = _0x48__0x47_pipeline_result)
+                                let _0x49__0x46_pipeline_result = _0x9a__0x35_for_word__index
+                                _0x49__0x46_pipeline_result
+                                const _0x9e_word = await _0x45_word
+                                const _0x9d_split = await String.prototype.split.call(_0x9e_word, "")
+                                let _0x4b__0x4a_pipeline_result = _0x9d_split
+                                _0x4b__0x4a_pipeline_result
+                                const _0xa0__0x4a_pipeline_result = await _0x4b__0x4a_pipeline_result
+                                const _0x9f_sort = await Array.prototype.sort.call(_0xa0__0x4a_pipeline_result)
+                                let _0x4d__0x4c_pipeline_result = _0x9f_sort
+                                _0x4d__0x4c_pipeline_result
+                                const _0xa2__0x4c_pipeline_result = await _0x4d__0x4c_pipeline_result
+                                const _0xa1_join = await Array.prototype.join.call(_0xa2__0x4c_pipeline_result, "")
+                                let _0x4e_key = _0xa1_join
+                                _0x4e_key
 
 
 
-                                const _0x67_groups = await _0x6_groups
-                                let _0x25__0x24_pipeline_result = _0x67_groups
-                                const _0x68_key = await _0x20_key
-                                let _0x23__0x22_pipeline_result = _0x68_key
-                                const _0x69_await__67lang_dot_exists_inside_lp_ = await _67lang.exists_inside(_0x25__0x24_pipeline_result, _0x23__0x22_pipeline_result)
-                                const _0x66_none = await !(_0x69_await__67lang_dot_exists_inside_lp_)
-                                let _0x26__0x21_pipeline_result = _0x66_none
-                                if (_0x26__0x21_pipeline_result)
+                                const _0xa4_groups = await _0x34_groups
+                                let _0x53__0x52_pipeline_result = _0xa4_groups
+                                const _0xa5_key = await _0x4e_key
+                                let _0x51__0x50_pipeline_result = _0xa5_key
+                                const _0xa6_await__67lang_dot_exists_inside_lp_ = await _67lang.exists_inside(_0x53__0x52_pipeline_result, _0x51__0x50_pipeline_result)
+                                const _0xa3_none = await !(_0xa6_await__67lang_dot_exists_inside_lp_)
+                                let _0x54__0x4f_pipeline_result = _0xa3_none
+                                if (_0x54__0x4f_pipeline_result)
                                 {
                                     const parent_scope = scope
                                     {
                                         const scope = _67lang.scope(parent_scope)
-                                        const _0x6b_groups = await _0x6_groups
-                                        let _0x29__0x28_pipeline_result = _0x6b_groups
-                                        const _0x6c_key = await _0x20_key
-                                        let _0x2b__0x2a_pipeline_result = _0x6c_key
-                                        const _0x6a__hash_ = await (_0x29__0x28_pipeline_result[_0x2b__0x2a_pipeline_result] = [])
-                                        let _0x2c__0x27_pipeline_result = _0x6a__hash_
-                                        _0x2c__0x27_pipeline_result
+                                        const _0xa8_groups = await _0x34_groups
+                                        let _0x57__0x56_pipeline_result = _0xa8_groups
+                                        const _0xa9_key = await _0x4e_key
+                                        let _0x59__0x58_pipeline_result = _0xa9_key
+                                        const _0xa7__hash_ = await (_0x57__0x56_pipeline_result[_0x59__0x58_pipeline_result] = [])
+                                        let _0x5a__0x55_pipeline_result = _0xa7__hash_
+                                        _0x5a__0x55_pipeline_result
                                     }
                                 } 
-                                const _0x6e_groups = await _0x6_groups
-                                let _0x2f__0x2e_pipeline_result = _0x6e_groups
-                                const _0x6f_key = await _0x20_key
-                                let _0x31__0x30_pipeline_result = _0x6f_key
-                                const _0x6d__hash_ = await _0x2f__0x2e_pipeline_result[_0x31__0x30_pipeline_result]
-                                let _0x32__0x2d_pipeline_result = _0x6d__hash_
-                                _0x32__0x2d_pipeline_result
-                                const _0x71__0x2d_pipeline_result = await _0x32__0x2d_pipeline_result
-                                const _0x72_word = await _0x17_word
-                                let _0x35__0x34_pipeline_result = _0x72_word
-                                const _0x70_push = await Array.prototype.push.call(_0x71__0x2d_pipeline_result, _0x35__0x34_pipeline_result)
-                                let _0x36__0x33_pipeline_result = _0x70_push
-                                _0x36__0x33_pipeline_result
+                                const _0xab_groups = await _0x34_groups
+                                let _0x5d__0x5c_pipeline_result = _0xab_groups
+                                const _0xac_key = await _0x4e_key
+                                let _0x5f__0x5e_pipeline_result = _0xac_key
+                                const _0xaa__hash_ = await _0x5d__0x5c_pipeline_result[_0x5f__0x5e_pipeline_result]
+                                let _0x60__0x5b_pipeline_result = _0xaa__hash_
+                                _0x60__0x5b_pipeline_result
+                                const _0xae__0x5b_pipeline_result = await _0x60__0x5b_pipeline_result
+                                const _0xaf_word = await _0x45_word
+                                let _0x63__0x62_pipeline_result = _0xaf_word
+                                const _0xad_push = await Array.prototype.push.call(_0xae__0x5b_pipeline_result, _0x63__0x62_pipeline_result)
+                                let _0x64__0x61_pipeline_result = _0xad_push
+                                _0x64__0x61_pipeline_result
                             }
                         } }
                 }
@@ -177,46 +197,46 @@ void (async () => {
                 const parent_scope = scope
                 {
                     const scope = _67lang.scope(parent_scope)
-                    let _0x39__0x37_for_group__index = 0
-                    _0x39__0x37_for_group__index
-                    const _0x74_groups = await _0x6_groups
-                    const _0x73_values = await Object.values(_0x74_groups)
-                    let _0x3b__0x3a_pipeline_result = _0x73_values
-                    let _0x3c__0x38_for_group__list = _0x3b__0x3a_pipeline_result
-                    _0x3c__0x38_for_group__list
+                    let _0x67__0x65_for_group__index = 0
+                    _0x67__0x65_for_group__index
+                    const _0xb1_groups = await _0x34_groups
+                    const _0xb0_values = await Object.values(_0xb1_groups)
+                    let _0x69__0x68_pipeline_result = _0xb0_values
+                    let _0x6a__0x66_for_group__list = _0x69__0x68_pipeline_result
+                    _0x6a__0x66_for_group__list
                     while(true) {
-                        const _0x76__0x37_for_group__index = await _0x39__0x37_for_group__index
-                        let _0x3f__0x3e_pipeline_result = _0x76__0x37_for_group__index
-                        const _0x78__0x38_for_group__list = await _0x3c__0x38_for_group__list
-                        const _0x77_length = await (_0x78__0x38_for_group__list.length)
-                        let _0x41__0x40_pipeline_result = _0x77_length
-                        const _0x75_asc = await (_0x3f__0x3e_pipeline_result < _0x41__0x40_pipeline_result)
-                        let _0x42__0x3d_pipeline_result = _0x75_asc
-                        if (!_0x42__0x3d_pipeline_result) { break; }
+                        const _0xb3__0x65_for_group__index = await _0x67__0x65_for_group__index
+                        let _0x6d__0x6c_pipeline_result = _0xb3__0x65_for_group__index
+                        const _0xb5__0x66_for_group__list = await _0x6a__0x66_for_group__list
+                        const _0xb4_length = await (_0xb5__0x66_for_group__list.length)
+                        let _0x6f__0x6e_pipeline_result = _0xb4_length
+                        const _0xb2_asc = await (_0x6d__0x6c_pipeline_result < _0x6f__0x6e_pipeline_result)
+                        let _0x70__0x6b_pipeline_result = _0xb2_asc
+                        if (!_0x70__0x6b_pipeline_result) { break; }
                         {
                             const parent_scope = scope
                             {
                                 const scope = _67lang.scope(parent_scope)
-                                const _0x7a__0x38_for_group__list = await _0x3c__0x38_for_group__list
-                                const _0x7b__0x37_for_group__index = await _0x39__0x37_for_group__index
-                                let _0x45__0x44_pipeline_result = _0x7b__0x37_for_group__index
-                                const _0x79__hash_ = await _0x7a__0x38_for_group__list[_0x45__0x44_pipeline_result]
-                                let _0x46__0x43_pipeline_result = _0x79__hash_
-                                let _0x47_group = _0x46__0x43_pipeline_result
-                                _0x47_group
-                                const _0x7e__0x37_for_group__index = await _0x39__0x37_for_group__index
-                                const _0x7d_add = await (_0x7e__0x37_for_group__index + 1)
-                                let _0x4a__0x49_pipeline_result = _0x7d_add
-                                const _0x7c__0x37_for_group__index = await (_0x39__0x37_for_group__index = _0x4a__0x49_pipeline_result)
-                                let _0x4b__0x48_pipeline_result = _0x7c__0x37_for_group__index
-                                _0x4b__0x48_pipeline_result
-                                const _0x81_group = await _0x47_group
-                                let _0x4f__0x4e_pipeline_result = _0x81_group
-                                const _0x80_join = await Array.prototype.join.call(_0x4f__0x4e_pipeline_result, " ")
-                                let _0x50__0x4d_pipeline_result = _0x80_join
-                                const _0x7f_print = await console.log(_0x50__0x4d_pipeline_result)
-                                let _0x51__0x4c_pipeline_result = _0x7f_print
-                                _0x51__0x4c_pipeline_result
+                                const _0xb7__0x66_for_group__list = await _0x6a__0x66_for_group__list
+                                const _0xb8__0x65_for_group__index = await _0x67__0x65_for_group__index
+                                let _0x73__0x72_pipeline_result = _0xb8__0x65_for_group__index
+                                const _0xb6__hash_ = await _0xb7__0x66_for_group__list[_0x73__0x72_pipeline_result]
+                                let _0x74__0x71_pipeline_result = _0xb6__hash_
+                                let _0x75_group = _0x74__0x71_pipeline_result
+                                _0x75_group
+                                const _0xbb__0x65_for_group__index = await _0x67__0x65_for_group__index
+                                const _0xba_add = await (_0xbb__0x65_for_group__index + 1)
+                                let _0x78__0x77_pipeline_result = _0xba_add
+                                const _0xb9__0x65_for_group__index = await (_0x67__0x65_for_group__index = _0x78__0x77_pipeline_result)
+                                let _0x79__0x76_pipeline_result = _0xb9__0x65_for_group__index
+                                _0x79__0x76_pipeline_result
+                                const _0xbe_group = await _0x75_group
+                                let _0x7d__0x7c_pipeline_result = _0xbe_group
+                                const _0xbd_join = await Array.prototype.join.call(_0x7d__0x7c_pipeline_result, " ")
+                                let _0x7e__0x7b_pipeline_result = _0xbd_join
+                                const _0xbc_print = await console.log(_0x7e__0x7b_pipeline_result)
+                                let _0x7f__0x7a_pipeline_result = _0xbc_print
+                                _0x7f__0x7a_pipeline_result
                             }
                         } }
                 }

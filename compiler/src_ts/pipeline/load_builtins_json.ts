@@ -179,4 +179,4 @@ export function load_builtins_from_json(raw: string): void {
 
 
 // Load immediately (Crystal evaluated at file load)
-load_builtins_from_json(BUILTINS_RAW);
+// load_builtins_from_json(BUILTINS_RAW);

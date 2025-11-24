@@ -8,5 +8,6 @@
       "error_type": "INVALID_INDENTATION"
     }
   ],
-  "$order": "any"
+  "$order": "any",
+  "$key": ["line", "error_type"]
 }

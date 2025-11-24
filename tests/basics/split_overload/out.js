@@ -73,22 +73,42 @@ void (async () => {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x0_str = "testing"
-            _0x0_str
 
-            const _0xb_str = await _0x0_str
-            const _0xa_split = await String.prototype.split.call(_0xb_str, "t")
-            let _0x3__0x2_pipeline_result = _0xa_split
-            const _0x9_print = await console.log(_0x3__0x2_pipeline_result)
-            let _0x4__0x1_pipeline_result = _0x9_print
-            _0x4__0x1_pipeline_result
 
-            const _0xe_str = await _0x0_str
-            const _0xd_split = await String.prototype.split.call(_0xe_str, /t/)
-            let _0x7__0x6_pipeline_result = _0xd_split
-            const _0xc_print = await console.log(_0x7__0x6_pipeline_result)
-            let _0x8__0x5_pipeline_result = _0xc_print
-            _0x8__0x5_pipeline_result
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = _67lang.scope(parent_scope)
+            let _0x2e_str = "testing"
+            _0x2e_str
+
+            const _0x48_str = await _0x2e_str
+            const _0x47_split = await String.prototype.split.call(_0x48_str, "t")
+            let _0x31__0x30_pipeline_result = _0x47_split
+            const _0x46_print = await console.log(_0x31__0x30_pipeline_result)
+            let _0x32__0x2f_pipeline_result = _0x46_print
+            _0x32__0x2f_pipeline_result
+
+            const _0x4b_str = await _0x2e_str
+            const _0x4a_split = await String.prototype.split.call(_0x4b_str, /t/)
+            let _0x35__0x34_pipeline_result = _0x4a_split
+            const _0x49_print = await console.log(_0x35__0x34_pipeline_result)
+            let _0x36__0x33_pipeline_result = _0x49_print
+            _0x36__0x33_pipeline_result
         }
     } 
 })();

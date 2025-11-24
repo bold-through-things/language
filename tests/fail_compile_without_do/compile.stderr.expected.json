@@ -22,5 +22,6 @@
       "error_type": "INVALID_STRUCTURE"
     }
   ],
-  "$order": "any"
+  "$order": "any",
+  "$key": ["line", "error_type"]
 }

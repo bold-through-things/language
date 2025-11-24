@@ -95,7 +95,7 @@ export class Macrocosm {
   js_output = "";
   root_node: Node | null = null;
 
-  private dynamic_conventions: Record<string, Call_convention[]> = {};
+  private dynamic_conventions: Record<string, Call_convention[]> = Object.create(null);
 
   readonly processing_steps: MacroProcessingStep[];
 

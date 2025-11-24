@@ -69,64 +69,84 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-    const _0x4_main_test = async function () {{
+    const _0x32_main_test = async function () {{
             const parent_scope = scope
             {
                 const scope = _67lang.scope(parent_scope)
 
-                const _0x17_WebSocket = await (new WebSocket("wss://example.com"))
-                let _0x5_ws = _0x17_WebSocket
-                _0x5_ws
+                const _0x54_WebSocket = await (new WebSocket("wss://example.com"))
+                let _0x33_ws = _0x54_WebSocket
+                _0x33_ws
 
-                const _0x19_ws = await _0x5_ws
-                let _0x8__0x7_pipeline_result = _0x19_ws
-                const _0x18_send = await WebSocket.prototype.send.call(_0x8__0x7_pipeline_result, "Hello WebSocket")
-                let _0x9__0x6_pipeline_result = _0x18_send
-                _0x9__0x6_pipeline_result
+                const _0x56_ws = await _0x33_ws
+                let _0x36__0x35_pipeline_result = _0x56_ws
+                const _0x55_send = await WebSocket.prototype.send.call(_0x36__0x35_pipeline_result, "Hello WebSocket")
+                let _0x37__0x34_pipeline_result = _0x55_send
+                _0x37__0x34_pipeline_result
 
-                let _0xa_message = "Another message"
-                _0xa_message
-                const _0x1b_ws = await _0x5_ws
-                let _0xd__0xc_pipeline_result = _0x1b_ws
-                const _0x1c_message = await _0xa_message
-                let _0xf__0xe_pipeline_result = _0x1c_message
-                const _0x1a_send = await WebSocket.prototype.send.call(_0xd__0xc_pipeline_result, _0xf__0xe_pipeline_result)
-                let _0x10__0xb_pipeline_result = _0x1a_send
-                _0x10__0xb_pipeline_result
+                let _0x38_message = "Another message"
+                _0x38_message
+                const _0x58_ws = await _0x33_ws
+                let _0x3b__0x3a_pipeline_result = _0x58_ws
+                const _0x59_message = await _0x38_message
+                let _0x3d__0x3c_pipeline_result = _0x59_message
+                const _0x57_send = await WebSocket.prototype.send.call(_0x3b__0x3a_pipeline_result, _0x3d__0x3c_pipeline_result)
+                let _0x3e__0x39_pipeline_result = _0x57_send
+                _0x3e__0x39_pipeline_result
 
-                const _0x1e_ws = await _0x5_ws
-                const _0x1d_onmessage = await (_0x1e_ws.onmessage = (((arg0) => _0x0_message_handler(arg0))))
-                let _0x12__0x11_pipeline_result = _0x1d_onmessage
-                _0x12__0x11_pipeline_result
+                const _0x5b_ws = await _0x33_ws
+                const _0x5a_onmessage = await (_0x5b_ws.onmessage = (((arg0) => _0x2e_message_handler(arg0))))
+                let _0x40__0x3f_pipeline_result = _0x5a_onmessage
+                _0x40__0x3f_pipeline_result
 
-                const _0x20_ws = await _0x5_ws
-                const _0x1f_onopen = await (_0x20_ws.onopen = (((arg0) => _0x0_message_handler(arg0))))
-                let _0x14__0x13_pipeline_result = _0x1f_onopen
-                _0x14__0x13_pipeline_result
-                const _0x22_ws = await _0x5_ws
-                const _0x21_onclose = await (_0x22_ws.onclose = (((arg0) => _0x0_message_handler(arg0))))
-                let _0x16__0x15_pipeline_result = _0x21_onclose
-                _0x16__0x15_pipeline_result
+                const _0x5d_ws = await _0x33_ws
+                const _0x5c_onopen = await (_0x5d_ws.onopen = (((arg0) => _0x2e_message_handler(arg0))))
+                let _0x42__0x41_pipeline_result = _0x5c_onopen
+                _0x42__0x41_pipeline_result
+                const _0x5f_ws = await _0x33_ws
+                const _0x5e_onclose = await (_0x5f_ws.onclose = (((arg0) => _0x2e_message_handler(arg0))))
+                let _0x44__0x43_pipeline_result = _0x5e_onclose
+                _0x44__0x43_pipeline_result
 
 
             }
         } }
-    const _0x0_message_handler = async function (
+    const _0x2e_message_handler = async function (
         event
     ) {{
             const parent_scope = scope
             {
                 const scope = _67lang.scope(parent_scope)
                 event = event
-                let _0x1_event = event
-                _0x1_event
+                let _0x2f_event = event
+                _0x2f_event
 
-                const _0x23_print = await console.log("Message received")
-                let _0x3__0x2_pipeline_result = _0x23_print
-                _0x3__0x2_pipeline_result
+                const _0x60_print = await console.log("Message received")
+                let _0x31__0x30_pipeline_result = _0x60_print
+                _0x31__0x30_pipeline_result
             }
         } }
     {
+        const parent_scope = scope
+        {
+            const scope = _67lang.scope(parent_scope)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)

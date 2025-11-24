@@ -79,8 +79,7 @@ function matchAny(spec: Json, actual: Json, path: string, errs: MatchError[]): v
     }
 
     if (Array.isArray(spec)) {
-        matchList(spec, actual, path, errs);
-        return;
+        throw new Error("array spec must use array controller operators");
     }
 
     if (spec !== actual) {
@@ -251,42 +250,123 @@ function arrayCount(whereSpec: Json, actual: Json, path: string, cmpOps: Record<
     matchScalarOp(cmpOps, n as unknown as Json, `${path}/$count`, errs);
 }
 
-function unorderedMultisetMatch(specItems: Json[], actualItems: Json[], path: string, errs: MatchError[]): void {
-    const used = new Array(actualItems.length).fill(false);
-    let bestHint: MatchError | null = null;
+function unorderedKeyedMatch(
+    specItems: Json[],
+    actualItems: Json[],
+    keySpec: Json,   // string | string[]
+    path: string,
+    errs: MatchError[]
+): void {
+    type Key = string;
 
-    const backtrack = (j: number): boolean => {
-        if (j === specItems.length) {
-            return true;
+    function extract(obj: Json, itemPath: string): Key | null {
+        if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+            errs.push(new MatchError(itemPath, "$key requires object elements"));
+            return null;
         }
-        const want = specItems[j];
-        for (let i = 0; i < actualItems.length; i++) {
-            if (used[i]) {
-                continue;
-            }
-            const got = actualItems[i];
-            const subErrs: MatchError[] = [];
-            matchAny(want, got, jsonPath(path, i), subErrs);
-            if (subErrs.length === 0) {
-                used[i] = true;
-                if (backtrack(j + 1)) {
-                    return true;
+
+        const o = obj as Record<string, Json>;
+
+        if (typeof keySpec === "string") {
+            return JSON.stringify([o[keySpec]]);
+        }
+
+        if (Array.isArray(keySpec)) {
+            const out: Json[] = [];
+            for (const f of keySpec) {
+                if (typeof f !== "string") {
+                    errs.push(new MatchError(itemPath, "$key fields must be strings"));
+                    return null;
                 }
-                used[i] = false;
-            } else if (bestHint === null) {
-                bestHint = subErrs[0];
+                out.push(o[f]);
             }
+            return JSON.stringify(out);
         }
-        return false;
-    };
 
-    if (!backtrack(0)) {
-        errs.push(new MatchError(path, "unordered multiset match failed"));
-        if (bestHint) {
-            errs.push(bestHint);
+        errs.push(new MatchError(path, "$key must be string or array of strings"));
+        return null;
+    }
+
+    const specKeys: Key[] = [];
+    const actualKeys: Key[] = [];
+
+    const specKeysMap = new Map<Key, Json>();
+    const actualKeysMap = new Map<Key, Json>();
+
+    for (let i = 0; i < specItems.length; i++) {
+        const it = specItems[i];
+        const k = extract(it, jsonPath(path, i));
+        if (k !== null) {
+            specKeys.push(k);
+            specKeysMap.set(k, it);
         }
     }
+
+    for (let i = 0; i < actualItems.length; i++) {
+        const it = actualItems[i];
+        const k = extract(it, jsonPath(path, i));
+        if (k !== null) {
+            actualKeys.push(k);
+            actualKeysMap.set(k, it);
+        }
+    }
+
+    const missing: Key[] = [];
+    const extra: Key[] = [];
+
+    const actualKeysCopy = [...actualKeys];
+    const specKeysCopy = [...specKeys];
+
+    const remove_in_place = (arr: Key[], val: Key) => {
+        const idx = arr.indexOf(val);
+        if (idx >= 0) {
+            arr.splice(idx, 1);
+        }
+    }
+
+    for (const k of specKeys) {
+        const match = actualKeysCopy.find((ak) => ak === k);
+        if (!match) {
+            missing.push(k);
+        } else {
+            remove_in_place(actualKeysCopy, k);
+        }
+    }
+
+    for (const k of actualKeys) {
+        const match = specKeysCopy.find((sk) => sk === k);
+        if (!match) {
+            extra.push(k);
+        } else {
+            remove_in_place(specKeysCopy, k);
+        }
+    }
+
+    if (missing.length > 0) {
+        errs.push(new MatchError(path, `missing keys: ${missing.join(", ")}`));
+    }
+
+    if (extra.length > 0) {
+        errs.push(new MatchError(path, `extra keys: ${extra.join(", ")}`));
+    }
+
+    if (errs.length > 0) {
+        return;
+    }
+
+    // Same keys → deep match items
+    for (const k of specKeys) {
+        const want = specKeysMap.get(k);
+        const got = actualKeysMap.get(k);
+
+        if (want == null || got == null) {
+            throw new Error("unreachable");
+        }
+
+        matchAny(want, got, `${path}{key=${k}}`, errs);
+    }
 }
+
 
 function matchArrayController(spec: Record<string, Json>, actual: Json, path: string, errs: MatchError[]): void {
     if (!Array.isArray(actual)) {
@@ -348,7 +428,8 @@ function matchArrayController(spec: Record<string, Json>, actual: Json, path: st
 
     if ("$subset" in spec) {
         const subsetSpecs = Array.isArray(spec["$subset"]) ? spec["$subset"] as Json[] : [];
-        unorderedMultisetMatch(subsetSpecs, actual as Json[], path, errs);
+        const keySpec = spec["$key"];
+        unorderedKeyedMatch(subsetSpecs, actual as Json[], keySpec, path, errs);
     }
 
     if ("$items" in spec) {
@@ -366,18 +447,10 @@ function matchArrayController(spec: Record<string, Json>, actual: Json, path: st
             if (wantItems.length !== actual.length) {
                 errs.push(new MatchError(path, `$items any: actual has ${actual.length} items, spec has ${wantItems.length}`));
             }
-            unorderedMultisetMatch(wantItems, actual as Json[], path, errs);
+            const keySpec = spec["$key"];
+            unorderedKeyedMatch(wantItems, actual as Json[], keySpec, path, errs);
         }
     }
-}
-
-function matchList(spec: Json, actual: Json, path: string, errs: MatchError[]): void {
-    if (!Array.isArray(actual)) {
-        errs.push(new MatchError(path, `expected array, got ${typeName(actual)}`));
-        return;
-    }
-    const specList = Array.isArray(spec) ? spec as Json[] : [];
-    unorderedMultisetMatch(specList, actual as Json[], path, errs);
 }
 
 function prettyJson(s: string): string {

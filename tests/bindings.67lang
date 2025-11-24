@@ -1,0 +1,547 @@
+note 
+	
+
+	String
+
+
+
+fn length is FieldCall
+	field length
+	param self
+		type str
+	returns
+		type int
+
+fn split is PrototypeCall
+	constructor String
+	fn split
+	param self
+		type str
+	param sep
+		type str
+	returns
+		type list
+			type str
+
+fn split is PrototypeCall
+	constructor String
+	fn split
+	param self
+		type str
+	param sep
+		type str
+	param limit
+		type int
+	returns
+		type list
+			type str
+
+fn split is PrototypeCall
+	constructor String
+	fn split
+	param self
+		type str
+	param sep
+		type regex
+	returns
+		type list
+			type str
+
+fn split is PrototypeCall
+	constructor String
+	fn split
+	param self
+		type str
+	param sep
+		type regex
+	param limit
+		type int
+	returns
+		type list
+			type str
+
+fn toUpperCase is PrototypeCall
+	constructor String
+	fn toUpperCase
+	param self
+		type str
+	returns
+		type str
+
+fn toLowerCase is PrototypeCall
+	constructor String
+	fn toLowerCase
+	param self
+		type str
+	returns
+		type str
+
+fn includes is PrototypeCall
+	constructor String
+	fn includes
+	param self
+		type str
+	param search
+		type str
+	returns
+		type bool
+
+fn startsWith is PrototypeCall
+	constructor String
+	fn startsWith
+	param self
+		type str
+	param search
+		type str
+	returns
+		type bool
+
+fn endsWith is PrototypeCall
+	constructor String
+	fn endsWith
+	param self
+		type str
+	param search
+		type str
+	returns
+		type bool
+
+fn indexOf is PrototypeCall
+	constructor String
+	fn indexOf
+	param self
+		type str
+	param search
+		type str
+	returns
+		type int
+
+fn slice is PrototypeCall
+	constructor String
+	fn slice
+	param self
+		type str
+	param start
+		type int
+	param end
+		type int
+	returns
+		type str
+
+fn substring is PrototypeCall
+	constructor String
+	fn substring
+	param self
+		type str
+	param start
+		type int
+	param end
+		type int
+	returns
+		type str
+
+fn charAt is PrototypeCall
+	constructor String
+	fn charAt
+	param self
+		type str
+	param index
+		type int
+	returns
+		type str
+
+fn charCodeAt is PrototypeCall
+	constructor String
+	fn charCodeAt
+	param self
+		type str
+	param index
+		type int
+	returns
+		type int
+
+fn trim is PrototypeCall
+	constructor String
+	fn trim
+	param self
+		type str
+	returns
+		type str
+
+fn trimStart is PrototypeCall
+	constructor String
+	fn trimStart
+	param self
+		type str
+	returns
+		type str
+
+fn trimEnd is PrototypeCall
+	constructor String
+	fn trimEnd
+	param self
+		type str
+	returns
+		type str
+
+note overload: replace(string, string)
+fn replace is PrototypeCall
+	constructor String
+	fn replace
+	param self
+		type str
+	param search
+		type str
+	param replacement
+		type str
+	returns
+		type str
+
+note overload: replace(regex, string)
+fn replace is PrototypeCall
+	constructor String
+	fn replace
+	param self
+		type str
+	param search
+		type regex
+	param replacement
+		type str
+	returns
+		type str
+
+note overload: match(regex)
+fn match is PrototypeCall
+	constructor String
+	fn match
+	param self
+		type str
+	param re
+		type regex
+	returns
+		type list
+			type str
+
+note overload: match(string)
+fn match is PrototypeCall
+	constructor String
+	fn match
+	param self
+		type str
+	param search
+		type str
+	returns
+		type list
+			type str
+
+note
+
+
+	toString
+
+
+
+note TODO
+	fn toString is PrototypeCall
+		constructor Number
+		fn toString
+		param self
+			type int
+		returns
+			type str
+
+fn toString is PrototypeCall
+	constructor Number
+	fn toString
+	param self
+		type float
+	returns
+		type str
+
+fn toString is PrototypeCall
+	constructor String
+	fn toString
+	param self
+		type str
+	returns
+		type str
+
+note TODO
+	fn toString is PrototypeCall
+		constructor Object
+		fn toString
+		param self
+			type *
+		returns
+			type str
+
+note 
+	
+
+	Array
+
+
+
+fn length is FieldCall
+	field length
+	param self
+		type list
+	returns
+		type int
+
+fn push is PrototypeCall
+	constructor Array
+	fn push
+	param self
+		type list
+			type T var
+	param item
+		type T var
+	returns
+		type void
+
+fn sort is PrototypeCall
+	constructor Array
+	fn sort
+	param self
+		type list
+			type T var
+	returns
+		type list
+			type T var
+
+fn join is PrototypeCall
+	constructor Array
+	fn join
+	param self
+		type list
+			type str
+	param sep
+		type str
+	returns
+		type str
+
+fn join is PrototypeCall
+	constructor Array
+	fn join
+	param self
+		type list
+			type str
+	returns
+		type str
+
+fn reverse is PrototypeCall
+	constructor Array
+	fn reverse
+	param self
+		type list
+			type T var
+	returns
+		type list
+			type T var
+
+fn slice is PrototypeCall
+	constructor Array
+	fn slice
+	param self
+		type list
+			type T var
+	returns
+		type list
+			type T var
+
+fn slice is PrototypeCall
+	constructor Array
+	fn slice
+	param self
+		type list
+			type T var
+	param start
+		type int
+	returns
+		type list
+			type T var
+
+fn slice is PrototypeCall
+	constructor Array
+	fn slice
+	param self
+		type list
+			type T var
+	param start
+		type int
+	param end
+		type int
+	returns
+		type list
+			type T var
+
+note 
+	
+
+	WebSocket
+
+
+
+fn WebSocket is NewCall
+	constructor WebSocket
+	param url
+		type str
+	returns
+		type WebSocket
+
+fn send is PrototypeCall
+	constructor WebSocket
+	fn send
+	param self
+		type WebSocket
+	param data
+		type str
+	returns
+		type void
+
+fn close is PrototypeCall
+	constructor WebSocket
+	fn close
+	param self
+		type WebSocket
+	returns
+		type void
+
+fn on_message is PrototypeCall
+	constructor WebSocket
+	fn onMessage
+	param self
+		type WebSocket
+	param callback
+		type callable
+			type * var
+	returns
+		type void
+
+note 
+
+	
+	URL
+
+
+
+type URL is JS:object
+	constructor URL
+
+fn URL is NewCall
+	constructor URL
+	param url
+		type str
+	returns
+		type URL
+
+fn pathname is FieldCall
+	field pathname
+	param self
+		type URL
+	returns
+		type str
+
+note 
+	
+
+	TextEncoder
+
+
+
+type TextEncoder is JS:object
+	constructor TextEncoder
+
+type Uint8Array is JS:object
+	constructor Uint8Array
+
+fn TextEncoder is NewCall
+	constructor TextEncoder
+	returns
+		type TextEncoder
+
+fn encode is PrototypeCall
+	constructor TextEncoder
+	fn encode
+	param self
+		type TextEncoder
+	param input
+		type str
+	returns
+		type Uint8Array
+
+note 
+	
+
+	TextDecoder
+
+
+	
+type TextDecoder is JS:object
+	constructor TextDecoder
+
+fn decode is PrototypeCall
+	constructor TextDecoder
+	fn decode
+	param self
+		type TextDecoder
+	param input
+		type Uint8Array
+	returns
+		type str
+
+note
+	
+
+	Base64
+
+
+
+fn btoa is DirectCall
+	receiver globalThis
+	fn btoa
+	param input
+		type str
+	returns
+		type str
+
+fn atob is DirectCall
+	receiver globalThis
+	fn atob
+	param input
+		type str
+	returns
+		type str
+
+note
+	
+
+	fetch
+
+
+
+type Response is JS:object
+	constructor Response
+
+fn fetch is DirectCall
+	receiver globalThis
+	fn fetch
+	param input
+		type str
+	param init
+		type dict
+			type str for K
+			type str for V
+	returns
+		type Response
+
+fn json is PrototypeCall
+	constructor Response
+	fn json
+	param self
+		type Response
+	returns
+		type dict
+			type str for K
+			type * for V

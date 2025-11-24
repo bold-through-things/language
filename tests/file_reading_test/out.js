@@ -74,43 +74,63 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
-            const _0x18_print = await console.log("Current working directory:")
-            let _0x1__0x0_pipeline_result = _0x18_print
-            _0x1__0x0_pipeline_result
-            const _0x1a_cwd = await Deno.cwd()
-            let _0x4__0x3_pipeline_result = _0x1a_cwd
-            const _0x19_print = await console.log(_0x4__0x3_pipeline_result)
-            let _0x5__0x2_pipeline_result = _0x19_print
-            _0x5__0x2_pipeline_result
-            const _0x1b_print = await console.log("Reading sample.txt:")
-            let _0x7__0x6_pipeline_result = _0x1b_print
-            _0x7__0x6_pipeline_result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = _67lang.scope(parent_scope)
+
+            const _0x55_print = await console.log("Current working directory:")
+            let _0x2f__0x2e_pipeline_result = _0x55_print
+            _0x2f__0x2e_pipeline_result
+            const _0x57_cwd = await Deno.cwd()
+            let _0x32__0x31_pipeline_result = _0x57_cwd
+            const _0x56_print = await console.log(_0x32__0x31_pipeline_result)
+            let _0x33__0x30_pipeline_result = _0x56_print
+            _0x33__0x30_pipeline_result
+            const _0x58_print = await console.log("Reading sample.txt:")
+            let _0x35__0x34_pipeline_result = _0x58_print
+            _0x35__0x34_pipeline_result
             try {
-                const _0x1c_read_file = await Deno.readTextFile("sample.txt")
-                let _0x9__0x8_pipeline_result = _0x1c_read_file
-                let _0xa_content = _0x9__0x8_pipeline_result
-                _0xa_content
-                const _0x1e_content = await _0xa_content
-                let _0xd__0xc_pipeline_result = _0x1e_content
-                const _0x1d_print = await console.log(_0xd__0xc_pipeline_result)
-                let _0xe__0xb_pipeline_result = _0x1d_print
-                _0xe__0xb_pipeline_result
+                const _0x59_read_file = await Deno.readTextFile("sample.txt")
+                let _0x37__0x36_pipeline_result = _0x59_read_file
+                let _0x38_content = _0x37__0x36_pipeline_result
+                _0x38_content
+                const _0x5b_content = await _0x38_content
+                let _0x3b__0x3a_pipeline_result = _0x5b_content
+                const _0x5a_print = await console.log(_0x3b__0x3a_pipeline_result)
+                let _0x3c__0x39_pipeline_result = _0x5a_print
+                _0x3c__0x39_pipeline_result
             }
             catch (error) {
-                let _0xf_error = error
-                _0xf_error
-                const _0x1f_print = await console.log("Error reading file:")
-                let _0x11__0x10_pipeline_result = _0x1f_print
-                _0x11__0x10_pipeline_result
-                const _0x21_error = await _0xf_error
-                let _0x14__0x13_pipeline_result = _0x21_error
-                const _0x20_print = await console.log(_0x14__0x13_pipeline_result)
-                let _0x15__0x12_pipeline_result = _0x20_print
-                _0x15__0x12_pipeline_result
+                let _0x3d_error = error
+                _0x3d_error
+                const _0x5c_print = await console.log("Error reading file:")
+                let _0x3f__0x3e_pipeline_result = _0x5c_print
+                _0x3f__0x3e_pipeline_result
+                const _0x5e_error = await _0x3d_error
+                let _0x42__0x41_pipeline_result = _0x5e_error
+                const _0x5d_print = await console.log(_0x42__0x41_pipeline_result)
+                let _0x43__0x40_pipeline_result = _0x5d_print
+                _0x43__0x40_pipeline_result
             }
-            const _0x22_print = await console.log("File reading test complete")
-            let _0x17__0x16_pipeline_result = _0x22_print
-            _0x17__0x16_pipeline_result
+            const _0x5f_print = await console.log("File reading test complete")
+            let _0x45__0x44_pipeline_result = _0x5f_print
+            _0x45__0x44_pipeline_result
 
         }
     } 

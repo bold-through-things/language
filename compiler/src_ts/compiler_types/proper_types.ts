@@ -271,18 +271,7 @@ export class TypeRegistry {
   }
 
   get_type(name: string): Type | undefined {
-    switch (name) {
-      case "int":
-        return INT;
-      case "float":
-        return FLOAT;
-      case "bool":
-        return BOOL;
-      case "void":
-        return VOID;
-      default:
-        return this.types[name];
-    }
+    return this.types[name];
   }
 
   instantiate_generic(name: string, type_args: Type[]): ComplexType | null {
@@ -304,15 +293,21 @@ export class TypeRegistry {
 
 export const TYPE_REGISTRY = new TypeRegistry();
 
+function comp_prim(name: string): PrimitiveType {
+  return TYPE_REGISTRY.compute_type(
+    name,
+    () => new PrimitiveType(name),
+  ) as PrimitiveType;
+}
+
 export const NEVER = new NeverType();
 export const WILDCARD = TYPE_REGISTRY.compute_type("*", () => new ComplexType("*")); // TODO nuke me...
-export const INT = new PrimitiveType("int");
-export const FLOAT = new PrimitiveType("float");
-export const STRING = TYPE_REGISTRY.compute_type("str", () => new PrimitiveType("str"));
-export const REGEX = new PrimitiveType("regex");
-export const BOOL = new PrimitiveType("bool");
-export const VOID = new PrimitiveType("void");
-
+export const INT = comp_prim("int");
+export const FLOAT = comp_prim("float");
+export const STRING = comp_prim("str");
+export const REGEX = comp_prim("regex");
+export const BOOL = comp_prim("bool");
+export const VOID = comp_prim("void");
 export const LIST = new ComplexType("list", [new TypeVariable("T")], [
   { name: "length", type: INT },
 ]);

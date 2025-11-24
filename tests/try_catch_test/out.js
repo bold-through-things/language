@@ -74,44 +74,64 @@ void (async () => {
         {
             const scope = _67lang.scope(parent_scope)
 
-            const _0x15_print = await console.log("Starting execution")
-            let _0x1__0x0_pipeline_result = _0x15_print
-            _0x1__0x0_pipeline_result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = _67lang.scope(parent_scope)
+
+            const _0x52_print = await console.log("Starting execution")
+            let _0x2f__0x2e_pipeline_result = _0x52_print
+            _0x2f__0x2e_pipeline_result
             try {
-                const _0x16_print = await console.log("Inside try block")
-                let _0x3__0x2_pipeline_result = _0x16_print
-                _0x3__0x2_pipeline_result
-                const _0x17_print = await console.log("About to throw")
-                let _0x5__0x4_pipeline_result = _0x17_print
-                _0x5__0x4_pipeline_result
+                const _0x53_print = await console.log("Inside try block")
+                let _0x31__0x30_pipeline_result = _0x53_print
+                _0x31__0x30_pipeline_result
+                const _0x54_print = await console.log("About to throw")
+                let _0x33__0x32_pipeline_result = _0x54_print
+                _0x33__0x32_pipeline_result
                 throw "Test error message";
-                const _0x18_print = await console.log("This should not print")
-                let _0x7__0x6_pipeline_result = _0x18_print
-                _0x7__0x6_pipeline_result
+                const _0x55_print = await console.log("This should not print")
+                let _0x35__0x34_pipeline_result = _0x55_print
+                _0x35__0x34_pipeline_result
             }
             catch (error) {
-                let _0x8_error = error
-                _0x8_error
-                const _0x19_print = await console.log("Caught error:")
-                let _0xa__0x9_pipeline_result = _0x19_print
-                _0xa__0x9_pipeline_result
-                const _0x1b_error = await _0x8_error
-                let _0xd__0xc_pipeline_result = _0x1b_error
-                const _0x1a_print = await console.log(_0xd__0xc_pipeline_result)
-                let _0xe__0xb_pipeline_result = _0x1a_print
-                _0xe__0xb_pipeline_result
+                let _0x36_error = error
+                _0x36_error
+                const _0x56_print = await console.log("Caught error:")
+                let _0x38__0x37_pipeline_result = _0x56_print
+                _0x38__0x37_pipeline_result
+                const _0x58_error = await _0x36_error
+                let _0x3b__0x3a_pipeline_result = _0x58_error
+                const _0x57_print = await console.log(_0x3b__0x3a_pipeline_result)
+                let _0x3c__0x39_pipeline_result = _0x57_print
+                _0x3c__0x39_pipeline_result
             }
             finally {
-                const _0x1c_print = await console.log("Finally block executed")
-                let _0x10__0xf_pipeline_result = _0x1c_print
-                _0x10__0xf_pipeline_result
-                const _0x1d_print = await console.log("Many statements")
-                let _0x12__0x11_pipeline_result = _0x1d_print
-                _0x12__0x11_pipeline_result
+                const _0x59_print = await console.log("Finally block executed")
+                let _0x3e__0x3d_pipeline_result = _0x59_print
+                _0x3e__0x3d_pipeline_result
+                const _0x5a_print = await console.log("Many statements")
+                let _0x40__0x3f_pipeline_result = _0x5a_print
+                _0x40__0x3f_pipeline_result
             }
-            const _0x1e_print = await console.log("Execution complete")
-            let _0x14__0x13_pipeline_result = _0x1e_print
-            _0x14__0x13_pipeline_result
+            const _0x5b_print = await console.log("Execution complete")
+            let _0x42__0x41_pipeline_result = _0x5b_print
+            _0x42__0x41_pipeline_result
 
         }
     } 

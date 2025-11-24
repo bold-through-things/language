@@ -69,22 +69,42 @@ if (typeof window === "undefined") {
 void (async () => {
     'use strict';
     const scope = globalThis;
-    const _0x0_test_fn = async function () {{
+    const _0x2e_test_fn = async function () {{
             const parent_scope = scope
             {
                 const scope = _67lang.scope(parent_scope)
-                const _0x5_print = await console.log("test")
-                let _0x2__0x1_pipeline_result = _0x5_print
-                _0x2__0x1_pipeline_result
+                const _0x42_print = await console.log("test")
+                let _0x30__0x2f_pipeline_result = _0x42_print
+                _0x30__0x2f_pipeline_result
             }
         } }
     {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x6_setTimeout = await setTimeout((() => _0x0_test_fn()), 100)
-            let _0x4__0x3_pipeline_result = _0x6_setTimeout
-            _0x4__0x3_pipeline_result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    } {
+        const parent_scope = scope
+        {
+            const scope = _67lang.scope(parent_scope)
+            const _0x43_setTimeout = await setTimeout((() => _0x2e_test_fn()), 100)
+            let _0x32__0x31_pipeline_result = _0x43_setTimeout
+            _0x32__0x31_pipeline_result
         }
     } 
 })();
