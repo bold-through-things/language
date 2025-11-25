@@ -14,7 +14,7 @@ do
 	then do split
 		string " "
 	then as words do length
-	then into final_count do toString
+	then into final_count do str
 	local test
 		type int
 		get words

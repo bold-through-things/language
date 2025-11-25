@@ -10,7 +10,8 @@ import { Node, ResolvedConvention } from "../core/node.ts";
 import { IndentedStringIO } from "../utils/strutil.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { resolve_candidates, unify_types } from "../pipeline/call_resolver.ts";
-import { ComplexType, TypeSubstitution } from "../compiler_types/proper_types.ts";
+import { ComplexType, Type, TypeParameter, TypeSubstitution } from "../compiler_types/proper_types.ts";
+import { assert_instanceof, assert_not_instanceof } from "../utils/utils.ts";
 
 export class Bind_macro_provider
   implements Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider
@@ -52,7 +53,7 @@ export class Bind_macro_provider
     }
   }
 
-  pick_convention(ctx: MacroContext, name: string, arity: number, bound_pairs: Array<[number, any]>) {
+  pick_convention(ctx: MacroContext, name: string, arity: number, bound_pairs: Array<[number, Type | TypeParameter]>) {
     const candidates = resolve_candidates(ctx, name)
       .filter((c) => c.demands != null && c.returns != null)
       .filter((c) => (c.demands ?? []).length === arity);
@@ -66,9 +67,10 @@ export class Bind_macro_provider
     for (const cand of candidates) {
       const dmds = cand.demands ?? [];
 
-      const bound_actuals: any[] = [];
-      const bound_sigs: any[] = [];
-      for (const [idx, at] of bound_pairs) {
+      const bound_actuals: Type[] = [];
+      const bound_sigs: Type[] = [];
+      for (const [idx, at1] of bound_pairs) {
+        const at = assert_not_instanceof(at1, TypeParameter);
         bound_actuals.push(at);
         bound_sigs.push(dmds[idx]);
       }
@@ -79,7 +81,8 @@ export class Bind_macro_provider
       const subst = new TypeSubstitution(computed);
 
       let compatible = true;
-      for (const [idx, at] of bound_pairs) {
+      for (const [idx, at1] of bound_pairs) {
+        const at = assert_not_instanceof(at1, TypeParameter);
         const demanded = subst.apply(dmds[idx]);
         if (!at.is_assignable_to(demanded)) {
           compatible = false;
@@ -96,14 +99,13 @@ export class Bind_macro_provider
       ctx.node,
       `No overload of '${name}' matches the bound arguments`,
     );
-    throw new Error("unreachable");
   }
 
   typecheck(ctx: MacroContext): ComplexType {
     const parts = ctx.node.content.split(" ");
     const desired_fn_name = parts[2];
 
-    const bound_pairs: Array<[number, any]> = [];
+    const bound_pairs: Array<[number, Type | TypeParameter]> = [];
     const unbound_ix: number[] = [];
 
     let i = -1;
@@ -142,7 +144,9 @@ export class Bind_macro_provider
       new ResolvedConvention(conv),
     );
 
-    return new ComplexType("callable", [...param_types, result_type]);
+    const l = param_types.length == 0 ? "" : param_types.length + "";
+
+    return new ComplexType(`callable${l}`, [...param_types, result_type]);
   }
 
   emission(ctx: MacroContext): void {

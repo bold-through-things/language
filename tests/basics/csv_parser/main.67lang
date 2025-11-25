@@ -79,7 +79,7 @@ for row in
 			note TODO - the test case should probably strain this asc
 				on what happens if age is 30
 			do asc
-				do parseInt
+				do int:parse
 					do # the row
 						string "age"
 				int 30

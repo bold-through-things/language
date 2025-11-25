@@ -65,7 +65,7 @@ fn split is PrototypeCall
 		type list
 			type str
 
-fn toUpperCase is PrototypeCall
+fn uppercase is PrototypeCall
 	sync
 	constructor String
 	fn toUpperCase
@@ -74,7 +74,7 @@ fn toUpperCase is PrototypeCall
 	returns
 		type str
 
-fn toLowerCase is PrototypeCall
+fn lowercase is PrototypeCall
 	sync
 	constructor String
 	fn toLowerCase
@@ -94,7 +94,7 @@ fn includes is PrototypeCall
 	returns
 		type bool
 
-fn startsWith is PrototypeCall
+fn starts_with is PrototypeCall
 	sync
 	constructor String
 	fn startsWith
@@ -105,7 +105,7 @@ fn startsWith is PrototypeCall
 	returns
 		type bool
 
-fn endsWith is PrototypeCall
+fn ends_with is PrototypeCall
 	sync
 	constructor String
 	fn endsWith
@@ -116,7 +116,7 @@ fn endsWith is PrototypeCall
 	returns
 		type bool
 
-fn indexOf is PrototypeCall
+fn index_of is PrototypeCall
 	sync
 	constructor String
 	fn indexOf
@@ -153,7 +153,7 @@ fn substring is PrototypeCall
 	returns
 		type str
 
-fn charAt is PrototypeCall
+fn char_at is PrototypeCall
 	sync
 	constructor String
 	fn charAt
@@ -164,7 +164,7 @@ fn charAt is PrototypeCall
 	returns
 		type str
 
-fn charCodeAt is PrototypeCall
+fn char_code_at is PrototypeCall
 	sync
 	constructor String
 	fn charCodeAt
@@ -184,7 +184,7 @@ fn trim is PrototypeCall
 	returns
 		type str
 
-fn trimStart is PrototypeCall
+fn trim_start is PrototypeCall
 	sync
 	constructor String
 	fn trimStart
@@ -193,7 +193,7 @@ fn trimStart is PrototypeCall
 	returns
 		type str
 
-fn trimEnd is PrototypeCall
+fn trim_end is PrototypeCall
 	sync
 	constructor String
 	fn trimEnd
@@ -255,12 +255,12 @@ fn match is PrototypeCall
 note
 
 
-	toString
+	str
 
 
 
 note TODO
-	fn toString is PrototypeCall
+	fn str is PrototypeCall
 		sync
 		constructor Number
 		fn toString
@@ -269,7 +269,7 @@ note TODO
 		returns
 			type str
 
-fn toString is PrototypeCall
+fn str is PrototypeCall
 	sync
 	constructor Number
 	fn toString
@@ -278,7 +278,7 @@ fn toString is PrototypeCall
 	returns
 		type str
 
-fn toString is PrototypeCall
+fn str is PrototypeCall
 	sync
 	constructor String
 	fn toString
@@ -288,7 +288,7 @@ fn toString is PrototypeCall
 		type str
 
 note TODO
-	fn toString is PrototypeCall
+	fn str is PrototypeCall
 		sync
 		constructor Object
 		fn toString
@@ -296,6 +296,53 @@ note TODO
 			type *
 		returns
 			type str
+
+note
+
+
+	int
+
+
+
+fn int:parse is DirectCall
+	sync
+	receiver globalThis
+	fn parseInt
+	param str
+		type str
+	returns
+		type int
+
+note
+
+
+	dict
+
+
+
+fn keys is DirectCall
+	sync
+	receiver Object
+	fn keys
+	param self
+		type dict
+			type K var
+			type V var
+	returns
+		type list
+			type K var
+
+fn values is DirectCall
+	sync
+	receiver Object
+	fn values
+	param self
+		type dict
+			type K var
+			type V var
+	returns
+		type list
+			type V var
 
 note 
 	
@@ -442,15 +489,42 @@ fn close is PrototypeCall
 	returns
 		type void
 
-fn on_message is PrototypeCall
+fn message_handler is PrototypeCall
 	sync
 	constructor WebSocket
-	fn onMessage
+	fn onmessage
 	param self
 		type WebSocket
 	param callback
-		type callable
-			type * var
+		type callable1
+			type * for ARG
+			type void for RV
+	returns
+		type void
+
+fn open_handler is PrototypeCall
+	sync
+	constructor WebSocket
+	fn onopen
+	param self
+		type WebSocket
+	param callback
+		type callable1
+			type * for ARG
+			type void for RV
+	returns
+		type void
+
+fn close_handler is PrototypeCall
+	sync
+	constructor WebSocket
+	fn onclose
+	param self
+		type WebSocket
+	param callback
+		type callable1
+			type * for ARG
+			type void for RV
 	returns
 		type void
 
@@ -589,3 +663,129 @@ fn json is PrototypeCall
 		type dict
 			type str for K
 			type * for V
+
+note
+
+
+	JSON
+
+
+
+fn str:JSON is DirectCall
+	sync
+	receiver JSON
+	fn stringify
+	param value
+		type *
+	returns
+		type str
+
+fn parse:JSON is DirectCall
+	sync
+	receiver JSON
+	fn parse
+	param text
+		type str
+	returns
+		type *
+
+note 
+	
+
+	event loop
+
+
+
+note TODO this isn't valid (int...)
+
+type Interval_ID is JS:object
+	constructor Interval_ID
+
+fn interval is DirectCall
+	sync
+	receiver globalThis
+	fn setInterval
+	param callback
+		type callable
+			type void for RV
+	param delay
+		type int
+	returns
+		type Interval_ID
+
+fn interval:clear is DirectCall
+	sync
+	receiver globalThis
+	fn clearInterval
+	param id
+		type Interval_ID
+	returns
+		type void
+
+fn timeout is DirectCall
+	sync
+	receiver globalThis
+	fn setTimeout
+	param callback
+		type callable
+			type void for RV
+	param delay
+		type int
+	returns
+		type Interval_ID
+
+fn timeout:clear is DirectCall
+	sync
+	receiver globalThis
+	fn clearTimeout
+	param id
+		type Interval_ID
+	returns
+		type void
+
+note
+	
+	
+	67lang builtins
+
+
+
+fn prompt is DirectCall
+	async
+	receiver _67lang
+	fn prompt
+	param msg
+		type str
+	returns
+		type str
+
+fn stdin is DirectCall
+	async
+	receiver _67lang
+	fn stdin
+	returns
+		type str
+
+fn is_tty is DirectCall
+	sync
+	receiver _67lang
+	fn is_tty
+	returns
+		type bool
+
+note TODO should only show this if we target Deno
+fn read_file is DirectCall
+	async
+	receiver Deno
+	fn readTextFile
+	param path
+		type str
+	returns
+		type str
+
+fn cwd is DirectCall
+	sync
+	receiver Deno
+	fn cwd
+	returns
+		type str

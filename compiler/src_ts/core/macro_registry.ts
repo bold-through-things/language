@@ -4,20 +4,21 @@ import { IndentedStringIO } from "../utils/strutil.ts";
 import { default_logger } from "../utils/logger.ts";
 import type { Node } from "./node.ts";
 import type { Macrocosm } from "./macrocosm.ts";
+import { Type, TypeParameter } from "../compiler_types/proper_types.ts";
 
-// TCResult = Type | null | TypeParameter
-export type TCResult = any; // real types filled in once proper_types.ts exists
+export type TCResult = Type | null | TypeParameter; 
 
 export type OutIO = IndentedStringIO | { 
   write: (s: string) => void,
   gets_to_end: () => string
 };
 
-// The union of call signatures used in Crystal:
-// Proc(MacroContext, TCResult) | Proc(MacroContext, Nil)
+export type Macro_ctx_typecheck_proc = (ctx: MacroContext) => TCResult;
+export type Macro_ctx_void_proc = (ctx: MacroContext) => void;
+
 export type Macro_ctx_proc =
-  | ((ctx: MacroContext) => TCResult)
-  | ((ctx: MacroContext) => void);
+  | Macro_ctx_typecheck_proc
+  | Macro_ctx_void_proc;
 
 // --------------------------------------
 // MacroContext
@@ -125,14 +126,14 @@ export abstract class MacroProcessingStep {
 // MacroRegistry
 // --------------------------------------
 
-export class MacroRegistry {
-  private registry: Record<string, Macro_ctx_proc>;
+export class MacroRegistry<TProc extends Macro_ctx_proc> {
+  private registry: Record<string, TProc>;
 
   constructor() {
     this.registry = {};
   }
 
-  add_fn(fn: Macro_ctx_proc | null, ...names: string[]): void {
+  add_fn(fn: TProc | null, ...names: string[]): void {
     if (fn === null) {
       return;
     }
@@ -141,7 +142,7 @@ export class MacroRegistry {
     }
   }
 
-  get(name: string): Macro_ctx_proc {
+  get(name: string): TProc {
     const fn = this.registry[name];
     if (!fn) {
       default_logger.macro(`ERROR: unknown macro "${name}"`);
@@ -150,7 +151,7 @@ export class MacroRegistry {
     return fn;
   }
 
-  all(): Record<string, Macro_ctx_proc> {
+  all(): Record<string, TProc> {
     return { ...this.registry };
   }
 }

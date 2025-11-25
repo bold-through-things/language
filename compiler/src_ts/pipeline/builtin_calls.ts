@@ -27,6 +27,7 @@ import {
   BOOL,
   WILDCARD,
   FLOAT,
+  TYPE_REGISTRY,
 } from "../compiler_types/proper_types.ts";
 
 // Built-ins map
@@ -146,7 +147,10 @@ for (let size = 0; size <= MAX_NARY; size++) {
     { length: size },
     (_v, n) => new TypeVariable(`ARG${n}`),
   );
-  const callable = new ComplexType("callable", [...args, RV]);
+  // TODO i really hate to spam the types
+  const n = size == 0 ? "" : size + "";
+  const name = `callable${n}`;
+  const callable = TYPE_REGISTRY.compute_type(name, () => new ComplexType(name, [...args, RV]));
   register("~", [
     new CallableInvokeCall(
       [callable, ...args] as TypeDemand[],
@@ -192,20 +196,6 @@ for (let size = 2; size <= MAX_NARY; size++) {
   }
 }
 
-// Object helpers
-BUILTIN_CALLS["values"] = [
-  new DirectCall(
-    "values",
-    "Object",
-    [new ComplexType("dict", [K, V])] as TypeDemand[],
-    new ComplexType("list", [V]) as TypeDemand,
-  ),
-];
-
-BUILTIN_CALLS["keys"] = [
-  new DirectCall("keys", "Object"),
-];
-
 // print (0..MAX_NARY arguments of WILDCARD)
 for (let size = 0; size <= MAX_NARY; size++) {
   const demands: TypeDemand[] = Array.from(
@@ -218,6 +208,7 @@ for (let size = 0; size <= MAX_NARY; size++) {
 }
 
 // 67lang shims
+// well TODO this should be a varargs
 BUILTIN_CALLS["zip"] = [
   new DirectCall(
     "zip",
@@ -236,115 +227,9 @@ BUILTIN_CALLS["zip"] = [
   ),
 ];
 
-BUILTIN_CALLS["new_set"] = [
-  new DirectCall("new_set", "_67lang", undefined, SET as TypeDemand, Async_mode.SYNC),
-];
 
-BUILTIN_CALLS["stdin"] = [
-  new DirectCall("stdin", "_67lang", undefined, STRING as TypeDemand, Async_mode.ASYNC),
-];
-
-BUILTIN_CALLS["is_tty"] = [
-  new DirectCall("is_tty", "_67lang", undefined, BOOL as TypeDemand, Async_mode.SYNC),
-];
-
-// Deno (target-specific)
-BUILTIN_CALLS["read_file"] = [
-  new DirectCall(
-    "readTextFile",
-    "Deno",
-    [STRING as TypeDemand],
-    STRING as TypeDemand,
-    Async_mode.ASYNC,
-  ),
-];
-
-BUILTIN_CALLS["cwd"] = [
-  new DirectCall("cwd", "Deno", undefined, STRING as TypeDemand, Async_mode.SYNC),
-];
-
-// JSON
-BUILTIN_CALLS["JSON.stringify"] = [
-  new DirectCall(
-    "stringify",
-    "JSON",
-    [DICT as TypeDemand],
-    STRING as TypeDemand,
-  ),
-];
-
-BUILTIN_CALLS["JSON.parse"] = [
-  new DirectCall(
-    "parse",
-    "JSON",
-    [STRING as TypeDemand],
-    DICT as TypeDemand,
-  ),
-];
-
-// Misc built-ins
-register("parseInt", [
-  new DirectCall(
-    "parseInt",
-    undefined,
-    [STRING as TypeDemand],
-    INT as TypeDemand,
-  ),
-]);
-
-register("onopen", [
-  new FieldCall(
-    "onopen",
-    [
-      new ComplexType("WebSocket"),
-      new ComplexType("callable", [T, VOID]),
-    ] as TypeDemand[],
-    VOID as TypeDemand,
-  ),
-]);
-
-register("onmessage", [
-  new FieldCall(
-    "onmessage",
-    [
-      new ComplexType("WebSocket"),
-      new ComplexType("callable", [T, VOID]),
-    ] as TypeDemand[],
-    VOID as TypeDemand,
-  ),
-]);
-
-register("onclose", [
-  new FieldCall(
-    "onclose",
-    [
-      new ComplexType("WebSocket"),
-      new ComplexType("callable", [T, VOID]),
-    ] as TypeDemand[],
-    VOID as TypeDemand,
-  ),
-]);
-
-register("setInterval", [
-  new DirectCall(
-    "setInterval",
-    undefined,
-    [
-      new ComplexType("callable", [VOID]),
-      INT as TypeDemand,
-    ] as TypeDemand[],
-    VOID as TypeDemand,
-  ),
-]);
-
-register("setTimeout", [
-  new DirectCall(
-    "setTimeout",
-    undefined,
-    [
-      new ComplexType("callable", [VOID]),
-      INT as TypeDemand,
-    ] as TypeDemand[],
-    VOID as TypeDemand,
-  ),
-]);
+BUILTIN_CALLS["set"] = new Array(MAX_NARY).fill(0).map((_, i) => 
+  new DirectCall("new_set", "_67lang", new Array(i).fill(
+    new TypeVariable("T"),
+  ), SET, Async_mode.SYNC),
+);

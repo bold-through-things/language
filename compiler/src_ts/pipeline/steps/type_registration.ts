@@ -1,11 +1,11 @@
 // pipeline/steps/type_registration.ts
 
 import { MacroProcessingStep } from "./base.ts";
-import { MacroContext, MacroRegistry, TCResult } from "../../core/macro_registry.ts";
+import { Macro_ctx_typecheck_proc, MacroContext, MacroRegistry, TCResult } from "../../core/macro_registry.ts";
 import { Macro } from "../../core/node.ts";
 
 export class TypeRegistrationStep extends MacroProcessingStep {
-  constructor(public override macros: MacroRegistry) {
+  constructor(public override macros: MacroRegistry<Macro_ctx_typecheck_proc>) {
     super();
     this.macros = macros;
   }
@@ -28,7 +28,7 @@ export class TypeRegistrationStep extends MacroProcessingStep {
 }
 
 export class TypeDetailRegistrationStep extends MacroProcessingStep {
-  constructor(public override macros: MacroRegistry) {
+  constructor(public override macros: MacroRegistry<Macro_ctx_typecheck_proc>) {
     super();
     this.macros = macros;
   }
@@ -51,7 +51,7 @@ export class TypeDetailRegistrationStep extends MacroProcessingStep {
 }
 
 export class FunctionRegistrationStep extends MacroProcessingStep {
-  constructor(public override macros: MacroRegistry) {
+  constructor(public override macros: MacroRegistry<Macro_ctx_typecheck_proc>) {
     super();
     this.macros = macros;
   }

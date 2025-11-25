@@ -1,12 +1,12 @@
 // pipeline/steps/type_checking.ts
 
 import { MacroProcessingStep } from "./base.ts";
-import { MacroContext, MacroRegistry, TCResult } from "../../core/macro_registry.ts";
+import { Macro_ctx_typecheck_proc, MacroContext, MacroRegistry, TCResult } from "../../core/macro_registry.ts";
 import { Macro } from "../../core/node.ts";
 import { default_logger } from "../../utils/logger.ts";
 
 export class TypeCheckingStep extends MacroProcessingStep {
-  constructor(public override macros: MacroRegistry) {
+  constructor(public override macros: MacroRegistry<Macro_ctx_typecheck_proc>) {
     super();
     this.macros = macros;
   }

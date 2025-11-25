@@ -1,7 +1,7 @@
 // pipeline/steps/javascript_emission.ts
 
 import { MacroProcessingStep } from "./base.ts";
-import { MacroRegistry, MacroContext } from "../../core/macro_registry.ts";
+import { MacroRegistry, MacroContext, Macro_ctx_void_proc } from "../../core/macro_registry.ts";
 import { default_logger } from "../../utils/logger.ts";
 import { ErrorType } from "../../utils/error_types.ts";
 import { IndentedStringIO } from "../../utils/strutil.ts";
@@ -10,7 +10,7 @@ import { Macro } from "../../core/node.ts";
 import { NewCall } from "../call_conventions.ts";
 
 export class JavaScriptEmissionStep extends MacroProcessingStep {
-  constructor(public override macros: MacroRegistry) {
+  constructor(public override macros: MacroRegistry<Macro_ctx_void_proc>) {
     super();
     // DO NOT override this.macros via super() – Crystal version intentionally avoids calling super().
     // So we reassign manually to mirror semantics.

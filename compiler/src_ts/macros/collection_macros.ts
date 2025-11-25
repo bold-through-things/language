@@ -10,6 +10,8 @@ import { ErrorType } from "../utils/error_types.ts";
 import { type_registry, TypeParameter } from "../compiler_types/proper_types.ts";
 import { Macro, type Node } from "../core/node.ts";
 import type { TCResult } from "../core/macro_registry.ts";
+import { TypeCheckingStep } from "../pipeline/steps/typechecking.ts";
+import { assert_instanceof, Error_like } from "../utils/utils.ts";
 
 const LIST_OPS = new Set(["append", "prepend", "insert_after_index"]);
 
@@ -20,7 +22,7 @@ export class List_macro_provider
     const type_params: TypeParameter[] = [];
     const value_ops: Array<[Node, TCResult]> = [];
 
-    const step = ctx.current_step!;
+    const step = assert_instanceof(ctx.current_step, TypeCheckingStep);
     for (const child of ctx.node.children) {
       const child_ctx = ctx.clone_with({ node: child });
       const res = step.process_node(child_ctx);
@@ -75,7 +77,18 @@ export class List_macro_provider
       }
     }
 
-    return type_registry().instantiate_generic("list", [element_type]);
+    const rv = type_registry().instantiate_generic("list", [element_type]);
+
+    if (rv instanceof Error_like) {
+      ctx.compiler.assert_(
+        false,
+        ctx.node,
+        `Failed to instantiate list type: ${rv.message}`,
+        ErrorType.INVALID_MACRO,
+      );
+    }
+
+    return rv;
   }
 
   emission(ctx: MacroContext): void {
@@ -172,13 +185,13 @@ export class Dict_macro_provider
     const type_params: TypeParameter[] = [];
     const entries: Array<[Node, TCResult, Node, TCResult]> = [];
 
-    const step = ctx.current_step!;
+    const step = assert_instanceof(ctx.current_step, TypeCheckingStep);
     for (const child of ctx.node.children) {
       const cctx = ctx.clone_with({ node: child });
       const res = step.process_node(cctx);
 
-      if (res && typeof res.parameter_name === "string") {
-        type_params.push(res as TypeParameter);
+      if (res instanceof TypeParameter) {
+        type_params.push(res);
         continue;
       }
 
@@ -260,7 +273,17 @@ export class Dict_macro_provider
       }
     }
 
-    return type_registry().instantiate_generic("dict", [kt, vt]);
+    const rv = type_registry().instantiate_generic("dict", [kt, vt]);
+    if (rv instanceof Error_like) {
+      ctx.compiler.assert_(
+        false,
+        ctx.node,
+        `Failed to instantiate dict type: ${rv.message}`,
+        ErrorType.INVALID_MACRO,
+      );
+    }
+    
+    return rv;
   }
 
   emission(ctx: MacroContext): void {

@@ -32,16 +32,16 @@ fn main_test
 			get message
 		
 		note Test 3: onmessage with bind construct (EventHandler compatibility)
-		do onmessage in ws
+		do message_handler in ws
 			bind fn message_handler as callable
 				_
 		
 		note Test 4: onopen and onclose also use EventHandler
-		do onopen in ws
+		do open_handler in ws
 			bind fn message_handler as callable
 				_
 		
-		do onclose in ws
+		do close_handler in ws
 			bind fn message_handler as callable
 				_
 		

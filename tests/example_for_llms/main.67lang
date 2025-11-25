@@ -487,17 +487,17 @@ do print
 	string "wow, counting!"
 
 do print
-	do toString
+	do str
 		do ~ the counter
-	do toString
+	do str
 		do ~ the counter
-	do toString
+	do str
 		do ~ the counter
-	do toString
+	do str
 		do ~ the counter
-	do toString
+	do str
 		do ~ the counter
-	do toString
+	do str
 		do ~ the counter
 
 note that is rather tedious and quite verbose! but you should

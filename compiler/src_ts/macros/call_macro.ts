@@ -6,7 +6,7 @@ import {
   MacroContext,
   TCResult,
 } from "../core/macro_registry.ts";
-import { Node, Args, ResolvedConvention } from "../core/node.ts";
+import { Node, Args, ResolvedConvention, Macro_previously_failed } from "../core/node.ts";
 import { cut } from "../utils/strutil.ts";
 import { default_logger } from "../utils/logger.ts";
 import { ErrorType } from "../utils/error_types.ts";
@@ -85,7 +85,7 @@ export class Call_macro_provider
   implements Macro_emission_provider, Macro_typecheck_provider
 {
   typecheck(ctx: MacroContext): TCResult {
-    return graceful_typecheck(() => {
+    const rv = graceful_typecheck(() => {
       const args: Array<Type> = [];
       const step = ctx.current_step;
       if (!step) {
@@ -115,8 +115,8 @@ export class Call_macro_provider
         new ResolvedConvention(conv),
       );
 
-      if ((conv as any).demands) {
-        const demands = (conv as any).demands as Type[] | null;
+      if (conv.demands) {
+        const demands = conv.demands as Type[] | null;
         if (demands) {
           const [ok, subs] = unify_types(args, demands);
           if (ok && Object.keys(subs).length > 0) {
@@ -157,11 +157,11 @@ export class Call_macro_provider
         }
       }
 
-      if ((conv as any).returns) {
-        const ret = (conv as any).returns as Type | null;
+      if (conv.returns) {
+        const ret = conv.returns as Type | null;
 
-        if ((conv as any).demands) {
-          const demands = (conv as any).demands as Type[] | null;
+        if (conv.demands) {
+          const demands = conv.demands as Type[] | null;
           if (demands) {
             const [ok, subs] = unify_types(args, demands);
             if (ok && Object.keys(subs).length > 0 && ret instanceof Type) {
@@ -175,51 +175,62 @@ export class Call_macro_provider
 
       return NEVER;
     });
+
+    if (ctx.compiler.maybe_metadata(ctx.node, ResolvedConvention) == null) {
+      ctx.compiler.set_metadata(
+        ctx.node,
+        Macro_previously_failed,
+        new Macro_previously_failed("convention not resolved"),
+      );
+    }
+
+    return rv;
   }
 
   emission(ctx: MacroContext): void {
-    try {
-      const args_str = ctx.compiler.get_metadata(ctx.node, Args).toString();
-      const parts = args_str.split(" ");
-      const ident = ctx.compiler.get_new_ident(parts.join("_"));
-
-      const resolved = ctx.compiler.get_metadata(ctx.node, ResolvedConvention);
-      const conv = not_null(resolved.convention);
-
-      const arg_exprs = collect_child_expressions(ctx);
-      const call_src = conv.compile(arg_exprs);
-
-      const await_fn = {
-        [Async_mode.ASYNC]: (id: string) => `await (${id})`,
-        [Async_mode.SYNC]: (id: string) => id,
-        /* 
-        shout out to Claude for helping me benchmark this. yes, it's not that bad!
-
-        Without unnecessary awaits: 0.30ms
-        Smart conditional await: 0.40ms (1.33x slower) <-
-        With pointless awaits: 72.40ms (241.33x slower)
-
-        see the code below (at end of file)
-
-        i really fucking love the JIT.
-        */
-        [Async_mode.MAYBE]: (id: string) => `await _67lang.maybe_await(${id})`,
-      }
-      
-      ctx.statement_out.write(`const ${ident} = ${await_fn[conv.async_mode](call_src)}\n`);
-      ctx.expression_out.write(ident);
-    } catch (ex) {
-      default_logger.debug(
-        `Call emission failed for ${ctx.node.content}: ${ex}, producing error marker`,
+    if (ctx.compiler.maybe_metadata(ctx.node, Macro_previously_failed)) {
+      default_logger.codegen(
+        `skipping emission of call due to prior typecheck failure: ${ctx.node.content}`,
       );
-      const args_str = ctx.compiler.get_metadata(ctx.node, Args).toString();
-      const ident = ctx.compiler.get_new_ident(args_str.split(" ").join("_"));
-      ctx.statement_out.write(`const ${ident} = ??????COMPILE_ERROR;\n`);
-      ctx.expression_out.write(ident);
+      return;
     }
-  }
 
-  // The shared resolver is provided by CallResolver (included)
+    const args_str = ctx.compiler.get_metadata(ctx.node, Args).toString();
+    const parts = args_str.split(" ");
+    const ident = ctx.compiler.get_new_ident(parts.join("_"));
+
+    const resolved = ctx.compiler.maybe_metadata(ctx.node, ResolvedConvention);
+    ctx.compiler.assert_(
+      resolved != null && resolved.convention != null,
+      ctx.node,
+      "emission: convention must be resolved",
+      ErrorType.INVALID_MACRO,
+    )
+    const conv = resolved.convention;
+
+    const arg_exprs = collect_child_expressions(ctx);
+    const call_src = conv.compile(arg_exprs);
+
+    const await_fn = {
+      [Async_mode.ASYNC]: (id: string) => `await (${id})`,
+      [Async_mode.SYNC]: (id: string) => id,
+      /* 
+      shout out to Claude for helping me benchmark this. yes, it's not that bad!
+
+      Without unnecessary awaits: 0.30ms
+      Smart conditional await: 0.40ms (1.33x slower) <-
+      With pointless awaits: 72.40ms (241.33x slower)
+
+      see the code below (at end of file)
+
+      i really fucking love the JIT.
+      */
+      [Async_mode.MAYBE]: (id: string) => `await _67lang.maybe_await(${id})`,
+    }
+
+    ctx.statement_out.write(`const ${ident} = ${await_fn[conv.async_mode](call_src)}\n`);
+    ctx.expression_out.write(ident);
+  }
 }
 
 /*

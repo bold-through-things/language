@@ -1,5 +1,7 @@
 // compiler_types/proper_types.ts
 
+import { Error_like } from "../utils/utils.ts";
+
 // Proper type system for 67lang — objects, mandatory generics.
 
 export abstract class Type {
@@ -274,16 +276,16 @@ export class TypeRegistry {
     return this.types[name];
   }
 
-  instantiate_generic(name: string, type_args: Type[]): ComplexType | null {
+  instantiate_generic(name: string, type_args: Type[]): ComplexType | Error_like | null {
     const tmpl = this.types[name];
     if (!tmpl) {
-      return null;
+      return new Error_like(`Type template ${name} not found`);
     }
     if (!(tmpl instanceof ComplexType)) {
       throw new Error("??????");
     }
     if (type_args.length !== tmpl.type_params.length) {
-      return null;
+      return new Error_like(`Type ${name} expects ${tmpl.type_params.length} type arguments, got ${type_args.length}`);
     }
     return new ComplexType(tmpl.name, type_args.slice(), tmpl.fields);
   }

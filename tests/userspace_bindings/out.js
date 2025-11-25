@@ -16,6 +16,8 @@ globalThis._67lang = {
         });
     },
     new_set: (...args) => {
+        // need this since semantics differ here
+        // (we are remapping `...args` to first)
         return new Set(args);
     },
 
@@ -97,21 +99,28 @@ void (async () => {
 
 
 
+
+
+
+
+
+
+
         }
     } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            let _0x2f_test = "test"
-            _0x2f_test
-            const _0x44_test = _0x2f_test
-            const _0x43_my_split = await _67lang.maybe_await(String.prototype.split.call(_0x44_test, ""))
-            let _0x31__0x30_pipeline_result = _0x43_my_split
-            _0x31__0x30_pipeline_result
-            const _0x46__0x30_pipeline_result = _0x31__0x30_pipeline_result
-            const _0x45_print = await _67lang.maybe_await(console.log(_0x46__0x30_pipeline_result))
-            let _0x33__0x32_pipeline_result = _0x45_print
-            _0x33__0x32_pipeline_result
+            let _0x3f_test = "test"
+            _0x3f_test
+            const _0x57_test = _0x3f_test
+            const _0x56_my_split = await _67lang.maybe_await(String.prototype.split.call(_0x57_test, ""))
+            let _0x41__0x40_pipeline_result = _0x56_my_split
+            _0x41__0x40_pipeline_result
+            const _0x59__0x40_pipeline_result = _0x41__0x40_pipeline_result
+            const _0x58_print = await _67lang.maybe_await(console.log(_0x59__0x40_pipeline_result))
+            let _0x43__0x42_pipeline_result = _0x58_print
+            _0x43__0x42_pipeline_result
         }
     } 
 })();

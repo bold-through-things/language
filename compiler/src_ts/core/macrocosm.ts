@@ -20,7 +20,7 @@ import { MacroAssertFailed } from "../core/exceptions.ts";
 //   meta_to_json_any,
 //   type MetaValue,
 // } from "../core/meta_value.ts";
-import { Macro_provider, MacroContext, MacroProcessingStep, MacroRegistry, TCResult } from "./macro_registry.ts";
+import { Macro_ctx_proc, Macro_ctx_typecheck_proc, Macro_ctx_void_proc, Macro_provider, MacroContext, MacroProcessingStep, MacroRegistry, TCResult } from "./macro_registry.ts";
 
 import { Noscope_macro_provider } from "../macros/noscope_macro.ts";
 import {
@@ -89,7 +89,7 @@ type MetaCtor<T> = { new (...args: any[]): T; name: string };
 export class Macrocosm {
   readonly nodes: Node[] = [];
   compile_errors: Array<Record<string, MetaValue>> = [];
-  readonly registries: Record<string, MacroRegistry> = {};
+  readonly registries: Record<string, MacroRegistry<Macro_ctx_proc>> = {};
 
   private incremental_id = 0;
   js_output = "";
@@ -103,13 +103,12 @@ export class Macrocosm {
   private metadata: Map<Node, Map<string, unknown>> = new Map();
 
   constructor(
-    emission_registry: MacroRegistry,
-    typecheck_registry: MacroRegistry,
-    code_linking_registry: MacroRegistry,
-    preprocess_registry: MacroRegistry,
-    type_registration_registry: MacroRegistry,
-    type_detail_registration_registry: MacroRegistry,
-    function_registration: MacroRegistry,
+    emission_registry: MacroRegistry<Macro_ctx_void_proc>,
+    typecheck_registry: MacroRegistry<Macro_ctx_typecheck_proc>,
+    preprocess_registry: MacroRegistry<Macro_ctx_void_proc>,
+    type_registration_registry: MacroRegistry<Macro_ctx_typecheck_proc>,
+    type_detail_registration_registry: MacroRegistry<Macro_ctx_typecheck_proc>,
+    function_registration: MacroRegistry<Macro_ctx_typecheck_proc>,
   ) {
     this.processing_steps = [
       new PreprocessingStep(preprocess_registry),
@@ -118,7 +117,7 @@ export class Macrocosm {
       new FunctionRegistrationStep(function_registration),
       new TypeCheckingStep(typecheck_registry),
       new JavaScriptEmissionStep(emission_registry),
-      new MustCompileErrorVerificationStep(new MacroRegistry()),
+      new MustCompileErrorVerificationStep(new MacroRegistry<Macro_ctx_void_proc>()),
     ];
   }
 
@@ -485,26 +484,25 @@ export function create_macrocosm(): Macrocosm {
     );
   }
 
-  const registries: Record<string, MacroRegistry> = {};
-  const create_registry = (name: string): MacroRegistry => {
-    const r = new MacroRegistry();
+  const registries: Record<string, MacroRegistry<Macro_ctx_proc>> = {};
+  const create_registry = <T extends Macro_ctx_proc>(name: string): MacroRegistry<T> => {
+    const r = new MacroRegistry<T>();
     registries[name] = r;
     return r;
   };
 
-  const preprocess = create_registry("preprocess");
-  const typecheck = create_registry("typecheck");
-  const emission = create_registry("emission");
-  const type_registration = create_registry("type_registration");
-  const type_detail_registration = create_registry("type_detail_registration");
-  const function_registration = create_registry("function_registration");
-  const code_linking_registry = create_registry("code_linking");
+  const preprocess = create_registry<Macro_ctx_void_proc>("preprocess");
+  const typecheck = create_registry<Macro_ctx_typecheck_proc>("typecheck");
+  const emission = create_registry<Macro_ctx_void_proc>("emission");
+  const type_registration = create_registry<Macro_ctx_typecheck_proc>("type_registration");
+  const type_detail_registration = create_registry<Macro_ctx_typecheck_proc>("type_detail_registration");
+  const function_registration = create_registry<Macro_ctx_typecheck_proc>("function_registration");
 
   for (const [macro_name, provider] of Object.entries(macro_providers)) {
     // preprocess
     if ("preprocess" in provider) {
       preprocess.add_fn(
-        (c: MacroContext) => (provider as any).preprocess(c),
+        (c: MacroContext) => provider.preprocess(c),
         macro_name,
       );
     } else {
@@ -515,7 +513,7 @@ export function create_macrocosm(): Macrocosm {
     if ("typecheck" in provider) {
       typecheck.add_fn(
         (c: MacroContext): TCResult => {
-          const rv = (provider as any).typecheck(c);
+          const rv = provider.typecheck(c);
           if (typeof rv === "string") {
             throw new Error(
               `String... ${rv} is_a? String ${typeof rv === "string"}`,
@@ -533,7 +531,7 @@ export function create_macrocosm(): Macrocosm {
     if ("register_functions" in provider) {
       function_registration.add_fn(
         (c: MacroContext): TCResult => {
-          const rv = (provider as any).register_functions(c);
+          const rv = provider.register_functions(c);
           if (typeof rv === "string") {
             throw new Error(
               `String... ${rv} is_a? String ${typeof rv === "string"}`,
@@ -550,27 +548,17 @@ export function create_macrocosm(): Macrocosm {
     // emission
     if ("emission" in provider) {
       emission.add_fn(
-        (c: MacroContext) => (provider as any).emission(c),
+        (c: MacroContext) => provider.emission(c),
         macro_name,
       );
     } else {
       emission.add_fn(null, macro_name);
     }
 
-    // code_linking
-    if ("code_linking" in provider) {
-      code_linking_registry.add_fn(
-        (c: MacroContext) => (provider as any).code_linking(c),
-        macro_name,
-      );
-    } else {
-      code_linking_registry.add_fn(null, macro_name);
-    }
-
     // type_registration
     if ("register_type" in provider) {
       type_registration.add_fn(
-        (c: MacroContext) => (provider as any).register_type(c),
+        (c: MacroContext) => provider.register_type(c),
         macro_name,
       );
     } else {
@@ -580,7 +568,7 @@ export function create_macrocosm(): Macrocosm {
     // type_detail_registration
     if ("register_type_details" in provider) {
       type_detail_registration.add_fn(
-        (c: MacroContext) => (provider as any).register_type_details(c),
+        (c: MacroContext) => provider.register_type_details(c),
         macro_name,
       );
     } else {
@@ -591,7 +579,6 @@ export function create_macrocosm(): Macrocosm {
   const rv = new Macrocosm(
     emission,
     typecheck,
-    code_linking_registry,
     preprocess,
     type_registration,
     type_detail_registration,

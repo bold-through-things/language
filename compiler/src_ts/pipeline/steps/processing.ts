@@ -1,13 +1,13 @@
 // pipeline/steps/preprocessing.ts
 
 import { MacroProcessingStep } from "./base.ts";
-import { MacroContext, MacroRegistry } from "../../core/macro_registry.ts";
+import { Macro_ctx_void_proc, MacroContext, MacroRegistry } from "../../core/macro_registry.ts";
 import { default_logger } from "../../utils/logger.ts";
 import { ErrorType } from "../../utils/error_types.ts";
 import { Macro } from "../../core/node.ts";
 
 export class PreprocessingStep extends MacroProcessingStep {
-  constructor(public override macros: MacroRegistry) {
+  constructor(public override macros: MacroRegistry<Macro_ctx_void_proc>) {
     super();
     this.macros = macros;
   }

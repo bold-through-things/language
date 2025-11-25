@@ -28,7 +28,7 @@ import {
   TypeVariable,
 } from "../compiler_types/proper_types.ts";
 import { ErrorType } from "../utils/error_types.ts";
-import { choose_single, try_catch } from "../utils/utils.ts";
+import { choose_single, Error_like, try_catch } from "../utils/utils.ts";
 import { Fixed, parseTokens, Schema } from "../utils/new_parser.ts";
 
 /*
@@ -357,14 +357,15 @@ export class Type_macro_provider
     }
 
     const instantiated = type_registry().instantiate_generic(type_name, type_args);
-    if (!instantiated) {
-      ctx.compiler.compile_error(
+    if (instantiated instanceof Error_like) {
+      ctx.compiler.assert_(
+        false,
         ctx.node,
-        `Cannot instantiate generic type ${type_name} with ${type_args.length} arguments`,
+        `Failed to instantiate type ${type_name}: ${instantiated.message}`,
         ErrorType.INVALID_MACRO,
       );
     }
 
-    return instantiated ?? null;
+    return instantiated;
   }
 }

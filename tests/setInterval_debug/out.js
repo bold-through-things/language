@@ -16,6 +16,8 @@ globalThis._67lang = {
         });
     },
     new_set: (...args) => {
+        // need this since semantics differ here
+        // (we are remapping `...args` to first)
         return new Set(args);
     },
 
@@ -82,13 +84,13 @@ if (is_Deno) {
 void (async () => {
     'use strict';
     const scope = globalThis;
-    const _0x2e_test_fn = async function () {{
+    const _0x3e_test_fn = async function () {{
             const parent_scope = scope
             {
                 const scope = _67lang.scope(parent_scope)
-                const _0x42_print = await _67lang.maybe_await(console.log("test"))
-                let _0x30__0x2f_pipeline_result = _0x42_print
-                _0x30__0x2f_pipeline_result
+                const _0x55_print = await _67lang.maybe_await(console.log("test"))
+                let _0x40__0x3f_pipeline_result = _0x55_print
+                _0x40__0x3f_pipeline_result
             }
         } }
     {
@@ -106,14 +108,21 @@ void (async () => {
 
 
 
+
+
+
+
+
+
+
         }
     } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
-            const _0x43_setTimeout = await _67lang.maybe_await(setTimeout((() => _0x2e_test_fn()), 100))
-            let _0x32__0x31_pipeline_result = _0x43_setTimeout
-            _0x32__0x31_pipeline_result
+            const _0x56_timeout = globalThis.setTimeout((() => _0x3e_test_fn()), 100)
+            let _0x42__0x41_pipeline_result = _0x56_timeout
+            _0x42__0x41_pipeline_result
         }
     } 
 })();

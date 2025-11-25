@@ -82,16 +82,14 @@ local testObj
 			string "42"
 
 local jsonString
-	do JSON.stringify
-		get testObj
+	do str:JSON the testObj
 
 local parsedObj
 	67lang:assume_type_valid
 	type dict
 		type str
 		type *
-	do JSON.parse
-		get jsonString
+	do parse:JSON the jsonString
 
 do print
 	string "Original object -> JSON: "

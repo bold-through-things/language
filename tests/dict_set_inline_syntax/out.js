@@ -16,6 +16,8 @@ globalThis._67lang = {
         });
     },
     new_set: (...args) => {
+        // need this since semantics differ here
+        // (we are remapping `...args` to first)
         return new Set(args);
     },
 
@@ -97,43 +99,50 @@ void (async () => {
 
 
 
+
+
+
+
+
+
+
         }
     } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
 
-            let _0x2e_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"}
-            _0x2e_user
-            const _0x54_user = _0x2e_user
-            let _0x31__0x30_pipeline_result = _0x54_user
-            const _0x53_print = await _67lang.maybe_await(console.log(_0x31__0x30_pipeline_result))
-            let _0x32__0x2f_pipeline_result = _0x53_print
-            _0x32__0x2f_pipeline_result
-            const _0x55_new_set = _67lang.new_set("apple", "banana", "cherry")
-            let _0x34__0x33_pipeline_result = _0x55_new_set
-            let _0x35_my_set = _0x34__0x33_pipeline_result
-            _0x35_my_set
-            const _0x57_my_set = _0x35_my_set
-            let _0x38__0x37_pipeline_result = _0x57_my_set
-            const _0x56_print = await _67lang.maybe_await(console.log(_0x38__0x37_pipeline_result))
-            let _0x39__0x36_pipeline_result = _0x56_print
-            _0x39__0x36_pipeline_result
-            let _0x3a_my_list = [-2, -1, 0, 1, 2, 3]
-            _0x3a_my_list
-            const _0x59_my_list = _0x3a_my_list
-            let _0x3d__0x3c_pipeline_result = _0x59_my_list
-            const _0x58_print = await _67lang.maybe_await(console.log(_0x3d__0x3c_pipeline_result))
-            let _0x3e__0x3b_pipeline_result = _0x58_print
-            _0x3e__0x3b_pipeline_result
+            let _0x3e_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"}
+            _0x3e_user
+            const _0x67_user = _0x3e_user
+            let _0x41__0x40_pipeline_result = _0x67_user
+            const _0x66_print = await _67lang.maybe_await(console.log(_0x41__0x40_pipeline_result))
+            let _0x42__0x3f_pipeline_result = _0x66_print
+            _0x42__0x3f_pipeline_result
+            const _0x68_set = _67lang.new_set("apple", "banana", "cherry")
+            let _0x44__0x43_pipeline_result = _0x68_set
+            let _0x45_my_set = _0x44__0x43_pipeline_result
+            _0x45_my_set
+            const _0x6a_my_set = _0x45_my_set
+            let _0x48__0x47_pipeline_result = _0x6a_my_set
+            const _0x69_print = await _67lang.maybe_await(console.log(_0x48__0x47_pipeline_result))
+            let _0x49__0x46_pipeline_result = _0x69_print
+            _0x49__0x46_pipeline_result
+            let _0x4a_my_list = [-2, -1, 0, 1, 2, 3]
+            _0x4a_my_list
+            const _0x6c_my_list = _0x4a_my_list
+            let _0x4d__0x4c_pipeline_result = _0x6c_my_list
+            const _0x6b_print = await _67lang.maybe_await(console.log(_0x4d__0x4c_pipeline_result))
+            let _0x4e__0x4b_pipeline_result = _0x6b_print
+            _0x4e__0x4b_pipeline_result
 
-            let _0x3f_simple_list = [1, 2, 3]
-            _0x3f_simple_list
-            const _0x5b_simple_list = _0x3f_simple_list
-            let _0x42__0x41_pipeline_result = _0x5b_simple_list
-            const _0x5a_print = await _67lang.maybe_await(console.log(_0x42__0x41_pipeline_result))
-            let _0x43__0x40_pipeline_result = _0x5a_print
-            _0x43__0x40_pipeline_result
+            let _0x4f_simple_list = [1, 2, 3]
+            _0x4f_simple_list
+            const _0x6e_simple_list = _0x4f_simple_list
+            let _0x52__0x51_pipeline_result = _0x6e_simple_list
+            const _0x6d_print = await _67lang.maybe_await(console.log(_0x52__0x51_pipeline_result))
+            let _0x53__0x50_pipeline_result = _0x6d_print
+            _0x53__0x50_pipeline_result
         }
     } 
 })();

@@ -5,7 +5,7 @@ fn test_fn
 		do print
 			string "test"
 
-do setTimeout
+do timeout
 	bind fn test_fn as callable
 	int 100
 

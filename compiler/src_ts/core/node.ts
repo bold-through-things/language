@@ -298,6 +298,12 @@ export class ResolvedConvention {
   }
 }
 
+export class Macro_previously_failed {
+  constructor(readonly reason: string) {
+    // ...
+  }
+}
+
 // optional factory funcs (compatibility with prior registrations if needed)
 export function __indexers(): Indexers {
   return new Indexers();

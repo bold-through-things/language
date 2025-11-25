@@ -18,7 +18,7 @@ do print
 	get user
 
 local my_set
-	do new_set
+	do set
 		string "apple"
 		string "banana"
 		string "cherry"

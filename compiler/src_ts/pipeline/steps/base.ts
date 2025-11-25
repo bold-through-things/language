@@ -1,10 +1,10 @@
 // pipeline/steps/base.ts
 // Base class for all macro-processing steps
 
-import { MacroRegistry, MacroContext, TCResult } from "../../core/macro_registry.ts";
+import { MacroRegistry, MacroContext, TCResult, Macro_ctx_proc } from "../../core/macro_registry.ts";
 
 export abstract class MacroProcessingStep {
-  macros: MacroRegistry;
+  macros: MacroRegistry<Macro_ctx_proc>;
 
   constructor() {
     // same semantics as Crystal version (yes, dumb default)

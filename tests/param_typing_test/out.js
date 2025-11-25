@@ -16,6 +16,8 @@ globalThis._67lang = {
         });
     },
     new_set: (...args) => {
+        // need this since semantics differ here
+        // (we are remapping `...args` to first)
         return new Set(args);
     },
 
@@ -82,30 +84,30 @@ if (is_Deno) {
 void (async () => {
     'use strict';
     const scope = globalThis;
-    const _0x2e_process_list = async function (
+    const _0x3e_process_list = async function (
         my_list
     ) {{
             const parent_scope = scope
             {
                 const scope = _67lang.scope(parent_scope)
                 my_list = my_list
-                let _0x2f_my_list = my_list
-                _0x2f_my_list
+                let _0x3f_my_list = my_list
+                _0x3f_my_list
 
 
-                const _0x51_my_list = _0x2f_my_list
-                const _0x50_slice = Array.prototype.slice.call(_0x51_my_list)
-                let _0x31__0x30_pipeline_result = _0x50_slice
-                let _0x32_copied_list = _0x31__0x30_pipeline_result
-                _0x32_copied_list
+                const _0x64_my_list = _0x3f_my_list
+                const _0x63_slice = Array.prototype.slice.call(_0x64_my_list)
+                let _0x41__0x40_pipeline_result = _0x63_slice
+                let _0x42_copied_list = _0x41__0x40_pipeline_result
+                _0x42_copied_list
 
-                const _0x53_copied_list = _0x32_copied_list
-                const _0x52_reverse = Array.prototype.reverse.call(_0x53_copied_list)
-                let _0x34__0x33_pipeline_result = _0x52_reverse
-                _0x34__0x33_pipeline_result
-                const _0x54_copied_list = _0x32_copied_list
-                let _0x36__0x35_pipeline_result = _0x54_copied_list
-                return _0x36__0x35_pipeline_result;
+                const _0x66_copied_list = _0x42_copied_list
+                const _0x65_reverse = Array.prototype.reverse.call(_0x66_copied_list)
+                let _0x44__0x43_pipeline_result = _0x65_reverse
+                _0x44__0x43_pipeline_result
+                const _0x67_copied_list = _0x42_copied_list
+                let _0x46__0x45_pipeline_result = _0x67_copied_list
+                return _0x46__0x45_pipeline_result;
             }
         } }
     {
@@ -123,25 +125,32 @@ void (async () => {
 
 
 
+
+
+
+
+
+
+
         }
     } {
         const parent_scope = scope
         {
             const scope = _67lang.scope(parent_scope)
 
-            let _0x37_test_list = ["a", "b", "c"]
-            _0x37_test_list
-            const _0x56_test_list = _0x37_test_list
-            let _0x3a__0x39_pipeline_result = _0x56_test_list
-            const _0x55_process_list = await _67lang.maybe_await(_0x2e_process_list(_0x3a__0x39_pipeline_result))
-            let _0x3b__0x38_pipeline_result = _0x55_process_list
-            let _0x3c_result = _0x3b__0x38_pipeline_result
-            _0x3c_result
-            const _0x58_result = _0x3c_result
-            let _0x3f__0x3e_pipeline_result = _0x58_result
-            const _0x57_print = await _67lang.maybe_await(console.log(_0x3f__0x3e_pipeline_result))
-            let _0x40__0x3d_pipeline_result = _0x57_print
-            _0x40__0x3d_pipeline_result
+            let _0x47_test_list = ["a", "b", "c"]
+            _0x47_test_list
+            const _0x69_test_list = _0x47_test_list
+            let _0x4a__0x49_pipeline_result = _0x69_test_list
+            const _0x68_process_list = await _67lang.maybe_await(_0x3e_process_list(_0x4a__0x49_pipeline_result))
+            let _0x4b__0x48_pipeline_result = _0x68_process_list
+            let _0x4c_result = _0x4b__0x48_pipeline_result
+            _0x4c_result
+            const _0x6b_result = _0x4c_result
+            let _0x4f__0x4e_pipeline_result = _0x6b_result
+            const _0x6a_print = await _67lang.maybe_await(console.log(_0x4f__0x4e_pipeline_result))
+            let _0x50__0x4d_pipeline_result = _0x6a_print
+            _0x50__0x4d_pipeline_result
         }
     } 
 })();

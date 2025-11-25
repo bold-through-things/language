@@ -17,6 +17,8 @@ import { ErrorType } from "../utils/error_types.ts";
 import { graceful_typecheck } from "../core/exceptions.ts";
 import { collect_child_expressions, get_single_arg } from "../utils/common_utils.ts";
 import { Type, TypeParameter } from "../compiler_types/proper_types.ts";
+import { TypeCheckingStep } from "../pipeline/steps/typechecking.ts";
+import { assert_instanceof } from "../utils/utils.ts";
 
 export class Local_macro_provider
   implements
@@ -61,27 +63,27 @@ export class Local_macro_provider
   }
 
   typecheck(ctx: MacroContext) {
-    const t = graceful_typecheck(() => {
+    const t = graceful_typecheck((): Type => {
       let demanded_type: TCResult = null;
       let received_type: TCResult = null;
       let assume_type = false;
 
-      const step = ctx.current_step!;
+      const step = assert_instanceof(ctx.current_step, TypeCheckingStep);
 
-      ctx.node.children.forEach((child) => {
+      for (const child of ctx.node.children) {
         if (child.content.startsWith("67lang:assume_type_valid")) {
           assume_type = true;
-          return;
+          continue;
         }
 
         const res = step.process_node(ctx.clone_with({ node: child }));
 
-        if (res && res instanceof TypeParameter) {
+        if (res instanceof TypeParameter) {
           demanded_type = res.type_expr;
-        } else if (res && res instanceof Type) {
+        } else if (res instanceof Type) {
           received_type = res;
         }
-      });
+      }
 
       if (received_type == null) {
         ctx.compiler.assert_(
@@ -101,9 +103,7 @@ export class Local_macro_provider
       );
 
       if (!assume_type) {
-        const ok =
-          received_type.is_assignable_to &&
-          received_type.is_assignable_to(demanded_type);
+        const ok = received_type.is_assignable_to(demanded_type); // received_type is never ?!
 
         if (!ok) {
           ctx.compiler.assert_(

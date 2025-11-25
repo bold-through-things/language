@@ -1,7 +1,7 @@
 // pipeline/steps/must_compile_error_verification.ts
 
 import { MacroProcessingStep } from "./base.ts";
-import { MacroContext, MacroRegistry } from "../../core/macro_registry.ts";
+import { Macro_ctx_void_proc, MacroContext, MacroRegistry } from "../../core/macro_registry.ts";
 import { Args, Macro, Node } from "../../core/node.ts";
 import { default_logger } from "../../utils/logger.ts";
 import { ErrorType } from "../../utils/error_types.ts";
@@ -31,7 +31,7 @@ function mv_to_s(v: unknown): string | null {
 export class MustCompileErrorVerificationStep extends MacroProcessingStep {
   private expectations: Array<Expectation>;
 
-  constructor(public override macros: MacroRegistry) {
+  constructor(public override macros: MacroRegistry<Macro_ctx_void_proc>) {
     super();
     this.macros = macros;
     this.expectations = [];

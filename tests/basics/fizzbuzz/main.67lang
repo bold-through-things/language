@@ -29,17 +29,17 @@ do
 	do #
 		get input
 		int 0
-	then do parseInt into fizz_divisor
+	then do int:parse into fizz_divisor
 
 	do #
 		get input
 		int 1
-	then do parseInt into buzz_divisor
+	then do int:parse into buzz_divisor
 
 	do #
 		get input
 		int 2
-	then do parseInt into n
+	then do int:parse into n
 
 local i
 	int 0
@@ -81,7 +81,7 @@ while
 			do concat into out
 				note TODO why is this needed
 				string ""
-				do toString the i
+				do str the i
 
 		do print
 			get out

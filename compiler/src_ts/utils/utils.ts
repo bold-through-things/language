@@ -94,6 +94,30 @@ export function not_null<T>(value: T | null | undefined): T {
   return value;
 }
 
+export function assert_instanceof<T>(
+  value: unknown,
+  _class: Constructor<T>,
+): T {
+  if (value instanceof _class) {
+    return value;
+  }
+  throw new MacroAssertFailed(
+    `Expected instance of ${_class.name}, got ${typeof value}`,
+  );
+}
+
+export function assert_not_instanceof<T, V>(
+  value: V,
+  _class: Constructor<T>,
+): Exclude<V, T> {
+  if (!(value instanceof _class)) {
+    return value as Exclude<V, T>; // TODO might actually erase too much
+  }
+  throw new MacroAssertFailed(
+    `Expected not instance of ${_class.name}, got ${typeof value}`,
+  );
+}
+
 // TODO i really do not like the MacroContext here
 //  perhaps a custom handler function?
 export function choose_single<T, TR>(ctx: MacroContext, options: [T, (v: T) => TR][]): TR {
@@ -124,5 +148,13 @@ export function if_<T>(condition: boolean, f: () => T, fnot: () => T): T {
     return f();
   } else {
     return fnot();
+  }
+}
+
+export class Error_like {
+  constructor (
+    readonly message: string,
+  ) {
+    // ...
   }
 }
