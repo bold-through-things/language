@@ -202,14 +202,6 @@ export class Params {
   }
 }
 
-export class Inject_code_start {
-  code: string[];
-
-  constructor() {
-    this.code = [];
-  }
-}
-
 // --- String wrapper meta-types ---
 
 export class Macro {

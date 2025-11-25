@@ -5,13 +5,11 @@ import {
   Macro_preprocess_provider,
   Macro_functions_provider,
   MacroContext,
-  Macro_provider,
 } from "../core/macro_registry.ts";
 
-import { Args, Inject_code_start, Node, SaneIdentifier } from "../core/node.ts";
+import { Args, SaneIdentifier } from "../core/node.ts";
 import { cut } from "../utils/strutil.ts";
 import {
-  collect_child_expressions,
   get_single_arg,
 } from "../utils/common_utils.ts";
 
@@ -353,15 +351,8 @@ export class Fn_macro_provider
 
     so.write(") ");
 
-    const inject = { code: [] as string[] };
-    ctx.compiler.set_metadata(body, Inject_code_start, inject);
-
     so.write("{");
     so.with_indent(() => {
-      for (const p of names) {
-        inject.code.push(`${p} = ${p}` + NEWLINE);
-      }
-
       ctx.current_step!.process_node(
         ctx.clone_with({ node: body }),
       );

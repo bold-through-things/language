@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,9 +80,6 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -106,50 +98,41 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
+
+
+        let _0x3e_phrase = "hello world"
+        _0x3e_phrase
+
+        let _0x3f_final_count = "0"
+        _0x3f_final_count
         {
-            const scope = _67lang.scope(parent_scope)
 
+            const _0x5e_phrase = _0x3e_phrase
+            let _0x41__0x40_pipeline_result = _0x5e_phrase
+            _0x41__0x40_pipeline_result
+            const _0x60__0x40_pipeline_result = _0x41__0x40_pipeline_result
+            const _0x5f_split = String.prototype.split.call(_0x60__0x40_pipeline_result, " ")
+            let _0x43__0x42_pipeline_result = _0x5f_split
+            _0x43__0x42_pipeline_result
+            const _0x62__0x42_pipeline_result = _0x43__0x42_pipeline_result
+            const _0x61_length = (_0x62__0x42_pipeline_result.length)
+            let _0x44_words = _0x61_length
+            _0x44_words
+            const _0x65_words = _0x44_words
+            const _0x64_str = Number.prototype.toString.call(_0x65_words)
+            const _0x63_final_count = (_0x3f_final_count = _0x64_str)
+            _0x63_final_count
+            const _0x66_words = _0x44_words
+            let _0x46__0x45_pipeline_result = _0x66_words
+            let _0x47_test = _0x46__0x45_pipeline_result
+            _0x47_test
+        } 
 
-            let _0x3e_phrase = "hello world"
-            _0x3e_phrase
-
-            let _0x3f_final_count = "0"
-            _0x3f_final_count
-            {
-                const parent_scope = scope
-                {
-                    const scope = _67lang.scope(parent_scope)
-
-                    const _0x5e_phrase = _0x3e_phrase
-                    let _0x41__0x40_pipeline_result = _0x5e_phrase
-                    _0x41__0x40_pipeline_result
-                    const _0x60__0x40_pipeline_result = _0x41__0x40_pipeline_result
-                    const _0x5f_split = String.prototype.split.call(_0x60__0x40_pipeline_result, " ")
-                    let _0x43__0x42_pipeline_result = _0x5f_split
-                    _0x43__0x42_pipeline_result
-                    const _0x62__0x42_pipeline_result = _0x43__0x42_pipeline_result
-                    const _0x61_length = (_0x62__0x42_pipeline_result.length)
-                    let _0x44_words = _0x61_length
-                    _0x44_words
-                    const _0x65_words = _0x44_words
-                    const _0x64_str = Number.prototype.toString.call(_0x65_words)
-                    const _0x63_final_count = (_0x3f_final_count = _0x64_str)
-                    _0x63_final_count
-                    const _0x66_words = _0x44_words
-                    let _0x46__0x45_pipeline_result = _0x66_words
-                    let _0x47_test = _0x46__0x45_pipeline_result
-                    _0x47_test
-                }
-            } 
-
-            const _0x68_final_count = _0x3f_final_count
-            let _0x4a__0x49_pipeline_result = _0x68_final_count
-            const _0x67_print = await _67lang.maybe_await(console.log(_0x4a__0x49_pipeline_result))
-            let _0x4b__0x48_pipeline_result = _0x67_print
-            _0x4b__0x48_pipeline_result
-        }
+        const _0x68_final_count = _0x3f_final_count
+        let _0x4a__0x49_pipeline_result = _0x68_final_count
+        const _0x67_print = await _67lang.maybe_await(console.log(_0x4a__0x49_pipeline_result))
+        let _0x4b__0x48_pipeline_result = _0x67_print
+        _0x4b__0x48_pipeline_result
     } 
 })();

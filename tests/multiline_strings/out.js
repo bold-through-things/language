@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,9 +80,6 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -106,18 +98,13 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
-            "this is a statement-level multiline string.\nit should act like a comment - not produce any output."
-            const _0x54_print = await _67lang.maybe_await(console.log("this is an expression-level multiline string.\nit should produce a string value.\n						it can contain indented values.\ntrivially."))
-            let _0x3f__0x3e_pipeline_result = _0x54_print
-            _0x3f__0x3e_pipeline_result
-            const _0x55_print = await _67lang.maybe_await(console.log("hello world"))
-            let _0x41__0x40_pipeline_result = _0x55_print
-            _0x41__0x40_pipeline_result
-        }
+        "this is a statement-level multiline string.\nit should act like a comment - not produce any output."
+        const _0x54_print = await _67lang.maybe_await(console.log("this is an expression-level multiline string.\nit should produce a string value.\n						it can contain indented values.\ntrivially."))
+        let _0x3f__0x3e_pipeline_result = _0x54_print
+        _0x3f__0x3e_pipeline_result
+        const _0x55_print = await _67lang.maybe_await(console.log("hello world"))
+        let _0x41__0x40_pipeline_result = _0x55_print
+        _0x41__0x40_pipeline_result
     } 
 })();

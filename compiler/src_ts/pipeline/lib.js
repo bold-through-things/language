@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test

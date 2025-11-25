@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,9 +80,6 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -106,51 +98,46 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
-            const _0x65_print = await _67lang.maybe_await(console.log("Starting execution"))
-            let _0x3f__0x3e_pipeline_result = _0x65_print
-            _0x3f__0x3e_pipeline_result
-            try {
-                const _0x66_print = await _67lang.maybe_await(console.log("Inside try block"))
-                let _0x41__0x40_pipeline_result = _0x66_print
-                _0x41__0x40_pipeline_result
-                const _0x67_print = await _67lang.maybe_await(console.log("About to throw"))
-                let _0x43__0x42_pipeline_result = _0x67_print
-                _0x43__0x42_pipeline_result
-                throw "Test error message";
-                const _0x68_print = await _67lang.maybe_await(console.log("This should not print"))
-                let _0x45__0x44_pipeline_result = _0x68_print
-                _0x45__0x44_pipeline_result
-            }
-            catch (error) {
-                let _0x46_error = error
-                _0x46_error
-                const _0x69_print = await _67lang.maybe_await(console.log("Caught error:"))
-                let _0x48__0x47_pipeline_result = _0x69_print
-                _0x48__0x47_pipeline_result
-                const _0x6b_error = _0x46_error
-                let _0x4b__0x4a_pipeline_result = _0x6b_error
-                const _0x6a_print = await _67lang.maybe_await(console.log(_0x4b__0x4a_pipeline_result))
-                let _0x4c__0x49_pipeline_result = _0x6a_print
-                _0x4c__0x49_pipeline_result
-            }
-            finally {
-                const _0x6c_print = await _67lang.maybe_await(console.log("Finally block executed"))
-                let _0x4e__0x4d_pipeline_result = _0x6c_print
-                _0x4e__0x4d_pipeline_result
-                const _0x6d_print = await _67lang.maybe_await(console.log("Many statements"))
-                let _0x50__0x4f_pipeline_result = _0x6d_print
-                _0x50__0x4f_pipeline_result
-            }
-            const _0x6e_print = await _67lang.maybe_await(console.log("Execution complete"))
-            let _0x52__0x51_pipeline_result = _0x6e_print
-            _0x52__0x51_pipeline_result
-
+        const _0x65_print = await _67lang.maybe_await(console.log("Starting execution"))
+        let _0x3f__0x3e_pipeline_result = _0x65_print
+        _0x3f__0x3e_pipeline_result
+        try {
+            const _0x66_print = await _67lang.maybe_await(console.log("Inside try block"))
+            let _0x41__0x40_pipeline_result = _0x66_print
+            _0x41__0x40_pipeline_result
+            const _0x67_print = await _67lang.maybe_await(console.log("About to throw"))
+            let _0x43__0x42_pipeline_result = _0x67_print
+            _0x43__0x42_pipeline_result
+            throw "Test error message";
+            const _0x68_print = await _67lang.maybe_await(console.log("This should not print"))
+            let _0x45__0x44_pipeline_result = _0x68_print
+            _0x45__0x44_pipeline_result
         }
+        catch (error) {
+            let _0x46_error = error
+            _0x46_error
+            const _0x69_print = await _67lang.maybe_await(console.log("Caught error:"))
+            let _0x48__0x47_pipeline_result = _0x69_print
+            _0x48__0x47_pipeline_result
+            const _0x6b_error = _0x46_error
+            let _0x4b__0x4a_pipeline_result = _0x6b_error
+            const _0x6a_print = await _67lang.maybe_await(console.log(_0x4b__0x4a_pipeline_result))
+            let _0x4c__0x49_pipeline_result = _0x6a_print
+            _0x4c__0x49_pipeline_result
+        }
+        finally {
+            const _0x6c_print = await _67lang.maybe_await(console.log("Finally block executed"))
+            let _0x4e__0x4d_pipeline_result = _0x6c_print
+            _0x4e__0x4d_pipeline_result
+            const _0x6d_print = await _67lang.maybe_await(console.log("Many statements"))
+            let _0x50__0x4f_pipeline_result = _0x6d_print
+            _0x50__0x4f_pipeline_result
+        }
+        const _0x6e_print = await _67lang.maybe_await(console.log("Execution complete"))
+        let _0x52__0x51_pipeline_result = _0x6e_print
+        _0x52__0x51_pipeline_result
+
     } 
 })();

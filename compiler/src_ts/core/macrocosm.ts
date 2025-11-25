@@ -7,7 +7,6 @@ import {
   Position,
   Macro,
   Args,
-  Inject_code_start,
   Params,
   Indexers,
   Callers
@@ -590,7 +589,6 @@ export function create_macrocosm(): Macrocosm {
 
 // default factories for metadata types that want auto-creation
 
-TypeMap.register(Inject_code_start, () => new Inject_code_start());
 TypeMap.register(Callers, () => new Callers());
 TypeMap.register(Indexers, () => new Indexers());
 TypeMap.register(Params, () => new Params());

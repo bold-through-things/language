@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -87,33 +82,25 @@ void (async () => {
     const _0x3e_process_list = async function (
         my_list
     ) {{
-            const parent_scope = scope
-            {
-                const scope = _67lang.scope(parent_scope)
-                my_list = my_list
-                let _0x3f_my_list = my_list
-                _0x3f_my_list
+            let _0x3f_my_list = my_list
+            _0x3f_my_list
 
 
-                const _0x64_my_list = _0x3f_my_list
-                const _0x63_slice = Array.prototype.slice.call(_0x64_my_list)
-                let _0x41__0x40_pipeline_result = _0x63_slice
-                let _0x42_copied_list = _0x41__0x40_pipeline_result
-                _0x42_copied_list
+            const _0x64_my_list = _0x3f_my_list
+            const _0x63_slice = Array.prototype.slice.call(_0x64_my_list)
+            let _0x41__0x40_pipeline_result = _0x63_slice
+            let _0x42_copied_list = _0x41__0x40_pipeline_result
+            _0x42_copied_list
 
-                const _0x66_copied_list = _0x42_copied_list
-                const _0x65_reverse = Array.prototype.reverse.call(_0x66_copied_list)
-                let _0x44__0x43_pipeline_result = _0x65_reverse
-                _0x44__0x43_pipeline_result
-                const _0x67_copied_list = _0x42_copied_list
-                let _0x46__0x45_pipeline_result = _0x67_copied_list
-                return _0x46__0x45_pipeline_result;
-            }
+            const _0x66_copied_list = _0x42_copied_list
+            const _0x65_reverse = Array.prototype.reverse.call(_0x66_copied_list)
+            let _0x44__0x43_pipeline_result = _0x65_reverse
+            _0x44__0x43_pipeline_result
+            const _0x67_copied_list = _0x42_copied_list
+            let _0x46__0x45_pipeline_result = _0x67_copied_list
+            return _0x46__0x45_pipeline_result;
         } }
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -132,25 +119,20 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
-            let _0x47_test_list = ["a", "b", "c"]
-            _0x47_test_list
-            const _0x69_test_list = _0x47_test_list
-            let _0x4a__0x49_pipeline_result = _0x69_test_list
-            const _0x68_process_list = await _67lang.maybe_await(_0x3e_process_list(_0x4a__0x49_pipeline_result))
-            let _0x4b__0x48_pipeline_result = _0x68_process_list
-            let _0x4c_result = _0x4b__0x48_pipeline_result
-            _0x4c_result
-            const _0x6b_result = _0x4c_result
-            let _0x4f__0x4e_pipeline_result = _0x6b_result
-            const _0x6a_print = await _67lang.maybe_await(console.log(_0x4f__0x4e_pipeline_result))
-            let _0x50__0x4d_pipeline_result = _0x6a_print
-            _0x50__0x4d_pipeline_result
-        }
+        let _0x47_test_list = ["a", "b", "c"]
+        _0x47_test_list
+        const _0x69_test_list = _0x47_test_list
+        let _0x4a__0x49_pipeline_result = _0x69_test_list
+        const _0x68_process_list = await _67lang.maybe_await(_0x3e_process_list(_0x4a__0x49_pipeline_result))
+        let _0x4b__0x48_pipeline_result = _0x68_process_list
+        let _0x4c_result = _0x4b__0x48_pipeline_result
+        _0x4c_result
+        const _0x6b_result = _0x4c_result
+        let _0x4f__0x4e_pipeline_result = _0x6b_result
+        const _0x6a_print = await _67lang.maybe_await(console.log(_0x4f__0x4e_pipeline_result))
+        let _0x50__0x4d_pipeline_result = _0x6a_print
+        _0x50__0x4d_pipeline_result
     } 
 })();

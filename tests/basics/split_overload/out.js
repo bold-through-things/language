@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,9 +80,6 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -106,27 +98,22 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
-            let _0x3e_str = "testing"
-            _0x3e_str
+        let _0x3e_str = "testing"
+        _0x3e_str
 
-            const _0x5b_str = _0x3e_str
-            const _0x5a_split = String.prototype.split.call(_0x5b_str, "t")
-            let _0x41__0x40_pipeline_result = _0x5a_split
-            const _0x59_print = await _67lang.maybe_await(console.log(_0x41__0x40_pipeline_result))
-            let _0x42__0x3f_pipeline_result = _0x59_print
-            _0x42__0x3f_pipeline_result
+        const _0x5b_str = _0x3e_str
+        const _0x5a_split = String.prototype.split.call(_0x5b_str, "t")
+        let _0x41__0x40_pipeline_result = _0x5a_split
+        const _0x59_print = await _67lang.maybe_await(console.log(_0x41__0x40_pipeline_result))
+        let _0x42__0x3f_pipeline_result = _0x59_print
+        _0x42__0x3f_pipeline_result
 
-            const _0x5e_str = _0x3e_str
-            const _0x5d_split = String.prototype.split.call(_0x5e_str, /t/)
-            let _0x45__0x44_pipeline_result = _0x5d_split
-            const _0x5c_print = await _67lang.maybe_await(console.log(_0x45__0x44_pipeline_result))
-            let _0x46__0x43_pipeline_result = _0x5c_print
-            _0x46__0x43_pipeline_result
-        }
+        const _0x5e_str = _0x3e_str
+        const _0x5d_split = String.prototype.split.call(_0x5e_str, /t/)
+        let _0x45__0x44_pipeline_result = _0x5d_split
+        const _0x5c_print = await _67lang.maybe_await(console.log(_0x45__0x44_pipeline_result))
+        let _0x46__0x43_pipeline_result = _0x5c_print
+        _0x46__0x43_pipeline_result
     } 
 })();

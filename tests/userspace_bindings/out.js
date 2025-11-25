@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,9 +80,6 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -106,21 +98,16 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
-            let _0x3f_test = "test"
-            _0x3f_test
-            const _0x57_test = _0x3f_test
-            const _0x56_my_split = await _67lang.maybe_await(String.prototype.split.call(_0x57_test, ""))
-            let _0x41__0x40_pipeline_result = _0x56_my_split
-            _0x41__0x40_pipeline_result
-            const _0x59__0x40_pipeline_result = _0x41__0x40_pipeline_result
-            const _0x58_print = await _67lang.maybe_await(console.log(_0x59__0x40_pipeline_result))
-            let _0x43__0x42_pipeline_result = _0x58_print
-            _0x43__0x42_pipeline_result
-        }
+        let _0x3f_test = "test"
+        _0x3f_test
+        const _0x57_test = _0x3f_test
+        const _0x56_my_split = await _67lang.maybe_await(String.prototype.split.call(_0x57_test, ""))
+        let _0x41__0x40_pipeline_result = _0x56_my_split
+        _0x41__0x40_pipeline_result
+        const _0x59__0x40_pipeline_result = _0x41__0x40_pipeline_result
+        const _0x58_print = await _67lang.maybe_await(console.log(_0x59__0x40_pipeline_result))
+        let _0x43__0x42_pipeline_result = _0x58_print
+        _0x43__0x42_pipeline_result
     } 
 })();

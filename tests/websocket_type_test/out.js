@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,66 +80,54 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     const _0x42_main_test = async function () {{
-            const parent_scope = scope
-            {
-                const scope = _67lang.scope(parent_scope)
 
-                const _0x67_WebSocket = (new WebSocket("wss://example.com"))
-                let _0x43_ws = _0x67_WebSocket
-                _0x43_ws
+            const _0x67_WebSocket = (new WebSocket("wss://example.com"))
+            let _0x43_ws = _0x67_WebSocket
+            _0x43_ws
 
-                const _0x69_ws = _0x43_ws
-                let _0x46__0x45_pipeline_result = _0x69_ws
-                const _0x68_send = WebSocket.prototype.send.call(_0x46__0x45_pipeline_result, "Hello WebSocket")
-                let _0x47__0x44_pipeline_result = _0x68_send
-                _0x47__0x44_pipeline_result
+            const _0x69_ws = _0x43_ws
+            let _0x46__0x45_pipeline_result = _0x69_ws
+            const _0x68_send = WebSocket.prototype.send.call(_0x46__0x45_pipeline_result, "Hello WebSocket")
+            let _0x47__0x44_pipeline_result = _0x68_send
+            _0x47__0x44_pipeline_result
 
-                let _0x48_message = "Another message"
-                _0x48_message
-                const _0x6b_ws = _0x43_ws
-                let _0x4b__0x4a_pipeline_result = _0x6b_ws
-                const _0x6c_message = _0x48_message
-                let _0x4d__0x4c_pipeline_result = _0x6c_message
-                const _0x6a_send = WebSocket.prototype.send.call(_0x4b__0x4a_pipeline_result, _0x4d__0x4c_pipeline_result)
-                let _0x4e__0x49_pipeline_result = _0x6a_send
-                _0x4e__0x49_pipeline_result
+            let _0x48_message = "Another message"
+            _0x48_message
+            const _0x6b_ws = _0x43_ws
+            let _0x4b__0x4a_pipeline_result = _0x6b_ws
+            const _0x6c_message = _0x48_message
+            let _0x4d__0x4c_pipeline_result = _0x6c_message
+            const _0x6a_send = WebSocket.prototype.send.call(_0x4b__0x4a_pipeline_result, _0x4d__0x4c_pipeline_result)
+            let _0x4e__0x49_pipeline_result = _0x6a_send
+            _0x4e__0x49_pipeline_result
 
-                const _0x6e_ws = _0x43_ws
-                const _0x6d_message_handler = WebSocket.prototype.onmessage.call(_0x6e_ws, ((arg0) => _0x3e_message_handler(arg0)))
-                let _0x50__0x4f_pipeline_result = _0x6d_message_handler
-                _0x50__0x4f_pipeline_result
+            const _0x6e_ws = _0x43_ws
+            const _0x6d_message_handler = WebSocket.prototype.onmessage.call(_0x6e_ws, ((arg0) => _0x3e_message_handler(arg0)))
+            let _0x50__0x4f_pipeline_result = _0x6d_message_handler
+            _0x50__0x4f_pipeline_result
 
-                const _0x70_ws = _0x43_ws
-                const _0x6f_open_handler = WebSocket.prototype.onopen.call(_0x70_ws, ((arg0) => _0x3e_message_handler(arg0)))
-                let _0x52__0x51_pipeline_result = _0x6f_open_handler
-                _0x52__0x51_pipeline_result
-                const _0x72_ws = _0x43_ws
-                const _0x71_close_handler = WebSocket.prototype.onclose.call(_0x72_ws, ((arg0) => _0x3e_message_handler(arg0)))
-                let _0x54__0x53_pipeline_result = _0x71_close_handler
-                _0x54__0x53_pipeline_result
+            const _0x70_ws = _0x43_ws
+            const _0x6f_open_handler = WebSocket.prototype.onopen.call(_0x70_ws, ((arg0) => _0x3e_message_handler(arg0)))
+            let _0x52__0x51_pipeline_result = _0x6f_open_handler
+            _0x52__0x51_pipeline_result
+            const _0x72_ws = _0x43_ws
+            const _0x71_close_handler = WebSocket.prototype.onclose.call(_0x72_ws, ((arg0) => _0x3e_message_handler(arg0)))
+            let _0x54__0x53_pipeline_result = _0x71_close_handler
+            _0x54__0x53_pipeline_result
 
 
-            }
         } }
     const _0x3e_message_handler = async function (
         event
     ) {{
-            const parent_scope = scope
-            {
-                const scope = _67lang.scope(parent_scope)
-                event = event
-                let _0x3f_event = event
-                _0x3f_event
+            let _0x3f_event = event
+            _0x3f_event
 
-                const _0x73_print = await _67lang.maybe_await(console.log("Message received"))
-                let _0x41__0x40_pipeline_result = _0x73_print
-                _0x41__0x40_pipeline_result
-            }
+            const _0x73_print = await _67lang.maybe_await(console.log("Message received"))
+            let _0x41__0x40_pipeline_result = _0x73_print
+            _0x41__0x40_pipeline_result
         } }
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -163,13 +146,8 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
-        }
     } 
 })();

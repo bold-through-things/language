@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,18 +80,11 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     const _0x3e_test_fn = async function () {{
-            const parent_scope = scope
-            {
-                const scope = _67lang.scope(parent_scope)
-                const _0x55_print = await _67lang.maybe_await(console.log("test"))
-                let _0x40__0x3f_pipeline_result = _0x55_print
-                _0x40__0x3f_pipeline_result
-            }
+            const _0x55_print = await _67lang.maybe_await(console.log("test"))
+            let _0x40__0x3f_pipeline_result = _0x55_print
+            _0x40__0x3f_pipeline_result
         } }
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -115,14 +103,9 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
-            const _0x56_timeout = globalThis.setTimeout((() => _0x3e_test_fn()), 100)
-            let _0x42__0x41_pipeline_result = _0x56_timeout
-            _0x42__0x41_pipeline_result
-        }
+        const _0x56_timeout = globalThis.setTimeout((() => _0x3e_test_fn()), 100)
+        let _0x42__0x41_pipeline_result = _0x56_timeout
+        _0x42__0x41_pipeline_result
     } 
 })();

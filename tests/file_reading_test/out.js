@@ -21,11 +21,6 @@ globalThis._67lang = {
         return new Set(args);
     },
 
-    scope(parent) {
-        const scope = Object.create(parent || globalThis);
-        return (scope);
-    },
-
     maybe_await: async function (value) {
         // we expect the JIT will optimize this h*ck
         // TODO benchmark as test
@@ -85,9 +80,6 @@ void (async () => {
     'use strict';
     const scope = globalThis;
     {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
 
 
@@ -106,50 +98,45 @@ void (async () => {
 
 
 
-        }
     } {
-        const parent_scope = scope
-        {
-            const scope = _67lang.scope(parent_scope)
 
-            const _0x68_print = await _67lang.maybe_await(console.log("Current working directory:"))
-            let _0x3f__0x3e_pipeline_result = _0x68_print
-            _0x3f__0x3e_pipeline_result
-            const _0x6a_cwd = Deno.cwd()
-            let _0x42__0x41_pipeline_result = _0x6a_cwd
-            const _0x69_print = await _67lang.maybe_await(console.log(_0x42__0x41_pipeline_result))
-            let _0x43__0x40_pipeline_result = _0x69_print
-            _0x43__0x40_pipeline_result
-            const _0x6b_print = await _67lang.maybe_await(console.log("Reading sample.txt:"))
-            let _0x45__0x44_pipeline_result = _0x6b_print
-            _0x45__0x44_pipeline_result
-            try {
-                const _0x6c_read_file = await (Deno.readTextFile("sample.txt"))
-                let _0x47__0x46_pipeline_result = _0x6c_read_file
-                let _0x48_content = _0x47__0x46_pipeline_result
-                _0x48_content
-                const _0x6e_content = _0x48_content
-                let _0x4b__0x4a_pipeline_result = _0x6e_content
-                const _0x6d_print = await _67lang.maybe_await(console.log(_0x4b__0x4a_pipeline_result))
-                let _0x4c__0x49_pipeline_result = _0x6d_print
-                _0x4c__0x49_pipeline_result
-            }
-            catch (error) {
-                let _0x4d_error = error
-                _0x4d_error
-                const _0x6f_print = await _67lang.maybe_await(console.log("Error reading file:"))
-                let _0x4f__0x4e_pipeline_result = _0x6f_print
-                _0x4f__0x4e_pipeline_result
-                const _0x71_error = _0x4d_error
-                let _0x52__0x51_pipeline_result = _0x71_error
-                const _0x70_print = await _67lang.maybe_await(console.log(_0x52__0x51_pipeline_result))
-                let _0x53__0x50_pipeline_result = _0x70_print
-                _0x53__0x50_pipeline_result
-            }
-            const _0x72_print = await _67lang.maybe_await(console.log("File reading test complete"))
-            let _0x55__0x54_pipeline_result = _0x72_print
-            _0x55__0x54_pipeline_result
-
+        const _0x68_print = await _67lang.maybe_await(console.log("Current working directory:"))
+        let _0x3f__0x3e_pipeline_result = _0x68_print
+        _0x3f__0x3e_pipeline_result
+        const _0x6a_cwd = Deno.cwd()
+        let _0x42__0x41_pipeline_result = _0x6a_cwd
+        const _0x69_print = await _67lang.maybe_await(console.log(_0x42__0x41_pipeline_result))
+        let _0x43__0x40_pipeline_result = _0x69_print
+        _0x43__0x40_pipeline_result
+        const _0x6b_print = await _67lang.maybe_await(console.log("Reading sample.txt:"))
+        let _0x45__0x44_pipeline_result = _0x6b_print
+        _0x45__0x44_pipeline_result
+        try {
+            const _0x6c_read_file = await (Deno.readTextFile("sample.txt"))
+            let _0x47__0x46_pipeline_result = _0x6c_read_file
+            let _0x48_content = _0x47__0x46_pipeline_result
+            _0x48_content
+            const _0x6e_content = _0x48_content
+            let _0x4b__0x4a_pipeline_result = _0x6e_content
+            const _0x6d_print = await _67lang.maybe_await(console.log(_0x4b__0x4a_pipeline_result))
+            let _0x4c__0x49_pipeline_result = _0x6d_print
+            _0x4c__0x49_pipeline_result
         }
+        catch (error) {
+            let _0x4d_error = error
+            _0x4d_error
+            const _0x6f_print = await _67lang.maybe_await(console.log("Error reading file:"))
+            let _0x4f__0x4e_pipeline_result = _0x6f_print
+            _0x4f__0x4e_pipeline_result
+            const _0x71_error = _0x4d_error
+            let _0x52__0x51_pipeline_result = _0x71_error
+            const _0x70_print = await _67lang.maybe_await(console.log(_0x52__0x51_pipeline_result))
+            let _0x53__0x50_pipeline_result = _0x70_print
+            _0x53__0x50_pipeline_result
+        }
+        const _0x72_print = await _67lang.maybe_await(console.log("File reading test complete"))
+        let _0x55__0x54_pipeline_result = _0x72_print
+        _0x55__0x54_pipeline_result
+
     } 
 })();
