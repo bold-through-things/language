@@ -1,14 +1,34 @@
 globalThis._67lang = {
-    // TODO eliminating this one probably next thing
-    exists_inside: (inside, ...arr) => {
+    EXISTS_INSIDE_AS_KEY: Symbol("EXISTS_INSIDE_AS_KEY"),
+    EXISTS_INSIDE_AS_VALUE: Symbol("EXISTS_INSIDE_AS_VALUE"),
+    exists_inside: (inside, k_or_v, ...arr) => {
+        // TODO support for sets
         if (Array.isArray(inside)) {
             // array
-            return arr.every(v => inside.includes(v))
+            const is_valid_index = (v) => Number.isInteger(v) && v >= 0 && v < inside.length;
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => is_valid_index(v));
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => inside.includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         } else {
             // assume dict
-            return arr.every(v => v in inside)
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => v in inside);
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => Object.values(inside).includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         }
     },
+
+    // TODO should bind these in the language proper
+    has_keys: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_KEY, ...values),
+    has_values: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_VALUE, ...values),
+
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
@@ -98,161 +118,162 @@ void (async () => {
 
 
 
+
     } {
-        const _0xc6_URL = (new URL("https://example.com/path?query=123"))
-        let _0x3f__0x3e_pipeline_result = _0xc6_URL
-        let _0x40_myURL = _0x3f__0x3e_pipeline_result
-        _0x40_myURL
-        const _0xc9_myURL = _0x40_myURL
-        const _0xc8_pathname = (_0xc9_myURL.pathname)
-        let _0x43__0x42_pipeline_result = _0xc8_pathname
-        const _0xc7_print = await _67lang.maybe_await(console.log(_0x43__0x42_pipeline_result))
-        let _0x44__0x41_pipeline_result = _0xc7_print
-        _0x44__0x41_pipeline_result
-        const _0xca_print = await _67lang.maybe_await(console.log("\n--- Testing TextEncoder/TextDecoder ---"))
-        let _0x46__0x45_pipeline_result = _0xca_print
-        _0x46__0x45_pipeline_result
-        const _0xcb_TextEncoder = await _67lang.maybe_await((new TextEncoder()))
-        let _0x48__0x47_pipeline_result = _0xcb_TextEncoder
-        let _0x49_encoder = _0x48__0x47_pipeline_result
-        _0x49_encoder
-        const _0xcc_TextDecoder = await _67lang.maybe_await((new TextDecoder()))
-        let _0x4b__0x4a_pipeline_result = _0xcc_TextDecoder
-        let _0x4c_decoder = _0x4b__0x4a_pipeline_result
-        _0x4c_decoder
-        let _0x4d_text_tests = ["ASCII text", "Unicode: 🦕 Deno", "Numbers: 42"]
-        _0x4d_text_tests
+        const _0xcb_URL = (new URL("https://example.com/path?query=123"))
+        let _0x41__0x40_pipeline_result = _0xcb_URL
+        let _0x42_myURL = _0x41__0x40_pipeline_result
+        _0x42_myURL
+        const _0xce_myURL = _0x42_myURL
+        const _0xcd_pathname = (_0xce_myURL.pathname)
+        let _0x45__0x44_pipeline_result = _0xcd_pathname
+        const _0xcc_print = await _67lang.maybe_await(console.log(_0x45__0x44_pipeline_result))
+        let _0x46__0x43_pipeline_result = _0xcc_print
+        _0x46__0x43_pipeline_result
+        const _0xcf_print = await _67lang.maybe_await(console.log("\n--- Testing TextEncoder/TextDecoder ---"))
+        let _0x48__0x47_pipeline_result = _0xcf_print
+        _0x48__0x47_pipeline_result
+        const _0xd0_TextEncoder = await _67lang.maybe_await((new TextEncoder()))
+        let _0x4a__0x49_pipeline_result = _0xd0_TextEncoder
+        let _0x4b_encoder = _0x4a__0x49_pipeline_result
+        _0x4b_encoder
+        const _0xd1_TextDecoder = await _67lang.maybe_await((new TextDecoder()))
+        let _0x4d__0x4c_pipeline_result = _0xd1_TextDecoder
+        let _0x4e_decoder = _0x4d__0x4c_pipeline_result
+        _0x4e_decoder
+        let _0x4f_text_tests = ["ASCII text", "Unicode: 🦕 Deno", "Numbers: 42"]
+        _0x4f_text_tests
         {
-            let _0x50__0x4e_for_text__index = 0
-            _0x50__0x4e_for_text__index
-            const _0xcd_text_tests = _0x4d_text_tests
-            let _0x52__0x51_pipeline_result = _0xcd_text_tests
-            let _0x53__0x4f_for_text__list = _0x52__0x51_pipeline_result
-            _0x53__0x4f_for_text__list
+            let _0x52__0x50_for_text__index = 0
+            _0x52__0x50_for_text__index
+            const _0xd2_text_tests = _0x4f_text_tests
+            let _0x54__0x53_pipeline_result = _0xd2_text_tests
+            let _0x55__0x51_for_text__list = _0x54__0x53_pipeline_result
+            _0x55__0x51_for_text__list
             while(true) {
-                const _0xcf__0x4e_for_text__index = _0x50__0x4e_for_text__index
-                let _0x56__0x55_pipeline_result = _0xcf__0x4e_for_text__index
-                const _0xd1__0x4f_for_text__list = _0x53__0x4f_for_text__list
-                const _0xd0_length = (_0xd1__0x4f_for_text__list.length)
-                let _0x58__0x57_pipeline_result = _0xd0_length
-                const _0xce_asc = (_0x56__0x55_pipeline_result < _0x58__0x57_pipeline_result)
-                let _0x59__0x54_pipeline_result = _0xce_asc
-                if (!_0x59__0x54_pipeline_result) { break; }
+                const _0xd4__0x50_for_text__index = _0x52__0x50_for_text__index
+                let _0x58__0x57_pipeline_result = _0xd4__0x50_for_text__index
+                const _0xd6__0x51_for_text__list = _0x55__0x51_for_text__list
+                const _0xd5_length = (_0xd6__0x51_for_text__list.length)
+                let _0x5a__0x59_pipeline_result = _0xd5_length
+                const _0xd3_asc = (_0x58__0x57_pipeline_result < _0x5a__0x59_pipeline_result)
+                let _0x5b__0x56_pipeline_result = _0xd3_asc
+                if (!_0x5b__0x56_pipeline_result) { break; }
                 {
-                    const _0xd3__0x4f_for_text__list = _0x53__0x4f_for_text__list
-                    const _0xd4__0x4e_for_text__index = _0x50__0x4e_for_text__index
-                    let _0x5c__0x5b_pipeline_result = _0xd4__0x4e_for_text__index
-                    const _0xd2__hash_ = _0xd3__0x4f_for_text__list[_0x5c__0x5b_pipeline_result]
-                    let _0x5d__0x5a_pipeline_result = _0xd2__hash_
-                    let _0x5e_text = _0x5d__0x5a_pipeline_result
-                    _0x5e_text
-                    const _0xd7__0x4e_for_text__index = _0x50__0x4e_for_text__index
-                    const _0xd6_add = (_0xd7__0x4e_for_text__index + 1)
-                    let _0x61__0x60_pipeline_result = _0xd6_add
-                    const _0xd5__0x4e_for_text__index = (_0x50__0x4e_for_text__index = _0x61__0x60_pipeline_result)
-                    let _0x62__0x5f_pipeline_result = _0xd5__0x4e_for_text__index
-                    _0x62__0x5f_pipeline_result
-                    const _0xd9_encoder = _0x49_encoder
-                    const _0xda_text = _0x5e_text
-                    let _0x65__0x64_pipeline_result = _0xda_text
-                    const _0xd8_encode = TextEncoder.prototype.encode.call(_0xd9_encoder, _0x65__0x64_pipeline_result)
-                    let _0x66__0x63_pipeline_result = _0xd8_encode
-                    let _0x67_bytes = _0x66__0x63_pipeline_result
-                    _0x67_bytes
-                    const _0xdc_decoder = _0x4c_decoder
-                    const _0xdd_bytes = _0x67_bytes
-                    let _0x6a__0x69_pipeline_result = _0xdd_bytes
-                    const _0xdb_decode = TextDecoder.prototype.decode.call(_0xdc_decoder, _0x6a__0x69_pipeline_result)
-                    let _0x6b__0x68_pipeline_result = _0xdb_decode
-                    let _0x6c_restored = _0x6b__0x68_pipeline_result
-                    _0x6c_restored
-                    const _0xdf_text = _0x5e_text
-                    let _0x6f__0x6e_pipeline_result = _0xdf_text
-                    const _0xe0_bytes = _0x67_bytes
-                    let _0x71__0x70_pipeline_result = _0xe0_bytes
-                    const _0xe1_restored = _0x6c_restored
-                    let _0x73__0x72_pipeline_result = _0xe1_restored
-                    const _0xde_print = await _67lang.maybe_await(console.log("Text: \"", _0x6f__0x6e_pipeline_result, "\" -> Bytes: [", _0x71__0x70_pipeline_result, "] -> Restored: \"", _0x73__0x72_pipeline_result))
-                    let _0x74__0x6d_pipeline_result = _0xde_print
-                    _0x74__0x6d_pipeline_result
+                    const _0xd8__0x51_for_text__list = _0x55__0x51_for_text__list
+                    const _0xd9__0x50_for_text__index = _0x52__0x50_for_text__index
+                    let _0x5e__0x5d_pipeline_result = _0xd9__0x50_for_text__index
+                    const _0xd7__hash_ = _0xd8__0x51_for_text__list[_0x5e__0x5d_pipeline_result]
+                    let _0x5f__0x5c_pipeline_result = _0xd7__hash_
+                    let _0x60_text = _0x5f__0x5c_pipeline_result
+                    _0x60_text
+                    const _0xdc__0x50_for_text__index = _0x52__0x50_for_text__index
+                    const _0xdb_add = (_0xdc__0x50_for_text__index + 1)
+                    let _0x63__0x62_pipeline_result = _0xdb_add
+                    const _0xda__0x50_for_text__index = (_0x52__0x50_for_text__index = _0x63__0x62_pipeline_result)
+                    let _0x64__0x61_pipeline_result = _0xda__0x50_for_text__index
+                    _0x64__0x61_pipeline_result
+                    const _0xde_encoder = _0x4b_encoder
+                    const _0xdf_text = _0x60_text
+                    let _0x67__0x66_pipeline_result = _0xdf_text
+                    const _0xdd_encode = TextEncoder.prototype.encode.call(_0xde_encoder, _0x67__0x66_pipeline_result)
+                    let _0x68__0x65_pipeline_result = _0xdd_encode
+                    let _0x69_bytes = _0x68__0x65_pipeline_result
+                    _0x69_bytes
+                    const _0xe1_decoder = _0x4e_decoder
+                    const _0xe2_bytes = _0x69_bytes
+                    let _0x6c__0x6b_pipeline_result = _0xe2_bytes
+                    const _0xe0_decode = TextDecoder.prototype.decode.call(_0xe1_decoder, _0x6c__0x6b_pipeline_result)
+                    let _0x6d__0x6a_pipeline_result = _0xe0_decode
+                    let _0x6e_restored = _0x6d__0x6a_pipeline_result
+                    _0x6e_restored
+                    const _0xe4_text = _0x60_text
+                    let _0x71__0x70_pipeline_result = _0xe4_text
+                    const _0xe5_bytes = _0x69_bytes
+                    let _0x73__0x72_pipeline_result = _0xe5_bytes
+                    const _0xe6_restored = _0x6e_restored
+                    let _0x75__0x74_pipeline_result = _0xe6_restored
+                    const _0xe3_print = await _67lang.maybe_await(console.log("Text: \"", _0x71__0x70_pipeline_result, "\" -> Bytes: [", _0x73__0x72_pipeline_result, "] -> Restored: \"", _0x75__0x74_pipeline_result))
+                    let _0x76__0x6f_pipeline_result = _0xe3_print
+                    _0x76__0x6f_pipeline_result
                 } }
         } 
-        const _0xe2_print = await _67lang.maybe_await(console.log("\n--- Testing atob/btoa ---"))
-        let _0x76__0x75_pipeline_result = _0xe2_print
-        _0x76__0x75_pipeline_result
-        let _0x77_testString = "Hello World"
-        _0x77_testString
-        const _0xe4_testString = _0x77_testString
-        let _0x7a__0x79_pipeline_result = _0xe4_testString
-        const _0xe3_btoa = globalThis.btoa(_0x7a__0x79_pipeline_result)
-        let _0x7b__0x78_pipeline_result = _0xe3_btoa
-        let _0x7c_encodedString = _0x7b__0x78_pipeline_result
-        _0x7c_encodedString
-        const _0xe6_encodedString = _0x7c_encodedString
-        let _0x7f__0x7e_pipeline_result = _0xe6_encodedString
-        const _0xe5_atob = globalThis.atob(_0x7f__0x7e_pipeline_result)
-        let _0x80__0x7d_pipeline_result = _0xe5_atob
-        let _0x81_decodedString = _0x80__0x7d_pipeline_result
-        _0x81_decodedString
-        const _0xe8_testString = _0x77_testString
-        let _0x84__0x83_pipeline_result = _0xe8_testString
-        const _0xe9_encodedString = _0x7c_encodedString
-        let _0x86__0x85_pipeline_result = _0xe9_encodedString
-        const _0xea_decodedString = _0x81_decodedString
-        let _0x88__0x87_pipeline_result = _0xea_decodedString
-        const _0xe7_print = await _67lang.maybe_await(console.log("Original: ", _0x84__0x83_pipeline_result, " -> Encoded: ", _0x86__0x85_pipeline_result, " -> Decoded: ", _0x88__0x87_pipeline_result))
-        let _0x89__0x82_pipeline_result = _0xe7_print
-        _0x89__0x82_pipeline_result
-        const _0xeb_print = await _67lang.maybe_await(console.log("\n--- Testing JSON.stringify/parse ---"))
-        let _0x8b__0x8a_pipeline_result = _0xeb_print
-        _0x8b__0x8a_pipeline_result
-        let _0x8c_testObj = {["name"]: "Claude", ["type"]: "AI", ["version"]: "42"}
-        _0x8c_testObj
-        const _0xed_testObj = _0x8c_testObj
-        const _0xec_str_colon_JSON = JSON.stringify(_0xed_testObj)
-        let _0x8e__0x8d_pipeline_result = _0xec_str_colon_JSON
-        let _0x8f_jsonString = _0x8e__0x8d_pipeline_result
-        _0x8f_jsonString
-        const _0xef_jsonString = _0x8f_jsonString
-        const _0xee_parse_colon_JSON = JSON.parse(_0xef_jsonString)
-        let _0x91__0x90_pipeline_result = _0xee_parse_colon_JSON
-        let _0x92_parsedObj = _0x91__0x90_pipeline_result
-        _0x92_parsedObj
-        const _0xf1_jsonString = _0x8f_jsonString
-        let _0x95__0x94_pipeline_result = _0xf1_jsonString
-        const _0xf0_print = await _67lang.maybe_await(console.log("Original object -> JSON: ", _0x95__0x94_pipeline_result))
-        let _0x96__0x93_pipeline_result = _0xf0_print
-        _0x96__0x93_pipeline_result
-        const _0xf4_parsedObj = _0x92_parsedObj
-        const _0xf3__hash_ = _0xf4_parsedObj["name"]
-        let _0x99__0x98_pipeline_result = _0xf3__hash_
-        const _0xf2_print = await _67lang.maybe_await(console.log("Parsed back -> name: ", _0x99__0x98_pipeline_result))
-        let _0x9a__0x97_pipeline_result = _0xf2_print
-        _0x9a__0x97_pipeline_result
-        const _0xf5_print = await _67lang.maybe_await(console.log("\n--- Testing fetch (data URL) ---"))
-        let _0x9c__0x9b_pipeline_result = _0xf5_print
-        _0x9c__0x9b_pipeline_result
-        const _0xf6_fetch = await (globalThis.fetch("data:application/json,{\"67lang\": \"is fucking awesome\"}", {}))
-        let _0x9d_response = _0xf6_fetch
-        _0x9d_response
-        const _0xf8_response = _0x9d_response
-        let _0xa0__0x9f_pipeline_result = _0xf8_response
-        const _0xfa_response = _0x9d_response
-        const _0xf9_json = await (Response.prototype.json.call(_0xfa_response))
-        let _0xa2__0xa1_pipeline_result = _0xf9_json
-        const _0xf7_print = await _67lang.maybe_await(console.log(_0xa0__0x9f_pipeline_result, _0xa2__0xa1_pipeline_result))
-        let _0xa3__0x9e_pipeline_result = _0xf7_print
-        _0xa3__0x9e_pipeline_result
-        const _0xfb_MyEncoder = await _67lang.maybe_await((new TextEncoder()))
-        let _0xa6__0xa5_pipeline_result = _0xfb_MyEncoder
-        let _0xa7_encoder2 = _0xa6__0xa5_pipeline_result
-        _0xa7_encoder2
-        const _0xfe_encoder2 = _0xa7_encoder2
-        let _0xab__0xaa_pipeline_result = _0xfe_encoder2
-        const _0xfd_encode = await _67lang.maybe_await(TextEncoder.prototype.encode.call(_0xab__0xaa_pipeline_result, "Custom encoding works!"))
-        let _0xac__0xa9_pipeline_result = _0xfd_encode
-        const _0xfc_print = await _67lang.maybe_await(console.log("\n--- Testing custom MyEncoder ---", _0xac__0xa9_pipeline_result))
-        let _0xad__0xa8_pipeline_result = _0xfc_print
-        _0xad__0xa8_pipeline_result
+        const _0xe7_print = await _67lang.maybe_await(console.log("\n--- Testing atob/btoa ---"))
+        let _0x78__0x77_pipeline_result = _0xe7_print
+        _0x78__0x77_pipeline_result
+        let _0x79_testString = "Hello World"
+        _0x79_testString
+        const _0xe9_testString = _0x79_testString
+        let _0x7c__0x7b_pipeline_result = _0xe9_testString
+        const _0xe8_btoa = globalThis.btoa(_0x7c__0x7b_pipeline_result)
+        let _0x7d__0x7a_pipeline_result = _0xe8_btoa
+        let _0x7e_encodedString = _0x7d__0x7a_pipeline_result
+        _0x7e_encodedString
+        const _0xeb_encodedString = _0x7e_encodedString
+        let _0x81__0x80_pipeline_result = _0xeb_encodedString
+        const _0xea_atob = globalThis.atob(_0x81__0x80_pipeline_result)
+        let _0x82__0x7f_pipeline_result = _0xea_atob
+        let _0x83_decodedString = _0x82__0x7f_pipeline_result
+        _0x83_decodedString
+        const _0xed_testString = _0x79_testString
+        let _0x86__0x85_pipeline_result = _0xed_testString
+        const _0xee_encodedString = _0x7e_encodedString
+        let _0x88__0x87_pipeline_result = _0xee_encodedString
+        const _0xef_decodedString = _0x83_decodedString
+        let _0x8a__0x89_pipeline_result = _0xef_decodedString
+        const _0xec_print = await _67lang.maybe_await(console.log("Original: ", _0x86__0x85_pipeline_result, " -> Encoded: ", _0x88__0x87_pipeline_result, " -> Decoded: ", _0x8a__0x89_pipeline_result))
+        let _0x8b__0x84_pipeline_result = _0xec_print
+        _0x8b__0x84_pipeline_result
+        const _0xf0_print = await _67lang.maybe_await(console.log("\n--- Testing JSON.stringify/parse ---"))
+        let _0x8d__0x8c_pipeline_result = _0xf0_print
+        _0x8d__0x8c_pipeline_result
+        let _0x8e_testObj = {["name"]: "Claude", ["type"]: "AI", ["version"]: "42"}
+        _0x8e_testObj
+        const _0xf2_testObj = _0x8e_testObj
+        const _0xf1_str_colon_JSON = JSON.stringify(_0xf2_testObj)
+        let _0x90__0x8f_pipeline_result = _0xf1_str_colon_JSON
+        let _0x91_jsonString = _0x90__0x8f_pipeline_result
+        _0x91_jsonString
+        const _0xf4_jsonString = _0x91_jsonString
+        const _0xf3_parse_colon_JSON = JSON.parse(_0xf4_jsonString)
+        let _0x93__0x92_pipeline_result = _0xf3_parse_colon_JSON
+        let _0x94_parsedObj = _0x93__0x92_pipeline_result
+        _0x94_parsedObj
+        const _0xf6_jsonString = _0x91_jsonString
+        let _0x97__0x96_pipeline_result = _0xf6_jsonString
+        const _0xf5_print = await _67lang.maybe_await(console.log("Original object -> JSON: ", _0x97__0x96_pipeline_result))
+        let _0x98__0x95_pipeline_result = _0xf5_print
+        _0x98__0x95_pipeline_result
+        const _0xf9_parsedObj = _0x94_parsedObj
+        const _0xf8__hash_ = _0xf9_parsedObj["name"]
+        let _0x9b__0x9a_pipeline_result = _0xf8__hash_
+        const _0xf7_print = await _67lang.maybe_await(console.log("Parsed back -> name: ", _0x9b__0x9a_pipeline_result))
+        let _0x9c__0x99_pipeline_result = _0xf7_print
+        _0x9c__0x99_pipeline_result
+        const _0xfa_print = await _67lang.maybe_await(console.log("\n--- Testing fetch (data URL) ---"))
+        let _0x9e__0x9d_pipeline_result = _0xfa_print
+        _0x9e__0x9d_pipeline_result
+        const _0xfb_fetch = await (globalThis.fetch("data:application/json,{\"67lang\": \"is fucking awesome\"}", {}))
+        let _0x9f_response = _0xfb_fetch
+        _0x9f_response
+        const _0xfd_response = _0x9f_response
+        let _0xa2__0xa1_pipeline_result = _0xfd_response
+        const _0xff_response = _0x9f_response
+        const _0xfe_json = await (Response.prototype.json.call(_0xff_response))
+        let _0xa4__0xa3_pipeline_result = _0xfe_json
+        const _0xfc_print = await _67lang.maybe_await(console.log(_0xa2__0xa1_pipeline_result, _0xa4__0xa3_pipeline_result))
+        let _0xa5__0xa0_pipeline_result = _0xfc_print
+        _0xa5__0xa0_pipeline_result
+        const _0x100_MyEncoder = await _67lang.maybe_await((new TextEncoder()))
+        let _0xa8__0xa7_pipeline_result = _0x100_MyEncoder
+        let _0xa9_encoder2 = _0xa8__0xa7_pipeline_result
+        _0xa9_encoder2
+        const _0x103_encoder2 = _0xa9_encoder2
+        let _0xad__0xac_pipeline_result = _0x103_encoder2
+        const _0x102_encode = await _67lang.maybe_await(TextEncoder.prototype.encode.call(_0xad__0xac_pipeline_result, "Custom encoding works!"))
+        let _0xae__0xab_pipeline_result = _0x102_encode
+        const _0x101_print = await _67lang.maybe_await(console.log("\n--- Testing custom MyEncoder ---", _0xae__0xab_pipeline_result))
+        let _0xaf__0xaa_pipeline_result = _0x101_print
+        _0xaf__0xaa_pipeline_result
     } 
 })();

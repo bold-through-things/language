@@ -750,6 +750,25 @@ note
 
 
 
+type inside.SPEC is JS:object
+	constructor inside.SPEC
+
+fn inside.AS_KEY is FieldCall
+	sync
+	receiver _67lang
+	field EXISTS_INSIDE_AS_KEY
+	returns
+		type inside.SPEC
+
+fn inside.AS_VALUE is FieldCall
+	sync
+	receiver _67lang
+	field EXISTS_INSIDE_AS_VALUE
+	returns
+		type inside.SPEC
+
+note TODO because varargs we can't express this yet. `inside` for now hardcoded in compiler
+
 fn prompt is DirectCall
 	async
 	receiver _67lang

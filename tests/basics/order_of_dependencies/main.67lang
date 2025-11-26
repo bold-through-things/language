@@ -116,10 +116,8 @@ fn visit
 			do deps the module
 			do
 				if
-					exists
+					do has_values the next_chain
 						get dep_id
-						inside
-							get next_chain
 				then
 					local dep_loop
 						list

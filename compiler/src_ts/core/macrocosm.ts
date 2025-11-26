@@ -35,7 +35,6 @@ import { While_macro_provider } from "../macros/while_macro.ts";
 import { For_macro_provider } from "../macros/for_macro.ts";
 import { Local_macro_provider } from "../macros/local_macro.ts";
 import { Fn_macro_provider } from "../macros/fn_macro.ts";
-import { Exists_macro_provider } from "../macros/exists_macro.ts";
 import { Call_macro_provider } from "../macros/call_macro.ts";
 import {
   COMMENT_MACROS,
@@ -433,7 +432,6 @@ export function create_macrocosm(): Macrocosm {
   macro_providers["fn"] = new Fn_macro_provider();
   macro_providers["bind"] = new Bind_macro_provider();
   macro_providers["67lang:call"] = new Call_macro_provider();
-  macro_providers["exists"] = new Exists_macro_provider();
   macro_providers["noop"] = new Noop_macro_provider();
   macro_providers["type"] = new Type_macro_provider();
   macro_providers["67lang:assume_local_exists"] = new Noop_macro_provider();

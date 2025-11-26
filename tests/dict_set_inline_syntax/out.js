@@ -1,14 +1,34 @@
 globalThis._67lang = {
-    // TODO eliminating this one probably next thing
-    exists_inside: (inside, ...arr) => {
+    EXISTS_INSIDE_AS_KEY: Symbol("EXISTS_INSIDE_AS_KEY"),
+    EXISTS_INSIDE_AS_VALUE: Symbol("EXISTS_INSIDE_AS_VALUE"),
+    exists_inside: (inside, k_or_v, ...arr) => {
+        // TODO support for sets
         if (Array.isArray(inside)) {
             // array
-            return arr.every(v => inside.includes(v))
+            const is_valid_index = (v) => Number.isInteger(v) && v >= 0 && v < inside.length;
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => is_valid_index(v));
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => inside.includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         } else {
             // assume dict
-            return arr.every(v => v in inside)
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => v in inside);
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => Object.values(inside).includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         }
     },
+
+    // TODO should bind these in the language proper
+    has_keys: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_KEY, ...values),
+    has_values: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_VALUE, ...values),
+
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
@@ -98,38 +118,39 @@ void (async () => {
 
 
 
+
     } {
 
-        let _0x3e_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"}
-        _0x3e_user
-        const _0x67_user = _0x3e_user
-        let _0x41__0x40_pipeline_result = _0x67_user
-        const _0x66_print = await _67lang.maybe_await(console.log(_0x41__0x40_pipeline_result))
-        let _0x42__0x3f_pipeline_result = _0x66_print
-        _0x42__0x3f_pipeline_result
-        const _0x68_set = _67lang.new_set("apple", "banana", "cherry")
-        let _0x44__0x43_pipeline_result = _0x68_set
-        let _0x45_my_set = _0x44__0x43_pipeline_result
-        _0x45_my_set
-        const _0x6a_my_set = _0x45_my_set
-        let _0x48__0x47_pipeline_result = _0x6a_my_set
-        const _0x69_print = await _67lang.maybe_await(console.log(_0x48__0x47_pipeline_result))
-        let _0x49__0x46_pipeline_result = _0x69_print
-        _0x49__0x46_pipeline_result
-        let _0x4a_my_list = [-2, -1, 0, 1, 2, 3]
-        _0x4a_my_list
-        const _0x6c_my_list = _0x4a_my_list
-        let _0x4d__0x4c_pipeline_result = _0x6c_my_list
-        const _0x6b_print = await _67lang.maybe_await(console.log(_0x4d__0x4c_pipeline_result))
-        let _0x4e__0x4b_pipeline_result = _0x6b_print
-        _0x4e__0x4b_pipeline_result
+        let _0x40_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"}
+        _0x40_user
+        const _0x6c_user = _0x40_user
+        let _0x43__0x42_pipeline_result = _0x6c_user
+        const _0x6b_print = await _67lang.maybe_await(console.log(_0x43__0x42_pipeline_result))
+        let _0x44__0x41_pipeline_result = _0x6b_print
+        _0x44__0x41_pipeline_result
+        const _0x6d_set = _67lang.new_set("apple", "banana", "cherry")
+        let _0x46__0x45_pipeline_result = _0x6d_set
+        let _0x47_my_set = _0x46__0x45_pipeline_result
+        _0x47_my_set
+        const _0x6f_my_set = _0x47_my_set
+        let _0x4a__0x49_pipeline_result = _0x6f_my_set
+        const _0x6e_print = await _67lang.maybe_await(console.log(_0x4a__0x49_pipeline_result))
+        let _0x4b__0x48_pipeline_result = _0x6e_print
+        _0x4b__0x48_pipeline_result
+        let _0x4c_my_list = [-2, -1, 0, 1, 2, 3]
+        _0x4c_my_list
+        const _0x71_my_list = _0x4c_my_list
+        let _0x4f__0x4e_pipeline_result = _0x71_my_list
+        const _0x70_print = await _67lang.maybe_await(console.log(_0x4f__0x4e_pipeline_result))
+        let _0x50__0x4d_pipeline_result = _0x70_print
+        _0x50__0x4d_pipeline_result
 
-        let _0x4f_simple_list = [1, 2, 3]
-        _0x4f_simple_list
-        const _0x6e_simple_list = _0x4f_simple_list
-        let _0x52__0x51_pipeline_result = _0x6e_simple_list
-        const _0x6d_print = await _67lang.maybe_await(console.log(_0x52__0x51_pipeline_result))
-        let _0x53__0x50_pipeline_result = _0x6d_print
-        _0x53__0x50_pipeline_result
+        let _0x51_simple_list = [1, 2, 3]
+        _0x51_simple_list
+        const _0x73_simple_list = _0x51_simple_list
+        let _0x54__0x53_pipeline_result = _0x73_simple_list
+        const _0x72_print = await _67lang.maybe_await(console.log(_0x54__0x53_pipeline_result))
+        let _0x55__0x52_pipeline_result = _0x72_print
+        _0x55__0x52_pipeline_result
     } 
 })();

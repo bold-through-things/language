@@ -15,10 +15,8 @@ for word in
 	do
 		if
 			do none
-				exists
+				do has_keys the count
 					get word
-					inside
-						get count
 		then
 			do #
 				get count

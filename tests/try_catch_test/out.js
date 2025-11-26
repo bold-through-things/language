@@ -1,14 +1,34 @@
 globalThis._67lang = {
-    // TODO eliminating this one probably next thing
-    exists_inside: (inside, ...arr) => {
+    EXISTS_INSIDE_AS_KEY: Symbol("EXISTS_INSIDE_AS_KEY"),
+    EXISTS_INSIDE_AS_VALUE: Symbol("EXISTS_INSIDE_AS_VALUE"),
+    exists_inside: (inside, k_or_v, ...arr) => {
+        // TODO support for sets
         if (Array.isArray(inside)) {
             // array
-            return arr.every(v => inside.includes(v))
+            const is_valid_index = (v) => Number.isInteger(v) && v >= 0 && v < inside.length;
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => is_valid_index(v));
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => inside.includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         } else {
             // assume dict
-            return arr.every(v => v in inside)
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => v in inside);
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => Object.values(inside).includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         }
     },
+
+    // TODO should bind these in the language proper
+    has_keys: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_KEY, ...values),
+    has_values: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_VALUE, ...values),
+
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
@@ -98,46 +118,47 @@ void (async () => {
 
 
 
+
     } {
 
-        const _0x65_print = await _67lang.maybe_await(console.log("Starting execution"))
-        let _0x3f__0x3e_pipeline_result = _0x65_print
-        _0x3f__0x3e_pipeline_result
+        const _0x6a_print = await _67lang.maybe_await(console.log("Starting execution"))
+        let _0x41__0x40_pipeline_result = _0x6a_print
+        _0x41__0x40_pipeline_result
         try {
-            const _0x66_print = await _67lang.maybe_await(console.log("Inside try block"))
-            let _0x41__0x40_pipeline_result = _0x66_print
-            _0x41__0x40_pipeline_result
-            const _0x67_print = await _67lang.maybe_await(console.log("About to throw"))
-            let _0x43__0x42_pipeline_result = _0x67_print
+            const _0x6b_print = await _67lang.maybe_await(console.log("Inside try block"))
+            let _0x43__0x42_pipeline_result = _0x6b_print
             _0x43__0x42_pipeline_result
-            throw "Test error message";
-            const _0x68_print = await _67lang.maybe_await(console.log("This should not print"))
-            let _0x45__0x44_pipeline_result = _0x68_print
+            const _0x6c_print = await _67lang.maybe_await(console.log("About to throw"))
+            let _0x45__0x44_pipeline_result = _0x6c_print
             _0x45__0x44_pipeline_result
+            throw "Test error message";
+            const _0x6d_print = await _67lang.maybe_await(console.log("This should not print"))
+            let _0x47__0x46_pipeline_result = _0x6d_print
+            _0x47__0x46_pipeline_result
         }
         catch (error) {
-            let _0x46_error = error
-            _0x46_error
-            const _0x69_print = await _67lang.maybe_await(console.log("Caught error:"))
-            let _0x48__0x47_pipeline_result = _0x69_print
-            _0x48__0x47_pipeline_result
-            const _0x6b_error = _0x46_error
-            let _0x4b__0x4a_pipeline_result = _0x6b_error
-            const _0x6a_print = await _67lang.maybe_await(console.log(_0x4b__0x4a_pipeline_result))
-            let _0x4c__0x49_pipeline_result = _0x6a_print
-            _0x4c__0x49_pipeline_result
+            let _0x48_error = error
+            _0x48_error
+            const _0x6e_print = await _67lang.maybe_await(console.log("Caught error:"))
+            let _0x4a__0x49_pipeline_result = _0x6e_print
+            _0x4a__0x49_pipeline_result
+            const _0x70_error = _0x48_error
+            let _0x4d__0x4c_pipeline_result = _0x70_error
+            const _0x6f_print = await _67lang.maybe_await(console.log(_0x4d__0x4c_pipeline_result))
+            let _0x4e__0x4b_pipeline_result = _0x6f_print
+            _0x4e__0x4b_pipeline_result
         }
         finally {
-            const _0x6c_print = await _67lang.maybe_await(console.log("Finally block executed"))
-            let _0x4e__0x4d_pipeline_result = _0x6c_print
-            _0x4e__0x4d_pipeline_result
-            const _0x6d_print = await _67lang.maybe_await(console.log("Many statements"))
-            let _0x50__0x4f_pipeline_result = _0x6d_print
+            const _0x71_print = await _67lang.maybe_await(console.log("Finally block executed"))
+            let _0x50__0x4f_pipeline_result = _0x71_print
             _0x50__0x4f_pipeline_result
+            const _0x72_print = await _67lang.maybe_await(console.log("Many statements"))
+            let _0x52__0x51_pipeline_result = _0x72_print
+            _0x52__0x51_pipeline_result
         }
-        const _0x6e_print = await _67lang.maybe_await(console.log("Execution complete"))
-        let _0x52__0x51_pipeline_result = _0x6e_print
-        _0x52__0x51_pipeline_result
+        const _0x73_print = await _67lang.maybe_await(console.log("Execution complete"))
+        let _0x54__0x53_pipeline_result = _0x73_print
+        _0x54__0x53_pipeline_result
 
     } 
 })();

@@ -1,14 +1,34 @@
 globalThis._67lang = {
-    // TODO eliminating this one probably next thing
-    exists_inside: (inside, ...arr) => {
+    EXISTS_INSIDE_AS_KEY: Symbol("EXISTS_INSIDE_AS_KEY"),
+    EXISTS_INSIDE_AS_VALUE: Symbol("EXISTS_INSIDE_AS_VALUE"),
+    exists_inside: (inside, k_or_v, ...arr) => {
+        // TODO support for sets
         if (Array.isArray(inside)) {
             // array
-            return arr.every(v => inside.includes(v))
+            const is_valid_index = (v) => Number.isInteger(v) && v >= 0 && v < inside.length;
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => is_valid_index(v));
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => inside.includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         } else {
             // assume dict
-            return arr.every(v => v in inside)
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => v in inside);
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => Object.values(inside).includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         }
     },
+
+    // TODO should bind these in the language proper
+    has_keys: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_KEY, ...values),
+    has_values: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_VALUE, ...values),
+
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
@@ -98,124 +118,125 @@ void (async () => {
 
 
 
+
     } {
-        let _0x3e_fizz_divisor = 0
-        _0x3e_fizz_divisor
-        let _0x3f_buzz_divisor = 0
-        _0x3f_buzz_divisor
-        let _0x40_n = 0
-        _0x40_n
+        let _0x40_fizz_divisor = 0
+        _0x40_fizz_divisor
+        let _0x41_buzz_divisor = 0
+        _0x41_buzz_divisor
+        let _0x42_n = 0
+        _0x42_n
 
         {
-            const _0x92_stdin = await (_67lang.stdin())
-            let _0x42__0x41_pipeline_result = _0x92_stdin
-            let _0x43_input = _0x42__0x41_pipeline_result
-            _0x43_input
-            const _0x94_input = _0x43_input
-            const _0x93_split = String.prototype.split.call(_0x94_input, "\n")
-            let _0x45__0x44_pipeline_result = _0x93_split
-            let _0x46_input = _0x45__0x44_pipeline_result
-            _0x46_input
+            const _0x97_stdin = await (_67lang.stdin())
+            let _0x44__0x43_pipeline_result = _0x97_stdin
+            let _0x45_input = _0x44__0x43_pipeline_result
+            _0x45_input
+            const _0x99_input = _0x45_input
+            const _0x98_split = String.prototype.split.call(_0x99_input, "\n")
+            let _0x47__0x46_pipeline_result = _0x98_split
+            let _0x48_input = _0x47__0x46_pipeline_result
+            _0x48_input
 
-            const _0x96_input = _0x46_input
-            let _0x49__0x48_pipeline_result = _0x96_input
-            const _0x95__hash_ = _0x49__0x48_pipeline_result[0]
-            let _0x4a__0x47_pipeline_result = _0x95__hash_
-            _0x4a__0x47_pipeline_result
-            const _0x99__0x47_pipeline_result = _0x4a__0x47_pipeline_result
-            const _0x98_int_colon_parse = globalThis.parseInt(_0x99__0x47_pipeline_result)
-            const _0x97_fizz_divisor = (_0x3e_fizz_divisor = _0x98_int_colon_parse)
-            _0x97_fizz_divisor
-            const _0x9b_input = _0x46_input
-            let _0x4d__0x4c_pipeline_result = _0x9b_input
-            const _0x9a__hash_ = _0x4d__0x4c_pipeline_result[1]
-            let _0x4e__0x4b_pipeline_result = _0x9a__hash_
-            _0x4e__0x4b_pipeline_result
-            const _0x9e__0x4b_pipeline_result = _0x4e__0x4b_pipeline_result
-            const _0x9d_int_colon_parse = globalThis.parseInt(_0x9e__0x4b_pipeline_result)
-            const _0x9c_buzz_divisor = (_0x3f_buzz_divisor = _0x9d_int_colon_parse)
-            _0x9c_buzz_divisor
-            const _0xa0_input = _0x46_input
-            let _0x51__0x50_pipeline_result = _0xa0_input
-            const _0x9f__hash_ = _0x51__0x50_pipeline_result[2]
-            let _0x52__0x4f_pipeline_result = _0x9f__hash_
-            _0x52__0x4f_pipeline_result
-            const _0xa3__0x4f_pipeline_result = _0x52__0x4f_pipeline_result
-            const _0xa2_int_colon_parse = globalThis.parseInt(_0xa3__0x4f_pipeline_result)
-            const _0xa1_n = (_0x40_n = _0xa2_int_colon_parse)
-            _0xa1_n
+            const _0x9b_input = _0x48_input
+            let _0x4b__0x4a_pipeline_result = _0x9b_input
+            const _0x9a__hash_ = _0x4b__0x4a_pipeline_result[0]
+            let _0x4c__0x49_pipeline_result = _0x9a__hash_
+            _0x4c__0x49_pipeline_result
+            const _0x9e__0x49_pipeline_result = _0x4c__0x49_pipeline_result
+            const _0x9d_int_colon_parse = globalThis.parseInt(_0x9e__0x49_pipeline_result)
+            const _0x9c_fizz_divisor = (_0x40_fizz_divisor = _0x9d_int_colon_parse)
+            _0x9c_fizz_divisor
+            const _0xa0_input = _0x48_input
+            let _0x4f__0x4e_pipeline_result = _0xa0_input
+            const _0x9f__hash_ = _0x4f__0x4e_pipeline_result[1]
+            let _0x50__0x4d_pipeline_result = _0x9f__hash_
+            _0x50__0x4d_pipeline_result
+            const _0xa3__0x4d_pipeline_result = _0x50__0x4d_pipeline_result
+            const _0xa2_int_colon_parse = globalThis.parseInt(_0xa3__0x4d_pipeline_result)
+            const _0xa1_buzz_divisor = (_0x41_buzz_divisor = _0xa2_int_colon_parse)
+            _0xa1_buzz_divisor
+            const _0xa5_input = _0x48_input
+            let _0x53__0x52_pipeline_result = _0xa5_input
+            const _0xa4__hash_ = _0x53__0x52_pipeline_result[2]
+            let _0x54__0x51_pipeline_result = _0xa4__hash_
+            _0x54__0x51_pipeline_result
+            const _0xa8__0x51_pipeline_result = _0x54__0x51_pipeline_result
+            const _0xa7_int_colon_parse = globalThis.parseInt(_0xa8__0x51_pipeline_result)
+            const _0xa6_n = (_0x42_n = _0xa7_int_colon_parse)
+            _0xa6_n
         } 
-        let _0x53_i = 0
-        _0x53_i
+        let _0x55_i = 0
+        _0x55_i
         while(true) {
-            const _0xa5_i = _0x53_i
-            let _0x56__0x55_pipeline_result = _0xa5_i
-            const _0xa6_n = _0x40_n
-            let _0x58__0x57_pipeline_result = _0xa6_n
-            const _0xa4_nondesc = (_0x56__0x55_pipeline_result <= _0x58__0x57_pipeline_result)
-            let _0x59__0x54_pipeline_result = _0xa4_nondesc
-            if (!_0x59__0x54_pipeline_result) { break; }
+            const _0xaa_i = _0x55_i
+            let _0x58__0x57_pipeline_result = _0xaa_i
+            const _0xab_n = _0x42_n
+            let _0x5a__0x59_pipeline_result = _0xab_n
+            const _0xa9_nondesc = (_0x58__0x57_pipeline_result <= _0x5a__0x59_pipeline_result)
+            let _0x5b__0x56_pipeline_result = _0xa9_nondesc
+            if (!_0x5b__0x56_pipeline_result) { break; }
             {
-                let _0x5a_out = ""
-                _0x5a_out
-                const _0xa9_i = _0x53_i
-                let _0x5e__0x5d_pipeline_result = _0xa9_i
-                const _0xaa_fizz_divisor = _0x3e_fizz_divisor
-                let _0x60__0x5f_pipeline_result = _0xaa_fizz_divisor
-                const _0xa8_mod = (_0x5e__0x5d_pipeline_result % _0x60__0x5f_pipeline_result)
-                let _0x61__0x5c_pipeline_result = _0xa8_mod
-                const _0xa7_eq = (_0x61__0x5c_pipeline_result === 0)
-                let _0x62__0x5b_pipeline_result = _0xa7_eq
-                if (_0x62__0x5b_pipeline_result)
+                let _0x5c_out = ""
+                _0x5c_out
+                const _0xae_i = _0x55_i
+                let _0x60__0x5f_pipeline_result = _0xae_i
+                const _0xaf_fizz_divisor = _0x40_fizz_divisor
+                let _0x62__0x61_pipeline_result = _0xaf_fizz_divisor
+                const _0xad_mod = (_0x60__0x5f_pipeline_result % _0x62__0x61_pipeline_result)
+                let _0x63__0x5e_pipeline_result = _0xad_mod
+                const _0xac_eq = (_0x63__0x5e_pipeline_result === 0)
+                let _0x64__0x5d_pipeline_result = _0xac_eq
+                if (_0x64__0x5d_pipeline_result)
                 {
-                    const _0xad_out = _0x5a_out
-                    let _0x64__0x63_pipeline_result = _0xad_out
-                    const _0xac_concat = (_0x64__0x63_pipeline_result + "fizz")
-                    const _0xab_out = (_0x5a_out = _0xac_concat)
-                    _0xab_out
+                    const _0xb2_out = _0x5c_out
+                    let _0x66__0x65_pipeline_result = _0xb2_out
+                    const _0xb1_concat = (_0x66__0x65_pipeline_result + "fizz")
+                    const _0xb0_out = (_0x5c_out = _0xb1_concat)
+                    _0xb0_out
                 } 
-                const _0xb0_i = _0x53_i
-                let _0x68__0x67_pipeline_result = _0xb0_i
-                const _0xb1_buzz_divisor = _0x3f_buzz_divisor
-                let _0x6a__0x69_pipeline_result = _0xb1_buzz_divisor
-                const _0xaf_mod = (_0x68__0x67_pipeline_result % _0x6a__0x69_pipeline_result)
-                let _0x6b__0x66_pipeline_result = _0xaf_mod
-                const _0xae_eq = (_0x6b__0x66_pipeline_result === 0)
-                let _0x6c__0x65_pipeline_result = _0xae_eq
-                if (_0x6c__0x65_pipeline_result)
+                const _0xb5_i = _0x55_i
+                let _0x6a__0x69_pipeline_result = _0xb5_i
+                const _0xb6_buzz_divisor = _0x41_buzz_divisor
+                let _0x6c__0x6b_pipeline_result = _0xb6_buzz_divisor
+                const _0xb4_mod = (_0x6a__0x69_pipeline_result % _0x6c__0x6b_pipeline_result)
+                let _0x6d__0x68_pipeline_result = _0xb4_mod
+                const _0xb3_eq = (_0x6d__0x68_pipeline_result === 0)
+                let _0x6e__0x67_pipeline_result = _0xb3_eq
+                if (_0x6e__0x67_pipeline_result)
                 {
-                    const _0xb4_out = _0x5a_out
-                    let _0x6e__0x6d_pipeline_result = _0xb4_out
-                    const _0xb3_concat = (_0x6e__0x6d_pipeline_result + "buzz")
-                    const _0xb2_out = (_0x5a_out = _0xb3_concat)
-                    _0xb2_out
-                } 
-                const _0xb6_out = _0x5a_out
-                let _0x71__0x70_pipeline_result = _0xb6_out
-                const _0xb5_eq = (_0x71__0x70_pipeline_result === "")
-                let _0x72__0x6f_pipeline_result = _0xb5_eq
-                if (_0x72__0x6f_pipeline_result)
-                {
-                    const _0xba_i = _0x53_i
-                    const _0xb9_str = Number.prototype.toString.call(_0xba_i)
-                    let _0x74__0x73_pipeline_result = _0xb9_str
-                    const _0xb8_concat = ("" + _0x74__0x73_pipeline_result)
-                    const _0xb7_out = (_0x5a_out = _0xb8_concat)
+                    const _0xb9_out = _0x5c_out
+                    let _0x70__0x6f_pipeline_result = _0xb9_out
+                    const _0xb8_concat = (_0x70__0x6f_pipeline_result + "buzz")
+                    const _0xb7_out = (_0x5c_out = _0xb8_concat)
                     _0xb7_out
                 } 
-                const _0xbc_out = _0x5a_out
-                let _0x77__0x76_pipeline_result = _0xbc_out
-                const _0xbb_print = await _67lang.maybe_await(console.log(_0x77__0x76_pipeline_result))
-                let _0x78__0x75_pipeline_result = _0xbb_print
-                _0x78__0x75_pipeline_result
-                const _0xbf_i = _0x53_i
-                let _0x7c__0x7b_pipeline_result = _0xbf_i
-                const _0xbe_add = (_0x7c__0x7b_pipeline_result + 1)
-                let _0x7d__0x7a_pipeline_result = _0xbe_add
-                let _0x7e__fix_the_fucking_add_return_type = _0x7d__0x7a_pipeline_result
-                const _0xbd_i = (_0x53_i = _0x7e__fix_the_fucking_add_return_type)
-                let _0x7f__0x79_pipeline_result = _0xbd_i
-                _0x7f__0x79_pipeline_result
+                const _0xbb_out = _0x5c_out
+                let _0x73__0x72_pipeline_result = _0xbb_out
+                const _0xba_eq = (_0x73__0x72_pipeline_result === "")
+                let _0x74__0x71_pipeline_result = _0xba_eq
+                if (_0x74__0x71_pipeline_result)
+                {
+                    const _0xbf_i = _0x55_i
+                    const _0xbe_str = Number.prototype.toString.call(_0xbf_i)
+                    let _0x76__0x75_pipeline_result = _0xbe_str
+                    const _0xbd_concat = ("" + _0x76__0x75_pipeline_result)
+                    const _0xbc_out = (_0x5c_out = _0xbd_concat)
+                    _0xbc_out
+                } 
+                const _0xc1_out = _0x5c_out
+                let _0x79__0x78_pipeline_result = _0xc1_out
+                const _0xc0_print = await _67lang.maybe_await(console.log(_0x79__0x78_pipeline_result))
+                let _0x7a__0x77_pipeline_result = _0xc0_print
+                _0x7a__0x77_pipeline_result
+                const _0xc4_i = _0x55_i
+                let _0x7e__0x7d_pipeline_result = _0xc4_i
+                const _0xc3_add = (_0x7e__0x7d_pipeline_result + 1)
+                let _0x7f__0x7c_pipeline_result = _0xc3_add
+                let _0x80__fix_the_fucking_add_return_type = _0x7f__0x7c_pipeline_result
+                const _0xc2_i = (_0x55_i = _0x80__fix_the_fucking_add_return_type)
+                let _0x81__0x7b_pipeline_result = _0xc2_i
+                _0x81__0x7b_pipeline_result
             } }
     } 
 })();

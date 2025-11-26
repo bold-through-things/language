@@ -1,6 +1,6 @@
 a rough roadmap the way things stand.
 
-- clean up the mess of definitions for the types
+- clean up the mess of definitions for the types (it's kinda mostly done)
 - remove the `if` instead use `match` and `when`
   - keep something like `ternary` though
 - remove the overload for `do` instead begin pipelines with `pipe` or some
@@ -10,5 +10,5 @@ a rough roadmap the way things stand.
 - use tags for tests
 - type checking must be done within a single step
 - emit TypeScript to help debugging speed
-- remove the `scope(...)` since it's redundant for a while
 - eliminate `exists` `inside`
+- support varargs

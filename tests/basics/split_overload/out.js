@@ -1,14 +1,34 @@
 globalThis._67lang = {
-    // TODO eliminating this one probably next thing
-    exists_inside: (inside, ...arr) => {
+    EXISTS_INSIDE_AS_KEY: Symbol("EXISTS_INSIDE_AS_KEY"),
+    EXISTS_INSIDE_AS_VALUE: Symbol("EXISTS_INSIDE_AS_VALUE"),
+    exists_inside: (inside, k_or_v, ...arr) => {
+        // TODO support for sets
         if (Array.isArray(inside)) {
             // array
-            return arr.every(v => inside.includes(v))
+            const is_valid_index = (v) => Number.isInteger(v) && v >= 0 && v < inside.length;
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => is_valid_index(v));
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => inside.includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         } else {
             // assume dict
-            return arr.every(v => v in inside)
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => v in inside);
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => Object.values(inside).includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         }
     },
+
+    // TODO should bind these in the language proper
+    has_keys: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_KEY, ...values),
+    has_values: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_VALUE, ...values),
+
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
@@ -98,22 +118,23 @@ void (async () => {
 
 
 
+
     } {
-        let _0x3e_str = "testing"
-        _0x3e_str
+        let _0x40_str = "testing"
+        _0x40_str
 
-        const _0x5b_str = _0x3e_str
-        const _0x5a_split = String.prototype.split.call(_0x5b_str, "t")
-        let _0x41__0x40_pipeline_result = _0x5a_split
-        const _0x59_print = await _67lang.maybe_await(console.log(_0x41__0x40_pipeline_result))
-        let _0x42__0x3f_pipeline_result = _0x59_print
-        _0x42__0x3f_pipeline_result
+        const _0x60_str = _0x40_str
+        const _0x5f_split = String.prototype.split.call(_0x60_str, "t")
+        let _0x43__0x42_pipeline_result = _0x5f_split
+        const _0x5e_print = await _67lang.maybe_await(console.log(_0x43__0x42_pipeline_result))
+        let _0x44__0x41_pipeline_result = _0x5e_print
+        _0x44__0x41_pipeline_result
 
-        const _0x5e_str = _0x3e_str
-        const _0x5d_split = String.prototype.split.call(_0x5e_str, /t/)
-        let _0x45__0x44_pipeline_result = _0x5d_split
-        const _0x5c_print = await _67lang.maybe_await(console.log(_0x45__0x44_pipeline_result))
-        let _0x46__0x43_pipeline_result = _0x5c_print
-        _0x46__0x43_pipeline_result
+        const _0x63_str = _0x40_str
+        const _0x62_split = String.prototype.split.call(_0x63_str, /t/)
+        let _0x47__0x46_pipeline_result = _0x62_split
+        const _0x61_print = await _67lang.maybe_await(console.log(_0x47__0x46_pipeline_result))
+        let _0x48__0x45_pipeline_result = _0x61_print
+        _0x48__0x45_pipeline_result
     } 
 })();

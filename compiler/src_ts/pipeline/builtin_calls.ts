@@ -3,12 +3,9 @@
 import {
   Call_convention,
   FieldCall,
-  PrototypeCall,
   DirectCall,
-  LocalAccessCall,
   NaryOperatorCall,
   ChainedComparisonCall,
-  NewCall,
   IndexAccessCall,
   CallableInvokeCall,
   TypeDemand,
@@ -20,15 +17,13 @@ import {
   TypeVariable,
   ComplexType,
   INT,
-  STRING,
-  DICT,
   SET,
   VOID,
   BOOL,
   WILDCARD,
-  FLOAT,
   TYPE_REGISTRY,
 } from "../compiler_types/proper_types.ts";
+import { not_null } from "../utils/utils.ts";
 
 // Built-ins map
 export const BUILTIN_CALLS: Record<string, Call_convention[]> = Object.create(null);
@@ -232,4 +227,22 @@ BUILTIN_CALLS["set"] = new Array(MAX_NARY).fill(0).map((_, i) =>
   new DirectCall("new_set", "_67lang", new Array(i).fill(
     new TypeVariable("T"),
   ), SET, Async_mode.SYNC),
+);
+
+BUILTIN_CALLS["has_keys"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
+  ([["list", TYPE_REGISTRY.get_type("int")], ["dict", new TypeVariable("K")]] as [string, Type][]).map(([container_type, item_type]) => 
+    new DirectCall("has_keys", "_67lang", [
+      not_null(TYPE_REGISTRY.get_type(container_type)),
+      ...new Array(i).fill(item_type),
+    ], BOOL, Async_mode.SYNC),
+  )
+);
+
+BUILTIN_CALLS["has_values"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
+  ([["list", new TypeVariable("V")], ["dict", new TypeVariable("V")]] as [string, Type][]).map(([container_type, item_type]) => 
+    new DirectCall("has_values", "_67lang", [
+      not_null(TYPE_REGISTRY.get_type(container_type)),
+      ...new Array(i).fill(item_type),
+    ], BOOL, Async_mode.SYNC),
+  )
 );

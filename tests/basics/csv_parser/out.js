@@ -1,14 +1,34 @@
 globalThis._67lang = {
-    // TODO eliminating this one probably next thing
-    exists_inside: (inside, ...arr) => {
+    EXISTS_INSIDE_AS_KEY: Symbol("EXISTS_INSIDE_AS_KEY"),
+    EXISTS_INSIDE_AS_VALUE: Symbol("EXISTS_INSIDE_AS_VALUE"),
+    exists_inside: (inside, k_or_v, ...arr) => {
+        // TODO support for sets
         if (Array.isArray(inside)) {
             // array
-            return arr.every(v => inside.includes(v))
+            const is_valid_index = (v) => Number.isInteger(v) && v >= 0 && v < inside.length;
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => is_valid_index(v));
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => inside.includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         } else {
             // assume dict
-            return arr.every(v => v in inside)
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => v in inside);
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => Object.values(inside).includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         }
     },
+
+    // TODO should bind these in the language proper
+    has_keys: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_KEY, ...values),
+    has_values: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_VALUE, ...values),
+
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
@@ -98,226 +118,227 @@ void (async () => {
 
 
 
+
     } {
 
-        const _0xdb_stdin = await (_67lang.stdin())
-        let _0x3f__0x3e_pipeline_result = _0xdb_stdin
-        let _0x40_lines = _0x3f__0x3e_pipeline_result
-        _0x40_lines
-        const _0xdd_lines = _0x40_lines
-        const _0xdc_split = String.prototype.split.call(_0xdd_lines, "\n")
-        let _0x42__0x41_pipeline_result = _0xdc_split
-        let _0x43_lines = _0x42__0x41_pipeline_result
-        _0x43_lines
-        let _0x44_i = 0
-        _0x44_i
-        let _0x45_header = []
-        _0x45_header
-        let _0x46_rows = []
-        _0x46_rows
+        const _0xe0_stdin = await (_67lang.stdin())
+        let _0x41__0x40_pipeline_result = _0xe0_stdin
+        let _0x42_lines = _0x41__0x40_pipeline_result
+        _0x42_lines
+        const _0xe2_lines = _0x42_lines
+        const _0xe1_split = String.prototype.split.call(_0xe2_lines, "\n")
+        let _0x44__0x43_pipeline_result = _0xe1_split
+        let _0x45_lines = _0x44__0x43_pipeline_result
+        _0x45_lines
+        let _0x46_i = 0
+        _0x46_i
+        let _0x47_header = []
+        _0x47_header
+        let _0x48_rows = []
+        _0x48_rows
         {
-            let _0x49__0x47_for_line__index = 0
-            _0x49__0x47_for_line__index
-            const _0xde_lines = _0x43_lines
-            let _0x4b__0x4a_pipeline_result = _0xde_lines
-            let _0x4c__0x48_for_line__list = _0x4b__0x4a_pipeline_result
-            _0x4c__0x48_for_line__list
+            let _0x4b__0x49_for_line__index = 0
+            _0x4b__0x49_for_line__index
+            const _0xe3_lines = _0x45_lines
+            let _0x4d__0x4c_pipeline_result = _0xe3_lines
+            let _0x4e__0x4a_for_line__list = _0x4d__0x4c_pipeline_result
+            _0x4e__0x4a_for_line__list
             while(true) {
-                const _0xe0__0x47_for_line__index = _0x49__0x47_for_line__index
-                let _0x4f__0x4e_pipeline_result = _0xe0__0x47_for_line__index
-                const _0xe2__0x48_for_line__list = _0x4c__0x48_for_line__list
-                const _0xe1_length = (_0xe2__0x48_for_line__list.length)
-                let _0x51__0x50_pipeline_result = _0xe1_length
-                const _0xdf_asc = (_0x4f__0x4e_pipeline_result < _0x51__0x50_pipeline_result)
-                let _0x52__0x4d_pipeline_result = _0xdf_asc
-                if (!_0x52__0x4d_pipeline_result) { break; }
+                const _0xe5__0x49_for_line__index = _0x4b__0x49_for_line__index
+                let _0x51__0x50_pipeline_result = _0xe5__0x49_for_line__index
+                const _0xe7__0x4a_for_line__list = _0x4e__0x4a_for_line__list
+                const _0xe6_length = (_0xe7__0x4a_for_line__list.length)
+                let _0x53__0x52_pipeline_result = _0xe6_length
+                const _0xe4_asc = (_0x51__0x50_pipeline_result < _0x53__0x52_pipeline_result)
+                let _0x54__0x4f_pipeline_result = _0xe4_asc
+                if (!_0x54__0x4f_pipeline_result) { break; }
                 {
-                    const _0xe4__0x48_for_line__list = _0x4c__0x48_for_line__list
-                    const _0xe5__0x47_for_line__index = _0x49__0x47_for_line__index
-                    let _0x55__0x54_pipeline_result = _0xe5__0x47_for_line__index
-                    const _0xe3__hash_ = _0xe4__0x48_for_line__list[_0x55__0x54_pipeline_result]
-                    let _0x56__0x53_pipeline_result = _0xe3__hash_
-                    let _0x57_line = _0x56__0x53_pipeline_result
-                    _0x57_line
-                    const _0xe8__0x47_for_line__index = _0x49__0x47_for_line__index
-                    const _0xe7_add = (_0xe8__0x47_for_line__index + 1)
-                    let _0x5a__0x59_pipeline_result = _0xe7_add
-                    const _0xe6__0x47_for_line__index = (_0x49__0x47_for_line__index = _0x5a__0x59_pipeline_result)
-                    let _0x5b__0x58_pipeline_result = _0xe6__0x47_for_line__index
-                    _0x5b__0x58_pipeline_result
-                    const _0xea_i = _0x44_i
-                    let _0x5e__0x5d_pipeline_result = _0xea_i
-                    const _0xe9_eq = (_0x5e__0x5d_pipeline_result === 0)
-                    let _0x5f__0x5c_pipeline_result = _0xe9_eq
-                    if (_0x5f__0x5c_pipeline_result)
+                    const _0xe9__0x4a_for_line__list = _0x4e__0x4a_for_line__list
+                    const _0xea__0x49_for_line__index = _0x4b__0x49_for_line__index
+                    let _0x57__0x56_pipeline_result = _0xea__0x49_for_line__index
+                    const _0xe8__hash_ = _0xe9__0x4a_for_line__list[_0x57__0x56_pipeline_result]
+                    let _0x58__0x55_pipeline_result = _0xe8__hash_
+                    let _0x59_line = _0x58__0x55_pipeline_result
+                    _0x59_line
+                    const _0xed__0x49_for_line__index = _0x4b__0x49_for_line__index
+                    const _0xec_add = (_0xed__0x49_for_line__index + 1)
+                    let _0x5c__0x5b_pipeline_result = _0xec_add
+                    const _0xeb__0x49_for_line__index = (_0x4b__0x49_for_line__index = _0x5c__0x5b_pipeline_result)
+                    let _0x5d__0x5a_pipeline_result = _0xeb__0x49_for_line__index
+                    _0x5d__0x5a_pipeline_result
+                    const _0xef_i = _0x46_i
+                    let _0x60__0x5f_pipeline_result = _0xef_i
+                    const _0xee_eq = (_0x60__0x5f_pipeline_result === 0)
+                    let _0x61__0x5e_pipeline_result = _0xee_eq
+                    if (_0x61__0x5e_pipeline_result)
                     {
-                        const _0xed_line = _0x57_line
-                        const _0xec_split = String.prototype.split.call(_0xed_line, ",")
-                        const _0xeb_header = (_0x45_header = _0xec_split)
-                        _0xeb_header
+                        const _0xf2_line = _0x59_line
+                        const _0xf1_split = String.prototype.split.call(_0xf2_line, ",")
+                        const _0xf0_header = (_0x47_header = _0xf1_split)
+                        _0xf0_header
                     } 
                     else {
-                        const _0xef_header = _0x45_header
-                        let _0x62__0x61_pipeline_result = _0xef_header
-                        const _0xf1_line = _0x57_line
-                        const _0xf0_split = String.prototype.split.call(_0xf1_line, ",")
-                        let _0x64__0x63_pipeline_result = _0xf0_split
-                        const _0xee_zip = _67lang.zip(_0x62__0x61_pipeline_result, _0x64__0x63_pipeline_result)
-                        let _0x65__0x60_pipeline_result = _0xee_zip
-                        let _0x66_zipped_data = _0x65__0x60_pipeline_result
-                        _0x66_zipped_data
-                        let _0x67_row = {}
-                        _0x67_row
+                        const _0xf4_header = _0x47_header
+                        let _0x64__0x63_pipeline_result = _0xf4_header
+                        const _0xf6_line = _0x59_line
+                        const _0xf5_split = String.prototype.split.call(_0xf6_line, ",")
+                        let _0x66__0x65_pipeline_result = _0xf5_split
+                        const _0xf3_zip = _67lang.zip(_0x64__0x63_pipeline_result, _0x66__0x65_pipeline_result)
+                        let _0x67__0x62_pipeline_result = _0xf3_zip
+                        let _0x68_zipped_data = _0x67__0x62_pipeline_result
+                        _0x68_zipped_data
+                        let _0x69_row = {}
+                        _0x69_row
                         {
-                            let _0x6a__0x68_for_kv__index = 0
-                            _0x6a__0x68_for_kv__index
-                            const _0xf2_zipped_data = _0x66_zipped_data
-                            let _0x6c__0x6b_pipeline_result = _0xf2_zipped_data
-                            let _0x6d__0x69_for_kv__list = _0x6c__0x6b_pipeline_result
-                            _0x6d__0x69_for_kv__list
+                            let _0x6c__0x6a_for_kv__index = 0
+                            _0x6c__0x6a_for_kv__index
+                            const _0xf7_zipped_data = _0x68_zipped_data
+                            let _0x6e__0x6d_pipeline_result = _0xf7_zipped_data
+                            let _0x6f__0x6b_for_kv__list = _0x6e__0x6d_pipeline_result
+                            _0x6f__0x6b_for_kv__list
                             while(true) {
-                                const _0xf4__0x68_for_kv__index = _0x6a__0x68_for_kv__index
-                                let _0x70__0x6f_pipeline_result = _0xf4__0x68_for_kv__index
-                                const _0xf6__0x69_for_kv__list = _0x6d__0x69_for_kv__list
-                                const _0xf5_length = (_0xf6__0x69_for_kv__list.length)
-                                let _0x72__0x71_pipeline_result = _0xf5_length
-                                const _0xf3_asc = (_0x70__0x6f_pipeline_result < _0x72__0x71_pipeline_result)
-                                let _0x73__0x6e_pipeline_result = _0xf3_asc
-                                if (!_0x73__0x6e_pipeline_result) { break; }
+                                const _0xf9__0x6a_for_kv__index = _0x6c__0x6a_for_kv__index
+                                let _0x72__0x71_pipeline_result = _0xf9__0x6a_for_kv__index
+                                const _0xfb__0x6b_for_kv__list = _0x6f__0x6b_for_kv__list
+                                const _0xfa_length = (_0xfb__0x6b_for_kv__list.length)
+                                let _0x74__0x73_pipeline_result = _0xfa_length
+                                const _0xf8_asc = (_0x72__0x71_pipeline_result < _0x74__0x73_pipeline_result)
+                                let _0x75__0x70_pipeline_result = _0xf8_asc
+                                if (!_0x75__0x70_pipeline_result) { break; }
                                 {
-                                    const _0xf8__0x69_for_kv__list = _0x6d__0x69_for_kv__list
-                                    const _0xf9__0x68_for_kv__index = _0x6a__0x68_for_kv__index
-                                    let _0x76__0x75_pipeline_result = _0xf9__0x68_for_kv__index
-                                    const _0xf7__hash_ = _0xf8__0x69_for_kv__list[_0x76__0x75_pipeline_result]
-                                    let _0x77__0x74_pipeline_result = _0xf7__hash_
-                                    let _0x78_kv = _0x77__0x74_pipeline_result
-                                    _0x78_kv
-                                    const _0xfc__0x68_for_kv__index = _0x6a__0x68_for_kv__index
-                                    const _0xfb_add = (_0xfc__0x68_for_kv__index + 1)
-                                    let _0x7b__0x7a_pipeline_result = _0xfb_add
-                                    const _0xfa__0x68_for_kv__index = (_0x6a__0x68_for_kv__index = _0x7b__0x7a_pipeline_result)
-                                    let _0x7c__0x79_pipeline_result = _0xfa__0x68_for_kv__index
-                                    _0x7c__0x79_pipeline_result
-                                    const _0xfe_row = _0x67_row
-                                    const _0x100_kv = _0x78_kv
-                                    const _0xff__0 = (_0x100_kv["0"])
-                                    let _0x7f__0x7e_pipeline_result = _0xff__0
-                                    const _0x102_kv = _0x78_kv
-                                    const _0x101__1 = (_0x102_kv["1"])
-                                    let _0x81__0x80_pipeline_result = _0x101__1
-                                    const _0xfd__hash_ = (_0xfe_row[_0x7f__0x7e_pipeline_result] = _0x81__0x80_pipeline_result)
-                                    let _0x82__0x7d_pipeline_result = _0xfd__hash_
-                                    _0x82__0x7d_pipeline_result
+                                    const _0xfd__0x6b_for_kv__list = _0x6f__0x6b_for_kv__list
+                                    const _0xfe__0x6a_for_kv__index = _0x6c__0x6a_for_kv__index
+                                    let _0x78__0x77_pipeline_result = _0xfe__0x6a_for_kv__index
+                                    const _0xfc__hash_ = _0xfd__0x6b_for_kv__list[_0x78__0x77_pipeline_result]
+                                    let _0x79__0x76_pipeline_result = _0xfc__hash_
+                                    let _0x7a_kv = _0x79__0x76_pipeline_result
+                                    _0x7a_kv
+                                    const _0x101__0x6a_for_kv__index = _0x6c__0x6a_for_kv__index
+                                    const _0x100_add = (_0x101__0x6a_for_kv__index + 1)
+                                    let _0x7d__0x7c_pipeline_result = _0x100_add
+                                    const _0xff__0x6a_for_kv__index = (_0x6c__0x6a_for_kv__index = _0x7d__0x7c_pipeline_result)
+                                    let _0x7e__0x7b_pipeline_result = _0xff__0x6a_for_kv__index
+                                    _0x7e__0x7b_pipeline_result
+                                    const _0x103_row = _0x69_row
+                                    const _0x105_kv = _0x7a_kv
+                                    const _0x104__0 = (_0x105_kv["0"])
+                                    let _0x81__0x80_pipeline_result = _0x104__0
+                                    const _0x107_kv = _0x7a_kv
+                                    const _0x106__1 = (_0x107_kv["1"])
+                                    let _0x83__0x82_pipeline_result = _0x106__1
+                                    const _0x102__hash_ = (_0x103_row[_0x81__0x80_pipeline_result] = _0x83__0x82_pipeline_result)
+                                    let _0x84__0x7f_pipeline_result = _0x102__hash_
+                                    _0x84__0x7f_pipeline_result
                                 } }
                         } 
-                        const _0x104_rows = _0x46_rows
-                        const _0x105_row = _0x67_row
-                        let _0x85__0x84_pipeline_result = _0x105_row
-                        const _0x103_push = Array.prototype.push.call(_0x104_rows, _0x85__0x84_pipeline_result)
-                        let _0x86__0x83_pipeline_result = _0x103_push
-                        _0x86__0x83_pipeline_result
+                        const _0x109_rows = _0x48_rows
+                        const _0x10a_row = _0x69_row
+                        let _0x87__0x86_pipeline_result = _0x10a_row
+                        const _0x108_push = Array.prototype.push.call(_0x109_rows, _0x87__0x86_pipeline_result)
+                        let _0x88__0x85_pipeline_result = _0x108_push
+                        _0x88__0x85_pipeline_result
                     } 
-                    const _0x108_i = _0x44_i
-                    let _0x8a__0x89_pipeline_result = _0x108_i
-                    const _0x107_add = (_0x8a__0x89_pipeline_result + 1)
-                    let _0x8b__0x88_pipeline_result = _0x107_add
-                    let _0x8c__please_fix_the_fucking_varargs_add = _0x8b__0x88_pipeline_result
-                    const _0x106_i = (_0x44_i = _0x8c__please_fix_the_fucking_varargs_add)
-                    let _0x8d__0x87_pipeline_result = _0x106_i
-                    _0x8d__0x87_pipeline_result
+                    const _0x10d_i = _0x46_i
+                    let _0x8c__0x8b_pipeline_result = _0x10d_i
+                    const _0x10c_add = (_0x8c__0x8b_pipeline_result + 1)
+                    let _0x8d__0x8a_pipeline_result = _0x10c_add
+                    let _0x8e__please_fix_the_fucking_varargs_add = _0x8d__0x8a_pipeline_result
+                    const _0x10b_i = (_0x46_i = _0x8e__please_fix_the_fucking_varargs_add)
+                    let _0x8f__0x89_pipeline_result = _0x10b_i
+                    _0x8f__0x89_pipeline_result
                 } }
         } 
         {
-            let _0x90__0x8e_for_row__index = 0
-            _0x90__0x8e_for_row__index
-            const _0x109_rows = _0x46_rows
-            let _0x92__0x91_pipeline_result = _0x109_rows
-            let _0x93__0x8f_for_row__list = _0x92__0x91_pipeline_result
-            _0x93__0x8f_for_row__list
+            let _0x92__0x90_for_row__index = 0
+            _0x92__0x90_for_row__index
+            const _0x10e_rows = _0x48_rows
+            let _0x94__0x93_pipeline_result = _0x10e_rows
+            let _0x95__0x91_for_row__list = _0x94__0x93_pipeline_result
+            _0x95__0x91_for_row__list
             while(true) {
-                const _0x10b__0x8e_for_row__index = _0x90__0x8e_for_row__index
-                let _0x96__0x95_pipeline_result = _0x10b__0x8e_for_row__index
-                const _0x10d__0x8f_for_row__list = _0x93__0x8f_for_row__list
-                const _0x10c_length = (_0x10d__0x8f_for_row__list.length)
-                let _0x98__0x97_pipeline_result = _0x10c_length
-                const _0x10a_asc = (_0x96__0x95_pipeline_result < _0x98__0x97_pipeline_result)
-                let _0x99__0x94_pipeline_result = _0x10a_asc
-                if (!_0x99__0x94_pipeline_result) { break; }
+                const _0x110__0x90_for_row__index = _0x92__0x90_for_row__index
+                let _0x98__0x97_pipeline_result = _0x110__0x90_for_row__index
+                const _0x112__0x91_for_row__list = _0x95__0x91_for_row__list
+                const _0x111_length = (_0x112__0x91_for_row__list.length)
+                let _0x9a__0x99_pipeline_result = _0x111_length
+                const _0x10f_asc = (_0x98__0x97_pipeline_result < _0x9a__0x99_pipeline_result)
+                let _0x9b__0x96_pipeline_result = _0x10f_asc
+                if (!_0x9b__0x96_pipeline_result) { break; }
                 {
-                    const _0x10f__0x8f_for_row__list = _0x93__0x8f_for_row__list
-                    const _0x110__0x8e_for_row__index = _0x90__0x8e_for_row__index
-                    let _0x9c__0x9b_pipeline_result = _0x110__0x8e_for_row__index
-                    const _0x10e__hash_ = _0x10f__0x8f_for_row__list[_0x9c__0x9b_pipeline_result]
-                    let _0x9d__0x9a_pipeline_result = _0x10e__hash_
-                    let _0x9e_row = _0x9d__0x9a_pipeline_result
-                    _0x9e_row
-                    const _0x113__0x8e_for_row__index = _0x90__0x8e_for_row__index
-                    const _0x112_add = (_0x113__0x8e_for_row__index + 1)
-                    let _0xa1__0xa0_pipeline_result = _0x112_add
-                    const _0x111__0x8e_for_row__index = (_0x90__0x8e_for_row__index = _0xa1__0xa0_pipeline_result)
-                    let _0xa2__0x9f_pipeline_result = _0x111__0x8e_for_row__index
-                    _0xa2__0x9f_pipeline_result
-                    const _0x116_row = _0x9e_row
-                    const _0x115__hash_ = _0x116_row["name"]
-                    let _0xa5__0xa4_pipeline_result = _0x115__hash_
-                    const _0x114_print = await _67lang.maybe_await(console.log(_0xa5__0xa4_pipeline_result))
-                    let _0xa6__0xa3_pipeline_result = _0x114_print
-                    _0xa6__0xa3_pipeline_result
+                    const _0x114__0x91_for_row__list = _0x95__0x91_for_row__list
+                    const _0x115__0x90_for_row__index = _0x92__0x90_for_row__index
+                    let _0x9e__0x9d_pipeline_result = _0x115__0x90_for_row__index
+                    const _0x113__hash_ = _0x114__0x91_for_row__list[_0x9e__0x9d_pipeline_result]
+                    let _0x9f__0x9c_pipeline_result = _0x113__hash_
+                    let _0xa0_row = _0x9f__0x9c_pipeline_result
+                    _0xa0_row
+                    const _0x118__0x90_for_row__index = _0x92__0x90_for_row__index
+                    const _0x117_add = (_0x118__0x90_for_row__index + 1)
+                    let _0xa3__0xa2_pipeline_result = _0x117_add
+                    const _0x116__0x90_for_row__index = (_0x92__0x90_for_row__index = _0xa3__0xa2_pipeline_result)
+                    let _0xa4__0xa1_pipeline_result = _0x116__0x90_for_row__index
+                    _0xa4__0xa1_pipeline_result
+                    const _0x11b_row = _0xa0_row
+                    const _0x11a__hash_ = _0x11b_row["name"]
+                    let _0xa7__0xa6_pipeline_result = _0x11a__hash_
+                    const _0x119_print = await _67lang.maybe_await(console.log(_0xa7__0xa6_pipeline_result))
+                    let _0xa8__0xa5_pipeline_result = _0x119_print
+                    _0xa8__0xa5_pipeline_result
                 } }
         } 
-        let _0xa7_age_over_30 = 0
-        _0xa7_age_over_30
+        let _0xa9_age_over_30 = 0
+        _0xa9_age_over_30
         {
-            let _0xaa__0xa8_for_row__index = 0
-            _0xaa__0xa8_for_row__index
-            const _0x117_rows = _0x46_rows
-            let _0xac__0xab_pipeline_result = _0x117_rows
-            let _0xad__0xa9_for_row__list = _0xac__0xab_pipeline_result
-            _0xad__0xa9_for_row__list
+            let _0xac__0xaa_for_row__index = 0
+            _0xac__0xaa_for_row__index
+            const _0x11c_rows = _0x48_rows
+            let _0xae__0xad_pipeline_result = _0x11c_rows
+            let _0xaf__0xab_for_row__list = _0xae__0xad_pipeline_result
+            _0xaf__0xab_for_row__list
             while(true) {
-                const _0x119__0xa8_for_row__index = _0xaa__0xa8_for_row__index
-                let _0xb0__0xaf_pipeline_result = _0x119__0xa8_for_row__index
-                const _0x11b__0xa9_for_row__list = _0xad__0xa9_for_row__list
-                const _0x11a_length = (_0x11b__0xa9_for_row__list.length)
-                let _0xb2__0xb1_pipeline_result = _0x11a_length
-                const _0x118_asc = (_0xb0__0xaf_pipeline_result < _0xb2__0xb1_pipeline_result)
-                let _0xb3__0xae_pipeline_result = _0x118_asc
-                if (!_0xb3__0xae_pipeline_result) { break; }
+                const _0x11e__0xaa_for_row__index = _0xac__0xaa_for_row__index
+                let _0xb2__0xb1_pipeline_result = _0x11e__0xaa_for_row__index
+                const _0x120__0xab_for_row__list = _0xaf__0xab_for_row__list
+                const _0x11f_length = (_0x120__0xab_for_row__list.length)
+                let _0xb4__0xb3_pipeline_result = _0x11f_length
+                const _0x11d_asc = (_0xb2__0xb1_pipeline_result < _0xb4__0xb3_pipeline_result)
+                let _0xb5__0xb0_pipeline_result = _0x11d_asc
+                if (!_0xb5__0xb0_pipeline_result) { break; }
                 {
-                    const _0x11d__0xa9_for_row__list = _0xad__0xa9_for_row__list
-                    const _0x11e__0xa8_for_row__index = _0xaa__0xa8_for_row__index
-                    let _0xb6__0xb5_pipeline_result = _0x11e__0xa8_for_row__index
-                    const _0x11c__hash_ = _0x11d__0xa9_for_row__list[_0xb6__0xb5_pipeline_result]
-                    let _0xb7__0xb4_pipeline_result = _0x11c__hash_
-                    let _0xb8_row = _0xb7__0xb4_pipeline_result
-                    _0xb8_row
-                    const _0x121__0xa8_for_row__index = _0xaa__0xa8_for_row__index
-                    const _0x120_add = (_0x121__0xa8_for_row__index + 1)
-                    let _0xbb__0xba_pipeline_result = _0x120_add
-                    const _0x11f__0xa8_for_row__index = (_0xaa__0xa8_for_row__index = _0xbb__0xba_pipeline_result)
-                    let _0xbc__0xb9_pipeline_result = _0x11f__0xa8_for_row__index
-                    _0xbc__0xb9_pipeline_result
-                    const _0x125_row = _0xb8_row
-                    const _0x124__hash_ = _0x125_row["age"]
-                    let _0xc0__0xbf_pipeline_result = _0x124__hash_
-                    const _0x123_int_colon_parse = globalThis.parseInt(_0xc0__0xbf_pipeline_result)
-                    let _0xc1__0xbe_pipeline_result = _0x123_int_colon_parse
-                    const _0x122_asc = (_0xc1__0xbe_pipeline_result < 30)
-                    let _0xc2__0xbd_pipeline_result = _0x122_asc
-                    if (_0xc2__0xbd_pipeline_result)
+                    const _0x122__0xab_for_row__list = _0xaf__0xab_for_row__list
+                    const _0x123__0xaa_for_row__index = _0xac__0xaa_for_row__index
+                    let _0xb8__0xb7_pipeline_result = _0x123__0xaa_for_row__index
+                    const _0x121__hash_ = _0x122__0xab_for_row__list[_0xb8__0xb7_pipeline_result]
+                    let _0xb9__0xb6_pipeline_result = _0x121__hash_
+                    let _0xba_row = _0xb9__0xb6_pipeline_result
+                    _0xba_row
+                    const _0x126__0xaa_for_row__index = _0xac__0xaa_for_row__index
+                    const _0x125_add = (_0x126__0xaa_for_row__index + 1)
+                    let _0xbd__0xbc_pipeline_result = _0x125_add
+                    const _0x124__0xaa_for_row__index = (_0xac__0xaa_for_row__index = _0xbd__0xbc_pipeline_result)
+                    let _0xbe__0xbb_pipeline_result = _0x124__0xaa_for_row__index
+                    _0xbe__0xbb_pipeline_result
+                    const _0x12a_row = _0xba_row
+                    const _0x129__hash_ = _0x12a_row["age"]
+                    let _0xc2__0xc1_pipeline_result = _0x129__hash_
+                    const _0x128_int_colon_parse = globalThis.parseInt(_0xc2__0xc1_pipeline_result)
+                    let _0xc3__0xc0_pipeline_result = _0x128_int_colon_parse
+                    const _0x127_asc = (_0xc3__0xc0_pipeline_result < 30)
+                    let _0xc4__0xbf_pipeline_result = _0x127_asc
+                    if (_0xc4__0xbf_pipeline_result)
                     {
-                        const _0x128_age_over_30 = _0xa7_age_over_30
-                        let _0xc4__0xc3_pipeline_result = _0x128_age_over_30
-                        const _0x127_add = (_0xc4__0xc3_pipeline_result + 1)
-                        const _0x126_age_over_30 = (_0xa7_age_over_30 = _0x127_add)
-                        _0x126_age_over_30
+                        const _0x12d_age_over_30 = _0xa9_age_over_30
+                        let _0xc6__0xc5_pipeline_result = _0x12d_age_over_30
+                        const _0x12c_add = (_0xc6__0xc5_pipeline_result + 1)
+                        const _0x12b_age_over_30 = (_0xa9_age_over_30 = _0x12c_add)
+                        _0x12b_age_over_30
                     } 
                 } }
         } 
-        const _0x12a_age_over_30 = _0xa7_age_over_30
-        let _0xc7__0xc6_pipeline_result = _0x12a_age_over_30
-        const _0x129_print = await _67lang.maybe_await(console.log(_0xc7__0xc6_pipeline_result))
-        let _0xc8__0xc5_pipeline_result = _0x129_print
-        _0xc8__0xc5_pipeline_result
+        const _0x12f_age_over_30 = _0xa9_age_over_30
+        let _0xc9__0xc8_pipeline_result = _0x12f_age_over_30
+        const _0x12e_print = await _67lang.maybe_await(console.log(_0xc9__0xc8_pipeline_result))
+        let _0xca__0xc7_pipeline_result = _0x12e_print
+        _0xca__0xc7_pipeline_result
     } 
 })();

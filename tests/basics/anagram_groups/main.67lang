@@ -25,10 +25,8 @@ for word in
 		#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
 		if
 			do none
-				exists
+				do has_keys the groups
 					get key
-					inside
-						get groups
 		then
 			do #
 				get groups

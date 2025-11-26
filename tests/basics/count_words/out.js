@@ -1,14 +1,34 @@
 globalThis._67lang = {
-    // TODO eliminating this one probably next thing
-    exists_inside: (inside, ...arr) => {
+    EXISTS_INSIDE_AS_KEY: Symbol("EXISTS_INSIDE_AS_KEY"),
+    EXISTS_INSIDE_AS_VALUE: Symbol("EXISTS_INSIDE_AS_VALUE"),
+    exists_inside: (inside, k_or_v, ...arr) => {
+        // TODO support for sets
         if (Array.isArray(inside)) {
             // array
-            return arr.every(v => inside.includes(v))
+            const is_valid_index = (v) => Number.isInteger(v) && v >= 0 && v < inside.length;
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => is_valid_index(v));
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => inside.includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         } else {
             // assume dict
-            return arr.every(v => v in inside)
+            if (k_or_v === _67lang.EXISTS_INSIDE_AS_KEY) {
+                return arr.every(v => v in inside);
+            } else if (k_or_v === _67lang.EXISTS_INSIDE_AS_VALUE) {
+                return arr.every(v => Object.values(inside).includes(v));
+            } else {
+                throw new Error("compiler bug, `exists_inside`, must be a symbol `k_or_v`")
+            }
         }
     },
+
+    // TODO should bind these in the language proper
+    has_keys: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_KEY, ...values),
+    has_values: (list_or_dict, ...values) => _67lang.exists_inside(list_or_dict, _67lang.EXISTS_INSIDE_AS_VALUE, ...values),
+
     zip: (...arrays) => {
         const maxLength = Math.max(...arrays.map(x => x.length));
         return Array.from({ length: maxLength }).map((_, i) => {
@@ -98,87 +118,88 @@ void (async () => {
 
 
 
+
     } {
-        const _0x8a_stdin = await (_67lang.stdin())
-        let _0x3f__0x3e_pipeline_result = _0x8a_stdin
-        let _0x40_input = _0x3f__0x3e_pipeline_result
-        _0x40_input
-        const _0x8c_input = _0x40_input
-        const _0x8b_split = String.prototype.split.call(_0x8c_input, "\n")
-        let _0x42__0x41_pipeline_result = _0x8b_split
-        let _0x43_words = _0x42__0x41_pipeline_result
-        _0x43_words
-        let _0x44_count = {}
-        _0x44_count
+        const _0x8f_stdin = await (_67lang.stdin())
+        let _0x41__0x40_pipeline_result = _0x8f_stdin
+        let _0x42_input = _0x41__0x40_pipeline_result
+        _0x42_input
+        const _0x91_input = _0x42_input
+        const _0x90_split = String.prototype.split.call(_0x91_input, "\n")
+        let _0x44__0x43_pipeline_result = _0x90_split
+        let _0x45_words = _0x44__0x43_pipeline_result
+        _0x45_words
+        let _0x46_count = {}
+        _0x46_count
         {
-            let _0x47__0x45_for_word__index = 0
-            _0x47__0x45_for_word__index
-            const _0x8d_words = _0x43_words
-            let _0x49__0x48_pipeline_result = _0x8d_words
-            let _0x4a__0x46_for_word__list = _0x49__0x48_pipeline_result
-            _0x4a__0x46_for_word__list
+            let _0x49__0x47_for_word__index = 0
+            _0x49__0x47_for_word__index
+            const _0x92_words = _0x45_words
+            let _0x4b__0x4a_pipeline_result = _0x92_words
+            let _0x4c__0x48_for_word__list = _0x4b__0x4a_pipeline_result
+            _0x4c__0x48_for_word__list
             while(true) {
-                const _0x8f__0x45_for_word__index = _0x47__0x45_for_word__index
-                let _0x4d__0x4c_pipeline_result = _0x8f__0x45_for_word__index
-                const _0x91__0x46_for_word__list = _0x4a__0x46_for_word__list
-                const _0x90_length = (_0x91__0x46_for_word__list.length)
-                let _0x4f__0x4e_pipeline_result = _0x90_length
-                const _0x8e_asc = (_0x4d__0x4c_pipeline_result < _0x4f__0x4e_pipeline_result)
-                let _0x50__0x4b_pipeline_result = _0x8e_asc
-                if (!_0x50__0x4b_pipeline_result) { break; }
+                const _0x94__0x47_for_word__index = _0x49__0x47_for_word__index
+                let _0x4f__0x4e_pipeline_result = _0x94__0x47_for_word__index
+                const _0x96__0x48_for_word__list = _0x4c__0x48_for_word__list
+                const _0x95_length = (_0x96__0x48_for_word__list.length)
+                let _0x51__0x50_pipeline_result = _0x95_length
+                const _0x93_asc = (_0x4f__0x4e_pipeline_result < _0x51__0x50_pipeline_result)
+                let _0x52__0x4d_pipeline_result = _0x93_asc
+                if (!_0x52__0x4d_pipeline_result) { break; }
                 {
-                    const _0x93__0x46_for_word__list = _0x4a__0x46_for_word__list
-                    const _0x94__0x45_for_word__index = _0x47__0x45_for_word__index
-                    let _0x53__0x52_pipeline_result = _0x94__0x45_for_word__index
-                    const _0x92__hash_ = _0x93__0x46_for_word__list[_0x53__0x52_pipeline_result]
-                    let _0x54__0x51_pipeline_result = _0x92__hash_
-                    let _0x55_word = _0x54__0x51_pipeline_result
-                    _0x55_word
-                    const _0x97__0x45_for_word__index = _0x47__0x45_for_word__index
-                    const _0x96_add = (_0x97__0x45_for_word__index + 1)
-                    let _0x58__0x57_pipeline_result = _0x96_add
-                    const _0x95__0x45_for_word__index = (_0x47__0x45_for_word__index = _0x58__0x57_pipeline_result)
-                    let _0x59__0x56_pipeline_result = _0x95__0x45_for_word__index
-                    _0x59__0x56_pipeline_result
-                    const _0x99_count = _0x44_count
-                    let _0x5e__0x5d_pipeline_result = _0x99_count
-                    const _0x9a_word = _0x55_word
-                    let _0x5c__0x5b_pipeline_result = _0x9a_word
-                    const _0x9b_await__67lang_dot_exists_inside_lp_ = await _67lang.exists_inside(_0x5e__0x5d_pipeline_result, _0x5c__0x5b_pipeline_result)
-                    const _0x98_none = !(_0x9b_await__67lang_dot_exists_inside_lp_)
-                    let _0x5f__0x5a_pipeline_result = _0x98_none
-                    if (_0x5f__0x5a_pipeline_result)
+                    const _0x98__0x48_for_word__list = _0x4c__0x48_for_word__list
+                    const _0x99__0x47_for_word__index = _0x49__0x47_for_word__index
+                    let _0x55__0x54_pipeline_result = _0x99__0x47_for_word__index
+                    const _0x97__hash_ = _0x98__0x48_for_word__list[_0x55__0x54_pipeline_result]
+                    let _0x56__0x53_pipeline_result = _0x97__hash_
+                    let _0x57_word = _0x56__0x53_pipeline_result
+                    _0x57_word
+                    const _0x9c__0x47_for_word__index = _0x49__0x47_for_word__index
+                    const _0x9b_add = (_0x9c__0x47_for_word__index + 1)
+                    let _0x5a__0x59_pipeline_result = _0x9b_add
+                    const _0x9a__0x47_for_word__index = (_0x49__0x47_for_word__index = _0x5a__0x59_pipeline_result)
+                    let _0x5b__0x58_pipeline_result = _0x9a__0x47_for_word__index
+                    _0x5b__0x58_pipeline_result
+                    const _0x9f_count = _0x46_count
+                    const _0xa0_word = _0x57_word
+                    let _0x5f__0x5e_pipeline_result = _0xa0_word
+                    const _0x9e_has_keys = _67lang.has_keys(_0x9f_count, _0x5f__0x5e_pipeline_result)
+                    let _0x60__0x5d_pipeline_result = _0x9e_has_keys
+                    const _0x9d_none = !(_0x60__0x5d_pipeline_result)
+                    let _0x61__0x5c_pipeline_result = _0x9d_none
+                    if (_0x61__0x5c_pipeline_result)
                     {
-                        const _0x9d_count = _0x44_count
-                        let _0x62__0x61_pipeline_result = _0x9d_count
-                        const _0x9e_word = _0x55_word
-                        let _0x64__0x63_pipeline_result = _0x9e_word
-                        const _0x9c__hash_ = (_0x62__0x61_pipeline_result[_0x64__0x63_pipeline_result] = 0)
-                        let _0x65__0x60_pipeline_result = _0x9c__hash_
-                        _0x65__0x60_pipeline_result
+                        const _0xa2_count = _0x46_count
+                        let _0x64__0x63_pipeline_result = _0xa2_count
+                        const _0xa3_word = _0x57_word
+                        let _0x66__0x65_pipeline_result = _0xa3_word
+                        const _0xa1__hash_ = (_0x64__0x63_pipeline_result[_0x66__0x65_pipeline_result] = 0)
+                        let _0x67__0x62_pipeline_result = _0xa1__hash_
+                        _0x67__0x62_pipeline_result
                     } 
 
-                    const _0xa0_count = _0x44_count
-                    let _0x68__0x67_pipeline_result = _0xa0_count
-                    const _0xa1_word = _0x55_word
-                    let _0x6a__0x69_pipeline_result = _0xa1_word
-                    const _0xa4_count = _0x44_count
-                    let _0x6e__0x6d_pipeline_result = _0xa4_count
-                    const _0xa5_word = _0x55_word
-                    let _0x70__0x6f_pipeline_result = _0xa5_word
-                    const _0xa3__hash_ = _0x6e__0x6d_pipeline_result[_0x70__0x6f_pipeline_result]
-                    let _0x71__0x6c_pipeline_result = _0xa3__hash_
-                    const _0xa2_add = (1 + _0x71__0x6c_pipeline_result)
-                    let _0x72__0x6b_pipeline_result = _0xa2_add
-                    const _0x9f__hash_ = (_0x68__0x67_pipeline_result[_0x6a__0x69_pipeline_result] = _0x72__0x6b_pipeline_result)
-                    let _0x73__0x66_pipeline_result = _0x9f__hash_
-                    _0x73__0x66_pipeline_result
+                    const _0xa5_count = _0x46_count
+                    let _0x6a__0x69_pipeline_result = _0xa5_count
+                    const _0xa6_word = _0x57_word
+                    let _0x6c__0x6b_pipeline_result = _0xa6_word
+                    const _0xa9_count = _0x46_count
+                    let _0x70__0x6f_pipeline_result = _0xa9_count
+                    const _0xaa_word = _0x57_word
+                    let _0x72__0x71_pipeline_result = _0xaa_word
+                    const _0xa8__hash_ = _0x70__0x6f_pipeline_result[_0x72__0x71_pipeline_result]
+                    let _0x73__0x6e_pipeline_result = _0xa8__hash_
+                    const _0xa7_add = (1 + _0x73__0x6e_pipeline_result)
+                    let _0x74__0x6d_pipeline_result = _0xa7_add
+                    const _0xa4__hash_ = (_0x6a__0x69_pipeline_result[_0x6c__0x6b_pipeline_result] = _0x74__0x6d_pipeline_result)
+                    let _0x75__0x68_pipeline_result = _0xa4__hash_
+                    _0x75__0x68_pipeline_result
                 } }
         } 
-        const _0xa7_count = _0x44_count
-        let _0x76__0x75_pipeline_result = _0xa7_count
-        const _0xa6_print = await _67lang.maybe_await(console.log(_0x76__0x75_pipeline_result))
-        let _0x77__0x74_pipeline_result = _0xa6_print
-        _0x77__0x74_pipeline_result
+        const _0xac_count = _0x46_count
+        let _0x78__0x77_pipeline_result = _0xac_count
+        const _0xab_print = await _67lang.maybe_await(console.log(_0x78__0x77_pipeline_result))
+        let _0x79__0x76_pipeline_result = _0xab_print
+        _0x79__0x76_pipeline_result
     } 
 })();
