@@ -31,30 +31,30 @@ for line in
 			do eq
 				get i
 				int 0
-		then
-			do split the line into header
-				string ","
-		else
-			local zipped_data
-				do zip
-					get header
-					do split the line
-						string ","
-			
-			local row
-				dict
-					type str for K
-					type str for V
-			
-			for kv in
-				get zipped_data
-				do
-					do # the row
-						get 0 from kv
-						get 1 from kv
-			
-			do push the rows
-				get row
+			then
+				do split the line into header
+					string ","
+			else
+				local zipped_data
+					do zip
+						get header
+						do split the line
+							string ","
+				
+				local row
+					dict
+						type str for K
+						type str for V
+				
+				for kv in
+					get zipped_data
+					do
+						do # the row
+							get 0 from kv
+							get 1 from kv
+				
+				do push the rows
+					get row
 		
 		do i
 			local _please_fix_the_fucking_varargs_add
@@ -83,10 +83,10 @@ for row in
 					do # the row
 						string "age"
 				int 30
-		then
-			do add into age_over_30
-				get age_over_30
-				int 1
+			then
+				do add into age_over_30
+					get age_over_30
+					int 1
 
 do print
 	get age_over_30

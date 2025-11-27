@@ -17,11 +17,11 @@ for word in
 			do none
 				do has_keys the count
 					get word
-		then
-			do #
-				get count
-				get word
-				int 0
+			then
+				do #
+					get count
+					get word
+					int 0
 		note and TODO following line must not be empty here...
 		
 		do #

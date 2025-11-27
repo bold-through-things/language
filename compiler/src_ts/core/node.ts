@@ -4,6 +4,7 @@
 import "../utils/utils.ts";
 import "../pipeline/call_conventions.ts";
 import { Call_convention } from "../pipeline/call_conventions.ts";
+import { TCResult } from "./macro_registry.ts";
 
 // --- Position ---
 
@@ -274,9 +275,9 @@ export class SaneIdentifier {
 
 // TODO: remove and store Type objects directly
 export class FieldDemandType {
-  tc: unknown; // TCResult placeholder
+  tc: TCResult;
 
-  constructor(tc: unknown) {
+  constructor(tc: TCResult) {
     this.tc = tc;
   }
 }

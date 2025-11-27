@@ -4,7 +4,7 @@ import { MacroProcessingStep } from "./base.ts";
 import { MacroRegistry, MacroContext, Macro_ctx_void_proc } from "../../core/macro_registry.ts";
 import { default_logger } from "../../utils/logger.ts";
 import { ErrorType } from "../../utils/error_types.ts";
-import { IndentedStringIO } from "../../utils/strutil.ts";
+import { IndentedStringIO, Statement } from "../../utils/strutil.ts";
 import { JS_LIB } from "../js_conversion.ts";
 import { Macro } from "../../core/node.ts";
 import { NewCall } from "../call_conventions.ts";
@@ -40,11 +40,11 @@ export class JavaScriptEmissionStep extends MacroProcessingStep {
       obuf.write(`void (async () => {\n`);
       obuf.with_indent(() => {
         obuf.write(`'use strict';\n`);
-        obuf.write(`const scope = globalThis;\n`);
 
+        const stmts: Statement[] = [];
         const inner = ctx.clone_with({
-          statement_out: obuf,
-          expression_out: obuf,
+          statement_out: stmts,
+          expression_out: new IndentedStringIO(), // discard
         });
 
         const fn = all[macroName];
@@ -55,6 +55,10 @@ export class JavaScriptEmissionStep extends MacroProcessingStep {
             const childCtx = inner.clone_with({ node: child });
             this.process_node(childCtx);
           }
+        }
+
+        for (const stmt of stmts) {
+          obuf.write(stmt());
         }
       });
 

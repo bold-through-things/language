@@ -98,145 +98,157 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const scope = globalThis;
-    {
+    /* -> */ {    
+        }
+    /* -> */ {    
+            let _0x40_fizz_divisor = 0;
 
+            let _0x41_buzz_divisor = 0;
 
+            let _0x42_n = 0;
 
+            /* -> */ {    
+                const _0x97_stdin = (await (_67lang.stdin()));
+                let _0x44__0x43_pipeline_result = _0x97_stdin;
 
+                let _0x45_input = _0x44__0x43_pipeline_result;
 
+                const _0x99_input = (_0x45_input);
+                const _0x98_split = (String.prototype.split.call(_0x99_input, "\n"));
+                let _0x47__0x46_pipeline_result = _0x98_split;
 
+                let _0x48_input = _0x47__0x46_pipeline_result;
 
+                const _0x9b_input = (_0x48_input);
+                let _0x4b__0x4a_pipeline_result = _0x9b_input;
 
+                const _0x9a__hash_ = (_0x4b__0x4a_pipeline_result[0]);
+                let _0x4c__0x49_pipeline_result = _0x9a__hash_;
 
+                const _0x9e__0x49_pipeline_result = (_0x4c__0x49_pipeline_result);
+                const _0x9d_int_colon_parse = (globalThis.parseInt(_0x9e__0x49_pipeline_result));
+                const _0x9c_fizz_divisor = ((_0x40_fizz_divisor = _0x9d_int_colon_parse));
+                const _0xa0_input = (_0x48_input);
+                let _0x4f__0x4e_pipeline_result = _0xa0_input;
 
+                const _0x9f__hash_ = (_0x4f__0x4e_pipeline_result[1]);
+                let _0x50__0x4d_pipeline_result = _0x9f__hash_;
 
+                const _0xa3__0x4d_pipeline_result = (_0x50__0x4d_pipeline_result);
+                const _0xa2_int_colon_parse = (globalThis.parseInt(_0xa3__0x4d_pipeline_result));
+                const _0xa1_buzz_divisor = ((_0x41_buzz_divisor = _0xa2_int_colon_parse));
+                const _0xa5_input = (_0x48_input);
+                let _0x53__0x52_pipeline_result = _0xa5_input;
 
+                const _0xa4__hash_ = (_0x53__0x52_pipeline_result[2]);
+                let _0x54__0x51_pipeline_result = _0xa4__hash_;
 
+                const _0xa8__0x51_pipeline_result = (_0x54__0x51_pipeline_result);
+                const _0xa7_int_colon_parse = (globalThis.parseInt(_0xa8__0x51_pipeline_result));
+                const _0xa6_n = ((_0x42_n = _0xa7_int_colon_parse));
+            }
 
+            let _0x55_i = 0;
 
+            while(true) /* -> */ {    
+                const _0xaa_i = (_0x55_i);
+                let _0x58__0x57_pipeline_result = _0xaa_i;
 
+                const _0xab_n = (_0x42_n);
+                let _0x5a__0x59_pipeline_result = _0xab_n;
 
+                const _0xa9_nondesc = ((_0x58__0x57_pipeline_result <= _0x5a__0x59_pipeline_result));
+                let _0x5b__0x56_pipeline_result = _0xa9_nondesc;
 
+                if (!_0x5b__0x56_pipeline_result) { break; }
+                /* -> */ {    
+                    let _0x5c_out = "";
 
-    } {
-        let _0x40_fizz_divisor = 0
-        _0x40_fizz_divisor
-        let _0x41_buzz_divisor = 0
-        _0x41_buzz_divisor
-        let _0x42_n = 0
-        _0x42_n
+                    const _0xae_i = (_0x55_i);
+                    let _0x60__0x5f_pipeline_result = _0xae_i;
 
-        {
-            const _0x97_stdin = await (_67lang.stdin())
-            let _0x44__0x43_pipeline_result = _0x97_stdin
-            let _0x45_input = _0x44__0x43_pipeline_result
-            _0x45_input
-            const _0x99_input = _0x45_input
-            const _0x98_split = String.prototype.split.call(_0x99_input, "\n")
-            let _0x47__0x46_pipeline_result = _0x98_split
-            let _0x48_input = _0x47__0x46_pipeline_result
-            _0x48_input
+                    const _0xaf_fizz_divisor = (_0x40_fizz_divisor);
+                    let _0x62__0x61_pipeline_result = _0xaf_fizz_divisor;
 
-            const _0x9b_input = _0x48_input
-            let _0x4b__0x4a_pipeline_result = _0x9b_input
-            const _0x9a__hash_ = _0x4b__0x4a_pipeline_result[0]
-            let _0x4c__0x49_pipeline_result = _0x9a__hash_
-            _0x4c__0x49_pipeline_result
-            const _0x9e__0x49_pipeline_result = _0x4c__0x49_pipeline_result
-            const _0x9d_int_colon_parse = globalThis.parseInt(_0x9e__0x49_pipeline_result)
-            const _0x9c_fizz_divisor = (_0x40_fizz_divisor = _0x9d_int_colon_parse)
-            _0x9c_fizz_divisor
-            const _0xa0_input = _0x48_input
-            let _0x4f__0x4e_pipeline_result = _0xa0_input
-            const _0x9f__hash_ = _0x4f__0x4e_pipeline_result[1]
-            let _0x50__0x4d_pipeline_result = _0x9f__hash_
-            _0x50__0x4d_pipeline_result
-            const _0xa3__0x4d_pipeline_result = _0x50__0x4d_pipeline_result
-            const _0xa2_int_colon_parse = globalThis.parseInt(_0xa3__0x4d_pipeline_result)
-            const _0xa1_buzz_divisor = (_0x41_buzz_divisor = _0xa2_int_colon_parse)
-            _0xa1_buzz_divisor
-            const _0xa5_input = _0x48_input
-            let _0x53__0x52_pipeline_result = _0xa5_input
-            const _0xa4__hash_ = _0x53__0x52_pipeline_result[2]
-            let _0x54__0x51_pipeline_result = _0xa4__hash_
-            _0x54__0x51_pipeline_result
-            const _0xa8__0x51_pipeline_result = _0x54__0x51_pipeline_result
-            const _0xa7_int_colon_parse = globalThis.parseInt(_0xa8__0x51_pipeline_result)
-            const _0xa6_n = (_0x42_n = _0xa7_int_colon_parse)
-            _0xa6_n
-        } 
-        let _0x55_i = 0
-        _0x55_i
-        while(true) {
-            const _0xaa_i = _0x55_i
-            let _0x58__0x57_pipeline_result = _0xaa_i
-            const _0xab_n = _0x42_n
-            let _0x5a__0x59_pipeline_result = _0xab_n
-            const _0xa9_nondesc = (_0x58__0x57_pipeline_result <= _0x5a__0x59_pipeline_result)
-            let _0x5b__0x56_pipeline_result = _0xa9_nondesc
-            if (!_0x5b__0x56_pipeline_result) { break; }
-            {
-                let _0x5c_out = ""
-                _0x5c_out
-                const _0xae_i = _0x55_i
-                let _0x60__0x5f_pipeline_result = _0xae_i
-                const _0xaf_fizz_divisor = _0x40_fizz_divisor
-                let _0x62__0x61_pipeline_result = _0xaf_fizz_divisor
-                const _0xad_mod = (_0x60__0x5f_pipeline_result % _0x62__0x61_pipeline_result)
-                let _0x63__0x5e_pipeline_result = _0xad_mod
-                const _0xac_eq = (_0x63__0x5e_pipeline_result === 0)
-                let _0x64__0x5d_pipeline_result = _0xac_eq
-                if (_0x64__0x5d_pipeline_result)
-                {
-                    const _0xb2_out = _0x5c_out
-                    let _0x66__0x65_pipeline_result = _0xb2_out
-                    const _0xb1_concat = (_0x66__0x65_pipeline_result + "fizz")
-                    const _0xb0_out = (_0x5c_out = _0xb1_concat)
-                    _0xb0_out
-                } 
-                const _0xb5_i = _0x55_i
-                let _0x6a__0x69_pipeline_result = _0xb5_i
-                const _0xb6_buzz_divisor = _0x41_buzz_divisor
-                let _0x6c__0x6b_pipeline_result = _0xb6_buzz_divisor
-                const _0xb4_mod = (_0x6a__0x69_pipeline_result % _0x6c__0x6b_pipeline_result)
-                let _0x6d__0x68_pipeline_result = _0xb4_mod
-                const _0xb3_eq = (_0x6d__0x68_pipeline_result === 0)
-                let _0x6e__0x67_pipeline_result = _0xb3_eq
-                if (_0x6e__0x67_pipeline_result)
-                {
-                    const _0xb9_out = _0x5c_out
-                    let _0x70__0x6f_pipeline_result = _0xb9_out
-                    const _0xb8_concat = (_0x70__0x6f_pipeline_result + "buzz")
-                    const _0xb7_out = (_0x5c_out = _0xb8_concat)
-                    _0xb7_out
-                } 
-                const _0xbb_out = _0x5c_out
-                let _0x73__0x72_pipeline_result = _0xbb_out
-                const _0xba_eq = (_0x73__0x72_pipeline_result === "")
-                let _0x74__0x71_pipeline_result = _0xba_eq
-                if (_0x74__0x71_pipeline_result)
-                {
-                    const _0xbf_i = _0x55_i
-                    const _0xbe_str = Number.prototype.toString.call(_0xbf_i)
-                    let _0x76__0x75_pipeline_result = _0xbe_str
-                    const _0xbd_concat = ("" + _0x76__0x75_pipeline_result)
-                    const _0xbc_out = (_0x5c_out = _0xbd_concat)
-                    _0xbc_out
-                } 
-                const _0xc1_out = _0x5c_out
-                let _0x79__0x78_pipeline_result = _0xc1_out
-                const _0xc0_print = await _67lang.maybe_await(console.log(_0x79__0x78_pipeline_result))
-                let _0x7a__0x77_pipeline_result = _0xc0_print
-                _0x7a__0x77_pipeline_result
-                const _0xc4_i = _0x55_i
-                let _0x7e__0x7d_pipeline_result = _0xc4_i
-                const _0xc3_add = (_0x7e__0x7d_pipeline_result + 1)
-                let _0x7f__0x7c_pipeline_result = _0xc3_add
-                let _0x80__fix_the_fucking_add_return_type = _0x7f__0x7c_pipeline_result
-                const _0xc2_i = (_0x55_i = _0x80__fix_the_fucking_add_return_type)
-                let _0x81__0x7b_pipeline_result = _0xc2_i
-                _0x81__0x7b_pipeline_result
-            } }
-    } 
+                    const _0xad_mod = ((_0x60__0x5f_pipeline_result % _0x62__0x61_pipeline_result));
+                    let _0x63__0x5e_pipeline_result = _0xad_mod;
+
+                    const _0xac_eq = ((_0x63__0x5e_pipeline_result === 0));
+                    let _0x64__0x5d_pipeline_result = _0xac_eq;
+
+                    if /* -> */ (    
+                        _0x64__0x5d_pipeline_result
+                    )/* -> */ {    
+                        const _0xb2_out = (_0x5c_out);
+                        let _0x66__0x65_pipeline_result = _0xb2_out;
+
+                        const _0xb1_concat = ((_0x66__0x65_pipeline_result + "fizz"));
+                        const _0xb0_out = ((_0x5c_out = _0xb1_concat));
+                    }else /* -> */ {    
+                    }
+
+                    const _0xb5_i = (_0x55_i);
+                    let _0x6a__0x69_pipeline_result = _0xb5_i;
+
+                    const _0xb6_buzz_divisor = (_0x41_buzz_divisor);
+                    let _0x6c__0x6b_pipeline_result = _0xb6_buzz_divisor;
+
+                    const _0xb4_mod = ((_0x6a__0x69_pipeline_result % _0x6c__0x6b_pipeline_result));
+                    let _0x6d__0x68_pipeline_result = _0xb4_mod;
+
+                    const _0xb3_eq = ((_0x6d__0x68_pipeline_result === 0));
+                    let _0x6e__0x67_pipeline_result = _0xb3_eq;
+
+                    if /* -> */ (    
+                        _0x6e__0x67_pipeline_result
+                    )/* -> */ {    
+                        const _0xb9_out = (_0x5c_out);
+                        let _0x70__0x6f_pipeline_result = _0xb9_out;
+
+                        const _0xb8_concat = ((_0x70__0x6f_pipeline_result + "buzz"));
+                        const _0xb7_out = ((_0x5c_out = _0xb8_concat));
+                    }else /* -> */ {    
+                    }
+
+                    const _0xbb_out = (_0x5c_out);
+                    let _0x73__0x72_pipeline_result = _0xbb_out;
+
+                    const _0xba_eq = ((_0x73__0x72_pipeline_result === ""));
+                    let _0x74__0x71_pipeline_result = _0xba_eq;
+
+                    if /* -> */ (    
+                        _0x74__0x71_pipeline_result
+                    )/* -> */ {    
+                        const _0xbf_i = (_0x55_i);
+                        const _0xbe_str = (Number.prototype.toString.call(_0xbf_i));
+                        let _0x76__0x75_pipeline_result = _0xbe_str;
+
+                        const _0xbd_concat = (("" + _0x76__0x75_pipeline_result));
+                        const _0xbc_out = ((_0x5c_out = _0xbd_concat));
+                    }else /* -> */ {    
+                    }
+
+                    const _0xc1_out = (_0x5c_out);
+                    let _0x79__0x78_pipeline_result = _0xc1_out;
+
+                    const _0xc0_print = (await _67lang.maybe_await(console.log(_0x79__0x78_pipeline_result)));
+                    let _0x7a__0x77_pipeline_result = _0xc0_print;
+
+                    const _0xc4_i = (_0x55_i);
+                    let _0x7e__0x7d_pipeline_result = _0xc4_i;
+
+                    const _0xc3_add = ((_0x7e__0x7d_pipeline_result + 1));
+                    let _0x7f__0x7c_pipeline_result = _0xc3_add;
+
+                    let _0x80__fix_the_fucking_add_return_type = _0x7f__0x7c_pipeline_result;
+
+                    const _0xc2_i = ((_0x55_i = _0x80__fix_the_fucking_add_return_type));
+                    let _0x81__0x7b_pipeline_result = _0xc2_i;
+
+                }
+
+            }
+
+        }
+
 })();

@@ -16,17 +16,17 @@ try
 	do print
 		string "This should not print"
 
-catch error
-	do print
-		string "Caught error:"
-	do print
-		get error
+	catch error
+		do print
+			string "Caught error:"
+		do print
+			get error
 
-finally
-	do print
-		string "Finally block executed"
-	do print
-		string "Many statements"
+	finally
+		do print
+			string "Finally block executed"
+		do print
+			string "Many statements"
 
 do print
 	string "Execution complete"

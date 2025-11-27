@@ -47,12 +47,12 @@ for line in
 			do none
 				do eq the deps_str
 					string ""
-		then
-			do trim the deps_str
-			then do split as deps
-				regex /\s+/
-			do deps the module
-				get deps
+			then
+				do trim the deps_str
+				then do split as deps
+					regex /\s+/
+				do deps the module
+					get deps
 		
 		do # the modules
 			get id from module
@@ -93,18 +93,18 @@ fn visit
 		
 		if 
 			get visited the module
-		then
-			return
+			then
+				return
 		do visited the module
 			true
 
 		if
 			false
-		then
-			note just testing TODO please remove me.
-			do slice the chain
-			then do push
-				do id the module
+			then
+				note just testing TODO please remove me.
+				do slice the chain
+				then do push
+					do id the module
 
 		# TODO - this shouldn't be using slice. we need a dedicated copy command
 		local next_chain
@@ -118,38 +118,38 @@ fn visit
 				if
 					do has_values the next_chain
 						get dep_id
-				then
-					local dep_loop
-						list
-							type str
-					do push the dep_loop
-						get dep_id
-					do slice the next_chain
-					for chain_dep_id in
-						then do reverse
-						do
-							do push the dep_loop
-								get chain_dep_id
-							if
-								do eq
-									get chain_dep_id
-									get dep_id
-							then
-								break
-
-					do reverse the dep_loop
-
-					do push
-						get dep_loops from unroller
-						do join the dep_loop
-							string " → "
-				else
-					do visit
-						get unroller
-						do #
-							get modules from unroller
+					then
+						local dep_loop
+							list
+								type str
+						do push the dep_loop
 							get dep_id
-						get next_chain
+						do slice the next_chain
+						for chain_dep_id in
+							then do reverse
+							do
+								do push the dep_loop
+									get chain_dep_id
+								if
+									do eq
+										get chain_dep_id
+										get dep_id
+									then
+										break
+
+						do reverse the dep_loop
+
+						do push
+							get dep_loops from unroller
+							do join the dep_loop
+								string " → "
+					else
+						do visit
+							get unroller
+							do #
+								get modules from unroller
+								get dep_id
+							get next_chain
 
 		do push
 			get build_order from unroller
@@ -178,14 +178,16 @@ if
 	do nondesc
 		int 1
 		then chain dep_loops length
-then
-	do print
-		do concat
-			string "ERROR: there are dependency loops.\n"
-			then chain dep_loops join
+	then
+		get unroller
+		do print
+			do concat
+				string "ERROR: there are dependency loops.\n"
+				then chain dep_loops join
+					string "\n"
+	else
+		get unroller
+		do print
+			then chain build_order join
 				string "\n"
-else
-	do print
-		then chain build_order join
-			string "\n"
 

@@ -10,19 +10,20 @@ import { default_logger } from "../utils/logger.ts";
 import {
   seek_child_macro,
 } from "../pipeline/steps/utils.ts";
-import { TypeParameter } from "../compiler_types/proper_types.ts";
+import { Type, TypeParameter } from "../compiler_types/proper_types.ts";
+import { MetaCtor } from "../core/macrocosm.ts";
 
 // ------------------------------------------------------------
 // Result
 // ------------------------------------------------------------
 
-export class UpwalkerResult {
+export class UpwalkerResult<T> {
   node: Node;
-  type_value: any | null;
+  found: T | null;
 
-  constructor(node: Node, type_value: any | null) {
+  constructor(node: Node, found: T | null) {
     this.node = node;
-    this.type_value = type_value;
+    this.found = found;
   }
 }
 
@@ -30,21 +31,21 @@ export class UpwalkerResult {
 // Strategy base
 // ------------------------------------------------------------
 
-export abstract class SearchStrategy {
-  abstract try_match(ctx: MacroContext): UpwalkerResult | null;
-  abstract search_in_noscope(ctx: MacroContext): UpwalkerResult | null;
+export abstract class SearchStrategy<T> {
+  abstract try_match(ctx: MacroContext): UpwalkerResult<T> | null;
+  abstract search_in_noscope(ctx: MacroContext): UpwalkerResult<T> | null;
 }
 
 // ------------------------------------------------------------
 // Local name lookup
 // ------------------------------------------------------------
 
-export class LocalNameSearchStrategy extends SearchStrategy {
+export class LocalNameSearchStrategy extends SearchStrategy<Type> {
   constructor(private name: string) {
     super();
   }
 
-  try_match(ctx: MacroContext): UpwalkerResult | null {
+  try_match(ctx: MacroContext): UpwalkerResult<Type> | null {
     let mname: string;
     try {
       mname = ctx.compiler.get_metadata(ctx.node, Macro)?.toString() ?? "";
@@ -82,7 +83,7 @@ export class LocalNameSearchStrategy extends SearchStrategy {
     return null;
   }
 
-  search_in_noscope(ctx: MacroContext): UpwalkerResult | null {
+  search_in_noscope(ctx: MacroContext): UpwalkerResult<Type> | null {
     for (const child of ctx.node.children) {
       const res = this.try_match(ctx.clone_with({ node: child }));
       if (res) {
@@ -97,8 +98,8 @@ export class LocalNameSearchStrategy extends SearchStrategy {
 // then-chain lookup
 // ------------------------------------------------------------
 
-export class LastThenSearchStrategy extends SearchStrategy {
-  try_match(ctx: MacroContext): UpwalkerResult | null {
+export class LastThenSearchStrategy extends SearchStrategy<Type> {
+  try_match(ctx: MacroContext): UpwalkerResult<Type> | null {
     try {
       const mname = ctx.compiler.get_metadata(ctx.node, Macro)?.toString() ?? "";
       if (mname === "local") {
@@ -127,7 +128,34 @@ export class LastThenSearchStrategy extends SearchStrategy {
     return null;
   }
 
-  search_in_noscope(ctx: MacroContext): UpwalkerResult | null {
+  search_in_noscope(ctx: MacroContext): UpwalkerResult<Type> | null {
+    for (const child of ctx.node.children) {
+      const res = this.try_match(ctx.clone_with({ node: child }));
+      if (res) {
+        return res;
+      }
+    }
+    return null;
+  }
+}
+
+export class MetadataSearchStrategy<T> extends SearchStrategy<T> {
+  constructor(private meta: MetaCtor<T>) {
+    super();
+  }
+
+  try_match(ctx: MacroContext): UpwalkerResult<T> | null {
+    const meta = ctx.compiler.maybe_metadata(ctx.node, this.meta);
+    if (meta !== undefined) {
+      default_logger.typecheck( // TODO it's not typecheck i think though...
+        `MetadataSearchStrategy: found metadata ${this.meta.name} at ${ctx.node.content}`,
+      );
+      return new UpwalkerResult(ctx.node, meta);
+    }
+    return null;
+  }
+
+  search_in_noscope(ctx: MacroContext): UpwalkerResult<T> | null {
     for (const child of ctx.node.children) {
       const res = this.try_match(ctx.clone_with({ node: child }));
       if (res) {
@@ -142,10 +170,10 @@ export class LastThenSearchStrategy extends SearchStrategy {
 // Upwalker
 // ------------------------------------------------------------
 
-export class Upwalker {
-  constructor(private strategy: SearchStrategy) {}
+export class Upwalker<T> {
+  constructor(private strategy: SearchStrategy<T>) {}
 
-  find(ctx: MacroContext): UpwalkerResult | null {
+  find(ctx: MacroContext): UpwalkerResult<T> | null {
     let current: Node | null = ctx.node;
     const compiler = ctx.compiler;
 
@@ -205,8 +233,6 @@ export class Upwalker {
 export function walk_upwards_for_local_definition(
   ctx: MacroContext,
   name: string,
-): UpwalkerResult | null {
+): UpwalkerResult<Type> | null {
   return new Upwalker(new LocalNameSearchStrategy(name)).find(ctx);
 }
-
-export type LocalMatchResult = UpwalkerResult;

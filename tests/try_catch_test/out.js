@@ -98,67 +98,52 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const scope = globalThis;
-    {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    } {
-
-        const _0x6a_print = await _67lang.maybe_await(console.log("Starting execution"))
-        let _0x41__0x40_pipeline_result = _0x6a_print
-        _0x41__0x40_pipeline_result
-        try {
-            const _0x6b_print = await _67lang.maybe_await(console.log("Inside try block"))
-            let _0x43__0x42_pipeline_result = _0x6b_print
-            _0x43__0x42_pipeline_result
-            const _0x6c_print = await _67lang.maybe_await(console.log("About to throw"))
-            let _0x45__0x44_pipeline_result = _0x6c_print
-            _0x45__0x44_pipeline_result
-            throw "Test error message";
-            const _0x6d_print = await _67lang.maybe_await(console.log("This should not print"))
-            let _0x47__0x46_pipeline_result = _0x6d_print
-            _0x47__0x46_pipeline_result
+    /* -> */ {    
         }
-        catch (error) {
-            let _0x48_error = error
-            _0x48_error
-            const _0x6e_print = await _67lang.maybe_await(console.log("Caught error:"))
-            let _0x4a__0x49_pipeline_result = _0x6e_print
-            _0x4a__0x49_pipeline_result
-            const _0x70_error = _0x48_error
-            let _0x4d__0x4c_pipeline_result = _0x70_error
-            const _0x6f_print = await _67lang.maybe_await(console.log(_0x4d__0x4c_pipeline_result))
-            let _0x4e__0x4b_pipeline_result = _0x6f_print
-            _0x4e__0x4b_pipeline_result
-        }
-        finally {
-            const _0x71_print = await _67lang.maybe_await(console.log("Finally block executed"))
-            let _0x50__0x4f_pipeline_result = _0x71_print
-            _0x50__0x4f_pipeline_result
-            const _0x72_print = await _67lang.maybe_await(console.log("Many statements"))
-            let _0x52__0x51_pipeline_result = _0x72_print
-            _0x52__0x51_pipeline_result
-        }
-        const _0x73_print = await _67lang.maybe_await(console.log("Execution complete"))
-        let _0x54__0x53_pipeline_result = _0x73_print
-        _0x54__0x53_pipeline_result
+    /* -> */ {    
+            const _0x6a_print = (await _67lang.maybe_await(console.log("Starting execution")));
+            let _0x41__0x40_pipeline_result = _0x6a_print;
 
-    } 
+            try /* -> */ {    
+                const _0x6b_print = (await _67lang.maybe_await(console.log("Inside try block")));
+                let _0x43__0x42_pipeline_result = _0x6b_print;
+
+                const _0x6c_print = (await _67lang.maybe_await(console.log("About to throw")));
+                let _0x45__0x44_pipeline_result = _0x6c_print;
+
+                throw "Test error message";
+                const _0x6d_print = (await _67lang.maybe_await(console.log("This should not print")));
+                let _0x47__0x46_pipeline_result = _0x6d_print;
+
+            }catch /* -> */ (    
+                error
+            )/* -> */ {    
+                let _0x48_error = error;
+
+                const _0x6e_print = (await _67lang.maybe_await(console.log("Caught error:")));
+                let _0x4a__0x49_pipeline_result = _0x6e_print;
+
+                const _0x70_error = (_0x48_error);
+                let _0x4d__0x4c_pipeline_result = _0x70_error;
+
+                const _0x6f_print = (await _67lang.maybe_await(console.log(_0x4d__0x4c_pipeline_result)));
+                let _0x4e__0x4b_pipeline_result = _0x6f_print;
+
+            }finally /* -> */ {    
+                /* -> */ {    
+                    const _0x71_print = (await _67lang.maybe_await(console.log("Finally block executed")));
+                    let _0x50__0x4f_pipeline_result = _0x71_print;
+
+                    const _0x72_print = (await _67lang.maybe_await(console.log("Many statements")));
+                    let _0x52__0x51_pipeline_result = _0x72_print;
+
+                }
+
+            }
+
+            const _0x73_print = (await _67lang.maybe_await(console.log("Execution complete")));
+            let _0x54__0x53_pipeline_result = _0x73_print;
+
+        }
+
 })();

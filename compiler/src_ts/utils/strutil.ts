@@ -150,3 +150,70 @@ export class IndentedStringIO {
     }
   }
 }
+
+export interface Statement { // but not really since it also takes identifiers
+  (): string;
+}
+
+export function not_a_statement(s: string): Statement {
+  return () => s;
+}
+
+export function statement_raw(s: string): Statement {
+  return () => s;
+}
+
+export function statement_expr(expr: string, intermediate_result: string): Statement {
+  return () => `const ${intermediate_result} = (${expr});`;
+}
+
+export const PARENTHESIS = (s: string) => `(${s})`;
+export const BRACES = (s: string) => `{${s}}`;
+export const BRACKETS = (s: string) => `[${s}]`;
+
+type Statement_block = Statement[] & { keyword: string | null; wrap: (s: string) => string };
+export function statement_block(keyword: string | null = null, wrap: (s: string) => string = BRACES): Statement_block {
+  return Object.assign([], {keyword, wrap});
+}
+
+export function statement_blocks(...blocks: Statement_block[]) {
+  const compile = () => {
+    const result = new IndentedStringIO();
+
+    for (const block of compile.blocks) {
+      if (block.keyword) {
+        result.write(`${block.keyword} `);
+      }
+      result.write("/* -> */ ") // hacks around the `with_indent`
+      const indented = new IndentedStringIO();
+      indented.with_indent(() => {
+        indented.writeline();
+        for (const stmt of block) {
+          indented.writeline(stmt());
+        }
+      });
+      result.with_indent(() => result.write(block.wrap(indented.to_string())));
+    }
+    result.writeline();
+
+    return result.to_string();
+  };
+  compile.blocks = blocks;
+  const iter = function* () {
+    for (const block of compile.blocks) {
+      yield block;
+    }
+  }
+  compile[Symbol.iterator] = iter;
+  return compile;
+}
+
+export function statement_local(var_name: string, expr: string | null): Statement {
+  return () => {
+    if (expr !== null) {
+      return `let ${var_name} = ${expr};\n`;
+    } else {
+      return `let ${var_name};\n`;
+    }
+  };
+}

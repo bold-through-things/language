@@ -27,12 +27,12 @@ for word in
 			do none
 				do has_keys the groups
 					get key
-		then
-			do #
-				get groups
-				get key
-				list
-					type str
+			then
+				do #
+					get groups
+					get key
+					list
+						type str
 
 		do #
 			get groups

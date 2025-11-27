@@ -19,6 +19,7 @@ import { collect_child_expressions, get_single_arg } from "../utils/common_utils
 import { Type, TypeParameter } from "../compiler_types/proper_types.ts";
 import { TypeCheckingStep } from "../pipeline/steps/typechecking.ts";
 import { assert_instanceof } from "../utils/utils.ts";
+import { statement_local } from "../utils/strutil.ts";
 
 export class Local_macro_provider
   implements
@@ -53,11 +54,8 @@ export class Local_macro_provider
       ? []
       : collect_child_expressions(ctx);
 
-    ctx.statement_out.write(`let ${actual}`);
-    if (args.length > 0) {
-      ctx.statement_out.write(` = ${args[args.length - 1]}`);
-    }
-    ctx.statement_out.write("\n");
+    // TODO i mean it wouldn't ever get a null here
+    ctx.statement_out.push(statement_local(actual, args[args.length - 1] ?? null));
 
     ctx.expression_out.write(actual);
   }

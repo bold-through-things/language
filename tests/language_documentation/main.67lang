@@ -259,9 +259,9 @@ note in this chapter number five (5) we shall do some conditioning and looping
 
 if
 	true
-then
-	do print
-		string "big"
+	then
+		do print
+			string "big"
 
 note that is absolutely big if true.
 	
@@ -269,12 +269,12 @@ note that is absolutely big if true.
 
 if
 	false
-then
-	do print
-		string "big"
-else
-	do print
-		string "my disappointment is immeasurable and my day is ruined."
+	then
+		do print
+			string "big"
+	else
+		do print
+			string "my disappointment is immeasurable and my day is ruined."
 
 note that my disappointment in programming languages is indeed immeasurable.
 
@@ -462,11 +462,11 @@ fn fuck!
 			get nondesc
 				int 0
 				get fucks_given
-		then
-			get fuck!
-				get add
-					get fucks_given
-					int -1
+			then
+				get fuck!
+					get add
+						get fucks_given
+						int -1
 
 do fuck!
 	int 6

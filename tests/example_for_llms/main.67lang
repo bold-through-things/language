@@ -211,12 +211,12 @@ if
 	do nondesc
 		int 18
 		get age
-then
-	do print
-		string "Adult"
-else
-	do print
-		string "Minor"
+	then
+		do print
+			string "Adult"
+	else
+		do print
+			string "Minor"
 
 note the above is roughly equivalent to following JS
 
@@ -364,13 +364,14 @@ for thing in
 				if
 					then get desc
 						get max_characters
-				then
-					note this assigns max_characters!
-					then do max_characters
-					note `into` to set variables...
-					get word into found_word
-					note you could also just...
-					get found_word from word
+					then
+						get length from word
+						note this assigns max_characters!
+						then do max_characters
+						note `into` to set variables...
+						get word into found_word
+						note you could also just...
+						get found_word from word
 
 do print
 	get found_word
@@ -520,10 +521,10 @@ fn bool_printer
 	do
 		if
 			get value
-		then
-			do print the if_true
-		else
-			do print the if_false
+			then
+				do print the if_true
+			else
+				do print the if_false
 
 local politely_agree
 	bind fn bool_printer as callable

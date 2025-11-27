@@ -7,7 +7,7 @@ import {
   TCResult,
 } from "../core/macro_registry.ts";
 import { Node, Args, ResolvedConvention, Macro_previously_failed } from "../core/node.ts";
-import { cut } from "../utils/strutil.ts";
+import { cut, statement_expr } from "../utils/strutil.ts";
 import { default_logger } from "../utils/logger.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { BUILTIN_CALLS } from "../pipeline/builtin_calls.ts";
@@ -228,7 +228,9 @@ export class Call_macro_provider
       [Async_mode.MAYBE]: (id: string) => `await _67lang.maybe_await(${id})`,
     }
 
-    ctx.statement_out.write(`const ${ident} = ${await_fn[conv.async_mode](call_src)}\n`);
+    ctx.statement_out.push(
+      statement_expr(`${await_fn[conv.async_mode](call_src)}`, ident),
+    )
     ctx.expression_out.write(ident);
   }
 }

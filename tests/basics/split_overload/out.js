@@ -98,43 +98,25 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const scope = globalThis;
-    {
+    /* -> */ {    
+        }
+    /* -> */ {    
+            let _0x40_str = "testing";
 
+            const _0x60_str = (_0x40_str);
+            const _0x5f_split = (String.prototype.split.call(_0x60_str, "t"));
+            let _0x43__0x42_pipeline_result = _0x5f_split;
 
+            const _0x5e_print = (await _67lang.maybe_await(console.log(_0x43__0x42_pipeline_result)));
+            let _0x44__0x41_pipeline_result = _0x5e_print;
 
+            const _0x63_str = (_0x40_str);
+            const _0x62_split = (String.prototype.split.call(_0x63_str, /t/));
+            let _0x47__0x46_pipeline_result = _0x62_split;
 
+            const _0x61_print = (await _67lang.maybe_await(console.log(_0x47__0x46_pipeline_result)));
+            let _0x48__0x45_pipeline_result = _0x61_print;
 
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    } {
-        let _0x40_str = "testing"
-        _0x40_str
-
-        const _0x60_str = _0x40_str
-        const _0x5f_split = String.prototype.split.call(_0x60_str, "t")
-        let _0x43__0x42_pipeline_result = _0x5f_split
-        const _0x5e_print = await _67lang.maybe_await(console.log(_0x43__0x42_pipeline_result))
-        let _0x44__0x41_pipeline_result = _0x5e_print
-        _0x44__0x41_pipeline_result
-
-        const _0x63_str = _0x40_str
-        const _0x62_split = String.prototype.split.call(_0x63_str, /t/)
-        let _0x47__0x46_pipeline_result = _0x62_split
-        const _0x61_print = await _67lang.maybe_await(console.log(_0x47__0x46_pipeline_result))
-        let _0x48__0x45_pipeline_result = _0x61_print
-        _0x48__0x45_pipeline_result
-    } 
 })();

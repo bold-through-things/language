@@ -1,6 +1,6 @@
 // core/macro_registry.ts
 
-import { IndentedStringIO } from "../utils/strutil.ts";
+import { IndentedStringIO, Statement } from "../utils/strutil.ts";
 import { default_logger } from "../utils/logger.ts";
 import type { Node } from "./node.ts";
 import type { Macrocosm } from "./macrocosm.ts";
@@ -25,14 +25,14 @@ export type Macro_ctx_proc =
 // --------------------------------------
 
 export class MacroContext {
-  statement_out: IndentedStringIO;
+  statement_out: Statement[];
   expression_out: OutIO;
   node: Node;
   compiler: Macrocosm;
   current_step: MacroProcessingStep | null;
 
   constructor(
-    statement_out: IndentedStringIO,
+    statement_out: Statement[],
     expression_out: OutIO,
     node: Node,
     compiler: Macrocosm,
@@ -46,7 +46,7 @@ export class MacroContext {
   }
 
   clone_with(opts: {
-    statement_out?: IndentedStringIO | null;
+    statement_out?: Statement[] | null;
     expression_out?: OutIO | null;
     node?: Node | null;
     compiler?: Macrocosm | null;
@@ -70,6 +70,11 @@ export class MacroContext {
       child.current_step.process_node(child);
     }
     return child;
+  }
+
+  push<T>(stmt: Statement & T): T {
+    this.statement_out.push(stmt);
+    return stmt;
   }
 }
 

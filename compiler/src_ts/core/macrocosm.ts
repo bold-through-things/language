@@ -49,7 +49,6 @@ import { Type_macro_provider } from "../macros/type_macro.ts";
 import {
   Try_macro_provider,
   Catch_macro_provider,
-  Finally_macro_provider,
   Throw_macro_provider,
 } from "../macros/try_catch_macro.ts";
 import { Bind_macro_provider } from "../macros/bind_macro.ts";
@@ -82,7 +81,7 @@ import { ErrorType } from "../utils/error_types.ts";
 
 // --- metadata store (TS replacement for def_metadata macro) -------------------
 
-type MetaCtor<T> = { new (...args: any[]): T; name: string };
+export type MetaCtor<T> = { new (...args: any[]): T; name: string };
 
 export class Macrocosm {
   readonly nodes: Node[] = [];
@@ -276,7 +275,7 @@ export class Macrocosm {
         `processing step: ${stepName}`,
         () => {
           const ctx: MacroContext = new MacroContext(
-            new IndentedStringIO(),
+            [],
             new IndentedStringIO(),
             solution_node,
             this,
@@ -340,41 +339,6 @@ export class Macrocosm {
       all.push(...convs);
     }
     return all;
-  }
-
-  compile_fn_call(
-    ctx: MacroContext,
-    call: string,
-    nodes: Node[],
-    ident: boolean = true,
-  ): void {
-    const args: string[] = [];
-
-    for (const child of nodes) {
-      const child_ctx = ctx.clone_with({
-        node: child,
-        expression_out: new IndentedStringIO(),
-      });
-      not_null(child_ctx.current_step).process_node(child_ctx);
-      const expr = child_ctx.expression_out.gets_to_end();
-      if (expr.length > 0) {
-        args.push(expr);
-      }
-    }
-
-    let ident_value = "";
-    if (ident) {
-      ident_value = this.get_new_ident(call);
-      ctx.statement_out.write(`const ${ident_value} = `);
-    }
-
-    ctx.statement_out.write(call);
-    ctx.statement_out.write(args.join(", "));
-    ctx.statement_out.write(")\n");
-
-    if (ident) {
-      ctx.expression_out.write(ident_value);
-    }
   }
 
   safely(fn: () => void): void {
@@ -454,7 +418,7 @@ export function create_macrocosm(): Macrocosm {
   macro_providers["return"] = new Return_macro_provider();
   macro_providers["try"] = new Try_macro_provider();
   macro_providers["catch"] = new Catch_macro_provider();
-  macro_providers["finally"] = new Finally_macro_provider();
+  macro_providers["finally"] = new Scope_macro_provider();
   macro_providers["throw"] = new Throw_macro_provider();
 
   for (const m of COMMENT_MACROS) {

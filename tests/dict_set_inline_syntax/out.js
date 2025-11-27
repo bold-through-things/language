@@ -98,59 +98,44 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const scope = globalThis;
-    {
+    /* -> */ {    
+        }
+    /* -> */ {    
+            let _0x40_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"};
 
+            const _0x6c_user = (_0x40_user);
+            let _0x43__0x42_pipeline_result = _0x6c_user;
 
+            const _0x6b_print = (await _67lang.maybe_await(console.log(_0x43__0x42_pipeline_result)));
+            let _0x44__0x41_pipeline_result = _0x6b_print;
 
+            const _0x6d_set = (_67lang.new_set("apple", "banana", "cherry"));
+            let _0x46__0x45_pipeline_result = _0x6d_set;
 
+            let _0x47_my_set = _0x46__0x45_pipeline_result;
 
+            const _0x6f_my_set = (_0x47_my_set);
+            let _0x4a__0x49_pipeline_result = _0x6f_my_set;
 
+            const _0x6e_print = (await _67lang.maybe_await(console.log(_0x4a__0x49_pipeline_result)));
+            let _0x4b__0x48_pipeline_result = _0x6e_print;
 
+            let _0x4c_my_list = [-2, -1, 0, 1, 2, 3];
 
+            const _0x71_my_list = (_0x4c_my_list);
+            let _0x4f__0x4e_pipeline_result = _0x71_my_list;
 
+            const _0x70_print = (await _67lang.maybe_await(console.log(_0x4f__0x4e_pipeline_result)));
+            let _0x50__0x4d_pipeline_result = _0x70_print;
 
+            let _0x51_simple_list = [1, 2, 3];
 
+            const _0x73_simple_list = (_0x51_simple_list);
+            let _0x54__0x53_pipeline_result = _0x73_simple_list;
 
+            const _0x72_print = (await _67lang.maybe_await(console.log(_0x54__0x53_pipeline_result)));
+            let _0x55__0x52_pipeline_result = _0x72_print;
 
+        }
 
-
-
-
-
-
-    } {
-
-        let _0x40_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"}
-        _0x40_user
-        const _0x6c_user = _0x40_user
-        let _0x43__0x42_pipeline_result = _0x6c_user
-        const _0x6b_print = await _67lang.maybe_await(console.log(_0x43__0x42_pipeline_result))
-        let _0x44__0x41_pipeline_result = _0x6b_print
-        _0x44__0x41_pipeline_result
-        const _0x6d_set = _67lang.new_set("apple", "banana", "cherry")
-        let _0x46__0x45_pipeline_result = _0x6d_set
-        let _0x47_my_set = _0x46__0x45_pipeline_result
-        _0x47_my_set
-        const _0x6f_my_set = _0x47_my_set
-        let _0x4a__0x49_pipeline_result = _0x6f_my_set
-        const _0x6e_print = await _67lang.maybe_await(console.log(_0x4a__0x49_pipeline_result))
-        let _0x4b__0x48_pipeline_result = _0x6e_print
-        _0x4b__0x48_pipeline_result
-        let _0x4c_my_list = [-2, -1, 0, 1, 2, 3]
-        _0x4c_my_list
-        const _0x71_my_list = _0x4c_my_list
-        let _0x4f__0x4e_pipeline_result = _0x71_my_list
-        const _0x70_print = await _67lang.maybe_await(console.log(_0x4f__0x4e_pipeline_result))
-        let _0x50__0x4d_pipeline_result = _0x70_print
-        _0x50__0x4d_pipeline_result
-
-        let _0x51_simple_list = [1, 2, 3]
-        _0x51_simple_list
-        const _0x73_simple_list = _0x51_simple_list
-        let _0x54__0x53_pipeline_result = _0x73_simple_list
-        const _0x72_print = await _67lang.maybe_await(console.log(_0x54__0x53_pipeline_result))
-        let _0x55__0x52_pipeline_result = _0x72_print
-        _0x55__0x52_pipeline_result
-    } 
 })();

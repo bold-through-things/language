@@ -8,7 +8,7 @@ import {
 } from "../core/macro_registry.ts";
 
 import { Args, SaneIdentifier } from "../core/node.ts";
-import { cut } from "../utils/strutil.ts";
+import { BRACES, cut, not_a_statement, PARENTHESIS, statement_block, statement_blocks, statement_expr } from "../utils/strutil.ts";
 import {
   get_single_arg,
 } from "../utils/common_utils.ts";
@@ -329,35 +329,20 @@ export class Fn_macro_provider
 
     const fn_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) || get_single_arg(ctx);
 
-    const so = ctx.statement_out as IndentedStringIO;
-    so.write(`const ${fn_name} = async function (`);
+    const [params_block, body_block] = ctx.push(statement_blocks(
+      statement_block(`const ${fn_name} = async function`, PARENTHESIS),
+      statement_block(null, BRACES)
+    ));
 
     const params = ctx.compiler.get_metadata(ctx.node, Params) as Params;
     const names = Object.keys(params.mapping);
 
     if (names.length > 0) {
-      so.write(NEWLINE);
-      so.with_indent(() => {
-        names.forEach((p, i) => {
-          so.write(p);
-          if (i < names.length - 1) {
-            so.write("," + NEWLINE);
-          } else {
-            so.write(NEWLINE);
-          }
-        });
-      });
+      names.forEach((p) => params_block.push(not_a_statement(`${p},`)));
     }
 
-    so.write(") ");
-
-    so.write("{");
-    so.with_indent(() => {
-      ctx.current_step!.process_node(
-        ctx.clone_with({ node: body }),
-      );
-    });
-
-    so.write("}" + NEWLINE);
+    ctx.current_step!.process_node(
+      ctx.clone_with({ node: body, statement_out: body_block }),
+    );
   }
 }

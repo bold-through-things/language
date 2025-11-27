@@ -17,11 +17,11 @@ try
 	do print
 		get content
 
-catch error
-	do print
-		string "Error reading file:"
-	do print
-		get error
+	catch error
+		do print
+			string "Error reading file:"
+		do print
+			get error
 
 do print
 	string "File reading test complete"

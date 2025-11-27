@@ -98,66 +98,53 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const scope = globalThis;
-    {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    } {
-
-        const _0x6d_print = await _67lang.maybe_await(console.log("Current working directory:"))
-        let _0x41__0x40_pipeline_result = _0x6d_print
-        _0x41__0x40_pipeline_result
-        const _0x6f_cwd = Deno.cwd()
-        let _0x44__0x43_pipeline_result = _0x6f_cwd
-        const _0x6e_print = await _67lang.maybe_await(console.log(_0x44__0x43_pipeline_result))
-        let _0x45__0x42_pipeline_result = _0x6e_print
-        _0x45__0x42_pipeline_result
-        const _0x70_print = await _67lang.maybe_await(console.log("Reading sample.txt:"))
-        let _0x47__0x46_pipeline_result = _0x70_print
-        _0x47__0x46_pipeline_result
-        try {
-            const _0x71_read_file = await (Deno.readTextFile("sample.txt"))
-            let _0x49__0x48_pipeline_result = _0x71_read_file
-            let _0x4a_content = _0x49__0x48_pipeline_result
-            _0x4a_content
-            const _0x73_content = _0x4a_content
-            let _0x4d__0x4c_pipeline_result = _0x73_content
-            const _0x72_print = await _67lang.maybe_await(console.log(_0x4d__0x4c_pipeline_result))
-            let _0x4e__0x4b_pipeline_result = _0x72_print
-            _0x4e__0x4b_pipeline_result
+    /* -> */ {    
         }
-        catch (error) {
-            let _0x4f_error = error
-            _0x4f_error
-            const _0x74_print = await _67lang.maybe_await(console.log("Error reading file:"))
-            let _0x51__0x50_pipeline_result = _0x74_print
-            _0x51__0x50_pipeline_result
-            const _0x76_error = _0x4f_error
-            let _0x54__0x53_pipeline_result = _0x76_error
-            const _0x75_print = await _67lang.maybe_await(console.log(_0x54__0x53_pipeline_result))
-            let _0x55__0x52_pipeline_result = _0x75_print
-            _0x55__0x52_pipeline_result
-        }
-        const _0x77_print = await _67lang.maybe_await(console.log("File reading test complete"))
-        let _0x57__0x56_pipeline_result = _0x77_print
-        _0x57__0x56_pipeline_result
+    /* -> */ {    
+            const _0x6d_print = (await _67lang.maybe_await(console.log("Current working directory:")));
+            let _0x41__0x40_pipeline_result = _0x6d_print;
 
-    } 
+            const _0x6f_cwd = (Deno.cwd());
+            let _0x44__0x43_pipeline_result = _0x6f_cwd;
+
+            const _0x6e_print = (await _67lang.maybe_await(console.log(_0x44__0x43_pipeline_result)));
+            let _0x45__0x42_pipeline_result = _0x6e_print;
+
+            const _0x70_print = (await _67lang.maybe_await(console.log("Reading sample.txt:")));
+            let _0x47__0x46_pipeline_result = _0x70_print;
+
+            try /* -> */ {    
+                const _0x71_read_file = (await (Deno.readTextFile("sample.txt")));
+                let _0x49__0x48_pipeline_result = _0x71_read_file;
+
+                let _0x4a_content = _0x49__0x48_pipeline_result;
+
+                const _0x73_content = (_0x4a_content);
+                let _0x4d__0x4c_pipeline_result = _0x73_content;
+
+                const _0x72_print = (await _67lang.maybe_await(console.log(_0x4d__0x4c_pipeline_result)));
+                let _0x4e__0x4b_pipeline_result = _0x72_print;
+
+            }catch /* -> */ (    
+                error
+            )/* -> */ {    
+                let _0x4f_error = error;
+
+                const _0x74_print = (await _67lang.maybe_await(console.log("Error reading file:")));
+                let _0x51__0x50_pipeline_result = _0x74_print;
+
+                const _0x76_error = (_0x4f_error);
+                let _0x54__0x53_pipeline_result = _0x76_error;
+
+                const _0x75_print = (await _67lang.maybe_await(console.log(_0x54__0x53_pipeline_result)));
+                let _0x55__0x52_pipeline_result = _0x75_print;
+
+            }finally /* -> */ {    
+            }
+
+            const _0x77_print = (await _67lang.maybe_await(console.log("File reading test complete")));
+            let _0x57__0x56_pipeline_result = _0x77_print;
+
+        }
+
 })();

@@ -8,14 +8,14 @@ local n
 note TODO add prompting tests...
 	if
 		do is_tty
-	then
-		do prompt into fizz_divisor
-			string "fizz? "
-		do prompt into buzz_divisor
-			string "buzz? "
-		do prompt into n
-			string "n? "
-	else
+		then
+			do prompt into fizz_divisor
+				string "fizz? "
+			do prompt into buzz_divisor
+				string "buzz? "
+			do prompt into n
+				string "n? "
+		else
 do
 	local input
 		do stdin
@@ -57,10 +57,10 @@ while
 					get i
 					get fizz_divisor
 				int 0
-		then
-			do concat into out
-				get out
-				string "fizz"
+			then
+				do concat into out
+					get out
+					string "fizz"
 
 		if
 			do eq
@@ -68,20 +68,20 @@ while
 					get i
 					get buzz_divisor
 				int 0
-		then
-			do concat into out
-				get out
-				string "buzz"
+			then
+				do concat into out
+					get out
+					string "buzz"
 		
 		if
 			do eq
 				get out
 				string ""
-		then
-			do concat into out
-				note TODO why is this needed
-				string ""
-				do str the i
+			then
+				do concat into out
+					note TODO why is this needed
+					string ""
+					do str the i
 
 		do print
 			get out

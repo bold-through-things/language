@@ -120,7 +120,7 @@ function resolve_local_definition(
   const sane = ctx.compiler.maybe_metadata(res.node, SaneIdentifier);
   const resolved_name = (sane ?? name).toString();
 
-  const type = res.type_value;
+  const type = res.found;
   if (!type) {
     return [];
   }
