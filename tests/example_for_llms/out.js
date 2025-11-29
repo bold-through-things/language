@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -121,9 +111,9 @@ void (async () => {
             if (    
                 _0x67_value
             ) {    
-                (await _67lang.maybe_await(console.log(_0x66_if_true)));
+                console.log(_0x66_if_true);
             } else {    
-                (await _67lang.maybe_await(console.log(_0x65_if_false)));
+                console.log(_0x65_if_false);
             }
         }
     }
@@ -132,14 +122,14 @@ void (async () => {
     ) {    
         {    
             let _0x61__ = _;
-            let _0x62_new = ((await _67lang.maybe_await(_0x61__.count)) + 1);
-            return (await _67lang.maybe_await((_0x61__.count = (_0x62_new))));
+            let _0x62_new = (_0x61__.count + 1);
+            return (_0x61__.count = (_0x62_new));
         }
     }
     const _0x5e_create_counter = async function (
     ) {    
         {    
-            let _0x5f__ = (await _67lang.maybe_await((new _0x69_create_counter_store(0))));
+            let _0x5f__ = (new _0x69_create_counter_store(0));
             return (() => _0x60_create_counter_colon__colon_count(_0x5f__));
         }
     }
@@ -157,21 +147,21 @@ void (async () => {
         let _0x40_name = "Alice";
         let _0x41_age = 25;
         let _0x42_is_active = true;
-        (await _67lang.maybe_await(console.log(_0x40_name, _0x41_age, _0x42_is_active)));
+        console.log(_0x40_name, _0x41_age, _0x42_is_active);
         (_0x40_name = "Aris");
-        (await _67lang.maybe_await(console.log(_0x40_name)));
-        (await _67lang.maybe_await(console.log(_0x40_name)));
-        (await _67lang.maybe_await(console.log((await _67lang.maybe_await(_0x43_greet("Alice"))))));
+        console.log(_0x40_name);
+        console.log(_0x40_name);
+        console.log((await (_0x43_greet("Alice"))));
         let _0x45_numbers = [1, 2, 3, 4, 5];
         Array.prototype.push.call(_0x45_numbers, 6);
-        (await _67lang.maybe_await(console.log(_0x45_numbers[0])));
-        (await _67lang.maybe_await(console.log(_0x45_numbers[(_0x45_numbers.length - 1)])));
+        console.log(_0x45_numbers[0]);
+        console.log(_0x45_numbers[(_0x45_numbers.length - 1)]);
         if (    
             (18 <= _0x41_age)
         ) {    
-            (await _67lang.maybe_await(console.log("Adult")));
+            console.log("Adult");
         } else {    
-            (await _67lang.maybe_await(console.log("Minor")));
+            console.log("Minor");
         }
     
         {    
@@ -182,28 +172,28 @@ void (async () => {
                 {    
                     let _0x4a_number = _0x49__0x47_for_number__list[_0x48__0x46_for_number__index];
                     (_0x48__0x46_for_number__index = (_0x48__0x46_for_number__index + 1));
-                    (await _67lang.maybe_await(console.log(_0x4a_number)));
+                    console.log(_0x4a_number);
                 }
             }
         }
     
-        let _0x4b_alice = (await _67lang.maybe_await((new _0x6a_Person("Alice", 30))));
-        (await _67lang.maybe_await(console.log((await _67lang.maybe_await(_0x4b_alice.name)))));
-        (await _67lang.maybe_await(console.log((await _67lang.maybe_await(_0x4b_alice.age)))));
-        (await _67lang.maybe_await((_0x4b_alice.name = ("Alicia"))));
-        (await _67lang.maybe_await(console.log((await _67lang.maybe_await(_0x4b_alice.name)))));
-        (await _67lang.maybe_await(console.log(_0x40_name)));
+        let _0x4b_alice = (new _0x6a_Person("Alice", 30));
+        console.log(_0x4b_alice.name);
+        console.log(_0x4b_alice.age);
+        (_0x4b_alice.name = ("Alicia"));
+        console.log(_0x4b_alice.name);
+        console.log(_0x40_name);
         let _0x4c__1 = 1;
         const _0xfd__1 = _0x4c__1;
         const _0xfe__pipeline_result = _0xfd__1;
         let _0x4d__q_ = _0xfe__pipeline_result;
-        (await _67lang.maybe_await(console.log((_0xfe__pipeline_result + _0x4d__q_ + 1))));
+        console.log((_0xfe__pipeline_result + _0x4d__q_ + 1));
         let _0x4e__q_ = _0x4c__1;
-        (await _67lang.maybe_await(console.log((_0x4e__q_ + 1))));
+        console.log((_0x4e__q_ + 1));
         const _0x10d__1 = _0x4c__1;
         const _0x10e__pipeline_result = _0x10d__1;
         let _0x4f__q_ = _0x10e__pipeline_result;
-        (await _67lang.maybe_await(console.log((_0x10e__pipeline_result + 1))));
+        console.log((_0x10e__pipeline_result + 1));
         let _0x50_things_to_say = ["67lang is awesome", "67lang is flexible as fuck", "67lang is all you ever need", "67lang is on the brink", "67lang is good enough to write a Discord bot", "67lang is almost good enough for everything."];
         let _0x51_max_characters = 0;
         let _0x52_found_word = "";
@@ -239,14 +229,14 @@ void (async () => {
             }
         }
     
-        (await _67lang.maybe_await(console.log(_0x52_found_word)));
-        (await _67lang.maybe_await(console.log(Array.prototype.join.call(Array.prototype.sort.call(String.prototype.split.call(_0x50_things_to_say[0], " "))), " - what words!")));
-        let _0x63_counter = (await _67lang.maybe_await(_0x5e_create_counter()));
-        (await _67lang.maybe_await(console.log("wow, counting!")));
-        (await _67lang.maybe_await(console.log(Number.prototype.toString.call((await _67lang.maybe_await(_0x63_counter()))), Number.prototype.toString.call((await _67lang.maybe_await(_0x63_counter()))), Number.prototype.toString.call((await _67lang.maybe_await(_0x63_counter()))), Number.prototype.toString.call((await _67lang.maybe_await(_0x63_counter()))), Number.prototype.toString.call((await _67lang.maybe_await(_0x63_counter()))), Number.prototype.toString.call((await _67lang.maybe_await(_0x63_counter()))))));
+        console.log(_0x52_found_word);
+        console.log(Array.prototype.join.call(Array.prototype.sort.call(String.prototype.split.call(_0x50_things_to_say[0], " "))), " - what words!");
+        let _0x63_counter = (await (_0x5e_create_counter()));
+        console.log("wow, counting!");
+        console.log(Number.prototype.toString.call((await (_0x63_counter()))), Number.prototype.toString.call((await (_0x63_counter()))), Number.prototype.toString.call((await (_0x63_counter()))), Number.prototype.toString.call((await (_0x63_counter()))), Number.prototype.toString.call((await (_0x63_counter()))), Number.prototype.toString.call((await (_0x63_counter()))));
         let _0x68_politely_agree = ((arg0, arg1) => _0x64_bool_printer(arg0, "i would indeed like to agree.", arg1));
-        (await _67lang.maybe_await(_0x68_politely_agree(true, "what?! utter BULLSHIT!")));
-        (await _67lang.maybe_await(_0x68_politely_agree(false, "what?! utter BULLSHIT!")));
+        (await (_0x68_politely_agree(true, "what?! utter BULLSHIT!")));
+        (await (_0x68_politely_agree(false, "what?! utter BULLSHIT!")));
     }
 
 })();

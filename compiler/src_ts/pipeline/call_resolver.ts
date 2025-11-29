@@ -126,8 +126,8 @@ function resolve_local_definition(
   }
 
   return [
-    new LocalAccessCall(resolved_name, [], type, Async_mode.SYNC),
-    new LocalAccessCall(resolved_name, [type], type, Async_mode.SYNC),
+    new LocalAccessCall({ fn: resolved_name, demands: [], returns: type, async_mode: Async_mode.SYNC }),
+    new LocalAccessCall({ fn: resolved_name, demands: [type], returns: type, async_mode: Async_mode.SYNC }),
   ];
 }
 

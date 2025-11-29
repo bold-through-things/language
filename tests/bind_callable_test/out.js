@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -107,21 +97,21 @@ void (async () => {
             let _0x41_is_trusted = is_trusted;
             let _0x42_message = message;
             let _0x43_bot = bot;
-            (await _67lang.maybe_await(console.log("Bot: ", _0x43_bot, ", Message: ", _0x42_message, ", Trusted: ", _0x41_is_trusted)));
+            console.log("Bot: ", _0x43_bot, ", Message: ", _0x42_message, ", Trusted: ", _0x41_is_trusted);
         }
     }
     {
     }
     {    
-        (await _67lang.maybe_await(console.log("=== Testing bind callable ===")));
+        console.log("=== Testing bind callable ===");
         let _0x44_bound_handler = ((arg0) => _0x40_handle_message("MyBot", arg0, true));
-        (await _67lang.maybe_await(_0x44_bound_handler("Hello from bind test!")));
+        (await (_0x44_bound_handler("Hello from bind test!")));
         let _0x45_multi_bound = ((arg0, arg1) => _0x40_handle_message(arg0, arg1, false));
-        (await _67lang.maybe_await(_0x45_multi_bound("AnotherBot", "Multiple unbound test")));
+        (await (_0x45_multi_bound("AnotherBot", "Multiple unbound test")));
         let _0x46_fully_bound = (() => _0x40_handle_message("FullyBoundBot", "This message is pre-bound", true));
-        (await _67lang.maybe_await(_0x46_fully_bound()));
-        (await _67lang.maybe_await(console.log("print manually")));
-        (await _67lang.maybe_await((() => console.log("or a bound print"))()));
+        (await (_0x46_fully_bound()));
+        console.log("print manually");
+        (await ((() => console.log("or a bound print"))()));
     }
 
 })();

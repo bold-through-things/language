@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -101,26 +91,26 @@ void (async () => {
     {
     }
     {    
-        (await _67lang.maybe_await(console.log("Starting execution")));
+        console.log("Starting execution");
         try {    
-            (await _67lang.maybe_await(console.log("Inside try block")));
-            (await _67lang.maybe_await(console.log("About to throw")));
+            console.log("Inside try block");
+            console.log("About to throw");
             throw "Test error message";
-            (await _67lang.maybe_await(console.log("This should not print")));
+            console.log("This should not print");
         } catch (    
             error
         ) {    
             let _0x40_error = error;
-            (await _67lang.maybe_await(console.log("Caught error:")));
-            (await _67lang.maybe_await(console.log(_0x40_error)));
+            console.log("Caught error:");
+            console.log(_0x40_error);
         } finally {    
             {    
-                (await _67lang.maybe_await(console.log("Finally block executed")));
-                (await _67lang.maybe_await(console.log("Many statements")));
+                console.log("Finally block executed");
+                console.log("Many statements");
             }
         }
     
-        (await _67lang.maybe_await(console.log("Execution complete")));
+        console.log("Execution complete");
     }
 
 })();

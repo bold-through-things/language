@@ -223,18 +223,6 @@ export class Call_macro_provider
       const await_fn = {
         [Async_mode.ASYNC]: (id: string) => `(await (${id}))`, // should NEVER drop the outer brackets here!
         [Async_mode.SYNC]: (id: string) => id,
-        /* 
-        shout out to Claude for helping me benchmark this. yes, it's not that bad!
-
-        Without unnecessary awaits: 0.30ms
-        Smart conditional await: 0.40ms (1.33x slower) <-
-        With pointless awaits: 72.40ms (241.33x slower)
-
-        see the code below (at end of file)
-
-        i really fucking love the JIT.
-        */
-        [Async_mode.MAYBE]: (id: string) => `(await _67lang.maybe_await(${id}))`, // should NEVER drop the outer brackets!
       }
 
       const [define, use] = statement_expr(() => `${await_fn[conv.async_mode](call_src())}`, ident);

@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -104,11 +94,11 @@ void (async () => {
         {    
             let _0x54_fucks_given = fucks_given;
             let _0x55_fucks_given = _0x54_fucks_given;
-            (await _67lang.maybe_await(console.log("fuck!")));
+            console.log("fuck!");
             if (    
                 (0 <= _0x55_fucks_given)
             ) {    
-                (await _67lang.maybe_await(_0x53_fuck_bang_((_0x55_fucks_given + -1))));
+                (await (_0x53_fuck_bang_((_0x55_fucks_given + -1))));
             } else {
             }
         }
@@ -116,46 +106,46 @@ void (async () => {
     {
     }
     {    
-        (await _67lang.maybe_await(console.log("hello world")));
-        (await _67lang.maybe_await(console.log("\"hello world\" is a fucking stupid non argument.")));
-        (await _67lang.maybe_await(console.log("this literally cannot be true... yet it is: ", (("new year's eve" === ("new year's " + "eve")) && ("a very scary error" === ("a very " + "scary " + "error")) && ("your regex should be stored into the regex variable." === ("your regex" + " should be stored into the " + "regex" + " variable."))))));
-        (await _67lang.maybe_await(console.log("just write the newlines naturally and \nthey will appear in the output, meaning\nwhat you see is what you get.")));
-        (await _67lang.maybe_await(console.log((2 + 0 + 2))));
-        (await _67lang.maybe_await(console.log((0 < 1 && 1 < 2))));
+        console.log("hello world");
+        console.log("\"hello world\" is a fucking stupid non argument.");
+        console.log("this literally cannot be true... yet it is: ", (("new year's eve" === ("new year's " + "eve")) && ("a very scary error" === ("a very " + "scary " + "error")) && ("your regex should be stored into the regex variable." === ("your regex" + " should be stored into the " + "regex" + " variable."))));
+        console.log("just write the newlines naturally and \nthey will appear in the output, meaning\nwhat you see is what you get.");
+        console.log((2 + 0 + 2));
+        console.log((0 < 1 && 1 < 2));
         let _0x40_age = 23;
-        (await _67lang.maybe_await(console.log("my age is", _0x40_age)));
+        console.log("my age is", _0x40_age);
         (_0x40_age = 25);
-        (await _67lang.maybe_await(console.log("actually, i lied. my age is", _0x40_age)));
+        console.log("actually, i lied. my age is", _0x40_age);
         let _0x41__0 = 0;
-        (await _67lang.maybe_await(console.log(_0x41__0)));
+        console.log(_0x41__0);
         (_0x41__0 = 2347);
-        (await _67lang.maybe_await(console.log(_0x41__0)));
+        console.log(_0x41__0);
         let _0x42_discord_dot__at_member_hash_hash = "#2347";
         let _0x43__67lang_dot__dollar_budget = 0;
         let _0x44__lp_2347_rp_ = /(2347)/;
         let _0x45__comma_ = true;
-        (await _67lang.maybe_await(console.log(_0x45__comma_)));
+        console.log(_0x45__comma_);
         (_0x45__comma_ = (_0x45__comma_ = _0x45__comma_));
         let _0x46__2347 = "wow, very helpful.";
-        (await _67lang.maybe_await(console.log(Array.prototype.join.call(Array.prototype.sort.call(String.prototype.split.call(_0x46__2347, " ")), ", "))));
+        console.log(Array.prototype.join.call(Array.prototype.sort.call(String.prototype.split.call(_0x46__2347, " ")), ", "));
         let _0x47__67lang_dot_features = {};
         (_0x47__67lang_dot_features["the get macro"] = "a powerful and flexible method chaining \"syntax sugar\" with clear branching\neliminating the pain of using brackets and having to erase or insert the bracket\nat the beginning and then at the end inherently by being part of 67lang\nwhere indentation rules all.");
         (_0x47__67lang_dot_features["the flexibility of identifiers"] = "anything can be an identifier. there is only whitespace and non whitespace. this \nfrees programmers to express their ideas in a truly direct and unleashed way.\nif you desire to have a variable named `$`, `,`, `?`, or even `true`, we are\nnot here to stop you. if you are stupid, you will certainly misuse this and obliterate\nyour foot. if you are smart, you will write the most readable code ever written.");
         let _0x48__we_really_needed_the_generics_yesterday_bang_ = _0x47__67lang_dot_features["the flexibility of identifiers"];
-        (await _67lang.maybe_await(console.log(String.prototype.slice.call(_0x48__we_really_needed_the_generics_yesterday_bang_, 0, 67))));
+        console.log(String.prototype.slice.call(_0x48__we_really_needed_the_generics_yesterday_bang_, 0, 67));
         if (    
             true
         ) {    
-            (await _67lang.maybe_await(console.log("big")));
+            console.log("big");
         } else {
         }
     
         if (    
             false
         ) {    
-            (await _67lang.maybe_await(console.log("big")));
+            console.log("big");
         } else {    
-            (await _67lang.maybe_await(console.log("my disappointment is immeasurable and my day is ruined.")));
+            console.log("my disappointment is immeasurable and my day is ruined.");
         }
     
         let _0x49_i_hate_this_trash_bang_ = ["Python? insufferable import semantics, no macros, optional correctness.", "Lisp? does not run on JS proper, insufferable syntax, indentation is demanded yet optional.", "Java? [statement removed due to violating Terms of Service]", "Nim? possibly the only one that has any chance, but at this point i'm tired of trying."];
@@ -167,7 +157,7 @@ void (async () => {
                 {    
                     let _0x4e_angy = _0x4d__0x4b_for_angy__list[_0x4c__0x4a_for_angy__index];
                     (_0x4c__0x4a_for_angy__index = (_0x4c__0x4a_for_angy__index + 1));
-                    (await _67lang.maybe_await(console.log((_0x4e_angy + "!!!"))));
+                    console.log((_0x4e_angy + "!!!"));
                 }
             }
         }
@@ -176,19 +166,19 @@ void (async () => {
         while(true) {    
             if (!_0x4f_does_a_decent_programming_language_exist_q_) { break; }
             {    
-                (await _67lang.maybe_await(console.log("code for quality software")));
+                console.log("code for quality software");
             }
         }
     
-        (await _67lang.maybe_await(console.log("false: ", (true && true && false))));
-        (await _67lang.maybe_await(console.log("true: ", (true || false || false))));
-        (await _67lang.maybe_await(console.log("true: ", !(false || false || false))));
-        (await _67lang.maybe_await(console.log("6: ", (1 + 1 + 1 + 1 + 1 + 1))));
+        console.log("false: ", (true && true && false));
+        console.log("true: ", (true || false || false));
+        console.log("true: ", !(false || false || false));
+        console.log("6: ", (1 + 1 + 1 + 1 + 1 + 1));
         let _0x50__2347 = 2347;
         let _0x51_where_q_ = "not even in Nebraska.";
         _0x51_where_q_;
         String.prototype.split.call(_0x51_where_q_, " ");
-        (await _67lang.maybe_await(_0x53_fuck_bang_(6)));
+        (await (_0x53_fuck_bang_(6)));
     }
 
 })();

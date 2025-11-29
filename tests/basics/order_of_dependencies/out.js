@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -122,25 +112,25 @@ void (async () => {
             let _0x4f_module = module;
             let _0x50_unroller = unroller;
             if (    
-                (await _67lang.maybe_await(_0x4f_module.visited))
+                _0x4f_module.visited
             ) {    
                 return;
             } else {
             }
     
-            (await _67lang.maybe_await((_0x4f_module.visited = (true))));
+            (_0x4f_module.visited = (true));
             if (    
                 false
             ) {    
-                Array.prototype.push.call(Array.prototype.slice.call(_0x4e_chain), (await _67lang.maybe_await(_0x4f_module.id)));
+                Array.prototype.push.call(Array.prototype.slice.call(_0x4e_chain), _0x4f_module.id);
             } else {
             }
     
             let _0x51_next_chain = Array.prototype.slice.call(_0x4e_chain);
-            Array.prototype.push.call(_0x51_next_chain, (await _67lang.maybe_await(_0x4f_module.id)));
+            Array.prototype.push.call(_0x51_next_chain, _0x4f_module.id);
             {    
                 let _0x54__0x52_for_dep_id__index = 0;
-                let _0x55__0x53_for_dep_id__list = (await _67lang.maybe_await(_0x4f_module.deps));
+                let _0x55__0x53_for_dep_id__list = _0x4f_module.deps;
                 while(true) {    
                     if (!(_0x54__0x52_for_dep_id__index < _0x55__0x53_for_dep_id__list.length)) { break; }
                     {    
@@ -171,21 +161,21 @@ void (async () => {
                             }
     
                             Array.prototype.reverse.call(_0x57_dep_loop);
-                            Array.prototype.push.call((await _67lang.maybe_await(_0x50_unroller.dep_loops)), Array.prototype.join.call(_0x57_dep_loop, " → "));
+                            Array.prototype.push.call(_0x50_unroller.dep_loops, Array.prototype.join.call(_0x57_dep_loop, " → "));
                         } else {    
-                            (await _67lang.maybe_await(_0x4d_visit(_0x50_unroller, (await _67lang.maybe_await(_0x50_unroller.modules))[_0x56_dep_id], _0x51_next_chain)));
+                            (await (_0x4d_visit(_0x50_unroller, _0x50_unroller.modules[_0x56_dep_id], _0x51_next_chain)));
                         }
                     }
                 }
             }
     
-            Array.prototype.push.call((await _67lang.maybe_await(_0x50_unroller.build_order)), (await _67lang.maybe_await(_0x4f_module.id)));
+            Array.prototype.push.call(_0x50_unroller.build_order, _0x4f_module.id);
         }
     }
     {
     }
     {    
-        let _0x40_lines = await (_67lang.stdin());
+        let _0x40_lines = (await (_67lang.stdin()));
         let _0x41_lines = String.prototype.split.call(_0x40_lines, "\n");
         let _0x42_modules = {};
         {    
@@ -198,22 +188,22 @@ void (async () => {
                     (_0x45__0x43_for_line__index = (_0x45__0x43_for_line__index + 1));
                     let _0x48_kv = String.prototype.split.call(_0x47_line, ":", 2);
                     let _0x49_id = String.prototype.trim.call(_0x48_kv[0]);
-                    let _0x4a_module = (await _67lang.maybe_await((new _0x64_Module(_0x49_id, [], false))));
+                    let _0x4a_module = (new _0x64_Module(_0x49_id, [], false));
                     let _0x4b_deps_str = String.prototype.trim.call(_0x48_kv[1]);
                     if (    
                         !((_0x4b_deps_str === ""))
                     ) {    
                         let _0x4c_deps = String.prototype.split.call(String.prototype.trim.call(_0x4b_deps_str), /\s+/);
-                        (await _67lang.maybe_await((_0x4a_module.deps = (_0x4c_deps))));
+                        (_0x4a_module.deps = (_0x4c_deps));
                     } else {
                     }
     
-                    (_0x42_modules[(await _67lang.maybe_await(_0x4a_module.id))] = _0x4a_module);
+                    (_0x42_modules[_0x4a_module.id] = _0x4a_module);
                 }
             }
         }
     
-        let _0x5d_unroller = (await _67lang.maybe_await((new _0x63_DAG_unroller([], [], _0x42_modules))));
+        let _0x5d_unroller = (new _0x63_DAG_unroller([], [], _0x42_modules));
         {    
             let _0x60__0x5e_for_module__index = 0;
             let _0x61__0x5f_for_module__list = Object.values(_0x42_modules);
@@ -222,17 +212,17 @@ void (async () => {
                 {    
                     let _0x62_module = _0x61__0x5f_for_module__list[_0x60__0x5e_for_module__index];
                     (_0x60__0x5e_for_module__index = (_0x60__0x5e_for_module__index + 1));
-                    (await _67lang.maybe_await(_0x4d_visit(_0x5d_unroller, _0x62_module, [])));
+                    (await (_0x4d_visit(_0x5d_unroller, _0x62_module, [])));
                 }
             }
         }
     
         if (    
-            (1 <= (await _67lang.maybe_await(_0x5d_unroller.dep_loops)).length)
+            (1 <= _0x5d_unroller.dep_loops.length)
         ) {    
-            (await _67lang.maybe_await(console.log(("ERROR: there are dependency loops.\n" + Array.prototype.join.call((await _67lang.maybe_await(_0x5d_unroller.dep_loops)), "\n")))));
+            console.log(("ERROR: there are dependency loops.\n" + Array.prototype.join.call(_0x5d_unroller.dep_loops, "\n")));
         } else {    
-            (await _67lang.maybe_await(console.log(Array.prototype.join.call((await _67lang.maybe_await(_0x5d_unroller.build_order)), "\n"))));
+            console.log(Array.prototype.join.call(_0x5d_unroller.build_order, "\n"));
         }
     }
 

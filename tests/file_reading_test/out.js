@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -101,22 +91,22 @@ void (async () => {
     {
     }
     {    
-        (await _67lang.maybe_await(console.log("Current working directory:")));
-        (await _67lang.maybe_await(console.log(Deno.cwd())));
-        (await _67lang.maybe_await(console.log("Reading sample.txt:")));
+        console.log("Current working directory:");
+        console.log(Deno.cwd());
+        console.log("Reading sample.txt:");
         try {    
-            let _0x40_content = await (Deno.readTextFile("sample.txt"));
-            (await _67lang.maybe_await(console.log(_0x40_content)));
+            let _0x40_content = (await (Deno.readTextFile("sample.txt")));
+            console.log(_0x40_content);
         } catch (    
             error
         ) {    
             let _0x41_error = error;
-            (await _67lang.maybe_await(console.log("Error reading file:")));
-            (await _67lang.maybe_await(console.log(_0x41_error)));
+            console.log("Error reading file:");
+            console.log(_0x41_error);
         } finally {
         }
     
-        (await _67lang.maybe_await(console.log("File reading test complete")));
+        console.log("File reading test complete");
     }
 
 })();

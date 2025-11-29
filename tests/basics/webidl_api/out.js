@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -102,10 +92,10 @@ void (async () => {
     }
     {    
         let _0x40_myURL = (new URL("https://example.com/path?query=123"));
-        (await _67lang.maybe_await(console.log(_0x40_myURL.pathname)));
-        (await _67lang.maybe_await(console.log("\n--- Testing TextEncoder/TextDecoder ---")));
-        let _0x41_encoder = (await _67lang.maybe_await((new TextEncoder())));
-        let _0x42_decoder = (await _67lang.maybe_await((new TextDecoder())));
+        console.log(_0x40_myURL.pathname);
+        console.log("\n--- Testing TextEncoder/TextDecoder ---");
+        let _0x41_encoder = (new TextEncoder());
+        let _0x42_decoder = (new TextDecoder());
         let _0x43_text_tests = ["ASCII text", "Unicode: 🦕 Deno", "Numbers: 42"];
         {    
             let _0x46__0x44_for_text__index = 0;
@@ -117,27 +107,27 @@ void (async () => {
                     (_0x46__0x44_for_text__index = (_0x46__0x44_for_text__index + 1));
                     let _0x49_bytes = TextEncoder.prototype.encode.call(_0x41_encoder, _0x48_text);
                     let _0x4a_restored = TextDecoder.prototype.decode.call(_0x42_decoder, _0x49_bytes);
-                    (await _67lang.maybe_await(console.log("Text: \"", _0x48_text, "\" -> Bytes: [", _0x49_bytes, "] -> Restored: \"", _0x4a_restored)));
+                    console.log("Text: \"", _0x48_text, "\" -> Bytes: [", _0x49_bytes, "] -> Restored: \"", _0x4a_restored);
                 }
             }
         }
     
-        (await _67lang.maybe_await(console.log("\n--- Testing atob/btoa ---")));
+        console.log("\n--- Testing atob/btoa ---");
         let _0x4b_testString = "Hello World";
         let _0x4c_encodedString = globalThis.btoa(_0x4b_testString);
         let _0x4d_decodedString = globalThis.atob(_0x4c_encodedString);
-        (await _67lang.maybe_await(console.log("Original: ", _0x4b_testString, " -> Encoded: ", _0x4c_encodedString, " -> Decoded: ", _0x4d_decodedString)));
-        (await _67lang.maybe_await(console.log("\n--- Testing JSON.stringify/parse ---")));
+        console.log("Original: ", _0x4b_testString, " -> Encoded: ", _0x4c_encodedString, " -> Decoded: ", _0x4d_decodedString);
+        console.log("\n--- Testing JSON.stringify/parse ---");
         let _0x4e_testObj = {["name"]: "Claude", ["type"]: "AI", ["version"]: "42"};
         let _0x4f_jsonString = JSON.stringify(_0x4e_testObj);
         let _0x50_parsedObj = JSON.parse(_0x4f_jsonString);
-        (await _67lang.maybe_await(console.log("Original object -> JSON: ", _0x4f_jsonString)));
-        (await _67lang.maybe_await(console.log("Parsed back -> name: ", _0x50_parsedObj["name"])));
-        (await _67lang.maybe_await(console.log("\n--- Testing fetch (data URL) ---")));
-        let _0x51_response = await (globalThis.fetch("data:application/json,{\"67lang\": \"is fucking awesome\"}", {}));
-        (await _67lang.maybe_await(console.log(_0x51_response, await (Response.prototype.json.call(_0x51_response)))));
-        let _0x53_encoder2 = (await _67lang.maybe_await((new TextEncoder())));
-        (await _67lang.maybe_await(console.log("\n--- Testing custom MyEncoder ---", (await _67lang.maybe_await(TextEncoder.prototype.encode.call(_0x53_encoder2, "Custom encoding works!"))))));
+        console.log("Original object -> JSON: ", _0x4f_jsonString);
+        console.log("Parsed back -> name: ", _0x50_parsedObj["name"]);
+        console.log("\n--- Testing fetch (data URL) ---");
+        let _0x51_response = (await (globalThis.fetch("data:application/json,{\"67lang\": \"is fucking awesome\"}", {})));
+        console.log(_0x51_response, (await (Response.prototype.json.call(_0x51_response))));
+        let _0x53_encoder2 = (new TextEncoder());
+        console.log("\n--- Testing custom MyEncoder ---", TextEncoder.prototype.encode.call(_0x53_encoder2, "Custom encoding works!"));
     }
 
 })();

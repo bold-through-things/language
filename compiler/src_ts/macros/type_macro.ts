@@ -17,6 +17,7 @@ import { seek_child_macro } from "../pipeline/steps/utils.ts";
 import { Joiner } from "../utils/strutil.ts";
 import { NEWLINE } from "../pipeline/js_conversion.ts";
 import {
+Async_mode,
   FieldCall,
   NewCall
 } from "../pipeline/call_conventions.ts";
@@ -174,14 +175,15 @@ export class Type_macro_provider
         field_names.push(field_name);
         constructor_demands.push(field_type!);
 
-        const getter = new FieldCall(field_name, [new_type], field_type!);
+        const getter = new FieldCall({field: field_name, demands: [new_type], returns: field_type, async_mode: Async_mode.SYNC});
         ctx.compiler.add_dynamic_convention(field_name, getter);
 
-        const setter = new FieldCall(
-          field_name,
-          [new_type, field_type!],
-          field_type!,
-        );
+        const setter = new FieldCall({
+          async_mode: Async_mode.SYNC,
+          field: field_name,
+          demands: [new_type, field_type!],
+          returns: field_type,
+        });
         ctx.compiler.add_dynamic_convention(field_name, setter);
       }
     }
@@ -189,7 +191,7 @@ export class Type_macro_provider
     const sane = ctx.compiler.get_metadata(ctx.node, SaneIdentifier).value;
 
     // TODO just skip this if we gonna drop it
-    let ctor = new NewCall(sane, constructor_demands, new_type);
+    let ctor = new NewCall({constructor: sane, demands: constructor_demands, returns: new_type, async_mode: Async_mode.SYNC});
     const impl_out = new IndentedStringIO();
     impl_out.write(`function ${sane}(`);
     const joiner = new Joiner(impl_out, ", ");
@@ -217,21 +219,23 @@ export class Type_macro_provider
         [
           js_ctor, () => {
             const js_ctor_name = get_single_arg(ctx.clone_with({ node: js_ctor }));
-            ctor = new NewCall(
-              String(js_ctor_name),
-              constructor_demands,
-              new_type,
-            );
+            ctor = new NewCall({
+              async_mode: Async_mode.SYNC,
+              constructor: String(js_ctor_name),
+              demands: constructor_demands,
+              returns: new_type,
+            });
             // no need to set implementation here because we're binding the existing one
           }
         ],
         [
           plain, () => {
-            ctor = new NewCall(
-              `plain_object_${sane}`,
-              constructor_demands,
-              new_type,
-            );
+            ctor = new NewCall({
+              constructor: `plain_object_${sane}`,
+              demands: constructor_demands,
+              returns: new_type,
+              async_mode: Async_mode.SYNC,
+            });
             // this is a weird one since it's kind of binding, kind of not.
             const plain_out = new IndentedStringIO();
             plain_out.write(`function plain_object_${sane}(`);

@@ -120,7 +120,9 @@ type MyEncoder is JS:object
 type MyUint8Array is JS:object
 	constructor Uint8Array
 
+note TODO just honestly remove these here
 fn encode is PrototypeCall
+	sync
 	constructor TextEncoder
 	fn encode
 	param self

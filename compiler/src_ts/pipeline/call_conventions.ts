@@ -23,7 +23,6 @@ export function jsFieldAccess(s: string): string {
 // --- Call conventions ---------------------------------------------------------
 
 export enum Async_mode {
-  MAYBE,
   ASYNC,
   SYNC,
 }
@@ -32,13 +31,22 @@ const call = <T>(fn: () => T): T => fn();
 const is_not_null = <T>(x: T | null): x is T => x !== null;
 
 export class FieldCall {
+  readonly field: string;
+  readonly async_mode: Async_mode;
+  readonly demands: TypeDemand[] | null;
+  readonly returns: TypeDemand | null;
   constructor(
-    readonly field: string,
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      field: string;
+      async_mode: Async_mode;
+      demands?: TypeDemand[] | null;
+      returns?: TypeDemand | null;
+    }
   ) { 
-    // ...
+    this.field = opts.field;
+    this.async_mode = opts.async_mode;
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
   }
 
   compile(args: Emission_item[], _ctx: MacroContext): Emission_item {
@@ -92,14 +100,26 @@ export class FieldCall {
 }
 
 export class PrototypeCall {
+  readonly constructorName: string;
+  readonly fn: string;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
+  readonly async_mode: Async_mode;
+
   constructor(
-    readonly constructorName: string,
-    readonly fn: string,
-    readonly demands: TypeDemand[],
-    readonly returns: TypeDemand,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      constructor: string,
+      fn: string,
+      demands: TypeDemand[],
+      returns: TypeDemand,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.constructorName = opts.constructor;
+    this.fn = opts.fn;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {
@@ -109,15 +129,26 @@ export class PrototypeCall {
 
 // fn(args...)  (or receiver.fn(args...) if receiver provided)
 export class DirectCall {
+  readonly fn: string;
+  readonly receiver: string | null = null;
+  readonly demands: TypeDemand[] | null = null;
+  readonly returns: TypeDemand | null = null;
+  readonly async_mode: Async_mode;
 
   constructor(
-    readonly fn: string,
-    readonly receiver: string | null = null,
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      fn: string,
+      receiver?: string | null,
+      demands?: TypeDemand[] | null,
+      returns?: TypeDemand | null,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.fn = opts.fn;
+    this.receiver = opts.receiver ?? null;
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {
@@ -128,13 +159,22 @@ export class DirectCall {
 
 // just returns / assigns the identifier
 export class LocalAccessCall {
+  readonly fn: string;
+  readonly demands: TypeDemand[] | null = null;
+  readonly returns: TypeDemand | null = null;
+  readonly async_mode: Async_mode;
   constructor(
-    readonly fn: string,
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      fn: string,
+      demands?: TypeDemand[] | null,
+      returns?: TypeDemand | null,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.fn = opts.fn;
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {
@@ -149,15 +189,28 @@ export class LocalAccessCall {
 // emits a direct JS operator for n-ary application (e.g., +, &&, ||)
 // optionally wraps the whole expression (e.g., "!" prefix)
 export class NaryOperatorCall {
+  readonly operator: string;
+  readonly demands: TypeDemand[] | null = null;
+  readonly returns: TypeDemand | null = null;
+  readonly is_async: boolean = false;
+  readonly wrapper: string | null = null;
+  readonly async_mode: Async_mode;
   constructor(
-    readonly operator: string,
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly is_async: boolean = false,
-    readonly wrapper: string | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      operator: string,
+      demands?: TypeDemand[] | null,
+      returns?: TypeDemand | null,
+      is_async?: boolean,
+      wrapper?: string | null,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.operator = opts.operator;
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
+    this.is_async = opts.is_async ?? false;
+    this.wrapper = opts.wrapper ?? null;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {
@@ -174,13 +227,22 @@ export class NaryOperatorCall {
 
 // emits chained comparisons: a < b && b < c
 export class ChainedComparisonCall {
+  readonly operator: string;
+  readonly demands: TypeDemand[] | null = null;
+  readonly returns: TypeDemand | null = null;
+  readonly async_mode: Async_mode;
   constructor(
-    readonly operator: string,
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      operator: string,
+      demands?: TypeDemand[] | null,
+      returns?: TypeDemand | null,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.operator = opts.operator;
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {
@@ -205,17 +267,26 @@ export class ChainedComparisonCall {
 
 // new Constructor(a, b)
 export class NewCall {
+  readonly constructorName: string;
+  readonly demands: TypeDemand[] | null = null;
+  readonly returns: TypeDemand | null = null;
+  readonly async_mode: Async_mode;
 
   // only used for classes we define ourselves
   implementation: string | null = null;
 
   constructor(
-    readonly constructorName: string,
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      constructor: string,
+      demands?: TypeDemand[] | null,
+      returns?: TypeDemand | null,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.constructorName = opts.constructor;
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {
@@ -225,12 +296,19 @@ export class NewCall {
 
 // obj[index]   or   obj[index] = value
 export class IndexAccessCall {
+  readonly demands: TypeDemand[] | null = null;
+  readonly returns: TypeDemand | null = null;
+  readonly async_mode: Async_mode;
   constructor(
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      demands?: TypeDemand[] | null,
+      returns?: TypeDemand | null,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {
@@ -254,12 +332,19 @@ export class IndexAccessCall {
 
 // fn(args...) where the first arg is the callable
 export class CallableInvokeCall {
+  readonly demands: TypeDemand[] | null = null;
+  readonly returns: TypeDemand | null = null;
+  readonly async_mode: Async_mode;
   constructor(
-    readonly demands: TypeDemand[] | null = null,
-    readonly returns: TypeDemand | null = null,
-    readonly async_mode: Async_mode = Async_mode.MAYBE,
+    opts: {
+      demands?: TypeDemand[] | null,
+      returns?: TypeDemand | null,
+      async_mode: Async_mode,
+    }
   ) {
-    // ...
+    this.demands = opts.demands ?? null;
+    this.returns = opts.returns ?? null;
+    this.async_mode = opts.async_mode;
   }
 
   compile(args: Emission_item[]): Emission_item {

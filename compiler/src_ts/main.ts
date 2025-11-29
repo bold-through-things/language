@@ -17,7 +17,6 @@ import {
 } from "./core/macrocosm.ts";
 import { MetaValue } from "./core/meta_value.ts";
 
-import "./pipeline/load_builtins_json.ts"; // side-effect: loads builtins into TYPE_REGISTRY
 import "./compiler_types/type_hierarchy.ts"; // side-effect: loads type hierarchy
 import { Fixed, parseTokens } from "./utils/new_parser.ts";
 

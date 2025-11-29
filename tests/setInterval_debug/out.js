@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -101,7 +91,7 @@ void (async () => {
     const _0x40_test_fn = async function (
     ) {    
         {    
-            (await _67lang.maybe_await(console.log("test")));
+            console.log("test");
         }
     }
     {

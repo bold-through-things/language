@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -101,7 +91,7 @@ void (async () => {
     {
     }
     {    
-        let _0x40_lines = await (_67lang.stdin());
+        let _0x40_lines = (await (_67lang.stdin()));
         let _0x41_lines = String.prototype.split.call(_0x40_lines, "\n");
         let _0x42_i = 0;
         let _0x43_header = [];
@@ -151,7 +141,7 @@ void (async () => {
                 {    
                     let _0x56_row = _0x55__0x53_for_row__list[_0x54__0x52_for_row__index];
                     (_0x54__0x52_for_row__index = (_0x54__0x52_for_row__index + 1));
-                    (await _67lang.maybe_await(console.log(_0x56_row["name"])));
+                    console.log(_0x56_row["name"]);
                 }
             }
         }
@@ -175,7 +165,7 @@ void (async () => {
             }
         }
     
-        (await _67lang.maybe_await(console.log(_0x57_age_over_30)));
+        console.log(_0x57_age_over_30);
     }
 
 })();

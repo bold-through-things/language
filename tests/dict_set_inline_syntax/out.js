@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -102,13 +92,13 @@ void (async () => {
     }
     {    
         let _0x40_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"};
-        (await _67lang.maybe_await(console.log(_0x40_user)));
+        console.log(_0x40_user);
         let _0x41_my_set = _67lang.new_set("apple", "banana", "cherry");
-        (await _67lang.maybe_await(console.log(_0x41_my_set)));
+        console.log(_0x41_my_set);
         let _0x42_my_list = [-2, -1, 0, 1, 2, 3];
-        (await _67lang.maybe_await(console.log(_0x42_my_list)));
+        console.log(_0x42_my_list);
         let _0x43_simple_list = [1, 2, 3];
-        (await _67lang.maybe_await(console.log(_0x43_simple_list)));
+        console.log(_0x43_simple_list);
     }
 
 })();

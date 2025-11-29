@@ -52,9 +52,9 @@ export function spread_nary(
 ): Call_convention[] {
   const out: Call_convention[] = [];
   for (let n = 1; n <= max_arity; n++) {
-    const demands: TypeDemand[] = Array.from({ length: n }, () => t as TypeDemand);
+    const demands: TypeDemand[] = Array.from({ length: n }, () => t);
     out.push(
-      new NaryOperatorCall(operator, demands, t as TypeDemand, false, wrapper ?? undefined, Async_mode.SYNC),
+      new NaryOperatorCall({operator, demands, returns: t, wrapper: wrapper ?? undefined, async_mode: Async_mode.SYNC}),
     );
   }
   return out;
@@ -67,9 +67,9 @@ export function spread_chain(
 ): Call_convention[] {
   const out: Call_convention[] = [];
   for (let n = 1; n <= max_arity; n++) {
-    const demands: TypeDemand[] = Array.from({ length: n }, () => t as TypeDemand);
+    const demands: TypeDemand[] = Array.from({ length: n }, () => t);
     out.push(
-      new ChainedComparisonCall(operator, demands, t as TypeDemand, Async_mode.SYNC),
+      new ChainedComparisonCall({operator, demands, returns: t, async_mode: Async_mode.SYNC}),
     );
   }
   return out;
@@ -110,29 +110,29 @@ for (const [kname, v] of Object.entries(N_ARIES)) {
 // "#": list/dict indexing + assignment
 BUILTIN_CALLS["#"] = [
   // list get
-  new IndexAccessCall(
-    [new ComplexType("list", [T]), INT] as TypeDemand[],
-    T as TypeDemand,
-    Async_mode.SYNC,
-  ),
+  new IndexAccessCall({
+    demands: [new ComplexType("list", [T]), INT],
+    returns: T,
+    async_mode: Async_mode.SYNC,
+  }),
   // list set
-  new IndexAccessCall(
-    [new ComplexType("list", [T]), INT, T] as TypeDemand[],
-    T as TypeDemand,
-    Async_mode.SYNC,
-  ),
+  new IndexAccessCall({
+    demands: [new ComplexType("list", [T]), INT, T],
+    returns: T,
+    async_mode: Async_mode.SYNC,
+  }),
   // dict get
-  new IndexAccessCall(
-    [new ComplexType("dict", [K, V]), K] as TypeDemand[],
-    V as TypeDemand,
-    Async_mode.SYNC,
-  ),
+  new IndexAccessCall({
+    demands: [new ComplexType("dict", [K, V]), K],
+    returns: V,
+    async_mode: Async_mode.SYNC,
+  }),
   // dict set
-  new IndexAccessCall(
-    [new ComplexType("dict", [K, V]), K, V] as TypeDemand[],
-    V as TypeDemand,
-    Async_mode.SYNC,
-  ),
+  new IndexAccessCall({
+    demands: [new ComplexType("dict", [K, V]), K, V],
+    returns: V,
+    async_mode: Async_mode.SYNC,
+  }),
 ];
 
 // "~": callable invoke
@@ -147,11 +147,11 @@ for (let size = 0; size <= MAX_NARY; size++) {
   const name = `callable${n}`;
   const callable = TYPE_REGISTRY.compute_type(name, () => new ComplexType(name, [...args, RV]));
   register("~", [
-    new CallableInvokeCall(
-      [callable, ...args] as TypeDemand[],
-      RV as TypeDemand,
-      Async_mode.MAYBE, // TODO
-    ),
+    new CallableInvokeCall({
+      demands: [callable, ...args],
+      returns: RV,
+      async_mode: Async_mode.ASYNC, // TODO
+    }),
   ]);
 }
 
@@ -163,7 +163,7 @@ for (let size = 2; size <= MAX_NARY; size++) {
   );
 
   for (let n = 0; n < size; n++) {
-    const tv = tvs[n] as TypeDemand;
+    const tv = tvs[n];
     const fn = String(n);
     if (!BUILTIN_CALLS[fn]) {
       BUILTIN_CALLS[fn] = [];
@@ -171,22 +171,22 @@ for (let size = 2; size <= MAX_NARY; size++) {
 
     // getter
     BUILTIN_CALLS[fn].push(
-      new FieldCall(
-        fn,
-        [new ComplexType("tuple", tvs)] as TypeDemand[],
-        tv,
-        Async_mode.SYNC,
-      ),
+      new FieldCall({
+        field: fn,
+        demands: [new ComplexType("tuple", tvs)],
+        returns: tv,
+        async_mode: Async_mode.SYNC,
+      }),
     );
 
     // setter
     BUILTIN_CALLS[fn].push(
-      new FieldCall(
-        fn,
-        [new ComplexType("tuple", tvs), tv] as TypeDemand[],
-        tv,
-        Async_mode.SYNC,
-      ),
+      new FieldCall({
+        field: fn,
+        demands: [new ComplexType("tuple", tvs), tv],
+        returns: tv,
+        async_mode: Async_mode.SYNC,
+      }),
     );
   }
 }
@@ -195,54 +195,54 @@ for (let size = 2; size <= MAX_NARY; size++) {
 for (let size = 0; size <= MAX_NARY; size++) {
   const demands: TypeDemand[] = Array.from(
     { length: size },
-    () => WILDCARD as TypeDemand,
+    () => WILDCARD,
   );
   register("print", [
-    new DirectCall("log", "console", demands, VOID as TypeDemand),
+    new DirectCall({fn: "log", receiver: "console", demands, returns: VOID, async_mode: Async_mode.SYNC }),
   ]);
 }
 
 // 67lang shims
 // well TODO this should be a varargs
 BUILTIN_CALLS["zip"] = [
-  new DirectCall(
-    "zip",
-    "_67lang",
-    [
+  new DirectCall({
+    fn: "zip",
+    receiver: "_67lang",
+    demands: [
       new ComplexType("list", [new TypeVariable("A")]),
       new ComplexType("list", [new TypeVariable("B")]),
-    ] as TypeDemand[],
-    new ComplexType("list", [
+    ],
+    returns: new ComplexType("list", [
       new ComplexType("tuple", [
         new TypeVariable("A"),
         new TypeVariable("B"),
       ]),
-    ]) as TypeDemand,
-    Async_mode.SYNC,
-  ),
+    ]),
+    async_mode: Async_mode.SYNC,
+  }),
 ];
 
 
 BUILTIN_CALLS["set"] = new Array(MAX_NARY).fill(0).map((_, i) => 
-  new DirectCall("new_set", "_67lang", new Array(i).fill(
+  new DirectCall({fn: "new_set", receiver: "_67lang", demands: new Array(i).fill(
     new TypeVariable("T"),
-  ), SET, Async_mode.SYNC),
+  ), returns: SET, async_mode: Async_mode.SYNC}),
 );
 
 BUILTIN_CALLS["has_keys"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
   ([["list", TYPE_REGISTRY.get_type("int")], ["dict", new TypeVariable("K")]] as [string, Type][]).map(([container_type, item_type]) => 
-    new DirectCall("has_keys", "_67lang", [
+    new DirectCall({fn: "has_keys", receiver: "_67lang", demands: [
       not_null(TYPE_REGISTRY.get_type(container_type)),
       ...new Array(i).fill(item_type),
-    ], BOOL, Async_mode.SYNC),
+    ], returns: BOOL, async_mode: Async_mode.SYNC}),
   )
 );
 
 BUILTIN_CALLS["has_values"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
   ([["list", new TypeVariable("V")], ["dict", new TypeVariable("V")]] as [string, Type][]).map(([container_type, item_type]) => 
-    new DirectCall("has_values", "_67lang", [
+    new DirectCall({fn: "has_values", receiver: "_67lang", demands: [
       not_null(TYPE_REGISTRY.get_type(container_type)),
       ...new Array(i).fill(item_type),
-    ], BOOL, Async_mode.SYNC),
+    ], returns: BOOL, async_mode: Async_mode.SYNC}),
   )
 );

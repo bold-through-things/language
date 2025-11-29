@@ -1,4 +1,5 @@
 fn my_split is PrototypeCall
+	sync
 	constructor String
 	fn split
 	param s

@@ -125,23 +125,23 @@ export class Fn_macro_provider
     conv_name: string | null,
     desired_name: string,
     actual_name: string,
-    param_demands: TypeDemand[],
-    return_type: TypeDemand,
+    demands: TypeDemand[],
+    returns: TypeDemand,
   ): Call_convention {
     const is_binding = ctx.node.content.includes(" is ")
-    const emit_fn = if_(is_binding, () => {
+    const fn = if_(is_binding, () => {
       const hnode =  seek_child_macro(ctx.node, "fn");
       return hnode ? get_single_arg(ctx.clone_with({ node: hnode })) : desired_name;
     }, () => actual_name);
 
     const async_mode = if_(is_binding, () => {
-      const amode = seek_child_macro(ctx.node, "async");
-      const smode = seek_child_macro(ctx.node, "sync");
+      const amode = !!seek_child_macro(ctx.node, "async");
+      const smode = !!seek_child_macro(ctx.node, "sync");
 
       ctx.compiler.assert_(
-        !(amode && smode),
+        amode !== smode,
         ctx.node,
-        "cannot have both async and sync modes",
+        "must specify `async` or `sync`, not both or neither",
         ErrorType.INVALID_MACRO,
       );
 
@@ -153,17 +153,17 @@ export class Fn_macro_provider
         return Async_mode.SYNC;
       }
 
-      return Async_mode.MAYBE;
-    }, () => Async_mode.MAYBE); // yes TODO we need to be quite smart with this
+      throw new Error("unreachable");
+    }, () => Async_mode.ASYNC); // TODO we need to be quite smart with this
 
     if (conv_name === null) {
-      return new DirectCall(
-        emit_fn,
-        null,
-        param_demands,
-        return_type,
+      return new DirectCall({
+        fn,
+        receiver: null,
+        demands,
+        returns,
         async_mode,
-      );
+      });
     }
 
     if (conv_name === "PrototypeCall") {
@@ -178,30 +178,30 @@ export class Fn_macro_provider
         ctx.clone_with({ node: cnode! }),
       );
 
-      return new PrototypeCall(
+      return new PrototypeCall({
         constructor,
-        emit_fn,
-        param_demands,
-        return_type,
+        fn,
+        demands,
+        returns,
         async_mode,
-      );
+      });
     }
 
     if (conv_name === "DirectCall") {
-      let recv: string | null = null;
+      let receiver: string | null = null;
 
       const rnode = seek_child_macro(ctx.node, "receiver");
       if (rnode) {
-        recv = get_single_arg(ctx.clone_with({ node: rnode }));
+        receiver = get_single_arg(ctx.clone_with({ node: rnode }));
       }
 
-      return new DirectCall(
-        emit_fn,
-        recv,
-        param_demands,
-        return_type,
+      return new DirectCall({
+        fn,
+        receiver,
+        demands,
+        returns,
         async_mode,
-      );
+      });
     }
 
     if (conv_name === "FieldCall") {
@@ -213,7 +213,7 @@ export class Fn_macro_provider
       );
 
       const field = get_single_arg(ctx.clone_with({ node: fnode! }));
-      return new FieldCall(field, param_demands, return_type, async_mode);
+      return new FieldCall({ field, async_mode, demands, returns });
     }
 
     if (conv_name === "NewCall") {
@@ -228,7 +228,7 @@ export class Fn_macro_provider
         ctx.clone_with({ node: cnode! }),
       );
 
-      return new NewCall(constructor, param_demands, return_type, async_mode);
+      return new NewCall({ constructor, demands, returns, async_mode });
     }
 
     ctx.compiler.assert_(

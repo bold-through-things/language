@@ -40,16 +40,6 @@ globalThis._67lang = {
         // (we are remapping `...args` to first)
         return new Set(args);
     },
-
-    maybe_await: async function (value) {
-        // we expect the JIT will optimize this h*ck
-        // TODO benchmark as test
-        if (value instanceof Promise) {
-            return await value;
-        } else {
-            return value;
-        }
-    }
 }
 
 const is_browser = typeof window !== "undefined" && typeof window.document !== "undefined";
@@ -105,7 +95,7 @@ void (async () => {
         let _0x41_buzz_divisor = 0;
         let _0x42_n = 0;
         {    
-            let _0x43_input = await (_67lang.stdin());
+            let _0x43_input = (await (_67lang.stdin()));
             let _0x44_input = String.prototype.split.call(_0x43_input, "\n");
             (_0x40_fizz_divisor = globalThis.parseInt(_0x44_input[0]));
             (_0x41_buzz_divisor = globalThis.parseInt(_0x44_input[1]));
@@ -138,7 +128,7 @@ void (async () => {
                 } else {
                 }
     
-                (await _67lang.maybe_await(console.log(_0x46_out)));
+                console.log(_0x46_out);
                 let _0x47__fix_the_fucking_add_return_type = (_0x45_i + 1);
                 (_0x45_i = _0x47__fix_the_fucking_add_return_type);
             }
