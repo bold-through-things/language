@@ -8,7 +8,7 @@ import {
 import { Emission_item, IndentedStringIO, cut } from "../utils/strutil.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { type_registry, TypeParameter } from "../compiler_types/proper_types.ts";
-import { Macro, type Node } from "../core/node.ts";
+import { Macro, Resolved_type, type Node } from "../core/node.ts";
 import type { TCResult } from "../core/macro_registry.ts";
 import { TypeCheckingStep } from "../pipeline/steps/typechecking.ts";
 import { assert_instanceof, Error_like } from "../utils/utils.ts";
@@ -92,8 +92,21 @@ export class List_macro_provider
   }
 
   emission(ctx: MacroContext): void {
+    const resolved = ctx.compiler.get_metadata(
+      ctx.node,
+      Resolved_type
+    ).type;
+
+    if (resolved instanceof TypeParameter) {
+      throw new Error("List emission: resolved type is still a TypeParameter");
+    }
+
+    if (resolved == null) {
+      throw new Error("List emission: resolved type is null");
+    }
+
     if (ctx.node.children.length === 0) {
-      ctx.expression_out.push(() => "[]");
+      ctx.expression_out.push(() => `[] as ${resolved.to_typescript()}`);
       return;
     }
 
@@ -174,7 +187,7 @@ export class List_macro_provider
       }
     }
 
-    ctx.expression_out.push(() => `[${final_items.filter(item => item != null).map(item => item()).join(", ")}]`);
+    ctx.expression_out.push(() => `[${final_items.filter(item => item != null).map(item => item()).join(", ")}] as ${resolved.to_typescript()}`);
   }
 }
 
@@ -287,8 +300,21 @@ export class Dict_macro_provider
   }
 
   emission(ctx: MacroContext): void {
+    const resolved = ctx.compiler.get_metadata(
+      ctx.node,
+      Resolved_type
+    ).type;
+
+    if (resolved instanceof TypeParameter) {
+      throw new Error("Dict emission: resolved type is still a TypeParameter");
+    }
+
+    if (resolved == null) {
+      throw new Error("Dict emission: resolved type is null");
+    }
+
     if (ctx.node.children.length === 0) {
-      ctx.expression_out.push(() => "{}");
+      ctx.expression_out.push(() => `{} as ${resolved.to_typescript()}`);
       return;
     }
 
@@ -356,6 +382,6 @@ export class Dict_macro_provider
       }
     }
 
-    ctx.expression_out.push(() => parts.length === 0 ? "{}" : `{${parts.map(p => p()).join(", ")}}`);
+    ctx.expression_out.push(() => parts.length === 0 ? `{} as ${resolved.to_typescript()}` : `{${parts.map(p => p()).join(", ")}} as ${resolved.to_typescript()}`);
   }
 }

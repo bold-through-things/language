@@ -146,7 +146,7 @@ export class Bind_macro_provider
 
     const l = param_types.length == 0 ? "" : param_types.length + "";
 
-    return new ComplexType(`callable${l}`, [...param_types, result_type]);
+    return new ComplexType({ name: `callable${l}`, type_params: [...param_types, result_type], typescript_name: "Function" });
   }
 
   emission(ctx: MacroContext): void {
@@ -163,14 +163,15 @@ export class Bind_macro_provider
 
     const conv = resolved.convention;
 
-    const unbound_names: string[] = [];
+    const unbound: [string, Type][] = [];
     const args_in_order: Emission_item[] = [];
     let hole_idx = 0;
 
     ctx.node.children.forEach((child, idx) => {
       if (this.placeholder(child)) {
         const pname = this.placeholder_name(hole_idx, child);
-        unbound_names.push(pname);
+        const ptype = conv.demands[hole_idx];
+        unbound.push([pname, ptype]);
         args_in_order.push(() => pname);
         hole_idx += 1;
       } else {
@@ -188,6 +189,6 @@ export class Bind_macro_provider
       }
     });
 
-    ctx.expression_out.push(() => `((${unbound_names.join(", ")}) => ${not_null(conv.compile(args_in_order, ctx))()})`);
+    ctx.expression_out.push(() => `((${unbound.map(([name, type]) => `${name}: ${type.to_typescript()}`).join(", ")}) => ${not_null(conv.compile(args_in_order, ctx))()})`);
   }
 }

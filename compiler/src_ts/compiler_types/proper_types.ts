@@ -9,6 +9,8 @@ export abstract class Type {
 
   abstract is_assignable_to(other: Type): boolean;
   abstract is_concrete(): boolean;
+
+  abstract to_typescript(): string;
 }
 
 export const TYPE_HIERARCHY: Map<Type, Type[]> = new Map();
@@ -36,14 +38,20 @@ export function is_transitive_subtype(current: Type, target: Type): boolean {
 
 export class PrimitiveType extends Type {
   readonly name: string;
+  readonly typescript_name: string;
 
-  constructor(name: string) {
+  constructor(opts: { name: string, typescript_name: string }) {
     super();
-    this.name = name;
+    this.name = opts.name;
+    this.typescript_name = opts.typescript_name;
   }
 
   override toString(): string {
     return this.name;
+  }
+
+  to_typescript(): string {
+    return this.typescript_name;
   }
 
   is_assignable_to(other: Type): boolean {
@@ -84,10 +92,10 @@ export class TypeVariable extends Type {
   readonly name: string;
   readonly constraints: Type[];
 
-  constructor(name: string, constraints: Type[] = []) {
+  constructor(opts: { name: string, constraints?: Type[] } ) {
     super();
-    this.name = name;
-    this.constraints = constraints;
+    this.name = opts.name;
+    this.constraints = opts.constraints ?? [];
   }
 
   override toString(): string {
@@ -95,6 +103,10 @@ export class TypeVariable extends Type {
       return this.name;
     }
     return `${this.name} extends ${this.constraints.map((c) => c.toString()).join(" & ")}`;
+  }
+
+  to_typescript(): string {
+    return this.name;
   }
 
   is_assignable_to(other: Type): boolean {
@@ -117,17 +129,23 @@ export class TypeVariable extends Type {
 export class ComplexType extends Type {
   readonly name: string;
   readonly type_params: Type[];
-  readonly fields: Array<{ name: string; type: Type }>;
+  readonly typescript_name: string;
 
   constructor(
-    name: string,
-    type_params: Type[] = [],
-    fields: Array<{ name: string; type: Type }> = [],
+    opts: { name: string, type_params?: Type[], typescript_name: string },
   ) {
     super();
-    this.name = name;
-    this.type_params = type_params.slice();
-    this.fields = fields.map((f) => ({ name: f.name, type: f.type }));
+    this.name = opts.name;
+    this.type_params = opts.type_params ?? [];
+    this.typescript_name = opts.typescript_name;
+  }
+
+  to_typescript(): string {
+    if (this.type_params.length === 0) {
+      return this.typescript_name;
+    }
+    const inner = this.type_params.map((t) => t.to_typescript()).join(", ");
+    return `${this.typescript_name}<${inner}>`;
   }
 
   override toString(): string {
@@ -176,15 +194,6 @@ export class ComplexType extends Type {
   is_concrete(): boolean {
     return this.type_params.every((t) => t.is_concrete());
   }
-
-  get_field_type(field_name: string): Type | null {
-    for (const { name, type } of this.fields) {
-      if (name === field_name) {
-        return type;
-      }
-    }
-    return null;
-  }
 }
 
 // -------- Bottom / Never --------
@@ -193,6 +202,10 @@ export class NeverType extends Type {
   readonly name: string = "never";
 
   override toString(): string {
+    return "never";
+  }
+
+  to_typescript(): string {
     return "never";
   }
 
@@ -207,23 +220,13 @@ export class NeverType extends Type {
 
 // -------- Builtin helpers --------
 
-export class FunctionType extends ComplexType {
-  constructor(param_types: Type[], return_type: Type) {
-    super("function", [...param_types, return_type]);
-  }
-}
-
 export const BuiltinGenericTypes = {
   list_of(element_type: Type): ComplexType {
-    return new ComplexType("list", [element_type], [{ name: "length", type: INT }]);
+    return new ComplexType({ name: "list", type_params: [element_type], typescript_name: "Array" });
   },
 
   dict_of(key_type: Type, value_type: Type): ComplexType {
-    return new ComplexType("dict", [key_type, value_type]);
-  },
-
-  function_of(param_types: Type[], return_type: Type): FunctionType {
-    return new FunctionType(param_types, return_type);
+    return new ComplexType({ name: "dict", type_params: [key_type, value_type], typescript_name: "Record" });
   },
 };
 
@@ -243,7 +246,7 @@ export class TypeSubstitution {
     }
     if (type_expr instanceof ComplexType) {
       const new_params = type_expr.type_params.map((t) => this.apply(t));
-      return new ComplexType(type_expr.name, new_params, type_expr.fields);
+      return new ComplexType({ name: type_expr.name, type_params: new_params, typescript_name: type_expr.typescript_name });
     }
     return type_expr;
   }
@@ -287,7 +290,7 @@ export class TypeRegistry {
     if (type_args.length !== tmpl.type_params.length) {
       return new Error_like(`Type ${name} expects ${tmpl.type_params.length} type arguments, got ${type_args.length}`);
     }
-    return new ComplexType(tmpl.name, type_args.slice(), tmpl.fields);
+    return new ComplexType({ name: tmpl.name, type_params: type_args.slice(), typescript_name: tmpl.typescript_name });
   }
 }
 
@@ -295,45 +298,39 @@ export class TypeRegistry {
 
 export const TYPE_REGISTRY = new TypeRegistry();
 
-function comp_prim(name: string): PrimitiveType {
+function comp_prim(name: string, typescript_name: string): PrimitiveType {
   return TYPE_REGISTRY.compute_type(
     name,
-    () => new PrimitiveType(name),
+    () => new PrimitiveType({ name, typescript_name }),
   ) as PrimitiveType;
 }
 
 export const NEVER = new NeverType();
-export const WILDCARD = TYPE_REGISTRY.compute_type("*", () => new ComplexType("*")); // TODO nuke me...
-export const INT = comp_prim("int");
-export const FLOAT = comp_prim("float");
-export const STRING = comp_prim("str");
-export const REGEX = comp_prim("regex");
-export const BOOL = comp_prim("bool");
-export const VOID = comp_prim("void");
-export const LIST = new ComplexType("list", [new TypeVariable("T")], [
-  { name: "length", type: INT },
-]);
+export const WILDCARD = TYPE_REGISTRY.compute_type("*", () => new ComplexType({ name: "*", typescript_name: "any" })); // TODO nuke me...
+export const INT = comp_prim("int", "number");
+export const FLOAT = comp_prim("float", "number");
+export const STRING = comp_prim("str", "string");
+export const REGEX = comp_prim("regex", "RegExp");
+export const BOOL = comp_prim("bool", "boolean");
+export const VOID = comp_prim("void", "void");
+export const LIST = new ComplexType({ name: "list", type_params: [new TypeVariable({ name: "T" })], typescript_name: "Array" });
 
 export const DICT = TYPE_REGISTRY.compute_type(
   "dict",
-  () => new ComplexType("dict", [new TypeVariable("K"), new TypeVariable("V")]),
+  () => new ComplexType({ name: "dict", type_params: [new TypeVariable({ name: "K" }), new TypeVariable({ name: "V" })], typescript_name: "Record" }),
 );
 
-export const SET = new ComplexType("set", [new TypeVariable("T")]);
+export const SET = new ComplexType({ name: "set", type_params: [new TypeVariable({ name: "T" })], typescript_name: "Set" });
 
 export const CALLABLE = TYPE_REGISTRY.compute_type(
   "callable",
-  () => new ComplexType("callable", [new TypeVariable("RV")]),
+  () => new ComplexType({ name: "callable", type_params: [new TypeVariable({ name: "RV" })], typescript_name: "Function" }),
 );
-
-if (!CALLABLE) {
-  throw new Error("fuck you");
-}
 
 // register some builtins
 TYPE_REGISTRY.register_type(LIST);
 TYPE_REGISTRY.register_type(SET);
-TYPE_REGISTRY.register_type(new ComplexType("Error"));
+TYPE_REGISTRY.register_type(new ComplexType({ name: "Error", typescript_name: "Error" }));
 
 // Convenience accessor
 export function type_registry(): TypeRegistry {

@@ -76,9 +76,9 @@ export function spread_chain(
 }
 
 // Type params
-const T = new TypeVariable("T");
-const K = new TypeVariable("K");
-const V = new TypeVariable("V");
+const T = new TypeVariable({ name: "T" });
+const K = new TypeVariable({ name: "K" });
+const V = new TypeVariable({ name: "V" });
 
 // N-ary logical/arithmetic ops expanded into fixed arities 1..MAX_NARY
 N_ARIES["concat"] = spread_nary("+", T, MAX_NARY, null, "concat");
@@ -111,41 +111,41 @@ for (const [kname, v] of Object.entries(N_ARIES)) {
 BUILTIN_CALLS["#"] = [
   // list get
   new IndexAccessCall({
-    demands: [new ComplexType("list", [T]), INT],
+    demands: [new ComplexType({ name: "list", type_params: [T], typescript_name: "Array" }), INT],
     returns: T,
     async_mode: Async_mode.SYNC,
   }),
   // list set
   new IndexAccessCall({
-    demands: [new ComplexType("list", [T]), INT, T],
+    demands: [new ComplexType({ name: "list", type_params: [T], typescript_name: "Array" }), INT, T],
     returns: T,
     async_mode: Async_mode.SYNC,
   }),
   // dict get
   new IndexAccessCall({
-    demands: [new ComplexType("dict", [K, V]), K],
+    demands: [new ComplexType({ name: "dict", type_params: [K, V], typescript_name: "Record" }), K],
     returns: V,
     async_mode: Async_mode.SYNC,
   }),
   // dict set
   new IndexAccessCall({
-    demands: [new ComplexType("dict", [K, V]), K, V],
+    demands: [new ComplexType({ name: "dict", type_params: [K, V], typescript_name: "Record" }), K, V],
     returns: V,
     async_mode: Async_mode.SYNC,
   }),
 ];
 
 // "~": callable invoke
-const RV = new TypeVariable("RV");
+const RV = new TypeVariable({ name: "RV" });
 for (let size = 0; size <= MAX_NARY; size++) {
   const args: Type[] = Array.from(
     { length: size },
-    (_v, n) => new TypeVariable(`ARG${n}`),
+    (_v, n) => new TypeVariable({ name: `ARG${n}` }),
   );
   // TODO i really hate to spam the types
   const n = size == 0 ? "" : size + "";
   const name = `callable${n}`;
-  const callable = TYPE_REGISTRY.compute_type(name, () => new ComplexType(name, [...args, RV]));
+  const callable = TYPE_REGISTRY.compute_type(name, () => new ComplexType({ name, type_params: [...args, RV], typescript_name: "Function" }));
   register("~", [
     new CallableInvokeCall({
       demands: [callable, ...args],
@@ -159,7 +159,7 @@ for (let size = 0; size <= MAX_NARY; size++) {
 for (let size = 2; size <= MAX_NARY; size++) {
   const tvs: Type[] = Array.from(
     { length: size },
-    (_v, n) => new TypeVariable(`V${n}`),
+    (_v, n) => new TypeVariable({ name: `V${n}` }),
   );
 
   for (let n = 0; n < size; n++) {
@@ -173,7 +173,7 @@ for (let size = 2; size <= MAX_NARY; size++) {
     BUILTIN_CALLS[fn].push(
       new FieldCall({
         field: fn,
-        demands: [new ComplexType("tuple", tvs)],
+        demands: [new ComplexType({ name: "tuple", type_params: tvs, typescript_name: "Array" })],
         returns: tv,
         async_mode: Async_mode.SYNC,
       }),
@@ -183,7 +183,7 @@ for (let size = 2; size <= MAX_NARY; size++) {
     BUILTIN_CALLS[fn].push(
       new FieldCall({
         field: fn,
-        demands: [new ComplexType("tuple", tvs), tv],
+        demands: [new ComplexType({ name: "tuple", type_params: tvs, typescript_name: "Array" }), tv],
         returns: tv,
         async_mode: Async_mode.SYNC,
       }),
@@ -209,15 +209,15 @@ BUILTIN_CALLS["zip"] = [
     fn: "zip",
     receiver: "_67lang",
     demands: [
-      new ComplexType("list", [new TypeVariable("A")]),
-      new ComplexType("list", [new TypeVariable("B")]),
+      new ComplexType({ name: "list", type_params: [new TypeVariable({ name: "A" })], typescript_name: "Array" }),
+      new ComplexType({ name: "list", type_params: [new TypeVariable({ name: "B" })], typescript_name: "Array" }),
     ],
-    returns: new ComplexType("list", [
-      new ComplexType("tuple", [
-        new TypeVariable("A"),
-        new TypeVariable("B"),
-      ]),
-    ]),
+    returns: new ComplexType({ name: "list", type_params: [
+      new ComplexType({ name: "tuple", type_params: [
+        new TypeVariable({ name: "A" }),
+        new TypeVariable({ name: "B" }),
+      ], typescript_name: "Array" }),
+    ], typescript_name: "Array" }),
     async_mode: Async_mode.SYNC,
   }),
 ];
@@ -225,12 +225,12 @@ BUILTIN_CALLS["zip"] = [
 
 BUILTIN_CALLS["set"] = new Array(MAX_NARY).fill(0).map((_, i) => 
   new DirectCall({fn: "new_set", receiver: "_67lang", demands: new Array(i).fill(
-    new TypeVariable("T"),
+    new TypeVariable({ name: "T" }),
   ), returns: SET, async_mode: Async_mode.SYNC}),
 );
 
 BUILTIN_CALLS["has_keys"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
-  ([["list", TYPE_REGISTRY.get_type("int")], ["dict", new TypeVariable("K")]] as [string, Type][]).map(([container_type, item_type]) => 
+  ([["list", TYPE_REGISTRY.get_type("int")], ["dict", new TypeVariable({ name: "K" })]] as [string, Type][]).map(([container_type, item_type]) => 
     new DirectCall({fn: "has_keys", receiver: "_67lang", demands: [
       not_null(TYPE_REGISTRY.get_type(container_type)),
       ...new Array(i).fill(item_type),
@@ -239,7 +239,7 @@ BUILTIN_CALLS["has_keys"] = new Array(MAX_NARY).fill(0).flatMap((_, i) =>
 );
 
 BUILTIN_CALLS["has_values"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
-  ([["list", new TypeVariable("V")], ["dict", new TypeVariable("V")]] as [string, Type][]).map(([container_type, item_type]) => 
+  ([["list", new TypeVariable({ name: "V" })], ["dict", new TypeVariable({ name: "V" })]] as [string, Type][]).map(([container_type, item_type]) => 
     new DirectCall({fn: "has_values", receiver: "_67lang", demands: [
       not_null(TYPE_REGISTRY.get_type(container_type)),
       ...new Array(i).fill(item_type),

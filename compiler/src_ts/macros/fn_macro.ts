@@ -30,7 +30,7 @@ export class FnConventionName {
 
 // Params container (identical to Crystal behaviour)
 export class Params {
-  mapping: Record<string, boolean> = {};
+  mapping: Record<string, TypeDemand> = {};
 }
 
 // -------------- provider --------------
@@ -67,11 +67,12 @@ export class Fn_macro_provider
     throw new Error("bad header");
   }
 
-  private get_param_demands(ctx: MacroContext): TypeDemand[] {
-    const demands: TypeDemand[] = [];
+  private get_param_demands(ctx: MacroContext): [string, TypeDemand][] {
+    const demands: [string, TypeDemand][] = [];
 
     const param_nodes = seek_all_child_macros(ctx.node, "param");
     for (const p of param_nodes) {
+      const pname = get_single_arg(ctx.clone_with({ node: p }));
       const tnode = seek_child_macro(p, "type");
       if (!tnode) {
         ctx.compiler.compile_error(
@@ -90,7 +91,7 @@ export class Fn_macro_provider
         throw new Error(`Expected TypeParameter, got ${child_res}`);
       }
 
-      demands.push(child_res.type_expr!);
+      demands.push([pname, child_res.type_expr]);
     }
 
     return demands;
@@ -253,9 +254,6 @@ export class Fn_macro_provider
     ctx.compiler.set_metadata(ctx.node, SaneIdentifier, new SaneIdentifier(actual_name));
     ctx.compiler.set_metadata(ctx.node, FnConventionName, new FnConventionName(conv_name));
 
-    const params = new Params();
-    ctx.compiler.set_metadata(ctx.node, Params, params);
-
     const do_block = seek_child_macro(ctx.node, "do");
 
     if (conv_name === null) {
@@ -271,7 +269,6 @@ export class Fn_macro_provider
 
       for (const pn of param_nodes) {
         const pname = get_single_arg(ctx.clone_with({ node: pn }));
-        params.mapping[pname] = true;
 
         const local_node = ctx.compiler.make_node(
           `local ${pname}`,
@@ -312,9 +309,16 @@ export class Fn_macro_provider
       conv_name,
       name,
       actual_name,
-      params,
+      params.map(([_name, type]) => type),
       ret,
     );
+
+
+    const params_meta = new Params();
+    ctx.compiler.set_metadata(ctx.node, Params, params_meta);
+    for (const [pname, type] of params) {
+      params_meta.mapping[pname] = type;
+    }
 
     ctx.compiler.add_dynamic_convention(name, convention);
   }
@@ -335,11 +339,7 @@ export class Fn_macro_provider
     ));
 
     const params = ctx.compiler.get_metadata(ctx.node, Params) as Params;
-    const names = Object.keys(params.mapping);
-
-    if (names.length > 0) {
-      names.forEach((p) => params_block.push(() => (`${p},`)));
-    }
+    Object.entries(params.mapping).forEach(([pname, type]) => params_block.push(() => (`${pname}: ${type.to_typescript()},`)));
 
     ctx.current_step!.process_node(
       ctx.clone_with({ node: body, statement_out: body_block }),

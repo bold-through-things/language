@@ -80,7 +80,7 @@ export function to_valid_js_ident(s: string): string {
 }
 
 // Same stub as the Crystal snippet you showed
-import JS_LIB from "./lib.js" with { type: "text" };
+import JS_LIB from "./lib.ts" with { type: "text" };
 
 export { JS_LIB };
 

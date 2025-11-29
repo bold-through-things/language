@@ -2,7 +2,7 @@
 
 import { MacroProcessingStep } from "./base.ts";
 import { Macro_ctx_typecheck_proc, MacroContext, MacroRegistry, TCResult } from "../../core/macro_registry.ts";
-import { Macro } from "../../core/node.ts";
+import { Macro, Resolved_type } from "../../core/node.ts";
 import { default_logger } from "../../utils/logger.ts";
 
 export class TypeCheckingStep extends MacroProcessingStep {
@@ -29,6 +29,11 @@ export class TypeCheckingStep extends MacroProcessingStep {
         ctx.compiler.safely(() => {
           result = allMacros[macroName].call(ctx, ctx);
         });
+        ctx.compiler.set_metadata(
+          ctx.node,
+          Resolved_type,
+          new Resolved_type(result),
+        );
         return result;
       } else {
         let last: TCResult = null;
@@ -36,6 +41,11 @@ export class TypeCheckingStep extends MacroProcessingStep {
           const childCtx = ctx.clone_with({ node: child });
           last = this.process_node(childCtx);
         });
+        ctx.compiler.set_metadata(
+          ctx.node,
+          Resolved_type,
+          new Resolved_type(last),
+        );
         return last;
       }
     });

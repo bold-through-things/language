@@ -72,8 +72,9 @@
     "visible_overloads": [
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -99,16 +100,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -122,8 +113,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -143,16 +135,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -167,8 +149,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -194,16 +177,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -217,8 +190,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -238,16 +212,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -272,8 +236,9 @@
     "visible_overloads": [
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -299,16 +264,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -322,8 +277,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -343,16 +299,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -367,8 +313,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -394,16 +341,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -417,8 +354,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -438,16 +376,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -472,8 +400,9 @@
     "visible_overloads": [
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -499,16 +428,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -522,8 +441,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -543,16 +463,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -567,8 +477,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -594,16 +505,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -617,8 +518,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -638,16 +540,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -672,8 +564,9 @@
     "visible_overloads": [
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -699,16 +592,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -722,8 +605,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -743,16 +627,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -767,8 +641,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -794,16 +669,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -817,8 +682,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -838,16 +704,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -872,8 +728,9 @@
     "visible_overloads": [
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -899,16 +756,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -922,8 +769,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -943,16 +791,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }
@@ -967,8 +805,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -994,16 +833,6 @@
                 "type_params": [],
                 "fields": []
               }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
-              }
             ]
           }
         },
@@ -1017,8 +846,9 @@
       },
       {
         "convention": {
-          "convention": "PrototypeCall",
-          "fn": "split",
+          "convention": "DirectCall",
+          "fn": "string_split",
+          "receiver": "_67lang",
           "demands": [
             {
               "name": "str",
@@ -1038,16 +868,6 @@
                 "name": "str",
                 "type_params": [],
                 "fields": []
-              }
-            ],
-            "fields": [
-              {
-                "name": "length",
-                "type": {
-                  "name": "int",
-                  "type_params": [],
-                  "fields": []
-                }
               }
             ]
           }

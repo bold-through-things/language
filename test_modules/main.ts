@@ -209,6 +209,7 @@ function getCompilerCmd(_argsObj: CliArgs): string[] {
         "--check",
         "--allow-read",
         "--allow-write",
+        "--allow-run",
         "--unstable-raw-imports",
         joinPath(Deno.cwd(), "compiler/src_ts/main.ts")
     ];
@@ -390,6 +391,7 @@ async function runSingleTest(tc: TestCase, args: CliArgs, stdinText: string | nu
         const execCmd: string[] = [
             "deno",
             "run",
+            "--check", // yes compiler checks it, what if it did not though?
             "--allow-read"
         ];
         if (args.debug) {
@@ -452,7 +454,7 @@ async function testSilentCompilation(args: CliArgs, log: TestLog): Promise<void>
     const testDir = joinPath(Deno.cwd(), "tests", "basics", "anagram_groups");
 
     const tmpDir = await Deno.makeTempDir();
-    const outFile = joinPath(tmpDir, "out.js");
+    const outFile = joinPath(tmpDir, EXECUTABLE);
 
     const compilerCmd = getCompilerCmd(args).filter(it => it !== "--check");
 
@@ -508,7 +510,7 @@ async function testVerboseCompilation(args: CliArgs, log: TestLog): Promise<void
     const testDir = joinPath(Deno.cwd(), "tests", "basics", "anagram_groups");
 
     const tmpDir = await Deno.makeTempDir();
-    const outFile = joinPath(tmpDir, "out.js");
+    const outFile = joinPath(tmpDir, EXECUTABLE);
 
     const compilerCmd = getCompilerCmd(args);
 

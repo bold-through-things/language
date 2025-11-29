@@ -33,20 +33,20 @@ const is_not_null = <T>(x: T | null): x is T => x !== null;
 export class FieldCall {
   readonly field: string;
   readonly async_mode: Async_mode;
-  readonly demands: TypeDemand[] | null;
-  readonly returns: TypeDemand | null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   constructor(
     opts: {
       field: string;
       async_mode: Async_mode;
-      demands?: TypeDemand[] | null;
-      returns?: TypeDemand | null;
+      demands: TypeDemand[];
+      returns: TypeDemand;
     }
   ) { 
     this.field = opts.field;
     this.async_mode = opts.async_mode;
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
   }
 
   compile(args: Emission_item[], _ctx: MacroContext): Emission_item {
@@ -131,23 +131,23 @@ export class PrototypeCall {
 export class DirectCall {
   readonly fn: string;
   readonly receiver: string | null = null;
-  readonly demands: TypeDemand[] | null = null;
-  readonly returns: TypeDemand | null = null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   readonly async_mode: Async_mode;
 
   constructor(
     opts: {
       fn: string,
       receiver?: string | null,
-      demands?: TypeDemand[] | null,
-      returns?: TypeDemand | null,
+      demands: TypeDemand[],
+      returns: TypeDemand,
       async_mode: Async_mode,
     }
   ) {
     this.fn = opts.fn;
     this.receiver = opts.receiver ?? null;
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
     this.async_mode = opts.async_mode;
   }
 
@@ -160,20 +160,20 @@ export class DirectCall {
 // just returns / assigns the identifier
 export class LocalAccessCall {
   readonly fn: string;
-  readonly demands: TypeDemand[] | null = null;
-  readonly returns: TypeDemand | null = null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   readonly async_mode: Async_mode;
   constructor(
     opts: {
       fn: string,
-      demands?: TypeDemand[] | null,
-      returns?: TypeDemand | null,
+      demands: TypeDemand[],
+      returns: TypeDemand,
       async_mode: Async_mode,
     }
   ) {
     this.fn = opts.fn;
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
     this.async_mode = opts.async_mode;
   }
 
@@ -190,24 +190,24 @@ export class LocalAccessCall {
 // optionally wraps the whole expression (e.g., "!" prefix)
 export class NaryOperatorCall {
   readonly operator: string;
-  readonly demands: TypeDemand[] | null = null;
-  readonly returns: TypeDemand | null = null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   readonly is_async: boolean = false;
   readonly wrapper: string | null = null;
   readonly async_mode: Async_mode;
   constructor(
     opts: {
       operator: string,
-      demands?: TypeDemand[] | null,
-      returns?: TypeDemand | null,
+      demands: TypeDemand[],
+      returns: TypeDemand,
       is_async?: boolean,
       wrapper?: string | null,
       async_mode: Async_mode,
     }
   ) {
     this.operator = opts.operator;
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
     this.is_async = opts.is_async ?? false;
     this.wrapper = opts.wrapper ?? null;
     this.async_mode = opts.async_mode;
@@ -228,20 +228,20 @@ export class NaryOperatorCall {
 // emits chained comparisons: a < b && b < c
 export class ChainedComparisonCall {
   readonly operator: string;
-  readonly demands: TypeDemand[] | null = null;
-  readonly returns: TypeDemand | null = null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   readonly async_mode: Async_mode;
   constructor(
     opts: {
       operator: string,
-      demands?: TypeDemand[] | null,
-      returns?: TypeDemand | null,
+      demands: TypeDemand[],
+      returns: TypeDemand,
       async_mode: Async_mode,
     }
   ) {
     this.operator = opts.operator;
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
     this.async_mode = opts.async_mode;
   }
 
@@ -268,8 +268,8 @@ export class ChainedComparisonCall {
 // new Constructor(a, b)
 export class NewCall {
   readonly constructorName: string;
-  readonly demands: TypeDemand[] | null = null;
-  readonly returns: TypeDemand | null = null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   readonly async_mode: Async_mode;
 
   // only used for classes we define ourselves
@@ -278,14 +278,14 @@ export class NewCall {
   constructor(
     opts: {
       constructor: string,
-      demands?: TypeDemand[] | null,
-      returns?: TypeDemand | null,
+      demands: TypeDemand[],
+      returns: TypeDemand,
       async_mode: Async_mode,
     }
   ) {
     this.constructorName = opts.constructor;
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
     this.async_mode = opts.async_mode;
   }
 
@@ -296,18 +296,18 @@ export class NewCall {
 
 // obj[index]   or   obj[index] = value
 export class IndexAccessCall {
-  readonly demands: TypeDemand[] | null = null;
-  readonly returns: TypeDemand | null = null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   readonly async_mode: Async_mode;
   constructor(
     opts: {
-      demands?: TypeDemand[] | null,
-      returns?: TypeDemand | null,
+      demands: TypeDemand[],
+      returns: TypeDemand,
       async_mode: Async_mode,
     }
   ) {
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
     this.async_mode = opts.async_mode;
   }
 
@@ -332,18 +332,18 @@ export class IndexAccessCall {
 
 // fn(args...) where the first arg is the callable
 export class CallableInvokeCall {
-  readonly demands: TypeDemand[] | null = null;
-  readonly returns: TypeDemand | null = null;
+  readonly demands: TypeDemand[];
+  readonly returns: TypeDemand;
   readonly async_mode: Async_mode;
   constructor(
     opts: {
-      demands?: TypeDemand[] | null,
-      returns?: TypeDemand | null,
+      demands: TypeDemand[],
+      returns: TypeDemand,
       async_mode: Async_mode,
     }
   ) {
-    this.demands = opts.demands ?? null;
-    this.returns = opts.returns ?? null;
+    this.demands = opts.demands;
+    this.returns = opts.returns;
     this.async_mode = opts.async_mode;
   }
 

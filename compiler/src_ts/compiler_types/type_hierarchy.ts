@@ -33,10 +33,10 @@ function decode_h_value(x: any): Type {
   };
 
   if (typeof x === "string") {
-    return remap[x] ?? TYPE_REGISTRY.compute_type(x, () => new ComplexType(x));
+    return remap[x] ?? TYPE_REGISTRY.compute_type(x, () => new ComplexType({ name: x, type_params: [], typescript_name: x }));
   } else {
     const s = String(x);
-    return remap[s] ?? TYPE_REGISTRY.compute_type(s, () => new ComplexType(s));
+    return remap[s] ?? TYPE_REGISTRY.compute_type(s, () => new ComplexType({ name: s, type_params: [], typescript_name: s }));
   }
 }
 

@@ -13,10 +13,10 @@ fn length is FieldCall
 	returns
 		type int
 
-fn split is PrototypeCall
+fn split is DirectCall
 	sync
-	constructor String
-	fn split
+	receiver _67lang
+	fn string_split
 	param self
 		type str
 	param sep
@@ -25,10 +25,10 @@ fn split is PrototypeCall
 		type list
 			type str
 
-fn split is PrototypeCall
+fn split is DirectCall
 	sync
-	constructor String
-	fn split
+	receiver _67lang
+	fn string_split
 	param self
 		type str
 	param sep
@@ -39,10 +39,10 @@ fn split is PrototypeCall
 		type list
 			type str
 
-fn split is PrototypeCall
+fn split is DirectCall
 	sync
-	constructor String
-	fn split
+	receiver _67lang
+	fn string_split
 	param self
 		type str
 	param sep
@@ -51,10 +51,10 @@ fn split is PrototypeCall
 		type list
 			type str
 
-fn split is PrototypeCall
+fn split is DirectCall
 	sync
-	constructor String
-	fn split
+	receiver _67lang
+	fn string_split
 	param self
 		type str
 	param sep
@@ -489,10 +489,9 @@ fn close is PrototypeCall
 	returns
 		type void
 
-fn message_handler is PrototypeCall
+fn message_handler is FieldCall
 	sync
-	constructor WebSocket
-	fn onmessage
+	field onmessage
 	param self
 		type WebSocket
 	param callback
@@ -502,10 +501,9 @@ fn message_handler is PrototypeCall
 	returns
 		type void
 
-fn open_handler is PrototypeCall
+fn open_handler is FieldCall
 	sync
-	constructor WebSocket
-	fn onopen
+	field onopen
 	param self
 		type WebSocket
 	param callback
@@ -515,10 +513,9 @@ fn open_handler is PrototypeCall
 	returns
 		type void
 
-fn close_handler is PrototypeCall
+fn close_handler is FieldCall
 	sync
-	constructor WebSocket
-	fn onclose
+	field onclose
 	param self
 		type WebSocket
 	param callback

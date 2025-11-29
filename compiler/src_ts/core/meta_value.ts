@@ -37,10 +37,6 @@ export function type_to_meta(t: Type): MetaValue {
     return {
       name: t.name,
       type_params: t.type_params.map((p) => type_to_meta(p)),
-      fields: t.fields.map((field) => ({
-        name: field.name,
-        type: type_to_meta(field.type),
-      })),
     };
   }
 

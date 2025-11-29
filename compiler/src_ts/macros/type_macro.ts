@@ -76,10 +76,6 @@ export class Type_macro_provider
     Macro_functions_provider
 {
   typecheck(ctx: MacroContext): TCResult {
-    if (ctx.node.content.includes(" is ")) {
-      // definition mode → registers type, returns null
-      return this.handle_type_definition(ctx);
-    }
     return this.parse_type_expression(ctx);
   }
 
@@ -121,7 +117,7 @@ export class Type_macro_provider
       new SaneIdentifier(sane),
     );
 
-    const new_type = new ComplexType(type_name, [], []);
+    const new_type = new ComplexType({ name: type_name, type_params: [], typescript_name: sane });
     type_registry().register_type(new_type);
   }
 
@@ -144,7 +140,7 @@ export class Type_macro_provider
       return;
     }
 
-    const field_names: string[] = [];
+    const fields: [string, Type][] = [];
     const constructor_demands: Type[] = [];
 
     for (const child of ctx.node.children) {
@@ -172,8 +168,8 @@ export class Type_macro_provider
           `Failed to resolve field type '${field_type_name}' for field '${field_name}'`,
         );
 
-        field_names.push(field_name);
-        constructor_demands.push(field_type!);
+        fields.push([field_name, field_type]);
+        constructor_demands.push(field_type);
 
         const getter = new FieldCall({field: field_name, demands: [new_type], returns: field_type, async_mode: Async_mode.SYNC});
         ctx.compiler.add_dynamic_convention(field_name, getter);
@@ -193,20 +189,26 @@ export class Type_macro_provider
     // TODO just skip this if we gonna drop it
     let ctor = new NewCall({constructor: sane, demands: constructor_demands, returns: new_type, async_mode: Async_mode.SYNC});
     const impl_out = new IndentedStringIO();
-    impl_out.write(`function ${sane}(`);
-    const joiner = new Joiner(impl_out, ", ");
-    for (const fname of field_names) {
-      joiner.use(() => {
-        impl_out.write(fname);
-      });
-    }
-    impl_out.write(`) {\n`);
+    impl_out.writeline(`class ${sane} {`);
     impl_out.with_indent(() => {
-      for (const fname of field_names) {
-        impl_out.write(
-          `this.${fname} = ${fname};\n`,
-        );
+      for (const [fname, ftype] of fields) {
+        impl_out.writeline(`${fname}: ${ftype.to_typescript()};`);
       }
+      impl_out.writeline(`constructor(`);
+      impl_out.with_indent(() => {
+        for (const [fname, ftype] of fields) {    
+            impl_out.write(`${fname}: ${ftype.to_typescript()},\n`);
+        }
+      });
+      impl_out.write(`) {\n`);
+      impl_out.with_indent(() => {
+        for (const [fname] of fields) {
+          impl_out.write(
+            `this.${fname} = ${fname};\n`,
+          );
+        }
+      });
+      impl_out.write(`}\n`);
     });
     impl_out.write(`}\n`);
     ctor.implementation = impl_out.to_string();
@@ -240,16 +242,16 @@ export class Type_macro_provider
             const plain_out = new IndentedStringIO();
             plain_out.write(`function plain_object_${sane}(`);
             const joiner = new Joiner(plain_out, ", ");
-            for (const fname of field_names) {
+            for (const [fname, ftype] of fields) {
               joiner.use(() => {
-                plain_out.write(fname);
+                plain_out.write(`${fname}: ${ftype.to_typescript()}`);
               });
             }
             plain_out.write(`) {\n`);
             plain_out.with_indent(() => {
               plain_out.write(`const obj = {\n`);
               plain_out.with_indent(() => {
-                for (const fname of field_names) {
+                for (const fname of fields) {
                   // TODO i can't be arsed right now. needs `alias`
                   plain_out.write(
                     `${fname}: ${fname},\n`,
@@ -257,6 +259,7 @@ export class Type_macro_provider
                 }
               });
               plain_out.write(`};\n`);
+              plain_out.write(`return obj;\n`);
             });
             plain_out.write(`}\n`);
             ctor.implementation = plain_out.to_string();
@@ -274,8 +277,7 @@ export class Type_macro_provider
   }
 
   register_functions(ctx: MacroContext): TCResult {
-    // same hack as Crystal: just invoke typecheck
-    return this.typecheck(ctx);
+    return this.parse_type_expression(ctx);
   }
 
   // ---------------- private helpers ----------------
@@ -312,7 +314,7 @@ export class Type_macro_provider
         : String(param_name_raw);
 
     if (parsed.var?.length > 0) {
-      return new TypeParameter(new TypeVariable(type_name), param_name);
+      return new TypeParameter(new TypeVariable({ name: type_name }), param_name);
     }
 
     const resolved = this.resolve_type_with_children(ctx, type_name);

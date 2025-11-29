@@ -1,17 +1,25 @@
-fn my_split is PrototypeCall
+fn my_push is PrototypeCall
 	sync
-	constructor String
-	fn split
-	param s
-		type str
-	param sep
-		type str
-	returns
+	constructor Array
+	fn push
+	param self
 		type list
-			type str
+			type T var
+	param item
+		type T var
+	returns
+		type void
 
 local test
-	string "test"
-do my_split the test
-	string ""
-then do print
+	list
+		type str
+do my_push the test
+	string "t"
+do my_push the test
+	string "e"
+do my_push the test
+	string "s"
+do my_push the test
+	string "t"
+
+do print the test

@@ -1,6 +1,6 @@
 // test_modules/paths.ts
 export const TEST_ROOT = "tests";
-export const EXECUTABLE = "out.js";
+export const EXECUTABLE = "out.ts";
 
 export function readFile(path: string): string | null {
     try {

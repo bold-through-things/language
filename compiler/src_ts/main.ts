@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-write --unstable-raw-imports
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run --unstable-raw-imports
 
 // main.ts — entrypoint (ported from main.cr)
 
@@ -263,6 +263,19 @@ function main(): void {
         `compilation successful, writing output to ${outputFile}`,
       );
       Deno.writeTextFileSync(outputFile, compiled);
+
+      // then `deno check` the file we generated
+      const checkProcess = new Deno.Command(Deno.execPath(), { // TODO should check if this would work within a binary
+        args: ["check", outputFile],
+        stdout: "piped",
+        stderr: "piped",
+      });
+
+      const checkResult = checkProcess.outputSync();
+      if (checkResult.code !== 0) {
+        crash = new TextDecoder().decode(checkResult.stderr);
+        console.log("TypeScript typecheck failed:\n" + crash);
+      }
     }
   }
 

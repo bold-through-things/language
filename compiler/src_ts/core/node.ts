@@ -287,6 +287,12 @@ export class ResolvedConvention {
   }
 }
 
+export class Resolved_type {
+  constructor(public readonly type: TCResult) {
+    // ...
+  }
+}
+
 export class Macro_previously_failed {
   constructor(readonly reason: string) {
     // ...
