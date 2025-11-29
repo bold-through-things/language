@@ -6,8 +6,9 @@ import {
   MacroContext,
 } from "../core/macro_registry.ts";
 
-import { Node, Args } from "../core/node.ts";
-import { BRACES, IndentedStringIO, PARENTHESIS, statement_block, statement_blocks, statement_raw } from "../utils/strutil.ts";
+import { Args } from "../core/node.ts";
+import { ErrorType } from "../utils/error_types.ts";
+import { BRACES, Emission_item, PARENTHESIS, statement_block, statement_blocks } from "../utils/strutil.ts";
 
 export class Try_macro_provider implements Macro_emission_provider {
   emission(ctx: MacroContext) {
@@ -17,7 +18,7 @@ export class Try_macro_provider implements Macro_emission_provider {
       catch_blocks.push(...rv);
       return rv;
     };
-    const stmt = ctx.push(statement_blocks(
+    const stmt = ctx.statement(statement_blocks(
       statement_block("try", BRACES),
       statement_block("finally", BRACES),
     ))
@@ -31,7 +32,7 @@ export class Try_macro_provider implements Macro_emission_provider {
 
         const args = ctx.compiler.get_metadata(catch_, Args)?.toString() ?? "";
         const error_var = args.trim() === "" ? "error" : args.trim();
-        catch_header.push(statement_raw(error_var));
+        catch_header.push(() => error_var);
 
         for (const catch_child of catch_.children) {
           const catch_ctx = ctx.clone_with({ node: catch_child, statement_out: catch_body });
@@ -90,15 +91,23 @@ export class Catch_macro_provider
 export class Throw_macro_provider implements Macro_emission_provider {
   emission(ctx: MacroContext) {
     if (ctx.node.children.length === 0) {
-      ctx.statement_out.push(statement_raw("throw;"));
+      ctx.statement_out.push(() => "throw;");
       return;
     }
 
     const child = ctx.node.children[0];
-    const expr_out = new IndentedStringIO();
+    const expr_out: Emission_item[] = [];
     const child_ctx = ctx.clone_with({ node: child, expression_out: expr_out });
     ctx.current_step!.process_node(child_ctx);
 
-    ctx.statement_out.push(statement_raw(`throw ${expr_out.gets_to_end()};`));
+    const throw_value = expr_out[0];
+    ctx.compiler.assert_(
+      throw_value != null,
+      ctx.node,
+      "throw macro must produce a single expression",
+      ErrorType.INVALID_STRUCTURE,
+    );
+
+    ctx.statement_out.push(() => `throw ${throw_value()};`);
   }
 }

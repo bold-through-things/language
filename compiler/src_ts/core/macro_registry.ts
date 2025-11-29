@@ -1,6 +1,6 @@
 // core/macro_registry.ts
 
-import { IndentedStringIO, Statement } from "../utils/strutil.ts";
+import { IndentedStringIO, Emission_item } from "../utils/strutil.ts";
 import { default_logger } from "../utils/logger.ts";
 import type { Node } from "./node.ts";
 import type { Macrocosm } from "./macrocosm.ts";
@@ -25,15 +25,15 @@ export type Macro_ctx_proc =
 // --------------------------------------
 
 export class MacroContext {
-  statement_out: Statement[];
-  expression_out: OutIO;
+  statement_out: Emission_item[];
+  expression_out: Emission_item[];
   node: Node;
   compiler: Macrocosm;
   current_step: MacroProcessingStep | null;
 
   constructor(
-    statement_out: Statement[],
-    expression_out: OutIO,
+    statement_out: Emission_item[],
+    expression_out: Emission_item[],
     node: Node,
     compiler: Macrocosm,
     current_step: MacroProcessingStep | null = null,
@@ -46,8 +46,8 @@ export class MacroContext {
   }
 
   clone_with(opts: {
-    statement_out?: Statement[] | null;
-    expression_out?: OutIO | null;
+    statement_out?: Emission_item[] | null;
+    expression_out?: Emission_item[] | null;
     node?: Node | null;
     compiler?: Macrocosm | null;
     current_step?: MacroProcessingStep | null;
@@ -61,20 +61,14 @@ export class MacroContext {
     );
   }
 
-  sub_compile_expression(node: Node): MacroContext {
-    const child = this.clone_with({
-      node,
-      expression_out: new IndentedStringIO(),
-    });
-    if (child.current_step) {
-      child.current_step.process_node(child);
-    }
-    return child;
-  }
-
-  push<T>(stmt: Statement & T): T {
+  statement<T>(stmt: Emission_item & T): T {
     this.statement_out.push(stmt);
     return stmt;
+  }
+
+  expression<T>(expr: Emission_item & T): T {
+    this.expression_out.push(expr);
+    return expr;
   }
 }
 

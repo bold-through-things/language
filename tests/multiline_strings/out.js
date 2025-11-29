@@ -98,15 +98,11 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    /* -> */ {    
-        }
-    /* -> */ {    
-            const _0x59_print = (await _67lang.maybe_await(console.log("this is an expression-level multiline string.\nit should produce a string value.\n						it can contain indented values.\ntrivially.")));
-            let _0x41__0x40_pipeline_result = _0x59_print;
-
-            const _0x5a_print = (await _67lang.maybe_await(console.log("hello world")));
-            let _0x43__0x42_pipeline_result = _0x5a_print;
-
-        }
+    {
+    }
+    {    
+        (await _67lang.maybe_await(console.log("this is an expression-level multiline string.\nit should produce a string value.\n						it can contain indented values.\ntrivially.")));
+        (await _67lang.maybe_await(console.log("hello world")));
+    }
 
 })();

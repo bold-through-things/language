@@ -98,117 +98,33 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    /* -> */ {    
-        }
-    /* -> */ {    
-            const _0x8f_stdin = (await (_67lang.stdin()));
-            let _0x41__0x40_pipeline_result = _0x8f_stdin;
-
-            let _0x42_input = _0x41__0x40_pipeline_result;
-
-            const _0x91_input = (_0x42_input);
-            const _0x90_split = (String.prototype.split.call(_0x91_input, "\n"));
-            let _0x44__0x43_pipeline_result = _0x90_split;
-
-            let _0x45_words = _0x44__0x43_pipeline_result;
-
-            let _0x46_count = {};
-
-            /* -> */ {    
-                let _0x49__0x47_for_word__index = 0;
-
-                const _0x92_words = (_0x45_words);
-                let _0x4b__0x4a_pipeline_result = _0x92_words;
-
-                let _0x4c__0x48_for_word__list = _0x4b__0x4a_pipeline_result;
-
-                while(true) /* -> */ {    
-                    const _0x94__0x47_for_word__index = (_0x49__0x47_for_word__index);
-                    let _0x4f__0x4e_pipeline_result = _0x94__0x47_for_word__index;
-
-                    const _0x96__0x48_for_word__list = (_0x4c__0x48_for_word__list);
-                    const _0x95_length = ((_0x96__0x48_for_word__list.length));
-                    let _0x51__0x50_pipeline_result = _0x95_length;
-
-                    const _0x93_asc = ((_0x4f__0x4e_pipeline_result < _0x51__0x50_pipeline_result));
-                    let _0x52__0x4d_pipeline_result = _0x93_asc;
-
-                    if (!_0x52__0x4d_pipeline_result) { break; }
-                    /* -> */ {    
-                        const _0x98__0x48_for_word__list = (_0x4c__0x48_for_word__list);
-                        const _0x99__0x47_for_word__index = (_0x49__0x47_for_word__index);
-                        let _0x55__0x54_pipeline_result = _0x99__0x47_for_word__index;
-
-                        const _0x97__hash_ = (_0x98__0x48_for_word__list[_0x55__0x54_pipeline_result]);
-                        let _0x56__0x53_pipeline_result = _0x97__hash_;
-
-                        let _0x57_word = _0x56__0x53_pipeline_result;
-
-                        const _0x9c__0x47_for_word__index = (_0x49__0x47_for_word__index);
-                        const _0x9b_add = ((_0x9c__0x47_for_word__index + 1));
-                        let _0x5a__0x59_pipeline_result = _0x9b_add;
-
-                        const _0x9a__0x47_for_word__index = ((_0x49__0x47_for_word__index = _0x5a__0x59_pipeline_result));
-                        let _0x5b__0x58_pipeline_result = _0x9a__0x47_for_word__index;
-
-                        const _0x9f_count = (_0x46_count);
-                        const _0xa0_word = (_0x57_word);
-                        let _0x5f__0x5e_pipeline_result = _0xa0_word;
-
-                        const _0x9e_has_keys = (_67lang.has_keys(_0x9f_count, _0x5f__0x5e_pipeline_result));
-                        let _0x60__0x5d_pipeline_result = _0x9e_has_keys;
-
-                        const _0x9d_none = (!(_0x60__0x5d_pipeline_result));
-                        let _0x61__0x5c_pipeline_result = _0x9d_none;
-
-                        if /* -> */ (    
-                            _0x61__0x5c_pipeline_result
-                        )/* -> */ {    
-                            const _0xa2_count = (_0x46_count);
-                            let _0x64__0x63_pipeline_result = _0xa2_count;
-
-                            const _0xa3_word = (_0x57_word);
-                            let _0x66__0x65_pipeline_result = _0xa3_word;
-
-                            const _0xa1__hash_ = ((_0x64__0x63_pipeline_result[_0x66__0x65_pipeline_result] = 0));
-                            let _0x67__0x62_pipeline_result = _0xa1__hash_;
-
-                        }else /* -> */ {    
-                        }
-
-                        const _0xa5_count = (_0x46_count);
-                        let _0x6a__0x69_pipeline_result = _0xa5_count;
-
-                        const _0xa6_word = (_0x57_word);
-                        let _0x6c__0x6b_pipeline_result = _0xa6_word;
-
-                        const _0xa9_count = (_0x46_count);
-                        let _0x70__0x6f_pipeline_result = _0xa9_count;
-
-                        const _0xaa_word = (_0x57_word);
-                        let _0x72__0x71_pipeline_result = _0xaa_word;
-
-                        const _0xa8__hash_ = (_0x70__0x6f_pipeline_result[_0x72__0x71_pipeline_result]);
-                        let _0x73__0x6e_pipeline_result = _0xa8__hash_;
-
-                        const _0xa7_add = ((1 + _0x73__0x6e_pipeline_result));
-                        let _0x74__0x6d_pipeline_result = _0xa7_add;
-
-                        const _0xa4__hash_ = ((_0x6a__0x69_pipeline_result[_0x6c__0x6b_pipeline_result] = _0x74__0x6d_pipeline_result));
-                        let _0x75__0x68_pipeline_result = _0xa4__hash_;
-
+    {
+    }
+    {    
+        let _0x40_input = await (_67lang.stdin());
+        let _0x41_words = String.prototype.split.call(_0x40_input, "\n");
+        let _0x42_count = {};
+        {    
+            let _0x45__0x43_for_word__index = 0;
+            let _0x46__0x44_for_word__list = _0x41_words;
+            while(true) {    
+                if (!(_0x45__0x43_for_word__index < _0x46__0x44_for_word__list.length)) { break; }
+                {    
+                    let _0x47_word = _0x46__0x44_for_word__list[_0x45__0x43_for_word__index];
+                    (_0x45__0x43_for_word__index = (_0x45__0x43_for_word__index + 1));
+                    if (    
+                        !(_67lang.has_keys(_0x42_count, _0x47_word))
+                    ) {    
+                        (_0x42_count[_0x47_word] = 0);
+                    } else {
                     }
-
+    
+                    (_0x42_count[_0x47_word] = (1 + _0x42_count[_0x47_word]));
                 }
-
             }
-
-            const _0xac_count = (_0x46_count);
-            let _0x78__0x77_pipeline_result = _0xac_count;
-
-            const _0xab_print = (await _67lang.maybe_await(console.log(_0x78__0x77_pipeline_result)));
-            let _0x79__0x76_pipeline_result = _0xab_print;
-
         }
+    
+        (await _67lang.maybe_await(console.log(_0x42_count)));
+    }
 
 })();

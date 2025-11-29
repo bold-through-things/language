@@ -63,7 +63,7 @@ export class LocalNameSearchStrategy extends SearchStrategy<Type> {
         return null;
     }
 
-    const sane = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.toString();
+    const sane = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.value;
     if (this.name === desired_local_name || (sane && this.name === sane)) {
       default_logger.typecheck(
         `LocalNameSearchStrategy: found ${this.name} at ${ctx.node.content}`,
@@ -146,7 +146,7 @@ export class MetadataSearchStrategy<T> extends SearchStrategy<T> {
 
   try_match(ctx: MacroContext): UpwalkerResult<T> | null {
     const meta = ctx.compiler.maybe_metadata(ctx.node, this.meta);
-    if (meta !== undefined) {
+    if (meta !== null) {
       default_logger.typecheck( // TODO it's not typecheck i think though...
         `MetadataSearchStrategy: found metadata ${this.meta.name} at ${ctx.node.content}`,
       );

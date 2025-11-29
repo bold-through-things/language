@@ -98,59 +98,29 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const _0x44_main_test = async function /* -> */ (    
-        )/* -> */ {    
-            /* -> */ {    
-                const _0x6c_WebSocket = ((new WebSocket("wss://example.com")));
-                let _0x45_ws = _0x6c_WebSocket;
-
-                const _0x6e_ws = (_0x45_ws);
-                let _0x48__0x47_pipeline_result = _0x6e_ws;
-
-                const _0x6d_send = (WebSocket.prototype.send.call(_0x48__0x47_pipeline_result, "Hello WebSocket"));
-                let _0x49__0x46_pipeline_result = _0x6d_send;
-
-                let _0x4a_message = "Another message";
-
-                const _0x70_ws = (_0x45_ws);
-                let _0x4d__0x4c_pipeline_result = _0x70_ws;
-
-                const _0x71_message = (_0x4a_message);
-                let _0x4f__0x4e_pipeline_result = _0x71_message;
-
-                const _0x6f_send = (WebSocket.prototype.send.call(_0x4d__0x4c_pipeline_result, _0x4f__0x4e_pipeline_result));
-                let _0x50__0x4b_pipeline_result = _0x6f_send;
-
-                const _0x73_ws = (_0x45_ws);
-                const _0x72_message_handler = (WebSocket.prototype.onmessage.call(_0x73_ws, ((arg0) => _0x40_message_handler(arg0))));
-                let _0x52__0x51_pipeline_result = _0x72_message_handler;
-
-                const _0x75_ws = (_0x45_ws);
-                const _0x74_open_handler = (WebSocket.prototype.onopen.call(_0x75_ws, ((arg0) => _0x40_message_handler(arg0))));
-                let _0x54__0x53_pipeline_result = _0x74_open_handler;
-
-                const _0x77_ws = (_0x45_ws);
-                const _0x76_close_handler = (WebSocket.prototype.onclose.call(_0x77_ws, ((arg0) => _0x40_message_handler(arg0))));
-                let _0x56__0x55_pipeline_result = _0x76_close_handler;
-
-            }
-
+    const _0x42_main_test = async function (
+    ) {    
+        {    
+            let _0x43_ws = (new WebSocket("wss://example.com"));
+            WebSocket.prototype.send.call(_0x43_ws, "Hello WebSocket");
+            let _0x44_message = "Another message";
+            WebSocket.prototype.send.call(_0x43_ws, _0x44_message);
+            WebSocket.prototype.onmessage.call(_0x43_ws, ((arg0) => _0x40_message_handler(arg0)));
+            WebSocket.prototype.onopen.call(_0x43_ws, ((arg0) => _0x40_message_handler(arg0)));
+            WebSocket.prototype.onclose.call(_0x43_ws, ((arg0) => _0x40_message_handler(arg0)));
         }
-    const _0x40_message_handler = async function /* -> */ (    
-            event,
-        )/* -> */ {    
-            /* -> */ {    
-                let _0x41_event = event;
-
-                const _0x78_print = (await _67lang.maybe_await(console.log("Message received")));
-                let _0x43__0x42_pipeline_result = _0x78_print;
-
-            }
-
+    }
+    const _0x40_message_handler = async function (    
+        event,
+    ) {    
+        {    
+            let _0x41_event = event;
+            (await _67lang.maybe_await(console.log("Message received")));
         }
-    /* -> */ {    
-        }
-    /* -> */ {    
-        }
+    }
+    {
+    }
+    {
+    }
 
 })();

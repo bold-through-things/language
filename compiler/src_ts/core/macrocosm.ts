@@ -75,7 +75,7 @@ import { MustCompileErrorVerificationStep } from "../pipeline/steps/must_compile
 import { TypeCheckingStep } from "../pipeline/steps/typechecking.ts";
 import { Solution_macro_provider } from "../macros/solution_macro.ts";
 import { Multi_provider } from "../macros/multi_provider.ts";
-import { Pipeline_macro_provider } from "../macros/then_macro.ts";
+import { _67lang_GET_LAST_PIPELINE_RESULT, _67lang_PIPELINE_RESULT, Get_last_pipeline_result_macro_provider, Pipeline_macro_provider, Pipeline_result_macro_provider } from "../macros/then_macro.ts";
 import { Noop_macro_provider } from "../macros/utility_macros.ts";
 import { ErrorType } from "../utils/error_types.ts";
 
@@ -276,7 +276,7 @@ export class Macrocosm {
         () => {
           const ctx: MacroContext = new MacroContext(
             [],
-            new IndentedStringIO(),
+            [],
             solution_node,
             this,
             step,
@@ -365,7 +365,11 @@ export class Literal_macro_provider {
   }
 
   emission(ctx: MacroContext): void {
-    ctx.expression_out.write(this.value);
+    if (this.t === null) {
+      ctx.statement_out.push(() => this.value);
+    } else {
+      ctx.expression_out.push(() => this.value);
+    }
   }
 
   typecheck(ctx: MacroContext): TCResult {
@@ -402,7 +406,8 @@ export function create_macrocosm(): Macrocosm {
   macro_providers["67lang:assume_type_valid"] = new Noop_macro_provider();
   macro_providers["67lang:obtain_param_value"] =
     new Obtain_param_value_macro_provider();
-  macro_providers["67lang:last_then"] = new Noop_macro_provider();
+  macro_providers[_67lang_PIPELINE_RESULT] = new Pipeline_result_macro_provider();
+  macro_providers[_67lang_GET_LAST_PIPELINE_RESULT] = new Get_last_pipeline_result_macro_provider();
   macro_providers["67lang:solution"] = new Solution_macro_provider();
   macro_providers["must_compile_error"] = new Must_compile_error_macro_provider();
   macro_providers["then"] = new Multi_provider([
@@ -431,8 +436,8 @@ export function create_macrocosm(): Macrocosm {
   const literalTable: Record<string, [string, Type | null]> = {
     true: ["true", BOOL],
     false: ["false", BOOL],
-    break: ["break", null],
-    continue: ["continue", null],
+    break: ["break;", null],
+    continue: ["continue;", null],
   };
 
   for (const [k, [value, tname]] of Object.entries(literalTable)) {

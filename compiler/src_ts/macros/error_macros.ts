@@ -13,12 +13,11 @@ export class Must_compile_error_macro_provider
   implements Macro_emission_provider, Macro_typecheck_provider
 {
   emission(ctx: MacroContext): void {
-    const dummyExpr = new IndentedStringIO();
     for (const child of ctx.node.children) {
       const childCtx = ctx.clone_with({
         node: child,
         statement_out: [],
-        expression_out: dummyExpr,
+        expression_out: [],
       });
       not_null(ctx.current_step).process_node(childCtx);
     }

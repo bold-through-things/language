@@ -4,10 +4,16 @@ import { MacroProcessingStep } from "./base.ts";
 import { MacroRegistry, MacroContext, Macro_ctx_void_proc } from "../../core/macro_registry.ts";
 import { default_logger } from "../../utils/logger.ts";
 import { ErrorType } from "../../utils/error_types.ts";
-import { IndentedStringIO, Statement } from "../../utils/strutil.ts";
+import { IndentedStringIO, Emission_item, count_users } from "../../utils/strutil.ts";
 import { JS_LIB } from "../js_conversion.ts";
 import { Macro } from "../../core/node.ts";
 import { NewCall } from "../call_conventions.ts";
+
+export class Emitted_expression_metadata {
+  constructor(public expr: Emission_item) {
+    // ...
+  }
+}
 
 export class JavaScriptEmissionStep extends MacroProcessingStep {
   constructor(public override macros: MacroRegistry<Macro_ctx_void_proc>) {
@@ -41,10 +47,10 @@ export class JavaScriptEmissionStep extends MacroProcessingStep {
       obuf.with_indent(() => {
         obuf.write(`'use strict';\n`);
 
-        const stmts: Statement[] = [];
+        const stmts: Emission_item[] = [];
         const inner = ctx.clone_with({
           statement_out: stmts,
-          expression_out: new IndentedStringIO(), // discard
+          expression_out: [], // discard
         });
 
         const fn = all[macroName];
@@ -57,9 +63,28 @@ export class JavaScriptEmissionStep extends MacroProcessingStep {
           }
         }
 
-        for (const stmt of stmts) {
-          obuf.write(stmt());
-        }
+        // TODO this is a really fucking stupid h*ck. TypeScript to blame since they do not
+        //  allow us to inspect the closures
+
+        // 1. emit and then discard to count the users here
+
+        ctx.compiler.safely(() => {
+          count_users(() => {
+            for (const stmt of stmts) {
+              if (stmt !== null) {
+                stmt();
+              }
+            }
+          });
+
+          // 2. emit the code now
+
+          for (const stmt of stmts) {
+            if (stmt !== null) {
+              obuf.write(stmt());
+            }
+          }
+        });
       });
 
       obuf.write(`\n})();`);
@@ -76,6 +101,14 @@ export class JavaScriptEmissionStep extends MacroProcessingStep {
     if (fn) {
       default_logger.codegen(`applying JavaScript emission macro: ${macroName}`);
       ctx.compiler.safely(() => fn(ctx));
+      ctx.compiler.set_metadata(
+        ctx.node,
+        Emitted_expression_metadata,
+        new Emitted_expression_metadata(
+          // right TODO this isn't quite correct (what if emitted many)
+          ctx.expression_out[ctx.expression_out.length - 1],
+        ),
+      );
       return null;
     }
 

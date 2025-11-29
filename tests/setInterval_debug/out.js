@@ -98,21 +98,16 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const _0x40_test_fn = async function /* -> */ (    
-        )/* -> */ {    
-            /* -> */ {    
-                const _0x5a_print = (await _67lang.maybe_await(console.log("test")));
-                let _0x42__0x41_pipeline_result = _0x5a_print;
-
-            }
-
+    const _0x40_test_fn = async function (
+    ) {    
+        {    
+            (await _67lang.maybe_await(console.log("test")));
         }
-    /* -> */ {    
-        }
-    /* -> */ {    
-            const _0x5b_timeout = (globalThis.setTimeout((() => _0x40_test_fn()), 100));
-            let _0x44__0x43_pipeline_result = _0x5b_timeout;
-
-        }
+    }
+    {
+    }
+    {    
+        globalThis.setTimeout((() => _0x40_test_fn()), 100);
+    }
 
 })();

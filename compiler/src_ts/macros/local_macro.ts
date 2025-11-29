@@ -20,6 +20,7 @@ import { Type, TypeParameter } from "../compiler_types/proper_types.ts";
 import { TypeCheckingStep } from "../pipeline/steps/typechecking.ts";
 import { assert_instanceof } from "../utils/utils.ts";
 import { statement_local } from "../utils/strutil.ts";
+import { FORCE_SYNTAX_ERROR } from "../pipeline/js_conversion.ts";
 
 export class Local_macro_provider
   implements
@@ -45,19 +46,28 @@ export class Local_macro_provider
   }
 
   emission(ctx: MacroContext): void {
-    const desired = get_single_arg(ctx);
-    const actual =
-      ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.toString() ??
-      desired;
+    let stmt = statement_local(`${FORCE_SYNTAX_ERROR} /* ${ctx.node.content} */`, null)
+    let expr = () => `${FORCE_SYNTAX_ERROR} /* ${ctx.node.content} */`;
+    try {
+      const desired = get_single_arg(ctx);
+      const actual =
+        ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.value;
 
-    const args = ctx.node.children.length === 0
-      ? []
-      : collect_child_expressions(ctx);
+      if (!actual) {
+        throw new Error(`Compiler bug: Local_macro_provider.emission: no SaneIdentifier metadata for local '${desired}'`);
+      }
 
-    // TODO i mean it wouldn't ever get a null here
-    ctx.statement_out.push(statement_local(actual, args[args.length - 1] ?? null));
+      const args = ctx.node.children.length === 0
+        ? []
+        : collect_child_expressions(ctx);
 
-    ctx.expression_out.write(actual);
+      // TODO i mean it wouldn't ever get a null here
+      stmt = statement_local(actual, args[args.length - 1] ?? null);
+      expr = () => actual;
+    } finally {
+      ctx.statement_out.push(stmt);
+      ctx.expression_out.push(expr);
+    }
   }
 
   typecheck(ctx: MacroContext) {

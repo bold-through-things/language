@@ -98,63 +98,30 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    const _0x40_handle_message = async function /* -> */ (    
-            bot,
-            message,
-            is_trusted,
-        )/* -> */ {    
-            /* -> */ {    
-                let _0x41_is_trusted = is_trusted;
-
-                let _0x42_message = message;
-
-                let _0x43_bot = bot;
-
-                const _0x71_bot = (_0x43_bot);
-                let _0x46__0x45_pipeline_result = _0x71_bot;
-
-                const _0x72_message = (_0x42_message);
-                let _0x48__0x47_pipeline_result = _0x72_message;
-
-                const _0x73_is_trusted = (_0x41_is_trusted);
-                let _0x4a__0x49_pipeline_result = _0x73_is_trusted;
-
-                const _0x70_print = (await _67lang.maybe_await(console.log("Bot: ", _0x46__0x45_pipeline_result, ", Message: ", _0x48__0x47_pipeline_result, ", Trusted: ", _0x4a__0x49_pipeline_result)));
-                let _0x4b__0x44_pipeline_result = _0x70_print;
-
-            }
-
+    const _0x40_handle_message = async function (    
+        bot,
+        message,
+        is_trusted,
+    ) {    
+        {    
+            let _0x41_is_trusted = is_trusted;
+            let _0x42_message = message;
+            let _0x43_bot = bot;
+            (await _67lang.maybe_await(console.log("Bot: ", _0x43_bot, ", Message: ", _0x42_message, ", Trusted: ", _0x41_is_trusted)));
         }
-    /* -> */ {    
-        }
-    /* -> */ {    
-            const _0x74_print = (await _67lang.maybe_await(console.log("=== Testing bind callable ===")));
-            let _0x4d__0x4c_pipeline_result = _0x74_print;
-
-            let _0x4e_bound_handler = ((arg0) => _0x40_handle_message("MyBot", arg0, true));
-
-            const _0x76_bound_handler = (_0x4e_bound_handler);
-            const _0x75__tilde_ = (await _67lang.maybe_await(_0x76_bound_handler("Hello from bind test!")));
-            let _0x50__0x4f_pipeline_result = _0x75__tilde_;
-
-            let _0x51_multi_bound = ((arg0, arg1) => _0x40_handle_message(arg0, arg1, false));
-
-            const _0x78_multi_bound = (_0x51_multi_bound);
-            const _0x77__tilde_ = (await _67lang.maybe_await(_0x78_multi_bound("AnotherBot", "Multiple unbound test")));
-            let _0x53__0x52_pipeline_result = _0x77__tilde_;
-
-            let _0x54_fully_bound = (() => _0x40_handle_message("FullyBoundBot", "This message is pre-bound", true));
-
-            const _0x7a_fully_bound = (_0x54_fully_bound);
-            const _0x79__tilde_ = (await _67lang.maybe_await(_0x7a_fully_bound()));
-            let _0x56__0x55_pipeline_result = _0x79__tilde_;
-
-            const _0x7b_print = (await _67lang.maybe_await(console.log("print manually")));
-            let _0x58__0x57_pipeline_result = _0x7b_print;
-
-            const _0x7c__tilde_ = (await _67lang.maybe_await((() => console.log("or a bound print"))()));
-            let _0x5a__0x59_pipeline_result = _0x7c__tilde_;
-
-        }
+    }
+    {
+    }
+    {    
+        (await _67lang.maybe_await(console.log("=== Testing bind callable ===")));
+        let _0x44_bound_handler = ((arg0) => _0x40_handle_message("MyBot", arg0, true));
+        (await _67lang.maybe_await(_0x44_bound_handler("Hello from bind test!")));
+        let _0x45_multi_bound = ((arg0, arg1) => _0x40_handle_message(arg0, arg1, false));
+        (await _67lang.maybe_await(_0x45_multi_bound("AnotherBot", "Multiple unbound test")));
+        let _0x46_fully_bound = (() => _0x40_handle_message("FullyBoundBot", "This message is pre-bound", true));
+        (await _67lang.maybe_await(_0x46_fully_bound()));
+        (await _67lang.maybe_await(console.log("print manually")));
+        (await _67lang.maybe_await((() => console.log("or a bound print"))()));
+    }
 
 })();

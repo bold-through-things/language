@@ -2,6 +2,11 @@
 // Built-in function call definitions and call conventions.
 
 import type { Type } from "../compiler_types/proper_types.ts";
+import { MacroAssertFailed } from "../core/exceptions.ts";
+import { MacroContext } from "../core/macro_registry.ts";
+import { ErrorType } from "../utils/error_types.ts";
+import { BRACKETS, Emission_item, PARENTHESIS } from "../utils/strutil.ts";
+import { FORCE_SYNTAX_ERROR } from "./js_conversion.ts";
 
 // Types used in demands/returns
 export type TypeDemand = Type;
@@ -23,6 +28,9 @@ export enum Async_mode {
   SYNC,
 }
 
+const call = <T>(fn: () => T): T => fn();
+const is_not_null = <T>(x: T | null): x is T => x !== null;
+
 export class FieldCall {
   constructor(
     readonly field: string,
@@ -33,18 +41,22 @@ export class FieldCall {
     // ...
   }
 
-  compile(args: string[]): string {
-    try {
-      const receiver = args[0];
-      const rest = args.slice(1);
-      const maybeAssign = rest.length === 0
-        ? ""
-        : ` = (${rest.join(",")})`;
+  compile(args: Emission_item[], _ctx: MacroContext): Emission_item {
+    return () => {
+      const args_real = args.filter(is_not_null);
+      const receiver = args_real[0];
+      const rest = args_real.slice(1);
+      const [ maybeAssign, wrap ] = rest.length === 0
+        ? ["", (s: string) => s]
+        : [` = (${rest.map(call).join(",")})`, PARENTHESIS];
       const fieldExpr = this.formatField(this.field);
-      return `(${receiver}${fieldExpr}${maybeAssign})`;
-    } catch (e) {
-      throw new Error(`FieldCall(${this.field}) failed to compile: ${e}`);
-    }
+
+      if (!receiver) {
+        return `/* invalid FieldCall: \`invalid${fieldExpr}${maybeAssign}\` */`;
+      }
+
+      return wrap(`${receiver()}${fieldExpr}${maybeAssign}`);
+    };
   }
 
   private formatField(name: string): string {
@@ -90,8 +102,8 @@ export class PrototypeCall {
     // ...
   }
 
-  compile(args: string[]): string {
-    return `${this.constructorName}.prototype.${this.fn}.call(${args.join(", ")})`;
+  compile(args: Emission_item[]): Emission_item {
+    return () => `${this.constructorName}.prototype.${this.fn}.call(${args.filter(is_not_null).map(call).join(", ")})`;
   }
 }
 
@@ -108,9 +120,9 @@ export class DirectCall {
     // ...
   }
 
-  compile(args: string[]): string {
+  compile(args: Emission_item[]): Emission_item {
     const prefix = this.receiver ? `${this.receiver}.` : "";
-    return `${prefix}${this.fn}(${args.join(", ")})`;
+    return () => `${prefix}${this.fn}(${args.filter(is_not_null).map(call).join(", ")})`;
   }
 }
 
@@ -125,11 +137,11 @@ export class LocalAccessCall {
     // ...
   }
 
-  compile(args: string[]): string {
+  compile(args: Emission_item[]): Emission_item {
     if (args.length > 0) {
-      return `(${this.fn} = ${args.join(",")})`;
+      return () => `(${this.fn} = ${args.filter(is_not_null).map(call).join(",")})`;
     } else {
-      return this.fn;
+      return () => this.fn;
     }
   }
 }
@@ -148,12 +160,14 @@ export class NaryOperatorCall {
     // ...
   }
 
-  compile(args: string[]): string {
-    const expr = `(${args.join(` ${this.operator} `)})`;
-    if (this.wrapper) {
-      return `${this.wrapper}${expr}`;
-    } else {
-      return expr;
+  compile(args: Emission_item[]): Emission_item {
+    return () => {
+      const expr = `(${args.filter(is_not_null).map(call).join(` ${this.operator} `)})`;
+      if (this.wrapper) {
+        return `${this.wrapper}${expr}`;
+      } else {
+        return expr;
+      }
     }
   }
 }
@@ -169,17 +183,23 @@ export class ChainedComparisonCall {
     // ...
   }
 
-  compile(args: string[]): string {
-    if (args.length < 2) {
-      return "true";
+  compile(args: Emission_item[]): Emission_item {
+    const args_real = args.filter(is_not_null);
+
+    if (args_real.length < 2) {
+      return () => "true";
     }
 
-    const parts: string[] = [];
-    for (let i = 0; i < args.length - 1; i++) {
-      parts.push(`${args[i]} ${this.operator} ${args[i + 1]}`);
-    }
+    return () => {
+      const parts: string[] = [];
+      for (let i = 0; i < args_real.length - 1; i++) {
+        const arg = args_real[i];
+        const next_arg = args_real[i + 1];
+        parts.push(`${arg()} ${this.operator} ${next_arg()}`);
+      }
 
-    return `(${parts.join(" && ")})`;
+      return `(${parts.join(" && ")})`;
+    }
   }
 }
 
@@ -198,8 +218,8 @@ export class NewCall {
     // ...
   }
 
-  compile(args: string[]): string {
-    return `(new ${this.constructorName}(${args.join(", ")}))`;
+  compile(args: Emission_item[]): Emission_item {
+    return () => `(new ${this.constructorName}(${args.filter(is_not_null).map(call).join(", ")}))`;
   }
 }
 
@@ -213,15 +233,21 @@ export class IndexAccessCall {
     // ...
   }
 
-  compile(args: string[]): string {
-    const receiver = args[0];
-    const index = args[1];
-    const value = args[2];
+  compile(args: Emission_item[]): Emission_item {
+    const args_real = args.filter(is_not_null);
+
+    const receiver = args_real[0];
+    const index = args_real[1];
+    const value = args_real[2];
+
+    if (args_real.length < 2) {
+      return () => `${FORCE_SYNTAX_ERROR} /* invalid IndexAccessCall: \`${receiver?.() ?? "invalid"}[${index?.() ?? "invalid"}] = ${value?.() ?? "invalid"}\` */`
+    }
 
     if (value !== undefined) {
-      return `(${receiver}[${index}] = ${value})`;
+      return () => `(${receiver()}[${index()}] = ${value()})`;
     } else {
-      return `${receiver}[${index}]`;
+      return () => `${receiver()}[${index()}]`;
     }
   }
 }
@@ -236,10 +262,11 @@ export class CallableInvokeCall {
     // ...
   }
 
-  compile(args: string[]): string {
-    const fn = args[0];
-    const params = args.slice(1);
-    return `${fn}(${params.join(", ")})`;
+  compile(args: Emission_item[]): Emission_item {
+    const args_real = args.filter(is_not_null);
+    const fn = args_real[0];
+    const params = args_real.slice(1);
+    return () => `${fn()}(${params.map(call).join(", ")})`;
   }
 }
 

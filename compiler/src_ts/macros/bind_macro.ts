@@ -7,11 +7,11 @@ import {
 } from "../core/macro_registry.ts";
 
 import { Node, ResolvedConvention } from "../core/node.ts";
-import { IndentedStringIO } from "../utils/strutil.ts";
+import { Emission_item, IndentedStringIO } from "../utils/strutil.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { resolve_candidates, unify_types } from "../pipeline/call_resolver.ts";
 import { ComplexType, Type, TypeParameter, TypeSubstitution } from "../compiler_types/proper_types.ts";
-import { assert_instanceof, assert_not_instanceof } from "../utils/utils.ts";
+import { assert_instanceof, assert_not_instanceof, not_null } from "../utils/utils.ts";
 
 export class Bind_macro_provider
   implements Macro_emission_provider, Macro_preprocess_provider, Macro_typecheck_provider
@@ -164,29 +164,30 @@ export class Bind_macro_provider
     const conv = resolved.convention;
 
     const unbound_names: string[] = [];
-    const args_in_order: string[] = [];
+    const args_in_order: Emission_item[] = [];
     let hole_idx = 0;
 
     ctx.node.children.forEach((child, idx) => {
       if (this.placeholder(child)) {
         const pname = this.placeholder_name(hole_idx, child);
         unbound_names.push(pname);
-        args_in_order.push(pname);
+        args_in_order.push(() => pname);
         hole_idx += 1;
       } else {
-        const obuf = new IndentedStringIO();
+        const obuf: Emission_item[] = [];
         const child_ctx = ctx.clone_with({ node: child, expression_out: obuf });
         ctx.current_step!.process_node(child_ctx);
-        args_in_order.push(obuf.gets_to_end());
+        const expr = obuf[0];
+        ctx.compiler.assert_(
+          expr != null,
+          child,
+          "bound argument must produce an expression",
+          ErrorType.INVALID_STRUCTURE,
+        );
+        args_in_order.push(expr);
       }
     });
 
-    ctx.expression_out.write("((");
-    if (unbound_names.length > 0) {
-      ctx.expression_out.write(unbound_names.join(", "));
-    }
-    ctx.expression_out.write(") => ");
-    ctx.expression_out.write(conv.compile(args_in_order));
-    ctx.expression_out.write(")");
+    ctx.expression_out.push(() => `((${unbound_names.join(", ")}) => ${not_null(conv.compile(args_in_order, ctx))()})`);
   }
 }

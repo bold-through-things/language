@@ -2,11 +2,12 @@
 
 import { MacroContext } from "../core/macro_registry.ts";
 import { Macro_emission_provider } from "../core/macro_registry.ts";
-import { BRACES, IndentedStringIO, PARENTHESIS, statement_block, statement_blocks, statement_raw } from "../utils/strutil.ts";
+import { ErrorType } from "../utils/error_types.ts";
+import { BRACES, Emission_item, PARENTHESIS, statement_block, statement_blocks } from "../utils/strutil.ts";
 
 export class If_macro_provider implements Macro_emission_provider {
   emission(ctx: MacroContext): void {
-    const args: string[] = [];
+    const args: Emission_item[] = [];
 
     // don't push this here else the condition will emit too late
     const stmt = statement_blocks(
@@ -49,18 +50,22 @@ export class If_macro_provider implements Macro_emission_provider {
         continue;
       }
 
-      const buf = new IndentedStringIO();
-      const child_ctx = ctx.clone_with({ node: child, expression_out: buf });
+      const expr: Emission_item[] = [];
+      const child_ctx = ctx.clone_with({ node: child, expression_out: expr });
       ctx.current_step?.process_node(child_ctx);
 
-      const expr = buf.gets_to_end();
-      if (expr.length > 0) {
-        args.push(expr);
-      }
+      args.push(...expr.filter(e => e != null));
     }
 
-    const cond = args.length === 0 ? "" : args[args.length - 1];
-    if_condition.push(statement_raw(cond));
-    ctx.push(stmt);
+    const cond = args[args.length - 1];
+    ctx.compiler.assert_(
+      cond != null,
+      ctx.node,
+      "if macro requires at least one expression as condition",
+      ErrorType.INVALID_STRUCTURE,
+    );
+    
+    if_condition.push(() => cond());
+    ctx.statement(stmt);
   }
 }

@@ -2,13 +2,13 @@
 
 import { MacroContext } from "../core/macro_registry.ts";
 import { Macro_emission_provider } from "../core/macro_registry.ts";
-import { BRACES, IndentedStringIO, not_a_statement, statement_block, statement_blocks, statement_raw } from "../utils/strutil.ts";
+import { BRACES, Emission_item, IndentedStringIO, statement_block, statement_blocks } from "../utils/strutil.ts";
 import { seek_child_macro } from "../pipeline/steps/utils.ts";
 import { ErrorType } from "../utils/error_types.ts";
 
 export class While_macro_provider implements Macro_emission_provider {
   emission(ctx: MacroContext): void {
-    const [body] = ctx.push(statement_blocks(
+    const [body] = ctx.statement(statement_blocks(
       statement_block("while(true)", BRACES),
     ));
 
@@ -21,7 +21,7 @@ export class While_macro_provider implements Macro_emission_provider {
 
     const cond_node = ctx.node.children[0];
 
-    const obuf = new IndentedStringIO();
+    const obuf: Emission_item[] = [];
     const cond_ctx = ctx.clone_with({
       node: cond_node,
       expression_out: obuf,
@@ -29,7 +29,15 @@ export class While_macro_provider implements Macro_emission_provider {
     });
     ctx.current_step?.process_node(cond_ctx);
 
-    body.push(statement_raw(`if (!${obuf.gets_to_end()}) { break; }`));
+    const cond = obuf[0];
+    ctx.compiler.assert_(
+      cond != null,
+      ctx.node,
+      "condition must produce a single expression",
+      ErrorType.INVALID_STRUCTURE
+    )
+
+    body.push(() => `if (!${cond()}) { break; }`);
 
     const body_node = seek_child_macro(ctx.node, "do");
     ctx.compiler.assert_(

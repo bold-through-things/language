@@ -24,6 +24,8 @@ import { collect_child_expressions } from "../utils/common_utils.ts";
 import { resolve_convention, unify_types } from "../pipeline/call_resolver.ts";
 import { Async_mode } from "../pipeline/call_conventions.ts";
 import { not_null } from "../utils/utils.ts";
+import { unroll_parent_chain } from "../pipeline/steps/utils.ts";
+import { FORCE_SYNTAX_ERROR } from "../pipeline/js_conversion.ts";
 
 // -------------------------------------------------------------------
 // TypeHierarchyChecker
@@ -188,50 +190,60 @@ export class Call_macro_provider
   }
 
   emission(ctx: MacroContext): void {
-    if (ctx.compiler.maybe_metadata(ctx.node, Macro_previously_failed)) {
-      default_logger.codegen(
-        `skipping emission of call due to prior typecheck failure: ${ctx.node.content}`,
-      );
-      return;
+    let expr = () => `${FORCE_SYNTAX_ERROR} /* :call had emission error */`;
+    try {
+      if (ctx.compiler.maybe_metadata(ctx.node, Macro_previously_failed)) {
+        default_logger.codegen(
+          `skipping emission of call due to prior typecheck failure: ${ctx.node.content}`,
+        );
+        return;
+      }
+
+      const args_str = ctx.compiler.get_metadata(ctx.node, Args).toString();
+      const parts = args_str.split(" ");
+      const ident = ctx.compiler.get_new_ident(parts.join("_"));
+
+      const resolved = ctx.compiler.maybe_metadata(ctx.node, ResolvedConvention);
+      ctx.compiler.assert_(
+        resolved != null && resolved.convention != null,
+        ctx.node,
+        "emission: convention must be resolved",
+        ErrorType.INVALID_MACRO,
+      )
+      const conv = resolved.convention;
+
+      const arg_exprs = collect_child_expressions(ctx);
+      const call_src = conv.compile(arg_exprs, ctx);
+
+      if (call_src == null) {
+        // compiler bug then
+        throw new Error("call_src is null");
+      }
+
+      const await_fn = {
+        [Async_mode.ASYNC]: (id: string) => `(await (${id}))`, // should NEVER drop the outer brackets here!
+        [Async_mode.SYNC]: (id: string) => id,
+        /* 
+        shout out to Claude for helping me benchmark this. yes, it's not that bad!
+
+        Without unnecessary awaits: 0.30ms
+        Smart conditional await: 0.40ms (1.33x slower) <-
+        With pointless awaits: 72.40ms (241.33x slower)
+
+        see the code below (at end of file)
+
+        i really fucking love the JIT.
+        */
+        [Async_mode.MAYBE]: (id: string) => `(await _67lang.maybe_await(${id}))`, // should NEVER drop the outer brackets!
+      }
+
+      const [define, use] = statement_expr(() => `${await_fn[conv.async_mode](call_src())}`, ident);
+
+      ctx.statement(define);
+      expr = use ?? expr;
+    } finally {
+      ctx.expression(expr);
     }
-
-    const args_str = ctx.compiler.get_metadata(ctx.node, Args).toString();
-    const parts = args_str.split(" ");
-    const ident = ctx.compiler.get_new_ident(parts.join("_"));
-
-    const resolved = ctx.compiler.maybe_metadata(ctx.node, ResolvedConvention);
-    ctx.compiler.assert_(
-      resolved != null && resolved.convention != null,
-      ctx.node,
-      "emission: convention must be resolved",
-      ErrorType.INVALID_MACRO,
-    )
-    const conv = resolved.convention;
-
-    const arg_exprs = collect_child_expressions(ctx);
-    const call_src = conv.compile(arg_exprs);
-
-    const await_fn = {
-      [Async_mode.ASYNC]: (id: string) => `await (${id})`,
-      [Async_mode.SYNC]: (id: string) => id,
-      /* 
-      shout out to Claude for helping me benchmark this. yes, it's not that bad!
-
-      Without unnecessary awaits: 0.30ms
-      Smart conditional await: 0.40ms (1.33x slower) <-
-      With pointless awaits: 72.40ms (241.33x slower)
-
-      see the code below (at end of file)
-
-      i really fucking love the JIT.
-      */
-      [Async_mode.MAYBE]: (id: string) => `await _67lang.maybe_await(${id})`,
-    }
-
-    ctx.statement_out.push(
-      statement_expr(`${await_fn[conv.async_mode](call_src)}`, ident),
-    )
-    ctx.expression_out.write(ident);
   }
 }
 

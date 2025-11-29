@@ -1,14 +1,21 @@
 // macros/then_macro.ts
 
 import {
+Macro_emission_provider,
   Macro_preprocess_provider,
+  Macro_typecheck_provider,
   MacroContext,
+  TCResult,
 } from "../core/macro_registry.ts";
 import { Args, Node, Position } from "../core/node.ts";
-import { get_single_arg } from "../utils/common_utils.ts";
-import { Upwalker, LastThenSearchStrategy } from "../pipeline/local_lookup.ts";
+import { collect_child_expressions, get_single_arg } from "../utils/common_utils.ts";
+import { Upwalker, LastThenSearchStrategy, MetadataSearchStrategy } from "../pipeline/local_lookup.ts";
 import { parseTokens, Schema, Fixed, VarOrTerminated } from "../utils/new_parser.ts";
 import { try_catch } from "../utils/utils.ts";
+import { Emission_item, statement_expr } from "../utils/strutil.ts";
+import { ErrorType } from "../utils/error_types.ts";
+import { graceful_typecheck } from "../core/exceptions.ts";
+import { FORCE_SYNTAX_ERROR } from "../pipeline/js_conversion.ts";
 
 // --------------------------------------------------------
 // Then-schema (new parser)
@@ -32,6 +39,7 @@ type Tree = ReturnType<typeof parseTokens< typeof thenSchema >>;
 // Wrapper for the parse-tree
 // --------------------------------------------------------
 
+const LAST_PIPELINE_RESULT = Symbol("LAST_PIPELINE_RESULT");
 class ThenView {
   constructor(public tree: Tree) {}
 
@@ -73,14 +81,42 @@ class ThenView {
 // Call builder
 // --------------------------------------------------------
 
-function create_operation_call_node(
+function create_call_chain(
   ctx: MacroContext,
   opCmd: string,
-  opArgs: string[],
+  opArgs: (string | typeof LAST_PIPELINE_RESULT)[],
   children: Node[],
-  sourceValueName: string | null,
-): Node | null {
+  sourceValue: string | typeof LAST_PIPELINE_RESULT | null,
+): Node {
   const p0 = new Position(0, 0);
+
+  ctx.compiler.assert_( // TODO might just be a compiler bug
+    [...opArgs, sourceValue].filter((x) => x === LAST_PIPELINE_RESULT).length <= 1,
+    ctx.node,
+    `Only one ${_67lang_GET_LAST_PIPELINE_RESULT} allowed in pipeline operation`,
+    ErrorType.INVALID_STRUCTURE,
+  );
+
+  function create_call_node(target: string | typeof LAST_PIPELINE_RESULT, children: Node[]): Node {
+    if (target === LAST_PIPELINE_RESULT) {
+      ctx.compiler.assert_( // TODO might just be a compiler bug though..?
+        children.length === 0,
+        ctx.node,
+        `${_67lang_GET_LAST_PIPELINE_RESULT} does not take any arguments`,
+      );
+      return ctx.compiler.make_node(
+        `${_67lang_GET_LAST_PIPELINE_RESULT}`,
+        ctx.node.pos ?? p0,
+        [],
+      );
+    } else {
+      return ctx.compiler.make_node(
+        `67lang:call ${target}`,
+        ctx.node.pos ?? p0,
+        children,
+      );
+    }
+  }
 
   switch (opCmd) {
 
@@ -89,20 +125,18 @@ function create_operation_call_node(
     case "set": {
       if (opArgs.length !== 1) {
         ctx.compiler.assert_(false, ctx.node, `${opCmd} requires exactly one method name`);
-        return null;
       }
 
       const opChildren: Node[] = [];
-      if (sourceValueName) {
+      if (sourceValue) {
         opChildren.push(
-          ctx.compiler.make_node(`67lang:call ${sourceValueName}`, ctx.node.pos ?? p0, []),
+          create_call_node(sourceValue, [])
         );
       }
       opChildren.push(...children);
 
-      return ctx.compiler.make_node(
-        `67lang:call ${opArgs[0]}`,
-        ctx.node.pos ?? p0,
+      return create_call_node(
+        opArgs[0],
         opChildren,
       );
     }
@@ -110,16 +144,13 @@ function create_operation_call_node(
     case "chain": {
       if (opArgs.length === 0) {
         ctx.compiler.assert_(false, ctx.node, "chain requires at least one step");
-        return null;
       }
-      if (!sourceValueName) {
+      if (!sourceValue) {
         ctx.compiler.assert_(false, ctx.node, "chain requires a source value");
-        return null;
       }
 
-      let current: Node = ctx.compiler.make_node(
-        `67lang:call ${sourceValueName}`,
-        ctx.node.pos ?? p0,
+      let current: Node = create_call_node(
+        sourceValue,
         [],
       );
 
@@ -128,9 +159,8 @@ function create_operation_call_node(
         if (i === opArgs.length - 1) {
           callChildren.push(...children);
         }
-        current = ctx.compiler.make_node(
-          `67lang:call ${step}`,
-          ctx.node.pos ?? p0,
+        current = create_call_node(
+          step,
           callChildren,
         );
       });
@@ -140,7 +170,6 @@ function create_operation_call_node(
 
     default:
       ctx.compiler.assert_(false, ctx.node, `unknown operation: ${opCmd}`);
-      return null;
   }
 }
 
@@ -166,7 +195,6 @@ export class Pipeline_macro_provider implements Macro_preprocess_provider {
     // tokenize for the new parser
     const tokens = parseContent.split(/\s+/).filter(Boolean);
     const tree = try_catch(() => parseTokens(tokens, thenSchema), (e) => {
-    console.log(tokens);
       ctx.compiler.assert_(false, ctx.node, `Failed to parse tokens: ${e}`);
     });
 
@@ -174,21 +202,25 @@ export class Pipeline_macro_provider implements Macro_preprocess_provider {
     const op = view.op;
     ctx.compiler.assert_(op !== null, ctx.node, "pipeline requires an operation (do, get, set, chain)");
 
-    let sourceValueName: string | null = null;
+    let sourceValueName: string | typeof LAST_PIPELINE_RESULT | null = null;
 
     if (isContinuation) {
-      const up = new Upwalker(new LastThenSearchStrategy());
-      const lastThen = up.find(ctx);
-      ctx.compiler.assert_(lastThen !== null, ctx.node, "then used but no previous expression to pipe from");
-      sourceValueName = get_single_arg(ctx.clone_with({ node: lastThen!.node }));
+      // TODO...
+
+      // const up = new Upwalker(new LastThenSearchStrategy());
+      // const lastThen = up.find(ctx);
+      // ctx.compiler.assert_(lastThen !== null, ctx.node, "then used but no previous expression to pipe from");
+      // sourceValueName = get_single_arg(ctx.clone_with({ node: lastThen!.node }));
+
+      sourceValueName = LAST_PIPELINE_RESULT;
     } else {
       sourceValueName = view.source;
     }
 
-    const callNode = create_operation_call_node(
+    const callNode = create_call_chain(
       ctx,
-      op!.name,
-      op!.args,
+      op.name,
+      op.args,
       ctx.node.children,
       sourceValueName,
     );
@@ -197,41 +229,157 @@ export class Pipeline_macro_provider implements Macro_preprocess_provider {
     }
 
     const p0 = new Position(0, 0);
-    let newNode: Node;
+    let resultNode: Node | null = null;
+    let localAssignNode: Node | null = null;
 
+    // TODO support for many
     const assignName = view.assign;
     const bindName = view.bind;
 
+    resultNode = ctx.compiler.make_node(
+      `${_67lang_PIPELINE_RESULT}`,
+      ctx.node.pos ?? p0,
+      [callNode],
+    );
+    const refResultNode = ctx.compiler.make_node(
+      `${_67lang_GET_LAST_PIPELINE_RESULT}`,
+      ctx.node.pos ?? p0,
+      [],
+    );
+
     if (assignName) {
-      newNode = ctx.compiler.make_node(
+      localAssignNode = ctx.compiler.make_node(
         `67lang:call ${assignName}`,
         ctx.node.pos ?? p0,
-        [callNode],
+        [refResultNode],
       );
     } else if (bindName) {
-      newNode = ctx.compiler.make_node(
+      localAssignNode = ctx.compiler.make_node(
         `local ${bindName}`,
         ctx.node.pos ?? p0,
-        [
-          ctx.compiler.make_node("67lang:last_then", ctx.node.pos ?? p0, []),
-          callNode,
-        ],
-      );
-    } else {
-      const resultName = ctx.compiler.get_new_ident("pipeline_result");
-      newNode = ctx.compiler.make_node(
-        `local ${resultName}`,
-        ctx.node.pos ?? p0,
-        [
-          ctx.compiler.make_node("67lang:last_then", ctx.node.pos ?? p0, []),
-          callNode,
-        ],
+        [refResultNode],
       );
     }
 
-    parent.replace_child(ctx.node, [newNode]);
-    ctx.current_step!.process_node(ctx.clone_with({ node: newNode }));
+    const replacement = [resultNode, localAssignNode].filter((x): x is Node => x !== null);
+
+    if (replacement.length === 0) {
+      throw new Error("wow compiler bug `replacement.length` is 0");
+    }
+
+    parent.replace_child(ctx.node, replacement);
+    for (const child of replacement) {
+      const cctx = ctx.clone_with({ node: child });
+      ctx.current_step!.process_node(cctx);
+    }
   }
 }
 
-export const Then_macro_provider = Pipeline_macro_provider;
+export const _67lang_PIPELINE_RESULT = "67lang:pipeline_result";
+export class Pipeline_result_macro_provider implements Macro_emission_provider, Macro_typecheck_provider {
+  typecheck(ctx: MacroContext): TCResult {
+    return graceful_typecheck((): TCResult => {
+      let res: TCResult = null;
+      for (const child of ctx.node.children) {
+        const cctx = ctx.clone_with({ node: child });
+        const t = ctx.current_step!.process_node(cctx);
+
+        if (t) {
+          res = t;
+        }
+      }
+
+      ctx.compiler.assert_(
+        res !== null,
+        ctx.node,
+        `${_67lang_PIPELINE_RESULT} must have a valid type from its children`,
+        ErrorType.INVALID_STRUCTURE
+      );
+
+      ctx.compiler.set_metadata(
+        ctx.node,
+        Pipeline_result_typecheck_metadata,
+        new Pipeline_result_typecheck_metadata(res),
+      );
+      
+      return res;
+    });
+  }
+
+  emission(ctx: MacroContext): void {
+    const exprs = collect_child_expressions(ctx);
+    const expr = exprs[exprs.length - 1];
+    
+    // although this would be a compiler bug, consider that the users could 
+    // just use this one directly
+
+    ctx.compiler.assert_(
+      expr != null,
+      ctx.node,
+      `${_67lang_PIPELINE_RESULT} must have a valid expression`,
+      ErrorType.INVALID_STRUCTURE
+    );
+
+    const ident = ctx.compiler.get_new_ident("_pipeline_result"); // TODO include the name of operation
+
+    const [define, use] = statement_expr(expr, ident);
+    ctx.statement_out.push(define);
+    ctx.expression_out.push(use);
+
+    ctx.compiler.set_metadata(
+      ctx.node,
+      Pipeline_result_emission_metadata,
+      new Pipeline_result_emission_metadata(use),
+    );
+  }
+}
+
+export const _67lang_GET_LAST_PIPELINE_RESULT = "67lang:get_last_pipeline_result";
+export class Get_last_pipeline_result_macro_provider implements Macro_emission_provider, Macro_typecheck_provider {
+  typecheck(ctx: MacroContext): TCResult {
+    const up = new Upwalker(new MetadataSearchStrategy(Pipeline_result_typecheck_metadata));
+    const res = up.find(ctx);
+    ctx.compiler.assert_(
+      res !== null && res.found !== null,
+      ctx.node,
+      `in typechecking ${_67lang_GET_LAST_PIPELINE_RESULT} used but no previous pipeline result found`,
+      ErrorType.INVALID_STRUCTURE,
+    );
+
+    const meta = res.found;
+    return meta.type;
+  }
+
+  emission(ctx: MacroContext): void {
+    const up = new Upwalker(new MetadataSearchStrategy(Pipeline_result_emission_metadata));
+    const res = up.find(ctx);
+    ctx.compiler.assert_(
+      res !== null && res.found !== null,
+      ctx.node,
+      `in emission ${_67lang_GET_LAST_PIPELINE_RESULT} used but no previous pipeline result found`,
+      ErrorType.INVALID_STRUCTURE,
+    );
+
+
+    const meta = res.found;
+    ctx.expression_out.push(meta.expr ?? (() => `${FORCE_SYNTAX_ERROR} /* found no expression for last value */`));
+
+    // const ident = ctx.compiler.get_new_ident("_pipeline_result");
+    // const [define, use] = statement_expr(meta.expr ?? (() => `${FORCE_SYNTAX_ERROR} /* found no expression for last value */`), ident);
+    // ctx.statement_out.push(define);
+    // ctx.expression_out.push(use);
+  }
+}
+
+class Pipeline_result_typecheck_metadata {
+  constructor(readonly type: TCResult) {
+    // ...
+  }
+}
+
+
+class Pipeline_result_emission_metadata {
+  constructor(readonly expr: Emission_item) {
+    // ...
+  }
+}

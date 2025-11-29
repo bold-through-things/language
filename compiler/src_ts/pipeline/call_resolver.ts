@@ -118,7 +118,7 @@ function resolve_local_definition(
 
   const name = get_single_arg(ctx.clone_with({ node: res.node }));
   const sane = ctx.compiler.maybe_metadata(res.node, SaneIdentifier);
-  const resolved_name = (sane ?? name).toString();
+  const resolved_name = sane?.value ?? name;
 
   const type = res.found;
   if (!type) {
@@ -170,6 +170,7 @@ export function resolve_convention(
 
   if (actual_arg_types?.some(t => t == null)) {
     console.log("Compiler bug: null type in actual_arg_types", actual_arg_types);
+    throw new Error("null type in actual_arg_types");
   }
 
   default_logger.debug(`all_possible_conventions(${fn}): ${candidates}`);

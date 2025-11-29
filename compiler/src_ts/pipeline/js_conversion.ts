@@ -86,3 +86,5 @@ export { JS_LIB };
 
 // Constants
 export const NEWLINE = "\n";
+
+export const FORCE_SYNTAX_ERROR = "67lang";

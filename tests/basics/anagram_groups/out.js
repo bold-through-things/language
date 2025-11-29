@@ -98,171 +98,45 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    /* -> */ {    
-        }
-    /* -> */ {    
-            const _0xa7_stdin = (await (_67lang.stdin()));
-            let _0x41__0x40_pipeline_result = _0xa7_stdin;
-
-            let _0x42_input = _0x41__0x40_pipeline_result;
-
-            const _0xa9_input = (_0x42_input);
-            const _0xa8_split = (String.prototype.split.call(_0xa9_input, "\n"));
-            let _0x44__0x43_pipeline_result = _0xa8_split;
-
-            let _0x45_words = _0x44__0x43_pipeline_result;
-
-            let _0x46_groups = {};
-
-            /* -> */ {    
-                let _0x49__0x47_for_word__index = 0;
-
-                const _0xaa_words = (_0x45_words);
-                let _0x4b__0x4a_pipeline_result = _0xaa_words;
-
-                let _0x4c__0x48_for_word__list = _0x4b__0x4a_pipeline_result;
-
-                while(true) /* -> */ {    
-                    const _0xac__0x47_for_word__index = (_0x49__0x47_for_word__index);
-                    let _0x4f__0x4e_pipeline_result = _0xac__0x47_for_word__index;
-
-                    const _0xae__0x48_for_word__list = (_0x4c__0x48_for_word__list);
-                    const _0xad_length = ((_0xae__0x48_for_word__list.length));
-                    let _0x51__0x50_pipeline_result = _0xad_length;
-
-                    const _0xab_asc = ((_0x4f__0x4e_pipeline_result < _0x51__0x50_pipeline_result));
-                    let _0x52__0x4d_pipeline_result = _0xab_asc;
-
-                    if (!_0x52__0x4d_pipeline_result) { break; }
-                    /* -> */ {    
-                        const _0xb0__0x48_for_word__list = (_0x4c__0x48_for_word__list);
-                        const _0xb1__0x47_for_word__index = (_0x49__0x47_for_word__index);
-                        let _0x55__0x54_pipeline_result = _0xb1__0x47_for_word__index;
-
-                        const _0xaf__hash_ = (_0xb0__0x48_for_word__list[_0x55__0x54_pipeline_result]);
-                        let _0x56__0x53_pipeline_result = _0xaf__hash_;
-
-                        let _0x57_word = _0x56__0x53_pipeline_result;
-
-                        const _0xb4__0x47_for_word__index = (_0x49__0x47_for_word__index);
-                        const _0xb3_add = ((_0xb4__0x47_for_word__index + 1));
-                        let _0x5a__0x59_pipeline_result = _0xb3_add;
-
-                        const _0xb2__0x47_for_word__index = ((_0x49__0x47_for_word__index = _0x5a__0x59_pipeline_result));
-                        let _0x5b__0x58_pipeline_result = _0xb2__0x47_for_word__index;
-
-                        const _0xb6_word = (_0x57_word);
-                        const _0xb5_split = (String.prototype.split.call(_0xb6_word, ""));
-                        let _0x5d__0x5c_pipeline_result = _0xb5_split;
-
-                        const _0xb8__0x5c_pipeline_result = (_0x5d__0x5c_pipeline_result);
-                        const _0xb7_sort = (Array.prototype.sort.call(_0xb8__0x5c_pipeline_result));
-                        let _0x5f__0x5e_pipeline_result = _0xb7_sort;
-
-                        const _0xba__0x5e_pipeline_result = (_0x5f__0x5e_pipeline_result);
-                        const _0xb9_join = (Array.prototype.join.call(_0xba__0x5e_pipeline_result, ""));
-                        let _0x60_key = _0xb9_join;
-
-                        const _0xbd_groups = (_0x46_groups);
-                        const _0xbe_key = (_0x60_key);
-                        let _0x64__0x63_pipeline_result = _0xbe_key;
-
-                        const _0xbc_has_keys = (_67lang.has_keys(_0xbd_groups, _0x64__0x63_pipeline_result));
-                        let _0x65__0x62_pipeline_result = _0xbc_has_keys;
-
-                        const _0xbb_none = (!(_0x65__0x62_pipeline_result));
-                        let _0x66__0x61_pipeline_result = _0xbb_none;
-
-                        if /* -> */ (    
-                            _0x66__0x61_pipeline_result
-                        )/* -> */ {    
-                            const _0xc0_groups = (_0x46_groups);
-                            let _0x69__0x68_pipeline_result = _0xc0_groups;
-
-                            const _0xc1_key = (_0x60_key);
-                            let _0x6b__0x6a_pipeline_result = _0xc1_key;
-
-                            const _0xbf__hash_ = ((_0x69__0x68_pipeline_result[_0x6b__0x6a_pipeline_result] = []));
-                            let _0x6c__0x67_pipeline_result = _0xbf__hash_;
-
-                        }else /* -> */ {    
-                        }
-
-                        const _0xc3_groups = (_0x46_groups);
-                        let _0x6f__0x6e_pipeline_result = _0xc3_groups;
-
-                        const _0xc4_key = (_0x60_key);
-                        let _0x71__0x70_pipeline_result = _0xc4_key;
-
-                        const _0xc2__hash_ = (_0x6f__0x6e_pipeline_result[_0x71__0x70_pipeline_result]);
-                        let _0x72__0x6d_pipeline_result = _0xc2__hash_;
-
-                        const _0xc6__0x6d_pipeline_result = (_0x72__0x6d_pipeline_result);
-                        const _0xc7_word = (_0x57_word);
-                        let _0x75__0x74_pipeline_result = _0xc7_word;
-
-                        const _0xc5_push = (Array.prototype.push.call(_0xc6__0x6d_pipeline_result, _0x75__0x74_pipeline_result));
-                        let _0x76__0x73_pipeline_result = _0xc5_push;
-
+    {
+    }
+    {    
+        let _0x40_input = await (_67lang.stdin());
+        let _0x41_words = String.prototype.split.call(_0x40_input, "\n");
+        let _0x42_groups = {};
+        {    
+            let _0x45__0x43_for_word__index = 0;
+            let _0x46__0x44_for_word__list = _0x41_words;
+            while(true) {    
+                if (!(_0x45__0x43_for_word__index < _0x46__0x44_for_word__list.length)) { break; }
+                {    
+                    let _0x47_word = _0x46__0x44_for_word__list[_0x45__0x43_for_word__index];
+                    (_0x45__0x43_for_word__index = (_0x45__0x43_for_word__index + 1));
+                    let _0x48_key = Array.prototype.join.call(Array.prototype.sort.call(String.prototype.split.call(_0x47_word, "")), "");
+                    if (    
+                        !(_67lang.has_keys(_0x42_groups, _0x48_key))
+                    ) {    
+                        (_0x42_groups[_0x48_key] = []);
+                    } else {
                     }
-
+    
+                    Array.prototype.push.call(_0x42_groups[_0x48_key], _0x47_word);
                 }
-
             }
-
-            /* -> */ {    
-                let _0x79__0x77_for_group__index = 0;
-
-                const _0xc9_groups = (_0x46_groups);
-                const _0xc8_values = (Object.values(_0xc9_groups));
-                let _0x7b__0x7a_pipeline_result = _0xc8_values;
-
-                let _0x7c__0x78_for_group__list = _0x7b__0x7a_pipeline_result;
-
-                while(true) /* -> */ {    
-                    const _0xcb__0x77_for_group__index = (_0x79__0x77_for_group__index);
-                    let _0x7f__0x7e_pipeline_result = _0xcb__0x77_for_group__index;
-
-                    const _0xcd__0x78_for_group__list = (_0x7c__0x78_for_group__list);
-                    const _0xcc_length = ((_0xcd__0x78_for_group__list.length));
-                    let _0x81__0x80_pipeline_result = _0xcc_length;
-
-                    const _0xca_asc = ((_0x7f__0x7e_pipeline_result < _0x81__0x80_pipeline_result));
-                    let _0x82__0x7d_pipeline_result = _0xca_asc;
-
-                    if (!_0x82__0x7d_pipeline_result) { break; }
-                    /* -> */ {    
-                        const _0xcf__0x78_for_group__list = (_0x7c__0x78_for_group__list);
-                        const _0xd0__0x77_for_group__index = (_0x79__0x77_for_group__index);
-                        let _0x85__0x84_pipeline_result = _0xd0__0x77_for_group__index;
-
-                        const _0xce__hash_ = (_0xcf__0x78_for_group__list[_0x85__0x84_pipeline_result]);
-                        let _0x86__0x83_pipeline_result = _0xce__hash_;
-
-                        let _0x87_group = _0x86__0x83_pipeline_result;
-
-                        const _0xd3__0x77_for_group__index = (_0x79__0x77_for_group__index);
-                        const _0xd2_add = ((_0xd3__0x77_for_group__index + 1));
-                        let _0x8a__0x89_pipeline_result = _0xd2_add;
-
-                        const _0xd1__0x77_for_group__index = ((_0x79__0x77_for_group__index = _0x8a__0x89_pipeline_result));
-                        let _0x8b__0x88_pipeline_result = _0xd1__0x77_for_group__index;
-
-                        const _0xd6_group = (_0x87_group);
-                        let _0x8f__0x8e_pipeline_result = _0xd6_group;
-
-                        const _0xd5_join = (Array.prototype.join.call(_0x8f__0x8e_pipeline_result, " "));
-                        let _0x90__0x8d_pipeline_result = _0xd5_join;
-
-                        const _0xd4_print = (await _67lang.maybe_await(console.log(_0x90__0x8d_pipeline_result)));
-                        let _0x91__0x8c_pipeline_result = _0xd4_print;
-
-                    }
-
-                }
-
-            }
-
         }
+    
+        {    
+            let _0x4b__0x49_for_group__index = 0;
+            let _0x4c__0x4a_for_group__list = Object.values(_0x42_groups);
+            while(true) {    
+                if (!(_0x4b__0x49_for_group__index < _0x4c__0x4a_for_group__list.length)) { break; }
+                {    
+                    let _0x4d_group = _0x4c__0x4a_for_group__list[_0x4b__0x49_for_group__index];
+                    (_0x4b__0x49_for_group__index = (_0x4b__0x49_for_group__index + 1));
+                    (await _67lang.maybe_await(console.log(Array.prototype.join.call(_0x4d_group, " "))));
+                }
+            }
+        }
+    }
 
 })();

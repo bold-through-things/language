@@ -12,7 +12,7 @@ export class Scope_macro_provider
   emission(ctx: MacroContext): void {
     const macroName = ctx.compiler.get_metadata(ctx.node, Macro).toString();
 
-    const [ block ] = ctx.push(statement_blocks(
+    const [ block ] = ctx.statement(statement_blocks(
       statement_block(macroName == "else" ? "else" : null, BRACES),
     ));
     for (const child of ctx.node.children) {

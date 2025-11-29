@@ -12,3 +12,4 @@ a rough roadmap the way things stand.
 - emit TypeScript to help debugging speed
 - eliminate `exists` `inside`
 - support varargs
+- we're missing coverage for `break`

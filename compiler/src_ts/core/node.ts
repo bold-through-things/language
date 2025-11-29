@@ -267,10 +267,6 @@ export class SaneIdentifier {
   constructor(value: string) {
     this.value = value;
   }
-
-  toString(): string {
-    return this.value;
-  }
 }
 
 // TODO: remove and store Type objects directly

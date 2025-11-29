@@ -98,293 +98,84 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    /* -> */ {    
-        }
-    /* -> */ {    
-            const _0xe0_stdin = (await (_67lang.stdin()));
-            let _0x41__0x40_pipeline_result = _0xe0_stdin;
-
-            let _0x42_lines = _0x41__0x40_pipeline_result;
-
-            const _0xe2_lines = (_0x42_lines);
-            const _0xe1_split = (String.prototype.split.call(_0xe2_lines, "\n"));
-            let _0x44__0x43_pipeline_result = _0xe1_split;
-
-            let _0x45_lines = _0x44__0x43_pipeline_result;
-
-            let _0x46_i = 0;
-
-            let _0x47_header = [];
-
-            let _0x48_rows = [];
-
-            /* -> */ {    
-                let _0x4b__0x49_for_line__index = 0;
-
-                const _0xe3_lines = (_0x45_lines);
-                let _0x4d__0x4c_pipeline_result = _0xe3_lines;
-
-                let _0x4e__0x4a_for_line__list = _0x4d__0x4c_pipeline_result;
-
-                while(true) /* -> */ {    
-                    const _0xe5__0x49_for_line__index = (_0x4b__0x49_for_line__index);
-                    let _0x51__0x50_pipeline_result = _0xe5__0x49_for_line__index;
-
-                    const _0xe7__0x4a_for_line__list = (_0x4e__0x4a_for_line__list);
-                    const _0xe6_length = ((_0xe7__0x4a_for_line__list.length));
-                    let _0x53__0x52_pipeline_result = _0xe6_length;
-
-                    const _0xe4_asc = ((_0x51__0x50_pipeline_result < _0x53__0x52_pipeline_result));
-                    let _0x54__0x4f_pipeline_result = _0xe4_asc;
-
-                    if (!_0x54__0x4f_pipeline_result) { break; }
-                    /* -> */ {    
-                        const _0xe9__0x4a_for_line__list = (_0x4e__0x4a_for_line__list);
-                        const _0xea__0x49_for_line__index = (_0x4b__0x49_for_line__index);
-                        let _0x57__0x56_pipeline_result = _0xea__0x49_for_line__index;
-
-                        const _0xe8__hash_ = (_0xe9__0x4a_for_line__list[_0x57__0x56_pipeline_result]);
-                        let _0x58__0x55_pipeline_result = _0xe8__hash_;
-
-                        let _0x59_line = _0x58__0x55_pipeline_result;
-
-                        const _0xed__0x49_for_line__index = (_0x4b__0x49_for_line__index);
-                        const _0xec_add = ((_0xed__0x49_for_line__index + 1));
-                        let _0x5c__0x5b_pipeline_result = _0xec_add;
-
-                        const _0xeb__0x49_for_line__index = ((_0x4b__0x49_for_line__index = _0x5c__0x5b_pipeline_result));
-                        let _0x5d__0x5a_pipeline_result = _0xeb__0x49_for_line__index;
-
-                        const _0xef_i = (_0x46_i);
-                        let _0x60__0x5f_pipeline_result = _0xef_i;
-
-                        const _0xee_eq = ((_0x60__0x5f_pipeline_result === 0));
-                        let _0x61__0x5e_pipeline_result = _0xee_eq;
-
-                        if /* -> */ (    
-                            _0x61__0x5e_pipeline_result
-                        )/* -> */ {    
-                            const _0xf2_line = (_0x59_line);
-                            const _0xf1_split = (String.prototype.split.call(_0xf2_line, ","));
-                            const _0xf0_header = ((_0x47_header = _0xf1_split));
-                        }else /* -> */ {    
-                            const _0xf4_header = (_0x47_header);
-                            let _0x64__0x63_pipeline_result = _0xf4_header;
-
-                            const _0xf6_line = (_0x59_line);
-                            const _0xf5_split = (String.prototype.split.call(_0xf6_line, ","));
-                            let _0x66__0x65_pipeline_result = _0xf5_split;
-
-                            const _0xf3_zip = (_67lang.zip(_0x64__0x63_pipeline_result, _0x66__0x65_pipeline_result));
-                            let _0x67__0x62_pipeline_result = _0xf3_zip;
-
-                            let _0x68_zipped_data = _0x67__0x62_pipeline_result;
-
-                            let _0x69_row = {};
-
-                            /* -> */ {    
-                                let _0x6c__0x6a_for_kv__index = 0;
-
-                                const _0xf7_zipped_data = (_0x68_zipped_data);
-                                let _0x6e__0x6d_pipeline_result = _0xf7_zipped_data;
-
-                                let _0x6f__0x6b_for_kv__list = _0x6e__0x6d_pipeline_result;
-
-                                while(true) /* -> */ {    
-                                    const _0xf9__0x6a_for_kv__index = (_0x6c__0x6a_for_kv__index);
-                                    let _0x72__0x71_pipeline_result = _0xf9__0x6a_for_kv__index;
-
-                                    const _0xfb__0x6b_for_kv__list = (_0x6f__0x6b_for_kv__list);
-                                    const _0xfa_length = ((_0xfb__0x6b_for_kv__list.length));
-                                    let _0x74__0x73_pipeline_result = _0xfa_length;
-
-                                    const _0xf8_asc = ((_0x72__0x71_pipeline_result < _0x74__0x73_pipeline_result));
-                                    let _0x75__0x70_pipeline_result = _0xf8_asc;
-
-                                    if (!_0x75__0x70_pipeline_result) { break; }
-                                    /* -> */ {    
-                                        const _0xfd__0x6b_for_kv__list = (_0x6f__0x6b_for_kv__list);
-                                        const _0xfe__0x6a_for_kv__index = (_0x6c__0x6a_for_kv__index);
-                                        let _0x78__0x77_pipeline_result = _0xfe__0x6a_for_kv__index;
-
-                                        const _0xfc__hash_ = (_0xfd__0x6b_for_kv__list[_0x78__0x77_pipeline_result]);
-                                        let _0x79__0x76_pipeline_result = _0xfc__hash_;
-
-                                        let _0x7a_kv = _0x79__0x76_pipeline_result;
-
-                                        const _0x101__0x6a_for_kv__index = (_0x6c__0x6a_for_kv__index);
-                                        const _0x100_add = ((_0x101__0x6a_for_kv__index + 1));
-                                        let _0x7d__0x7c_pipeline_result = _0x100_add;
-
-                                        const _0xff__0x6a_for_kv__index = ((_0x6c__0x6a_for_kv__index = _0x7d__0x7c_pipeline_result));
-                                        let _0x7e__0x7b_pipeline_result = _0xff__0x6a_for_kv__index;
-
-                                        const _0x103_row = (_0x69_row);
-                                        const _0x105_kv = (_0x7a_kv);
-                                        const _0x104__0 = ((_0x105_kv["0"]));
-                                        let _0x81__0x80_pipeline_result = _0x104__0;
-
-                                        const _0x107_kv = (_0x7a_kv);
-                                        const _0x106__1 = ((_0x107_kv["1"]));
-                                        let _0x83__0x82_pipeline_result = _0x106__1;
-
-                                        const _0x102__hash_ = ((_0x103_row[_0x81__0x80_pipeline_result] = _0x83__0x82_pipeline_result));
-                                        let _0x84__0x7f_pipeline_result = _0x102__hash_;
-
-                                    }
-
+    {
+    }
+    {    
+        let _0x40_lines = await (_67lang.stdin());
+        let _0x41_lines = String.prototype.split.call(_0x40_lines, "\n");
+        let _0x42_i = 0;
+        let _0x43_header = [];
+        let _0x44_rows = [];
+        {    
+            let _0x47__0x45_for_line__index = 0;
+            let _0x48__0x46_for_line__list = _0x41_lines;
+            while(true) {    
+                if (!(_0x47__0x45_for_line__index < _0x48__0x46_for_line__list.length)) { break; }
+                {    
+                    let _0x49_line = _0x48__0x46_for_line__list[_0x47__0x45_for_line__index];
+                    (_0x47__0x45_for_line__index = (_0x47__0x45_for_line__index + 1));
+                    if (    
+                        (_0x42_i === 0)
+                    ) {    
+                        (_0x43_header = String.prototype.split.call(_0x49_line, ","));
+                    } else {    
+                        let _0x4a_zipped_data = _67lang.zip(_0x43_header, String.prototype.split.call(_0x49_line, ","));
+                        let _0x4b_row = {};
+                        {    
+                            let _0x4e__0x4c_for_kv__index = 0;
+                            let _0x4f__0x4d_for_kv__list = _0x4a_zipped_data;
+                            while(true) {    
+                                if (!(_0x4e__0x4c_for_kv__index < _0x4f__0x4d_for_kv__list.length)) { break; }
+                                {    
+                                    let _0x50_kv = _0x4f__0x4d_for_kv__list[_0x4e__0x4c_for_kv__index];
+                                    (_0x4e__0x4c_for_kv__index = (_0x4e__0x4c_for_kv__index + 1));
+                                    (_0x4b_row[_0x50_kv["0"]] = _0x50_kv["1"]);
                                 }
-
                             }
-
-                            const _0x109_rows = (_0x48_rows);
-                            const _0x10a_row = (_0x69_row);
-                            let _0x87__0x86_pipeline_result = _0x10a_row;
-
-                            const _0x108_push = (Array.prototype.push.call(_0x109_rows, _0x87__0x86_pipeline_result));
-                            let _0x88__0x85_pipeline_result = _0x108_push;
-
                         }
-
-                        const _0x10d_i = (_0x46_i);
-                        let _0x8c__0x8b_pipeline_result = _0x10d_i;
-
-                        const _0x10c_add = ((_0x8c__0x8b_pipeline_result + 1));
-                        let _0x8d__0x8a_pipeline_result = _0x10c_add;
-
-                        let _0x8e__please_fix_the_fucking_varargs_add = _0x8d__0x8a_pipeline_result;
-
-                        const _0x10b_i = ((_0x46_i = _0x8e__please_fix_the_fucking_varargs_add));
-                        let _0x8f__0x89_pipeline_result = _0x10b_i;
-
+    
+                        Array.prototype.push.call(_0x44_rows, _0x4b_row);
                     }
-
+    
+                    let _0x51__please_fix_the_fucking_varargs_add = (_0x42_i + 1);
+                    (_0x42_i = _0x51__please_fix_the_fucking_varargs_add);
                 }
-
             }
-
-            /* -> */ {    
-                let _0x92__0x90_for_row__index = 0;
-
-                const _0x10e_rows = (_0x48_rows);
-                let _0x94__0x93_pipeline_result = _0x10e_rows;
-
-                let _0x95__0x91_for_row__list = _0x94__0x93_pipeline_result;
-
-                while(true) /* -> */ {    
-                    const _0x110__0x90_for_row__index = (_0x92__0x90_for_row__index);
-                    let _0x98__0x97_pipeline_result = _0x110__0x90_for_row__index;
-
-                    const _0x112__0x91_for_row__list = (_0x95__0x91_for_row__list);
-                    const _0x111_length = ((_0x112__0x91_for_row__list.length));
-                    let _0x9a__0x99_pipeline_result = _0x111_length;
-
-                    const _0x10f_asc = ((_0x98__0x97_pipeline_result < _0x9a__0x99_pipeline_result));
-                    let _0x9b__0x96_pipeline_result = _0x10f_asc;
-
-                    if (!_0x9b__0x96_pipeline_result) { break; }
-                    /* -> */ {    
-                        const _0x114__0x91_for_row__list = (_0x95__0x91_for_row__list);
-                        const _0x115__0x90_for_row__index = (_0x92__0x90_for_row__index);
-                        let _0x9e__0x9d_pipeline_result = _0x115__0x90_for_row__index;
-
-                        const _0x113__hash_ = (_0x114__0x91_for_row__list[_0x9e__0x9d_pipeline_result]);
-                        let _0x9f__0x9c_pipeline_result = _0x113__hash_;
-
-                        let _0xa0_row = _0x9f__0x9c_pipeline_result;
-
-                        const _0x118__0x90_for_row__index = (_0x92__0x90_for_row__index);
-                        const _0x117_add = ((_0x118__0x90_for_row__index + 1));
-                        let _0xa3__0xa2_pipeline_result = _0x117_add;
-
-                        const _0x116__0x90_for_row__index = ((_0x92__0x90_for_row__index = _0xa3__0xa2_pipeline_result));
-                        let _0xa4__0xa1_pipeline_result = _0x116__0x90_for_row__index;
-
-                        const _0x11b_row = (_0xa0_row);
-                        const _0x11a__hash_ = (_0x11b_row["name"]);
-                        let _0xa7__0xa6_pipeline_result = _0x11a__hash_;
-
-                        const _0x119_print = (await _67lang.maybe_await(console.log(_0xa7__0xa6_pipeline_result)));
-                        let _0xa8__0xa5_pipeline_result = _0x119_print;
-
-                    }
-
-                }
-
-            }
-
-            let _0xa9_age_over_30 = 0;
-
-            /* -> */ {    
-                let _0xac__0xaa_for_row__index = 0;
-
-                const _0x11c_rows = (_0x48_rows);
-                let _0xae__0xad_pipeline_result = _0x11c_rows;
-
-                let _0xaf__0xab_for_row__list = _0xae__0xad_pipeline_result;
-
-                while(true) /* -> */ {    
-                    const _0x11e__0xaa_for_row__index = (_0xac__0xaa_for_row__index);
-                    let _0xb2__0xb1_pipeline_result = _0x11e__0xaa_for_row__index;
-
-                    const _0x120__0xab_for_row__list = (_0xaf__0xab_for_row__list);
-                    const _0x11f_length = ((_0x120__0xab_for_row__list.length));
-                    let _0xb4__0xb3_pipeline_result = _0x11f_length;
-
-                    const _0x11d_asc = ((_0xb2__0xb1_pipeline_result < _0xb4__0xb3_pipeline_result));
-                    let _0xb5__0xb0_pipeline_result = _0x11d_asc;
-
-                    if (!_0xb5__0xb0_pipeline_result) { break; }
-                    /* -> */ {    
-                        const _0x122__0xab_for_row__list = (_0xaf__0xab_for_row__list);
-                        const _0x123__0xaa_for_row__index = (_0xac__0xaa_for_row__index);
-                        let _0xb8__0xb7_pipeline_result = _0x123__0xaa_for_row__index;
-
-                        const _0x121__hash_ = (_0x122__0xab_for_row__list[_0xb8__0xb7_pipeline_result]);
-                        let _0xb9__0xb6_pipeline_result = _0x121__hash_;
-
-                        let _0xba_row = _0xb9__0xb6_pipeline_result;
-
-                        const _0x126__0xaa_for_row__index = (_0xac__0xaa_for_row__index);
-                        const _0x125_add = ((_0x126__0xaa_for_row__index + 1));
-                        let _0xbd__0xbc_pipeline_result = _0x125_add;
-
-                        const _0x124__0xaa_for_row__index = ((_0xac__0xaa_for_row__index = _0xbd__0xbc_pipeline_result));
-                        let _0xbe__0xbb_pipeline_result = _0x124__0xaa_for_row__index;
-
-                        const _0x12a_row = (_0xba_row);
-                        const _0x129__hash_ = (_0x12a_row["age"]);
-                        let _0xc2__0xc1_pipeline_result = _0x129__hash_;
-
-                        const _0x128_int_colon_parse = (globalThis.parseInt(_0xc2__0xc1_pipeline_result));
-                        let _0xc3__0xc0_pipeline_result = _0x128_int_colon_parse;
-
-                        const _0x127_asc = ((_0xc3__0xc0_pipeline_result < 30));
-                        let _0xc4__0xbf_pipeline_result = _0x127_asc;
-
-                        if /* -> */ (    
-                            _0xc4__0xbf_pipeline_result
-                        )/* -> */ {    
-                            const _0x12d_age_over_30 = (_0xa9_age_over_30);
-                            let _0xc6__0xc5_pipeline_result = _0x12d_age_over_30;
-
-                            const _0x12c_add = ((_0xc6__0xc5_pipeline_result + 1));
-                            const _0x12b_age_over_30 = ((_0xa9_age_over_30 = _0x12c_add));
-                        }else /* -> */ {    
-                        }
-
-                    }
-
-                }
-
-            }
-
-            const _0x12f_age_over_30 = (_0xa9_age_over_30);
-            let _0xc9__0xc8_pipeline_result = _0x12f_age_over_30;
-
-            const _0x12e_print = (await _67lang.maybe_await(console.log(_0xc9__0xc8_pipeline_result)));
-            let _0xca__0xc7_pipeline_result = _0x12e_print;
-
         }
+    
+        {    
+            let _0x54__0x52_for_row__index = 0;
+            let _0x55__0x53_for_row__list = _0x44_rows;
+            while(true) {    
+                if (!(_0x54__0x52_for_row__index < _0x55__0x53_for_row__list.length)) { break; }
+                {    
+                    let _0x56_row = _0x55__0x53_for_row__list[_0x54__0x52_for_row__index];
+                    (_0x54__0x52_for_row__index = (_0x54__0x52_for_row__index + 1));
+                    (await _67lang.maybe_await(console.log(_0x56_row["name"])));
+                }
+            }
+        }
+    
+        let _0x57_age_over_30 = 0;
+        {    
+            let _0x5a__0x58_for_row__index = 0;
+            let _0x5b__0x59_for_row__list = _0x44_rows;
+            while(true) {    
+                if (!(_0x5a__0x58_for_row__index < _0x5b__0x59_for_row__list.length)) { break; }
+                {    
+                    let _0x5c_row = _0x5b__0x59_for_row__list[_0x5a__0x58_for_row__index];
+                    (_0x5a__0x58_for_row__index = (_0x5a__0x58_for_row__index + 1));
+                    if (    
+                        (globalThis.parseInt(_0x5c_row["age"]) < 30)
+                    ) {    
+                        (_0x57_age_over_30 = (_0x57_age_over_30 + 1));
+                    } else {
+                    }
+                }
+            }
+        }
+    
+        (await _67lang.maybe_await(console.log(_0x57_age_over_30)));
+    }
 
 })();

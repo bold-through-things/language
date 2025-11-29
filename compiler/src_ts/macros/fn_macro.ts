@@ -8,7 +8,7 @@ import {
 } from "../core/macro_registry.ts";
 
 import { Args, SaneIdentifier } from "../core/node.ts";
-import { BRACES, cut, not_a_statement, PARENTHESIS, statement_block, statement_blocks, statement_expr } from "../utils/strutil.ts";
+import { BRACES, PARENTHESIS, statement_block, statement_blocks } from "../utils/strutil.ts";
 import {
   get_single_arg,
 } from "../utils/common_utils.ts";
@@ -302,7 +302,7 @@ export class Fn_macro_provider
 
   register_functions(ctx: MacroContext): any {
     const [name, conv_name] = this.parse_header(ctx);
-    const actual_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) || name;
+    const actual_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.value || name;
 
     const params = this.get_param_demands(ctx);
     const ret = this.get_return_type(ctx);
@@ -311,7 +311,7 @@ export class Fn_macro_provider
       ctx,
       conv_name,
       name,
-      actual_name.toString(),
+      actual_name,
       params,
       ret,
     );
@@ -327,9 +327,9 @@ export class Fn_macro_provider
       return;
     }
 
-    const fn_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier) || get_single_arg(ctx);
+    const fn_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.value || get_single_arg(ctx);
 
-    const [params_block, body_block] = ctx.push(statement_blocks(
+    const [params_block, body_block] = ctx.statement(statement_blocks(
       statement_block(`const ${fn_name} = async function`, PARENTHESIS),
       statement_block(null, BRACES)
     ));
@@ -338,7 +338,7 @@ export class Fn_macro_provider
     const names = Object.keys(params.mapping);
 
     if (names.length > 0) {
-      names.forEach((p) => params_block.push(not_a_statement(`${p},`)));
+      names.forEach((p) => params_block.push(() => (`${p},`)));
     }
 
     ctx.current_step!.process_node(

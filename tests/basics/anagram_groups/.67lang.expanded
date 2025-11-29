@@ -1,166 +1,172 @@
 67lang:file
+	note 
+		String
+	note
+		str
+	note TODO
+		fn str is PrototypeCall
+			sync
+			constructor Number
+			fn toString
+			param self
+				type int
+			returns
+				type str
+	note TODO
+		fn str is PrototypeCall
+			sync
+			constructor Object
+			fn toString
+			param self
+				type *
+			returns
+				type str
+	note
+		int
+	note
+		dict
+	note 
+		Array
+	note 
+		WebSocket
+	note 
+		URL
+	note 
+		TextEncoder
+	note 
+		TextDecoder
+	note
+		Base64
+	note
+		fetch
+	note
+		JSON
+	note 
+		event loop
+	note TODO this isn't valid (int...)
+	note
+		67lang builtins
+	note TODO because varargs we can't express this yet. `inside` for now hardcoded in compiler
+	note TODO should only show this if we target Deno
+
+67lang:file
 	local input
-		local _0x0_stdin
+		67lang:pipeline_result
 			67lang:call stdin
-
-			67lang:auto_type
-
 	local words
-		noscope
-			local _0x3_input
-				67lang:call input
-
-				67lang:auto_type
-
-		local _0x4_split
+		67lang:pipeline_result
 			67lang:call split
-				67lang:call _0x3_input
-
+				67lang:call input
 				string "\n"
-
-			67lang:auto_type
-
 	local groups
 		dict
-
-	for word in
-		67lang:assume_local_exists word
-
-		local _0x9_words
-			67lang:call words
-
-			67lang:auto_type
-
-		do
-			local key
-				noscope
-					local _0xb_word
-						67lang:call word
-
-						67lang:auto_type
-
-					local _0xc_split
-						67lang:call split
-							67lang:call _0xb_word
-
-							string ""
-
-						67lang:auto_type
-
-					local _0xd_sort
-						67lang:call sort
-							67lang:call _0xc_split
-
-						67lang:auto_type
-
-				local _0xe_join
-					67lang:call join
-						67lang:call _0xd_sort
-
-						string ""
-
-					67lang:auto_type
-
-			# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?
-
-			#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)
-
-			#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
-
-			if
-				local _0x14_none
-					67lang:call none
-						exists
-							local _0x15_key
-								67lang:call key
-
-								67lang:auto_type
-
-							inside
-								local _0x17_groups
-									67lang:call groups
-
-									67lang:auto_type
-
-					67lang:auto_type
-
-				then
-					noscope
-						local _0x1c_groups
-							67lang:call groups
-
-							67lang:auto_type
-
-					local _0x1d__hash_
+			type str for K
+			type list for V
+				type str
+	do
+		local _0x43_for_word__index
+			int 0
+		local _0x44_for_word__list
+			67lang:pipeline_result
+				67lang:call words
+		while
+			67lang:pipeline_result
+				67lang:call asc
+					67lang:pipeline_result
+						67lang:call _0x43_for_word__index
+					67lang:pipeline_result
+						67lang:call length
+							67lang:call _0x44_for_word__list
+			do
+				local word
+					67lang:pipeline_result
 						67lang:call #
-							67lang:call _0x1c_groups
-
-							local _0x1f_key
-								67lang:call key
-
-								67lang:auto_type
-
-							list
-
-						67lang:auto_type
-
-			noscope
-				local _0x23_groups
-					67lang:call groups
-
-					67lang:auto_type
-
-				local _0x24__hash_
-					67lang:call #
-						67lang:call _0x23_groups
-
-						local _0x27_key
-							67lang:call key
-
-							67lang:auto_type
-
-					67lang:auto_type
-
-			local _0x25_push
-				67lang:call push
-					67lang:call _0x24__hash_
-
-					local _0x2b_word
+							67lang:call _0x44_for_word__list
+							67lang:pipeline_result
+								67lang:call _0x43_for_word__index
+				67lang:pipeline_result
+					67lang:call _0x43_for_word__index
+						67lang:pipeline_result
+							67lang:call add
+								67lang:call _0x43_for_word__index
+								int 1
+				67lang:pipeline_result
+					67lang:call split
 						67lang:call word
-
-						67lang:auto_type
-
-				67lang:auto_type
-
-	for group in
-		67lang:assume_local_exists group
-
-		local _0x2f_values
-			67lang:call values
-				local _0x30_groups
+						string ""
+				67lang:pipeline_result
+					67lang:call sort
+						67lang:get_last_pipeline_result
+				local key
+					67lang:get_last_pipeline_result
+				67lang:pipeline_result
+					67lang:call join
+						67lang:get_last_pipeline_result
+						string ""
+				# TODO this really ought to be a macro. with(a groups key)do(if(self eq null)then(self(list))) or something?
+				#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq null); list)
+				#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
+				if
+					67lang:pipeline_result
+						67lang:call none
+							67lang:pipeline_result
+								67lang:call has_keys
+									67lang:call groups
+									67lang:pipeline_result
+										67lang:call key
+					then
+						67lang:pipeline_result
+							67lang:call #
+								67lang:pipeline_result
+									67lang:call groups
+								67lang:pipeline_result
+									67lang:call key
+								list
+									type str
+				67lang:pipeline_result
+					67lang:call #
+						67lang:pipeline_result
+							67lang:call groups
+						67lang:pipeline_result
+							67lang:call key
+				67lang:pipeline_result
+					67lang:call push
+						67lang:get_last_pipeline_result
+						67lang:pipeline_result
+							67lang:call word
+	do
+		local _0x48_for_group__index
+			int 0
+		local _0x49_for_group__list
+			67lang:pipeline_result
+				67lang:call values
 					67lang:call groups
-
-					67lang:auto_type
-
-			67lang:auto_type
-
-		do
-			local _0x34_print
-				67lang:call print
-					noscope
-						local _0x35_group
-							67lang:call group
-
-							67lang:auto_type
-
-					local _0x36_join
-						67lang:call join
-							67lang:call _0x35_group
-
-							string " "
-
-						67lang:auto_type
-
-				67lang:auto_type
-
+		while
+			67lang:pipeline_result
+				67lang:call asc
+					67lang:pipeline_result
+						67lang:call _0x48_for_group__index
+					67lang:pipeline_result
+						67lang:call length
+							67lang:call _0x49_for_group__list
+			do
+				local group
+					67lang:pipeline_result
+						67lang:call #
+							67lang:call _0x49_for_group__list
+							67lang:pipeline_result
+								67lang:call _0x48_for_group__index
+				67lang:pipeline_result
+					67lang:call _0x48_for_group__index
+						67lang:pipeline_result
+							67lang:call add
+								67lang:call _0x48_for_group__index
+								int 1
+				67lang:pipeline_result
+					67lang:call print
+						67lang:pipeline_result
+							67lang:call join
+								67lang:pipeline_result
+									67lang:call group
+								string " "
 

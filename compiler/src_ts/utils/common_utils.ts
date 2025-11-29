@@ -1,31 +1,33 @@
 // utils/common_utils.ts
 
-import { cut } from "./strutil.ts";
+import { cut, Emission_item } from "./strutil.ts";
 import { MacroContext } from "../core/macro_registry.ts";
 import { Args, Node } from "../core/node.ts";
 import { default_logger } from "./logger.ts";
 import { IndentedStringIO } from "../utils/strutil.ts";
+import { JavaScriptEmissionStep } from "../pipeline/steps/emission.ts";
 
 // Expressions from children
-export function collect_child_expressions(ctx: MacroContext): string[] {
-  const expressions: (string | null)[] = [];
+export function collect_child_expressions(ctx: MacroContext): Emission_item[] {
+  if (!(ctx.current_step instanceof JavaScriptEmissionStep)) {
+    throw new Error("collect_child_expressions can only be used during emission step");
+  }
+
+  const expressions: Emission_item[] = [];
 
   default_logger.debug(`collecting expressions from ${ctx.node.children.length} children`);
 
   ctx.node.children.forEach((child, i) => {
     default_logger.indent("debug", `processing child ${i}: ${child.content}`, () => {
-      const out = new IndentedStringIO();
+      const out: Emission_item[] = [];
       const cctx = ctx.clone_with({ node: child, expression_out: out });
       ctx.current_step!.process_node(cctx);
 
-      const value = out.gets_to_end();
-      expressions.push(value === "" ? null : value);
-
-      default_logger.debug(`child ${i} produced: '${value}'`);
+      expressions.push(...out);
     });
   });
 
-  const result = expressions.filter((x): x is string => x !== null);
+  const result = expressions.filter((x) => x != null);
   default_logger.debug(`filtered ${expressions.length} -> ${result.length} non-empty expressions`);
 
   return result;

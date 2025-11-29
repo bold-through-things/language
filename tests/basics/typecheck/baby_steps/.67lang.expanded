@@ -1,155 +1,119 @@
 67lang:file
-	# these are expected to pass
+	note 
+		String
+	note
+		str
+	note TODO
+		fn str is PrototypeCall
+			sync
+			constructor Number
+			fn toString
+			param self
+				type int
+			returns
+				type str
+	note TODO
+		fn str is PrototypeCall
+			sync
+			constructor Object
+			fn toString
+			param self
+				type *
+			returns
+				type str
+	note
+		int
+	note
+		dict
+	note 
+		Array
+	note 
+		WebSocket
+	note 
+		URL
+	note 
+		TextEncoder
+	note 
+		TextDecoder
+	note
+		Base64
+	note
+		fetch
+	note
+		JSON
+	note 
+		event loop
+	note TODO this isn't valid (int...)
+	note
+		67lang builtins
+	note TODO because varargs we can't express this yet. `inside` for now hardcoded in compiler
+	note TODO should only show this if we target Deno
 
+67lang:file
+	# these are expected to pass
 	do
 		local test
 			type int
-
 			int 0
-
 		local test_1
 			type int
-
-			local _0x1_test
+			67lang:pipeline_result
 				67lang:call test
-
-				67lang:auto_type
-
-		local _0x4_test
+		67lang:pipeline_result
 			67lang:call test
-				local _0x5_test_1
+				67lang:pipeline_result
 					67lang:call test_1
-
-					67lang:auto_type
-
-			67lang:auto_type
-
 		do
 			local test_1
 				type int
-
-				local _0x9_test
+				67lang:pipeline_result
 					67lang:call test
-
-					67lang:auto_type
-
-			local _0xc_test
+			67lang:pipeline_result
 				67lang:call test
-					local _0xd_test_1
+					67lang:pipeline_result
 						67lang:call test_1
-
-						67lang:auto_type
-
-				67lang:auto_type
-
 	# these are expected to fail
-
 	do
 		local test
 			type int
-
 			string "test"
-
 	do
 		local test_str
 			type str
-
 			# TODO - since we do not null by default - this should here also error!
-
 		local test_int
 			type int
-
-			local _0x13_test_str
+			67lang:pipeline_result
 				67lang:call test_str
-
-				67lang:auto_type
-
-		local _0x16_test_int
+		67lang:pipeline_result
 			67lang:call test_int
-				local _0x17_test_str
+				67lang:pipeline_result
 					67lang:call test_str
-
-					67lang:auto_type
-
-			67lang:auto_type
-
 		do
-			local _0x1b_test_str
+			67lang:pipeline_result
 				67lang:call test_str
 					int 0
-
-				67lang:auto_type
-
 			local test_bool
 				type bool
-
-				local _0x1d_test_str
+				67lang:pipeline_result
 					67lang:call test_str
-
-					67lang:auto_type
-
-			local _0x20_test_bool
+			67lang:pipeline_result
+				67lang:call test_str
+			67lang:pipeline_result
 				67lang:call test_bool
-					noscope
-						local _0x21_test_str
-							67lang:call test_str
-
-							67lang:auto_type
-
-						local _0x22_split
-							67lang:call split
-								67lang:call _0x21_test_str
-
-							67lang:auto_type
-
-						local _0x23_sort
-							67lang:call sort
-								67lang:call _0x22_split
-
-							67lang:auto_type
-
-					local _0x24_join
+					67lang:pipeline_result
 						67lang:call join
-							67lang:call _0x23_sort
-
-						67lang:auto_type
-
-				67lang:auto_type
-
-			noscope
-				local _0x2e_test_bool
+							67lang:call sort
+								67lang:call split
+									67lang:get_last_pipeline_result
+			67lang:pipeline_result
+				67lang:call split
 					67lang:call test_bool
-
-					67lang:auto_type
-
-			local _0x2f_split
+			67lang:pipeline_result
+				67lang:call test_str
+			67lang:pipeline_result
 				67lang:call split
-					67lang:call _0x2e_test_bool
-
-				67lang:auto_type
-
-			noscope
-				local _0x32_test_str
-					67lang:call test_str
-
-					67lang:auto_type
-
-				local _0x33_split
 					67lang:call split
-						67lang:call _0x32_test_str
-
-					67lang:auto_type
-
-				local _0x34_split
-					67lang:call split
-						67lang:call _0x33_split
-
-					67lang:auto_type
-
-			local _0x35_split
-				67lang:call split
-					67lang:call _0x34_split
-
-				67lang:auto_type
-
+						67lang:call split
+							67lang:get_last_pipeline_result
 

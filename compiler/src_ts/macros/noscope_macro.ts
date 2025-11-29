@@ -4,13 +4,13 @@ import type {
   Macro_emission_provider,
   MacroContext,
 } from "../core/macro_registry.ts";
-import { IndentedStringIO } from "../utils/strutil.ts";
+import { Emission_item } from "../utils/strutil.ts";
 
 export class Noscope_macro_provider implements Macro_emission_provider {
   // Emits children without introducing a scope node.
   emission(ctx: MacroContext): void {
     for (const child of ctx.node.children) {
-      const obuf = new IndentedStringIO();
+      const obuf: Emission_item[] = [];
       const child_ctx = ctx.clone_with({
         node: child,
         expression_out: obuf,

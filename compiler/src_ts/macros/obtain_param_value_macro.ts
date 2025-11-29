@@ -33,7 +33,7 @@ export class Obtain_param_value_macro_provider
   // Emits the parameter name as an expression.
   emission(ctx: MacroContext): void {
     const param_name = get_single_arg(ctx);
-    ctx.expression_out.write(param_name);
+    ctx.expression_out.push(() => param_name);
   }
 
   typecheck(_ctx: MacroContext): TCResult {

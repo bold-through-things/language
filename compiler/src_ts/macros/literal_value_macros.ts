@@ -15,7 +15,6 @@ import {
   FLOAT,
   STRING,
   REGEX,
-  TypeParameter
 } from "../compiler_types/proper_types.ts";
 
 // ----- Number -----
@@ -58,7 +57,7 @@ export class Number_macro_provider
 
   emission(ctx: MacroContext): void {
     const arg = ctx.compiler.get_metadata(ctx.node, Args).toString();
-    ctx.expression_out.write(arg);
+    ctx.expression_out.push(() => arg);
   }
 }
 
@@ -117,6 +116,6 @@ export class String_macro_provider
     s = s.replaceAll("\n", "\\n").replaceAll(`"`, `\\"`);
 
     const sep = this.kind === "string" ? `"` : `/`;
-    ctx.expression_out.write(`${sep}${s}${sep}`);
+    ctx.expression_out.push(() => `${sep}${s}${sep}`);
   }
 }

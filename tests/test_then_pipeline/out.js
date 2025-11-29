@@ -98,41 +98,24 @@ if (is_Deno) {
 
 void (async () => {
     'use strict';
-    /* -> */ {    
+    {
+    }
+    {    
+        let _0x40_phrase = "hello world";
+        let _0x41_final_count = "0";
+        {    
+            const _0x59_phrase = _0x40_phrase;
+            const _0x5a__pipeline_result = _0x59_phrase;
+            const _0x5b_split = String.prototype.split.call(_0x5a__pipeline_result, " ");
+            const _0x5c__pipeline_result = _0x5b_split;
+            const _0x5d_length = _0x5c__pipeline_result.length;
+            const _0x5e__pipeline_result = _0x5d_length;
+            let _0x42_words = _0x5e__pipeline_result;
+            (_0x41_final_count = Number.prototype.toString.call(_0x5e__pipeline_result));
+            let _0x43_test = _0x42_words;
         }
-    /* -> */ {    
-            let _0x40_phrase = "hello world";
-
-            let _0x41_final_count = "0";
-
-            /* -> */ {    
-                const _0x63_phrase = (_0x40_phrase);
-                let _0x43__0x42_pipeline_result = _0x63_phrase;
-
-                const _0x65__0x42_pipeline_result = (_0x43__0x42_pipeline_result);
-                const _0x64_split = (String.prototype.split.call(_0x65__0x42_pipeline_result, " "));
-                let _0x45__0x44_pipeline_result = _0x64_split;
-
-                const _0x67__0x44_pipeline_result = (_0x45__0x44_pipeline_result);
-                const _0x66_length = ((_0x67__0x44_pipeline_result.length));
-                let _0x46_words = _0x66_length;
-
-                const _0x6a_words = (_0x46_words);
-                const _0x69_str = (Number.prototype.toString.call(_0x6a_words));
-                const _0x68_final_count = ((_0x41_final_count = _0x69_str));
-                const _0x6b_words = (_0x46_words);
-                let _0x48__0x47_pipeline_result = _0x6b_words;
-
-                let _0x49_test = _0x48__0x47_pipeline_result;
-
-            }
-
-            const _0x6d_final_count = (_0x41_final_count);
-            let _0x4c__0x4b_pipeline_result = _0x6d_final_count;
-
-            const _0x6c_print = (await _67lang.maybe_await(console.log(_0x4c__0x4b_pipeline_result)));
-            let _0x4d__0x4a_pipeline_result = _0x6c_print;
-
-        }
+    
+        (await _67lang.maybe_await(console.log(_0x41_final_count)));
+    }
 
 })();

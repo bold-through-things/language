@@ -5,7 +5,7 @@ import {
   Macro_typecheck_provider,
   MacroContext,
 } from "../core/macro_registry.ts";
-import { IndentedStringIO, cut } from "../utils/strutil.ts";
+import { Emission_item, IndentedStringIO, cut } from "../utils/strutil.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { type_registry, TypeParameter } from "../compiler_types/proper_types.ts";
 import { Macro, type Node } from "../core/node.ts";
@@ -93,7 +93,7 @@ export class List_macro_provider
 
   emission(ctx: MacroContext): void {
     if (ctx.node.children.length === 0) {
-      ctx.expression_out.write("[]");
+      ctx.expression_out.push(() => "[]");
       return;
     }
 
@@ -111,29 +111,29 @@ export class List_macro_provider
       }
     }
 
-    const get_expr = (n: Node): string => {
-      const out = new IndentedStringIO();
+    const get_expr = (n: Node): Emission_item[] => {
+      const out: Emission_item[] = [];
       const child_ctx = ctx.clone_with({ node: n, expression_out: out });
       ctx.current_step?.process_node(child_ctx);
-      return out.gets_to_end();
+      return out;
     };
 
-    let final_items: string[] = [];
+    let final_items: Emission_item[] = [];
 
     for (const [op, content, kids] of ops) {
       if (op === "append") {
         for (const k of kids) {
           const ex = get_expr(k);
           if (ex) {
-            final_items.push(ex);
+            final_items.push(...ex);
           }
         }
       } else if (op === "prepend") {
-        const tmp: string[] = [];
+        const tmp: Emission_item[] = [];
         for (const k of [...kids].reverse()) {
           const ex = get_expr(k);
           if (ex) {
-            tmp.push(ex);
+            tmp.push(...ex);
           }
         }
         final_items = [...tmp, ...final_items];
@@ -164,17 +164,17 @@ export class List_macro_provider
           }
           const pos = idx + 1 + i;
           if (pos < 0) {
-            final_items.unshift(ex);
+            final_items.unshift(...ex);
           } else if (pos >= final_items.length) {
-            final_items.push(ex);
+            final_items.push(...ex);
           } else {
-            final_items.splice(pos, 0, ex);
+            final_items.splice(pos, 0, ...ex);
           }
         });
       }
     }
 
-    ctx.expression_out.write(`[${final_items.join(", ")}]`);
+    ctx.expression_out.push(() => `[${final_items.filter(item => item != null).map(item => item()).join(", ")}]`);
   }
 }
 
@@ -288,11 +288,11 @@ export class Dict_macro_provider
 
   emission(ctx: MacroContext): void {
     if (ctx.node.children.length === 0) {
-      ctx.expression_out.write("{}");
+      ctx.expression_out.push(() => "{}");
       return;
     }
 
-    const parts: string[] = [];
+    const parts: Exclude<Emission_item, null>[] = [];
 
     for (const child of ctx.node.children) {
       const macro_name = ctx.compiler.get_metadata(child, Macro).toString();
@@ -316,10 +316,18 @@ export class Dict_macro_provider
         return;
       }
 
+      ctx.compiler.assert_(
+        // TODO this means no comments here
+        child.children.length === 2,
+        child,
+        "Dict entry must have exactly 2 children (key, value)",
+        ErrorType.WRONG_ARG_COUNT,
+      );
+
       const [key_node, val_node] = child.children;
 
-      const kb = new IndentedStringIO();
-      const vb = new IndentedStringIO();
+      const kb: Emission_item[] = [];
+      const vb: Emission_item[] = [];
 
       const k_ctx = ctx.clone_with({ node: key_node, expression_out: kb });
       const v_ctx = ctx.clone_with({ node: val_node, expression_out: vb });
@@ -327,14 +335,27 @@ export class Dict_macro_provider
       ctx.current_step?.process_node(k_ctx);
       ctx.current_step?.process_node(v_ctx);
 
-      const kexp = kb.gets_to_end();
-      const vexp = vb.gets_to_end();
+      const kexp = kb[0];
+      const vexp = vb[0];
+
+      ctx.compiler.assert_(
+        kexp != null,
+        key_node,
+        "Dict entry key must produce a single expression",
+        ErrorType.INVALID_STRUCTURE,
+      );
+      ctx.compiler.assert_(
+        vexp != null,
+        val_node,
+        "Dict entry value must produce a single expression",
+        ErrorType.INVALID_STRUCTURE,
+      );
 
       if (kexp && vexp) {
-        parts.push(`[${kexp}]: ${vexp}`);
+        parts.push(() => `[${kexp()}]: ${vexp()}`);
       }
     }
 
-    ctx.expression_out.write(parts.length === 0 ? "{}" : `{${parts.join(", ")}}`);
+    ctx.expression_out.push(() => parts.length === 0 ? "{}" : `{${parts.map(p => p()).join(", ")}}`);
   }
 }
