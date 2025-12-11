@@ -1,5 +1,8 @@
 // ------------------------------------------------------------
 // cursor
+
+import { from_entries, keys } from "./utils.ts";
+
 // ------------------------------------------------------------
 class Cursor {
   constructor(public tokens: string[], public i: number = 0) {}
@@ -12,14 +15,14 @@ class Cursor {
     if (!this.has()) {
       throw new Error("Unexpected end of tokens");
     }
-    return this.tokens[this.i++];
+    return this.tokens[this.i++] as string /* already checked above */;
   }
 
   peek(): string {
     if (!this.has()) {
       throw new Error("Unexpected end of tokens");
     }
-    return this.tokens[this.i];
+    return this.tokens[this.i] as string /* already checked above */;
   }
 }
 
@@ -64,7 +67,14 @@ abstract class ClauseSpec {
     }
     for (let i = 0; i < args.length; i++) {
       const v = this.argumentValidators[i % this.argumentValidators.length];
-      const err = v(args[i]);
+      if (v === undefined) {
+        throw new Error(`undefined ${i} validator`);
+      }
+      const arg = args[i]
+      if (arg === undefined) {
+        throw new Error(`undefined ${i} argument`);
+      }
+      const err = v(arg);
       if (err) {
         throw err;
       }
@@ -113,8 +123,8 @@ export class VarOrTerminated extends ClauseSpec {
   parse(cursor: Cursor, keywordToken: string): string[] {
     // heredoc mode?
     if (this.setTerminatorString !== null && keywordToken.includes(this.setTerminatorString)) {
-      const parts = keywordToken.split(this.setTerminatorString);
-      if (parts.length !== 2 || parts[1].length === 0) {
+      const parts = keywordToken.split(this.setTerminatorString, 2);
+      if (parts[0] === undefined || parts[1] === undefined || parts[1].length === 0) {
         throw new Error("Invalid terminator assignment: " + keywordToken);
       }
       const terminator = parts[1];
@@ -146,7 +156,9 @@ export class VarOrTerminated extends ClauseSpec {
 // ------------------------------------------------------------
 export function parseTokens<T extends Schema>(tokens: string[], schema: T): { [K in keyof T]: ParsedClause<T[K]>[] } {
   const cursor = new Cursor(tokens);
-  const result: { [keyword: string]: ParsedClause<ClauseSpec>[] } = {};
+  const result = from_entries(
+    keys(schema).map((k) => [k, [] as ParsedClause<ClauseSpec>[]])
+  );
 
   while (cursor.has()) {
     const token = cursor.next();
@@ -184,10 +196,13 @@ export function parseTokens<T extends Schema>(tokens: string[], schema: T): { [K
       children: parseTokens(args, spec.subParser)
     };
 
-    if (!result[keyword]) {
-      result[keyword] = [];
+    const rkw = result[keyword];
+
+    if (rkw === undefined) {
+      throw new Error("internal error: undefined rkw for " + keyword);
     }
-    result[keyword].push(node);
+
+    rkw.push(node);
   }
 
   return result as ReturnType<typeof parseTokens<T>>;

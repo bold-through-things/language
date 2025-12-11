@@ -7,8 +7,8 @@ local words
 
 local count
 	dict
-		type str for K
-		type int for V
+		type named str for K
+		type named int for V
 
 for word in
 	get words

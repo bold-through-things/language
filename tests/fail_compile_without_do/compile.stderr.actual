@@ -4,23 +4,23 @@
     "line": 2,
     "char": 0,
     "content": "for i in",
-    "error": "failed to assert: must have a `do` block",
-    "error_type": "ASSERTION_FAILED"
+    "error": "must have a `do` block",
+    "error_type": "INVALID_STRUCTURE"
   },
   {
     "recoverable": false,
     "line": 12,
     "char": 0,
     "content": "fn name",
-    "error": "failed to assert: function must have a do block",
-    "error_type": "ASSERTION_FAILED"
+    "error": "function must have a do block",
+    "error_type": "INVALID_MACRO"
   },
   {
     "recoverable": false,
     "line": 9,
     "char": 0,
     "content": "while",
-    "error": "failed to assert: must have two children, got true",
+    "error": "must have two children, got true",
     "error_type": "INVALID_STRUCTURE"
   }
 ]

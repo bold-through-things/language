@@ -120,44 +120,106 @@ if (is_Deno) {
 }
 
 
+class _0x43_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x46_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x47_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x48_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x49_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
     {
     }
     {    
-        let _0x40_input = (await (_67lang.stdin()));
-        let _0x41_words = _67lang.string_split(_0x40_input, "\n");
-        let _0x42_groups = {} as Record<string, Array<string>>;
+        let _0x4a_input = (await (_67lang.stdin()));
+        let _0x4b_words = _67lang.string_split(_0x4a_input, "\n");
+        let _0x4c_groups = {} as Record<string, Array<string>>;
         {    
-            let _0x45__0x43_for_word__index = 0;
-            let _0x46__0x44_for_word__list = _0x41_words;
+            let _0x4d__0x3f_for_word__index = 0;
+            let _0x4e__0x40_for_word__list = _0x4b_words;
             while(true) {    
-                if (!(_0x45__0x43_for_word__index < _0x46__0x44_for_word__list.length)) { break; }
+                if (!(_0x4d__0x3f_for_word__index < _0x4e__0x40_for_word__list.length)) { break; }
                 {    
-                    let _0x47_word = _0x46__0x44_for_word__list[_0x45__0x43_for_word__index];
-                    (_0x45__0x43_for_word__index = (_0x45__0x43_for_word__index + 1));
-                    let _0x48_key = Array.prototype.join.call(Array.prototype.sort.call(_67lang.string_split(_0x47_word, "")), "");
+                    const _0x63__0x40_for_word__list = _0x4e__0x40_for_word__list;
+                    const _0x64__0x3f_for_word__index = _0x4d__0x3f_for_word__index;
+                    const _0x65__pipeline_result = _0x64__0x3f_for_word__index;
+                    if (_0x63__0x40_for_word__list[_0x65__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    let _0x4f_word = _0x63__0x40_for_word__list[_0x65__pipeline_result];
+                    (_0x4d__0x3f_for_word__index = (_0x4d__0x3f_for_word__index + 1));
+                    let _0x50_key = Array.prototype.join.call(Array.prototype.sort.call(_67lang.string_split(_0x4f_word, "")), "");
                     if (    
-                        !(_67lang.has_keys(_0x42_groups, _0x48_key))
+                        !(_67lang.has_keys(_0x4c_groups, _0x50_key))
                     ) {    
-                        (_0x42_groups[_0x48_key] = [] as Array<string>);
+                        (_0x4c_groups[_0x50_key] = [] as Array<string>);
                     } else {
                     }
     
-                    Array.prototype.push.call(_0x42_groups[_0x48_key], _0x47_word);
+                    const _0x81_groups = _0x4c_groups;
+                    const _0x82__pipeline_result = _0x81_groups;
+                    const _0x83_key = _0x50_key;
+                    const _0x84__pipeline_result = _0x83_key;
+                    if (_0x82__pipeline_result[_0x84__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    Array.prototype.push.call(_0x82__pipeline_result[_0x84__pipeline_result], _0x4f_word);
                 }
             }
         }
     
         {    
-            let _0x4b__0x49_for_group__index = 0;
-            let _0x4c__0x4a_for_group__list = Object.values(_0x42_groups);
+            let _0x51__0x41_for_group__index = 0;
+            let _0x52__0x42_for_group__list = Object.values(_0x4c_groups);
             while(true) {    
-                if (!(_0x4b__0x49_for_group__index < _0x4c__0x4a_for_group__list.length)) { break; }
+                if (!(_0x51__0x41_for_group__index < _0x52__0x42_for_group__list.length)) { break; }
                 {    
-                    let _0x4d_group = _0x4c__0x4a_for_group__list[_0x4b__0x49_for_group__index];
-                    (_0x4b__0x49_for_group__index = (_0x4b__0x49_for_group__index + 1));
-                    console.log(Array.prototype.join.call(_0x4d_group, " "));
+                    const _0x95__0x42_for_group__list = _0x52__0x42_for_group__list;
+                    const _0x96__0x41_for_group__index = _0x51__0x41_for_group__index;
+                    const _0x97__pipeline_result = _0x96__0x41_for_group__index;
+                    if (_0x95__0x42_for_group__list[_0x97__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    let _0x53_group = _0x95__0x42_for_group__list[_0x97__pipeline_result];
+                    (_0x51__0x41_for_group__index = (_0x51__0x41_for_group__index + 1));
+                    console.log(Array.prototype.join.call(_0x53_group, " "));
                 }
             }
         }

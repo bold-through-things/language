@@ -1,11 +1,11 @@
 # these are expected to pass
 do
 	local test
-		type int
+		type named int
 		int 0
 
 	local test_1
-		type int
+		type named int
 		get test
 
 	do test
@@ -13,7 +13,7 @@ do
 
 	do
 		local test_1
-			type int
+			type named int
 			get test
 
 		do test
@@ -22,16 +22,16 @@ do
 # these are expected to fail
 do
 	local test
-		type int
+		type named int
 		string "test"
 
 do
 	local test_str
-		type str
+		type named str
 		# TODO - since we do not null by default - this should here also error!
 		
 	local test_int
-		type int
+		type named int
 		get test_str
 
 	do test_int
@@ -42,7 +42,7 @@ do
 			int 0
 
 		local test_bool
-			type bool
+			type named bool
 			get test_str
 
 		get test_str

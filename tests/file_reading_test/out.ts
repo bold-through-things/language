@@ -120,6 +120,55 @@ if (is_Deno) {
 }
 
 
+class _0x3f_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x40_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
     {
@@ -129,14 +178,13 @@ void (async () => {
         console.log(Deno.cwd());
         console.log("Reading sample.txt:");
         try {    
-            let _0x40_content = (await (Deno.readTextFile("sample.txt")));
-            console.log(_0x40_content);
+            let _0x46_content = (await (Deno.readTextFile("sample.txt")));
+            console.log(_0x46_content);
         } catch (    
-            error
+            _0x47_error
         ) {    
-            let _0x41_error = error;
             console.log("Error reading file:");
-            console.log(_0x41_error);
+            console.log(_0x47_error);
         } finally {
         }
     

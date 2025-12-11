@@ -5,7 +5,7 @@
       "line": 25,
       "char": 0,
       "content": { "$contains": "local test" },
-      "error_type": "FIELD_TYPE_MISMATCH"
+      "error_type": "ARGUMENT_TYPE_MISMATCH"
     },
     {
       "recoverable": false,

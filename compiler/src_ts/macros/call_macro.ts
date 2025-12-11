@@ -1,184 +1,144 @@
 // macros/call_macro.ts
 
 import {
-  Macro_emission_provider,
-  Macro_typecheck_provider,
-  MacroContext,
-  TCResult,
+  Register_macro_providers,
+  REGISTER_MACRO_PROVIDERS,
+  Macro_provider,
 } from "../core/macro_registry.ts";
-import { Node, Args, ResolvedConvention, Macro_previously_failed } from "../core/node.ts";
-import { cut, statement_expr } from "../utils/strutil.ts";
+import { Args, Resolved_function, Macro_previously_failed } from "../core/node.ts";
+import { statement_expr } from "../utils/strutil.ts";
 import { default_logger } from "../utils/logger.ts";
 import { ErrorType } from "../utils/error_types.ts";
-import { BUILTIN_CALLS } from "../pipeline/builtin_calls.ts";
 import {
   Type,
-  TypeParameter,
   TypeSubstitution,
-  NEVER,
-  TYPE_HIERARCHY,
-  UNION_TYPES,
+  Type_reference,
+  Type_check_result,
+  Expression_return_type,
+  TypeVariable,
+  UPSTREAM_INVALID,
 } from "../compiler_types/proper_types.ts";
 import { graceful_typecheck } from "../core/exceptions.ts";
 import { collect_child_expressions } from "../utils/common_utils.ts";
-import { resolve_convention, unify_types } from "../pipeline/call_resolver.ts";
+import { resolve_function } from "../pipeline/call_resolver.ts";
 import { Async_mode } from "../pipeline/call_conventions.ts";
-import { not_null } from "../utils/utils.ts";
-import { unroll_parent_chain } from "../pipeline/steps/utils.ts";
 import { FORCE_SYNTAX_ERROR } from "../pipeline/js_conversion.ts";
+import { Type_checking_context } from "../pipeline/steps/typechecking.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
+import { Error_caused_by, for_each_pair, not_null } from "../utils/utils.ts";
 
-// -------------------------------------------------------------------
-// TypeHierarchyChecker
-// -------------------------------------------------------------------
-
-class TypeHierarchyChecker {
-  constructor(
-    private hierarchy: Map<Type | string, Array<Type | string>>,
-    private unions: Map<string, string[]>,
-  ) {}
-
-  is_subtype(child: Type | string, parent: Type | string): boolean {
-    if (child instanceof Type && parent instanceof Type) {
-      return child.is_assignable_to(parent);
-    }
-
-    const c = child.toString();
-    const p = parent.toString();
-
-    if (c === p) {
-      return true;
-    }
-
-    const members = this.unions.get(p);
-    if (members) {
-      for (const m of members) {
-        if (this.is_subtype(c, m)) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    const parents = this.hierarchy.get(c);
-    if (!parents) {
-      return false;
-    }
-
-    for (const pp of parents) {
-      if (this.is_subtype(pp, p)) {
-        return true;
-      }
-    }
-
-    return false;
+export class Call_macro_provider implements Macro_provider {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Type_checking_context, "67lang:call", this.typecheck.bind(this));
+    via(Emission_macro_context, "67lang:call", this.emission.bind(this));
   }
-}
 
-export const TYPE_CHECKER = new TypeHierarchyChecker(
-  TYPE_HIERARCHY,
-  UNION_TYPES,
-);
-
-// -------------------------------------------------------------------
-// Call_macro_provider
-// -------------------------------------------------------------------
-
-export class Call_macro_provider
-  implements Macro_emission_provider, Macro_typecheck_provider
-{
-  typecheck(ctx: MacroContext): TCResult {
-    const rv = graceful_typecheck(() => {
-      const args: Array<Type> = [];
-      const step = ctx.current_step;
-      if (!step) {
-        throw new Error("missing step");
-      }
+  typecheck(ctx: Type_checking_context): Type_check_result {
+    const rv = graceful_typecheck(ctx, Expression_return_type, () => {
+      const args: Type[] = [];
 
       for (const ch of ctx.node.children) {
-        const tc = step.process_node(ctx.clone_with({ node: ch }));
-        if (tc instanceof TypeParameter) {
-          ctx.compiler.assert_(
-            false,
-            ch,
-            "nonsense type parameter",
-            ErrorType.ARGUMENT_TYPE_MISMATCH,
-          );
-        } else if (tc instanceof Type) {
-          args.push(tc);
+        const tc = ctx.clone_with({ node: ch }).apply();
+        if (tc instanceof Type_reference) {
+          ctx.compiler.error_tracker.fail({
+            node: ch,
+            message: "nonsense type parameter",
+            type: ErrorType.ARGUMENT_TYPE_MISMATCH,
+          });
+        } else if(tc instanceof Expression_return_type) {
+          args.push(tc.type);
         }
       }
 
-      const fn = ctx.compiler.get_metadata(ctx.node, Args).toString().split(" ")[0];
-      const conv = resolve_convention(ctx, fn, args);
+      const fn_name = ctx.compiler.get_metadata(ctx.node, Args).toString().split(" ", 2)[0];
+
+      ctx.compiler.error_tracker.assert(
+        fn_name != undefined && fn_name.length > 0,
+        {
+          node: ctx.node,
+          message: "function name cannot be empty",
+          type: ErrorType.INVALID_STRUCTURE,
+        }
+      );
+
+      const resolved = resolve_function(ctx, fn_name, args);
+
+      ctx.compiler.error_tracker.assert(
+        resolved.fn_data.returns != null,
+        {
+          node: ctx.node,
+          message: "fn.returns != null",
+          type: ErrorType.INVALID_MACRO
+        }
+      )
 
       ctx.compiler.set_metadata(
         ctx.node,
-        ResolvedConvention,
-        new ResolvedConvention(conv),
+        Resolved_function,
+        new Resolved_function(resolved.fn_data),
       );
+      
+      const demands = resolved.fn_data.demands;
+      if (Object.keys(resolved.subs).length > 0) {
+        const subst = new TypeSubstitution(resolved.subs);
+        const unified = demands.map((d) => subst.apply({ ctx, type_expr: d, caused_by: Error_caused_by.USER }));
 
-      if (conv.demands) {
-        const demands = conv.demands as Type[] | null;
-        if (demands) {
-          const [ok, subs] = unify_types(args, demands);
-          if (ok && Object.keys(subs).length > 0) {
-            const subst = new TypeSubstitution(subs);
-            const unified = demands.map((d) => subst.apply(d));
-
-            unified.forEach((u, i) => {
-              const recv = args[i];
-              default_logger.typecheck(
-                `${ctx.node.content} demanded ${u} and was given ${recv}`,
-              );
-              const compatible = recv.is_assignable_to(u);
-              ctx.compiler.assert_(
-                compatible,
-                ctx.node,
-                `argument ${i + 1} demands ${u} and is given ${recv}`,
-                ErrorType.ARGUMENT_TYPE_MISMATCH,
-              );
-            });
-          } else {
-            demands.forEach((d, i) => {
-              const recv = args[i];
-              if (!recv) {
-                return;
-              }
-              default_logger.typecheck(
-                `${ctx.node.content} demanded ${d} and was given ${recv}`,
-              );
-              const compatible = recv.is_assignable_to(d);
-              ctx.compiler.assert_(
-                compatible,
-                ctx.node,
-                `argument ${i + 1} demands ${d} and is given ${recv}`,
-                ErrorType.ARGUMENT_TYPE_MISMATCH,
-              );
-            });
-          }
-        }
-      }
-
-      if (conv.returns) {
-        const ret = conv.returns as Type | null;
-
-        if (conv.demands) {
-          const demands = conv.demands as Type[] | null;
-          if (demands) {
-            const [ok, subs] = unify_types(args, demands);
-            if (ok && Object.keys(subs).length > 0 && ret instanceof Type) {
-              return new TypeSubstitution(subs).apply(ret);
+        for_each_pair(unified, args, (u, recv, i) => {
+          default_logger.typecheck(
+            `${ctx.node.content} demanded ${u} and was given ${recv}`,
+          );
+          const compatible = ctx.type_engine.can_assign({value_type: recv, field_type: u});
+          ctx.compiler.error_tracker.assert(
+            compatible,
+            {
+              node: ctx.node,
+              message: `argument ${i + 1} demands ${u.to_string()} and is given ${recv.to_string()}`,
+              type: ErrorType.ARGUMENT_TYPE_MISMATCH,
             }
+          );
+        });
+      } else {
+        demands.forEach((d, i) => {
+          const recv = args[i];
+          if (!recv) {
+            return;
           }
-        }
-
-        return ret!;
+          default_logger.typecheck(
+            `${ctx.node.content} demanded ${d} and was given ${recv}`,
+          );
+          const compatible = ctx.type_engine.can_assign({value_type: recv, field_type: d});
+          ctx.compiler.error_tracker.assert(
+            compatible,
+            {
+              node: ctx.node,
+              message: `argument ${i + 1} demands ${d} and is given ${recv}`,
+              type: ErrorType.ARGUMENT_TYPE_MISMATCH,
+            }
+          );
+        });
       }
 
-      return NEVER;
+      const ret = resolved.fn_data.returns;
+      if (Object.keys(resolved.subs).length > 0 && ret instanceof Type) {
+        const sub = new TypeSubstitution(resolved.subs).apply({ ctx, type_expr: ret, caused_by: Error_caused_by.USER });
+        if (args.some(a => a === UPSTREAM_INVALID && sub instanceof TypeVariable)) {
+          return new Expression_return_type(UPSTREAM_INVALID);
+        }
+        ctx.compiler.error_tracker.assert(
+          !(sub instanceof TypeVariable),
+          {
+            node: ctx.node,
+            message: `function must return generic ${sub.to_string()} was not resolved`,
+            type: ErrorType.INVALID_MACRO,
+          }
+        );
+        return new Expression_return_type(sub);
+      }
+
+      return new Expression_return_type(ret);
     });
 
-    if (ctx.compiler.maybe_metadata(ctx.node, ResolvedConvention) == null) {
+    if (ctx.compiler.maybe_metadata(ctx.node, Resolved_function) == null) {
       ctx.compiler.set_metadata(
         ctx.node,
         Macro_previously_failed,
@@ -189,7 +149,7 @@ export class Call_macro_provider
     return rv;
   }
 
-  emission(ctx: MacroContext): void {
+  emission(ctx: Emission_macro_context): void {
     let expr = () => `${FORCE_SYNTAX_ERROR} /* :call had emission error */`;
     try {
       if (ctx.compiler.maybe_metadata(ctx.node, Macro_previously_failed)) {
@@ -203,16 +163,19 @@ export class Call_macro_provider
       const parts = args_str.split(" ");
       const ident = ctx.compiler.get_new_ident(parts.join("_"));
 
-      const resolved = ctx.compiler.maybe_metadata(ctx.node, ResolvedConvention);
-      ctx.compiler.assert_(
-        resolved != null && resolved.convention != null,
-        ctx.node,
-        "emission: convention must be resolved",
-        ErrorType.INVALID_MACRO,
+      const resolved = ctx.compiler.maybe_metadata(ctx.node, Resolved_function);
+      ctx.compiler.error_tracker.assert(
+        resolved != null && resolved.fn != null,
+        {
+          node: ctx.node,
+          message: "emission: convention must be resolved",
+          type: ErrorType.INVALID_MACRO,
+        }
       )
-      const conv = resolved.convention;
+      const fn = resolved.fn;
 
       const arg_exprs = collect_child_expressions(ctx);
+      const conv = not_null(fn.convention);
       const call_src = conv.compile(arg_exprs, ctx);
 
       if (call_src == null) {
@@ -225,7 +188,8 @@ export class Call_macro_provider
         [Async_mode.SYNC]: (id: string) => id,
       }
 
-      const [define, use] = statement_expr(() => `${await_fn[conv.async_mode](call_src())}`, ident);
+      ctx.statement(call_src[0])
+      const [define, use] = statement_expr(() => `${await_fn[conv.async_mode](not_null(call_src[1])())}`, ident);
 
       ctx.statement(define);
       expr = use ?? expr;

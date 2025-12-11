@@ -1,11 +1,15 @@
 // macros/return_macro.ts
-import { Macro_emission_provider, MacroContext } from "../core/macro_registry.ts";
+import { REGISTER_MACRO_PROVIDERS, Register_macro_providers, Macro_provider } from "../core/macro_registry.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { Emission_item } from "../utils/strutil.ts";
-import { not_null } from "../utils/utils.ts";
 
-export class Return_macro_provider implements Macro_emission_provider {
-  emission(ctx: MacroContext): void {
+export class Return_macro_provider implements Macro_provider {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Emission_macro_context, "return", this.emission.bind(this));
+  }
+
+  emission(ctx: Emission_macro_context): void {
     const children = ctx.node.children;
 
     if (children.length === 0) {
@@ -19,20 +23,26 @@ export class Return_macro_provider implements Macro_emission_provider {
         node: children[0],
         expression_out: exprOut,
       });
-      not_null(ctx.current_step).process_node(childCtx);
+      childCtx.apply();
 
       const return_value = exprOut[0];
-      ctx.compiler.assert_(
+      ctx.compiler.error_tracker.assert(
         return_value != null,
-        ctx.node,
-        "return macro must produce a single expression",
-        ErrorType.INVALID_STRUCTURE,
+        {
+          node: ctx.node,
+          message: "return macro must produce a single expression",
+          type: ErrorType.INVALID_STRUCTURE,
+        }
       );
 
       ctx.statement_out.push(() => `return ${return_value()};`);
       return;
     }
 
-    ctx.compiler.assert_(false, ctx.node, "return must have 0 or 1 arguments");
+    ctx.compiler.error_tracker.fail({
+      node: ctx.node, 
+      message: "return must have 0 or 1 arguments",
+      type: ErrorType.INVALID_STRUCTURE,
+    });
   }
 }

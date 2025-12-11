@@ -88,7 +88,7 @@ while
 		
 		do i
 			local _fix_the_fucking_add_return_type
-				type int
+				type named int
 				do add
 					get i
 					int 1

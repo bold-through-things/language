@@ -7,19 +7,19 @@ local lines
 
 local modules
 	dict
-		type str for K
-		type Module for V
+		type named str for K
+		type named Module for V
 for line in
 	get lines
 	do
-		type Module is heap_entry
+		type named Module is heap_entry
 			has id
-				type str
+				type named str
 			has deps
-				type list
-					type str
+				type named list
+					type named str
 			has visited
-				type bool
+				type named bool
 
 		local kv
 			do split the line
@@ -34,7 +34,7 @@ for line in
 			do Module
 				get id
 				list
-					type str
+					type named str
 				false
 
 		
@@ -66,29 +66,29 @@ for line in
 # TODO - support a  way to convert a dict keys to a set cleanly
 # (old code removed)
 
-type DAG_unroller is heap_entry
+type named DAG_unroller is heap_entry
 	has dep_loops
-		type list
-			type str
+		type named list
+			type named str
 	has build_order
-		type list
-			type str
+		type named list
+			type named str
 	has modules
-		type dict
-			type str for K
-			type Module for V
+		type named dict
+			type named str for K
+			type named Module for V
 
 fn visit
 	param unroller
-		type DAG_unroller
+		type named DAG_unroller
 	param module
-		type Module
+		type named Module
 	param chain
-		type list
-			type str
+		type named list
+			type named str
 		# chain of dependencies currently being inspected - used to detect loops
 	returns
-		type void
+		type named void
 	do
 		
 		if 
@@ -121,7 +121,7 @@ fn visit
 					then
 						local dep_loop
 							list
-								type str
+								type named str
 						do push the dep_loop
 							get dep_id
 						do slice the next_chain
@@ -156,12 +156,12 @@ fn visit
 			do id the module
 
 local unroller
-	type DAG_unroller
+	type named DAG_unroller
 	do DAG_unroller
 		list
-			type str
+			type named str
 		list
-			type str
+			type named str
 		get modules
 
 for module in
@@ -171,7 +171,7 @@ for module in
 			get unroller
 			get module
 			list
-				type str
+				type named str
 
 get unroller
 if

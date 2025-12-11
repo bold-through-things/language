@@ -68,11 +68,11 @@ export function to_valid_js_ident(s: string): string {
     charMap,
   );
 
-  if (result.length > 0 && /[0-9]/.test(result[0])) {
+  if (result[0] !== undefined && /[0-9]/.test(result[0])) {
     result = "_" + result;
   }
 
-  if (result.length === 0 || !/[A-Za-z_]/.test(result[0])) {
+  if (result[0] === undefined || !/[A-Za-z_]/.test(result[0])) {
     result = "_" + result;
   }
 

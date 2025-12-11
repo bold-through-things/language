@@ -1,22 +1,37 @@
 // macros/while_macro.ts
 
-import { MacroContext } from "../core/macro_registry.ts";
-import { Macro_emission_provider } from "../core/macro_registry.ts";
-import { BRACES, Emission_item, IndentedStringIO, statement_block, statement_blocks } from "../utils/strutil.ts";
+import { BRACES, Emission_item, statement_block, statement_blocks } from "../utils/strutil.ts";
 import { seek_child_macro } from "../pipeline/steps/utils.ts";
 import { ErrorType } from "../utils/error_types.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
+import { Macro_provider, Register_macro_providers, REGISTER_MACRO_PROVIDERS } from "../core/macro_registry.ts";
 
-export class While_macro_provider implements Macro_emission_provider {
-  emission(ctx: MacroContext): void {
+export class While_macro_provider implements Macro_provider {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Emission_macro_context, "while", this.emission.bind(this));
+  }
+
+  emission(ctx: Emission_macro_context): void {
     const [body] = ctx.statement(statement_blocks(
       statement_block("while(true)", BRACES),
     ));
 
-    ctx.compiler.assert_(
+    ctx.compiler.error_tracker.assert(
+      body != undefined,
+      {
+        node: ctx.node,
+        message: "`body` statement not initialized",
+        type: ErrorType.INTERNAL_CODE_QUALITY
+      }
+    );
+
+    ctx.compiler.error_tracker.assert(
       ctx.node.children.length === 2,
-      ctx.node,
-      `must have two children, got ${ctx.node.children.map((ch) => ch.content)}`,
-      ErrorType.INVALID_STRUCTURE
+      {
+        node: ctx.node,
+        message: `must have two children, got ${ctx.node.children.map((ch) => ch.content)}`,
+        type: ErrorType.INVALID_STRUCTURE
+      }
     );
 
     const cond_node = ctx.node.children[0];
@@ -27,27 +42,31 @@ export class While_macro_provider implements Macro_emission_provider {
       expression_out: obuf,
       statement_out: body,
     });
-    ctx.current_step?.process_node(cond_ctx);
+    cond_ctx.apply();
 
     const cond = obuf[0];
-    ctx.compiler.assert_(
+    ctx.compiler.error_tracker.assert(
       cond != null,
-      ctx.node,
-      "condition must produce a single expression",
-      ErrorType.INVALID_STRUCTURE
-    )
+      {
+        node: ctx.node,
+        message: "condition must produce a single expression",
+        type: ErrorType.INVALID_STRUCTURE
+      }
+    );
 
     body.push(() => `if (!${cond()}) { break; }`);
 
     const body_node = seek_child_macro(ctx.node, "do");
-    ctx.compiler.assert_(
+    ctx.compiler.error_tracker.assert(
       body_node !== null,
-      ctx.node,
-      "must have a `do` block",
-      ErrorType.MISSING_BLOCK
+      {
+        node: ctx.node,
+        message: "must have a `do` block",
+        type: ErrorType.MISSING_BLOCK
+      }
     );
 
     const body_ctx = ctx.clone_with({ node: body_node!, statement_out: body });
-    ctx.current_step?.process_node(body_ctx);
+    body_ctx.apply();
   }
 }

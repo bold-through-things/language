@@ -8,7 +8,6 @@ import {
   ChainedComparisonCall,
   IndexAccessCall,
   CallableInvokeCall,
-  TypeDemand,
   Async_mode,
 } from "./call_conventions.ts";
 
@@ -16,233 +15,293 @@ import {
   Type,
   TypeVariable,
   ComplexType,
-  INT,
-  SET,
-  VOID,
-  BOOL,
-  WILDCARD,
-  TYPE_REGISTRY,
+  Type_engine,
+  Function_67lang,
 } from "../compiler_types/proper_types.ts";
-import { not_null } from "../utils/utils.ts";
+import { Macro_context } from "../core/macro_registry.ts";
+import { ErrorType } from "../utils/error_types.ts";
+import { Error_caused_by } from "../utils/utils.ts";
 
-// Built-ins map
-export const BUILTIN_CALLS: Record<string, Call_convention[]> = Object.create(null);
-export const N_ARIES: Record<string, Call_convention[]> = {};
-
-export const MAX_NARY = 6;
-
-// register(name, convs)
-export function register(
-  name: string,
-  convs: Call_convention[],
-): void {
-  if (!(name in BUILTIN_CALLS)) {
-    BUILTIN_CALLS[name] = [];
-  }
-  BUILTIN_CALLS[name].push(...convs);
-}
-
-// Helpers to generate fixed-arity variants by repeating T in the demands
-export function spread_nary(
-  operator: string,
-  t: TypeVariable,
-  max_arity: number = MAX_NARY,
-  wrapper: string | null = null,
-  name: string | null = null,
-): Call_convention[] {
-  const out: Call_convention[] = [];
-  for (let n = 1; n <= max_arity; n++) {
-    const demands: TypeDemand[] = Array.from({ length: n }, () => t);
-    out.push(
-      new NaryOperatorCall({operator, demands, returns: t, wrapper: wrapper ?? undefined, async_mode: Async_mode.SYNC}),
+export function load_builtins(ctx: Macro_context, engine: Type_engine): void {
+  function get_complex_type(name: string) {
+    const type = engine.get_type(name);
+    ctx.compiler.error_tracker.assert(
+      type instanceof ComplexType,
+      {
+        node: ctx.node,
+        message: `Expected complex type for builtin type '${name}', got '${type.to_string()}'`,
+        type: ErrorType.INTERNAL_TYPE_REGISTRATION,
+      }
     );
+    return type;
   }
-  return out;
-}
 
-export function spread_chain(
-  operator: string,
-  t: TypeVariable,
-  max_arity: number = MAX_NARY,
-): Call_convention[] {
-  const out: Call_convention[] = [];
-  for (let n = 1; n <= max_arity; n++) {
-    const demands: TypeDemand[] = Array.from({ length: n }, () => t);
-    out.push(
-      new ChainedComparisonCall({operator, demands, returns: t, async_mode: Async_mode.SYNC}),
-    );
-  }
-  return out;
-}
+  const max_nary = 6;
 
-// Type params
-const T = new TypeVariable({ name: "T" });
-const K = new TypeVariable({ name: "K" });
-const V = new TypeVariable({ name: "V" });
-
-// N-ary logical/arithmetic ops expanded into fixed arities 1..MAX_NARY
-N_ARIES["concat"] = spread_nary("+", T, MAX_NARY, null, "concat");
-N_ARIES["any"] = spread_nary("||", T);
-N_ARIES["all"] = spread_nary("&&", T);
-N_ARIES["add"] = spread_nary("+", T);
-N_ARIES["sub"] = spread_nary("-", T);
-N_ARIES["mul"] = spread_nary("*", T);
-N_ARIES["mod"] = spread_nary("%", T);
-N_ARIES["div"] = spread_nary("/", T);
-
-// none(x1, ..., xn) = ! (x1 || ... || xn)
-N_ARIES["none"] = spread_nary("||", T, MAX_NARY, "!");
-
-// Chained comparisons expanded into fixed arities 1..MAX_NARY
-N_ARIES["asc"] = spread_chain("<", T);
-N_ARIES["nondesc"] = spread_chain("<=", T);
-N_ARIES["desc"] = spread_chain(">", T);
-N_ARIES["nonasc"] = spread_chain(">=", T);
-N_ARIES["eq"] = spread_chain("===", T);
-
-for (const [kname, v] of Object.entries(N_ARIES)) {
-  if (!BUILTIN_CALLS[kname]) {
-    BUILTIN_CALLS[kname] = [];
-  }
-  BUILTIN_CALLS[kname].push(...v);
-}
-
-// "#": list/dict indexing + assignment
-BUILTIN_CALLS["#"] = [
-  // list get
-  new IndexAccessCall({
-    demands: [new ComplexType({ name: "list", type_params: [T], typescript_name: "Array" }), INT],
-    returns: T,
-    async_mode: Async_mode.SYNC,
-  }),
-  // list set
-  new IndexAccessCall({
-    demands: [new ComplexType({ name: "list", type_params: [T], typescript_name: "Array" }), INT, T],
-    returns: T,
-    async_mode: Async_mode.SYNC,
-  }),
-  // dict get
-  new IndexAccessCall({
-    demands: [new ComplexType({ name: "dict", type_params: [K, V], typescript_name: "Record" }), K],
-    returns: V,
-    async_mode: Async_mode.SYNC,
-  }),
-  // dict set
-  new IndexAccessCall({
-    demands: [new ComplexType({ name: "dict", type_params: [K, V], typescript_name: "Record" }), K, V],
-    returns: V,
-    async_mode: Async_mode.SYNC,
-  }),
-];
-
-// "~": callable invoke
-const RV = new TypeVariable({ name: "RV" });
-for (let size = 0; size <= MAX_NARY; size++) {
-  const args: Type[] = Array.from(
-    { length: size },
-    (_v, n) => new TypeVariable({ name: `ARG${n}` }),
-  );
-  // TODO i really hate to spam the types
-  const n = size == 0 ? "" : size + "";
-  const name = `callable${n}`;
-  const callable = TYPE_REGISTRY.compute_type(name, () => new ComplexType({ name, type_params: [...args, RV], typescript_name: "Function" }));
-  register("~", [
-    new CallableInvokeCall({
-      demands: [callable, ...args],
-      returns: RV,
-      async_mode: Async_mode.ASYNC, // TODO
-    }),
-  ]);
-}
-
-// tuple element accessors: "0", "1", ...
-for (let size = 2; size <= MAX_NARY; size++) {
-  const tvs: Type[] = Array.from(
-    { length: size },
-    (_v, n) => new TypeVariable({ name: `V${n}` }),
-  );
-
-  for (let n = 0; n < size; n++) {
-    const tv = tvs[n];
-    const fn = String(n);
-    if (!BUILTIN_CALLS[fn]) {
-      BUILTIN_CALLS[fn] = [];
+  function spread_nary(
+    name: string,
+    operator: string,
+    t: TypeVariable,
+    max_arity: number = max_nary,
+    wrapper: string | null = null,
+  ): Call_convention[] {
+    const out: Call_convention[] = [];
+    for (let n = 1; n <= max_arity; n++) {
+      const demands: Type[] = repeat(n, t);
+      engine.add_function(name, (fn: Function_67lang) => {
+        fn.demands = demands;
+        fn.returns = t;
+        fn.convention = new NaryOperatorCall({ operator, wrapper: wrapper ?? undefined, async_mode: Async_mode.SYNC });
+      })
     }
-
-    // getter
-    BUILTIN_CALLS[fn].push(
-      new FieldCall({
-        field: fn,
-        demands: [new ComplexType({ name: "tuple", type_params: tvs, typescript_name: "Array" })],
-        returns: tv,
-        async_mode: Async_mode.SYNC,
-      }),
-    );
-
-    // setter
-    BUILTIN_CALLS[fn].push(
-      new FieldCall({
-        field: fn,
-        demands: [new ComplexType({ name: "tuple", type_params: tvs, typescript_name: "Array" }), tv],
-        returns: tv,
-        async_mode: Async_mode.SYNC,
-      }),
-    );
+    return out;
   }
+
+  function spread_chain(
+    name: string,
+    operator: string,
+    t: TypeVariable,
+    max_arity: number = max_nary,
+  ): Call_convention[] {
+    const out: Call_convention[] = [];
+    for (let n = 1; n <= max_arity; n++) {
+      const demands: Type[] = repeat(n, t);
+      engine.add_function(name, (fn: Function_67lang) => {
+        fn.demands = demands;
+        fn.returns = t;
+        fn.convention = new ChainedComparisonCall({ operator, async_mode: Async_mode.SYNC });
+      });
+    }
+    return out;
+  }
+
+  function repeat<T>(length: number, value: T): T[] {
+    return Array.from({ length }, () => value);
+  }
+
+  function repeat_fn<T>(length: number, fn: (i: number) => T): T[] {
+    return Array.from({ length }, (_v, i) => fn(i));
+  }
+
+  // Type params
+  const T = new TypeVariable({ name: "T" });
+  const K = new TypeVariable({ name: "K" });
+  const V = new TypeVariable({ name: "V" });
+
+  // N-ary logical/arithmetic ops expanded into fixed arities 1..MAX_NARY
+  spread_nary("concat", "+", T, max_nary, null);
+  spread_nary("any", "||", T);
+  spread_nary("all", "&&", T);
+  spread_nary("add", "+", T);
+  spread_nary("sub", "-", T);
+  spread_nary("mul", "*", T);
+  spread_nary("mod", "%", T);
+  spread_nary("div", "/", T);
+
+  // none(x1, ..., xn) = ! (x1 || ... || xn)
+  spread_nary("none", "||", T, max_nary, "!");
+
+  // Chained comparisons expanded into fixed arities 1..MAX_NARY
+  spread_chain("asc", "<", T);
+  spread_chain("nondesc", "<=", T);
+  spread_chain("desc", ">", T);
+  spread_chain("nonasc", ">=", T);
+  spread_chain("eq", "===", T);
+  spread_chain("neq", "!==", T);
+
+  // "#": list/dict indexing + assignment
+  const list_T = get_complex_type("list")
+    .configure({
+      ctx,
+      caused_by: Error_caused_by.INTERNAL,
+      typescript_name: "Array",
+      type_params: [T],
+    });
+  const dict_KV = get_complex_type("dict")
+    .configure({
+      ctx,
+      caused_by: Error_caused_by.INTERNAL,
+      typescript_name: "Record",
+      type_params: [K, V],
+    });
+  const set_T = get_complex_type("set").configure({
+    ctx,
+    caused_by: Error_caused_by.INTERNAL,
+    typescript_name: "Set",
+    type_params: [T],
+  });
+  const int = engine.get_type("int");
+  engine.add_function("#", (fn: Function_67lang) => {
+    // list get
+    fn.demands = [list_T, int];
+    fn.returns = T;
+    fn.convention = new IndexAccessCall({
+      async_mode: Async_mode.SYNC,
+    });
+  });
+  engine.add_function("#", (fn: Function_67lang) => {
+    // list set
+    fn.demands = [list_T, int, T];
+    fn.returns = T;
+    fn.convention = new IndexAccessCall({
+      async_mode: Async_mode.SYNC,
+    });
+  });
+  engine.add_function("#", (fn: Function_67lang) => {
+    // dict get
+    fn.demands = [dict_KV, K];
+    fn.returns = V;
+    fn.convention = new IndexAccessCall({
+      async_mode: Async_mode.SYNC,
+    });
+  });
+  engine.add_function("#", (fn: Function_67lang) => {
+    // dict set
+    fn.demands = [dict_KV, K, V];
+    fn.returns = V;
+    fn.convention = new IndexAccessCall({
+      async_mode: Async_mode.SYNC,
+    });
+  });
+  
+  // "~": callable invoke
+  const RV = new TypeVariable({ name: "RV" });
+  for (let size = 0; size <= max_nary; size++) {
+    const args: Type[] = repeat_fn(
+      size,
+      (n) => new TypeVariable({ name: `ARG${n}` }),
+    );
+    // TODO i really hate to spam the types
+    const n = size == 0 ? "" : size + "";
+    const name = `callable${n}`;
+    const callable = get_complex_type(name).configure({
+      ctx,
+      caused_by: Error_caused_by.INTERNAL,
+      typescript_name: "Function",
+      type_params: [...args, RV],
+    });
+    engine.add_function("~", (fn: Function_67lang) => {
+      fn.demands = [callable, ...args];
+      fn.returns = RV;
+      fn.convention = new CallableInvokeCall({
+        async_mode: Async_mode.ASYNC, // TODO
+      });
+    });
+  }
+
+  // tuple element accessors: "0", "1", ...
+  for (let size = 2; size <= max_nary; size++) {
+    const tvs: Type[] = repeat_fn(
+      size,
+      (n) => new TypeVariable({ name: `V${n}` }),
+    );
+
+    const tuple = get_complex_type(`tuple${size}`).configure({
+      ctx,
+      caused_by: Error_caused_by.INTERNAL,
+      typescript_name: "Array",
+      type_params: tvs,
+    });
+
+    tvs.forEach((tv, n) => {
+      const fn = String(n);
+      
+      engine.add_function(fn, (f: Function_67lang) => {
+        // getter
+        f.demands = [tuple];
+        f.returns = tv;
+        f.convention = new FieldCall({
+          field: fn,
+          async_mode: Async_mode.SYNC,
+        });
+      });
+
+      engine.add_function(fn, (f: Function_67lang) => {
+        // setter
+        f.demands = [
+          tuple,
+          tv,
+        ];
+        f.returns = tv;
+        f.convention = new FieldCall({
+          field: fn,
+          async_mode: Async_mode.SYNC,
+        });
+      });
+    });
+  }
+
+  const unknown = engine.get_type("67lang:unknown");
+  const never = engine.get_type("67lang:never");
+
+  // print (0..MAX_NARY arguments of WILDCARD)
+  for (let size = 0; size <= max_nary; size++) {
+    const demands: Type[] = repeat(size, unknown);
+    engine.add_function("print", (fn: Function_67lang) => {
+      fn.demands = demands;
+      fn.returns = never; // um TODO
+      fn.convention = new DirectCall({fn: "log", receiver: "console", async_mode: Async_mode.SYNC });
+    });
+  }
+
+  // 67lang shims
+  // well TODO this should be a varargs
+  engine.add_function("zip", (fn: Function_67lang) => {
+    fn.convention = new DirectCall({ fn: "zip", receiver: "_67lang", async_mode: Async_mode.SYNC });
+    fn.demands = [
+      list_T.instantiate_with({ ctx, caused_by: Error_caused_by.INTERNAL, type_params: [new TypeVariable({ name: "A" })] }),
+      list_T.instantiate_with({ ctx, caused_by: Error_caused_by.INTERNAL, type_params: [new TypeVariable({ name: "B" })] }),
+    ]
+    fn.returns =
+      list_T.instantiate_with({ 
+        ctx,
+        caused_by: Error_caused_by.INTERNAL,
+        type_params: [
+          get_complex_type("tuple2").instantiate_with({
+            ctx,
+            caused_by: Error_caused_by.INTERNAL,
+            type_params: [
+              new TypeVariable({ name: "A" }),
+              new TypeVariable({ name: "B" }),
+            ],
+          })
+        ]
+      });
+  });
+
+  for (let size = 0; size < max_nary; size++) {
+    engine.add_function("set", (fn: Function_67lang) => {
+      fn.convention = new DirectCall({ fn: "new_set", receiver: "_67lang", async_mode: Async_mode.SYNC });
+      fn.demands = repeat(size, T);
+      fn.returns = set_T;
+    });
+  }
+
+  engine.add_function("has_keys", (fn: Function_67lang) => {
+    fn.convention = new DirectCall({ fn: "has_keys", receiver: "_67lang", async_mode: Async_mode.SYNC });
+    fn.demands = [
+      dict_KV,
+      K,
+    ];
+    fn.returns = engine.get_type("bool");
+  });
+
+  engine.add_function("has_values", (fn: Function_67lang) => {
+    fn.convention = new DirectCall({ fn: "has_values", receiver: "_67lang", async_mode: Async_mode.SYNC });
+    fn.demands = [
+      dict_KV,
+      V,
+    ];
+    fn.returns = engine.get_type("bool");
+  });
+
+
+  engine.add_function("has_values", (fn: Function_67lang) => {
+    fn.convention = new DirectCall({ fn: "has_values", receiver: "_67lang", async_mode: Async_mode.SYNC });
+    fn.demands = [
+      list_T,
+      T,
+    ];
+    fn.returns = engine.get_type("bool");
+  });
 }
-
-// print (0..MAX_NARY arguments of WILDCARD)
-for (let size = 0; size <= MAX_NARY; size++) {
-  const demands: TypeDemand[] = Array.from(
-    { length: size },
-    () => WILDCARD,
-  );
-  register("print", [
-    new DirectCall({fn: "log", receiver: "console", demands, returns: VOID, async_mode: Async_mode.SYNC }),
-  ]);
-}
-
-// 67lang shims
-// well TODO this should be a varargs
-BUILTIN_CALLS["zip"] = [
-  new DirectCall({
-    fn: "zip",
-    receiver: "_67lang",
-    demands: [
-      new ComplexType({ name: "list", type_params: [new TypeVariable({ name: "A" })], typescript_name: "Array" }),
-      new ComplexType({ name: "list", type_params: [new TypeVariable({ name: "B" })], typescript_name: "Array" }),
-    ],
-    returns: new ComplexType({ name: "list", type_params: [
-      new ComplexType({ name: "tuple", type_params: [
-        new TypeVariable({ name: "A" }),
-        new TypeVariable({ name: "B" }),
-      ], typescript_name: "Array" }),
-    ], typescript_name: "Array" }),
-    async_mode: Async_mode.SYNC,
-  }),
-];
-
-
-BUILTIN_CALLS["set"] = new Array(MAX_NARY).fill(0).map((_, i) => 
-  new DirectCall({fn: "new_set", receiver: "_67lang", demands: new Array(i).fill(
-    new TypeVariable({ name: "T" }),
-  ), returns: SET, async_mode: Async_mode.SYNC}),
-);
-
-BUILTIN_CALLS["has_keys"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
-  ([["list", TYPE_REGISTRY.get_type("int")], ["dict", new TypeVariable({ name: "K" })]] as [string, Type][]).map(([container_type, item_type]) => 
-    new DirectCall({fn: "has_keys", receiver: "_67lang", demands: [
-      not_null(TYPE_REGISTRY.get_type(container_type)),
-      ...new Array(i).fill(item_type),
-    ], returns: BOOL, async_mode: Async_mode.SYNC}),
-  )
-);
-
-BUILTIN_CALLS["has_values"] = new Array(MAX_NARY).fill(0).flatMap((_, i) => 
-  ([["list", new TypeVariable({ name: "V" })], ["dict", new TypeVariable({ name: "V" })]] as [string, Type][]).map(([container_type, item_type]) => 
-    new DirectCall({fn: "has_values", receiver: "_67lang", demands: [
-      not_null(TYPE_REGISTRY.get_type(container_type)),
-      ...new Array(i).fill(item_type),
-    ], returns: BOOL, async_mode: Async_mode.SYNC}),
-  )
-);

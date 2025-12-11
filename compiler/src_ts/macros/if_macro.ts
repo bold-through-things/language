@@ -1,12 +1,16 @@
 // macros/if_macro.ts
 
-import { MacroContext } from "../core/macro_registry.ts";
-import { Macro_emission_provider } from "../core/macro_registry.ts";
+import { Macro_provider, REGISTER_MACRO_PROVIDERS, Register_macro_providers } from "../core/macro_registry.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { BRACES, Emission_item, PARENTHESIS, statement_block, statement_blocks } from "../utils/strutil.ts";
 
-export class If_macro_provider implements Macro_emission_provider {
-  emission(ctx: MacroContext): void {
+export class If_macro_provider implements Macro_provider {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Emission_macro_context, "if", this.emission.bind(this));
+  }
+
+  emission(ctx: Emission_macro_context): void {
     const args: Emission_item[] = [];
 
     // don't push this here else the condition will emit too late
@@ -37,7 +41,7 @@ export class If_macro_provider implements Macro_emission_provider {
       if (child.content.startsWith("then")) {
         for (const then_child of child.children) {
           const then_ctx = ctx.clone_with({ node: then_child, statement_out: then_body });
-          ctx.current_step?.process_node(then_ctx);
+          then_ctx.apply();
         }
         continue;
       }
@@ -45,25 +49,36 @@ export class If_macro_provider implements Macro_emission_provider {
       if (child.content.startsWith("else")) {
         for (const else_child of child.children) {
           const else_ctx = ctx.clone_with({ node: else_child, statement_out: else_body });
-          ctx.current_step?.process_node(else_ctx);
+          else_ctx.apply();
         }
         continue;
       }
 
       const expr: Emission_item[] = [];
       const child_ctx = ctx.clone_with({ node: child, expression_out: expr });
-      ctx.current_step?.process_node(child_ctx);
+      child_ctx.apply();
 
       args.push(...expr.filter(e => e != null));
     }
 
     const cond = args[args.length - 1];
-    ctx.compiler.assert_(
+    ctx.compiler.error_tracker.assert(
       cond != null,
-      ctx.node,
-      "if macro requires at least one expression as condition",
-      ErrorType.INVALID_STRUCTURE,
+      {
+        node: ctx.node,
+        message: "if macro requires at least one expression as condition",
+        type: ErrorType.INVALID_STRUCTURE,
+      }
     );
+
+    ctx.compiler.error_tracker.assert(
+      if_condition != undefined,
+      {
+        node: ctx.node,
+        message: "`if_condition` statement not initialized",
+        type: ErrorType.INTERNAL_CODE_QUALITY
+      }
+    )
     
     if_condition.push(() => cond());
     ctx.statement(stmt);

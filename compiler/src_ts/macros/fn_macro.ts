@@ -1,10 +1,10 @@
 // macros/fn_macro.ts
 
 import {
-  Macro_emission_provider,
-  Macro_preprocess_provider,
-  Macro_functions_provider,
-  MacroContext,
+  Macro_context,
+  REGISTER_MACRO_PROVIDERS,
+  Register_macro_providers,
+  Macro_provider,
 } from "../core/macro_registry.ts";
 
 import { Args, SaneIdentifier } from "../core/node.ts";
@@ -16,118 +16,115 @@ import {
 import { seek_child_macro, seek_all_child_macros } from "../pipeline/steps/utils.ts";
 
 import { ErrorType } from "../utils/error_types.ts";
-import { NEWLINE } from "../pipeline/js_conversion.ts";
-import { IndentedStringIO } from "../utils/strutil.ts";
-import { Async_mode, Call_convention, DirectCall, FieldCall, NewCall, PrototypeCall, TypeDemand } from "../pipeline/call_conventions.ts";
-import { TypeParameter } from "../compiler_types/proper_types.ts";
+import { Async_mode, Call_convention, DirectCall, FieldCall, LocalAccessCall, NewCall, PrototypeCall } from "../pipeline/call_conventions.ts";
+import { Function_67lang, Type, Type_check_result, Type_reference } from "../compiler_types/proper_types.ts";
+import { Preprocessing_context } from "../pipeline/steps/processing.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
+import { Upwalker_visibility, Provides_locals__metadata } from "./local_macro.ts";
+import { Type_registration_context } from "../pipeline/steps/typechecking.ts";
 import { if_ } from "../utils/utils.ts";
-
-// -------- metadata carrier --------
 
 export class FnConventionName {
   constructor(public name: string | null) {}
 }
 
-// Params container (identical to Crystal behaviour)
 export class Params {
-  mapping: Record<string, TypeDemand> = {};
+  mapping: Record<string, Type> = {};
 }
 
-// -------------- provider --------------
-
-export class Fn_macro_provider
-  implements
-    Macro_emission_provider,
-    Macro_preprocess_provider,
-    Macro_functions_provider {
-
-  // ---------- helpers ----------
+export class Fn_macro_provider implements Macro_provider {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Preprocessing_context, "fn", this.preprocess.bind(this));
+    via(Type_registration_context, "fn", this.register_functions.bind(this));
+    via(Emission_macro_context, "fn", this.emission.bind(this));
+  }
 
   // Parses:
   //   "fn name" -> ["name", null]
   //   "fn name is Convention" -> ["name", "Convention"]
-  private parse_header(ctx: MacroContext): [string, string | null] {
+  private parse_header(ctx: Macro_context): [string, string | null] {
     const raw = ctx.compiler.get_metadata(ctx.node, Args).toString();
     const parts = raw.split(" ");
 
-    if (parts.length === 1) {
+    if (parts[0] !== undefined && parts.length === 1) {
       return [parts[0], null];
     }
 
-    if (parts.length === 3 && parts[1] === "is") {
+    if (parts[0] !== undefined && parts[2] !== undefined && parts[1] === "is") {
       return [parts[0], parts[2]];
     }
 
-    ctx.compiler.compile_error(
-      ctx.node,
-      "fn header must be `<name>` or `<name> is <Convention>`",
-      ErrorType.INVALID_MACRO,
-    );
-
-    throw new Error("bad header");
+    ctx.compiler.error_tracker.fail({
+      node: ctx.node,
+      message: "fn header must be `<name>` or `<name> is <Convention>`",
+      type: ErrorType.INVALID_MACRO,
+    });
   }
 
-  private get_param_demands(ctx: MacroContext): [string, TypeDemand][] {
-    const demands: [string, TypeDemand][] = [];
+  private get_param_demands(ctx: Type_registration_context): [string, Type][] {
+    const demands: [string, Type][] = [];
 
     const param_nodes = seek_all_child_macros(ctx.node, "param");
     for (const p of param_nodes) {
       const pname = get_single_arg(ctx.clone_with({ node: p }));
       const tnode = seek_child_macro(p, "type");
       if (!tnode) {
-        ctx.compiler.compile_error(
-          ctx.node,
-          "no type provided for param",
-          ErrorType.MISSING_TYPE,
-        );
+        ctx.compiler.error_tracker.fail({
+          node: ctx.node,
+          message: "no type provided for param",
+          type: ErrorType.MISSING_TYPE,
+        });
         continue;
       }
 
-      const child_res = ctx.current_step!.process_node(
-        ctx.clone_with({ node: tnode }),
+      const child_res = ctx.clone_with({ node: tnode }).apply();
+
+      ctx.compiler.error_tracker.assert(
+        child_res instanceof Type_reference,
+        {
+          node: ctx.node,
+          message: "child_res instanceof Type_reference",
+          type: ErrorType.INTERNAL_CODE_QUALITY,
+        }
       );
 
-      if (!(child_res instanceof TypeParameter)) {
-        throw new Error(`Expected TypeParameter, got ${child_res}`);
-      }
-
-      demands.push([pname, child_res.type_expr]);
+      demands.push([pname, child_res.ref]);
     }
 
     return demands;
   }
 
-  private get_return_type(ctx: MacroContext): TypeDemand {
+  private get_return_type(ctx: Type_registration_context): Type {
     const ret = seek_child_macro(ctx.node, "returns");
     if (ret) {
       const tnode = seek_child_macro(ret, "type");
       if (tnode) {
-        const r = ctx.current_step!.process_node(
-          ctx.clone_with({ node: tnode }),
+        const r = ctx.clone_with({ node: tnode }).apply();
+        ctx.compiler.error_tracker.assert(
+          r instanceof Type_reference, 
+          {
+            node: ctx.node,
+            message: "r instanceof Type_reference",
+            type: ErrorType.INTERNAL_CODE_QUALITY,
+          }
         );
-        if (!r || !("type_expr" in r)) {
-          throw new Error(`child_res=${r}`);
-        }
-        return r.type_expr!;
+        return r.ref;
       }
     }
 
-    ctx.compiler.compile_error(
-      ctx.node,
-      "no type provided for return",
-      ErrorType.MISSING_TYPE,
-    );
-
+    ctx.compiler.error_tracker.fail({
+      node: ctx.node,
+      message: "no type provided for return",
+      type: ErrorType.MISSING_TYPE,
+    });
     throw new Error("missing return type");
   }
 
   private build_convention(
-    ctx: MacroContext,
+    ctx: Macro_context,
     conv_name: string | null,
     desired_name: string,
     actual_name: string,
-    demands: TypeDemand[],
-    returns: TypeDemand,
   ): Call_convention {
     const is_binding = ctx.node.content.includes(" is ")
     const fn = if_(is_binding, () => {
@@ -139,11 +136,13 @@ export class Fn_macro_provider
       const amode = !!seek_child_macro(ctx.node, "async");
       const smode = !!seek_child_macro(ctx.node, "sync");
 
-      ctx.compiler.assert_(
+      ctx.compiler.error_tracker.assert(
         amode !== smode,
-        ctx.node,
-        "must specify `async` or `sync`, not both or neither",
-        ErrorType.INVALID_MACRO,
+        {
+          node: ctx.node,
+          message: "must specify `async` or `sync`, not both or neither",
+          type: ErrorType.INVALID_MACRO,
+        }
       );
 
       if (amode) {
@@ -161,18 +160,19 @@ export class Fn_macro_provider
       return new DirectCall({
         fn,
         receiver: null,
-        demands,
-        returns,
         async_mode,
       });
     }
 
     if (conv_name === "PrototypeCall") {
       const cnode = seek_child_macro(ctx.node, "constructor");
-      ctx.compiler.assert_(
+      ctx.compiler.error_tracker.assert(
         cnode !== null,
-        ctx.node,
-        "PrototypeCall needs a `constructor` child",
+        {
+          node: ctx.node,
+          message: "PrototypeCall needs a `constructor` child",
+          type: ErrorType.INVALID_MACRO,
+        }
       );
 
       const constructor = get_single_arg(
@@ -182,8 +182,6 @@ export class Fn_macro_provider
       return new PrototypeCall({
         constructor,
         fn,
-        demands,
-        returns,
         async_mode,
       });
     }
@@ -199,50 +197,53 @@ export class Fn_macro_provider
       return new DirectCall({
         fn,
         receiver,
-        demands,
-        returns,
         async_mode,
       });
     }
 
     if (conv_name === "FieldCall") {
       const fnode = seek_child_macro(ctx.node, "field");
-      ctx.compiler.assert_(
+      ctx.compiler.error_tracker.assert(
         fnode !== null,
-        ctx.node,
-        "FieldCall needs a `field` child",
+        {
+          node: ctx.node,
+          message: "FieldCall needs a `field` child",
+          type: ErrorType.INVALID_MACRO,
+        }
       );
 
       const field = get_single_arg(ctx.clone_with({ node: fnode! }));
-      return new FieldCall({ field, async_mode, demands, returns });
+      return new FieldCall({ field, async_mode });
     }
 
     if (conv_name === "NewCall") {
       const cnode = seek_child_macro(ctx.node, "constructor");
-      ctx.compiler.assert_(
+      ctx.compiler.error_tracker.assert(
         cnode !== null,
-        ctx.node,
-        "NewCall needs a `constructor` child",
+        {
+          node: ctx.node,
+          message: "NewCall needs a `constructor` child",
+          type: ErrorType.INVALID_MACRO,
+        }
       );
 
       const constructor = get_single_arg(
         ctx.clone_with({ node: cnode! }),
       );
 
-      return new NewCall({ constructor, demands, returns, async_mode });
+      return new NewCall({ constructor, async_mode });
     }
 
-    ctx.compiler.assert_(
-      false,
-      ctx.node,
-      `unknown call convention: ${conv_name}`,
-      ErrorType.INVALID_MACRO,
-    );
+    ctx.compiler.error_tracker.fail({
+      node: ctx.node,
+      message: `unknown call convention: ${conv_name}`,
+      type: ErrorType.INVALID_MACRO,
+    });
   }
 
   // ---------- preprocess ----------
 
-  preprocess(ctx: MacroContext): void {
+  preprocess(ctx: Macro_context): void {
     const p = ctx.node.parent;
     if (p && p !== ctx.compiler.root_node) {
       ctx.compiler.root_node!.prepend_child(ctx.node);
@@ -257,47 +258,24 @@ export class Fn_macro_provider
     const do_block = seek_child_macro(ctx.node, "do");
 
     if (conv_name === null) {
-      ctx.compiler.assert_(
+      ctx.compiler.error_tracker.assert(
         do_block !== null,
-        ctx.node,
-        "function must have a do block",
+        {
+          node: ctx.node,
+          message: "function must have a do block",
+          type: ErrorType.INVALID_MACRO,
+        }
       );
     }
 
     if (do_block) {
-      const param_nodes = seek_all_child_macros(ctx.node, "param");
-
-      for (const pn of param_nodes) {
-        const pname = get_single_arg(ctx.clone_with({ node: pn }));
-
-        const local_node = ctx.compiler.make_node(
-          `local ${pname}`,
-          pn.pos, [],
-        );
-
-        const tnode = seek_child_macro(pn, "type");
-        if (tnode) {
-          local_node.append_child(tnode.copy_recursive());
-        }
-
-        const obtain = ctx.compiler.make_node(
-          `67lang:obtain_param_value ${pname}`,
-          pn.pos, [],
-        );
-
-        local_node.append_child(obtain);
-        do_block.prepend_child(local_node);
-      }
-
-      ctx.current_step!.process_node(
-        ctx.clone_with({ node: do_block }),
-      );
+      ctx.clone_with({ node: do_block }).apply();
     }
   }
 
   // ---------- register functions ----------
 
-  register_functions(ctx: MacroContext): any {
+  register_functions(ctx: Type_registration_context): Type_check_result {
     const [name, conv_name] = this.parse_header(ctx);
     const actual_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.value || name;
 
@@ -309,23 +287,45 @@ export class Fn_macro_provider
       conv_name,
       name,
       actual_name,
-      params.map(([_name, type]) => type),
-      ret,
     );
-
 
     const params_meta = new Params();
     ctx.compiler.set_metadata(ctx.node, Params, params_meta);
+    const locals_meta = new Provides_locals__metadata({});
+    ctx.compiler.set_metadata(ctx.node, Provides_locals__metadata, locals_meta);
     for (const [pname, type] of params) {
       params_meta.mapping[pname] = type;
+      locals_meta.locals[pname] = {
+        sane_name: pname, // TODO
+        type: type,
+        local_lifetime: Upwalker_visibility.CHILDREN_ONLY,
+        getter: ctx.type_engine.add_function(null, (fn) => {
+          fn.demands = [];
+          fn.returns = type;
+          fn.convention = new LocalAccessCall({ fn: pname, async_mode: Async_mode.SYNC });
+        }),
+        setter: ctx.type_engine.add_function(null, (fn) => {
+          fn.demands = [type];
+          fn.returns = type;
+          fn.convention = new LocalAccessCall({ fn: pname, async_mode: Async_mode.SYNC });
+        })
+      };
     }
 
-    ctx.compiler.add_dynamic_convention(name, convention);
+    ctx.type_engine.add_function(name, 
+      (fn: Function_67lang) => {
+        fn.demands = params.map(([_pname, type]) => type);
+        fn.returns = ret;
+        fn.convention = convention;
+      }
+    );
+
+    return null;
   }
 
   // ---------- emission ----------
 
-  emission(ctx: MacroContext): void {
+  emission(ctx: Emission_macro_context): void {
     const body = seek_child_macro(ctx.node, "do");
     if (!body) {
       return;
@@ -338,11 +338,18 @@ export class Fn_macro_provider
       statement_block(null, BRACES)
     ));
 
+    ctx.compiler.error_tracker.assert(
+      params_block !== undefined && body_block !== undefined,
+      {
+        node: ctx.node,
+        message: "failed to create fn emission blocks",
+        type: ErrorType.INTERNAL_CODE_QUALITY,
+      }
+    );
+
     const params = ctx.compiler.get_metadata(ctx.node, Params) as Params;
     Object.entries(params.mapping).forEach(([pname, type]) => params_block.push(() => (`${pname}: ${type.to_typescript()},`)));
 
-    ctx.current_step!.process_node(
-      ctx.clone_with({ node: body, statement_out: body_block }),
-    );
+    ctx.clone_with({ node: body, statement_out: body_block }).apply();
   }
 }

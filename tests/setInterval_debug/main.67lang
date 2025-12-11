@@ -1,6 +1,6 @@
 fn test_fn
 	returns
-		type void
+		type named void
 	do
 		do print
 			string "test"

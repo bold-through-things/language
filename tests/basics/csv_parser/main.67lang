@@ -18,12 +18,12 @@ local i
 	int 0
 local header
 	list
-		type str
+		type named str
 local rows
 	list
-		type dict
-			type str for K
-			type str for V
+		type named dict
+			type named str for K
+			type named str for V
 for line in
 	get lines
 	do
@@ -43,8 +43,8 @@ for line in
 				
 				local row
 					dict
-						type str for K
-						type str for V
+						type named str for K
+						type named str for V
 				
 				for kv in
 					get zipped_data
@@ -58,7 +58,7 @@ for line in
 		
 		do i
 			local _please_fix_the_fucking_varargs_add
-				type int
+				type named int
 				do add
 					get i
 					int 1

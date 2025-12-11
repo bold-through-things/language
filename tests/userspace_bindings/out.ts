@@ -120,17 +120,66 @@ if (is_Deno) {
 }
 
 
+class _0x40_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x46_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
     {
     }
     {    
-        let _0x41_test = [] as Array<string>;
-        Array.prototype.push.call(_0x41_test, "t");
-        Array.prototype.push.call(_0x41_test, "e");
-        Array.prototype.push.call(_0x41_test, "s");
-        Array.prototype.push.call(_0x41_test, "t");
-        console.log(_0x41_test);
+        let _0x47_test = [] as Array<string>;
+        Array.prototype.push.call(_0x47_test, "t");
+        Array.prototype.push.call(_0x47_test, "e");
+        Array.prototype.push.call(_0x47_test, "s");
+        Array.prototype.push.call(_0x47_test, "t");
+        console.log(_0x47_test);
     }
 
 })();

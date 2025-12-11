@@ -120,14 +120,14 @@ if (is_Deno) {
 }
 
 
-class _0x63_DAG_unroller {
+class _0x48_DAG_unroller {
     dep_loops: Array<string>;
     build_order: Array<string>;
-    modules: Record<string, _0x64_Module>;
+    modules: Record<string, _0x49_Module>;
     constructor(
         dep_loops: Array<string>,
         build_order: Array<string>,
-        modules: Record<string, _0x64_Module>,
+        modules: Record<string, _0x49_Module>,
     ) {
         this.dep_loops = dep_loops;
         this.build_order = build_order;
@@ -136,7 +136,7 @@ class _0x63_DAG_unroller {
 }
 
 
-class _0x64_Module {
+class _0x49_Module {
     id: string;
     deps: Array<string>;
     visited: boolean;
@@ -152,58 +152,112 @@ class _0x64_Module {
 }
 
 
+class _0x4a_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x4b_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x4c_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x4d_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x4e_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x4f_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x50_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
-    const _0x4d_visit = async function (    
-        unroller: _0x63_DAG_unroller,
-        module: _0x64_Module,
+    const _0x41_visit = async function (    
+        unroller: _0x48_DAG_unroller,
+        module: _0x49_Module,
         chain: Array<string>,
     ) {    
         {    
-            let _0x4e_chain = chain;
-            let _0x4f_module = module;
-            let _0x50_unroller = unroller;
             if (    
-                _0x4f_module.visited
+                module.visited
             ) {    
                 return;
             } else {
             }
     
-            (_0x4f_module.visited = (true));
+            (module.visited = (true));
             if (    
                 false
             ) {    
-                Array.prototype.push.call(Array.prototype.slice.call(_0x4e_chain), _0x4f_module.id);
+                Array.prototype.push.call(Array.prototype.slice.call(chain), module.id);
             } else {
             }
     
-            let _0x51_next_chain = Array.prototype.slice.call(_0x4e_chain);
-            Array.prototype.push.call(_0x51_next_chain, _0x4f_module.id);
+            let _0x51_next_chain = Array.prototype.slice.call(chain);
+            Array.prototype.push.call(_0x51_next_chain, module.id);
             {    
-                let _0x54__0x52_for_dep_id__index = 0;
-                let _0x55__0x53_for_dep_id__list = _0x4f_module.deps;
+                let _0x52__0x42_for_dep_id__index = 0;
+                let _0x53__0x43_for_dep_id__list = module.deps;
                 while(true) {    
-                    if (!(_0x54__0x52_for_dep_id__index < _0x55__0x53_for_dep_id__list.length)) { break; }
+                    if (!(_0x52__0x42_for_dep_id__index < _0x53__0x43_for_dep_id__list.length)) { break; }
                     {    
-                        let _0x56_dep_id = _0x55__0x53_for_dep_id__list[_0x54__0x52_for_dep_id__index];
-                        (_0x54__0x52_for_dep_id__index = (_0x54__0x52_for_dep_id__index + 1));
+                        const _0x8a__0x43_for_dep_id__list = _0x53__0x43_for_dep_id__list;
+                        const _0x8b__0x42_for_dep_id__index = _0x52__0x42_for_dep_id__index;
+                        const _0x8c__pipeline_result = _0x8b__0x42_for_dep_id__index;
+                        if (_0x8a__0x43_for_dep_id__list[_0x8c__pipeline_result] === undefined) { throw new Error("sparse array") }
+                        let _0x54_dep_id = _0x8a__0x43_for_dep_id__list[_0x8c__pipeline_result];
+                        (_0x52__0x42_for_dep_id__index = (_0x52__0x42_for_dep_id__index + 1));
                         if (    
-                            _67lang.has_values(_0x51_next_chain, _0x56_dep_id)
+                            _67lang.has_values(_0x51_next_chain, _0x54_dep_id)
                         ) {    
-                            let _0x57_dep_loop = [] as Array<string>;
-                            Array.prototype.push.call(_0x57_dep_loop, _0x56_dep_id);
+                            let _0x55_dep_loop = [] as Array<string>;
+                            Array.prototype.push.call(_0x55_dep_loop, _0x54_dep_id);
                             {    
-                                let _0x5a__0x58_for_chain_dep_id__index = 0;
-                                let _0x5b__0x59_for_chain_dep_id__list = Array.prototype.reverse.call(Array.prototype.slice.call(_0x51_next_chain));
+                                let _0x56__0x44_for_chain_dep_id__index = 0;
+                                let _0x57__0x45_for_chain_dep_id__list = Array.prototype.reverse.call(Array.prototype.slice.call(_0x51_next_chain));
                                 while(true) {    
-                                    if (!(_0x5a__0x58_for_chain_dep_id__index < _0x5b__0x59_for_chain_dep_id__list.length)) { break; }
+                                    if (!(_0x56__0x44_for_chain_dep_id__index < _0x57__0x45_for_chain_dep_id__list.length)) { break; }
                                     {    
-                                        let _0x5c_chain_dep_id = _0x5b__0x59_for_chain_dep_id__list[_0x5a__0x58_for_chain_dep_id__index];
-                                        (_0x5a__0x58_for_chain_dep_id__index = (_0x5a__0x58_for_chain_dep_id__index + 1));
-                                        Array.prototype.push.call(_0x57_dep_loop, _0x5c_chain_dep_id);
+                                        const _0xaa__0x45_for_chain_dep_id__list = _0x57__0x45_for_chain_dep_id__list;
+                                        const _0xab__0x44_for_chain_dep_id__index = _0x56__0x44_for_chain_dep_id__index;
+                                        const _0xac__pipeline_result = _0xab__0x44_for_chain_dep_id__index;
+                                        if (_0xaa__0x45_for_chain_dep_id__list[_0xac__pipeline_result] === undefined) { throw new Error("sparse array") }
+                                        let _0x58_chain_dep_id = _0xaa__0x45_for_chain_dep_id__list[_0xac__pipeline_result];
+                                        (_0x56__0x44_for_chain_dep_id__index = (_0x56__0x44_for_chain_dep_id__index + 1));
+                                        Array.prototype.push.call(_0x55_dep_loop, _0x58_chain_dep_id);
                                         if (    
-                                            (_0x5c_chain_dep_id === _0x56_dep_id)
+                                            (_0x58_chain_dep_id === _0x54_dep_id)
                                         ) {    
                                             break;
                                         } else {
@@ -212,69 +266,87 @@ void (async () => {
                                 }
                             }
     
-                            Array.prototype.reverse.call(_0x57_dep_loop);
-                            Array.prototype.push.call(_0x50_unroller.dep_loops, Array.prototype.join.call(_0x57_dep_loop, " → "));
+                            Array.prototype.reverse.call(_0x55_dep_loop);
+                            Array.prototype.push.call(unroller.dep_loops, Array.prototype.join.call(_0x55_dep_loop, " → "));
                         } else {    
-                            (await (_0x4d_visit(_0x50_unroller, _0x50_unroller.modules[_0x56_dep_id], _0x51_next_chain)));
+                            const _0xce_unroller = unroller;
+                            const _0xcd_modules = _0xce_unroller.modules;
+                            const _0xcf__pipeline_result = _0xcd_modules;
+                            const _0xd0_dep_id = _0x54_dep_id;
+                            const _0xd1__pipeline_result = _0xd0_dep_id;
+                            if (_0xcf__pipeline_result[_0xd1__pipeline_result] === undefined) { throw new Error("sparse array") }
+                            (await (_0x41_visit(unroller, _0xcf__pipeline_result[_0xd1__pipeline_result], _0x51_next_chain)));
                         }
                     }
                 }
             }
     
-            Array.prototype.push.call(_0x50_unroller.build_order, _0x4f_module.id);
+            Array.prototype.push.call(unroller.build_order, module.id);
         }
     }
     {
     }
     {    
-        let _0x40_lines = (await (_67lang.stdin()));
-        let _0x41_lines = _67lang.string_split(_0x40_lines, "\n");
-        let _0x42_modules = {} as Record<string, _0x64_Module>;
+        let _0x59_lines = (await (_67lang.stdin()));
+        let _0x5a_lines = _67lang.string_split(_0x59_lines, "\n");
+        let _0x5b_modules = {} as Record<string, _0x49_Module>;
         {    
-            let _0x45__0x43_for_line__index = 0;
-            let _0x46__0x44_for_line__list = _0x41_lines;
+            let _0x5c__0x3f_for_line__index = 0;
+            let _0x5d__0x40_for_line__list = _0x5a_lines;
             while(true) {    
-                if (!(_0x45__0x43_for_line__index < _0x46__0x44_for_line__list.length)) { break; }
+                if (!(_0x5c__0x3f_for_line__index < _0x5d__0x40_for_line__list.length)) { break; }
                 {    
-                    let _0x47_line = _0x46__0x44_for_line__list[_0x45__0x43_for_line__index];
-                    (_0x45__0x43_for_line__index = (_0x45__0x43_for_line__index + 1));
-                    let _0x48_kv = _67lang.string_split(_0x47_line, ":", 2);
-                    let _0x49_id = String.prototype.trim.call(_0x48_kv[0]);
-                    let _0x4a_module = (new _0x64_Module(_0x49_id, [] as Array<string>, false));
-                    let _0x4b_deps_str = String.prototype.trim.call(_0x48_kv[1]);
+                    const _0xed__0x40_for_line__list = _0x5d__0x40_for_line__list;
+                    const _0xee__0x3f_for_line__index = _0x5c__0x3f_for_line__index;
+                    const _0xef__pipeline_result = _0xee__0x3f_for_line__index;
+                    if (_0xed__0x40_for_line__list[_0xef__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    let _0x5e_line = _0xed__0x40_for_line__list[_0xef__pipeline_result];
+                    (_0x5c__0x3f_for_line__index = (_0x5c__0x3f_for_line__index + 1));
+                    let _0x5f_kv = _67lang.string_split(_0x5e_line, ":", 2);
+                    const _0xfa_kv = _0x5f_kv;
+                    if (_0xfa_kv[0] === undefined) { throw new Error("sparse array") }
+                    let _0x60_id = String.prototype.trim.call(_0xfa_kv[0]);
+                    let _0x61_module = (new _0x49_Module(_0x60_id, [] as Array<string>, false));
+                    const _0x103_kv = _0x5f_kv;
+                    if (_0x103_kv[1] === undefined) { throw new Error("sparse array") }
+                    let _0x62_deps_str = String.prototype.trim.call(_0x103_kv[1]);
                     if (    
-                        !((_0x4b_deps_str === ""))
+                        !((_0x62_deps_str === ""))
                     ) {    
-                        let _0x4c_deps = _67lang.string_split(String.prototype.trim.call(_0x4b_deps_str), /\s+/);
-                        (_0x4a_module.deps = (_0x4c_deps));
+                        let _0x63_deps = _67lang.string_split(String.prototype.trim.call(_0x62_deps_str), /\s+/);
+                        (_0x61_module.deps = (_0x63_deps));
                     } else {
                     }
     
-                    (_0x42_modules[_0x4a_module.id] = _0x4a_module);
+                    (_0x5b_modules[_0x61_module.id] = _0x61_module);
                 }
             }
         }
     
-        let _0x5d_unroller = (new _0x63_DAG_unroller([] as Array<string>, [] as Array<string>, _0x42_modules));
+        let _0x64_unroller = (new _0x48_DAG_unroller([] as Array<string>, [] as Array<string>, _0x5b_modules));
         {    
-            let _0x60__0x5e_for_module__index = 0;
-            let _0x61__0x5f_for_module__list = Object.values(_0x42_modules);
+            let _0x65__0x46_for_module__index = 0;
+            let _0x66__0x47_for_module__list = Object.values(_0x5b_modules);
             while(true) {    
-                if (!(_0x60__0x5e_for_module__index < _0x61__0x5f_for_module__list.length)) { break; }
+                if (!(_0x65__0x46_for_module__index < _0x66__0x47_for_module__list.length)) { break; }
                 {    
-                    let _0x62_module = _0x61__0x5f_for_module__list[_0x60__0x5e_for_module__index];
-                    (_0x60__0x5e_for_module__index = (_0x60__0x5e_for_module__index + 1));
-                    (await (_0x4d_visit(_0x5d_unroller, _0x62_module, [] as Array<string>)));
+                    const _0x12d__0x47_for_module__list = _0x66__0x47_for_module__list;
+                    const _0x12e__0x46_for_module__index = _0x65__0x46_for_module__index;
+                    const _0x12f__pipeline_result = _0x12e__0x46_for_module__index;
+                    if (_0x12d__0x47_for_module__list[_0x12f__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    let _0x67_module = _0x12d__0x47_for_module__list[_0x12f__pipeline_result];
+                    (_0x65__0x46_for_module__index = (_0x65__0x46_for_module__index + 1));
+                    (await (_0x41_visit(_0x64_unroller, _0x67_module, [] as Array<string>)));
                 }
             }
         }
     
         if (    
-            (1 <= _0x5d_unroller.dep_loops.length)
+            (1 <= _0x64_unroller.dep_loops.length)
         ) {    
-            console.log(("ERROR: there are dependency loops.\n" + Array.prototype.join.call(_0x5d_unroller.dep_loops, "\n")));
+            console.log(("ERROR: there are dependency loops.\n" + Array.prototype.join.call(_0x64_unroller.dep_loops, "\n")));
         } else {    
-            console.log(Array.prototype.join.call(_0x5d_unroller.build_order, "\n"));
+            console.log(Array.prototype.join.call(_0x64_unroller.build_order, "\n"));
         }
     }
 

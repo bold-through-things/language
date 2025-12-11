@@ -9,248 +9,248 @@ fn length is FieldCall
 	sync
 	field length
 	param self
-		type str
+		type named str
 	returns
-		type int
+		type named int
 
 fn split is DirectCall
 	sync
 	receiver _67lang
 	fn string_split
 	param self
-		type str
+		type named str
 	param sep
-		type str
+		type named str
 	returns
-		type list
-			type str
+		type named list
+			type named str
 
 fn split is DirectCall
 	sync
 	receiver _67lang
 	fn string_split
 	param self
-		type str
+		type named str
 	param sep
-		type str
+		type named str
 	param limit
-		type int
+		type named int
 	returns
-		type list
-			type str
+		type named list
+			type named str
 
 fn split is DirectCall
 	sync
 	receiver _67lang
 	fn string_split
 	param self
-		type str
+		type named str
 	param sep
-		type regex
+		type named regex
 	returns
-		type list
-			type str
+		type named list
+			type named str
 
 fn split is DirectCall
 	sync
 	receiver _67lang
 	fn string_split
 	param self
-		type str
+		type named str
 	param sep
-		type regex
+		type named regex
 	param limit
-		type int
+		type named int
 	returns
-		type list
-			type str
+		type named list
+			type named str
 
 fn uppercase is PrototypeCall
 	sync
 	constructor String
 	fn toUpperCase
 	param self
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn lowercase is PrototypeCall
 	sync
 	constructor String
 	fn toLowerCase
 	param self
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn includes is PrototypeCall
 	sync
 	constructor String
 	fn includes
 	param self
-		type str
+		type named str
 	param search
-		type str
+		type named str
 	returns
-		type bool
+		type named bool
 
 fn starts_with is PrototypeCall
 	sync
 	constructor String
 	fn startsWith
 	param self
-		type str
+		type named str
 	param search
-		type str
+		type named str
 	returns
-		type bool
+		type named bool
 
 fn ends_with is PrototypeCall
 	sync
 	constructor String
 	fn endsWith
 	param self
-		type str
+		type named str
 	param search
-		type str
+		type named str
 	returns
-		type bool
+		type named bool
 
 fn index_of is PrototypeCall
 	sync
 	constructor String
 	fn indexOf
 	param self
-		type str
+		type named str
 	param search
-		type str
+		type named str
 	returns
-		type int
+		type named int
 
 fn slice is PrototypeCall
 	sync
 	constructor String
 	fn slice
 	param self
-		type str
+		type named str
 	param start
-		type int
+		type named int
 	param end
-		type int
+		type named int
 	returns
-		type str
+		type named str
 
 fn substring is PrototypeCall
 	sync
 	constructor String
 	fn substring
 	param self
-		type str
+		type named str
 	param start
-		type int
+		type named int
 	param end
-		type int
+		type named int
 	returns
-		type str
+		type named str
 
 fn char_at is PrototypeCall
 	sync
 	constructor String
 	fn charAt
 	param self
-		type str
+		type named str
 	param index
-		type int
+		type named int
 	returns
-		type str
+		type named str
 
 fn char_code_at is PrototypeCall
 	sync
 	constructor String
 	fn charCodeAt
 	param self
-		type str
+		type named str
 	param index
-		type int
+		type named int
 	returns
-		type int
+		type named int
 
 fn trim is PrototypeCall
 	sync
 	constructor String
 	fn trim
 	param self
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn trim_start is PrototypeCall
 	sync
 	constructor String
 	fn trimStart
 	param self
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn trim_end is PrototypeCall
 	sync
 	constructor String
 	fn trimEnd
 	param self
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn replace is PrototypeCall
 	sync
 	constructor String
 	fn replace
 	param self
-		type str
+		type named str
 	param search
-		type str
+		type named str
 	param replacement
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn replace is PrototypeCall
 	sync
 	constructor String
 	fn replace
 	param self
-		type str
+		type named str
 	param search
-		type regex
+		type named regex
 	param replacement
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn match is PrototypeCall
 	sync
 	constructor String
 	fn match
 	param self
-		type str
+		type named str
 	param re
-		type regex
+		type named regex
 	returns
-		type list
-			type str
+		type named list
+			type named str
 
 fn match is PrototypeCall
 	sync
 	constructor String
 	fn match
 	param self
-		type str
+		type named str
 	param search
-		type str
+		type named str
 	returns
-		type list
-			type str
+		type named list
+			type named str
 
 note
 
@@ -265,27 +265,27 @@ note TODO
 		constructor Number
 		fn toString
 		param self
-			type int
+			type named int
 		returns
-			type str
+			type named str
 
 fn str is PrototypeCall
 	sync
 	constructor Number
 	fn toString
 	param self
-		type float
+		type named float
 	returns
-		type str
+		type named str
 
 fn str is PrototypeCall
 	sync
 	constructor String
 	fn toString
 	param self
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 note TODO
 	fn str is PrototypeCall
@@ -293,9 +293,9 @@ note TODO
 		constructor Object
 		fn toString
 		param self
-			type *
+			type named 67lang:unknown
 		returns
-			type str
+			type named str
 
 note
 
@@ -309,9 +309,9 @@ fn int:parse is DirectCall
 	receiver globalThis
 	fn parseInt
 	param str
-		type str
+		type named str
 	returns
-		type int
+		type named int
 
 note
 
@@ -325,24 +325,20 @@ fn keys is DirectCall
 	receiver Object
 	fn keys
 	param self
-		type dict
-			type K var
-			type V var
+		type named dict
 	returns
-		type list
-			type K var
+		type named list
+			type named K var for T
 
 fn values is DirectCall
 	sync
 	receiver Object
 	fn values
 	param self
-		type dict
-			type K var
-			type V var
+		type named dict
 	returns
-		type list
-			type V var
+		type named list
+			type named V var for T
 
 note 
 	
@@ -355,104 +351,104 @@ fn length is FieldCall
 	sync
 	field length
 	param self
-		type list
+		type named list
 	returns
-		type int
+		type named int
 
 fn push is PrototypeCall
 	sync
 	constructor Array
 	fn push
 	param self
-		type list
-			type T var
+		type named list
+			type named T var
 	param item
-		type T var
+		type named T var
 	returns
-		type void
+		type named void
 
 fn sort is PrototypeCall
 	sync
 	constructor Array
 	fn sort
 	param self
-		type list
-			type T var
+		type named list
+			type named T var
 	returns
-		type list
-			type T var
+		type named list
+			type named T var
 
 fn join is PrototypeCall
 	sync
 	constructor Array
 	fn join
 	param self
-		type list
-			type str
+		type named list
+			type named str
 	param sep
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn join is PrototypeCall
 	sync
 	constructor Array
 	fn join
 	param self
-		type list
-			type str
+		type named list
+			type named str
 	returns
-		type str
+		type named str
 
 fn reverse is PrototypeCall
 	sync
 	constructor Array
 	fn reverse
 	param self
-		type list
-			type T var
+		type named list
+			type named T var
 	returns
-		type list
-			type T var
+		type named list
+			type named T var
 
 fn slice is PrototypeCall
 	sync
 	constructor Array
 	fn slice
 	param self
-		type list
-			type T var
+		type named list
+			type named T var
 	returns
-		type list
-			type T var
+		type named list
+			type named T var
 
 fn slice is PrototypeCall
 	sync
 	constructor Array
 	fn slice
 	param self
-		type list
-			type T var
+		type named list
+			type named T var
 	param start
-		type int
+		type named int
 	returns
-		type list
-			type T var
+		type named list
+			type named T var
 
 fn slice is PrototypeCall
 	sync
 	constructor Array
 	fn slice
 	param self
-		type list
-			type T var
+		type named list
+			type named T var
 	param start
-		type int
+		type named int
 	param end
-		type int
+		type named int
 	returns
-		type list
-			type T var
+		type named list
+			type named T var
 
 note 
 	
@@ -465,65 +461,65 @@ fn WebSocket is NewCall
 	sync
 	constructor WebSocket
 	param url
-		type str
+		type named str
 	returns
-		type WebSocket
+		type named WebSocket
 
 fn send is PrototypeCall
 	sync
 	constructor WebSocket
 	fn send
 	param self
-		type WebSocket
+		type named WebSocket
 	param data
-		type str
+		type named str
 	returns
-		type void
+		type named void
 
 fn close is PrototypeCall
 	sync
 	constructor WebSocket
 	fn close
 	param self
-		type WebSocket
+		type named WebSocket
 	returns
-		type void
+		type named void
 
 fn message_handler is FieldCall
 	sync
 	field onmessage
 	param self
-		type WebSocket
+		type named WebSocket
 	param callback
-		type callable1
-			type * for ARG
-			type void for RV
+		type named callable1
+			type named 67lang:unknown for ARG0
+			type named void for RV
 	returns
-		type void
+		type named void
 
 fn open_handler is FieldCall
 	sync
 	field onopen
 	param self
-		type WebSocket
+		type named WebSocket
 	param callback
-		type callable1
-			type * for ARG
-			type void for RV
+		type named callable1
+			type named 67lang:unknown for ARG0
+			type named void for RV
 	returns
-		type void
+		type named void
 
 fn close_handler is FieldCall
 	sync
 	field onclose
 	param self
-		type WebSocket
+		type named WebSocket
 	param callback
-		type callable1
-			type * for ARG
-			type void for RV
+		type named callable1
+			type named 67lang:unknown for ARG0
+			type named void for RV
 	returns
-		type void
+		type named void
 
 note 
 
@@ -532,24 +528,24 @@ note
 
 
 
-type URL is JS:object
+type named URL is JS:object
 	constructor URL
 
 fn URL is NewCall
 	sync
 	constructor URL
 	param url
-		type str
+		type named str
 	returns
-		type URL
+		type named URL
 
 fn pathname is FieldCall
 	sync
 	field pathname
 	param self
-		type URL
+		type named URL
 	returns
-		type str
+		type named str
 
 note 
 	
@@ -558,28 +554,22 @@ note
 
 
 
-type TextEncoder is JS:object
+type named TextEncoder is JS:object
 	constructor TextEncoder
 
-type Uint8Array is JS:object
+type named Uint8Array is JS:object
 	constructor Uint8Array
-
-fn TextEncoder is NewCall
-	sync
-	constructor TextEncoder
-	returns
-		type TextEncoder
 
 fn encode is PrototypeCall
 	sync
 	constructor TextEncoder
 	fn encode
 	param self
-		type TextEncoder
+		type named TextEncoder
 	param input
-		type str
+		type named str
 	returns
-		type Uint8Array
+		type named Uint8Array
 
 note 
 	
@@ -588,7 +578,7 @@ note
 
 
 	
-type TextDecoder is JS:object
+type named TextDecoder is JS:object
 	constructor TextDecoder
 
 fn decode is PrototypeCall
@@ -596,11 +586,11 @@ fn decode is PrototypeCall
 	constructor TextDecoder
 	fn decode
 	param self
-		type TextDecoder
+		type named TextDecoder
 	param input
-		type Uint8Array
+		type named Uint8Array
 	returns
-		type str
+		type named str
 
 note
 	
@@ -614,18 +604,18 @@ fn btoa is DirectCall
 	receiver globalThis
 	fn btoa
 	param input
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn atob is DirectCall
 	sync
 	receiver globalThis
 	fn atob
 	param input
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 note
 	
@@ -634,7 +624,7 @@ note
 
 
 
-type Response is JS:object
+type named Response is JS:object
 	constructor Response
 
 fn fetch is DirectCall
@@ -642,24 +632,24 @@ fn fetch is DirectCall
 	receiver globalThis
 	fn fetch
 	param input
-		type str
+		type named str
 	param init
-		type dict
-			type str for K
-			type str for V
+		type named dict
+			type named str for K
+			type named str for V
 	returns
-		type Response
+		type named Response
 
 fn json is PrototypeCall
 	async
 	constructor Response
 	fn json
 	param self
-		type Response
+		type named Response
 	returns
-		type dict
-			type str for K
-			type * for V
+		type named dict
+			type named str for K
+			type named 67lang:unknown for V
 
 note
 
@@ -673,18 +663,19 @@ fn str:JSON is DirectCall
 	receiver JSON
 	fn stringify
 	param value
-		type *
+		type named 67lang:unknown
 	returns
-		type str
+		type named str
 
-fn parse:JSON is DirectCall
+fn JSON:str is DirectCall
 	sync
 	receiver JSON
 	fn parse
 	param text
-		type str
+		type named str
 	returns
-		type *
+		note here TODO this is the worst idea ever
+		type named 67lang:upstream_invalid
 
 note 
 	
@@ -695,7 +686,7 @@ note
 
 note TODO this isn't valid (int...)
 
-type Interval_ID is JS:object
+type named Interval_ID is JS:object
 	constructor Interval_ID
 
 fn interval is DirectCall
@@ -703,42 +694,42 @@ fn interval is DirectCall
 	receiver globalThis
 	fn setInterval
 	param callback
-		type callable
-			type void for RV
+		type named callable
+			type named void for RV
 	param delay
-		type int
+		type named int
 	returns
-		type Interval_ID
+		type named Interval_ID
 
 fn interval:clear is DirectCall
 	sync
 	receiver globalThis
 	fn clearInterval
 	param id
-		type Interval_ID
+		type named Interval_ID
 	returns
-		type void
+		type named void
 
 fn timeout is DirectCall
 	sync
 	receiver globalThis
 	fn setTimeout
 	param callback
-		type callable
-			type void for RV
+		type named callable
+			type named void for RV
 	param delay
-		type int
+		type named int
 	returns
-		type Interval_ID
+		type named Interval_ID
 
 fn timeout:clear is DirectCall
 	sync
 	receiver globalThis
 	fn clearTimeout
 	param id
-		type Interval_ID
+		type named Interval_ID
 	returns
-		type void
+		type named void
 
 note
 	
@@ -747,7 +738,7 @@ note
 
 
 
-type inside.SPEC is JS:object
+type named inside.SPEC is JS:object
 	constructor inside.SPEC
 
 fn inside.AS_KEY is FieldCall
@@ -755,14 +746,14 @@ fn inside.AS_KEY is FieldCall
 	receiver _67lang
 	field EXISTS_INSIDE_AS_KEY
 	returns
-		type inside.SPEC
+		type named inside.SPEC
 
 fn inside.AS_VALUE is FieldCall
 	sync
 	receiver _67lang
 	field EXISTS_INSIDE_AS_VALUE
 	returns
-		type inside.SPEC
+		type named inside.SPEC
 
 note TODO because varargs we can't express this yet. `inside` for now hardcoded in compiler
 
@@ -771,23 +762,23 @@ fn prompt is DirectCall
 	receiver _67lang
 	fn prompt
 	param msg
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn stdin is DirectCall
 	async
 	receiver _67lang
 	fn stdin
 	returns
-		type str
+		type named str
 
 fn is_tty is DirectCall
 	sync
 	receiver _67lang
 	fn is_tty
 	returns
-		type bool
+		type named bool
 
 note TODO should only show this if we target Deno
 fn read_file is DirectCall
@@ -795,13 +786,13 @@ fn read_file is DirectCall
 	receiver Deno
 	fn readTextFile
 	param path
-		type str
+		type named str
 	returns
-		type str
+		type named str
 
 fn cwd is DirectCall
 	sync
 	receiver Deno
 	fn cwd
 	returns
-		type str
+		type named str

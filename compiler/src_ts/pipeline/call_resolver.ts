@@ -3,28 +3,24 @@
 
 import { default_logger } from "../utils/logger.ts";
 import { ErrorType } from "../utils/error_types.ts";
-import { MacroContext } from "../core/macro_registry.ts";
-import { get_single_arg } from "../utils/common_utils.ts";
-import { walk_upwards_for_local_definition } from "./local_lookup.ts";
+import { Macro_context } from "../core/macro_registry.ts";
 import {
   Type,
   TypeVariable,
+  Function_67lang,
   ComplexType,
 } from "../compiler_types/proper_types.ts";
-import {
-Async_mode,
-  Call_convention,
-  LocalAccessCall,
-} from "./call_conventions.ts";
-import { BUILTIN_CALLS } from "./builtin_calls.ts";
-import { MetaValue, convention_to_meta, type_to_meta as encode_type_to_meta } from "../core/meta_value.ts";
-import { SaneIdentifier } from "../core/node.ts";
+import { JSON_value, type_to_meta as encode_type_to_meta, function_to_meta } from "../core/meta_value.ts";
+import { Type_checking_context } from "./steps/typechecking.ts";
+import { Match_request, Upwalker } from "./local_lookup.ts";
+import { Upwalker_visibility, Local_spec, Provides_locals__metadata } from "../macros/local_macro.ts";
+import { map_each_pair } from "../utils/utils.ts";
 
 // -------------------------------------------------------------------
 // Signature mismatch explanation helpers
 // -------------------------------------------------------------------
 
-function type_to_meta_value(t: Type | null): MetaValue {
+function type_to_meta_value(t: Type | null): JSON_value {
   if (!t) {
     return "nil";
   }
@@ -32,17 +28,18 @@ function type_to_meta_value(t: Type | null): MetaValue {
 }
 
 function explain_signature_mismatch(
+  ctx: Type_checking_context,
   actual: Type[],
   demanded: Type[] | null | undefined,
-): MetaValue[] {
-  const reasons: MetaValue[] = [];
+): JSON_value[] {
+  const reasons: JSON_value[] = [];
 
   if (!demanded) {
     return reasons;
   }
 
   if (actual.length !== demanded.length) {
-    const reason: { [key: string]: MetaValue } = {
+    const reason: { [key: string]: JSON_value } = {
       reason_type: "ARITY_MISMATCH",
       demanded_arity: demanded.length,
       received_arity: actual.length,
@@ -51,15 +48,14 @@ function explain_signature_mismatch(
     return reasons;
   }
 
-  const [ok] = unify_types(actual, demanded);
+  const [ok] = unify_types(ctx, actual, demanded);
   if (ok) {
     return reasons;
   }
 
-  demanded.forEach((d, i) => {
-    const a = actual[i];
-    if (!a.is_assignable_to(d)) {
-      const reason: { [key: string]: MetaValue } = {
+  map_each_pair(actual, demanded, (a, d, i) => {
+    if (!ctx.type_engine.can_assign({value_type: a, field_type: d})) {
+      const reason: { [key: string]: JSON_value } = {
         reason_type: "ARG_MISMATCH",
         index: i,
         demanded: type_to_meta_value(d),
@@ -70,7 +66,7 @@ function explain_signature_mismatch(
   });
 
   if (reasons.length === 0) {
-    const reason: { [key: string]: MetaValue } = {
+    const reason: { [key: string]: JSON_value } = {
       reason_type: "UNIFICATION_FAILED",
       details: "could not satisfy type variables",
       note: "no per-argument assignability clue",
@@ -82,221 +78,200 @@ function explain_signature_mismatch(
 }
 
 function matches_signature(
+  ctx: Type_checking_context,
   fn: string,
   actual: Type[],
   demanded: Type[] | null | undefined,
-): boolean {
+): [boolean, Record<string, Type>] {
   default_logger.typecheck(`matches_signature(${fn}): actual=${actual}, demanded=${demanded}`);
   if (!demanded) {
-    return true;
+    return [true, {}];
   }
 
-  const [ok] = unify_types(actual, demanded);
+  const [ok, subs] = unify_types(ctx, actual, demanded);
   if (ok) {
-    return true;
+    return [ok, subs];
   }
 
   if (actual.length !== demanded.length) {
-    return false;
+    return [false, {}];
   }
 
-  return actual.every((a, i) => a.is_assignable_to(demanded[i]));
+  const ok1 = map_each_pair(actual, demanded, (a, d) => ctx.type_engine.can_assign({value_type: a, field_type: d})).every((v) => v);
+  return [ok1, {}]; // TODO might not be needed
 }
 
-// -------------------------------------------------------------------
-// Candidate resolution
-// -------------------------------------------------------------------
-
 function resolve_local_definition(
-  ctx: MacroContext,
+  ctx: Macro_context,
   fn: string,
-): Call_convention[] {
-  const res = walk_upwards_for_local_definition(ctx, fn);
-  if (!res) {
-    return [];
+): Function_67lang[] {
+  function get_local(req: Match_request): Local_spec | null {
+    const ctx = req.ctx;
+    const meta = ctx.compiler.maybe_metadata(ctx.node, Provides_locals__metadata);
+    if (meta === null) { return null; }
+    const local = meta.locals[fn];
+    if (!local) { return null; }
+    const expected_is_direct_parent = {
+      [Upwalker_visibility.CHILDREN_ONLY]: true, 
+      [Upwalker_visibility.NEXT_NODES_ONLY]: false
+    }[local.local_lifetime];
+    if (expected_is_direct_parent !== req.is_direct_parent) {
+      return null;
+    }
+    return local;
   }
-
-  const name = get_single_arg(ctx.clone_with({ node: res.node }));
-  const sane = ctx.compiler.maybe_metadata(res.node, SaneIdentifier);
-  const resolved_name = sane?.value ?? name;
-
-  const type = res.found;
-  if (!type) {
+  const res = new Upwalker(get_local).find(ctx);
+  if (!res || !res.found) {
     return [];
   }
 
   return [
-    new LocalAccessCall({ fn: resolved_name, demands: [], returns: type, async_mode: Async_mode.SYNC }),
-    new LocalAccessCall({ fn: resolved_name, demands: [type], returns: type, async_mode: Async_mode.SYNC }),
-  ];
-}
-
-function resolve_builtin_call(fn: string): Call_convention[] {
-  const arr = BUILTIN_CALLS[fn];
-  if (arr) {
-    return arr;
-  }
-  return [];
-}
-
-function resolve_dynamic_convention(
-  ctx: MacroContext,
-  fn: string,
-): Call_convention[] {
-  return ctx.compiler.dynamic_conventions_for(fn) ?? [];
+    res.found.getter,
+    res.found.setter,
+  ].filter((f): f is Function_67lang => f !== null);
 }
 
 export function resolve_candidates(
-  ctx: MacroContext,
+  ctx: Type_checking_context,
   fn: string,
-): Call_convention[] {
-  const candidates: Call_convention[] = [];
+): Function_67lang[] {
+  const candidates: Function_67lang[] = [];
   candidates.push(...resolve_local_definition(ctx, fn));
-  candidates.push(...resolve_builtin_call(fn));
-  candidates.push(...resolve_dynamic_convention(ctx, fn));
+  candidates.push(...(ctx.type_engine.get_functions(fn) ?? []));
   return candidates;
 }
 
-// -------------------------------------------------------------------
-// Public resolver
-// -------------------------------------------------------------------
+export const PASSTHROUGH = Symbol("PASSTHROUGH");
 
-export function resolve_convention(
-  ctx: MacroContext,
+export function resolve_function(
+  ctx: Type_checking_context,
   fn: string,
-  actual_arg_types?: Type[] | null,
-): Call_convention {
-  const candidates = resolve_candidates(ctx, fn);
-
-  if (actual_arg_types?.some(t => t == null)) {
-    console.log("Compiler bug: null type in actual_arg_types", actual_arg_types);
-    throw new Error("null type in actual_arg_types");
+  actual_arg_types: (Type | typeof PASSTHROUGH)[],
+): { fn_data: Function_67lang, subs: Record<string, Type> } {
+  function apply_passthrough(fn: Function_67lang): Type[] {
+    return actual_arg_types.map(
+      (t, i) => 
+        t === PASSTHROUGH ? 
+          (
+            ctx.compiler.error_tracker.assert(
+              fn.demands[i] !== undefined,
+              {
+                node: ctx.node,
+                message: `fn.demands[i] !== undefined`,
+                type: ErrorType.INTERNAL_CODE_QUALITY,
+              }
+            ), 
+            fn.demands[i]
+          ) : 
+          t
+    );
   }
+
+  const candidates = resolve_candidates(ctx, fn);
 
   default_logger.debug(`all_possible_conventions(${fn}): ${candidates}`);
 
-  let selected: Call_convention | null = null;
+  let selected: { fn_data: Function_67lang, subs: Record<string, Type> } | null = null;
 
-  if (actual_arg_types && actual_arg_types.length > 0) {
-    const matching = candidates.filter((c) => {
+  const matching = candidates.map((fn_data) => {
+    const demands = fn_data.demands;
+    const [ok, subs] = matches_signature(ctx, fn, apply_passthrough(fn_data), demands ?? null)
+    return {ok, subs, fn_data };
+  }).filter(({ok}) => ok);
+
+  if (matching.length > 1) {
+    const score = (c: Function_67lang): [number, number] => {
       const demands = c.demands;
-      return matches_signature(fn, actual_arg_types, demands ?? null);
+      if (!demands) {
+        return [0, 0];
+      }
+      let specific = 0;
+      actual_arg_types.forEach((_a, _i) => {
+        // Crystal code increments for each arg; we keep it simple / same
+        specific += 1;
+      });
+      return [specific, -demands.length];
+    };
+
+    const best = matching.reduce((acc, c) => {
+      const s1 = score(acc.fn_data);
+      const s2 = score(c.fn_data);
+      if (s2[0] > s1[0]) {
+        return c;
+      }
+      if (s2[0] === s1[0] && s2[1] > s1[1]) {
+        return c;
+      }
+      return acc;
     });
 
-    if (matching.length > 1) {
-      const score = (c: Call_convention): [number, number] => {
-        const demands = c.demands;
-        if (!demands) {
-          return [0, 0];
-        }
-        let specific = 0;
-        actual_arg_types.forEach((_a, _i) => {
-          // Crystal code increments for each arg; we keep it simple / same
-          specific += 1;
-        });
-        return [specific, -demands.length];
+    const best_score = score(best.fn_data);
+    const ties = matching.filter((c) => {
+      const s = score(c.fn_data);
+      return s[0] === best_score[0] && s[1] === best_score[1];
+    });
+
+    if (ties.length > 1) {
+      const extras: { [key: string]: JSON_value } = {
+        matching_overloads: ties.map((c) => function_to_meta(c.fn_data)),
+        actual_arg_types: actual_arg_types.map((t) => t === PASSTHROUGH ? "PASSTHROUGH" : type_to_meta_value(t)),
       };
-
-      const best = matching.reduce((acc, c) => {
-        const s1 = score(acc);
-        const s2 = score(c);
-        if (s2[0] > s1[0]) {
-          return c;
-        }
-        if (s2[0] === s1[0] && s2[1] > s1[1]) {
-          return c;
-        }
-        return acc;
+      ctx.compiler.error_tracker.fail({
+        node: ctx.node,
+        message: `multiple equally specific overloads match for ${fn} with arguments ${actual_arg_types}`,
+        type: ErrorType.AMBIGUOUS_OVERLOAD,
+        extras,
       });
-
-      const best_score = score(best);
-      const ties = matching.filter((c) => {
-        const s = score(c);
-        return s[0] === best_score[0] && s[1] === best_score[1];
-      });
-
-      if (ties.length > 1) {
-        const extras: { [key: string]: MetaValue } = {
-          matching_overloads: ties.map((c) => convention_to_meta(c)) as MetaValue,
-        };
-        ctx.compiler.assert_(
-          false,
-          ctx.node,
-          `multiple equally specific overloads match for ${fn} with arguments ${actual_arg_types}`,
-          ErrorType.AMBIGUOUS_OVERLOAD,
-          extras,
-        );
-      } else {
-        selected = best;
-      }
-    } else if (matching.length === 1) {
-      selected = matching[0];
+    } else {
+      selected = best;
     }
-  } else {
-    if (candidates.length > 0) {
-      const arg_count = ctx.node.children.length;
-      const filtered = candidates.filter((c) => {
-        const demands = (c as any).demands as (Type[] | null | undefined);
-        if (!demands) {
-          return true;
-        }
-        return demands.length === arg_count;
-      });
-      selected = filtered.length > 0 ? filtered[0] : null;
-    }
+  } else if (matching[0] !== undefined) {
+    selected = matching[0];
   }
 
   if (!selected) {
-    const visible: MetaValue[] = candidates.map((c) => {
-      const meta = convention_to_meta(c);
-      let reasons: MetaValue[] = [];
+    const visible: JSON_value[] = candidates.map((c) => {
+      const meta = function_to_meta(c);
+      let reasons: JSON_value[] = [];
       if (actual_arg_types) {
-        const demands = (c as any).demands as Type[] | null | undefined;
-        reasons = explain_signature_mismatch(actual_arg_types, demands ?? null);
+        reasons = explain_signature_mismatch(ctx, apply_passthrough(c), c.demands);
       }
-      const entry: { [key: string]: MetaValue } = {
+      const entry: { [key: string]: JSON_value } = {
         convention: meta,
-        reasons: reasons as MetaValue,
+        reasons,
       };
       return entry;
     });
 
-    const extras: { [key: string]: MetaValue } = {
-      visible_overloads: visible as MetaValue,
+    const extras: { [key: string]: JSON_value } = {
+      visible_overloads: visible,
+      actual_arg_types: actual_arg_types.map((t) => t === PASSTHROUGH ? "PASSTHROUGH" : type_to_meta_value(t)),
     };
 
-    ctx.compiler.assert_(
-      false,
-      ctx.node,
-      `could not find a matching overload for ${fn} with arguments ${actual_arg_types}`,
-      ErrorType.NO_MATCHING_OVERLOAD,
+    ctx.compiler.error_tracker.fail({
+      node: ctx.node,
+      message: `could not find a matching overload for ${fn}`,
+      type: ErrorType.NO_MATCHING_OVERLOAD,
       extras,
-    );
+    });
     throw new Error("unreachable");
   }
 
   return selected;
 }
 
-// -------------------------------------------------------------------
-// Unification utilities for polymorphic signatures
-// -------------------------------------------------------------------
-
-function types_equivalent(t1: Type, t2: Type): boolean {
-  return t1.is_assignable_to(t2) && t2.is_assignable_to(t1);
-}
-
 function unify_single_type(
+  ctx: Type_checking_context,
   actual: Type,
   signature: Type,
   subs: Record<string, Type>,
 ): boolean {
-  // Type variable?
   if (signature instanceof TypeVariable) {
     const name = signature.name;
     const existing = subs[name];
     if (existing) {
-      return types_equivalent(actual, existing);
+      const rv = ctx.type_engine.can_assign({value_type: actual, field_type: existing}) && ctx.type_engine.can_assign({value_type: existing, field_type: actual});
+      return rv;
     } else {
       subs[name] = actual;
       return true;
@@ -304,7 +279,7 @@ function unify_single_type(
   }
 
   if (actual instanceof TypeVariable) {
-    throw new Error(`Compiler bug: actual type is TypeVariable: ${actual.toString()}`);
+    throw new Error(`Compiler bug: actual type is TypeVariable: ${actual.to_string()}`);
   }
 
   if (signature instanceof ComplexType && actual instanceof ComplexType) {
@@ -314,21 +289,18 @@ function unify_single_type(
     if (signature.type_params.length !== actual.type_params.length) {
       return false;
     }
-    for (let i = 0; i < signature.type_params.length; i += 1) {
-      const sig_t = signature.type_params[i];
-      const act_t = actual.type_params[i];
-      if (!unify_single_type(act_t, sig_t, subs)) {
-        return false;
-      }
-    }
-    return true;
+    const rv = map_each_pair(actual.type_params, signature.type_params, (at, st) => 
+      unify_single_type(ctx, at, st, subs)
+    ).every((v) => v);
+    return rv;
   }
 
   // Fallback: regular assignability
-  return actual.is_assignable_to(signature);
+  return ctx.type_engine.can_assign({value_type: actual, field_type: signature});
 }
 
 export function unify_types(
+  ctx: Type_checking_context,
   actuals: Type[],
   sigs: Type[],
 ): [boolean, Record<string, Type>] {
@@ -337,7 +309,7 @@ export function unify_types(
   }
 
   const subs: Record<string, Type> = {};
-  const ok = actuals.every((a, i) => unify_single_type(a, sigs[i], subs));
+  const ok = map_each_pair(actuals, sigs, (a, s) => unify_single_type(ctx, a, s, subs)).every((v) => v);
   if (!ok) {
     return [false, {}];
   }

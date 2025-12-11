@@ -4,15 +4,15 @@
     "line": 25,
     "char": 0,
     "content": "local test",
-    "error": "failed to assert: field demands int but is given str",
-    "error_type": "FIELD_TYPE_MISMATCH"
+    "error": "local typed int cannot accept a str",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
   },
   {
     "recoverable": false,
     "line": 30,
     "char": 0,
     "content": "local test_str",
-    "error": "failed to assert: field demands str but is given None",
+    "error": "local not initialized",
     "error_type": "MISSING_TYPE"
   },
   {
@@ -20,15 +20,20 @@
     "line": 42,
     "char": 0,
     "content": "67lang:call test_str",
-    "error": "failed to assert: could not find a matching overload for test_str with arguments int",
+    "error": "could not find a matching overload for test_str",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
         "convention": {
-          "convention": "LocalAccessCall",
-          "fn": "_0x44_test_str",
+          "convention": {
+            "convention": "LocalAccessCall",
+            "fn": "_0x4a_test_str"
+          },
           "demands": [],
-          "returns": "never"
+          "returns": {
+            "type": "Special_type",
+            "name": "67lang:upstream_invalid"
+          }
         },
         "reasons": [
           {
@@ -40,25 +45,43 @@
       },
       {
         "convention": {
-          "convention": "LocalAccessCall",
-          "fn": "_0x44_test_str",
+          "convention": {
+            "convention": "LocalAccessCall",
+            "fn": "_0x4a_test_str"
+          },
           "demands": [
-            "never"
+            {
+              "type": "Special_type",
+              "name": "67lang:upstream_invalid"
+            }
           ],
-          "returns": "never"
+          "returns": {
+            "type": "Special_type",
+            "name": "67lang:upstream_invalid"
+          }
         },
         "reasons": [
           {
             "reason_type": "ARG_MISMATCH",
             "index": 0,
-            "demanded": "never",
+            "demanded": {
+              "type": "Special_type",
+              "name": "67lang:upstream_invalid"
+            },
             "received": {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           }
         ]
+      }
+    ],
+    "actual_arg_types": [
+      {
+        "type": "ComplexType",
+        "name": "int",
+        "type_params": []
       }
     ]
   },
@@ -67,38 +90,41 @@
     "line": 51,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments never",
+    "error": "could not find a matching overload for split",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -113,28 +139,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -149,33 +178,36 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -190,28 +222,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -223,6 +258,12 @@
             "received_arity": 1
           }
         ]
+      }
+    ],
+    "actual_arg_types": [
+      {
+        "type": "Special_type",
+        "name": "67lang:upstream_invalid"
       }
     ]
   },
@@ -231,38 +272,41 @@
     "line": 53,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments bool",
+    "error": "could not find a matching overload for split",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -277,28 +321,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -313,33 +360,36 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -354,28 +404,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -388,6 +441,13 @@
           }
         ]
       }
+    ],
+    "actual_arg_types": [
+      {
+        "type": "ComplexType",
+        "name": "bool",
+        "type_params": []
+      }
     ]
   },
   {
@@ -395,38 +455,41 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments never",
+    "error": "could not find a matching overload for split",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -441,28 +504,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -477,33 +543,36 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -518,28 +587,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -552,6 +624,12 @@
           }
         ]
       }
+    ],
+    "actual_arg_types": [
+      {
+        "type": "Special_type",
+        "name": "67lang:upstream_invalid"
+      }
     ]
   },
   {
@@ -559,38 +637,41 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments never",
+    "error": "could not find a matching overload for split",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -605,28 +686,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -641,33 +725,36 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -682,28 +769,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -716,6 +806,12 @@
           }
         ]
       }
+    ],
+    "actual_arg_types": [
+      {
+        "type": "Special_type",
+        "name": "67lang:upstream_invalid"
+      }
     ]
   },
   {
@@ -723,38 +819,41 @@
     "line": 56,
     "char": 0,
     "content": "67lang:call split",
-    "error": "failed to assert: could not find a matching overload for split with arguments never",
+    "error": "could not find a matching overload for split",
     "error_type": "NO_MATCHING_OVERLOAD",
     "visible_overloads": [
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -769,28 +868,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "regex",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -805,33 +907,36 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "int",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -846,28 +951,31 @@
       },
       {
         "convention": {
-          "convention": "DirectCall",
-          "fn": "string_split",
-          "receiver": "_67lang",
+          "convention": {
+            "convention": "DirectCall",
+            "fn": "string_split",
+            "receiver": "_67lang"
+          },
           "demands": [
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             },
             {
+              "type": "ComplexType",
               "name": "str",
-              "type_params": [],
-              "fields": []
+              "type_params": []
             }
           ],
           "returns": {
+            "type": "ComplexType",
             "name": "list",
             "type_params": [
               {
+                "type": "ComplexType",
                 "name": "str",
-                "type_params": [],
-                "fields": []
+                "type_params": []
               }
             ]
           }
@@ -879,6 +987,12 @@
             "received_arity": 1
           }
         ]
+      }
+    ],
+    "actual_arg_types": [
+      {
+        "type": "Special_type",
+        "name": "67lang:upstream_invalid"
       }
     ]
   }

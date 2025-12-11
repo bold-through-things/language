@@ -11,15 +11,10 @@ import {
   Indexers,
   Callers
 } from "./node.ts";
-import { not_null, TypeMap } from "../utils/utils.ts";
+import { Constructor, not_null, TypeMap } from "../utils/utils.ts";
 import { to_valid_js_ident } from "../pipeline/js_conversion.ts";
-import { MacroAssertFailed } from "../core/exceptions.ts";
-// TODO we likely do not need this
-// import {
-//   meta_to_json_any,
-//   type MetaValue,
-// } from "../core/meta_value.ts";
-import { Macro_ctx_proc, Macro_ctx_typecheck_proc, Macro_ctx_void_proc, Macro_provider, MacroContext, MacroProcessingStep, MacroRegistry, TCResult } from "./macro_registry.ts";
+import { Macro_error_tracker } from "../core/exceptions.ts";
+import { Macro_context, Macro_registry, Register_macro_providers, Macro_provider, REGISTER_MACRO_PROVIDERS, Ctx_proc } from "./macro_registry.ts";
 
 import { Noscope_macro_provider } from "../macros/noscope_macro.ts";
 import {
@@ -37,47 +32,36 @@ import { Local_macro_provider } from "../macros/local_macro.ts";
 import { Fn_macro_provider } from "../macros/fn_macro.ts";
 import { Call_macro_provider } from "../macros/call_macro.ts";
 import {
-  COMMENT_MACROS,
   Comment_macro_provider,
 } from "../macros/comment_macros.ts";
 import { Return_macro_provider } from "../macros/return_macro.ts";
 import {
-SCOPE_MACRO,
   Scope_macro_provider,
 } from "../macros/scope_macro.ts";
 import { Type_macro_provider } from "../macros/type_macro.ts";
 import {
   Try_macro_provider,
-  Catch_macro_provider,
   Throw_macro_provider,
 } from "../macros/try_catch_macro.ts";
 import { Bind_macro_provider } from "../macros/bind_macro.ts";
-import { Obtain_param_value_macro_provider } from "../macros/obtain_param_value_macro.ts";
 import {
   Must_compile_error_macro_provider,
 } from "../macros/error_macros.ts";
 
-// and somewhere:
-
-import { IndentedStringIO } from "../utils/strutil.ts";
 import {
-  Call_convention,
-} from "../pipeline/call_conventions.ts";
-import {
-  BOOL,
-  type Type,
+  Expression_return_type,
+  Type_check_result,
+  Type_engine,
 } from "../compiler_types/proper_types.ts";
-import { MetaValue } from "./meta_value.ts";
-import { PreprocessingStep } from "../pipeline/steps/processing.ts";
-import { FunctionRegistrationStep, TypeDetailRegistrationStep, TypeRegistrationStep } from "../pipeline/steps/type_registration.ts";
-import { JavaScriptEmissionStep } from "../pipeline/steps/emission.ts";
-import { MustCompileErrorVerificationStep } from "../pipeline/steps/must_compile_error_step.ts";
-import { TypeCheckingStep } from "../pipeline/steps/typechecking.ts";
+import { JSON_value } from "./meta_value.ts";
+import { Preprocessing_context } from "../pipeline/steps/processing.ts";
+import { Must_compile_error_context } from "../pipeline/steps/must_compile_error_step.ts";
 import { Solution_macro_provider } from "../macros/solution_macro.ts";
 import { Multi_provider } from "../macros/multi_provider.ts";
 import { _67lang_GET_LAST_PIPELINE_RESULT, _67lang_PIPELINE_RESULT, Get_last_pipeline_result_macro_provider, Pipeline_macro_provider, Pipeline_result_macro_provider } from "../macros/then_macro.ts";
 import { Noop_macro_provider } from "../macros/utility_macros.ts";
-import { ErrorType } from "../utils/error_types.ts";
+import { Type_checking_context, Type_registration_context } from "../pipeline/steps/typechecking.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
 
 // --- metadata store (TS replacement for def_metadata macro) -------------------
 
@@ -85,36 +69,33 @@ export type MetaCtor<T> = { new (...args: any[]): T; name: string };
 
 export class Macrocosm {
   readonly nodes: Node[] = [];
-  compile_errors: Array<Record<string, MetaValue>> = [];
-  readonly registries: Record<string, MacroRegistry<Macro_ctx_proc>> = {};
+  compile_errors: Array<Record<string, JSON_value>> = [];
 
   private incremental_id = 0;
   js_output = "";
   root_node: Node | null = null;
 
-  private dynamic_conventions: Record<string, Call_convention[]> = Object.create(null);
+  readonly processing_steps: ((node: Node) => Macro_context)[];
 
-  readonly processing_steps: MacroProcessingStep[];
+  readonly error_tracker: Macro_error_tracker = new Macro_error_tracker();
 
   // metadata: Node -> (type-name -> value)
   private metadata: Map<Node, Map<string, unknown>> = new Map();
 
   constructor(
-    emission_registry: MacroRegistry<Macro_ctx_void_proc>,
-    typecheck_registry: MacroRegistry<Macro_ctx_typecheck_proc>,
-    preprocess_registry: MacroRegistry<Macro_ctx_void_proc>,
-    type_registration_registry: MacroRegistry<Macro_ctx_typecheck_proc>,
-    type_detail_registration_registry: MacroRegistry<Macro_ctx_typecheck_proc>,
-    function_registration: MacroRegistry<Macro_ctx_typecheck_proc>,
+    emission_registry: Macro_registry<Emission_macro_context>,
+    typecheck_registry: Macro_registry<Type_checking_context>,
+    preprocess_registry: Macro_registry<Preprocessing_context>,
+    type_registration_registry: Macro_registry<Type_registration_context>,
   ) {
+    const compiler = this;
+    const type_engine = new Type_engine();
     this.processing_steps = [
-      new PreprocessingStep(preprocess_registry),
-      new TypeRegistrationStep(type_registration_registry),
-      new TypeDetailRegistrationStep(type_detail_registration_registry),
-      new FunctionRegistrationStep(function_registration),
-      new TypeCheckingStep(typecheck_registry),
-      new JavaScriptEmissionStep(emission_registry),
-      new MustCompileErrorVerificationStep(new MacroRegistry<Macro_ctx_void_proc>()),
+      (node: Node) => new Preprocessing_context({ compiler, registry: preprocess_registry, node }),
+      (node: Node) => new Type_registration_context({ compiler, registry: type_registration_registry, node, type_engine }),
+      (node: Node) => new Type_checking_context({ compiler, registry: typecheck_registry, node, type_engine }),
+      (node: Node) => new Emission_macro_context({ compiler, registry: emission_registry, statement_out: [], expression_out: [], node, type_engine }),
+      (node: Node) => new Must_compile_error_context({ compiler, registry: new Macro_registry<Must_compile_error_context>(), node, expectations: [] }), // TODO: share registry
     ];
   }
 
@@ -155,6 +136,16 @@ export class Macrocosm {
     }
     const v = m.get(key);
     return (v as T | undefined) ?? null;
+  }
+
+  compute_metadata<T>(node: Node, t: MetaCtor<T>, factory: () => T): T {
+    const existing = this.maybe_metadata(node, t);
+    if (existing !== null) {
+      return existing;
+    }
+    const v = factory();
+    this.set_metadata(node, t, v);
+    return v;
   }
 
   get_metadata<T>(node: Node, t: MetaCtor<T>): T {
@@ -214,35 +205,20 @@ export class Macrocosm {
     this.nodes.push(node);
   }
 
-  assert_(
-    must_be_true: boolean,
-    node: Node,
-    message: string,
-    error_type?: string | null,
-    extra_fields?: Record<string, MetaValue> | null,
-  ): asserts must_be_true {
-    if (must_be_true) {
-      return;
-    }
-
-    this.compile_error(node, `failed to assert: ${message}`, error_type ?? ErrorType.ASSERTION_FAILED, extra_fields ?? null);
-    throw new MacroAssertFailed(message);
-  }
-
-  compile_error(
+  private compile_error(
     node: Node,
     error: string,
     error_type: string,
-    extra_fields: Record<string, MetaValue> | null = null,
+    extra_fields: Record<string, JSON_value> | null = null,
   ): void {
     const pos = node.pos ?? new Position(0, 0);
-    const entry: Record<string, MetaValue> = {
-      recoverable: false as unknown as MetaValue,
-      line: pos.line as unknown as MetaValue,
-      char: pos.char as unknown as MetaValue,
-      content: node.content as unknown as MetaValue,
-      error: error as unknown as MetaValue,
-      error_type: error_type as unknown as MetaValue,
+    const entry: Record<string, JSON_value> = {
+      recoverable: false as unknown as JSON_value,
+      line: pos.line as unknown as JSON_value,
+      char: pos.char as unknown as JSON_value,
+      content: node.content as unknown as JSON_value,
+      error: error as unknown as JSON_value,
+      error_type: error_type as unknown as JSON_value,
     };
 
     if (extra_fields) {
@@ -269,21 +245,26 @@ export class Macrocosm {
     this.root_node = solution_node;
 
     for (const step of this.processing_steps) {
-      const stepName = (step as any).constructor.name;
-      default_logger.indent(
-        "compile",
-        `processing step: ${stepName}`,
-        () => {
-          const ctx: MacroContext = new MacroContext(
-            [],
-            [],
-            solution_node,
-            this,
-            step,
-          );
+      // TODO
+      // const stepName = (step as any).constructor.name;
+      // default_logger.indent(
+      //   "compile",
+      //   `processing step: ${stepName}`,
+        // () => {
+        const ctx = step(solution_node)
+        this.error_tracker.safely(ctx, () => {
+          ctx.apply();
+        });
+        // },
+      // );
+    }
 
-          step.process_node(ctx);
-        },
+    for (const err of this.error_tracker.all) {
+      this.compile_error(
+        err.node,
+        err.message,
+        err.type,
+        err.extras ?? null,
       );
     }
 
@@ -312,234 +293,126 @@ export class Macrocosm {
     return n;
   }
 
-  add_dynamic_convention(
-    name: string,
-    convention: Call_convention,
-  ): void {
-    let arr = this.dynamic_conventions[name];
-    if (!arr) {
-      arr = [];
-      this.dynamic_conventions[name] = arr;
-    }
-    arr.push(convention);
-  }
-
-  dynamic_conventions_for(
-    name: string,
-  ): Call_convention[] | undefined {
-    if (Object.prototype.hasOwnProperty.call(this.dynamic_conventions, name)) {
-      return this.dynamic_conventions[name];
-    }
-    return undefined;
-  }
-
-  get conventions(): Call_convention[] {
-    const all: Call_convention[] = [];
-    for (const convs of Object.values(this.dynamic_conventions)) {
-      all.push(...convs);
-    }
-    return all;
-  }
-
-  safely(fn: () => void): void {
-    try {
-      fn();
-    } catch (e) {
-      if (!(e instanceof MacroAssertFailed)) {
-        throw e;
-      }
-      // swallow MacroAssertFailed
-    }
-  }
 }
 
 // Literal_macro_provider
 
-export class Literal_macro_provider {
-  private value: string;
-  private t: Type | null;
-
-  constructor(value: string, t: Type | null) {
-    this.value = value;
-    this.t = t;
+export class Literal_macro_provider implements Macro_provider {
+  constructor(
+    private macro_name: string, 
+    private value: string, 
+    private t_name: string | null
+  ) {
+    // ...
   }
 
-  emission(ctx: MacroContext): void {
-    if (this.t === null) {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Emission_macro_context, this.macro_name, this.emission.bind(this));
+    via(Type_checking_context, this.macro_name, this.typecheck.bind(this));
+  }
+
+  emission(ctx: Emission_macro_context): void {
+    if (this.t_name === null) {
       ctx.statement_out.push(() => this.value);
     } else {
       ctx.expression_out.push(() => this.value);
     }
   }
 
-  typecheck(ctx: MacroContext): TCResult {
-    return this.t as TCResult;
+  typecheck(ctx: Type_checking_context): Type_check_result {
+    if (this.t_name) {
+      return new Expression_return_type(ctx.type_engine.get_type(this.t_name));
+    } else {
+      // TODO a stupid h*ck
+      return null;
+    }    
   }
 }
 
 // --- macrocosm factory --------------------------------------------------------
 
 export function create_macrocosm(): Macrocosm {
-  const has_arguments = (ctx: MacroContext): boolean => {
+  const has_arguments = (ctx: Macro_context): boolean => {
     const args = ctx.compiler.get_metadata(ctx.node, Args).toString();
     return args.trim().length > 0;
   };
 
-  const macro_providers: Record<string, Macro_provider> = {};
-
-  macro_providers["while"] = new While_macro_provider();
-  macro_providers["for"] = new For_macro_provider();
-  macro_providers["int"] = new Number_macro_provider("int");
-  macro_providers["float"] = new Number_macro_provider("float");
-  macro_providers["string"] = new String_macro_provider("string");
-  macro_providers["regex"] = new String_macro_provider("regex");
-  macro_providers["if"] = new If_macro_provider();
-  macro_providers["list"] = new List_macro_provider();
-  macro_providers["dict"] = new Dict_macro_provider();
-  macro_providers["local"] = new Local_macro_provider();
-  macro_providers["fn"] = new Fn_macro_provider();
-  macro_providers["bind"] = new Bind_macro_provider();
-  macro_providers["67lang:call"] = new Call_macro_provider();
-  macro_providers["noop"] = new Noop_macro_provider();
-  macro_providers["type"] = new Type_macro_provider();
-  macro_providers["67lang:assume_local_exists"] = new Noop_macro_provider();
-  macro_providers["67lang:assume_type_valid"] = new Noop_macro_provider();
-  macro_providers["67lang:obtain_param_value"] =
-    new Obtain_param_value_macro_provider();
-  macro_providers[_67lang_PIPELINE_RESULT] = new Pipeline_result_macro_provider();
-  macro_providers[_67lang_GET_LAST_PIPELINE_RESULT] = new Get_last_pipeline_result_macro_provider();
-  macro_providers["67lang:solution"] = new Solution_macro_provider();
-  macro_providers["must_compile_error"] = new Must_compile_error_macro_provider();
-  macro_providers["then"] = new Multi_provider([
-    [has_arguments, new Pipeline_macro_provider()],
-    [null, new Scope_macro_provider()],
-  ]);
-  macro_providers["do"] = new Multi_provider([
-    [has_arguments, new Pipeline_macro_provider()],
-    [null, new Scope_macro_provider()],
-  ]);
-  macro_providers["get"] = new Pipeline_macro_provider();
-  macro_providers["noscope"] = new Noscope_macro_provider();
-  macro_providers["return"] = new Return_macro_provider();
-  macro_providers["try"] = new Try_macro_provider();
-  macro_providers["catch"] = new Catch_macro_provider();
-  macro_providers["finally"] = new Scope_macro_provider();
-  macro_providers["throw"] = new Throw_macro_provider();
-
-  for (const m of COMMENT_MACROS) {
-    macro_providers[m] = new Comment_macro_provider();
-  }
-  for (const m of SCOPE_MACRO) {
-    macro_providers[m] = new Scope_macro_provider();
-  }
-
-  const literalTable: Record<string, [string, Type | null]> = {
-    true: ["true", BOOL],
-    false: ["false", BOOL],
+  const providers = [
+    new Noop_macro_provider(),
+    new Type_macro_provider(),
+    new While_macro_provider(),
+    new For_macro_provider(),
+    new Number_macro_provider("int"),
+    new Number_macro_provider("float"),
+    new String_macro_provider("string"),
+    new String_macro_provider("regex"),
+    new If_macro_provider(),
+    new List_macro_provider(),
+    new Dict_macro_provider(),
+    new Local_macro_provider(),
+    new Fn_macro_provider(),
+    new Bind_macro_provider(),
+    new Call_macro_provider(),
+    new Pipeline_result_macro_provider(),
+    new Get_last_pipeline_result_macro_provider(),
+    new Solution_macro_provider(),
+    new Must_compile_error_macro_provider(),
+    new Comment_macro_provider(),
+    new Multi_provider(
+      "do",
+      [
+        [has_arguments, new Pipeline_macro_provider()],
+        [null, new Scope_macro_provider()]
+      ],
+    ),
+    new Multi_provider(
+      "then",
+      [
+        [has_arguments, new Pipeline_macro_provider()],
+        [null, new Scope_macro_provider()]
+      ],
+    ),
+    new Multi_provider("get", [[null, new Pipeline_macro_provider()]]),
+    new Multi_provider("set", [[null, new Pipeline_macro_provider()]]),
+    new Multi_provider("67lang:file", [[null, new Scope_macro_provider()]]),
+    new Multi_provider("finally", [[null, new Scope_macro_provider()]]),    
+    new Noscope_macro_provider(),
+    new Return_macro_provider(),
+    new Try_macro_provider(),
+    new Throw_macro_provider()
+  ]
+  
+  const literalTable: Record<string, [string, string | null]> = {
+    true: ["true", "bool"],
+    false: ["false", "bool"],
     break: ["break;", null],
     continue: ["continue;", null],
   };
 
-  for (const [k, [value, tname]] of Object.entries(literalTable)) {
-    macro_providers[k] = new Literal_macro_provider(value, tname);
+  for (const [macro_name, [value, type]] of Object.entries(literalTable)) {
+    providers.push(new Literal_macro_provider(macro_name, value, type));
   }
 
-  for (const [name, provider] of Object.entries(macro_providers)) {
-    default_logger.registry(
-      `registering macro "${name}" -> ${(provider as any).constructor.name}`,
-    );
-  }
-
-  const registries: Record<string, MacroRegistry<Macro_ctx_proc>> = {};
-  const create_registry = <T extends Macro_ctx_proc>(name: string): MacroRegistry<T> => {
-    const r = new MacroRegistry<T>();
-    registries[name] = r;
+  const registries: Map<Constructor<Macro_context>, Macro_registry<Macro_context<unknown>>> = new Map();
+  const create_registry = <T extends Macro_context<unknown>>(_name: string, type: Constructor<T>): Macro_registry<T> => {
+    const r = new Macro_registry<T>();
+    registries.set(type, r as unknown as Macro_registry<Macro_context>);
     return r;
   };
 
-  const preprocess = create_registry<Macro_ctx_void_proc>("preprocess");
-  const typecheck = create_registry<Macro_ctx_typecheck_proc>("typecheck");
-  const emission = create_registry<Macro_ctx_void_proc>("emission");
-  const type_registration = create_registry<Macro_ctx_typecheck_proc>("type_registration");
-  const type_detail_registration = create_registry<Macro_ctx_typecheck_proc>("type_detail_registration");
-  const function_registration = create_registry<Macro_ctx_typecheck_proc>("function_registration");
-
-  for (const [macro_name, provider] of Object.entries(macro_providers)) {
-    // preprocess
-    if ("preprocess" in provider) {
-      preprocess.add_fn(
-        (c: MacroContext) => provider.preprocess(c),
-        macro_name,
-      );
-    } else {
-      preprocess.add_fn(null, macro_name);
-    }
-
-    // typecheck
-    if ("typecheck" in provider) {
-      typecheck.add_fn(
-        (c: MacroContext): TCResult => {
-          const rv = provider.typecheck(c);
-          if (typeof rv === "string") {
-            throw new Error(
-              `String... ${rv} is_a? String ${typeof rv === "string"}`,
-            );
-          }
-          return rv;
-        },
-        macro_name,
-      );
-    } else {
-      typecheck.add_fn(null, macro_name);
-    }
-
-    // function_registration
-    if ("register_functions" in provider) {
-      function_registration.add_fn(
-        (c: MacroContext): TCResult => {
-          const rv = provider.register_functions(c);
-          if (typeof rv === "string") {
-            throw new Error(
-              `String... ${rv} is_a? String ${typeof rv === "string"}`,
-            );
-          }
-          return rv;
-        },
-        macro_name,
-      );
-    } else {
-      function_registration.add_fn(null, macro_name);
-    }
-
-    // emission
-    if ("emission" in provider) {
-      emission.add_fn(
-        (c: MacroContext) => provider.emission(c),
-        macro_name,
-      );
-    } else {
-      emission.add_fn(null, macro_name);
-    }
-
-    // type_registration
-    if ("register_type" in provider) {
-      type_registration.add_fn(
-        (c: MacroContext) => provider.register_type(c),
-        macro_name,
-      );
-    } else {
-      type_registration.add_fn(null, macro_name);
-    }
-
-    // type_detail_registration
-    if ("register_type_details" in provider) {
-      type_detail_registration.add_fn(
-        (c: MacroContext) => provider.register_type_details(c),
-        macro_name,
-      );
-    } else {
-      type_detail_registration.add_fn(null, macro_name);
-    }
+  const preprocess = create_registry<Preprocessing_context>("preprocess", Preprocessing_context);
+  const typecheck = create_registry<Type_checking_context>("typecheck", Type_checking_context);
+  const emission = create_registry<Emission_macro_context>("emission", Emission_macro_context);
+  const type_registration = create_registry<Type_registration_context>("type_registration", Type_registration_context);
+  for (const p of providers) {
+    p[REGISTER_MACRO_PROVIDERS]((
+      ctxType,
+      macro_name,
+      proc,
+    ) => {
+      const registry = not_null(registries.get(ctxType));
+      registry.add_fn(proc as Ctx_proc<Macro_context>, macro_name);
+    });
   }
 
   const rv = new Macrocosm(
@@ -547,10 +420,7 @@ export function create_macrocosm(): Macrocosm {
     typecheck,
     preprocess,
     type_registration,
-    type_detail_registration,
-    function_registration,
   );
-  Object.assign(rv.registries, registries);
   return rv;
 }
 

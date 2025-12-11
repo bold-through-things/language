@@ -120,26 +120,75 @@ if (is_Deno) {
 }
 
 
+class _0x3f_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x40_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
     {
     }
     {    
-        let _0x40_phrase = "hello world";
-        let _0x41_final_count = "0";
+        let _0x46_phrase = "hello world";
+        let _0x47_final_count = "0";
         {    
-            const _0x4b_phrase = _0x40_phrase;
-            const _0x4c__pipeline_result = _0x4b_phrase;
-            const _0x4d_split = _67lang.string_split(_0x4c__pipeline_result, " ");
-            const _0x4e__pipeline_result = _0x4d_split;
-            const _0x4f_length = _0x4e__pipeline_result.length;
-            const _0x50__pipeline_result = _0x4f_length;
-            let _0x42_words = _0x50__pipeline_result;
-            (_0x41_final_count = Number.prototype.toString.call(_0x50__pipeline_result));
-            let _0x43_test = _0x42_words;
+            const _0x4a_phrase = _0x46_phrase;
+            const _0x4b__pipeline_result = _0x4a_phrase;
+            const _0x4c_split = _67lang.string_split(_0x4b__pipeline_result, " ");
+            const _0x4d__pipeline_result = _0x4c_split;
+            const _0x4e_length = _0x4d__pipeline_result.length;
+            const _0x4f__pipeline_result = _0x4e_length;
+            let _0x48_words = _0x4f__pipeline_result;
+            (_0x47_final_count = Number.prototype.toString.call(_0x4f__pipeline_result));
+            let _0x49_test = _0x48_words;
         }
     
-        console.log(_0x41_final_count);
+        console.log(_0x47_final_count);
     }
 
 })();

@@ -120,19 +120,68 @@ if (is_Deno) {
 }
 
 
+class _0x3f_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x40_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
     {
     }
     {    
-        let _0x40_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"} as Record<string, string>;
-        console.log(_0x40_user);
-        let _0x41_my_set = _67lang.new_set("apple", "banana", "cherry");
-        console.log(_0x41_my_set);
-        let _0x42_my_list = [-2, -1, 0, 1, 2, 3] as Array<number>;
-        console.log(_0x42_my_list);
-        let _0x43_simple_list = [1, 2, 3] as Array<number>;
-        console.log(_0x43_simple_list);
+        let _0x46_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"} as Record<string, string>;
+        console.log(_0x46_user);
+        let _0x47_my_set = _67lang.new_set("apple", "banana", "cherry");
+        console.log(_0x47_my_set);
+        let _0x48_my_list = [-2, -1, 0, 1, 2, 3] as Array<number>;
+        console.log(_0x48_my_list);
+        let _0x49_simple_list = [1, 2, 3] as Array<number>;
+        console.log(_0x49_simple_list);
     }
 
 })();

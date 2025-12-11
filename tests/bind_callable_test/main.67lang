@@ -2,13 +2,13 @@ note Testing bind macro for creating partial function applications
 
 fn handle_message
 	param bot
-		type str
+		type named str
 	param message
-		type str
+		type named str
 	param is_trusted
-		type bool
+		type named bool
 	returns
-		type void
+		type named void
 	do
 		do print
 			string "Bot: "

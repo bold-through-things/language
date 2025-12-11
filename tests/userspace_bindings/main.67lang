@@ -3,16 +3,16 @@ fn my_push is PrototypeCall
 	constructor Array
 	fn push
 	param self
-		type list
-			type T var
+		type named list
+			type named T var
 	param item
-		type T var
+		type named T var
 	returns
-		type void
+		type named void
 
 local test
 	list
-		type str
+		type named str
 do my_push the test
 	string "t"
 do my_push the test

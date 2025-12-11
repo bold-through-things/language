@@ -1,6 +1,6 @@
 for i in
 	list
-		type int
+		type named int
 		int 1
 		int 2  
 		int 3
@@ -10,4 +10,4 @@ while
 
 fn name
 	returns
-		type void
+		type named void

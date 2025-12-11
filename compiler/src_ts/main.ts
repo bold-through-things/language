@@ -15,7 +15,7 @@ import { TreeParser } from "./core/tree_parser.ts";
 import {
   create_macrocosm,
 } from "./core/macrocosm.ts";
-import { MetaValue } from "./core/meta_value.ts";
+import { JSON_value } from "./core/meta_value.ts";
 
 import "./compiler_types/type_hierarchy.ts"; // side-effect: loads type hierarchy
 import { Fixed, parseTokens } from "./utils/new_parser.ts";
@@ -48,7 +48,7 @@ example...
 "wait, it's just SQL?!"
 `;
 
-type InspectionEntry = Record<string, MetaValue>;
+type InspectionEntry = Record<string, JSON_value>;
 
 // ---- helpers ----
 
@@ -95,14 +95,14 @@ function parseArgsNew(args: string[]): {
   const parsed = parseTokens(args, argsSchema);
 
   function required(arg: keyof typeof parsed): string {
-    if (parsed[arg] && parsed[arg].length > 0) {
+    if (parsed[arg] && parsed[arg][0] !== undefined) {
       return parsed[arg][0].value.join("");
     }
     throw new Error(`missing required argument: ${arg}`);
   }
 
   function optional(arg: keyof typeof parsed): string | null {
-    if (parsed[arg] && parsed[arg].length > 0) {
+    if (parsed[arg] && parsed[arg][0] !== undefined) {
       return parsed[arg][0].value.join("");
     }
     return null;
@@ -183,26 +183,7 @@ function main(): void {
 
   const itsJustMacros = create_macrocosm();
 
-  // registry summary (only strings; adjust .all return type in your reg impl as needed)
-  const codegenMacros = Object.keys(
-    itsJustMacros.registries["emission"].all,
-  ).join(", ");
-  const typecheckMacros = Object.keys(
-    itsJustMacros.registries["typecheck"].all,
-  ).join(", ");
-  const preprocessorMacros = Object.keys(
-    itsJustMacros.registries["preprocess"].all,
-  ).join(", ");
-
-  default_logger.registry(
-    `macro registry initialized with codegen macros: ${codegenMacros}`,
-  );
-  default_logger.registry(
-    `typecheck registry initialized with typecheck macros: ${typecheckMacros}`,
-  );
-  default_logger.registry(
-    `preprocessor registry initialized with preprocessor macros: ${preprocessorMacros}`,
-  );
+  default_logger.registry("[registry] registering macro whatever"); // uhh TODO
 
   const parserInst = new TreeParser();
 

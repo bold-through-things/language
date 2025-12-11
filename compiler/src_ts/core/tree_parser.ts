@@ -19,7 +19,7 @@ class TrimStack<T> {
     }
   }
 
-  get(index: number): T {
+  get(index: number): T | undefined {
     return this.data[index];
   }
 
@@ -93,8 +93,14 @@ export class TreeParser {
         `line ${lineNum}: indent=${indent}, content='${line}'`,
       );
 
+      const parent = scope.get(indent - 1);
+      if (parent === undefined) {
+        throw new Error(
+          `Invalid indentation at line ${lineNum}: ${raw}`,
+        );
+      }
       const node = new ParsingNode(line, new Position(lineNum));
-      scope.get(indent - 1).children.push(node);
+      parent.children.push(node);
       scope.set(indent, node);
       scope.trim(indent);
     }

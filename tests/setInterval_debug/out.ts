@@ -120,9 +120,58 @@ if (is_Deno) {
 }
 
 
+class _0x40_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x46_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
-    const _0x40_test_fn = async function (
+    const _0x3f_test_fn = async function (
     ) {    
         {    
             console.log("test");
@@ -131,7 +180,7 @@ void (async () => {
     {
     }
     {    
-        globalThis.setTimeout((() => _0x40_test_fn()), 100);
+        globalThis.setTimeout((() => _0x3f_test_fn()), 100);
     }
 
 })();

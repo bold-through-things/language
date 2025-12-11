@@ -9,7 +9,12 @@ a rough roadmap the way things stand.
 - reorganize the tests
 - use tags for tests
 - type checking must be done within a single step
-- emit TypeScript to help debugging speed
-- eliminate `exists` `inside`
 - support varargs
 - we're missing coverage for `break`
+- use `yo` and `pls` to start our pipelines now
+- use `str` for values too
+- require every call be clarified by using arguments by name
+- should flip `Upwalker` now
+- `yielding $param_name`
+- improve the fucking logging yo
+- begin bootstrapping. it is time.

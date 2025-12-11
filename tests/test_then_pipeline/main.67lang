@@ -16,7 +16,7 @@ do
 	then as words do length
 	then into final_count do str
 	local test
-		type int
+		type named int
 		get words
 
 note print the result

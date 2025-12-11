@@ -1,29 +1,45 @@
 // macros/for_macro.ts
 
 import {
-  Macro_preprocess_provider,
-  MacroContext
+  Macro_context,
+  Macro_provider,
+  Register_macro_providers,
+  REGISTER_MACRO_PROVIDERS
 } from "../core/macro_registry.ts";
 
 import { ErrorType } from "../utils/error_types.ts";
 import { Node } from "../core/node.ts";
+import { Preprocessing_context } from "../pipeline/steps/processing.ts";
 
-export class For_macro_provider implements Macro_preprocess_provider {
-  private assert_for_syntax(ctx: MacroContext, parts: string[]): void {
-    ctx.compiler.assert_(
+export class For_macro_provider implements Macro_provider {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Preprocessing_context, "for", this.preprocess.bind(this));
+  }
+
+  private assert_for_syntax(ctx: Macro_context, parts: string[]): void {
+    ctx.compiler.error_tracker.assert(
       parts.length >= 3,
-      ctx.node,
-      "must have a syntax: for $ident in"
+      {
+        node: ctx.node,
+        message: "must have a syntax: for $ident in",
+        type: ErrorType.INVALID_STRUCTURE,
+      }
     );
-    ctx.compiler.assert_(
+    ctx.compiler.error_tracker.assert(
       parts[0] === "for",
-      ctx.node,
-      "must start with `for`"
+      {
+        node: ctx.node,
+        message: "must start with `for`",
+        type: ErrorType.INVALID_STRUCTURE,
+      }
     );
-    ctx.compiler.assert_(
+    ctx.compiler.error_tracker.assert(
       parts[2] === "in",
-      ctx.node,
-      "must have a syntax: for $ident in"
+      {
+        node: ctx.node,
+        message: "must have a syntax: for $ident in",
+        type: ErrorType.INVALID_STRUCTURE,
+      }
     );
   }
 
@@ -31,18 +47,20 @@ export class For_macro_provider implements Macro_preprocess_provider {
     return node.children.find((c) => c.content === "do") ?? null;
   }
 
-  private take_iterable_child(ctx: MacroContext): Node {
+  private take_iterable_child(ctx: Macro_context): Node {
     const expr_nodes = ctx.node.children.filter((c) => c.content !== "do");
-    ctx.compiler.assert_(
-      expr_nodes.length === 1,
-      ctx.node,
-      `must have a single argument, the list provider (got ${expr_nodes.map((c) => c.content)})`,
-      ErrorType.WRONG_ARG_COUNT
+    ctx.compiler.error_tracker.assert(
+      expr_nodes.length === 1 && expr_nodes[0] !== undefined,
+      {
+        node: ctx.node,
+        message: `must have a single argument, the list provider (got ${expr_nodes.map((c) => c.content)})`,
+        type: ErrorType.WRONG_ARG_COUNT,
+      }
     );
     return expr_nodes[0];
   }
 
-  preprocess(ctx: MacroContext): void {
+  preprocess(ctx: Macro_context): void {
     const parts = ctx.node.content.split(" ");
     this.assert_for_syntax(ctx, parts);
 
@@ -50,7 +68,14 @@ export class For_macro_provider implements Macro_preprocess_provider {
     const pos = ctx.node.pos!;
 
     const body_node = this.find_body_node(ctx.node);
-    ctx.compiler.assert_(body_node !== null, ctx.node, "must have a `do` block");
+    ctx.compiler.error_tracker.assert(
+      body_node !== null, 
+      { 
+        node: ctx.node, 
+        message: "must have a `do` block",
+        type: ErrorType.INVALID_STRUCTURE,
+      }
+    );
 
     const iterable_ast = this.take_iterable_child(ctx);
 
@@ -106,13 +131,20 @@ export class For_macro_provider implements Macro_preprocess_provider {
     replacement.append_child(while_node);
 
     const parent = ctx.node.parent;
-    ctx.compiler.assert_(parent !== null, ctx.node, "internal error: for-node has no parent");
+    ctx.compiler.error_tracker.assert(
+      parent !== null, 
+      {
+        node: ctx.node, 
+        message: "internal error: for-node has no parent",
+        type: ErrorType.INTERNAL_CODE_QUALITY,
+      }
+    );
 
     parent!.replace_child(ctx.node, replacement);
 
     replacement.children.forEach((child) => {
       const cctx = ctx.clone_with({ node: child });
-      ctx.current_step!.process_node(cctx);
+      cctx.apply();
     });
   }
 }

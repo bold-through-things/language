@@ -120,24 +120,72 @@ if (is_Deno) {
 }
 
 
+class _0x40_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x46_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
-    const _0x40_process_list = async function (    
+    const _0x3f_process_list = async function (    
         my_list: Array<string>,
     ) {    
         {    
-            let _0x41_my_list = my_list;
-            let _0x42_copied_list = Array.prototype.slice.call(_0x41_my_list);
-            Array.prototype.reverse.call(_0x42_copied_list);
-            return _0x42_copied_list;
+            let _0x47_copied_list = Array.prototype.slice.call(my_list);
+            Array.prototype.reverse.call(_0x47_copied_list);
+            return _0x47_copied_list;
         }
     }
     {
     }
     {    
-        let _0x43_test_list = ["a", "b", "c"] as Array<string>;
-        let _0x44_result = (await (_0x40_process_list(_0x43_test_list)));
-        console.log(_0x44_result);
+        let _0x48_test_list = ["a", "b", "c"] as Array<string>;
+        let _0x49_result = (await (_0x3f_process_list(_0x48_test_list)));
+        console.log(_0x49_result);
     }
 
 })();

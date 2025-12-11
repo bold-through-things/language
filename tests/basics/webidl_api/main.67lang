@@ -16,7 +16,7 @@ local decoder
 
 local text_tests
 	list
-		type str
+		type named str
 		string "ASCII text"
 		string "Unicode: 🦕 Deno"
 		string "Numbers: 42"
@@ -69,8 +69,8 @@ do print
 
 local testObj
 	dict
-		type str for K
-		type str for V
+		type named str for K
+		type named str for V
 		entry
 			string "name"
 			string "Claude"
@@ -85,11 +85,10 @@ local jsonString
 	do str:JSON the testObj
 
 local parsedObj
-	67lang:assume_type_valid
-	type dict
-		type str
-		type *
-	do parse:JSON the jsonString
+	type named dict
+		type named str for K
+		type named 67lang:unknown for V
+	do JSON:str the jsonString
 
 do print
 	string "Original object -> JSON: "
@@ -107,17 +106,17 @@ do fetch as response
 	string "data:application/json,{"67lang": "is fucking awesome"}"
 	note the params
 	dict
-		type str for K
-		type str for V
+		type named str for K
+		type named str for V
 
 do print
 	get response
 	get json from response
 
-type MyEncoder is JS:object
+type named MyEncoder is JS:object
 	constructor TextEncoder
 
-type MyUint8Array is JS:object
+type named MyUint8Array is JS:object
 	constructor Uint8Array
 
 note TODO just honestly remove these here
@@ -126,11 +125,11 @@ fn encode is PrototypeCall
 	constructor TextEncoder
 	fn encode
 	param self
-		type MyEncoder
+		type named MyEncoder
 	param input
-		type str
+		type named str
 	returns
-		type MyUint8Array
+		type named MyUint8Array
 
 local encoder2
 	do MyEncoder

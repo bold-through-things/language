@@ -1,10 +1,12 @@
 // pipeline/steps/must_compile_error_verification.ts
 
-import { MacroProcessingStep } from "./base.ts";
-import { Macro_ctx_void_proc, MacroContext, MacroRegistry } from "../../core/macro_registry.ts";
+import { Macro_context, Macro_registry } from "../../core/macro_registry.ts";
 import { Args, Macro, Node } from "../../core/node.ts";
 import { default_logger } from "../../utils/logger.ts";
 import { ErrorType } from "../../utils/error_types.ts";
+import { Macrocosm } from "../../core/macrocosm.ts";
+import { Macro_error } from "../../core/exceptions.ts";
+import { unroll_parent_chain } from "./utils.ts";
 
 // ----------------------- helpers -----------------------
 
@@ -28,32 +30,50 @@ function mv_to_s(v: unknown): string | null {
 
 // ----------------------- main step -----------------------
 
-export class MustCompileErrorVerificationStep extends MacroProcessingStep {
-  private expectations: Array<Expectation>;
+export class Must_compile_error_context implements Macro_context {
+  node: Node;
+  compiler: Macrocosm;
+  registry: Macro_registry<Must_compile_error_context>;
+  expectations: Array<Expectation> = [];
 
-  constructor(public override macros: MacroRegistry<Macro_ctx_void_proc>) {
-    super();
-    this.macros = macros;
-    this.expectations = [];
+  constructor(opts: {
+    node: Node;
+    compiler: Macrocosm,
+    registry: Macro_registry<Must_compile_error_context>,
+    expectations: Expectation[],
+  }) {
+    this.node = opts.node;
+    this.compiler = opts.compiler;
+    this.registry = opts.registry;
+    this.expectations = opts.expectations || [];
   }
 
-  process_node(ctx: MacroContext): null {
-    const macroName = String(ctx.compiler.get_metadata(ctx.node, Macro));
+  clone_with(opts: { node: Node }): Must_compile_error_context {
+    return new Must_compile_error_context({
+      node: opts.node ?? this.node,
+      compiler: this.compiler,
+      registry: this.registry,
+      expectations: this.expectations,
+    });
+  }
+
+  apply(): null {
+    const macroName = String(this.compiler.get_metadata(this.node, Macro));
 
     if (macroName === "must_compile_error") {
-      const exp = this.extract_expectations_from_node(ctx, ctx.node);
+      const exp = this.extract_expectations_from_node(this, this.node);
       if (exp) {
-        this.expectations.push(new Expectation(ctx.node, exp));
+        this.expectations.push(new Expectation(this.node, exp));
       }
     } else {
-      for (const child of ctx.node.children) {
-        const childCtx = ctx.clone_with({ node: child });
-        this.process_node(childCtx);
+      for (const child of this.node.children) {
+        const childCtx = this.clone_with({ node: child });
+        childCtx.apply();
       }
     }
 
-    if (ctx.node.content === "67lang:solution") {
-      this.verify_expectations(ctx, this.expectations);
+    if (this.node.content === "67lang:solution") {
+      this.verify_expectations(this, this.expectations);
       this.expectations = [];
     }
 
@@ -63,18 +83,18 @@ export class MustCompileErrorVerificationStep extends MacroProcessingStep {
   // ------------------- extraction -------------------
 
   private extract_expectations_from_node(
-    ctx: MacroContext,
+    ctx: Macro_context,
     node: Node,
   ): Map<number, string> | null {
     const args = String(ctx.compiler.get_metadata(node, Args) ?? "");
     default_logger.macro(`must_compile_error with args: "${args}"`);
 
     if (args.trim() === "") {
-      ctx.compiler.compile_error(
+      ctx.compiler.error_tracker.fail({
         node,
-        "must_compile_error macro requires arguments in format ERROR_TYPE=line or ERROR_TYPE=+offset",
-        ErrorType.INVALID_MACRO,
-      );
+        message: "must_compile_error macro requires arguments in format ERROR_TYPE=line or ERROR_TYPE=+offset",
+        type: ErrorType.INVALID_MACRO,
+      });
       return null;
     }
 
@@ -82,16 +102,18 @@ export class MustCompileErrorVerificationStep extends MacroProcessingStep {
     const expected = new Map<number, string>();
 
     for (const pair of args.split(/\s+/)) {
-      if (!pair.includes("=")) {
-        ctx.compiler.compile_error(
-          node,
-          `must_compile_error argument must contain '=': ${pair}`,
-          ErrorType.INVALID_MACRO,
-        );
-        return null;
-      }
-
       const [rawType, rawNum] = pair.split("=", 2).map((x) => x.trim());
+
+      
+      ctx.compiler.error_tracker.assert(
+        rawType !== undefined && rawNum !== undefined,
+        {
+          node,
+          message: `must_compile_error argument must contain '=': ${pair}`,
+          type: ErrorType.INVALID_MACRO,
+        }
+      );
+
       let lineNum: number | null = null;
 
       if (rawNum.startsWith("+")) {
@@ -104,11 +126,11 @@ export class MustCompileErrorVerificationStep extends MacroProcessingStep {
       }
 
       if (lineNum === null) {
-        ctx.compiler.compile_error(
+        ctx.compiler.error_tracker.fail({
           node,
-          `invalid line number in must_compile_error: ${rawNum} (use absolute line number or +offset)`,
-          ErrorType.INVALID_MACRO,
-        );
+          message: `invalid line number in must_compile_error: ${rawNum} (use absolute line number or +offset)`,
+          type: ErrorType.INVALID_MACRO,
+        });
         return null;
       }
 
@@ -121,78 +143,49 @@ export class MustCompileErrorVerificationStep extends MacroProcessingStep {
   // ------------------- verification -------------------
 
   private verify_expectations(
-    ctx: MacroContext,
+    ctx: Macro_context,
     expectations: Array<Expectation>,
   ): void {
-    const actualByLine = new Map<number, Array<string>>();
-
-    for (const err of ctx.compiler.compile_errors) {
-      const line_v = err["line"];
-      if (line_v == null) {
-        continue;
-      }
-      const line_i = mv_to_i(line_v);
-      if (line_i == null) {
-        continue;
-      }
-
-      const type_v = err["error_type"];
-      const etype = mv_to_s(type_v) ?? "UNKNOWN_ERROR";
-
-      let arr = actualByLine.get(line_i);
-      if (!arr) {
-        arr = [];
-        actualByLine.set(line_i, arr);
-      }
-      arr.push(etype);
+    function line(err: Macro_error): number {
+      return err.node.pos?.line ?? 0;
     }
 
-    const consumed = new Set<number>();
+    const all_ours = ctx.compiler.error_tracker.all.filter((e) => unroll_parent_chain(e.node).includes(ctx.node));
+
+    const actualByLine: [/*line*/ number, ErrorType, Macro_error][] = [];
+
+    for (const err of all_ours) {
+      actualByLine.push([line(err), err.type, err]);
+    }
+
+    const consumed: Macro_error[] = [];
 
     for (const exp of expectations) {
       for (const [expectedLine, expectedType] of exp.expected_errors) {
-        const actual = actualByLine.get(expectedLine);
-
-        if (!actual) {
-          const nearby: Array<string> = [];
-          const sorted = [...actualByLine.keys()].sort((a, b) => a - b);
-          for (const ln of sorted) {
-            if (Math.abs(ln - expectedLine) <= 3) {
-              nearby.push(`line ${ln}: ${actualByLine.get(ln)}`);
+        ctx.compiler.error_tracker.safely(ctx, () => {
+          const matched = actualByLine.filter(([line, type]) =>
+            line === expectedLine && type === expectedType
+          );
+          ctx.compiler.error_tracker.assert(
+            matched.length > 0,
+            {
+              node: exp.node,
+              message: `expected compile error of type ${expectedType} at line ${expectedLine}, but none found`,
+              type: ErrorType.EXPECTATION_VIOLATED,
             }
+          );
+          for (const [, , err] of matched) {
+            consumed.push(err);
           }
-          const info = nearby.length === 0
-            ? ""
-            : ` (nearby errors: ${nearby.join("; ")})`;
-
-          ctx.compiler.compile_error(
-            exp.node,
-            `expected ${expectedType} error on line ${expectedLine} but no error found${info}`,
-            ErrorType.ASSERTION_FAILED,
-          );
-        } else if (!actual.includes(expectedType)) {
-          ctx.compiler.compile_error(
-            exp.node,
-            `expected ${expectedType} error on line ${expectedLine} but found ${actual}`,
-            ErrorType.ASSERTION_FAILED,
-          );
-        } else {
-          consumed.add(expectedLine);
-        }
+        });
       }
     }
-
-    ctx.compiler.compile_errors = ctx.compiler.compile_errors.filter((err) => {
-      const ln = mv_to_i(err["line"]);
-      if (ln == null) {
-        return true;
-      }
-      return !consumed.has(ln);
-    });
+    
+    for (const error of consumed) {
+      ctx.compiler.error_tracker.tolerate(error, "matched by `must_compile_error` macro");
+    }
   }
 }
-
-// ----------------------- expectation wrapper -----------------------
 
 class Expectation {
   public node: Node;

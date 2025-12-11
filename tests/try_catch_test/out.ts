@@ -120,6 +120,55 @@ if (is_Deno) {
 }
 
 
+class _0x3f_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x40_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
     {
@@ -132,11 +181,10 @@ void (async () => {
             throw "Test error message";
             console.log("This should not print");
         } catch (    
-            error
+            _0x46_error
         ) {    
-            let _0x40_error = error;
             console.log("Caught error:");
-            console.log(_0x40_error);
+            console.log(_0x46_error);
         } finally {    
             {    
                 console.log("Finally block executed");

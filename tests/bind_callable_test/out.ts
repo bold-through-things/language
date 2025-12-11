@@ -120,30 +120,76 @@ if (is_Deno) {
 }
 
 
+class _0x40_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x46_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
-    const _0x40_handle_message = async function (    
+    const _0x3f_handle_message = async function (    
         bot: string,
         message: string,
         is_trusted: boolean,
     ) {    
         {    
-            let _0x41_is_trusted = is_trusted;
-            let _0x42_message = message;
-            let _0x43_bot = bot;
-            console.log("Bot: ", _0x43_bot, ", Message: ", _0x42_message, ", Trusted: ", _0x41_is_trusted);
+            console.log("Bot: ", bot, ", Message: ", message, ", Trusted: ", is_trusted);
         }
     }
     {
     }
     {    
         console.log("=== Testing bind callable ===");
-        let _0x44_bound_handler = ((arg0: string) => _0x40_handle_message("MyBot", arg0, true));
-        (await (_0x44_bound_handler("Hello from bind test!")));
-        let _0x45_multi_bound = ((arg0: string, arg1: string) => _0x40_handle_message(arg0, arg1, false));
-        (await (_0x45_multi_bound("AnotherBot", "Multiple unbound test")));
-        let _0x46_fully_bound = (() => _0x40_handle_message("FullyBoundBot", "This message is pre-bound", true));
-        (await (_0x46_fully_bound()));
+        let _0x47_bound_handler = ((arg0: string) => _0x3f_handle_message("MyBot", arg0, true));
+        (await (_0x47_bound_handler("Hello from bind test!")));
+        let _0x48_multi_bound = ((arg0: string, arg1: string) => _0x3f_handle_message(arg0, arg1, false));
+        (await (_0x48_multi_bound("AnotherBot", "Multiple unbound test")));
+        let _0x49_fully_bound = (() => _0x3f_handle_message("FullyBoundBot", "This message is pre-bound", true));
+        (await (_0x49_fully_bound()));
         console.log("print manually");
         (await ((() => console.log("or a bound print"))()));
     }

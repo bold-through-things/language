@@ -120,25 +120,73 @@ if (is_Deno) {
 }
 
 
+class _0x41_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x46_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x47_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
-    const _0x42_main_test = async function (
+    const _0x40_main_test = async function (
     ) {    
         {    
-            let _0x43_ws = (new WebSocket("wss://example.com"));
-            WebSocket.prototype.send.call(_0x43_ws, "Hello WebSocket");
-            let _0x44_message = "Another message";
-            WebSocket.prototype.send.call(_0x43_ws, _0x44_message);
-            (_0x43_ws.onmessage = (((arg0: any) => _0x40_message_handler(arg0))));
-            (_0x43_ws.onopen = (((arg0: any) => _0x40_message_handler(arg0))));
-            (_0x43_ws.onclose = (((arg0: any) => _0x40_message_handler(arg0))));
+            let _0x48_ws = (new WebSocket("wss://example.com"));
+            WebSocket.prototype.send.call(_0x48_ws, "Hello WebSocket");
+            let _0x49_message = "Another message";
+            WebSocket.prototype.send.call(_0x48_ws, _0x49_message);
+            (_0x48_ws.onmessage = (((arg0: unknown) => _0x3f_message_handler(arg0))));
+            (_0x48_ws.onopen = (((arg0: unknown) => _0x3f_message_handler(arg0))));
+            (_0x48_ws.onclose = (((arg0: unknown) => _0x3f_message_handler(arg0))));
         }
     }
-    const _0x40_message_handler = async function (    
-        event: any,
+    const _0x3f_message_handler = async function (    
+        event: unknown,
     ) {    
         {    
-            let _0x41_event = event;
             console.log("Message received");
         }
     }

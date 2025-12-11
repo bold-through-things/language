@@ -1,32 +1,28 @@
 // macros/literal_value_macros.ts
 
-import { MacroContext, TCResult } from "../core/macro_registry.ts";
-import {
-  Macro_emission_provider,
-  Macro_typecheck_provider,
-  Macro_preprocess_provider,
-  Macro_code_linking_provider
-} from "../core/macro_registry.ts";
+import { Macro_context, Macro_provider, REGISTER_MACRO_PROVIDERS, Register_macro_providers } from "../core/macro_registry.ts";
 
 import { ErrorType } from "../utils/error_types.ts";
 import { Args, Node } from "../core/node.ts";
-import {
-  INT,
-  FLOAT,
-  STRING,
-  REGEX,
-} from "../compiler_types/proper_types.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
+import { Preprocessing_context } from "../pipeline/steps/processing.ts";
+import { Type_checking_context } from "../pipeline/steps/typechecking.ts";
+import { Expression_return_type, Type_check_result } from "../compiler_types/proper_types.ts";
 
 // ----- Number -----
 
-export class Number_macro_provider
-  implements Macro_emission_provider, Macro_typecheck_provider, Macro_preprocess_provider
-{
+export class Number_macro_provider implements Macro_provider {
   constructor(
     private number_type: "int" | "float" // simpler discriminator
   ) {}
 
-  preprocess(ctx: MacroContext): void {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Preprocessing_context, this.number_type, this.preprocess.bind(this));
+    via(Type_checking_context, this.number_type, this.typecheck.bind(this));
+    via(Emission_macro_context, this.number_type, this.emission.bind(this));
+  }
+
+  preprocess(ctx: Macro_context): void {
     const arg = ctx.compiler.get_metadata(ctx.node, Args).toString();
 
     let ok = false;
@@ -42,20 +38,21 @@ export class Number_macro_provider
         this.number_type === "int"
           ? ErrorType.INVALID_INT
           : ErrorType.INVALID_FLOAT;
-      ctx.compiler.assert_(
-        false,
-        ctx.node,
-        `${arg} must be a valid ${this.number_type}.`,
-        err
-      );
+      ctx.compiler.error_tracker.fail({
+        node: ctx.node,
+        message: `${arg} must be a valid ${this.number_type}.`,
+        type: err,
+      });
     }
   }
 
-  typecheck(ctx: MacroContext): TCResult {
-    return this.number_type === "int" ? INT : FLOAT;
+  typecheck(ctx: Type_checking_context): Type_check_result {
+    const int = ctx.type_engine.get_type("int");
+    const float = ctx.type_engine.get_type("float");
+    return new Expression_return_type(this.number_type === "int" ? int : float);
   }
 
-  emission(ctx: MacroContext): void {
+  emission(ctx: Emission_macro_context): void {
     const arg = ctx.compiler.get_metadata(ctx.node, Args).toString();
     ctx.expression_out.push(() => arg);
   }
@@ -72,31 +69,33 @@ function collect_content(node: Node, depth: number, out: string[]): void {
   }
 }
 
-export class String_macro_provider
-  implements
-    Macro_emission_provider,
-    Macro_typecheck_provider,
-    Macro_preprocess_provider,
-    Macro_code_linking_provider
-{
+export class String_macro_provider implements Macro_provider {
   constructor(private kind: "string" | "regex") {}
 
-  preprocess(_ctx: MacroContext): void {
+  [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
+    via(Preprocessing_context, this.kind, this.preprocess.bind(this));
+    via(Type_checking_context, this.kind, this.typecheck.bind(this));
+    via(Emission_macro_context, this.kind, this.emission.bind(this));
+  }
+
+  preprocess(_ctx: Macro_context): void {
     // noop
   }
 
-  typecheck(_ctx: MacroContext): TCResult {
-    return this.kind === "string" ? STRING : REGEX;
+  typecheck(ctx: Type_checking_context): Type_check_result {
+    const string = ctx.type_engine.get_type("str");
+    const regex = ctx.type_engine.get_type("regex");
+    return new Expression_return_type(this.kind === "string" ? string : regex);
   }
 
-  code_linking(_ctx: MacroContext): void {
+  code_linking(_ctx: Macro_context): void {
     // noop
   }
 
-  emission(ctx: MacroContext): void {
+  emission(ctx: Emission_macro_context): void {
     let s = ctx.compiler.get_metadata(ctx.node, Args).toString();
 
-    if (s.length === 0) {
+    if (s[0] === undefined) {
       // multiline
       const lines: string[] = [];
       for (const ch of ctx.node.children) {
@@ -105,10 +104,13 @@ export class String_macro_provider
       s = lines.join("\n");
     } else {
       const delim = s[0];
-      ctx.compiler.assert_(
+      ctx.compiler.error_tracker.assert(
         s.endsWith(delim),
-        ctx.node,
-        "must be delimited on both sides with the same character"
+        {
+          node: ctx.node,
+          message: "must be delimited on both sides with the same character",
+          type: ErrorType.INVALID_STRUCTURE,
+        }
       );
       s = s.slice(1, -1);
     }

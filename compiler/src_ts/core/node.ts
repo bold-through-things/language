@@ -3,8 +3,7 @@
 // Side-effect imports to mirror Crystal requires; you'll fill these in later.
 import "../utils/utils.ts";
 import "../pipeline/call_conventions.ts";
-import { Call_convention } from "../pipeline/call_conventions.ts";
-import { TCResult } from "./macro_registry.ts";
+import { Function_67lang, Type_check_result } from "../compiler_types/proper_types.ts";
 
 // --- Position ---
 
@@ -83,7 +82,7 @@ export class Node {
       }
     });
 
-    if (matches.length === 0) {
+    if (matches[0] === undefined) {
       throw new Error("target child not found");
     }
 
@@ -125,6 +124,10 @@ export class Node {
     // reverse_each + insert(index) to preserve order
     for (let i = replacement.length - 1; i >= 0; i--) {
       const child = replacement[i];
+
+      if (child === undefined) {
+        throw new Error("sparse array");
+      }
 
       // detach from old parent if present
       const p = child._parent;
@@ -271,24 +274,19 @@ export class SaneIdentifier {
 
 // TODO: remove and store Type objects directly
 export class FieldDemandType {
-  tc: TCResult;
-
-  constructor(tc: TCResult) {
-    this.tc = tc;
+  constructor(public readonly tc: Type_check_result) {
+    // ..
   }
 }
 
-// Stores the resolved calling convention for a function call
-export class ResolvedConvention {
-  convention: Call_convention; // Call_convention placeholder
-
-  constructor(convention: Call_convention) {
-    this.convention = convention;
+export class Resolved_function {
+  constructor(public readonly fn: Function_67lang) {
+    // ...
   }
 }
 
 export class Resolved_type {
-  constructor(public readonly type: TCResult) {
+  constructor(public readonly type: Type_check_result) {
     // ...
   }
 }

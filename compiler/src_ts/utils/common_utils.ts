@@ -1,18 +1,14 @@
 // utils/common_utils.ts
 
 import { cut, Emission_item } from "./strutil.ts";
-import { MacroContext } from "../core/macro_registry.ts";
-import { Args, Node } from "../core/node.ts";
+import { Macro_context } from "../core/macro_registry.ts";
+import { Args } from "../core/node.ts";
 import { default_logger } from "./logger.ts";
-import { IndentedStringIO } from "../utils/strutil.ts";
-import { JavaScriptEmissionStep } from "../pipeline/steps/emission.ts";
+import { Emission_macro_context } from "../pipeline/steps/emission.ts";
+import { ErrorType } from "./error_types.ts";
 
 // Expressions from children
-export function collect_child_expressions(ctx: MacroContext): Emission_item[] {
-  if (!(ctx.current_step instanceof JavaScriptEmissionStep)) {
-    throw new Error("collect_child_expressions can only be used during emission step");
-  }
-
+export function collect_child_expressions(ctx: Emission_macro_context): Emission_item[] {
   const expressions: Emission_item[] = [];
 
   default_logger.debug(`collecting expressions from ${ctx.node.children.length} children`);
@@ -21,7 +17,7 @@ export function collect_child_expressions(ctx: MacroContext): Emission_item[] {
     default_logger.indent("debug", `processing child ${i}: ${child.content}`, () => {
       const out: Emission_item[] = [];
       const cctx = ctx.clone_with({ node: child, expression_out: out });
-      ctx.current_step!.process_node(cctx);
+      cctx.apply();
 
       expressions.push(...out);
     });
@@ -34,7 +30,7 @@ export function collect_child_expressions(ctx: MacroContext): Emission_item[] {
 }
 
 // Types from children
-export function collect_child_types(ctx: MacroContext): string[] {
+export function collect_child_types(ctx: Macro_context): string[] {
   const types: string[] = [];
 
   default_logger.typecheck(`collecting types from ${ctx.node.content}`);
@@ -42,7 +38,7 @@ export function collect_child_types(ctx: MacroContext): string[] {
   ctx.node.children.forEach((child, i) => {
     default_logger.indent("typecheck", `type checking child ${i}: ${child.content}`, () => {
       const cctx = ctx.clone_with({ node: child });
-      const t = ctx.current_step!.process_node(cctx);
+      const t = cctx.apply();
 
       if (t) {
         types.push(String(t));
@@ -59,25 +55,23 @@ export function collect_child_types(ctx: MacroContext): string[] {
 
 // Run a processing step for children with safety wrapper
 export function process_children_with_context(
-  ctx: MacroContext,
-  step_processor: { process_node(c: MacroContext): any },
+  ctx: Macro_context,
 ): void {
-  default_logger.debug(
-    `processing children of ${ctx.node.content} with ${step_processor.constructor.name}`,
-  );
 
   ctx.node.children.forEach((child, i) => {
     default_logger.indent("debug", `processing child ${i}: ${child.content}`, () => {
-      ctx.compiler.safely(() => {
+      ctx.compiler.error_tracker.safely(ctx, () => {
         const cctx = ctx.clone_with({ node: child });
-        step_processor.process_node(cctx);
+        cctx.apply();
       });
     });
   });
 }
 
 // Metadata arg getter
-export function get_args_string(ctx: MacroContext): string {
+export function get_args_string(
+  ctx: Macro_context,
+): string {
   const args = ctx.compiler.get_metadata(ctx.node, Args).toString();
   default_logger.debug(`extracted args: '${args}'`);
   return args;
@@ -85,13 +79,20 @@ export function get_args_string(ctx: MacroContext): string {
 
 // Require exactly one arg
 export function get_single_arg(
-  ctx: MacroContext,
+  ctx: Macro_context,
   error_msg = "must have a single argument",
 ): string {
   const args = get_args_string(ctx);
   const [first, rest] = cut(args, " ");
 
-  ctx.compiler.assert_(rest === "", ctx.node, error_msg);
+  ctx.compiler.error_tracker.assert(
+    rest === "",
+    {
+      node: ctx.node,
+      message: error_msg,
+      type: ErrorType.INVALID_MACRO,
+    }
+  );
   default_logger.debug(`validated single arg: '${first}'`);
 
   return first;
@@ -99,13 +100,20 @@ export function get_single_arg(
 
 // Require exactly two args
 export function get_two_args(
-  ctx: MacroContext,
+  ctx: Macro_context,
   error_msg = "must have exactly two arguments",
 ): [string, string] {
   const args = get_args_string(ctx);
-  const parts = args.split(" ");
+  const parts = args.split(" ", 2);
 
-  ctx.compiler.assert_(parts.length === 2, ctx.node, error_msg);
+  ctx.compiler.error_tracker.assert(
+    parts[0] !== undefined && parts[1] !== undefined,
+    {
+      node: ctx.node,
+      message: error_msg,
+      type: ErrorType.INVALID_MACRO,
+    }
+  );
   default_logger.debug(`validated two args: '${parts[0]}', '${parts[1]}'`);
 
   return [parts[0], parts[1]];

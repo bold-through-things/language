@@ -1,10 +1,10 @@
-note Test WebSocket.send() union type support and EventHandler compatibility
+note Test WebSocket.send() union type named support and EventHandler compatibility
 
 fn message_handler
 	param event
-		type *
+		type named 67lang:unknown
 	returns
-		type void
+		type named void
 	do
 		note This function acts as an EventHandler
 		do print
@@ -12,7 +12,7 @@ fn message_handler
 
 fn main_test
 	returns
-		type void
+		type named void
 	do
 		note Create WebSocket instance
 		do WebSocket as ws
@@ -25,7 +25,7 @@ fn main_test
 		
 		note Test 2: WebSocket.send() with string variable
 		local message
-			type str
+			type named str
 			string "Another message"
 		do send
 			get ws

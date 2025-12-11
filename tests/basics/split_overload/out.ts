@@ -120,14 +120,63 @@ if (is_Deno) {
 }
 
 
+class _0x3f_inside_dot_SPEC {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x40_Interval_ID {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x41_Response {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x42_TextDecoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x43_Uint8Array {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x44_TextEncoder {
+    constructor(
+    ) {
+    }
+}
+
+
+class _0x45_URL {
+    constructor(
+    ) {
+    }
+}
+
+
 void (async () => {
     'use strict';
     {
     }
     {    
-        let _0x40_str = "testing";
-        console.log(_67lang.string_split(_0x40_str, "t"));
-        console.log(_67lang.string_split(_0x40_str, /t/));
+        let _0x46_str = "testing";
+        console.log(_67lang.string_split(_0x46_str, "t"));
+        console.log(_67lang.string_split(_0x46_str, /t/));
     }
 
 })();

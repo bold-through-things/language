@@ -1,11 +1,11 @@
-type Heartbeat is heap_entry
+type named Heartbeat is heap_entry
 	has heartbeat_interval
-		type int
+		type named int
 	has sequence_number
-		type int
+		type named int
 
 local heartbeat
-	type Heartbeat
+	type named Heartbeat
 	get Heartbeat
 		int 0
 		int 0
@@ -18,6 +18,6 @@ note that `fn` is not a closure, which means that it does not
 	see the `heartbeat`
 fn send_heartbeat
 	returns
-		type void
+		type named void
 	do
 		get sequence_number from heartbeat

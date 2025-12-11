@@ -18,11 +18,11 @@ note 67lang is very strict and quite particular. we will not parse spaces
 
 
 local name
-	type str
+	type named str
 	string "Alice"
 
 local age
-	type int
+	type named int
 	int 25
 
 note we prefer snake_case.
@@ -91,9 +91,9 @@ note that still works. how come?! the `do` and `get` are aliases.
 
 fn greet
 	param person
-		type str
+		type named str
 	returns
-		type str
+		type named str
 	do
 		return
 			do concat
@@ -115,7 +115,7 @@ note the above is roughly equivalent to following JS
 
 local numbers
 	list
-		type int
+		type named int
 		int 1
 		int 2
 		int 3
@@ -145,7 +145,7 @@ note the above is roughly equivalent to following JS
 
 
 note i commented out this code because
-	`type * for V` conundrum is unclear.
+	`type named unknown for V` conundrum is unclear.
 
 	we probably will not support that actually...
 	instead i'd rather force the users to know all their dicts
@@ -155,8 +155,8 @@ note i commented out this code because
 	
 	local user
 		dict
-			type str for K
-			type * for V
+			type named str for K
+			type named unknown for V
 			entry
 				string "employed"
 				true
@@ -166,8 +166,8 @@ note i commented out this code because
 			entry
 				string "address"
 				dict
-					type str for K
-					type str for V
+					type named str for K
+					type named str for V
 					entry
 						string "city"
 						string "New York"
@@ -242,20 +242,20 @@ note the above is roughly equivalent to following JS
 
 
 
-type Person is heap_entry
+type named Person is heap_entry
 	has name
-		type str
+		type named str
 	has age
-		type int
+		type named int
 
 local alice
 	do Person
 		string "Alice"
 		int 30
 		
-	note this shouldn't be needed, but type checking
+	note this shouldn't be needed, but type named checking
 		is a work in progress
-	type Person
+	type named Person
 
 do print
 	get name from alice
@@ -335,7 +335,7 @@ note this prints 2 as well. it is quite flexible. but even better!
 
 local things_to_say
 	list
-		type str
+		type named str
 		string "67lang is awesome"
 		string "67lang is flexible as fuck"
 		string "67lang is all you ever need"
@@ -355,9 +355,9 @@ for thing in
 			do split the thing
 				string " "
 			do
-				note this is needed temporarily... TODO! bad type inference!
+				note this is needed temporarily... TODO! bad type named inference!
 				local word
-					type str
+					type named str
 					get word
 				note this crazy `then` nonsense!
 				get length from word
@@ -449,8 +449,8 @@ note that, oh yeah, you can now do closures! kind of.
 
 fn create_counter
 	returns
-		type callable
-			type int for RV
+		type named callable
+			type named int for RV
 	do
 		note you do need a class or dict
 			as the bound values are literals.
@@ -458,17 +458,17 @@ fn create_counter
 		note oh good, great, we can't use : in class names.
 			bug! TODO!
 			and in param names too i guess. TODO!
-		type create_counter_store is heap_entry
+		type named create_counter_store is heap_entry
 			has count
-				type int
+				type named int
 		local _
 			get create_counter_store
 				int 0
 		fn create_counter::count
 			param _
-				type create_counter_store
+				type named create_counter_store
 			returns
-				type int
+				type named int
 			do
 				do add as new
 					get count from _
@@ -511,13 +511,13 @@ note `bind` is far more flexible...
 
 fn bool_printer
 	param value
-		type bool
+		type named bool
 	param if_true
-		type str
+		type named str
 	param if_false
-		type str
+		type named str
 	returns
-		type void
+		type named void
 	do
 		if
 			get value
