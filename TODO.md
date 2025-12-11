@@ -18,3 +18,4 @@ a rough roadmap the way things stand.
 - `yielding $param_name`
 - improve the fucking logging yo
 - begin bootstrapping. it is time.
+- i kind of fucking hate `discovery.ts` stop passing those JSONs around... do validation, types

@@ -1,5 +1,6 @@
 // test_modules/discovery.ts
-import { fileExists, readFile, TEST_ROOT } from "./paths.ts";
+import { JSON_value } from "../compiler/src_ts/core/meta_value.ts";
+import { readFile, TEST_ROOT } from "./paths.ts";
 
 export interface TestCase {
     name: string;
@@ -12,7 +13,7 @@ export interface DiscoveryArgs {
     glob: string | null;
 }
 
-export function discoverTests(args: DiscoveryArgs): TestCase[] {
+export function discoverTests(_args: DiscoveryArgs): TestCase[] {
     const results: TestCase[] = [];
 
     const testsRoot = TEST_ROOT;
@@ -21,6 +22,17 @@ export function discoverTests(args: DiscoveryArgs): TestCase[] {
         const baseDir = entry.dir;
 
         for (const row of entry.json) {
+            if (
+                typeof row !== "object" || 
+                row === null || 
+                Array.isArray(row) || 
+                row === undefined ||
+                typeof row.code !== "string" ||
+                typeof row.case !== "string"
+            ) {
+                throw new Error(`what the fuck is this at ${entry.path}, ${JSON.stringify(row)}`);
+            }
+
             const codeGlobs = resolveGlob(row.code, baseDir);
             const caseGlobs = resolveGlob(row.case, baseDir);
 
@@ -42,7 +54,7 @@ export function discoverTests(args: DiscoveryArgs): TestCase[] {
     return results;
 }
 
-function* walkTestsJson(root: string): Generator<{ dir: string; json: any[] }> {
+function* walkTestsJson(root: string): Generator<{ dir: string; json: JSON_value[], path: string }> {
     for (const entry of Deno.readDirSync(root)) {
         if (entry.isDirectory) {
             const sub = `${root}/${entry.name}`;
@@ -57,14 +69,14 @@ function* walkTestsJson(root: string): Generator<{ dir: string; json: any[] }> {
                 continue;
             }
 
-            let json: any[];
+            let json: JSON_value[];
             try {
                 json = JSON.parse(text);
             } catch {
                 continue;
             }
 
-            yield { dir: dir, json: json };
+            yield { dir: dir, json: json, path: full };
         }
     }
 }

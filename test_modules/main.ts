@@ -44,15 +44,15 @@ interface NamedTest {
 function parseArgsNew(args: string[]): CliArgs {
     const parsed = parseTokens(args, argsSchema);
     
-    function required(arg: keyof typeof parsed): string {
-        if (parsed[arg] && parsed[arg].length > 0) {
+    function _required(arg: keyof typeof parsed): string {
+        if (parsed[arg] && parsed[arg][0] !== undefined) {
             return parsed[arg][0].value.join("");
         }
         throw new Error(`missing required argument: ${arg}`);
     }
     
     function optional(arg: keyof typeof parsed): string | null {
-        if (parsed[arg] && parsed[arg].length > 0) {
+        if (parsed[arg] && parsed[arg][0] !== undefined) {
             return parsed[arg][0].value.join("");
         }
         return null;
@@ -141,7 +141,7 @@ function joinPath(...parts: string[]): string {
     if (cleaned.length === 0) {
         return "";
     }
-    if (cleaned[0].startsWith("/")) {
+    if ((cleaned[0] ?? "").startsWith("/")) {
         return cleaned[0] + (cleaned.length > 1 ? "/" + cleaned.slice(1).join("/") : "");
     }
     return cleaned.join("/");

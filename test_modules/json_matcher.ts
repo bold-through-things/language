@@ -1,6 +1,6 @@
 // test_modules/json_matcher.ts
 
-type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
+import { JSON_value } from "../compiler/src_ts/core/meta_value.ts";
 
 class MatchError {
     path: string;
@@ -45,11 +45,11 @@ function typeName(x: unknown): string {
     return typeof x;
 }
 
-function isOpDict(d: unknown): d is Record<string, Json> {
+function isOpDict(d: unknown): d is Record<string, JSON_value> {
     if (!d || typeof d !== "object") {
         return false;
     }
-    for (const k of Object.keys(d as Record<string, Json>)) {
+    for (const k of Object.keys(d as Record<string, JSON_value>)) {
         if (k.startsWith("$")) {
             return true;
         }
@@ -58,11 +58,11 @@ function isOpDict(d: unknown): d is Record<string, Json> {
 }
 
 // forward declarations
-function matchAny(spec: Json, actual: Json, path: string, errs: MatchError[]): void;
+function matchAny(spec: JSON_value, actual: JSON_value, path: string, errs: MatchError[]): void;
 
-function matchAny(spec: Json, actual: Json, path: string, errs: MatchError[]): void {
+function matchAny(spec: JSON_value, actual: JSON_value, path: string, errs: MatchError[]): void {
     if (typeof spec === "object" && spec !== null && !Array.isArray(spec)) {
-        const specObj = spec as Record<string, Json>;
+        const specObj = spec as Record<string, JSON_value>;
         const hasArrayOps = ["$len", "$any", "$all", "$subset", "$items", "$count"].some((k) =>
             Object.prototype.hasOwnProperty.call(specObj, k)
         );
@@ -87,7 +87,7 @@ function matchAny(spec: Json, actual: Json, path: string, errs: MatchError[]): v
     }
 }
 
-function matchScalarOp(spec: Record<string, Json>, actual: Json, path: string, errs: MatchError[]): void {
+function matchScalarOp(spec: Record<string, JSON_value>, actual: JSON_value, path: string, errs: MatchError[]): void {
     for (const [op, val] of Object.entries(spec)) {
         if (["$len", "$any", "$all", "$subset", "$items", "$count", "$strict", "$forbid", "$where"].includes(op)) {
             continue;
@@ -153,7 +153,7 @@ function matchScalarOp(spec: Record<string, Json>, actual: Json, path: string, e
             // handled at object level
         } else if (op === "$not") {
             const subErrs: MatchError[] = [];
-            matchAny(val as Json, actual, path, subErrs);
+            matchAny(val as JSON_value, actual, path, subErrs);
             if (subErrs.length === 0) {
                 errs.push(new MatchError(path, `$not failed: value matches forbidden spec`));
             }
@@ -165,7 +165,7 @@ function matchScalarOp(spec: Record<string, Json>, actual: Json, path: string, e
             const allErrs: Array<[number, MatchError[]]> = [];
             let matched = false;
             for (let i = 0; i < val.length; i++) {
-                const s = val[i] as Json;
+                const s = val[i] as JSON_value;
                 const subErrs: MatchError[] = [];
                 matchAny(s, actual, path, subErrs);
                 if (subErrs.length === 0) {
@@ -176,7 +176,7 @@ function matchScalarOp(spec: Record<string, Json>, actual: Json, path: string, e
             }
             if (!matched) {
                 const flat = allErrs
-                    .map(([i, es]) => `alt[${i}] first error: ${es[0].toString()}`)
+                    .map(([i, es]) => `alt[${i}] first error: ${(es[0]??"").toString()}`)
                     .join("; ");
                 errs.push(new MatchError(path, `none of $oneOf matched; ${flat}`));
             }
@@ -186,13 +186,13 @@ function matchScalarOp(spec: Record<string, Json>, actual: Json, path: string, e
     }
 }
 
-function matchObject(spec: Record<string, Json>, actual: Json, path: string, errs: MatchError[]): void {
+function matchObject(spec: Record<string, JSON_value>, actual: JSON_value, path: string, errs: MatchError[]): void {
     if (typeof actual !== "object" || actual === null || Array.isArray(actual)) {
         errs.push(new MatchError(path, `expected object, got ${typeName(actual)}`));
         return;
     }
 
-    const actualObj = actual as Record<string, Json>;
+    const actualObj = actual as Record<string, JSON_value>;
 
     const strict = Boolean(spec["$strict"]);
     const forbidVal = spec["$forbid"];
@@ -224,61 +224,61 @@ function matchObject(spec: Record<string, Json>, actual: Json, path: string, err
             errs.push(new MatchError(jsonPath(path, k), "missing key"));
             continue;
         }
-        matchAny(spec[k] as Json, actualObj[k], jsonPath(path, k), errs);
+        matchAny(spec[k] as JSON_value, actualObj[k] ?? null, jsonPath(path, k), errs);
     }
 }
 
-function matches(want: Json, got: Json): [boolean, MatchError[]] {
+function matches(want: JSON_value, got: JSON_value): [boolean, MatchError[]] {
     const e: MatchError[] = [];
     matchAny(want, got, "$", e);
     return [e.length === 0, e];
 }
 
-function arrayCount(whereSpec: Json, actual: Json, path: string, cmpOps: Record<string, Json>, errs: MatchError[]): void {
+function arrayCount(whereSpec: JSON_value, actual: JSON_value, path: string, cmpOps: Record<string, JSON_value>, errs: MatchError[]): void {
     if (!Array.isArray(actual)) {
         errs.push(new MatchError(path, `expected array for $count, got ${typeName(actual)}`));
         return;
     }
     let n = 0;
     for (let i = 0; i < actual.length; i++) {
-        const el = actual[i] as Json;
+        const el = actual[i] as JSON_value;
         const [ok] = matches(whereSpec, el);
         if (ok) {
             n += 1;
         }
     }
-    matchScalarOp(cmpOps, n as unknown as Json, `${path}/$count`, errs);
+    matchScalarOp(cmpOps, n as unknown as JSON_value, `${path}/$count`, errs);
 }
 
 function unorderedKeyedMatch(
-    specItems: Json[],
-    actualItems: Json[],
-    keySpec: Json,   // string | string[]
+    specItems: JSON_value[],
+    actualItems: JSON_value[],
+    keySpec: JSON_value,   // string | string[]
     path: string,
     errs: MatchError[]
 ): void {
     type Key = string;
 
-    function extract(obj: Json, itemPath: string): Key | null {
+    function extract(obj: JSON_value, itemPath: string): Key | null {
         if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
             errs.push(new MatchError(itemPath, "$key requires object elements"));
             return null;
         }
 
-        const o = obj as Record<string, Json>;
+        const o = obj as Record<string, JSON_value>;
 
         if (typeof keySpec === "string") {
             return JSON.stringify([o[keySpec]]);
         }
 
         if (Array.isArray(keySpec)) {
-            const out: Json[] = [];
+            const out: JSON_value[] = [];
             for (const f of keySpec) {
                 if (typeof f !== "string") {
                     errs.push(new MatchError(itemPath, "$key fields must be strings"));
                     return null;
                 }
-                out.push(o[f]);
+                out.push(o[f] ?? null);
             }
             return JSON.stringify(out);
         }
@@ -290,26 +290,24 @@ function unorderedKeyedMatch(
     const specKeys: Key[] = [];
     const actualKeys: Key[] = [];
 
-    const specKeysMap = new Map<Key, Json>();
-    const actualKeysMap = new Map<Key, Json>();
+    const specKeysMap = new Map<Key, JSON_value>();
+    const actualKeysMap = new Map<Key, JSON_value>();
 
-    for (let i = 0; i < specItems.length; i++) {
-        const it = specItems[i];
+    specItems.forEach((it, i) => {
         const k = extract(it, jsonPath(path, i));
         if (k !== null) {
             specKeys.push(k);
             specKeysMap.set(k, it);
         }
-    }
+    });
 
-    for (let i = 0; i < actualItems.length; i++) {
-        const it = actualItems[i];
+    actualItems.forEach((it, i) => {
         const k = extract(it, jsonPath(path, i));
         if (k !== null) {
             actualKeys.push(k);
             actualKeysMap.set(k, it);
         }
-    }
+    });
 
     const missing: Key[] = [];
     const extra: Key[] = [];
@@ -368,16 +366,16 @@ function unorderedKeyedMatch(
 }
 
 
-function matchArrayController(spec: Record<string, Json>, actual: Json, path: string, errs: MatchError[]): void {
+function matchArrayController(spec: Record<string, JSON_value>, actual: JSON_value, path: string, errs: MatchError[]): void {
     if (!Array.isArray(actual)) {
         errs.push(new MatchError(path, `expected array, got ${typeName(actual)}`));
         return;
     }
 
     if ("$len" in spec) {
-        const want = spec["$len"] as Json;
+        const want = spec["$len"] as JSON_value;
         if (typeof want === "object" && want !== null && !Array.isArray(want)) {
-            matchScalarOp(want as Record<string, Json>, actual.length as unknown as Json, `${path}/$len`, errs);
+            matchScalarOp(want as Record<string, JSON_value>, actual.length as unknown as JSON_value, `${path}/$len`, errs);
         } else {
             const n = Number(want);
             if (actual.length !== n) {
@@ -389,9 +387,9 @@ function matchArrayController(spec: Record<string, Json>, actual: Json, path: st
     if ("$count" in spec) {
         const payload = spec["$count"];
         if (typeof payload === "object" && payload !== null && !Array.isArray(payload)) {
-            const payloadObj = payload as Record<string, Json>;
-            const where = (payloadObj["$where"] ?? {}) as Json;
-            const cmpOps: Record<string, Json> = {};
+            const payloadObj = payload as Record<string, JSON_value>;
+            const where = (payloadObj["$where"] ?? {}) as JSON_value;
+            const cmpOps: Record<string, JSON_value> = {};
             for (const [k, v] of Object.entries(payloadObj)) {
                 if (k.startsWith("$") && k !== "$where") {
                     cmpOps[k] = v;
@@ -402,10 +400,10 @@ function matchArrayController(spec: Record<string, Json>, actual: Json, path: st
     }
 
     if ("$any" in spec) {
-        const each = spec["$any"] as Json;
+        const each = spec["$any"] as JSON_value;
         let okAny = false;
         for (let i = 0; i < actual.length; i++) {
-            const el = actual[i] as Json;
+            const el = actual[i] as JSON_value;
             const subErrs: MatchError[] = [];
             matchAny(each, el, jsonPath(path, i), subErrs);
             if (subErrs.length === 0) {
@@ -419,28 +417,28 @@ function matchArrayController(spec: Record<string, Json>, actual: Json, path: st
     }
 
     if ("$all" in spec) {
-        const each = spec["$all"] as Json;
+        const each = spec["$all"] as JSON_value;
         for (let i = 0; i < actual.length; i++) {
-            const el = actual[i] as Json;
+            const el = actual[i] as JSON_value;
             matchAny(each, el, jsonPath(path, i), errs);
         }
     }
 
     if ("$subset" in spec) {
-        const subsetSpecs = Array.isArray(spec["$subset"]) ? spec["$subset"] as Json[] : [];
+        const subsetSpecs = Array.isArray(spec["$subset"]) ? spec["$subset"] as JSON_value[] : [];
         const keySpec = spec["$key"];
-        unorderedKeyedMatch(subsetSpecs, actual as Json[], keySpec, path, errs);
+        unorderedKeyedMatch(subsetSpecs, actual as JSON_value[], keySpec ?? null, path, errs);
     }
 
     if ("$items" in spec) {
-        const wantItems = Array.isArray(spec["$items"]) ? spec["$items"] as Json[] : [];
+        const wantItems = Array.isArray(spec["$items"]) ? spec["$items"] as JSON_value[] : [];
         const order = (spec["$order"] as string) ?? "any";
         if (order === "exact") {
             if (wantItems.length !== actual.length) {
                 errs.push(new MatchError(path, `$items exact: length mismatch ${wantItems.length} != ${actual.length}`));
             } else {
                 for (let i = 0; i < wantItems.length; i++) {
-                    matchAny(wantItems[i], actual[i] as Json, jsonPath(path, i), errs);
+                    matchAny(wantItems[i] ?? null, actual[i] as JSON_value, jsonPath(path, i), errs);
                 }
             }
         } else {
@@ -448,7 +446,7 @@ function matchArrayController(spec: Record<string, Json>, actual: Json, path: st
                 errs.push(new MatchError(path, `$items any: actual has ${actual.length} items, spec has ${wantItems.length}`));
             }
             const keySpec = spec["$key"];
-            unorderedKeyedMatch(wantItems, actual as Json[], keySpec, path, errs);
+            unorderedKeyedMatch(wantItems, actual as JSON_value[], keySpec ?? null, path, errs);
         }
     }
 }
@@ -466,16 +464,16 @@ export function validateJsonSpec(
     actualJsonText: string,
     specJsonText: string
 ): [boolean, string, string] {
-    let actual: Json;
+    let actual: JSON_value;
     try {
-        actual = JSON.parse(actualJsonText) as Json;
+        actual = JSON.parse(actualJsonText) as JSON_value;
     } catch (e) {
         return [false, `Actual errors-file is not valid JSON: ${String(e)}`, prettyJson(actualJsonText)];
     }
 
-    let spec: Json;
+    let spec: JSON_value;
     try {
-        spec = JSON.parse(specJsonText) as Json;
+        spec = JSON.parse(specJsonText) as JSON_value;
     } catch (e) {
         return [false, `Spec file is not valid JSON: ${String(e)}`, prettyJson(actualJsonText)];
     }

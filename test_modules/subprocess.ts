@@ -11,6 +11,9 @@ export interface RunOptions {
 }
 
 export async function runWithInput(args: string[], options: RunOptions = {}): Promise<RunResult> {
+    if (args[0] === undefined) {
+        throw new Error("no command");
+    }
     const cmd = new Deno.Command(args[0], {
         args: args.slice(1),
         cwd: options.cwd,

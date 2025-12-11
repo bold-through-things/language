@@ -1,5 +1,4 @@
 {
-    "python.analysis.typeCheckingMode": "strict",
     "deno.enable": true,
     "deno.lint": true
 }
