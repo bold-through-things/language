@@ -18,3 +18,5 @@ test_diffs/
 
 # TODO remove me (should probably download into a temp dir)
 typescript_defs
+
+tests/present/*

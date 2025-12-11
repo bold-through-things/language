@@ -1,28 +1,21 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run --unstable-raw-imports
 
-// main.ts — entrypoint (ported from main.cr)
-
-// expects: configure_logger_from_args(String | null) and default_logger
 import {
   configureLoggerFromArgs,
   default_logger,
 } from "./utils/logger.ts";
 
-// expects: class TreeParser with parseTree(src: string, macrocosm: any): Node
 import { TreeParser } from "./core/tree_parser.ts";
 
-// expects: createMacrocosm(): any, compileErrorsToJsonAny(errors): unknown, MetaValue type
 import {
   create_macrocosm,
 } from "./core/macrocosm.ts";
 import { JSON_value } from "./core/meta_value.ts";
 
-import "./compiler_types/type_hierarchy.ts"; // side-effect: loads type hierarchy
+import "./compiler_types/type_hierarchy.ts";
 import { Fixed, parseTokens } from "./utils/new_parser.ts";
 
-import bindings_code from "../../tests/bindings.67lang" with { type: "text" }
-
-// ---- CLI / usage ----
+import bindings_code from "../../tests/all/bindings.67lang" with { type: "text" }
 
 const USAGE = `67lang compiler. readable clause centric CLI.
 
@@ -50,8 +43,6 @@ example...
 
 type InspectionEntry = Record<string, JSON_value>;
 
-// ---- helpers ----
-
 function humanReadable(inspections: InspectionEntry[]): void {
   const encoder = new TextEncoder();
   const reversed = [...inspections].reverse();
@@ -70,7 +61,6 @@ function writeJson(inspections: unknown, output: { write(data: Uint8Array): void
   const encoder = new TextEncoder();
   const text = JSON.stringify(inspections, null, 2) + "\n";
   output.write(encoder.encode(text));
-  // no explicit flush needed; Deno handles it when closing
 }
 
 const argsSchema = {
@@ -154,10 +144,7 @@ function collect67Files(root: string, rte: boolean): string[] {
   return results;
 }
 
-// ---- main flow ----
-
 function main(): void {
-  // placeholder: will be overridden by --log if passed
   configureLoggerFromArgs(null);
 
   const {
@@ -169,7 +156,6 @@ function main(): void {
     rte,
   } = parseArgsNew(Deno.args);
 
-  // reconfigure logging with the user-provided tags
   configureLoggerFromArgs(logSpec);
 
   default_logger.compile("starting compilation process");

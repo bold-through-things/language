@@ -23,6 +23,7 @@ const argsSchema = {
     help: new Fixed(0),
     "--help": new Fixed(0),
     pass: new VarOrTerminated(null, []),
+    present: new Fixed(0),
 };
 
 
@@ -34,6 +35,7 @@ interface CliArgs {
     run: boolean;
     expand: boolean;
     compilerArgs: string[];
+    present: boolean;
 }
 
 interface NamedTest {
@@ -91,6 +93,7 @@ function parseArgsNew(args: string[]): CliArgs {
         run: flag("run"),
         expand: flag("expand"),
         compilerArgs: optional_many("pass"),
+        present: flag("present"),
     };
 
     if (!rv.run && !rv.compile) {
@@ -451,7 +454,7 @@ async function runSingleTest(tc: TestCase, args: CliArgs, stdinText: string | nu
 }
 
 async function testSilentCompilation(args: CliArgs, log: TestLog): Promise<void> {
-    const testDir = joinPath(Deno.cwd(), "tests", "basics", "anagram_groups");
+    const testDir = joinPath(Deno.cwd(), "tests", "all", "basics", "anagram_groups");
 
     const tmpDir = await Deno.makeTempDir();
     const outFile = joinPath(tmpDir, EXECUTABLE);
@@ -507,7 +510,7 @@ async function testSilentCompilation(args: CliArgs, log: TestLog): Promise<void>
 }
 
 async function testVerboseCompilation(args: CliArgs, log: TestLog): Promise<void> {
-    const testDir = joinPath(Deno.cwd(), "tests", "basics", "anagram_groups");
+    const testDir = joinPath(Deno.cwd(), "tests", "all", "basics", "anagram_groups");
 
     const tmpDir = await Deno.makeTempDir();
     const outFile = joinPath(tmpDir, EXECUTABLE);
@@ -653,8 +656,54 @@ async function runAllTests(args: CliArgs, stdinText: string | null): Promise<num
     return failed === 0 ? 0 : 1;
 }
 
+function present(args: CliArgs): void {
+    // tests/present
+    // 1. remove all symlinks
+    // 2. create symlinks only to tests that match the glob
+
+    for (const file of Deno.readDirSync(joinPath(Deno.cwd(), "tests", "present"))) {
+        const filePath = joinPath(Deno.cwd(), "tests", "present", file.name);
+        const stat = Deno.lstatSync(filePath);
+        if (stat.isSymlink) {
+            console.log(`removing symlink: ${filePath}`);
+            Deno.removeSync(filePath);
+        }
+    }
+
+    const used_names = new Set<string>();
+    function get_unique_name(base: string): string {
+        let name = base;
+        let counter = 1;
+        while (used_names.has(name)) {
+            name = `${base}_${counter}`;
+            counter += 1;
+        }
+        used_names.add(name);
+        return name;
+    }
+
+    const glob_filter = buildMidglob(args.glob);
+    const e2e = discoverTests({ glob: args.glob });
+    for (const tc of e2e) {
+        if (!glob_filter(tc.name)) {
+            console.log(`ignoring \`${tc.name}\` per midglob \`${args.glob}\``);
+            continue;
+        }
+        const linkPath = joinPath(Deno.cwd(), tc.defPath);
+        const uniqueName = get_unique_name(tc.name.replace(/\//g, "_"));
+        const destPath = joinPath(Deno.cwd(), "tests", "present", uniqueName);
+        console.log(`creating symlink: ${destPath} -> ${linkPath}`);
+        Deno.symlinkSync(linkPath, destPath, { type: "dir" });
+    }
+}
+
 export async function main(): Promise<void> {
     const args = parseArgsNew(Deno.args);
+
+    if (args.present) {
+        present(args);
+        Deno.exit(0);
+    }
 
     const stdinText = args.stdin ? await readAllStdin() : null;
 

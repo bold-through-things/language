@@ -1,5 +1,5 @@
 Current working directory:
-67lang:test_suite:project_path/tests/file_reading_test
+67lang:test_suite:project_path/tests/all/file_reading_test
 Reading sample.txt:
 Hello from sample file!
 This is line 2.
