@@ -1,0 +1,18 @@
+[
+  {
+    "recoverable": false,
+    "line": 2,
+    "char": 0,
+    "content": "int 67%",
+    "error": "67% must be a valid int.",
+    "error_type": "INVALID_INT"
+  },
+  {
+    "recoverable": false,
+    "line": 3,
+    "char": 0,
+    "content": "float 67%",
+    "error": "67% must be a valid float.",
+    "error_type": "INVALID_FLOAT"
+  }
+]

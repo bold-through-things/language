@@ -1,0 +1,18 @@
+[
+  {
+    "recoverable": false,
+    "line": 2,
+    "char": 0,
+    "content": "local int",
+    "error": "local typed int cannot accept a str",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
+  },
+  {
+    "recoverable": false,
+    "line": 6,
+    "char": 0,
+    "content": "local float",
+    "error": "local typed float cannot accept a str",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
+  }
+]

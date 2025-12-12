@@ -1,0 +1,27 @@
+{
+  "$items": [
+    {
+      "recoverable": false,
+      "line": 2,
+      "char": 0,
+      "content": {
+        "$contains": "int"
+      },
+      "error_type": "ARGUMENT_TYPE_MISMATCH"
+    },
+    {
+      "recoverable": false,
+      "line": 6,
+      "char": 0,
+      "content": {
+        "$contains": "float"
+      },
+      "error_type": "ARGUMENT_TYPE_MISMATCH"
+    }
+  ],
+  "$order": "any",
+  "$key": [
+    "line",
+    "error_type"
+  ]
+}

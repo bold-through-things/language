@@ -6,12 +6,18 @@ import { build_midglob, discover_tests, Test_case } from "./discovery.ts";
 import { validateJsonSpec } from "./json_matcher.ts";
 import { createTestDiffReporter } from "./test_diff_reporter.ts";
 import { getTestArtifacts } from "./test_artifacts.ts";
-import { Fixed, parseTokens, VarOrTerminated } from "../compiler/src_ts/utils/new_parser.ts";
+import { Fixed, ParsedClause, parseTokens, Schema, VarOrTerminated } from "../compiler/src_ts/utils/new_parser.ts";
 
 const USAGE = `67lang test runner.
 
 TODO
 `;
+
+const new_schema = {
+    path: new Fixed(1),
+    succeeds: new Fixed(0),
+    fails: new Fixed(0),
+}
 
 const argsSchema = {
     glob: new Fixed(1), // TODO i see the point for doing this varargs yes
@@ -24,10 +30,22 @@ const argsSchema = {
     "--help": new Fixed(0),
     pass: new VarOrTerminated(null, []),
     present: new Fixed(0),
+    new: new VarOrTerminated(null, [], new_schema),
 };
 
+interface Command_new {
+    command: "new";
+    path: string;
+    type: "succeeds" | "fails";
+}
 
-interface CliArgs {
+interface Command_present {
+    command: "present";
+    glob: string;
+}
+
+interface Command_default {
+    command: "default";
     glob: string | null;
     stdin: boolean;
     compile: boolean;
@@ -35,35 +53,42 @@ interface CliArgs {
     run: boolean;
     expand: boolean;
     compilerArgs: string[];
-    present: boolean;
 }
 
-interface NamedTest {
+type Command = Command_new | Command_present | Command_default;
+
+interface Named_test {
     name: string;
     fn: (log: TestLog) => Promise<void>;
 }
 
-function parseArgsNew(args: string[]): CliArgs {
+function parse_args(args: string[]): Command {
+    type Parsed_tree_node<T extends Schema> = {
+        [K in keyof T]: ParsedClause<Fixed | VarOrTerminated>[];
+    }
+
     const parsed = parseTokens(args, argsSchema);
+
+    // right, TODO these `0` are a problem
     
-    function _required(arg: keyof typeof parsed): string {
-        if (parsed[arg] && parsed[arg][0] !== undefined) {
-            return parsed[arg][0].value.join("");
+    function required<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): string {
+        if (node[arg] && node[arg][0] !== undefined) {
+            return node[arg][0].value.join("");
         }
         throw new Error(`missing required argument: ${arg}`);
     }
     
-    function optional(arg: keyof typeof parsed): string | null {
-        if (parsed[arg] && parsed[arg][0] !== undefined) {
-            return parsed[arg][0].value.join("");
+    function optional<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): string | null {
+        if (node[arg] && node[arg][0] !== undefined) {
+            return node[arg][0].value.join("");
         }
         return null;
     }
 
-    function optional_many(arg: keyof typeof parsed): string[] {
-        if (parsed[arg] && parsed[arg].length > 0) {
+    function optional_many<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): string[] {
+        if (node[arg] && node[arg].length > 0) {
             const results: string[] = [];
-            for (const entry of parsed[arg]) {
+            for (const entry of node[arg]) {
                 results.push(...entry.value);
             }
             return results;
@@ -71,29 +96,56 @@ function parseArgsNew(args: string[]): CliArgs {
         return [];
     }
 
-    function flag(arg: keyof typeof parsed): boolean {  
-        return parsed[arg] && parsed[arg].length > 0;
+    function flag<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): boolean {  
+        return (node[arg]?.length ?? 0) > 0;
+    }
+
+    function children<T extends Schema>(
+        node: Parsed_tree_node<T>, 
+        arg: (keyof T) & string
+    ): Parsed_tree_node<Exclude<T[typeof arg]["subParser"], undefined>> | null {
+        if (node[arg] && node[arg][0] !== undefined) {
+            return node[arg][0].children ?? null;
+        }
+        return null;
+    }
+
+    const new_node = children(parsed, "new");
+    if (new_node != null) {
+        const path = required(new_node, "path");
+        const succeeds = flag(new_node, "succeeds");
+        const fails = flag(new_node, "fails");
+        if (succeeds === fails) {
+            throw new Error("specify exactly one `succeeds` or `fails`");
+        }
+        const type = succeeds ? "succeeds" : "fails";
+        return { command: "new", path, type, }
+    }
+
+    if (flag(parsed, "present")) {
+        const glob = required(parsed, "present");
+        return { command: "present", glob,  };
     }
     
-    if (flag("help")) {
+    if (flag(parsed, "help")) {
         console.log(USAGE);
         Deno.exit(0);
     }
 
-    if (flag("--help")) {
+    if (flag(parsed, "--help")) {
         console.log("this isn't Unix flags. try 'help'?");
         Deno.exit(0);
     }
 
     const rv = {
-        glob: optional("glob"),
-        stdin: flag("stdin"),
-        compile: flag("compile"),
-        debug: flag("debug"),
-        run: flag("run"),
-        expand: flag("expand"),
-        compilerArgs: optional_many("pass"),
-        present: flag("present"),
+        command: "default" as const,
+        glob: optional(parsed, "glob"),
+        stdin: flag(parsed, "stdin"),
+        compile: flag(parsed, "compile"),
+        debug: flag(parsed, "debug"),
+        run: flag(parsed, "run"),
+        expand: flag(parsed, "expand"),
+        compilerArgs: optional_many(parsed, "pass"),
     };
 
     if (!rv.run && !rv.compile) {
@@ -205,7 +257,7 @@ async function validateGitignoreForTest(tc: Test_case): Promise<void> {
     }
 }
 
-function getCompilerCmd(_argsObj: CliArgs): string[] {
+function getCompilerCmd(_argsObj: Command_default): string[] {
     return [
         "deno",
         "run",
@@ -229,7 +281,7 @@ type TestLog = {
     execution: CommandOutput[];
 }
 
-async function runSingleTest(tc: Test_case, args: CliArgs, stdinText: string | null, scriptDir: string, log: TestLog): Promise<void> {
+async function runSingleTest(tc: Test_case, args: Command_default, stdinText: string | null, scriptDir: string, log: TestLog): Promise<void> {
     const caseDir = tc.case_path;
     const codeDir = tc.code_path;
 
@@ -431,9 +483,18 @@ async function runSingleTest(tc: Test_case, args: CliArgs, stdinText: string | n
                     throw new Error("Expected runtime failure");
                 }
             } else {
+                function strip_suffix(s: string, suffix: string): string {
+                    if (s.endsWith(suffix)) {
+                        return s.slice(0, s.length - suffix.length);
+                    }
+                    return s;
+                }
                 const expectedOut = (expectedStdoutRaw ?? "").trim().replace(
                     "67lang:test_suite:project_path",
                     scriptDir
+                ).replace(
+                    "67lang:test_suite:case_path",
+                    strip_suffix(caseDirAbs, "/."),
                 );
                 const [isEqual, errorMsg] = diffReporter.compareText(
                     stdout.trim(),
@@ -453,8 +514,8 @@ async function runSingleTest(tc: Test_case, args: CliArgs, stdinText: string | n
     await validateGitignoreForTest(tc);
 }
 
-async function testSilentCompilation(args: CliArgs, log: TestLog): Promise<void> {
-    const testDir = joinPath(Deno.cwd(), "tests", "all", "basics", "anagram_groups");
+async function testSilentCompilation(args: Command_default, log: TestLog): Promise<void> {
+    const testDir = joinPath(Deno.cwd(), "tests", "all", "examples", "anagram_groups");
 
     const tmpDir = await Deno.makeTempDir();
     const outFile = joinPath(tmpDir, EXECUTABLE);
@@ -509,8 +570,8 @@ async function testSilentCompilation(args: CliArgs, log: TestLog): Promise<void>
     }
 }
 
-async function testVerboseCompilation(args: CliArgs, log: TestLog): Promise<void> {
-    const testDir = joinPath(Deno.cwd(), "tests", "all", "basics", "anagram_groups");
+async function testVerboseCompilation(args: Command_default, log: TestLog): Promise<void> {
+    const testDir = joinPath(Deno.cwd(), "tests", "all", "examples", "anagram_groups");
 
     const tmpDir = await Deno.makeTempDir();
     const outFile = joinPath(tmpDir, EXECUTABLE);
@@ -552,11 +613,11 @@ async function testVerboseCompilation(args: CliArgs, log: TestLog): Promise<void
     }
 }
 
-async function runAllTests(args: CliArgs, stdinText: string | null): Promise<number> {
+async function runAllTests(args: Command_default, stdinText: string | null): Promise<number> {
     const scriptDir = Deno.cwd();
     const globFilter = build_midglob(args.glob);
 
-    const tests: NamedTest[] = [];
+    const tests: Named_test[] = [];
 
     const e2e = discover_tests({ glob: args.glob });
     for (const tc of e2e) {
@@ -656,7 +717,7 @@ async function runAllTests(args: CliArgs, stdinText: string | null): Promise<num
     return failed === 0 ? 0 : 1;
 }
 
-function present(args: CliArgs): void {
+function present(args: Command_present): void {
     // tests/present
     // 1. remove all symlinks
     // 2. create symlinks only to tests that match the glob
@@ -701,11 +762,55 @@ function present(args: CliArgs): void {
     }
 }
 
-export async function main(): Promise<void> {
-    const args = parseArgsNew(Deno.args);
+function new_(args: Command_new): void {
+    // assuming no case dir for now (`case`: ".")
+    const testDir = joinPath(Deno.cwd(), "tests", "all");
+    const fullPath = joinPath(testDir, args.path);
+    Deno.mkdirSync(fullPath, { recursive: true });
+    if (args.type === "succeeds") {
+        const codePath = joinPath(fullPath, "main.67lang");
+        Deno.writeTextFileSync(codePath, `note huge success\ndo print\n\tstring "huge success"\n`);
+        
+        const successOutPath = joinPath(fullPath, "success.stdout.expected");
+        Deno.writeTextFileSync(successOutPath, `huge success\n`);        
+    } else {
+        const codePath = joinPath(fullPath, "main.67lang");
+        Deno.writeTextFileSync(codePath, `note inevitable fail`);
 
-    if (args.present) {
+        const failureErrPath = joinPath(fullPath, "compile.stderr.expected.json");
+        Deno.writeTextFileSync(failureErrPath, JSON.stringify({
+            "$items": [
+                {
+                    "recoverable": false,
+                    "line": 1,
+                    "char": 0,
+                    "content": { "$contains": "failure" },
+                    "error_type": "INVALID_MACRO",
+                },
+            ],
+            "$order": "any",
+            "$key": ["line", "error_type"]
+        }, null, 2));
+    }
+    const testJsonPath = joinPath(fullPath, "tests.json");
+    const testJsonContent = {
+        code: ".",
+        case: ".",
+        tags: ["TODO"]
+    };
+    Deno.writeTextFileSync(testJsonPath, JSON.stringify([testJsonContent], null, 2));
+}
+
+export async function main(): Promise<void> {
+    const args = parse_args(Deno.args);
+
+    if (args.command === "present") {
         present(args);
+        Deno.exit(0);
+    }
+
+    if (args.command === "new") {
+        new_(args);
         Deno.exit(0);
     }
 

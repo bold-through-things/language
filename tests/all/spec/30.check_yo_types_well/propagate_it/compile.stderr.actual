@@ -1,0 +1,10 @@
+[
+  {
+    "recoverable": false,
+    "line": 3,
+    "char": 0,
+    "content": "local str",
+    "error": "local typed str cannot accept a int",
+    "error_type": "ARGUMENT_TYPE_MISMATCH"
+  }
+]

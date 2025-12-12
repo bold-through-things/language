@@ -1,0 +1,8 @@
+note this will error
+local str
+	type named str
+	int 67
+
+note this yields no error then
+do split the str
+	string " "

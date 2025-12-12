@@ -1,0 +1,7 @@
+local int
+	type named int
+	string "not an int though :3"
+
+local float
+	type named float
+	string "no float here either :3"

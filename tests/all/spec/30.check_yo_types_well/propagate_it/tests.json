@@ -1,0 +1,10 @@
+[
+  {
+    "code": ".",
+    "case": ".",
+    "tags": [
+      "type_checking",
+      "no_error_propagation"
+    ]
+  }
+]

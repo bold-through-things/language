@@ -1,0 +1,21 @@
+{
+  "$items": [
+    {
+      "recoverable": false,
+      "line": 2,
+      "char": 0,
+      "error_type": "INVALID_INT"
+    },
+    {
+      "recoverable": false,
+      "line": 3,
+      "char": 0,
+      "error_type": "INVALID_FLOAT"
+    }
+  ],
+  "$order": "any",
+  "$key": [
+    "line",
+    "error_type"
+  ]
+}
