@@ -44,7 +44,7 @@ do
 local i
 	int 0
 while
-	do nondesc
+	do asc(weak)?
 		get i
 		get n
 	do
@@ -52,33 +52,33 @@ while
 			string ""
 		
 		if
-			do eq
-				do mod
+			do eq?
+				do div(int,remainder)
 					get i
 					get fizz_divisor
 				int 0
 			then
-				do concat into out
+				do cat into out
 					get out
 					string "fizz"
 
 		if
-			do eq
-				do mod
+			do eq?
+				do div(int,remainder)
 					get i
 					get buzz_divisor
 				int 0
 			then
-				do concat into out
+				do cat into out
 					get out
 					string "buzz"
 		
 		if
-			do eq
+			do eq?
 				get out
 				string ""
 			then
-				do concat into out
+				do cat into out
 					note TODO why is this needed
 					string ""
 					do str the i
@@ -89,6 +89,6 @@ while
 		do i
 			local _fix_the_fucking_add_return_type
 				type named int
-				do add
+				do sum
 					get i
 					int 1

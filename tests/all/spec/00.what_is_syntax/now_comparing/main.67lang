@@ -1,0 +1,76 @@
+note okay TypeScript relax
+	compiler is too smart and tracks that 67 never equals 68
+	okay then!
+
+local 67
+	int 67
+
+local 68
+	do sum the 67
+		int 1
+
+note vro ts 🥀🥀🥀🥀🥀🥀
+
+do asc?
+	get 67
+	get 68
+then do print
+
+do asc?
+	get 68
+	get 67
+then do print
+
+do asc(weak)?
+	get 67
+	get 67
+	get 68
+then do print
+
+do asc(weak)?
+	get 68
+	get 67
+	get 68
+then do print
+
+do desc?
+	get 68
+	get 67
+then do print
+
+do desc?
+	get 67
+	get 68
+then do print
+
+do desc(weak)?
+	get 68
+	get 68
+	get 67
+then do print
+
+do desc(weak)?
+	get 67
+	get 68
+	get 67
+then do print
+
+do eq?
+	get 67
+	get 67
+then do print
+
+do eq?
+	get 67
+	get 68
+then do print
+
+do neq?
+	get 67
+	get 68
+then do print
+
+do neq?
+	get 67
+	get 67
+then do print

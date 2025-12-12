@@ -1,4 +1,4 @@
-do concat
+do cat
 	string "hello"
     string "world"
 

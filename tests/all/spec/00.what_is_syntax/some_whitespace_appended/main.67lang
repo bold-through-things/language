@@ -1,0 +1,9 @@
+note every line in this one has whitespace appended.      
+do print      
+	string "wowie you are telling me there are a bunch of spaces at the end?! -> "      
+      
+if      
+	true      
+	then      
+		do print	  
+			string "indeed"      

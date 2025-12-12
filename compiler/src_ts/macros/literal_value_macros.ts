@@ -53,8 +53,14 @@ export class Number_macro_provider implements Macro_provider {
   }
 
   emission(ctx: Emission_macro_context): void {
-    const arg = ctx.compiler.get_metadata(ctx.node, Args).toString();
-    ctx.expression_out.push(() => arg);
+    let num = ctx.compiler.get_metadata(ctx.node, Args).toString();
+    // strip leading pointless zeros since TypeScript explodes
+    num = num.replace(/^(-?)0+(\d)/, "$1$2");
+    const is_negative = num.startsWith("-");
+    if (is_negative) {
+      num = `(${num})`;
+    }
+    ctx.expression_out.push(() => num);
   }
 }
 

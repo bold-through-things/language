@@ -180,7 +180,7 @@ void (async () => {
             if (    
                 (0 <= _0x49_fucks_given)
             ) {    
-                (await (_0x41_fuck_bang_((_0x49_fucks_given + -1))));
+                (await (_0x41_fuck_bang_((_0x49_fucks_given + (-1)))));
             } else {
             }
         }
@@ -191,7 +191,7 @@ void (async () => {
         console.log("hello world");
         console.log("\"hello world\" is a fucking stupid non argument.");
         console.log("this literally cannot be true... yet it is: ", (("new year's eve" === ("new year's " + "eve")) && ("a very scary error" === ("a very " + "scary " + "error")) && ("your regex should be stored into the regex variable." === ("your regex" + " should be stored into the " + "regex" + " variable."))));
-        console.log("just write the newlines naturally and \nthey will appear in the output, meaning\nwhat you see is what you get.");
+        console.log("just write the newlines naturally and\nthey will appear in the output, meaning\nwhat you see is what you get.");
         console.log((2 + 0 + 2));
         console.log((0 < 1) && (1 < 2));
         let _0x4a_age = 23;
@@ -212,7 +212,7 @@ void (async () => {
         console.log(Array.prototype.join.call(Array.prototype.sort.call(_67lang.string_split(_0x50__2347, " ")), ", "));
         let _0x51__67lang_dot_features = {} as Record<string, string>;
         (_0x51__67lang_dot_features["the get macro"] = "a powerful and flexible method chaining \"syntax sugar\" with clear branching\neliminating the pain of using brackets and having to erase or insert the bracket\nat the beginning and then at the end inherently by being part of 67lang\nwhere indentation rules all.");
-        (_0x51__67lang_dot_features["the flexibility of identifiers"] = "anything can be an identifier. there is only whitespace and non whitespace. this \nfrees programmers to express their ideas in a truly direct and unleashed way.\nif you desire to have a variable named `$`, `,`, `?`, or even `true`, we are\nnot here to stop you. if you are stupid, you will certainly misuse this and obliterate\nyour foot. if you are smart, you will write the most readable code ever written.");
+        (_0x51__67lang_dot_features["the flexibility of identifiers"] = "anything can be an identifier. there is only whitespace and non whitespace. this\nfrees programmers to express their ideas in a truly direct and unleashed way.\nif you desire to have a variable named `$`, `,`, `?`, or even `true`, we are\nnot here to stop you. if you are stupid, you will certainly misuse this and obliterate\nyour foot. if you are smart, you will write the most readable code ever written.");
         const _0xb5__67lang_dot_features = _0x51__67lang_dot_features;
         if (_0xb5__67lang_dot_features["the flexibility of identifiers"] === undefined) { throw new Error("sparse array") }
         let _0x52__we_really_needed_the_generics_yesterday_bang_ = _0xb5__67lang_dot_features["the flexibility of identifiers"];

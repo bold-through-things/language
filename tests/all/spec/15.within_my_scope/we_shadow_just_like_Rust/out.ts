@@ -174,14 +174,15 @@ void (async () => {
     {
     }
     {    
-        let _0x46_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"} as Record<string, string>;
-        console.log(_0x46_user);
-        let _0x47_my_set = _67lang.new_set("apple", "banana", "cherry");
-        console.log(_0x47_my_set);
-        let _0x48_my_list = [(-2), (-1), 0, 1, 2, 3] as Array<number>;
-        console.log(_0x48_my_list);
-        let _0x49_simple_list = [1, 2, 3] as Array<number>;
-        console.log(_0x49_simple_list);
+        let _0x46__67 = 67;
+        {    
+            let _0x47__67 = 67.8;
+            console.log(_0x47__67);
+            let _0x48__67 = 2347;
+            console.log(_0x48__67);
+        }
+    
+        console.log(_0x46__67);
     }
 
 })();

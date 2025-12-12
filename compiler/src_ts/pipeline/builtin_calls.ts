@@ -89,26 +89,26 @@ export function load_builtins(ctx: Macro_context, engine: Type_engine): void {
   const V = new TypeVariable({ name: "V" });
 
   // N-ary logical/arithmetic ops expanded into fixed arities 1..MAX_NARY
-  spread_nary("concat", "+", T, max_nary, null);
-  spread_nary("any", "||", T);
-  spread_nary("all", "&&", T);
-  spread_nary("add", "+", T);
+  spread_nary("cat", "+", T, max_nary, null);
+  spread_nary("some?", "||", T);
+  spread_nary("every?", "&&", T);
+  spread_nary("sum", "+", T);
   spread_nary("sub", "-", T);
   spread_nary("mul", "*", T);
-  spread_nary("mod", "%", T);
+  spread_nary("div(int,remainder)", "%", T);
   spread_nary("div", "/", T);
 
   // none(x1, ..., xn) = ! (x1 || ... || xn)
-  spread_nary("none", "||", T, max_nary, "!");
+  spread_nary("none?", "||", T, max_nary, "!");
 
   // Chained comparisons expanded into fixed arities 1..MAX_NARY
-  spread_chain("asc", "<", T);
-  spread_chain("nondesc", "<=", T);
-  spread_chain("desc", ">", T);
-  spread_chain("nonasc", ">=", T);
-  spread_chain("eq", "===", T);
-  spread_chain("neq", "!==", T);
-
+  spread_chain("asc?", "<", T);
+  spread_chain("asc(weak)?", "<=", T);
+  spread_chain("desc?", ">", T);
+  spread_chain("desc(weak)?", ">=", T);
+  spread_chain("eq?", "===", T);
+  spread_chain("neq?", "!==", T);
+  
   // "#": list/dict indexing + assignment
   const list_T = get_complex_type("list")
     .configure({
@@ -303,5 +303,12 @@ export function load_builtins(ctx: Macro_context, engine: Type_engine): void {
       T,
     ];
     fn.returns = engine.get_type("bool");
+  });
+
+  engine.add_function("int->float", (fn: Function_67lang) => {
+    // oh yes this is a h*ck
+    fn.convention = new NaryOperatorCall({ operator: "+", async_mode: Async_mode.SYNC });
+    fn.demands = [engine.get_type("int")];
+    fn.returns = engine.get_type("float");
   });
 }

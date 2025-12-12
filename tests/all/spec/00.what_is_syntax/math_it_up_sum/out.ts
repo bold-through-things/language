@@ -174,14 +174,21 @@ void (async () => {
     {
     }
     {    
-        let _0x46_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"} as Record<string, string>;
-        console.log(_0x46_user);
-        let _0x47_my_set = _67lang.new_set("apple", "banana", "cherry");
-        console.log(_0x47_my_set);
-        let _0x48_my_list = [(-2), (-1), 0, 1, 2, 3] as Array<number>;
-        console.log(_0x48_my_list);
-        let _0x49_simple_list = [1, 2, 3] as Array<number>;
-        console.log(_0x49_simple_list);
+        const _0x49_sum = (67 + 0 + 6);
+        const _0x4a__pipeline_result = _0x49_sum;
+        let _0x46_small = _0x4a__pipeline_result;
+        console.log(_0x4a__pipeline_result);
+        console.log((67.8 + 0 + 6.0));
+        console.log((67 - 0 - 6));
+        console.log((67.8 - 0 - 6.0));
+        const _0x59_mul = (67 * 6 * 1);
+        const _0x5a__pipeline_result = _0x59_mul;
+        let _0x47_huge = _0x5a__pipeline_result;
+        console.log(_0x5a__pipeline_result);
+        let _0x48_huge = (_0x47_huge + _0x46_small);
+        console.log((67.8 * 6.0 * 1.0));
+        console.log((67.8 / 6.0 / 1.0));
+        console.log((_0x48_huge % 67 % 6));
     }
 
 })();

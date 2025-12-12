@@ -44,8 +44,8 @@ for line in
 		
 		# TODO - this ought to be a macro.
 		if
-			do none
-				do eq the deps_str
+			do none?
+				do eq? the deps_str
 					string ""
 			then
 				do trim the deps_str
@@ -131,7 +131,7 @@ fn visit
 								do push the dep_loop
 									get chain_dep_id
 								if
-									do eq
+									do eq?
 										get chain_dep_id
 										get dep_id
 									then
@@ -175,13 +175,13 @@ for module in
 
 get unroller
 if
-	do nondesc
+	do asc(weak)?
 		int 1
 		then chain dep_loops length
 	then
 		get unroller
 		do print
-			do concat
+			do cat
 				string "ERROR: there are dependency loops.\n"
 				then chain dep_loops join
 					string "\n"

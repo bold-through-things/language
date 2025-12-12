@@ -1,0 +1,58 @@
+note right of course we are for now restricted down to 6 parameters per call
+	TODO varargs!
+do sum
+	int 0
+	int -0
+	int 00
+	int -00
+	int 000
+	int -000
+then do sum
+	int 0000
+	int -0000
+	int 00000
+	int -00000
+	int 000000
+note and also this is broken since this `sum` is taking `T` but then cannot resolve between
+	the `int` and `float` here
+then do sum
+	int 67
+	int -67 
+then do sum
+	int 067
+	int -067
+	int 0067
+	int -0067
+then do int->float
+then do sum
+	float 0
+	float -0
+	float 00
+then do sum
+	float -00
+	float 000
+	float -000
+	float 0000
+	float -0000
+then do sum
+	float 00000
+	float -00000
+	float 000000
+	float -000000
+	float -000000.000000
+then do sum
+	float 67
+	float -67
+	float 67.8
+	float -67.8
+then do sum
+	float 067.8
+	float -067.8
+	float 0067.8
+	float -0067.8
+then do print
+
+do sum
+	float 67.8
+	float 67.80
+then do print

@@ -90,7 +90,7 @@ export class For_macro_provider implements Macro_provider {
     const local_list = ctx.compiler.make_node(`local ${list_ident}`, pos, []);
     local_list.append_child(iterable_ast);
 
-    const cond = ctx.compiler.make_node("do asc", pos, []);
+    const cond = ctx.compiler.make_node("do asc?", pos, []); // TODO this breaks if ever you rename the `asc?` though
     cond.append_child(
       ctx.compiler.make_node(`get ${idx_ident}`, pos, [])
     );

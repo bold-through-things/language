@@ -174,14 +174,13 @@ void (async () => {
     {
     }
     {    
-        let _0x46_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"} as Record<string, string>;
-        console.log(_0x46_user);
-        let _0x47_my_set = _67lang.new_set("apple", "banana", "cherry");
-        console.log(_0x47_my_set);
-        let _0x48_my_list = [(-2), (-1), 0, 1, 2, 3] as Array<number>;
-        console.log(_0x48_my_list);
-        let _0x49_simple_list = [1, 2, 3] as Array<number>;
-        console.log(_0x49_simple_list);
+        console.log("wowie you are telling me there are a bunch of spaces at the end?! -> ");
+        if (    
+            true
+        ) {    
+            console.log("indeed");
+        } else {
+        }
     }
 
 })();

@@ -14,7 +14,7 @@ for word in
 	get words
 	do
 		if
-			do none
+			do none?
 				do has_keys the count
 					get word
 			then
@@ -27,7 +27,7 @@ for word in
 		do #
 			get count
 			get word
-			do add
+			do sum
 				int 1
 				do #
 					get count

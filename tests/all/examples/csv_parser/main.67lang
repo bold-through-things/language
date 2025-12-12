@@ -28,7 +28,7 @@ for line in
 	get lines
 	do
 		if
-			do eq
+			do eq?
 				get i
 				int 0
 			then
@@ -59,7 +59,7 @@ for line in
 		do i
 			local _please_fix_the_fucking_varargs_add
 				type named int
-				do add
+				do sum
 					get i
 					int 1
 
@@ -78,13 +78,13 @@ for row in
 		if
 			note TODO - the test case should probably strain this asc
 				on what happens if age is 30
-			do asc
+			do asc?
 				do int:parse
 					do # the row
 						string "age"
 				int 30
 			then
-				do add into age_over_30
+				do sum into age_over_30
 					get age_over_30
 					int 1
 

@@ -1,0 +1,38 @@
+do every?
+	true
+	true
+then do print
+	string "indeed"
+
+do every?
+	true
+	true
+	false
+then do print
+	string "indeed"
+
+do some?
+	false
+	false
+then do print
+	string "indeed"
+
+do some?
+	false
+	false
+	true
+then do print
+	string "indeed"
+
+do none?
+	false
+	false
+then do print
+	string "indeed"
+
+do none?
+	false
+	true
+	true
+then do print
+	string "indeed"

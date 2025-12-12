@@ -52,21 +52,21 @@ note what happened there. did you forget to escape quotes? no, it's perfectly va
 # TODO - assert instead of printing (need a new macro)
 do print
 	string "this literally cannot be true... yet it is: "
-	do all
-		do eq
+	do every?
+		do eq?
 			string "new year's eve"
-			do concat
+			do cat
 				string "new year's "
 				string level
-		do eq
+		do eq?
 			string "a very scary error"
-			do concat
+			do cat
 				string "a very "
 				string !scary !
 				string -error-
-		do eq
+		do eq?
 			string "your regex should be stored into the regex variable."
-			do concat
+			do cat
 				string /your regex/
 				string " should be stored into the "
 				string `regex`
@@ -87,7 +87,7 @@ note that we didn't escape shit. no, wait, that's untrue. we didn't escape the n
 note that doing math is arguably the entire point of computers.
 
 do print
-	get add
+	get sum
 		note and TODO this used to say
 			int 2
 			float 0
@@ -97,7 +97,7 @@ do print
 		float 2
 
 do print
-	get asc
+	get asc?
 		int 0
 		int 1
 		int 2
@@ -295,7 +295,7 @@ for angy in
 	get i_hate_this_trash!
 	do
 		do print
-			get concat
+			get cat
 				get angy
 				string "!!!"
 
@@ -346,28 +346,28 @@ note in this chapter number six (6) we shall point out the obvious
 
 do print
 	string "false: "
-	get all
+	get every?
 		true
 		true
 		false
 
 do print
 	string "true: "
-	get any
+	get some?
 		true
 		false
 		false
 
 do print
 	string "true: "
-	get none
+	get none?
 		false
 		false
 		false
 
 do print
 	string "6: "
-	get add
+	get sum
 		int 1
 		int 1
 		int 1
@@ -459,12 +459,12 @@ fn fuck!
 		do print
 			string "fuck!"
 		if
-			get nondesc
+			get asc(weak)?
 				int 0
 				get fucks_given
 			then
 				get fuck!
-					get add
+					get sum
 						get fucks_given
 						int -1
 

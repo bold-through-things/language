@@ -123,7 +123,7 @@ function parse_args(args: string[]): Command {
     }
 
     if (flag(parsed, "present")) {
-        const glob = required(parsed, "present");
+        const glob = required(parsed, "glob");
         return { command: "present", glob,  };
     }
     

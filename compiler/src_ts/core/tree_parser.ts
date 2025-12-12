@@ -81,12 +81,14 @@ export class TreeParser {
     for (const raw of lines) {
       lineNum += 1;
 
-      const [line, extractedIndent] = extractIndent(raw, scope.size - 1);
+      const [line_0, extractedIndent] = extractIndent(raw, scope.size - 1);
       const indent = extractedIndent + 1;
 
-      if (line.trim().length === 0) {
+      if (line_0.trim().length === 0) {
         continue;
       }
+
+      const line = line_0.trimEnd();
 
       default_logger.log(
         "parse",

@@ -1,0 +1,5 @@
+do cat
+	string "uhh "
+	string "concat "
+	string "them"
+then do print
