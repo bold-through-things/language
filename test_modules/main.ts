@@ -2,7 +2,7 @@
 
 import { runWithInput } from "./subprocess.ts";
 import { readFile, fileExists, EXECUTABLE } from "./paths.ts";
-import { buildMidglob, discoverTests, TestCase } from "./discovery.ts";
+import { build_midglob, discover_tests, Test_case } from "./discovery.ts";
 import { validateJsonSpec } from "./json_matcher.ts";
 import { createTestDiffReporter } from "./test_diff_reporter.ts";
 import { getTestArtifacts } from "./test_artifacts.ts";
@@ -167,7 +167,7 @@ async function copyTree(src: string, dest: string): Promise<void> {
     }
 }
 
-async function validateGitignoreForTest(tc: TestCase): Promise<void> {
+async function validateGitignoreForTest(tc: Test_case): Promise<void> {
     const artifacts = getTestArtifacts(tc);
     if (artifacts.length === 0) {
         return;
@@ -187,8 +187,8 @@ async function validateGitignoreForTest(tc: TestCase): Promise<void> {
     }
 
     const testDiffDirs = [
-        joinPath(tc.casePath, "test_diffs"),
-        joinPath(tc.codePath, "test_diffs")
+        joinPath(tc.case_path, "test_diffs"),
+        joinPath(tc.code_path, "test_diffs")
     ];
 
     for (const d of testDiffDirs) {
@@ -229,9 +229,9 @@ type TestLog = {
     execution: CommandOutput[];
 }
 
-async function runSingleTest(tc: TestCase, args: CliArgs, stdinText: string | null, scriptDir: string, log: TestLog): Promise<void> {
-    const caseDir = tc.casePath;
-    const codeDir = tc.codePath;
+async function runSingleTest(tc: Test_case, args: CliArgs, stdinText: string | null, scriptDir: string, log: TestLog): Promise<void> {
+    const caseDir = tc.case_path;
+    const codeDir = tc.code_path;
 
     console.log(tc.name);
     console.log(`running test for ${JSON.stringify(tc)}`);
@@ -362,7 +362,7 @@ async function runSingleTest(tc: TestCase, args: CliArgs, stdinText: string | nu
         }
 
         const writeFailureArtifacts = (label: string, report: string, actualJsonPretty: string): void => {
-            const outDir = joinPath(tc.casePath, "test_diffs");
+            const outDir = joinPath(tc.case_path, "test_diffs");
             try {
                 Deno.mkdirSync(outDir, { recursive: true });
             } catch {
@@ -554,14 +554,14 @@ async function testVerboseCompilation(args: CliArgs, log: TestLog): Promise<void
 
 async function runAllTests(args: CliArgs, stdinText: string | null): Promise<number> {
     const scriptDir = Deno.cwd();
-    const globFilter = buildMidglob(args.glob);
+    const globFilter = build_midglob(args.glob);
 
     const tests: NamedTest[] = [];
 
-    const e2e = discoverTests({ glob: args.glob });
+    const e2e = discover_tests({ glob: args.glob });
     for (const tc of e2e) {
-        if (!globFilter(tc.name)) {
-            console.log(`ignoring \`${tc.name}\` per midglob \`${args.glob}\``);
+        if (!globFilter(tc.name) && !tc.tags.some(tag => globFilter(tag))) {
+            console.log(`ignoring \`${tc.name}\` [${tc.tags.map(tag => `\`${tag}\``).join(", ")}] per midglob \`${args.glob}\``);
             continue;
         }
         tests.push({
@@ -682,15 +682,19 @@ function present(args: CliArgs): void {
         return name;
     }
 
-    const glob_filter = buildMidglob(args.glob);
-    const e2e = discoverTests({ glob: args.glob });
+    const glob_filter = build_midglob(args.glob);
+    const e2e = discover_tests({ glob: args.glob });
+    const unique_by_base_name = new Map<string, Test_case>();
     for (const tc of e2e) {
-        if (!glob_filter(tc.name)) {
-            console.log(`ignoring \`${tc.name}\` per midglob \`${args.glob}\``);
+        unique_by_base_name.set(tc.base_name, tc);
+    }
+    for (const tc of unique_by_base_name.values()) {
+        if (!glob_filter(tc.name) && !tc.tags.some(tag => glob_filter(tag))) {
+            console.log(`ignoring \`${tc.name}\` [${tc.tags.map(tag => `\`${tag}\``).join(", ")}] per midglob \`${args.glob}\``);
             continue;
         }
-        const linkPath = joinPath(Deno.cwd(), tc.defPath);
-        const uniqueName = get_unique_name(tc.name.replace(/\//g, "_"));
+        const linkPath = joinPath(Deno.cwd(), tc.def_path);
+        const uniqueName = get_unique_name(tc.base_name.replace(/\//g, "_"));
         const destPath = joinPath(Deno.cwd(), "tests", "present", uniqueName);
         console.log(`creating symlink: ${destPath} -> ${linkPath}`);
         Deno.symlinkSync(linkPath, destPath, { type: "dir" });

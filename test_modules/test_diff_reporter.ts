@@ -1,6 +1,6 @@
 // test_modules/test_diff_reporter.ts
 
-import { TestCase } from "./discovery.ts";
+import { Test_case } from "./discovery.ts";
 
 export class TestDiffReporter {
     private testCasePath: string;
@@ -58,8 +58,8 @@ export class TestDiffReporter {
     }
 }
 
-export function createTestDiffReporter(testCase: TestCase): TestDiffReporter {
-    return new TestDiffReporter(testCase.casePath);
+export function createTestDiffReporter(testCase: Test_case): TestDiffReporter {
+    return new TestDiffReporter(testCase.case_path);
 }
 
 // very small unified diff implementation

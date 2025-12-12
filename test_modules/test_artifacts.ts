@@ -1,21 +1,21 @@
 // test_modules/test_artifacts.ts
 
-import { TestCase } from "./discovery.ts";
+import { Test_case } from "./discovery.ts";
 
-export function getTestArtifacts(tc: TestCase): string[] {
+export function getTestArtifacts(tc: Test_case): string[] {
     const out: string[] = [];
 
     const caseArtifacts = [
-        `${tc.casePath}/.67lang.expanded`,
-        `${tc.casePath}/out.js`,
-        `${tc.casePath}/success.stdout.actual`,
-        `${tc.casePath}/runtime.stderr.actual`
+        `${tc.case_path}/.67lang.expanded`,
+        `${tc.case_path}/out.js`,
+        `${tc.case_path}/success.stdout.actual`,
+        `${tc.case_path}/runtime.stderr.actual`
     ];
 
     const codeArtifacts = [
-        `${tc.codePath}/.67lang.expanded`,
-        `${tc.codePath}/out.js`,
-        `${tc.codePath}/compile.stderr.actual`
+        `${tc.code_path}/.67lang.expanded`,
+        `${tc.code_path}/out.js`,
+        `${tc.code_path}/compile.stderr.actual`
     ];
 
     for (const a of [...caseArtifacts, ...codeArtifacts]) {
