@@ -16,6 +16,7 @@ import "./compiler_types/type_hierarchy.ts";
 import { Fixed, parseTokens } from "./utils/new_parser.ts";
 
 import bindings_code from "../../tests/all/bindings.67lang" with { type: "text" }
+import { proclaim } from "./utils/utils.ts";
 
 const USAGE = `67lang compiler. readable clause centric CLI.
 
@@ -103,12 +104,12 @@ function parseArgsNew(args: string[]): {
   }
 
   if (flag("help")) {
-    console.log(USAGE);
+    proclaim("requested", USAGE);
     Deno.exit(0);
   }
 
   if (flag("--help")) {
-      console.log("this isn't Unix flags. try 'help'?");
+      proclaim("requested (wrong)", "this isn't Unix flags. try 'help'?");
       Deno.exit(0);
   }
 
@@ -241,15 +242,18 @@ function main(): void {
       const checkResult = checkProcess.outputSync();
       if (checkResult.code !== 0) {
         crash = new TextDecoder().decode(checkResult.stderr);
-        console.log("TypeScript typecheck failed:\n" + crash);
+        proclaim(
+          "our users need to know their code is broken (bug inside compiler though)", 
+          "TypeScript typecheck failed:\n" + crash
+        );
       }
     }
   }
 
-  console.log("refactor confidently when the flame flickers.");
+  proclaim("just branding i suppose", "refactor confidently when the flame flickers.");
 
   if (hadErrors || crash) {
-    console.log(`${itsJustMacros.compile_errors.length} compile errors.`);
+    proclaim("report amount of errors", `${itsJustMacros.compile_errors.length} compile errors.`);
 
     if (hadErrors) {
       if (errorsFile) {
@@ -265,7 +269,7 @@ function main(): void {
           file.close();
         }
 
-        console.log(`seek them in ${errorsFile}.`);
+        proclaim("tell user where to find them", `seek them in ${errorsFile}.`);
       } else {
         humanReadable(itsJustMacros.compile_errors);
       }

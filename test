@@ -1,5 +1,5 @@
 #!/usr/bin/env -S deno run --allow-run --allow-read --allow-write --unstable-raw-imports
 
-import { main } from "./test_modules/main.ts";
+import { main } from "./certain/main.ts";
 
 await main();

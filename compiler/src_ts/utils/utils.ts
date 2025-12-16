@@ -294,3 +294,17 @@ export function first_matching_key<T>(obj: Record<string, T>, fn: (k: string, v:
   }
   return undefined;
 }
+
+const c = console
+const cl = c.log.bind(c);
+/*
+this maybe seems a little silly
+
+so the reason that i added this is mark each place where we expect to write for users.
+`_reason` is unused but it should help avoid misuse of this
+
+you still can use the normal `log` for your debugging though
+*/
+export function proclaim(_reason: string, statement: string) {
+  cl(statement);
+}

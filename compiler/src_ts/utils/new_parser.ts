@@ -266,7 +266,7 @@ if (import.meta.main) {
   // ------------------------------------------------------------
   // inspect result
   // ------------------------------------------------------------
-  console.log(JSON.stringify(tree, null, 2));
+  console["log"](JSON.stringify(tree, null, 2));
 
   const tokens2 = [
     "add", "10", "20abc"
@@ -274,7 +274,7 @@ if (import.meta.main) {
 
   try {
     const tree2 = parseTokens(tokens2, schema);
-    console.log(JSON.stringify(tree2, null, 2));
+    console["log"](JSON.stringify(tree2, null, 2));
   } catch (e) {
     console.error("Error during parsing:", e);
   }
