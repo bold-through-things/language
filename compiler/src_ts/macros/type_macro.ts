@@ -469,7 +469,7 @@ export class Type_macro_provider implements Macro_provider {
         base.type_params.some((p) => p instanceof TypeVariable && p.name === k),
         {
           node: ctx.node,
-          message: `type '${spec.type_name}' has no type parameter '${k}'`,
+          message: `type '${spec.type_name}' has no such type parameter as '${k}' (has ${base.type_params.map((p) => p instanceof TypeVariable ? p.name : "<bound>").join(", ") || "<none>"})`,
           type: ErrorType.INVALID_MACRO,
         }
       );

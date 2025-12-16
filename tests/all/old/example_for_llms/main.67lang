@@ -449,7 +449,7 @@ note that, oh yeah, you can now do closures! kind of.
 
 fn create_counter
 	returns
-		type named callable
+		type named callable0
 			type named int for RV
 	do
 		note you do need a class or dict

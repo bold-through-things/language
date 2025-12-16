@@ -109,7 +109,7 @@ export class For_macro_provider implements Macro_provider {
     bind_item.append_child(bind_expr);
 
     const inc_idx = ctx.compiler.make_node(`do ${idx_ident}`, pos, []);
-    const add_the = ctx.compiler.make_node(`do add the ${idx_ident}`, pos, []);
+    const add_the = ctx.compiler.make_node(`do sum the ${idx_ident}`, pos, []);
     add_the.append_child(
       ctx.compiler.make_node("int 1", pos, [])
     );

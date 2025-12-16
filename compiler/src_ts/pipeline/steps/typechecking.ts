@@ -219,16 +219,6 @@ function register_builtins(ctx: Macro_context, engine: Type_engine) {
   );
 
 
-  get_complex_type("callable").configure(
-    {
-      ctx,
-      caused_by: Error_caused_by.INTERNAL,
-      type_params: [new TypeVariable({ name: "RV" })],
-      typescript_name: "Function",
-    },
-  );
-
-
   get_complex_type("!").configure(
     {
       ctx,

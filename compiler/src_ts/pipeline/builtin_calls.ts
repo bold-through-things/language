@@ -172,8 +172,7 @@ export function load_builtins(ctx: Macro_context, engine: Type_engine): void {
       (n) => new TypeVariable({ name: `ARG${n}` }),
     );
     // TODO i really hate to spam the types
-    const n = size == 0 ? "" : size + "";
-    const name = `callable${n}`;
+    const name = `callable${size}`;
     const callable = get_complex_type(name).configure({
       ctx,
       caused_by: Error_caused_by.INTERNAL,

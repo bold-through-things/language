@@ -56,12 +56,10 @@ for line in
 				do push the rows
 					get row
 		
-		do i
-			local _please_fix_the_fucking_varargs_add
-				type named int
-				do sum
-					get i
-					int 1
+		do sum
+			get i
+			int 1
+		then do i
 
 for row in
 	get rows

@@ -6,8 +6,6 @@ a rough roadmap the way things stand.
 - remove the overload for `do` instead begin pipelines with `pipe` or some
 - should drop the `for` instead approach the iteration through pipelines
 - rewrite the guide in interactive edit mode (a single large example which we focus into every step)
-- reorganize the tests
-- use tags for tests
 - type checking must be done within a single step
 - support varargs
 - we're missing coverage for `break`
@@ -19,3 +17,4 @@ a rough roadmap the way things stand.
 - improve the fucking logging yo
 - begin bootstrapping. it is time.
 - i kind of fucking hate `discovery.ts` stop passing those JSONs around... do validation, types
+- cannot be arsed right now. we need a good refactor of our call resolver. need to make it track the reason of each matching failure as it happens, not "infer" these reasons afterwards. so fucking stupid, what the fuck!

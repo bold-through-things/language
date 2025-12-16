@@ -185,11 +185,11 @@ void (async () => {
             while(true) {    
                 if (!(_0x53__0x3f_for_line__index < _0x54__0x40_for_line__list.length)) { break; }
                 {    
-                    const _0x72__0x40_for_line__list = _0x54__0x40_for_line__list;
-                    const _0x73__0x3f_for_line__index = _0x53__0x3f_for_line__index;
-                    const _0x74__pipeline_result = _0x73__0x3f_for_line__index;
-                    if (_0x72__0x40_for_line__list[_0x74__pipeline_result] === undefined) { throw new Error("sparse array") }
-                    let _0x55_line = _0x72__0x40_for_line__list[_0x74__pipeline_result];
+                    const _0x71__0x40_for_line__list = _0x54__0x40_for_line__list;
+                    const _0x72__0x3f_for_line__index = _0x53__0x3f_for_line__index;
+                    const _0x73__pipeline_result = _0x72__0x3f_for_line__index;
+                    if (_0x71__0x40_for_line__list[_0x73__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    let _0x55_line = _0x71__0x40_for_line__list[_0x73__pipeline_result];
                     (_0x53__0x3f_for_line__index = (_0x53__0x3f_for_line__index + 1));
                     if (    
                         (_0x50_i === 0)
@@ -204,17 +204,17 @@ void (async () => {
                             while(true) {    
                                 if (!(_0x58__0x41_for_kv__index < _0x59__0x42_for_kv__list.length)) { break; }
                                 {    
-                                    const _0x94__0x42_for_kv__list = _0x59__0x42_for_kv__list;
-                                    const _0x95__0x41_for_kv__index = _0x58__0x41_for_kv__index;
-                                    const _0x96__pipeline_result = _0x95__0x41_for_kv__index;
-                                    if (_0x94__0x42_for_kv__list[_0x96__pipeline_result] === undefined) { throw new Error("sparse array") }
-                                    let _0x5a_kv = _0x94__0x42_for_kv__list[_0x96__pipeline_result];
+                                    const _0x93__0x42_for_kv__list = _0x59__0x42_for_kv__list;
+                                    const _0x94__0x41_for_kv__index = _0x58__0x41_for_kv__index;
+                                    const _0x95__pipeline_result = _0x94__0x41_for_kv__index;
+                                    if (_0x93__0x42_for_kv__list[_0x95__pipeline_result] === undefined) { throw new Error("sparse array") }
+                                    let _0x5a_kv = _0x93__0x42_for_kv__list[_0x95__pipeline_result];
                                     (_0x58__0x41_for_kv__index = (_0x58__0x41_for_kv__index + 1));
-                                    const _0xa0_kv = _0x5a_kv;
-                                    if (_0xa0_kv["0"] === undefined) { throw new Error("sparse object") }
-                                    const _0xa3_kv = _0x5a_kv;
-                                    if (_0xa3_kv["1"] === undefined) { throw new Error("sparse object") }
-                                    (_0x57_row[_0xa0_kv["0"]] = _0xa3_kv["1"]);
+                                    const _0x9f_kv = _0x5a_kv;
+                                    if (_0x9f_kv["0"] === undefined) { throw new Error("sparse object") }
+                                    const _0xa2_kv = _0x5a_kv;
+                                    if (_0xa2_kv["1"] === undefined) { throw new Error("sparse object") }
+                                    (_0x57_row[_0x9f_kv["0"]] = _0xa2_kv["1"]);
                                 }
                             }
                         }
@@ -222,57 +222,56 @@ void (async () => {
                         Array.prototype.push.call(_0x52_rows, _0x57_row);
                     }
     
-                    let _0x5b__please_fix_the_fucking_varargs_add = (_0x50_i + 1);
-                    (_0x50_i = _0x5b__please_fix_the_fucking_varargs_add);
+                    (_0x50_i = (_0x50_i + 1));
                 }
             }
         }
     
         {    
-            let _0x5c__0x43_for_row__index = 0;
-            let _0x5d__0x44_for_row__list = _0x52_rows;
+            let _0x5b__0x43_for_row__index = 0;
+            let _0x5c__0x44_for_row__list = _0x52_rows;
             while(true) {    
-                if (!(_0x5c__0x43_for_row__index < _0x5d__0x44_for_row__list.length)) { break; }
+                if (!(_0x5b__0x43_for_row__index < _0x5c__0x44_for_row__list.length)) { break; }
                 {    
-                    const _0xbb__0x44_for_row__list = _0x5d__0x44_for_row__list;
-                    const _0xbc__0x43_for_row__index = _0x5c__0x43_for_row__index;
-                    const _0xbd__pipeline_result = _0xbc__0x43_for_row__index;
-                    if (_0xbb__0x44_for_row__list[_0xbd__pipeline_result] === undefined) { throw new Error("sparse array") }
-                    let _0x5e_row = _0xbb__0x44_for_row__list[_0xbd__pipeline_result];
-                    (_0x5c__0x43_for_row__index = (_0x5c__0x43_for_row__index + 1));
-                    const _0xc6_row = _0x5e_row;
-                    if (_0xc6_row["name"] === undefined) { throw new Error("sparse array") }
-                    console.log(_0xc6_row["name"]);
+                    const _0xba__0x44_for_row__list = _0x5c__0x44_for_row__list;
+                    const _0xbb__0x43_for_row__index = _0x5b__0x43_for_row__index;
+                    const _0xbc__pipeline_result = _0xbb__0x43_for_row__index;
+                    if (_0xba__0x44_for_row__list[_0xbc__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    let _0x5d_row = _0xba__0x44_for_row__list[_0xbc__pipeline_result];
+                    (_0x5b__0x43_for_row__index = (_0x5b__0x43_for_row__index + 1));
+                    const _0xc5_row = _0x5d_row;
+                    if (_0xc5_row["name"] === undefined) { throw new Error("sparse array") }
+                    console.log(_0xc5_row["name"]);
                 }
             }
         }
     
-        let _0x5f_age_over_30 = 0;
+        let _0x5e_age_over_30 = 0;
         {    
-            let _0x60__0x45_for_row__index = 0;
-            let _0x61__0x46_for_row__list = _0x52_rows;
+            let _0x5f__0x45_for_row__index = 0;
+            let _0x60__0x46_for_row__list = _0x52_rows;
             while(true) {    
-                if (!(_0x60__0x45_for_row__index < _0x61__0x46_for_row__list.length)) { break; }
+                if (!(_0x5f__0x45_for_row__index < _0x60__0x46_for_row__list.length)) { break; }
                 {    
-                    const _0xd3__0x46_for_row__list = _0x61__0x46_for_row__list;
-                    const _0xd4__0x45_for_row__index = _0x60__0x45_for_row__index;
-                    const _0xd5__pipeline_result = _0xd4__0x45_for_row__index;
-                    if (_0xd3__0x46_for_row__list[_0xd5__pipeline_result] === undefined) { throw new Error("sparse array") }
-                    let _0x62_row = _0xd3__0x46_for_row__list[_0xd5__pipeline_result];
-                    (_0x60__0x45_for_row__index = (_0x60__0x45_for_row__index + 1));
-                    const _0xdf_row = _0x62_row;
-                    if (_0xdf_row["age"] === undefined) { throw new Error("sparse array") }
+                    const _0xd2__0x46_for_row__list = _0x60__0x46_for_row__list;
+                    const _0xd3__0x45_for_row__index = _0x5f__0x45_for_row__index;
+                    const _0xd4__pipeline_result = _0xd3__0x45_for_row__index;
+                    if (_0xd2__0x46_for_row__list[_0xd4__pipeline_result] === undefined) { throw new Error("sparse array") }
+                    let _0x61_row = _0xd2__0x46_for_row__list[_0xd4__pipeline_result];
+                    (_0x5f__0x45_for_row__index = (_0x5f__0x45_for_row__index + 1));
+                    const _0xde_row = _0x61_row;
+                    if (_0xde_row["age"] === undefined) { throw new Error("sparse array") }
                     if (    
-                        (globalThis.parseInt(_0xdf_row["age"]) < 30)
+                        (globalThis.parseInt(_0xde_row["age"]) < 30)
                     ) {    
-                        (_0x5f_age_over_30 = (_0x5f_age_over_30 + 1));
+                        (_0x5e_age_over_30 = (_0x5e_age_over_30 + 1));
                     } else {
                     }
                 }
             }
         }
     
-        console.log(_0x5f_age_over_30);
+        console.log(_0x5e_age_over_30);
     }
 
 })();

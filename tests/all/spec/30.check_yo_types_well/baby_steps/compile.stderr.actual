@@ -35,13 +35,7 @@
             "name": "67lang:upstream_invalid"
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 0,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -129,13 +123,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -168,13 +156,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -212,13 +194,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -251,19 +227,81 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       }
     ],
     "actual_arg_types": [
       {
         "type": "Special_type",
         "name": "67lang:upstream_invalid"
+      }
+    ]
+  },
+  {
+    "recoverable": false,
+    "line": 50,
+    "char": 0,
+    "content": "67lang:call test_bool",
+    "error": "could not find a matching overload for test_bool",
+    "error_type": "NO_MATCHING_OVERLOAD",
+    "visible_overloads": [
+      {
+        "convention": {
+          "convention": {
+            "convention": "LocalAccessCall",
+            "fn": "_0x4c_test_bool"
+          },
+          "demands": [],
+          "returns": {
+            "type": "ComplexType",
+            "name": "bool",
+            "type_params": []
+          }
+        },
+        "reasons": []
+      },
+      {
+        "convention": {
+          "convention": {
+            "convention": "LocalAccessCall",
+            "fn": "_0x4c_test_bool"
+          },
+          "demands": [
+            {
+              "type": "ComplexType",
+              "name": "bool",
+              "type_params": []
+            }
+          ],
+          "returns": {
+            "type": "ComplexType",
+            "name": "bool",
+            "type_params": []
+          }
+        },
+        "reasons": [
+          {
+            "reason_type": "ARG_MISMATCH",
+            "index": 0,
+            "demanded": {
+              "type": "ComplexType",
+              "name": "bool",
+              "type_params": []
+            },
+            "received": {
+              "type": "ComplexType",
+              "name": "str",
+              "type_params": []
+            }
+          }
+        ]
+      }
+    ],
+    "actual_arg_types": [
+      {
+        "type": "ComplexType",
+        "name": "str",
+        "type_params": []
       }
     ]
   },
@@ -311,13 +349,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -350,13 +382,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -394,13 +420,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -433,13 +453,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       }
     ],
     "actual_arg_types": [
@@ -494,13 +508,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -533,13 +541,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -577,13 +579,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -616,13 +612,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       }
     ],
     "actual_arg_types": [
@@ -676,13 +666,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -715,13 +699,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -759,13 +737,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -798,13 +770,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       }
     ],
     "actual_arg_types": [
@@ -858,13 +824,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -897,13 +857,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -941,13 +895,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 3,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       },
       {
         "convention": {
@@ -980,13 +928,7 @@
             ]
           }
         },
-        "reasons": [
-          {
-            "reason_type": "ARITY_MISMATCH",
-            "demanded_arity": 2,
-            "received_arity": 1
-          }
-        ]
+        "reasons": []
       }
     ],
     "actual_arg_types": [

@@ -1,0 +1,28 @@
+local value
+	int 0
+
+fn increment
+	param getter
+		type named callable0
+			type named int for RV
+	param setter
+		type named callable1
+			type named int for ARG0
+			type named int for RV
+	returns
+		type named int
+	do
+		do ~ the getter
+		then do sum as new
+			int 1
+		return
+			do ~ the setter
+				get new
+
+do increment
+	note getter
+	bind fn value as callable
+	note setter
+	bind fn value as callable
+		_
+then do print

@@ -230,7 +230,7 @@ export class Bind_macro_provider implements Macro_provider {
     )
 
     const unbound = param_types.filter((_, idx) => provided[idx] === PASSTHROUGH);
-    const l = unbound.length == 0 ? "" : unbound.length + "";
+    const l = unbound.length + "";
 
     const callable_inst = ctx.type_engine.instantiate_generic({
       name: `callable${l}`,
@@ -310,7 +310,6 @@ export class Bind_macro_provider implements Macro_provider {
 
     const conv_comp = conv.compile(args_in_order, ctx);
     ctx.statement_out.push(conv_comp[0])
-    console.log(unbound.map(([name, type]) => `${name}: ${type.to_string()}`).join(", "));
     ctx.expression_out.push(() => `((${unbound.map(([name, type]) => `${name}: ${type.to_typescript()}`).join(", ")}) => ${not_null(conv_comp[1])()})`);
   }
 }

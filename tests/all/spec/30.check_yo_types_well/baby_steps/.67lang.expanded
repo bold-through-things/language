@@ -1,5 +1,5 @@
 67lang:file
-	note 
+	note
 		String
 	note
 		str
@@ -9,31 +9,31 @@
 			constructor Number
 			fn toString
 			param self
-				type int
+				type named int
 			returns
-				type str
+				type named str
 	note TODO
 		fn str is PrototypeCall
 			sync
 			constructor Object
 			fn toString
 			param self
-				type *
+				type named 67lang:unknown
 			returns
-				type str
+				type named str
 	note
 		int
 	note
 		dict
-	note 
+	note
 		Array
-	note 
+	note
 		WebSocket
-	note 
+	note
 		URL
-	note 
+	note
 		TextEncoder
-	note 
+	note
 		TextDecoder
 	note
 		Base64
@@ -41,7 +41,7 @@
 		fetch
 	note
 		JSON
-	note 
+	note
 		event loop
 	note TODO this isn't valid (int...)
 	note
@@ -53,10 +53,10 @@
 	# these are expected to pass
 	do
 		local test
-			type int
+			type named int
 			int 0
 		local test_1
-			type int
+			type named int
 			67lang:pipeline_result
 				67lang:call test
 		67lang:pipeline_result
@@ -65,7 +65,7 @@
 					67lang:call test_1
 		do
 			local test_1
-				type int
+				type named int
 				67lang:pipeline_result
 					67lang:call test
 			67lang:pipeline_result
@@ -75,14 +75,14 @@
 	# these are expected to fail
 	do
 		local test
-			type int
+			type named int
 			string "test"
 	do
 		local test_str
-			type str
+			type named str
 			# TODO - since we do not null by default - this should here also error!
 		local test_int
-			type int
+			type named int
 			67lang:pipeline_result
 				67lang:call test_str
 		67lang:pipeline_result
@@ -94,7 +94,7 @@
 				67lang:call test_str
 					int 0
 			local test_bool
-				type bool
+				type named bool
 				67lang:pipeline_result
 					67lang:call test_str
 			67lang:pipeline_result

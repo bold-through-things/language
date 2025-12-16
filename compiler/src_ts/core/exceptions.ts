@@ -12,7 +12,7 @@ const NEW = Symbol("NEW");
 export class Macro_error_tracker {
   private errors: (Macro_error | null)[] = [];
 
-  fail(opts: { message: string; node: Node; type: ErrorType, extras?: Record<string, JSON_value> }): never {
+  fail_soft(opts: { message: string; node: Node; type: ErrorType, extras?: Record<string, JSON_value> }): Macro_error {
     const err = Macro_error[NEW]({
       message: opts.message,
       node: opts.node,
@@ -20,7 +20,11 @@ export class Macro_error_tracker {
       extras: opts.extras,
     });
     this.errors.push(err);
-    throw err;
+    return err
+  }
+
+  fail(opts: { message: string; node: Node; type: ErrorType, extras?: Record<string, JSON_value> }): never {
+    throw this.fail_soft(opts);
   }
 
   assert(condition: boolean, opts: { message: string; node: Node; type: ErrorType, extras?: Record<string, JSON_value> }): asserts condition {
@@ -116,7 +120,14 @@ export function graceful_typecheck<T extends Type_check_result>(
   try {
     const rv = fn();
     return rv;
-  } catch (_e) {
+  } catch (e) {
+    if (!(e instanceof Macro_error)) {
+      ctx.compiler.error_tracker.fail_soft({
+        node: ctx.node,
+        message: `unexpected error during macro typecheck: ${e}`,
+        type: ErrorType.INTERNAL_CODE_QUALITY,
+      });
+    }
     return new container(ctx.type_engine.get_type(UPSTREAM_INVALID_NAME));
   }
 }

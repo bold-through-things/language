@@ -155,6 +155,12 @@ export class ComplexType extends Type {
     if (this._type_params.length === 0) {
       return this._typescript_name;
     }
+    if (this._typescript_name === "Function") {
+      // uhh TODO this is a little fucking stupid yes?
+      const inner = this._type_params.slice(0, -1).map((t, i) => `arg${i}: ${t.to_typescript()}`).join(", ");
+      const last = this._type_params[this._type_params.length - 1]?.to_typescript();
+      return `(${inner}) => ${last}`;
+    }
     const inner = this._type_params.map((t) => t.to_typescript()).join(", ");
     return `${this._typescript_name}<${inner}>`;
   }

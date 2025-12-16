@@ -17,6 +17,7 @@ import {
   Expression_return_type,
   TypeVariable,
   UPSTREAM_INVALID,
+  ComplexType,
 } from "../compiler_types/proper_types.ts";
 import { graceful_typecheck } from "../core/exceptions.ts";
 import { collect_child_expressions } from "../utils/common_utils.ts";
@@ -98,11 +99,7 @@ export class Call_macro_provider implements Macro_provider {
           );
         });
       } else {
-        demands.forEach((d, i) => {
-          const recv = args[i];
-          if (!recv) {
-            return;
-          }
+        for_each_pair(demands, args, (d, recv, i) => {
           default_logger.typecheck(
             `${ctx.node.content} demanded ${d} and was given ${recv}`,
           );
@@ -119,11 +116,25 @@ export class Call_macro_provider implements Macro_provider {
       }
 
       const ret = resolved.fn_data.returns;
+      function is_generic(t: Type): boolean {
+        if (t instanceof TypeVariable) {
+          return true;
+        }
+        if (!(t instanceof ComplexType)) {
+          return false;
+        }
+        for (const param of t.type_params) {
+          if (is_generic(param)) {
+            return true;
+          }
+        }
+        return false;
+      }
+      if (args.some(a => a === UPSTREAM_INVALID) && is_generic(ret)) {
+        return new Expression_return_type(UPSTREAM_INVALID);
+      }
       if (Object.keys(resolved.subs).length > 0 && ret instanceof Type) {
         const sub = new TypeSubstitution(resolved.subs).apply({ ctx, type_expr: ret, caused_by: Error_caused_by.USER });
-        if (args.some(a => a === UPSTREAM_INVALID && sub instanceof TypeVariable)) {
-          return new Expression_return_type(UPSTREAM_INVALID);
-        }
         ctx.compiler.error_tracker.assert(
           !(sub instanceof TypeVariable),
           {
@@ -134,7 +145,6 @@ export class Call_macro_provider implements Macro_provider {
         );
         return new Expression_return_type(sub);
       }
-
       return new Expression_return_type(ret);
     });
 

@@ -149,6 +149,9 @@ export function resolve_function(
   actual_arg_types: (Type | typeof PASSTHROUGH)[],
 ): { fn_data: Function_67lang, subs: Record<string, Type> } {
   function apply_passthrough(fn: Function_67lang): Type[] {
+    if (fn.demands.length !== actual_arg_types.length) {
+      return fn.demands;
+    }
     return actual_arg_types.map(
       (t, i) => 
         t === PASSTHROUGH ? 
@@ -176,14 +179,22 @@ export function resolve_function(
   const matching = candidates.map((fn_data) => {
     const demands = fn_data.demands;
     const [ok, subs] = matches_signature(ctx, fn, apply_passthrough(fn_data), demands ?? null)
-    return {ok, subs, fn_data };
-  }).filter(({ok}) => ok);
+    return { ok, subs, fn_data };
+  })
+  .filter(({ok}) => ok)
+  .filter(({fn_data}) => fn_data.demands && fn_data.demands.length === actual_arg_types.length);
 
   if (matching.length > 1) {
     const score = (c: Function_67lang): [number, number] => {
       const demands = c.demands;
       if (!demands) {
         return [0, 0];
+      }
+      if (demands.length !== actual_arg_types.length) {
+        return [0, 0];
+      }
+      if (actual_arg_types.length === 0) {
+        return [1, 0]; // what the fuck is all this code,,,,,, TODO i beg you!
       }
       let specific = 0;
       actual_arg_types.forEach((_a, _i) => {
@@ -254,7 +265,6 @@ export function resolve_function(
       type: ErrorType.NO_MATCHING_OVERLOAD,
       extras,
     });
-    throw new Error("unreachable");
   }
 
   return selected;

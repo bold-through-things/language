@@ -694,7 +694,7 @@ fn interval is DirectCall
 	receiver globalThis
 	fn setInterval
 	param callback
-		type named callable
+		type named callable0
 			type named void for RV
 	param delay
 		type named int
@@ -715,7 +715,7 @@ fn timeout is DirectCall
 	receiver globalThis
 	fn setTimeout
 	param callback
-		type named callable
+		type named callable0
 			type named void for RV
 	param delay
 		type named int
