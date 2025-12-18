@@ -1,9 +1,5 @@
-// ------------------------------------------------------------
-// cursor
-
 import { from_entries, keys } from "./utils.ts";
 
-// ------------------------------------------------------------
 class Cursor {
   constructor(public tokens: string[], public i: number = 0) {}
 
@@ -26,14 +22,8 @@ class Cursor {
   }
 }
 
-// ------------------------------------------------------------
-// validator
-// ------------------------------------------------------------
 export type Validator = (arg: string) => Error | null;
 
-// ------------------------------------------------------------
-// parse node
-// ------------------------------------------------------------
 export interface ParsedClause<T extends ClauseSpec> {
   value: string[];
   children: T["subParser"] extends Schema
@@ -43,18 +33,12 @@ export interface ParsedClause<T extends ClauseSpec> {
   : null;
 }
 
-// ------------------------------------------------------------
-// schema
-// ------------------------------------------------------------
 export type Schema = { 
     [keyword: string]: ClauseSpec & { subParser?: Schema }
 };
 
 type ClauseSpecAny = ClauseSpec & { subParser: Schema };
 
-// ------------------------------------------------------------
-// base class
-// ------------------------------------------------------------
 abstract class ClauseSpec {
   constructor(
     public argumentValidators: Validator[] = [],
@@ -84,9 +68,6 @@ abstract class ClauseSpec {
   abstract parse(cursor: Cursor, keywordToken: string): string[];
 }
 
-// ------------------------------------------------------------
-// fixed count
-// ------------------------------------------------------------
 export class Fixed extends ClauseSpec {
   constructor(
     public count: number,
@@ -108,9 +89,6 @@ export class Fixed extends ClauseSpec {
   }
 }
 
-// ------------------------------------------------------------
-// varargs / heredoc unified
-// ------------------------------------------------------------
 export class VarOrTerminated extends ClauseSpec {
   constructor(
     public setTerminatorString: string | null = null,
@@ -151,10 +129,7 @@ export class VarOrTerminated extends ClauseSpec {
   }
 }
 
-// ------------------------------------------------------------
-// parser
-// ------------------------------------------------------------
-export function parseTokens<T extends Schema>(tokens: string[], schema: T): { [K in keyof T]: ParsedClause<T[K]>[] } {
+export function parse_tokens<T extends Schema>(tokens: string[], schema: T): { [K in keyof T]: ParsedClause<T[K]>[] } {
   const cursor = new Cursor(tokens);
   const result = from_entries(
     keys(schema).map((k) => [k, [] as ParsedClause<ClauseSpec>[]])
@@ -193,7 +168,7 @@ export function parseTokens<T extends Schema>(tokens: string[], schema: T): { [K
       children: null
     } : {
       value: args,
-      children: parseTokens(args, spec.subParser)
+      children: parse_tokens(args, spec.subParser)
     };
 
     const rkw = result[keyword];
@@ -205,15 +180,134 @@ export function parseTokens<T extends Schema>(tokens: string[], schema: T): { [K
     rkw.push(node);
   }
 
-  return result as ReturnType<typeof parseTokens<T>>;
+  return result as ReturnType<typeof parse_tokens<T>>;
+}
+
+type Rule<T_result, T_schema extends Schema> = (current: T_result, parsed: Parsed_tree<T_schema>) => T_result;
+
+type String_keys<T> = keyof T & string;
+
+type Parsed_tree<T extends Schema> = {
+  [K in String_keys<T>]: ParsedClause<T[K]>[]
+};
+
+type Has_field<K extends string, V> = { [P in K]: V };
+
+type Undefined_is_never<T> = T extends undefined ? never : T;
+
+export class Rules<T_result>{
+  required<T_key extends string, T_schema extends Schema>(clause: keyof Parsed_tree<T_schema>, field: T_key) {
+    return (current: T_result & Has_field<T_key, string>, parsed: Parsed_tree<T_schema>): T_result => {
+      const entries = parsed[clause];
+      if (entries === undefined || entries[0] === undefined) {
+        throw new Error(`clause expected \`${clause}\``);
+      }
+      if (entries.length > 1) {
+        throw new Error(`only one expected \`${clause}\``);
+      }
+      ;((current: Has_field<T_key, string>) => { // "TypeScript is a good language"
+        current[field] = entries[0].value.join("");
+      })(current);
+      return current;
+    }
+  }
+  optional<T_key extends string, T_schema extends Schema>(clause: keyof Parsed_tree<T_schema>, field: T_key) {
+    return (current: T_result & Has_field<T_key, string | null>, parsed: Parsed_tree<T_schema>): T_result => {
+      const entries = parsed[clause];
+      if (entries !== undefined && entries[0] !== undefined) {
+        if (entries.length > 1) {
+          throw new Error(`only one expected \`${clause}\``);
+        }
+        ;((current: Has_field<T_key, string | null>) => { // "TypeScript is a good language"
+          current[field] = entries[0].value.join("");
+        })(current);
+      }
+      return current;
+    }
+  }
+  optional_many<T_key extends string, T_schema extends Schema>(clause: keyof Parsed_tree<T_schema>, field: T_key) {
+    return (current: T_result & Has_field<T_key, string[]>, parsed: Parsed_tree<T_schema>): T_result => {
+      const entries = parsed[clause];
+      if (entries !== undefined) {
+        ;((current: Has_field<T_key, string[]>) => { // "TypeScript is a good language"
+          current[field] = entries.flatMap(e => e.value);
+        })(current);
+      }
+      return current;
+    }
+  }
+  flag<T_key extends string, T_schema extends Schema, T_flag>(clause: keyof Parsed_tree<T_schema>, field: T_key, remap: (v: boolean) => T_flag) {
+    return (current: T_result & Has_field<T_key, T_flag>, parsed: Parsed_tree<T_schema>): T_result => {
+      const entries = parsed[clause];
+      ;((current: Has_field<T_key, T_flag>) => { // "TypeScript is a good language"
+        current[field] = remap(entries !== undefined && entries.length > 0);
+      })(current);
+      return current;
+    }
+  }
+  subtree<T_key extends string, T_schema extends Schema & { [P in T_key]: { subParser: T_sub_schema } }, T_sub_schema extends Schema>(clause: T_key, rules: Rule<T_result, T_sub_schema>[]) {
+    return (current: T_result, parsed: Parsed_tree<T_schema>): T_result => {
+      const entries = parsed[clause];
+      if (entries === undefined || entries[0] === undefined) {
+        throw new Error(`clause expected \`${clause}\``);
+      }
+      if (entries.length > 1) {
+        throw new Error(`only one expected \`${clause}\``);
+      }
+      const subtree = entries[0].children;
+      if (subtree === null) {
+        // should never happen
+        throw new Error("never");
+      }
+      return interpret_tree({
+        initial: current,
+        tree: subtree,
+        rules
+      });
+    }
+  }
+  mode_switch<T_new_result, T_key extends string, T_schema extends Schema>(clause: T_key, new_v: () => T_new_result) {
+    return (current: T_result, parsed: Parsed_tree<T_schema>): T_result | T_new_result => {
+      const entries = parsed[clause];
+      if (entries === undefined || entries[0] === undefined) {
+        return current;
+      }
+      if (entries.length > 1) {
+        throw new Error(`only one expected \`${clause}\``);
+      }
+      return new_v();
+    }
+  }
+}
+
+export function with_guard<T_result_generic, T_result_specific extends T_result_generic, T_schema extends Schema>(
+  guard: (current: T_result_generic, tree: Parsed_tree<T_schema>) => boolean,
+  mapper: Rule<T_result_specific, T_schema>
+): Rule<T_result_generic, T_schema> {
+  return (current: T_result_generic, tree: Parsed_tree<T_schema>): T_result_generic => {
+    if (guard(current, tree)) {
+      return mapper(current as T_result_specific, tree);
+    }
+    return current;
+  };
+}
+
+export function interpret_tree<T_schema extends Schema, T_result extends unknown>(
+  opts: {
+    initial: T_result
+    tree: Parsed_tree<T_schema>,
+    rules: Rule<T_result, T_schema>[]
+  }
+): T_result {
+  let result = opts.initial;
+  for (const rule of opts.rules) {
+    result = rule(result, opts.tree);
+  }
+  return result;
 }
 
 // TODO this should be autotest yes?
 if (import.meta.main) {
-
-  // ------------------------------------------------------------
-  // validators
-  // ------------------------------------------------------------
   const isInt: Validator = (x) => {
     if (/^-?\d+$/.test(x)) {
       return null;
@@ -228,44 +322,30 @@ if (import.meta.main) {
     return new Error("empty string not allowed");
   };
 
-  // ------------------------------------------------------------
-  // subparser example
-  // ------------------------------------------------------------
   const filterSchema: Schema = {
     "filter_by_ext": new Fixed(1, [exists]),
     "move": new Fixed(1, [exists])
   };
 
-  // ------------------------------------------------------------
-  // top-level schema
-  // ------------------------------------------------------------
   const schema = {
     "copy": new Fixed(2, [exists]),
     "from": new Fixed(1, [exists]),
     "to": new Fixed(1, [exists]),
-    "each": new VarOrTerminated("=", [exists]),                    // varargs or heredoc
-    "zip": new Fixed(0),                                           // no args
-    "run": new VarOrTerminated(null, [], filterSchema),            // run <subsyntax>
-    "add": new Fixed(2, [isInt, isInt])                             // two integers
+    "each": new VarOrTerminated("=", [exists]),
+    "zip": new Fixed(0),
+    "run": new VarOrTerminated(null, [], filterSchema),
+    "add": new Fixed(2, [isInt, isInt])
   };
 
-  // ------------------------------------------------------------
-  // example command
-  // ------------------------------------------------------------
   const tokens = [
     "copy", "fileA", "fileB",
     "each=END", "one", "two", "three", "END",
     "run", "filter_by_ext", "md", "move", "target"
   ];
 
-  // ------------------------------------------------------------
-  // run parser
-  // ------------------------------------------------------------
-  const tree = parseTokens(tokens, schema);
 
-  // ------------------------------------------------------------
-  // inspect result
-  // ------------------------------------------------------------
+  const tree = parse_tokens(tokens, schema);
+
   console["log"](JSON.stringify(tree, null, 2));
 
   const tokens2 = [
@@ -273,7 +353,7 @@ if (import.meta.main) {
   ]
 
   try {
-    const tree2 = parseTokens(tokens2, schema);
+    const tree2 = parse_tokens(tokens2, schema);
     console["log"](JSON.stringify(tree2, null, 2));
   } catch (e) {
     console.error("Error during parsing:", e);

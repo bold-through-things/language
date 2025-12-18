@@ -1,0 +1,9 @@
+stencil
+	match_content regex do.+
+	prepend_content
+		string "pls "
+
+stencil
+	match_content regex ^do$
+	replace_content
+		string "yo"

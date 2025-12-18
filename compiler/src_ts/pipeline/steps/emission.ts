@@ -164,6 +164,11 @@ export class Emission_macro_context implements Macro_context {
       return;
     }
 
+    if (this.node.content.trim() === "") {
+      default_logger.codegen("skipping empty node");
+      return;
+    }
+
     this.compiler.error_tracker.fail({
       node: this.node,
       message: `unknown macro '${macroName}' - is this supposed to exist? did you maybe typo something?`,

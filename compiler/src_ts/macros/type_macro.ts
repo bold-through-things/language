@@ -25,7 +25,7 @@ import {
 } from "../compiler_types/proper_types.ts";
 import { ErrorType } from "../utils/error_types.ts";
 import { choose_single, Error_caused_by, not_null, try_catch, WIP } from "../utils/utils.ts";
-import { Fixed, parseTokens } from "../utils/new_parser.ts";
+import { Fixed, parse_tokens } from "../utils/new_parser.ts";
 import { Emission_macro_context } from "../pipeline/steps/emission.ts";
 import { Type_checking_context, Type_registration_context } from "../pipeline/steps/typechecking.ts";
 import { Preprocessing_context } from "../pipeline/steps/processing.ts";
@@ -106,7 +106,7 @@ export class Type_macro_provider implements Macro_provider {
     const content = ctx.node.content.trim();
     const tokens = content.split(/\s+/).filter((x) => x.length > 0).slice(1); // skip `type`
 
-    const parsed = try_catch(() => parseTokens(tokens, typeSchema), (e) => {
+    const parsed = try_catch(() => parse_tokens(tokens, typeSchema), (e) => {
       ctx.compiler.error_tracker.fail({
         node: ctx.node, message: `Failed to parse type expression: ${e}`, type: ErrorType.INVALID_MACRO,
       });

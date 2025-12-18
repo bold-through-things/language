@@ -2,7 +2,7 @@
 export const TEST_ROOT = "tests/all";
 export const EXECUTABLE = "out.ts";
 
-export function readFile(path: string): string | null {
+export function read_file(path: string): string | null {
     try {
         return Deno.readTextFileSync(path);
     } catch (_) {
@@ -10,7 +10,7 @@ export function readFile(path: string): string | null {
     }
 }
 
-export function fileExists(path: string): boolean {
+export function file_exists(path: string): boolean {
     try {
         Deno.statSync(path);
         return true;
@@ -19,3 +19,15 @@ export function fileExists(path: string): boolean {
     }
 }
 
+export function* walk_recursive(root: string): Generator<string> {
+    for (const ent of Deno.readDirSync(root)) {
+        const full = `${root}/${ent.name}`;
+        if (ent.isFile) {
+            yield full;
+        }
+        if (ent.isDirectory) {
+            yield full;
+            yield* walk_recursive(full);
+        }
+    }
+}

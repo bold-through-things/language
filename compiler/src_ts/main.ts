@@ -5,7 +5,7 @@ import {
   default_logger,
 } from "./utils/logger.ts";
 
-import { TreeParser } from "./core/tree_parser.ts";
+import { Tree_parser } from "./core/tree_parser.ts";
 
 import {
   create_macrocosm,
@@ -13,7 +13,7 @@ import {
 import { JSON_value } from "./core/meta_value.ts";
 
 import "./compiler_types/type_hierarchy.ts";
-import { Fixed, parseTokens } from "./utils/new_parser.ts";
+import { Fixed, interpret_tree, parse_tokens, with_guard, Rules } from "./utils/new_parser.ts";
 
 import bindings_code from "../../tests/all/bindings.67lang" with { type: "text" }
 import { proclaim } from "./utils/utils.ts";
@@ -75,52 +75,67 @@ const argsSchema = {
   "--help": new Fixed(0),
 }
 
-function parseArgsNew(args: string[]): {
+
+const HELP = Symbol("HELP");
+const UNIX_HELP = Symbol("UNIX_HELP");
+
+const PARSED_ARGS = Symbol("PARSED_ARGS");
+type Compile_command = {
+  kind: typeof PARSED_ARGS;
   inputDir: string;
   outputFile: string;
   errorsFile: string | null;
   logSpec: string | null;
   expand: boolean;
   rte: boolean;
-} {
-  const parsed = parseTokens(args, argsSchema);
+}
 
-  function required(arg: keyof typeof parsed): string {
-    if (parsed[arg] && parsed[arg][0] !== undefined) {
-      return parsed[arg][0].value.join("");
+function parseArgsNew(args: string[]): Compile_command {
+  const parsed = parse_tokens(args, argsSchema);
+
+  type Command = Compile_command | typeof HELP | typeof UNIX_HELP
+
+  const is_parsed_args = (v: Command): v is Compile_command => typeof v === "object" && v?.kind === PARSED_ARGS;
+
+  const pa_rules = new Rules<Compile_command>();
+  const rules = new Rules<Command>();
+
+  const interpreted = interpret_tree<typeof argsSchema, Command>(
+    {
+      initial: {
+        kind: PARSED_ARGS,
+        inputDir: "",
+        outputFile: "",
+        errorsFile: null,
+        logSpec: null,
+        expand: false,
+        rte: false,
+      },
+      tree: parsed,
+      rules: [
+        rules.mode_switch("help", () => HELP),
+        rules.mode_switch("--help", () => UNIX_HELP),
+        with_guard(is_parsed_args, pa_rules.required("in", "inputDir")),
+        with_guard(is_parsed_args, pa_rules.required("out", "outputFile")),
+        with_guard(is_parsed_args, pa_rules.optional("err", "errorsFile")),
+        with_guard(is_parsed_args, pa_rules.optional("log", "logSpec")),
+        with_guard(is_parsed_args, pa_rules.flag("expand", "expand", v => v)),
+        with_guard(is_parsed_args, pa_rules.flag("rte", "rte", v => v)),
+      ],
     }
-    throw new Error(`missing required argument: ${arg}`);
-  }
+  );
 
-  function optional(arg: keyof typeof parsed): string | null {
-    if (parsed[arg] && parsed[arg][0] !== undefined) {
-      return parsed[arg][0].value.join("");
-    }
-    return null;
-  }
-
-  function flag(arg: keyof typeof parsed): boolean {  
-    return parsed[arg] && parsed[arg].length > 0;
-  }
-
-  if (flag("help")) {
+  if (interpreted === HELP) {
     proclaim("requested", USAGE);
     Deno.exit(0);
   }
 
-  if (flag("--help")) {
+  if (interpreted === UNIX_HELP) {
       proclaim("requested (wrong)", "this isn't Unix flags. try 'help'?");
       Deno.exit(0);
   }
 
-  return {
-    inputDir: required("in"),
-    outputFile: required("out"),
-    errorsFile: optional("err"),
-    logSpec: optional("log"),
-    expand: flag("expand"),
-    rte: flag("rte"),
-  };
+  return interpreted;
 }
   
 
@@ -146,8 +161,6 @@ function collect67Files(root: string, rte: boolean): string[] {
 }
 
 function main(): void {
-  configureLoggerFromArgs(null);
-
   const {
     inputDir,
     outputFile,
@@ -172,17 +185,17 @@ function main(): void {
 
   default_logger.registry("[registry] registering macro whatever"); // uhh TODO
 
-  const parserInst = new TreeParser();
+  const parserInst = new Tree_parser({top_level: "67lang:file"});
 
   default_logger.indent("compile", "parsing files", () => {
     // TODO for now this works, in future we will need a macro that injects these bindings
-    const bindingsNode = parserInst.parseTree(bindings_code, itsJustMacros);
+    const bindingsNode = parserInst.parse_tree(bindings_code, itsJustMacros);
     itsJustMacros.register(bindingsNode);
 
     for (const filename of files) {
       default_logger.compile(`parsing ${filename}`);
       const src = Deno.readTextFileSync(filename);
-      const node = parserInst.parseTree(src, itsJustMacros);
+      const node = parserInst.parse_tree(src, itsJustMacros);
       itsJustMacros.register(node);
     }
   });

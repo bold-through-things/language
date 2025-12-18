@@ -17,7 +17,7 @@ class SmartIndentContext {
 export class Logger {
   private output: WritableStreamDefaultWriter<Uint8Array>;
   // null => all tags enabled; empty set => all disabled
-  private enabledTags: Set<string> | null = null;
+  private enabledTags: Set<string> | null = new Set();
   private indentLevel: number = 0;
   private contextStack: SmartIndentContext[] = [];
 

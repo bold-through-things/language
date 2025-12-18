@@ -1,6 +1,6 @@
 // test_modules/discovery.ts
 import { JSON_value } from "../compiler/src_ts/core/meta_value.ts";
-import { readFile, TEST_ROOT } from "./paths.ts";
+import { read_file, TEST_ROOT, walk_recursive } from "./paths.ts";
 
 export interface Test_case {
     name: string;
@@ -77,7 +77,7 @@ function* walk_tests_JSON(root: string): Generator<{ dir: string; json: JSON_val
             const full = `${root}/${entry.name}`;
             const dir = root;
 
-            const text = readFile(full);
+            const text = read_file(full);
             if (!text) {
                 continue;
             }
@@ -105,19 +105,6 @@ function resolve_glob(pattern: string, base: string): string[] {
         return out;
     } else {
         return [`${base}/${pattern}`];
-    }
-}
-
-function* walk_recursive(root: string): Generator<string> {
-    for (const ent of Deno.readDirSync(root)) {
-        const full = `${root}/${ent.name}`;
-        if (ent.isFile) {
-            yield full;
-        }
-        if (ent.isDirectory) {
-            yield full;
-            yield* walk_recursive(full);
-        }
     }
 }
 

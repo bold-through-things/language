@@ -4,7 +4,7 @@ import { extractIndent } from "../utils/strutil.ts";
 import { Node, Position } from "./node.ts";
 import { default_logger } from "../utils/logger.ts";
 
-class TrimStack<T> {
+class Trim_stack<T> {
   private data: T[] = [];
 
   set(index: number, value: T): void {
@@ -23,12 +23,12 @@ class TrimStack<T> {
     return this.data[index];
   }
 
-  trim(maxIndex: number): void {
-    if (maxIndex < 0) {
+  trim(max_index: number): void {
+    if (max_index < 0) {
       this.data = [];
     } else {
-      const newSize = Math.min(maxIndex + 1, this.data.length);
-      this.data = this.data.slice(0, newSize);
+      const new_size = Math.min(max_index + 1, this.data.length);
+      this.data = this.data.slice(0, new_size);
     }
   }
 
@@ -41,72 +41,82 @@ class TrimStack<T> {
   }
 }
 
-class ParsingNode {
+class Parsing_node {
   readonly content: string;
   readonly position: Position;
-  readonly children: ParsingNode[];
+  readonly children: Parsing_node[];
 
   constructor(
     content: string,
     position: Position,
-    children: ParsingNode[] = [],
+    children: Parsing_node[] = [],
   ) {
     this.content = content;
     this.position = position;
     this.children = children;
   }
 
-  toNode(): Node {
+  to_Node(): Node {
     return new Node(
       this.content,
       this.position,
-      this.children.map((c) => c.toNode()),
+      this.children.map((c) => c.to_Node()),
     );
   }
 }
 
-export class TreeParser {
-  parseTree(code: string, _compiler: unknown = null): Node {
+export class Tree_parser {
+  private top_level: string;
+  constructor(opts: {
+    top_level: string
+  }) {
+    this.top_level = opts.top_level;
+  }
+  parse_tree(code: string, _compiler: unknown = null): Node {
+    if (code.endsWith("\n")) {
+      code = code.slice(0, -1);
+    }
+
     // wrap with newlines like Crystal
     code = `\n${code}\n`;
 
-    const scope = new TrimStack<ParsingNode>();
-    const root = new ParsingNode("67lang:file", new Position(0));
+    const scope = new Trim_stack<Parsing_node>();
+    const root = new Parsing_node(this.top_level, new Position(0));
     scope.set(0, root);
-    let lineNum = 0;
+    let line_num = 0;
 
     const lines = code.split("\n");
     default_logger.log("parse", `processing ${lines.length} lines`);
 
     for (const raw of lines) {
-      lineNum += 1;
+      line_num += 1;
 
-      const [line_0, extractedIndent] = extractIndent(raw, scope.size - 1);
-      const indent = extractedIndent + 1;
+      let [line, extracted_indent] = extractIndent(raw, scope.size - 1);
+      let indent = extracted_indent + 1;
 
-      if (line_0.trim().length === 0) {
-        continue;
+      if (line.trim().length === 0) {
+        indent = scope.size;
       }
 
-      const line = line_0.trimEnd();
+      line = line.trimEnd();
 
       default_logger.log(
         "parse",
-        `line ${lineNum}: indent=${indent}, content='${line}'`,
+        `line ${line_num}: indent=${indent}, content='${line}'`,
       );
 
       const parent = scope.get(indent - 1);
       if (parent === undefined) {
         throw new Error(
-          `Invalid indentation at line ${lineNum}: ${raw}`,
+          `Invalid indentation at line ${line_num}: ${raw}`,
         );
       }
-      const node = new ParsingNode(line, new Position(lineNum));
+      const node = new Parsing_node(line, new Position(line_num));
       parent.children.push(node);
       scope.set(indent, node);
       scope.trim(indent);
     }
 
-    return root.toNode();
+    return root.to_Node();
   }
 }

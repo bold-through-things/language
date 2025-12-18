@@ -49,7 +49,7 @@ export class Node {
     return this._parent;
   }
 
-  protected setParent(n: Node | null): void {
+  protected set_parent(n: Node | null): void {
     const old = this._parent;
     this._parent = n;
     if (old) {
@@ -92,7 +92,7 @@ export class Node {
 
     const index = matches[0];
     this._children.splice(index, 1);
-    target.setParent(null);
+    target.set_parent(null);
     this.insert_child(index, newChild);
     this.notifyTreeChange();
   }
@@ -136,11 +136,11 @@ export class Node {
         if (idx !== -1) {
           p._children.splice(idx, 1);
         }
-        child.setParent(null);
+        child.set_parent(null);
         p.assertAllChildrenParented();
       }
 
-      child.setParent(this);
+      child.set_parent(this);
       this._children.splice(index, 0, child);
     }
 
@@ -152,13 +152,13 @@ export class Node {
     // no-op by default
   }
 
-  indentedRepr(indent: string = ""): string {
+  indented_repr(indent: string = ""): string {
     const nextIndent = "\t" + indent;
     let out = "";
 
     out += indent + this.content + "\n";
     for (const ch of this._children) {
-      out += ch.indentedRepr(nextIndent) + "\n";
+      out += ch.indented_repr(nextIndent) + "\n";
     }
 
     // rstrip('\n')
@@ -166,7 +166,7 @@ export class Node {
   }
 
   inspect(): string {
-    return this.indentedRepr();
+    return this.indented_repr();
   }
 
   copy_recursive(): Node {
@@ -174,9 +174,30 @@ export class Node {
     for (const ch of this._children) {
       const childCopy = ch.copy_recursive();
       newNode._children.push(childCopy);
-      childCopy.setParent(newNode);
+      childCopy.set_parent(newNode);
     }
     return newNode;
+  }
+
+  copy_with_replacements(replacements: Map<Node, Node>): Node {
+    if (replacements.has(this)) {
+      return replacements.get(this)!;
+    }
+
+    const new_node = new Node(this.content, this.pos, []);
+    for (const ch of this._children) {
+      const new_child = ch.copy_with_replacements(replacements);
+      new_node._children.push(new_child);
+      new_child.set_parent(new_node);
+    }
+    return new_node;
+  }
+
+  walk_tree_top_down(fn: (n: Node) => void): void {
+    fn(this);
+    for (const ch of this._children) {
+      ch.walk_tree_top_down(fn);
+    }
   }
 }
 

@@ -9,7 +9,7 @@ import {
 import { Args, Node, Position } from "../core/node.ts";
 import { collect_child_expressions } from "../utils/common_utils.ts";
 import { Upwalker } from "../pipeline/local_lookup.ts";
-import { parseTokens, Fixed, VarOrTerminated } from "../utils/new_parser.ts";
+import { parse_tokens, Fixed, VarOrTerminated } from "../utils/new_parser.ts";
 import { try_catch } from "../utils/utils.ts";
 import { Emission_item, statement_expr } from "../utils/strutil.ts";
 import { ErrorType } from "../utils/error_types.ts";
@@ -36,7 +36,7 @@ const thenSchema = {
   "in":    new Fixed(1),
 };
 
-type Tree = ReturnType<typeof parseTokens< typeof thenSchema >>;
+type Tree = ReturnType<typeof parse_tokens< typeof thenSchema >>;
   
 // --------------------------------------------------------
 // Wrapper for the parse-tree
@@ -232,7 +232,7 @@ export class Pipeline_macro_provider implements Macro_provider {
 
     // tokenize for the new parser
     const tokens = parseContent.split(/\s+/).filter(Boolean);
-    const tree = try_catch(() => parseTokens(tokens, thenSchema), (e) => {
+    const tree = try_catch(() => parse_tokens(tokens, thenSchema), (e) => {
       ctx.compiler.error_tracker.fail({
         node: ctx.node,
         message: `Failed to parse tokens: ${e}`,

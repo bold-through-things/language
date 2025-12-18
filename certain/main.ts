@@ -1,12 +1,13 @@
 // test_modules/main.ts
 
 import { runWithInput } from "./subprocess.ts";
-import { readFile, fileExists, EXECUTABLE } from "./paths.ts";
+import { read_file, file_exists, EXECUTABLE } from "./paths.ts";
 import { build_midglob, discover_tests, Test_case } from "./discovery.ts";
 import { validateJsonSpec } from "./json_matcher.ts";
 import { createTestDiffReporter } from "./test_diff_reporter.ts";
 import { getTestArtifacts } from "./test_artifacts.ts";
-import { Fixed, ParsedClause, parseTokens, Schema, VarOrTerminated } from "../compiler/src_ts/utils/new_parser.ts";
+import { Fixed, ParsedClause, parse_tokens, Schema, VarOrTerminated, interpret_tree, Rules, with_guard } from "../compiler/src_ts/utils/new_parser.ts";
+import { proclaim } from "../compiler/src_ts/utils/utils.ts";
 
 const USAGE = `67lang test runner.
 
@@ -67,93 +68,76 @@ function parse_args(args: string[]): Command {
         [K in keyof T]: ParsedClause<Fixed | VarOrTerminated>[];
     }
 
-    const parsed = parseTokens(args, argsSchema);
+    const HELP = Symbol("HELP");
+    const UNIX_HELP = Symbol("UNIX_HELP");
+    type Any_command = Command | typeof HELP | typeof UNIX_HELP
 
-    // right, TODO these `0` are a problem
+    const parsed = parse_tokens(args, argsSchema);
+
+    const rules = new Rules<Any_command>();
+    const c_new_rules = new Rules<Command_new>();
+    const c_present_rules = new Rules<Command_present>();
+    const c_default_rules = new Rules<Command_default>();
+
+    const is_command = (s: string) => (v: Any_command): v is Command => typeof v === "object" && v.command === s;
+
+    const interpreted = interpret_tree<typeof argsSchema, Any_command>({
+        initial: {
+            command: "default" as const,
+            glob: null,
+            stdin: false,
+            compile: false,
+            debug: false,
+            run: false,
+            expand: false,
+            compilerArgs: [],
+        },
+        tree: parsed,
+        rules: [
+            rules.mode_switch("help", () => HELP),
+            rules.mode_switch("--help", () => UNIX_HELP),
+            rules.mode_switch("new", () => ({
+                command: "new",
+                path: "",
+                type: "succeeds",
+            })),
+            rules.mode_switch("present", () => ({
+                command: "present",
+                glob: "",
+            })),
+            with_guard(is_command("new"), c_new_rules.subtree("path", [
+                c_new_rules.required("path", "path"),
+                c_new_rules.flag("succeeds", "type", v => v ? "succeeds" : "fails"),
+                c_new_rules.flag("fails", "type", v => v ? "fails" : "succeeds"),
+                // TODO if (succeeds === fails) { throw new Error("specify exactly one `succeeds` or `fails`"); }
+            ])),
+            with_guard(is_command("present"), c_present_rules.required("glob", "glob")),
+            with_guard(is_command("default"), c_default_rules.optional("glob", "glob")),
+            with_guard(is_command("default"), c_default_rules.flag("stdin", "stdin", v => v)),
+            with_guard(is_command("default"), c_default_rules.flag("compile", "compile", v => v)),
+            with_guard(is_command("default"), c_default_rules.flag("debug", "debug", v => v)),
+            with_guard(is_command("default"), c_default_rules.flag("run", "run", v => v)),
+            with_guard(is_command("default"), c_default_rules.flag("expand", "expand", v => v)),
+            with_guard(is_command("default"), c_default_rules.optional_many("pass", "compilerArgs")),
+        ]
+    })
     
-    function required<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): string {
-        if (node[arg] && node[arg][0] !== undefined) {
-            return node[arg][0].value.join("");
-        }
-        throw new Error(`missing required argument: ${arg}`);
-    }
-    
-    function optional<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): string | null {
-        if (node[arg] && node[arg][0] !== undefined) {
-            return node[arg][0].value.join("");
-        }
-        return null;
-    }
-
-    function optional_many<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): string[] {
-        if (node[arg] && node[arg].length > 0) {
-            const results: string[] = [];
-            for (const entry of node[arg]) {
-                results.push(...entry.value);
-            }
-            return results;
-        }
-        return [];
-    }
-
-    function flag<T extends Schema>(node: Parsed_tree_node<T>, arg: (keyof T) & string): boolean {  
-        return (node[arg]?.length ?? 0) > 0;
-    }
-
-    function children<T extends Schema>(
-        node: Parsed_tree_node<T>, 
-        arg: (keyof T) & string
-    ): Parsed_tree_node<Exclude<T[typeof arg]["subParser"], undefined>> | null {
-        if (node[arg] && node[arg][0] !== undefined) {
-            return node[arg][0].children ?? null;
-        }
-        return null;
-    }
-
-    const new_node = children(parsed, "new");
-    if (new_node != null) {
-        const path = required(new_node, "path");
-        const succeeds = flag(new_node, "succeeds");
-        const fails = flag(new_node, "fails");
-        if (succeeds === fails) {
-            throw new Error("specify exactly one `succeeds` or `fails`");
-        }
-        const type = succeeds ? "succeeds" : "fails";
-        return { command: "new", path, type, }
-    }
-
-    if (flag(parsed, "present")) {
-        const glob = required(parsed, "glob");
-        return { command: "present", glob,  };
-    }
-    
-    if (flag(parsed, "help")) {
-        console.log(USAGE);
+    if (interpreted === HELP) {
+        proclaim("requested", USAGE);
         Deno.exit(0);
     }
 
-    if (flag(parsed, "--help")) {
-        console.log("this isn't Unix flags. try 'help'?");
+    if (interpreted === UNIX_HELP) {
+        proclaim("requested (wrong)", "this isn't Unix flags. try 'help'?");
         Deno.exit(0);
     }
 
-    const rv = {
-        command: "default" as const,
-        glob: optional(parsed, "glob"),
-        stdin: flag(parsed, "stdin"),
-        compile: flag(parsed, "compile"),
-        debug: flag(parsed, "debug"),
-        run: flag(parsed, "run"),
-        expand: flag(parsed, "expand"),
-        compilerArgs: optional_many(parsed, "pass"),
-    };
-
-    if (!rv.run && !rv.compile) {
-        rv.compile = true;
-        rv.run = true;
+    if (interpreted.command === "default" && !interpreted.run && !interpreted.compile) {
+        interpreted.compile = true;
+        interpreted.run = true;
     }
 
-    return rv;
+    return interpreted;
 }
 
 async function readAllStdin(): Promise<string> {
@@ -244,7 +228,7 @@ async function validateGitignoreForTest(tc: Test_case): Promise<void> {
     ];
 
     for (const d of testDiffDirs) {
-        if (!fileExists(d)) {
+        if (!file_exists(d)) {
             continue;
         }
         const { code, stderr } = await runWithInput(
@@ -291,15 +275,15 @@ async function runSingleTest(tc: Test_case, args: Command_default, stdinText: st
     const diffReporter = createTestDiffReporter(tc);
 
     const specPath = joinPath(codeDir, "compile.stderr.expected.json");
-    const expectedCompileErr = readFile(specPath);
-    const expectedRuntimeErr = readFile(joinPath(caseDir, "runtime.stderr.expected"));
-    const expectedStdoutRaw = readFile(joinPath(caseDir, "success.stdout.expected"));
+    const expectedCompileErr = read_file(specPath);
+    const expectedRuntimeErr = read_file(joinPath(caseDir, "runtime.stderr.expected"));
+    const expectedStdoutRaw = read_file(joinPath(caseDir, "success.stdout.expected"));
 
     let stdinPerTest: string | null;
     if (args.stdin) {
         stdinPerTest = stdinText;
     } else {
-        stdinPerTest = readFile(joinPath(caseDir, "stdin"));
+        stdinPerTest = read_file(joinPath(caseDir, "stdin"));
     }
 
     const projectRoot = Deno.cwd();
@@ -425,7 +409,7 @@ async function runSingleTest(tc: Test_case, args: Command_default, stdinText: st
         };
 
         if (expectedCompileErr !== null) {
-            const actualCompileErr = readFile(compileErrActualAbs) ?? "";
+            const actualCompileErr = read_file(compileErrActualAbs) ?? "";
             const [ok, report, prettyActual] = validateJsonSpec(actualCompileErr, expectedCompileErr);
             if (!ok) {
                 writeFailureArtifacts("compile_errors_spec", report, prettyActual);

@@ -28,7 +28,7 @@ export class TestDiffReporter {
         Deno.writeTextFileSync(actualFile, actual);
         Deno.writeTextFileSync(expectedFile, expected);
 
-        const diffLines = unifiedDiff(
+        const diffLines = unified_diff(
             expected.split(/\r?\n/),
             actual.split(/\r?\n/),
             `expected_${outputType}`,
@@ -63,7 +63,7 @@ export function createTestDiffReporter(testCase: Test_case): TestDiffReporter {
 }
 
 // very small unified diff implementation
-function unifiedDiff(
+export function unified_diff(
     a: string[],
     b: string[],
     fromFile: string,
