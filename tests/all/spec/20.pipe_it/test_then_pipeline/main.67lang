@@ -8,17 +8,17 @@ note create target for into assignment
 local final_count
 	string "0"
 
-do
+yo
 	note start pipeline with get
-	get phrase
+	pls get phrase
 	then do split
 		string " "
 	then as words do length
 	then into final_count do str
 	local test
 		type named int
-		get words
+		pls get words
 
 note print the result
-do print
-	get final_count
+pls do print
+	pls get final_count

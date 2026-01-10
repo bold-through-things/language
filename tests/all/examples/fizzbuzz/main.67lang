@@ -7,88 +7,91 @@ local n
 
 note TODO add prompting tests...
 	if
-		do is_tty
+		pls do is_tty
 		then
-			do prompt into fizz_divisor
+			pls do prompt into fizz_divisor
 				string "fizz? "
-			do prompt into buzz_divisor
+			pls do prompt into buzz_divisor
 				string "buzz? "
-			do prompt into n
+			pls do prompt into n
 				string "n? "
 		else
-do
+yo
 	local input
-		do stdin
+		pls do stdin
 	
 	local input
-		do split the input
+		pls do split the input
 			string "\n"
 	
 	# TODO: instead we should be able to just specify a mapping and unroll this automatically i.e. {0: fizz_divisor, ...}
 
-	do #
-		get input
+	pls do #
+		pls get input
 		int 0
 	then do int:parse into fizz_divisor
 
-	do #
-		get input
+	pls do #
+		pls get input
 		int 1
 	then do int:parse into buzz_divisor
 
-	do #
-		get input
+	pls do #
+		pls get input
 		int 2
 	then do int:parse into n
 
 local i
 	int 0
-while
-	do asc(weak)?
-		get i
-		get n
-	do
-		local out
+solution
+	point loops forever
+	if
+		pls do desc?
+			pls get i
+			pls get n
+		then
+			break
+	local out
+		string ""
+	
+	if
+		pls do eq?
+			pls do div(int,remainder)
+				pls get i
+				pls get fizz_divisor
+			int 0
+		then
+			pls do cat into out
+				pls get out
+				string "fizz"
+
+	if
+		pls do eq?
+			pls do div(int,remainder)
+				pls get i
+				pls get buzz_divisor
+			int 0
+		then
+			pls do cat into out
+				pls get out
+				string "buzz"
+	
+	if
+		pls do eq?
+			pls get out
 			string ""
-		
-		if
-			do eq?
-				do div(int,remainder)
-					get i
-					get fizz_divisor
-				int 0
-			then
-				do cat into out
-					get out
-					string "fizz"
-
-		if
-			do eq?
-				do div(int,remainder)
-					get i
-					get buzz_divisor
-				int 0
-			then
-				do cat into out
-					get out
-					string "buzz"
-		
-		if
-			do eq?
-				get out
+		then
+			pls do cat into out
+				note TODO why is this needed
 				string ""
-			then
-				do cat into out
-					note TODO why is this needed
-					string ""
-					do str the i
+				pls do str the i
 
-		do print
-			get out
-		
-		do i
-			local _fix_the_fucking_add_return_type
-				type named int
-				do sum
-					get i
-					int 1
+	pls do print
+		pls get out
+	
+	pls do i
+		local _fix_the_fucking_add_return_type
+			type named int
+			pls do sum
+				pls get i
+				int 1

@@ -9,16 +9,15 @@ fn handle_message
 		type named bool
 	returns
 		type named void
-	do
-		do print
-			string "Bot: "
-			get bot
-			string ", Message: "
-			get message
-			string ", Trusted: "
-			get is_trusted
+	pls do print
+		string "Bot: "
+		pls get bot
+		string ", Message: "
+		pls get message
+		string ", Trusted: "
+		pls get is_trusted
 
-do print
+pls do print
 	string "=== Testing bind callable ==="
 
 note test basic partial application
@@ -28,7 +27,7 @@ local bound_handler
 		_
 		true
 
-do ~ the bound_handler
+pls do ~ the bound_handler
 	string "Hello from bind test!"
 
 note test multiple unbound parameters
@@ -38,7 +37,7 @@ local multi_bound
 		_
 		false
 
-do ~ the multi_bound
+pls do ~ the multi_bound
 	string "AnotherBot"
 	string "Multiple unbound test"
 
@@ -49,12 +48,12 @@ local fully_bound
 		string "This message is pre-bound"
 		true
 
-do ~ the fully_bound
+pls do ~ the fully_bound
 
-do print
+pls do print
 	string "print manually"
 
-do ~
+pls do ~
 	bind fn print as callable
 		string "or a bound print"
 

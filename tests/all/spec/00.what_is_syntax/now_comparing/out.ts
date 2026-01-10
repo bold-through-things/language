@@ -173,7 +173,7 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         let _0x46__67 = 67;
         let _0x47__68 = (_0x46__67 + 1);
         console.log((_0x46__67 < _0x47__68));

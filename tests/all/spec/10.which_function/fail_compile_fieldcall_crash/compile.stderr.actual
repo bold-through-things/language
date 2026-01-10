@@ -1,7 +1,7 @@
 [
   {
     "recoverable": false,
-    "line": 24,
+    "line": 23,
     "char": 0,
     "content": "67lang:call heartbeat",
     "error": "could not find a matching overload for heartbeat",

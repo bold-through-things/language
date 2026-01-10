@@ -172,14 +172,12 @@ class _0x46_URL {
 void (async () => {
     'use strict';
     const _0x3f_test_fn = async function (
-    ) {    
-        {    
-            console.log("test");
-        }
+    ) {
+        console.log("test");
     }
     {
     }
-    {    
+    {
         globalThis.setTimeout((() => _0x3f_test_fn()), 100);
     }
 

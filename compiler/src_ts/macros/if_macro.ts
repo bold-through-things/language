@@ -63,7 +63,7 @@ export class If_macro_provider implements Macro_provider {
 
     const cond = args[args.length - 1];
     ctx.compiler.error_tracker.assert(
-      cond != null,
+      cond !== undefined && cond !== null,
       {
         node: ctx.node,
         message: "if macro requires at least one expression as condition",

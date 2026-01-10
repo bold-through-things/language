@@ -1,34 +1,34 @@
 note testing try/catch/finally/throw functionality
 
-do print
+pls do print
 	string "Starting execution"
 
 try
-	do print
+	pls do print
 		string "Inside try block"
 	
-	do print
+	pls do print
 		string "About to throw"
 	
 	throw
 		string "Test error message"
 	
-	do print
+	pls do print
 		string "This should not print"
 
 	catch error
-		do print
+		pls do print
 			string "Caught error:"
-		do print
-			get error
+		pls do print
+			pls get error
 
 	finally
-		do print
+		pls do print
 			string "Finally block executed"
-		do print
+		pls do print
 			string "Many statements"
 
-do print
+pls do print
 	string "Execution complete"
 
 note the above is roughly equivalent to following JS

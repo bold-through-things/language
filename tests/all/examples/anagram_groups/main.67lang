@@ -1,8 +1,8 @@
 local input
-	do stdin
+	pls do stdin
 
 local words
-	do split the input
+	pls do split the input
 		string "\n"
 
 local groups
@@ -11,42 +11,42 @@ local groups
 		type named list for V
 			type named str
 
-for word in
-	get words
-	do
-		do split the word
-			string ""
-		then do sort
-		then do join as key
-			string ""
-		
-		# TODO this really ought to be a macro. with(a groups key)do(if(self eq? null)then(self(list))) or something?
-		#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq? null); list)
-		#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
-		if
-			do none?
-				do has_keys the groups
-					get key
-			then
-				do #
-					get groups
-					get key
-					list
-						type named str
+solution
+	point loops each word
+		pls get words
+	pls do split the word
+		string ""
+	then do sort
+	then do join as key
+		string ""
+	
+	# TODO this really ought to be a macro. with(a groups key)do(if(self eq? null)then(self(list))) or something?
+	#  well, that is still too verbose. perhaps something more like a groups key (executing if (self eq? null); list)
+	#  which would be hilariously similar to a Python comprehension. lmfao. WHAT THE FUCK AM I COOKING ?!
+	if
+		pls do none?
+			pls do has_keys the groups
+				pls get key
+		then
+			pls do #
+				pls get groups
+				pls get key
+				list
+					type named str
 
-		do #
-			get groups
-			get key
-		then do push
-			get word
+	pls do #
+		pls get groups
+		pls get key
+	then do push
+		pls get word
 
-for group in
-	do values the groups
-	do
-		do print
-			do join
-				get group
-				string " "
+solution
+	point loops each group
+		pls do values the groups
+	pls do print
+		pls do join
+			pls get group
+			string " "
 
 
 

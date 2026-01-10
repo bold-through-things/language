@@ -173,25 +173,25 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         console.log("Starting execution");
-        try {    
+        try {
             console.log("Inside try block");
             console.log("About to throw");
             throw "Test error message";
             console.log("This should not print");
-        } catch (    
+        } catch (
             _0x46_error
-        ) {    
+        ) {
             console.log("Caught error:");
             console.log(_0x46_error);
-        } finally {    
-            {    
+        } finally {
+            {
                 console.log("Finally block executed");
                 console.log("Many statements");
             }
         }
-    
+
         console.log("Execution complete");
     }
 

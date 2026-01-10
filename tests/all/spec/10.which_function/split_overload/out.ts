@@ -173,7 +173,7 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         let _0x46_str = "testing";
         console.log(_67lang.string_split(_0x46_str, "t"));
         console.log(_67lang.string_split(_0x46_str, /t/));

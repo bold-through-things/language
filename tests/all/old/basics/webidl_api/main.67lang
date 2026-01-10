@@ -1,18 +1,18 @@
 local myURL
-	do URL
+	pls do URL
 		string "https://example.com/path?query=123"
 
-do print
-	get pathname from myURL
+pls do print
+	pls get pathname from myURL
 
-do print
+pls do print
 	string "\n--- Testing TextEncoder/TextDecoder ---"
 
 local encoder
-	do TextEncoder
+	pls do TextEncoder
 
 local decoder
-	do TextDecoder
+	pls do TextDecoder
 
 local text_tests
 	list
@@ -21,50 +21,49 @@ local text_tests
 		string "Unicode: 🦕 Deno"
 		string "Numbers: 42"
 
-for text in
-	get text_tests
-	do
+solution
+	point loops each text
+		pls get text_tests
 		
-		
-		local bytes
-			do encode the encoder
-				get text
+	local bytes
+		pls do encode the encoder
+			pls get text
 
-		local restored
-			do decode the decoder
-				get bytes
+	local restored
+		pls do decode the decoder
+			pls get bytes
 
-		do print
-			string `Text: "`
-			get text
-			string `" -> Bytes: [`
-			get bytes
-			string `] -> Restored: "`
-			get restored
+	pls do print
+		string `Text: "`
+		pls get text
+		string `" -> Bytes: [`
+		pls get bytes
+		string `] -> Restored: "`
+		pls get restored
 
-do print
+pls do print
 	string "\n--- Testing atob/btoa ---"
 
 local testString
 	string "Hello World"
 
 local encodedString
-	do btoa
-		get testString
+	pls do btoa
+		pls get testString
 
 local decodedString
-	do atob
-		get encodedString
+	pls do atob
+		pls get encodedString
 
-do print
+pls do print
 	string "Original: "
-	get testString
+	pls get testString
 	string " -> Encoded: "
-	get encodedString
+	pls get encodedString
 	string " -> Decoded: "
-	get decodedString
+	pls get decodedString
 
-do print
+pls do print
 	string "\n--- Testing JSON.stringify/parse ---"
 
 local testObj
@@ -82,36 +81,36 @@ local testObj
 			string "42"
 
 local jsonString
-	do str:JSON the testObj
+	pls do str:JSON the testObj
 
 local parsedObj
 	type named dict
 		type named str for K
 		type named 67lang:unknown for V
-	do JSON:str the jsonString
+	pls do JSON:str the jsonString
 
-do print
+pls do print
 	string "Original object -> JSON: "
-	get jsonString
+	pls get jsonString
 
-do print
+pls do print
 	string "Parsed back -> name: "
-	do # the parsedObj
+	pls do # the parsedObj
 		string "name"
 
-do print
+pls do print
 	string "\n--- Testing fetch (data URL) ---"
 
-do fetch as response
+pls do fetch as response
 	string "data:application/json,{"67lang": "is fucking awesome"}"
 	note the params
 	dict
 		type named str for K
 		type named str for V
 
-do print
-	get response
-	get json from response
+pls do print
+	pls get response
+	pls get json from response
 
 type named MyEncoder is JS:object
 	constructor TextEncoder
@@ -132,10 +131,10 @@ fn encode is PrototypeCall
 		type named MyUint8Array
 
 local encoder2
-	do MyEncoder
+	pls do MyEncoder
 
-do print
+pls do print
 	string "\n--- Testing custom MyEncoder ---"
-	do encode
-		get encoder2
+	pls do encode
+		pls get encoder2
 		string "Custom encoding works!"

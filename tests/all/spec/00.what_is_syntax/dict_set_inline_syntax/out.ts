@@ -173,7 +173,7 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         let _0x46_user = {["name"]: "Bob", ["age"]: "30", ["city"]: "New York"} as Record<string, string>;
         console.log(_0x46_user);
         let _0x47_my_set = _67lang.new_set("apple", "banana", "cherry");

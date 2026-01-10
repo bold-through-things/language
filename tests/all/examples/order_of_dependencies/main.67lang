@@ -1,66 +1,66 @@
 local lines
-	do stdin
+	pls do stdin
 
 local lines
-	do split the lines
+	pls do split the lines
 		string "\n"
 
 local modules
 	dict
 		type named str for K
 		type named Module for V
-for line in
-	get lines
-	do
-		type named Module is heap_entry
-			has id
+solution
+	point loops each line
+		pls get lines
+	type named Module is heap_entry
+		has id
+			type named str
+		has deps
+			type named list
 				type named str
-			has deps
-				type named list
-					type named str
-			has visited
-				type named bool
+		has visited
+			type named bool
 
-		local kv
-			do split the line
-				string ":"
-				int 2
+	local kv
+		pls do split the line
+			string ":"
+			int 2
 
-		do # the kv
-			int 0
-		then do trim as id
+	pls do # the kv
+		int 0
+	then do trim as id
 
-		local module
-			do Module
-				get id
-				list
-					type named str
-				false
+	local module
+		pls do Module
+			pls get id
+			list
+				type named str
+			false
 
-		
-		do # the kv
-			int 1
-		then do trim as deps_str
-		
-		# TODO - this ought to be a macro.
-		if
-			do none?
-				do eq? the deps_str
-					string ""
-			then
-				do trim the deps_str
-				then do split as deps
-					regex /\s+/
-				do deps the module
-					get deps
-		
-		do # the modules
-			get id from module
-			get module
+	
+	pls do # the kv
+		int 1
+	then do trim as deps_str
+	
+	# TODO - this ought to be a macro.
+	if
+		pls do none?
+			pls do eq? the deps_str
+				string ""
+		then
+			pls do trim the deps_str
+			then do split as deps
+				regex /\s+/
+			pls do deps the module
+				pls get deps
+	
+	pls do # the modules
+		pls get id from module
+		pls get module
 
 # print
 	string "modules"
-	get modules
+	pls get modules
 
 # TODO - support set initializers
 # TODO - support a  way to convert a dict keys to a set cleanly
@@ -89,105 +89,104 @@ fn visit
 		# chain of dependencies currently being inspected - used to detect loops
 	returns
 		type named void
-	do
 		
-		if 
-			get visited the module
-			then
-				return
-		do visited the module
-			true
+	if 
+		pls get visited the module
+		then
+			return
+	pls do visited the module
+		true
 
+	if
+		false
+		then
+			note just testing TODO please remove me.
+			pls do slice the chain
+			then do push
+				pls do id the module
+
+	# TODO - this shouldn't be using slice. we need a dedicated copy command
+	local next_chain
+		pls do slice the chain
+	pls do push the next_chain
+		pls do id the module
+
+	solution
+		point loops each dep_id
+			pls do deps the module
 		if
-			false
+			pls do has_values the next_chain
+				pls get dep_id
 			then
-				note just testing TODO please remove me.
-				do slice the chain
-				then do push
-					do id the module
+				local dep_loop
+					list
+						type named str
+				pls do push the dep_loop
+					pls get dep_id
+				solution
+					point loops each chain_dep_id
+						pls do slice the next_chain
+						then do reverse
+					pls do push the dep_loop
+						pls get chain_dep_id
+					if
+						pls do eq?
+							pls get chain_dep_id
+							pls get dep_id
+						then
+							break
 
-		# TODO - this shouldn't be using slice. we need a dedicated copy command
-		local next_chain
-			do slice the chain
-		do push the next_chain
-			do id the module
+				pls do reverse the dep_loop
 
-		for dep_id in
-			do deps the module
-			do
-				if
-					do has_values the next_chain
-						get dep_id
-					then
-						local dep_loop
-							list
-								type named str
-						do push the dep_loop
-							get dep_id
-						do slice the next_chain
-						for chain_dep_id in
-							then do reverse
-							do
-								do push the dep_loop
-									get chain_dep_id
-								if
-									do eq?
-										get chain_dep_id
-										get dep_id
-									then
-										break
+				pls do push
+					pls get dep_loops from unroller
+					pls do join the dep_loop
+						string " → "
+			else
+				pls do visit
+					pls get unroller
+					pls do #
+						pls get modules from unroller
+						pls get dep_id
+					pls get next_chain
 
-						do reverse the dep_loop
-
-						do push
-							get dep_loops from unroller
-							do join the dep_loop
-								string " → "
-					else
-						do visit
-							get unroller
-							do #
-								get modules from unroller
-								get dep_id
-							get next_chain
-
-		do push
-			get build_order from unroller
-			do id the module
+	pls do push
+		pls get build_order from unroller
+		pls do id the module
 
 local unroller
 	type named DAG_unroller
-	do DAG_unroller
+	pls do DAG_unroller
 		list
 			type named str
 		list
 			type named str
-		get modules
+		pls get modules
 
-for module in
-	get values from modules
-	do
-		do visit
-			get unroller
-			get module
-			list
-				type named str
+solution
+	point loops each module
+		pls get values the modules
+	pls do visit
+		pls get unroller
+		pls get module
+		list
+			type named str
 
-get unroller
+pls get unroller
 if
-	do asc(weak)?
+	pls do asc(weak)?
 		int 1
 		then chain dep_loops length
 	then
-		get unroller
-		do print
-			do cat
+		pls get unroller
+		pls do print
+			pls do cat
 				string "ERROR: there are dependency loops.\n"
 				then chain dep_loops join
 					string "\n"
 	else
-		get unroller
-		do print
+		pls get unroller
+		pls do print
 			then chain build_order join
 				string "\n"
 

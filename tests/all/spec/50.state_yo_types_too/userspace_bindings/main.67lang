@@ -13,13 +13,13 @@ fn my_push is PrototypeCall
 local test
 	list
 		type named str
-do my_push the test
+pls do my_push the test
 	string "t"
-do my_push the test
+pls do my_push the test
 	string "e"
-do my_push the test
+pls do my_push the test
 	string "s"
-do my_push the test
+pls do my_push the test
 	string "t"
 
-do print the test
+pls do print the test

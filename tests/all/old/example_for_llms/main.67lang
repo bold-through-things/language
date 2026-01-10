@@ -29,10 +29,10 @@ note we prefer snake_case.
 local is_active
 	true
 
-do print
-	get name
-	get age
-	get is_active
+pls do print
+	pls get name
+	pls get age
+	pls get is_active
 
 note the above is roughly equivalent to following JS
 	
@@ -49,11 +49,11 @@ note here is a **key** idea. here in our realm, you must
 
 	so now, to name the Alice yet again, you simply do...
 
-do name
+pls do name
 	string "Aris"
 
-do print
-	get name
+pls do print
+	pls get name
 
 note the above is roughly equivalent to following JS
 
@@ -73,8 +73,8 @@ note why then an assignment there? it's simple, **all in arity.**
 	and now to prove that they are functions, let's change up all the words
 	a little.
 
-get print
-	do name
+pls get print
+	pls do name
 
 note that still works. how come?! the `do` and `get` are aliases.
 	why would they not be?! it's all functions. you as the user know
@@ -82,9 +82,9 @@ note that still works. how come?! the `do` and `get` are aliases.
 
 	and then again, is this a `do`? or is it `get`?
 
-	do ? the database
+	pls do ? the database
 		string "SELECT * FROM ..."
-	get ? from database
+	pls get ? from database
 		string "SELECT * FROM ..."
 
 
@@ -94,14 +94,13 @@ fn greet
 		type named str
 	returns
 		type named str
-	do
-		return
-			do cat
-				string "Hello, "
-				get person
+	return
+		pls do cat
+			string "Hello, "
+			pls get person
 
-do print
-	do greet
+pls do print
+	pls do greet
 		string "Alice"
 
 note the above is roughly equivalent to following JS
@@ -122,17 +121,17 @@ local numbers
 		int 4
 		int 5
 
-do push the numbers
+pls do push the numbers
 	int 6
 
-do print
-	do # the numbers
+pls do print
+	pls do # the numbers
 		int 0
 	
-do print
-	do # the numbers
-		do sub
-			get length from numbers
+pls do print
+	pls do # the numbers
+		pls do sub
+			pls get length from numbers
 			int 1
 
 note the above is roughly equivalent to following JS
@@ -172,22 +171,22 @@ note i commented out this code because
 						string "city"
 						string "New York"
 
-	do # the user
+	pls do # the user
 		string "name"
 		string "Bob"
 
-	do # the user
+	pls do # the user
 		string "age"
 		int 30
 
-	do # the user
+	pls do # the user
 		string "address"
 	then do #
 		string "oblast"
 		string "Donetsk Oblast"
 
-	do print
-		get user
+	pls do print
+		pls get user
 
 note the above is roughly equivalent to following JS
 	
@@ -208,14 +207,14 @@ note the above is roughly equivalent to following JS
 
 
 if
-	do asc(weak)?
+	pls do asc(weak)?
 		int 18
-		get age
+		pls get age
 	then
-		do print
+		pls do print
 			string "Adult"
 	else
-		do print
+		pls do print
 			string "Minor"
 
 note the above is roughly equivalent to following JS
@@ -228,11 +227,11 @@ note the above is roughly equivalent to following JS
 
 
 
-for number in
-	get numbers
-	do
-		do print
-			get number
+solution
+	point loops each number
+		pls get numbers
+	pls do print
+		pls get number
 
 note the above is roughly equivalent to following JS
 	
@@ -249,7 +248,7 @@ type named Person is heap_entry
 		type named int
 
 local alice
-	do Person
+	pls do Person
 		string "Alice"
 		int 30
 		
@@ -257,21 +256,21 @@ local alice
 		is a work in progress
 	type named Person
 
-do print
-	get name from alice
-do print
-	get age from alice
+pls do print
+	pls get name from alice
+pls do print
+	pls get age from alice
 
-do name the alice
+pls do name the alice
 	string "Alicia"
 
-do print
-	get name from alice
+pls do print
+	pls get name from alice
 
 note both are the "name" getter, but it is intelligently
 	matched by type. ad hoc polymorphism now saves the day!
-do print
-	get name
+pls do print
+	pls get name
 
 note the above is roughly equivalent to following JS
 
@@ -299,9 +298,9 @@ note the pipelining syntax.
 local 1
 	int 1
 
-get 1 as ?
+pls get 1 as ?
 then do sum
-	get ?
+	pls get ?
 	int 1
 then do print
 
@@ -318,15 +317,15 @@ note that just printed 3. indeed, as 1 + 1 is... wait, what even?!
 	this is the **key**. the previous computed value becomes the **first** argument.
 	that is the `then` semantics. if you omit the `then`...
 
-get 1 as ?
-do sum
-	get ?
+pls get 1 as ?
+pls do sum
+	pls get ?
 	int 1
 then do print
 
 note then you get a 2, as you'd expect. or otherwise...
 
-get 1 as ?
+pls get 1 as ?
 then do sum
 	int 1
 then do print
@@ -348,33 +347,33 @@ local max_characters
 local found_word
 	string ""
 
-for thing in
-	get things_to_say
-	do
-		for word in
-			do split the thing
+solution
+	point loops each thing
+		pls get things_to_say
+	solution
+		point loops each word
+			pls do split the thing
 				string " "
-			do
-				note this is needed temporarily... TODO! bad type named inference!
-				local word
-					type named str
-					get word
-				note this crazy `then` nonsense!
-				get length from word
-				if
-					then get desc?
-						get max_characters
-					then
-						get length from word
-						note this assigns max_characters!
-						then do max_characters
-						note `into` to set variables...
-						get word into found_word
-						note you could also just...
-						get found_word from word
+		note this is needed temporarily... TODO! bad type named inference!
+		local word
+			type named str
+			pls get word
+		note this crazy `then` nonsense!
+		pls get length from word
+		if
+			then get desc?
+				pls get max_characters
+			then
+				pls get length from word
+				note this assigns max_characters!
+				then do max_characters
+				note `into` to set variables...
+				pls get word into found_word
+				note you could also just...
+				pls get found_word from word
 
-do print
-	get found_word
+pls do print
+	pls get found_word
 
 note the above is roughly equivalent to following JS
 
@@ -395,9 +394,9 @@ note the above is roughly equivalent to following JS
 
 
 note also commented out, TODO!
-	do print
+	pls do print
 		string "Bob's city"
-		get # from user
+		pls get # from user
 			string "address"
 		then get #
 			string "city"
@@ -409,9 +408,9 @@ note no, no, wait! that will not work. it will instead print:
 	you have to be aware of this, my dear. all those pipelining steps do actually
 	"return" their values up the tree. instead...
 
-	get # from user
+	pls get # from user
 		string "address"
-	do print
+	pls do print
 		string "Bob's city"
 		then get #
 			string "city"
@@ -420,7 +419,7 @@ note no, no, wait! that will not work. it will instead print:
 
 note that we also have this beast...
 
-get # from things_to_say
+pls get # from things_to_say
 	int 0
 then do split
 	string " "
@@ -451,7 +450,8 @@ fn create_counter
 	returns
 		type named callable0
 			type named int for RV
-	do
+	note what the fuck why does this *need* a `yo`?! TODO
+	yo
 		note you do need a class or dict
 			as the bound values are literals.
 			the Java problem. we will fix it later.
@@ -462,44 +462,44 @@ fn create_counter
 			has count
 				type named int
 		local _
-			get create_counter_store
+			pls get create_counter_store
 				int 0
 		fn create_counter::count
 			param _
 				type named create_counter_store
 			returns
 				type named int
-			do
-				do sum as new
-					get count from _
+			yo
+				pls do sum as new
+					pls get count from _
 					int 1
 				return
-					do count the _
-						get new
+					pls do count the _
+						pls get new
 
 		return
 			bind fn create_counter::count as callable
-				get _
+				pls get _
 
 local counter
-	do create_counter
+	pls do create_counter
 
-do print
+pls do print
 	string "wow, counting!"
 
-do print
-	do str
-		do ~ the counter
-	do str
-		do ~ the counter
-	do str
-		do ~ the counter
-	do str
-		do ~ the counter
-	do str
-		do ~ the counter
-	do str
-		do ~ the counter
+pls do print
+	pls do str
+		pls do ~ the counter
+	pls do str
+		pls do ~ the counter
+	pls do str
+		pls do ~ the counter
+	pls do str
+		pls do ~ the counter
+	pls do str
+		pls do ~ the counter
+	pls do str
+		pls do ~ the counter
 
 note that is rather tedious and quite verbose! but you should
 	celebrate we have it to begin with. we'll get proper closures
@@ -518,13 +518,12 @@ fn bool_printer
 		type named str
 	returns
 		type named void
-	do
-		if
-			get value
-			then
-				do print the if_true
-			else
-				do print the if_false
+	if
+		pls get value
+		then
+			pls do print the if_true
+		else
+			pls do print the if_false
 
 local politely_agree
 	bind fn bool_printer as callable
@@ -532,11 +531,11 @@ local politely_agree
 		string "i would indeed like to agree."
 		_
 
-do ~ the politely_agree
+pls do ~ the politely_agree
 	true
 	string "what?! utter BULLSHIT!"
 
-do ~ the politely_agree
+pls do ~ the politely_agree
 	false
 	string "what?! utter BULLSHIT!"
 

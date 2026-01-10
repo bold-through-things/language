@@ -173,7 +173,7 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         let _0x47_test = [] as Array<string>;
         Array.prototype.push.call(_0x47_test, "t");
         Array.prototype.push.call(_0x47_test, "e");

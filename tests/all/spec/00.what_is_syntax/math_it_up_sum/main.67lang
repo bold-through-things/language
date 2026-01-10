@@ -1,57 +1,58 @@
-do sum as small
+
+pls do sum as small
 	int 67
 	int 0
 	int 6
 then do print
 
-do sum
+pls do sum
 	float 67.8
 	float 0
 	float 6.0
 then do print
 
-do sub
+pls do sub
 	int 67
 	int 0
 	int 6
 then do print
 
-do sub
+pls do sub
 	float 67.8
 	float 0
 	float 6.0
 then do print
 
-do mul as huge
+pls do mul as huge
 	int 67
 	int 6
 	int 1
 then do print
 
-do sum the huge as huge
-	get small
+pls do sum the huge as huge
+	pls get small
 
-do mul
+pls do mul
 	float 67.8
 	float 6.0
 	float 1.0
 then do print
 
 note uh... TODO!
-	do div
+	pls do div
 		int 67
 		int 6
 		int 1
 	then do print
 
-do div
+pls do div
 	float 67.8
 	float 6.0
 	float 1.0
 then do print
 
-do div(int,remainder)
-	get huge
+pls do div(int,remainder)
+	pls get huge
 	int 67
 	int 6
 then do print

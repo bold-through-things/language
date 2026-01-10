@@ -11,15 +11,14 @@ fn increment
 			type named int for RV
 	returns
 		type named int
-	do
-		do ~ the getter
-		then do sum as new
-			int 1
-		return
-			do ~ the setter
-				get new
+	pls do ~ the getter
+	then do sum as new
+		int 1
+	return
+		pls do ~ the setter
+			pls get new
 
-do increment
+pls do increment
 	note getter
 	bind fn value as callable
 	note setter

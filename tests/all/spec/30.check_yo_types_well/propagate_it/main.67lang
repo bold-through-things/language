@@ -4,5 +4,5 @@ local str
 	int 67
 
 note this yields no error then
-do split the str
+pls do split the str
 	string " "

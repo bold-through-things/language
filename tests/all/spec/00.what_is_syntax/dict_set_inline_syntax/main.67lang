@@ -14,17 +14,17 @@ local user
 			string "city"
 			string "New York"
 
-do print
-	get user
+pls do print
+	pls get user
 
 local my_set
-	do set
+	pls do set
 		string "apple"
 		string "banana"
 		string "cherry"
 
-do print
-	get my_set
+pls do print
+	pls get my_set
 
 local my_list
 	list
@@ -41,8 +41,8 @@ local my_list
 		int 2
 		int 3
 
-do print
-	get my_list
+pls do print
+	pls get my_list
 
 note test simple list (no operations)
 local simple_list
@@ -52,5 +52,5 @@ local simple_list
 		int 2
 		int 3
 
-do print
-	get simple_list
+pls do print
+	pls get simple_list

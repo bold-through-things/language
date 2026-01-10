@@ -7,11 +7,11 @@ note the task given
 	Count how many rows have "age" > 30, assuming one of the columns is age.
 
 local lines
-	do stdin
+	pls do stdin
 	# okay i am seeing a reason to stop treating builtins as special, or at the very least to expose them in the scope object
 
 local lines
-	do split the lines
+	pls do split the lines
 		string "\n"
 
 local i
@@ -24,67 +24,67 @@ local rows
 		type named dict
 			type named str for K
 			type named str for V
-for line in
-	get lines
-	do
-		if
-			do eq?
-				get i
-				int 0
-			then
-				do split the line into header
-					string ","
-			else
-				local zipped_data
-					do zip
-						get header
-						do split the line
-							string ","
-				
-				local row
-					dict
-						type named str for K
-						type named str for V
-				
-				for kv in
-					get zipped_data
-					do
-						do # the row
-							get 0 from kv
-							get 1 from kv
-				
-				do push the rows
-					get row
-		
-		do sum
-			get i
-			int 1
-		then do i
+solution
+	point loops each line
+		pls get lines
+	if
+		pls do eq?
+			pls get i
+			int 0
+		then
+			pls do split the line into header
+				string ","
+		else
+			local zipped_data
+				pls do zip
+					pls get header
+					pls do split the line
+						string ","
+			
+			local row
+				dict
+					type named str for K
+					type named str for V
+			
+			solution
+				point loops each kv
+					pls get zipped_data
+				pls do # the row
+					pls get 0 from kv
+					pls get 1 from kv
+			
+			pls do push the rows
+				pls get row
+	
+	pls do sum
+		pls get i
+		int 1
+	then do i
 
-for row in
-	get rows
-	do
-		do print
-			get # from row
-				string "name"
+solution
+	point loops each row
+		pls get rows
+	pls do print
+		pls get # from row
+			string "name"
 
 local age_over_30
 	int 0
-for row in
-	get rows
-	do
-		if
-			note TODO - the test case should probably strain this asc
-				on what happens if age is 30
-			do asc?
-				do int:parse
-					do # the row
-						string "age"
-				int 30
-			then
-				do sum into age_over_30
-					get age_over_30
-					int 1
+solution
+	point loops each row
+		pls get rows
+	if
+		note TODO - the test case should probably strain this asc
+			on what happens if age is 30
+		pls do asc?
+			pls do int:parse
+				pls do # the row
+					string "age"
+			int 30
+		then
+			pls do sum into age_over_30
+				pls get age_over_30
+				int 1
 
-do print
-	get age_over_30
+pls do print
+	pls get age_over_30

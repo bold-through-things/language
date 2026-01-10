@@ -42,7 +42,9 @@ async function display_and_confirm_edit(opts: {
 
             if (diff_res.code !== 1) {
                 // a 0 would imply no diff which would be... kinda silly
-                throw new Error(`diff command RC is ${diff_res.code}, expected 0`);
+                console.log("\n\n\nold_content\n\n\n", opts.old_content);
+                console.log("\n\n\nnew_content\n\n\n", opts.new_content); 
+                throw new Error(`diff command RC is ${diff_res.code}, expected 1`);
             }
 
             const reply = prompt_choice("apply?", ["y", "n", "c"]);
@@ -67,58 +69,27 @@ function whitespace_string_from_node(n: Node): string {
     return args.slice(1, args.length - 1);
 }
 
-function sort_children_always_before_parents(n: Node[]) {
-    // TODO. this likely could be done way more efficient.
-    //  also i am not convinced that it preserves provided order
-    //  need to autotest it. then again, not critical for now, so...
-    type Tree_item = {
-        node: Node,
-        children: Tree_item[],
+function sort_children_always_before_parents(nodes: Node[]): Node[] {
+    type Maybe_node = {
+        node: Node | null,
     }
-    function parent_dist(n: Node, p: Node): number | null {
-        const parents = unroll_parent_chain(n);
-        for (let i = 0; i < parents.length; i++) {
-            if (parents[i] === p) {
-                return i;
+    const seen = new Map<Node, Maybe_node>();
+    const out: Maybe_node[] = [];
+    for (const node of nodes) {
+        const parents = unroll_parent_chain(node);
+        for (const p of parents) {
+            const item = seen.get(p);
+            if (item !== undefined) {
+                item.node = null;
+                seen.delete(p);
+                nodes.push(p);
             }
         }
-        return null;
+        const item = { node };
+        out.push(item);
+        seen.set(node, item);
     }
-    const roots: Tree_item[] = n.map(node => ({ node, children: [] }));
-    let changed = true;
-    while (changed) {
-        changed = false;
-        let lowest_dist = Infinity;
-        for (const item of roots) {
-            let new_parent: Tree_item | null = null;
-            for (const potential_parent of roots) {
-                if (item === potential_parent) {
-                    continue;
-                }
-                const dist = parent_dist(item.node, potential_parent.node);
-                if (dist !== null && dist < lowest_dist) {
-                    lowest_dist = dist;
-                    new_parent = potential_parent;
-                }
-            }
-            if (new_parent !== null) {
-                new_parent.children.push(item);
-                roots.splice(roots.indexOf(item), 1);
-                changed = true;
-            }
-        }
-    }
-    const out: Node[] = [];
-    function collect(item: Tree_item) {
-        for (const child of item.children) {
-            collect(child);
-        }
-        out.push(item.node);
-    }
-    for (const root of roots) {
-        collect(root);
-    }
-    return out;
+    return out.map(i => i.node).filter((n): n is Node => n !== null);
 }
 
 async function clean_redundant_whitespace_changes(opts: { old_content: string, new_content: string }): Promise<string> {    
@@ -240,6 +211,7 @@ async function stencil(args: Args) {
                         let new_ = node.copy_recursive();
                         new_ = edit_fn(new_, opts);
                         const new_tree = opts.target.copy_with_replacements(new Map([[node, new_]]));
+                        console.log(new_.content)
                         const approved = await display_and_confirm_edit({
                             old_content: opts.target.indented_repr(),
                             new_content: new_tree.indented_repr(),
@@ -249,6 +221,8 @@ async function stencil(args: Args) {
                         }
                     });
                 }
+
+                return await void 0;
             }
         }
         instructions["prepend_content"] = create_editor((n, opts) => {

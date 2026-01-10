@@ -1,55 +1,55 @@
 # these are expected to pass
-do
+yo
 	local test
 		type named int
 		int 0
 
 	local test_1
 		type named int
-		get test
+		pls get test
 
-	do test
-		get test_1
+	pls do test
+		pls get test_1
 
-	do
+	yo
 		local test_1
 			type named int
-			get test
+			pls get test
 
-		do test
-			get test_1
+		pls do test
+			pls get test_1
 
 # these are expected to fail
-do
+yo
 	local test
 		type named int
 		string "test"
 
-do
+yo
 	local test_str
 		type named str
 		# TODO - since we do not null by default - this should here also error!
 		
 	local test_int
 		type named int
-		get test_str
+		pls get test_str
 
-	do test_int
-		get test_str
+	pls do test_int
+		pls get test_str
 
-	do
-		do test_str
+	yo
+		pls do test_str
 			int 0
 
 		local test_bool
 			type named bool
-			get test_str
+			pls get test_str
 
-		get test_str
-		do test_bool
+		pls get test_str
+		pls do test_bool
 			then chain split sort join
 
-		do split the test_bool
+		pls do split the test_bool
 
-		get test_str
+		pls get test_str
 		then chain split split split

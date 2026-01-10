@@ -2,7 +2,7 @@
   "$items": [
     {
       "recoverable": false,
-      "line": 24,
+      "line": 23,
       "char": 0,
       "content": { "$contains": "call heartbeat" },
       "error_type": "NO_MATCHING_OVERLOAD",

@@ -1,11 +1,10 @@
 fn test_fn
 	returns
 		type named void
-	do
-		do print
-			string "test"
+	pls do print
+		string "test"
 
-do timeout
+pls do timeout
 	bind fn test_fn as callable
 	int 100
 

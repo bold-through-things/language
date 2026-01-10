@@ -173,21 +173,21 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         console.log("Current working directory:");
         console.log(Deno.cwd());
         console.log("Reading sample.txt:");
-        try {    
+        try {
             let _0x46_content = (await (Deno.readTextFile("sample.txt")));
             console.log(_0x46_content);
-        } catch (    
+        } catch (
             _0x47_error
-        ) {    
+        ) {
             console.log("Error reading file:");
             console.log(_0x47_error);
         } finally {
         }
-    
+
         console.log("File reading test complete");
     }
 

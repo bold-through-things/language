@@ -120,63 +120,63 @@ if (is_Deno) {
 }
 
 
-class _0x42_MyUint8Array {
+class _0x40_MyUint8Array {
     constructor(
     ) {
     }
 }
 
 
-class _0x43_MyEncoder {
+class _0x41_MyEncoder {
     constructor(
     ) {
     }
 }
 
 
-class _0x44_inside_dot_SPEC {
+class _0x42_inside_dot_SPEC {
     constructor(
     ) {
     }
 }
 
 
-class _0x45_Interval_ID {
+class _0x43_Interval_ID {
     constructor(
     ) {
     }
 }
 
 
-class _0x46_Response {
+class _0x44_Response {
     constructor(
     ) {
     }
 }
 
 
-class _0x47_TextDecoder {
+class _0x45_TextDecoder {
     constructor(
     ) {
     }
 }
 
 
-class _0x48_Uint8Array {
+class _0x46_Uint8Array {
     constructor(
     ) {
     }
 }
 
 
-class _0x49_TextEncoder {
+class _0x47_TextEncoder {
     constructor(
     ) {
     }
 }
 
 
-class _0x4a_URL {
+class _0x48_URL {
     constructor(
     ) {
     }
@@ -187,50 +187,38 @@ void (async () => {
     'use strict';
     {
     }
-    {    
-        let _0x4b_myURL = (new URL("https://example.com/path?query=123"));
-        console.log(_0x4b_myURL.pathname);
+    {
+        let _0x49_myURL = (new URL("https://example.com/path?query=123"));
+        console.log(_0x49_myURL.pathname);
         console.log("\n--- Testing TextEncoder/TextDecoder ---");
-        let _0x4c_encoder = (new TextEncoder());
-        let _0x4d_decoder = (new TextDecoder());
-        let _0x4e_text_tests = ["ASCII text", "Unicode: 🦕 Deno", "Numbers: 42"] as Array<string>;
-        {    
-            let _0x4f__0x3f_for_text__index = 0;
-            let _0x50__0x40_for_text__list = _0x4e_text_tests;
-            while(true) {    
-                if (!(_0x4f__0x3f_for_text__index < _0x50__0x40_for_text__list.length)) { break; }
-                {    
-                    const _0x73__0x40_for_text__list = _0x50__0x40_for_text__list;
-                    const _0x74__0x3f_for_text__index = _0x4f__0x3f_for_text__index;
-                    const _0x75__pipeline_result = _0x74__0x3f_for_text__index;
-                    if (_0x73__0x40_for_text__list[_0x75__pipeline_result] === undefined) { throw new Error("sparse array") }
-                    let _0x51_text = _0x73__0x40_for_text__list[_0x75__pipeline_result];
-                    (_0x4f__0x3f_for_text__index = (_0x4f__0x3f_for_text__index + 1));
-                    let _0x52_bytes = TextEncoder.prototype.encode.call(_0x4c_encoder, _0x51_text);
-                    let _0x53_restored = TextDecoder.prototype.decode.call(_0x4d_decoder, _0x52_bytes);
-                    console.log("Text: \"", _0x51_text, "\" -> Bytes: [", _0x52_bytes, "] -> Restored: \"", _0x53_restored);
-                }
-            }
+        let _0x4a_encoder = (new TextEncoder());
+        let _0x4b_decoder = (new TextDecoder());
+        let _0x4c_text_tests = ["ASCII text", "Unicode: 🦕 Deno", "Numbers: 42"] as Array<string>;
+        for (const _0x4d_text of _0x4c_text_tests)
+        {
+            let _0x4e_bytes = TextEncoder.prototype.encode.call(_0x4a_encoder, _0x4d_text);
+            let _0x4f_restored = TextDecoder.prototype.decode.call(_0x4b_decoder, _0x4e_bytes);
+            console.log("Text: \"", _0x4d_text, "\" -> Bytes: [", _0x4e_bytes, "] -> Restored: \"", _0x4f_restored);
         }
-    
+
         console.log("\n--- Testing atob/btoa ---");
-        let _0x54_testString = "Hello World";
-        let _0x55_encodedString = globalThis.btoa(_0x54_testString);
-        let _0x56_decodedString = globalThis.atob(_0x55_encodedString);
-        console.log("Original: ", _0x54_testString, " -> Encoded: ", _0x55_encodedString, " -> Decoded: ", _0x56_decodedString);
+        let _0x50_testString = "Hello World";
+        let _0x51_encodedString = globalThis.btoa(_0x50_testString);
+        let _0x52_decodedString = globalThis.atob(_0x51_encodedString);
+        console.log("Original: ", _0x50_testString, " -> Encoded: ", _0x51_encodedString, " -> Decoded: ", _0x52_decodedString);
         console.log("\n--- Testing JSON.stringify/parse ---");
-        let _0x57_testObj = {["name"]: "Claude", ["type"]: "AI", ["version"]: "42"} as Record<string, string>;
-        let _0x58_jsonString = JSON.stringify(_0x57_testObj);
-        let _0x59_parsedObj = JSON.parse(_0x58_jsonString);
-        console.log("Original object -> JSON: ", _0x58_jsonString);
-        const _0xae_parsedObj = _0x59_parsedObj;
-        if (_0xae_parsedObj["name"] === undefined) { throw new Error("sparse array") }
-        console.log("Parsed back -> name: ", _0xae_parsedObj["name"]);
+        let _0x53_testObj = {["name"]: "Claude", ["type"]: "AI", ["version"]: "42"} as Record<string, string>;
+        let _0x54_jsonString = JSON.stringify(_0x53_testObj);
+        let _0x55_parsedObj = JSON.parse(_0x54_jsonString);
+        console.log("Original object -> JSON: ", _0x54_jsonString);
+        const _0x99_parsedObj = _0x55_parsedObj;
+        if (_0x99_parsedObj["name"] === undefined) { throw new Error("sparse array") }
+        console.log("Parsed back -> name: ", _0x99_parsedObj["name"]);
         console.log("\n--- Testing fetch (data URL) ---");
-        let _0x5a_response = (await (globalThis.fetch("data:application/json,{\"67lang\": \"is fucking awesome\"}", {} as Record<string, string>)));
-        console.log(_0x5a_response, (await (Response.prototype.json.call(_0x5a_response))));
-        let _0x5b_encoder2 = (new TextEncoder());
-        console.log("\n--- Testing custom MyEncoder ---", TextEncoder.prototype.encode.call(_0x5b_encoder2, "Custom encoding works!"));
+        let _0x56_response = (await (globalThis.fetch("data:application/json,{\"67lang\": \"is fucking awesome\"}", {} as Record<string, string>)));
+        console.log(_0x56_response, (await (Response.prototype.json.call(_0x56_response))));
+        let _0x57_encoder2 = (new TextEncoder());
+        console.log("\n--- Testing custom MyEncoder ---", TextEncoder.prototype.encode.call(_0x57_encoder2, "Custom encoding works!"));
     }
 
 })();

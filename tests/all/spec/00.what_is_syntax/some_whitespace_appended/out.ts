@@ -173,11 +173,11 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         console.log("wowie you are telling me there are a bunch of spaces at the end?! -> ");
-        if (    
+        if (
             true
-        ) {    
+        ) {
             console.log("indeed");
         } else {
         }

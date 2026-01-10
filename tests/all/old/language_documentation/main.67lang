@@ -34,12 +34,12 @@ note in this chapter number one (1) we shall discuss basic types.
 	
 	much as i hate "hello world" as a concept, here it is, dipshits.
 
-do print
+pls do print
 	string "hello world"
 
 note that you can create and print strings. crazy, i know. are we computing yet? wow.
 
-do print
+pls do print
 	string ""hello world" is a fucking stupid non argument."
 
 note what happened there. did you forget to escape quotes? no, it's perfectly valid. it will
@@ -50,23 +50,23 @@ note what happened there. did you forget to escape quotes? no, it's perfectly va
 	but how come?! well, a riddle for you to solve. allow me to give you some hints, though:
 
 # TODO - assert instead of printing (need a new macro)
-do print
+pls do print
 	string "this literally cannot be true... yet it is: "
-	do every?
-		do eq?
+	pls do every?
+		pls do eq?
 			string "new year's eve"
-			do cat
+			pls do cat
 				string "new year's "
 				string level
-		do eq?
+		pls do eq?
 			string "a very scary error"
-			do cat
+			pls do cat
 				string "a very "
 				string !scary !
 				string -error-
-		do eq?
+		pls do eq?
 			string "your regex should be stored into the regex variable."
-			do cat
+			pls do cat
 				string /your regex/
 				string " should be stored into the "
 				string `regex`
@@ -74,7 +74,7 @@ do print
 
 note that i completely solved the need to escape quotes. moving on to escaping newlines now:
 
-do print
+pls do print
 	string
 		just write the newlines naturally and 
 		they will appear in the output, meaning
@@ -86,8 +86,8 @@ note that we didn't escape shit. no, wait, that's untrue. we didn't escape the n
 
 note that doing math is arguably the entire point of computers.
 
-do print
-	get sum
+pls do print
+	pls get sum
 		note and TODO this used to say
 			int 2
 			float 0
@@ -96,8 +96,8 @@ do print
 		float 0
 		float 2
 
-do print
-	get asc?
+pls do print
+	pls get asc?
 		int 0
 		int 1
 		int 2
@@ -114,19 +114,19 @@ note in this chapter number two (2) we shall discuss the tasty stuff.
 local age
 	int 23
 
-do print
+pls do print
 	string "my age is"
-	get age
+	pls get age
 
 note that i lied. my age is not currently 23. let's address that by opening a ticket
 	on our JIRA and spending 3 story points.
 
-get age
+pls get age
 	int 25
 
-do print
+pls do print
 	string "actually, i lied. my age is"
-	get age
+	pls get age
 
 note that we were able to close this ticket within 5 story points. good, let's move on to
 	list some more perfectly sensible examples.
@@ -136,16 +136,16 @@ local 0
 
 note what the fuck did we just do?! wait, hold on. this won't compile. right?
 
-do print
-	get 0
+pls do print
+	pls get 0
 
 note that no, it actually does. hm, weird. but what if...
 
-get 0
+pls get 0
 	int 2347
 
-do print
-	get 0
+pls do print
+	pls get 0
 
 note that this just printed 2347. why? what's going on here? let's investigate...
 
@@ -161,8 +161,8 @@ local (2347)
 local ,
 	true
 
-do print
-	get ,
+pls do print
+	pls get ,
 
 note that this language might actually be unhinged. Lisp would never.
 
@@ -174,9 +174,9 @@ note in this chapter number three (3) we shall discuss the really tasty stuff.
 
 	previous examples already hinted at it, but let's explore it in far greater detail:
 
-get ,
-	get ,
-		get ,
+pls get ,
+	pls get ,
+		pls get ,
 
 note that did literally nothing. incredible. so what did it even do, then? why, it's obvious.
 	you just tried to do `, = , = ,` and it happily did assign `,` to the `,` the value of which
@@ -188,7 +188,7 @@ note that did literally nothing. incredible. so what did it even do, then? why, 
 local 2347
 	string "wow, very helpful."
 
-do split the 2347
+pls do split the 2347
 	string | |
 then do sort
 then do join
@@ -215,7 +215,7 @@ local 67lang.features
 		type named str for K
 		type named str for V
 
-do # the 67lang.features
+pls do # the 67lang.features
 	string "the get macro"
 	string 
 		a powerful and flexible method chaining "syntax sugar" with clear branching
@@ -226,7 +226,7 @@ do # the 67lang.features
 note what a mouthful. but there are obviously other features here. let's mention
 	the previously outlined flexibility.
 	
-do # the 67lang.features
+pls do # the 67lang.features
 	string "the flexibility of identifiers"
 	string
 		anything can be an identifier. there is only whitespace and non whitespace. this 
@@ -238,9 +238,9 @@ do # the 67lang.features
 note that was too much yapping. let's truncate it a little.
 
 local _we_really_needed_the_generics_yesterday!
-	do # the 67lang.features
+	pls do # the 67lang.features
 		string "the flexibility of identifiers"
-do slice the _we_really_needed_the_generics_yesterday!
+pls do slice the _we_really_needed_the_generics_yesterday!
 	int 0
 	int 67
 then do print
@@ -260,7 +260,7 @@ note in this chapter number five (5) we shall do some conditioning and looping
 if
 	true
 	then
-		do print
+		pls do print
 			string "big"
 
 note that is absolutely big if true.
@@ -270,10 +270,10 @@ note that is absolutely big if true.
 if
 	false
 	then
-		do print
+		pls do print
 			string "big"
 	else
-		do print
+		pls do print
 			string "my disappointment is immeasurable and my day is ruined."
 
 note that my disappointment in programming languages is indeed immeasurable.
@@ -291,30 +291,30 @@ local i_hate_this_trash!
 note that keeping a list like that is great, but it really does deserve to be shouted
 	into the world as loudly as possible.
 
-for angy in
-	get i_hate_this_trash!
-	do
-		do print
-			get cat
-				get angy
-				string "!!!"
+solution
+	point loops each angy
+		pls get i_hate_this_trash!
+	pls do print
+		pls get cat
+			pls get angy
+			string "!!!"
 
 note that i feel much better now. it is good to vent frustration at times, i suppose.
 
 	let's `do` some work.
+note TODO the loops are fucked right now but either way this test should be deleted soon
+	# TODO update this once 67lang is production grade (give it two three months...)
+	local does_a_decent_programming_language_exist?
+		false
 
-# TODO update this once 67lang is production grade (give it two three months...)
-local does_a_decent_programming_language_exist?
-	false
+	while
+		pls get does_a_decent_programming_language_exist?
+		yo
+			pls do print
+				string `code for quality software`
 
-while
-	get does_a_decent_programming_language_exist?
-	do
-		do print
-			string `code for quality software`
-
-note that we failed to do any meaningful work. that's great. that's enterprise. create another
-	3 story points ticket please and we'll get this blocker resolved with velocity.
+	note that we failed to do any meaningful work. that's great. that's enterprise. create another
+		3 story points ticket please and we'll get this blocker resolved with velocity.
 
 
 
@@ -344,30 +344,30 @@ note in this chapter number six (6) we shall point out the obvious
 
 	every node can have many children. why restrict them all to two, then?
 
-do print
+pls do print
 	string "false: "
-	get every?
+	pls get every?
 		true
 		true
 		false
 
-do print
+pls do print
 	string "true: "
-	get some?
+	pls get some?
 		true
 		false
 		false
 
-do print
+pls do print
 	string "true: "
-	get none?
+	pls get none?
 		false
 		false
 		false
 
-do print
+pls do print
 	string "6: "
-	get sum
+	pls get sum
 		int 1
 		int 1
 		int 1
@@ -401,17 +401,17 @@ local where?
 	string "not even in Nebraska."
 
 must_compile_error NO_MATCHING_OVERLOAD=+1
-	do where?
-		get 2347
+	pls do where?
+		pls get 2347
 
 note that it is a work in progress, but even already it's remarkably powerful. write 
 	quality software with confidence. that's arguably the entire point of this language.
 
-get where?
+pls get where?
 must_compile_error NO_MATCHING_OVERLOAD=+1
 	then chain split split split
 
-do split the where?
+pls do split the where?
 	string " "
 must_compile_error ARGUMENT_TYPE_MISMATCH=+1
 	local number_of_words
@@ -450,25 +450,24 @@ fn fuck!
 		type named int
 	returns
 		type named void
-	do
-		local fucks_given
-			note needed temporarily while param doesn't support typing
-			type named int
-			get fucks_given
-			
-		do print
-			string "fuck!"
-		if
-			get asc(weak)?
-				int 0
-				get fucks_given
-			then
-				get fuck!
-					get sum
-						get fucks_given
-						int -1
+	local fucks_given
+		note needed temporarily while param doesn't support typing
+		type named int
+		pls get fucks_given
+		
+	pls do print
+		string "fuck!"
+	if
+		pls get asc(weak)?
+			int 0
+			pls get fucks_given
+		then
+			pls get fuck!
+				pls get sum
+					pls get fucks_given
+					int -1
 
-do fuck!
+pls do fuck!
 	int 6
 
 note that speaks for itself.

@@ -6,12 +6,12 @@ type named Heartbeat is heap_entry
 
 local heartbeat
 	type named Heartbeat
-	get Heartbeat
+	pls get Heartbeat
 		int 0
 		int 0
 
 note this one also fails as i nuked the `data`
-get # from event as data
+pls get # from event as data
 	string "data"
 
 note that `fn` is not a closure, which means that it does not
@@ -19,5 +19,4 @@ note that `fn` is not a closure, which means that it does not
 fn send_heartbeat
 	returns
 		type named void
-	do
-		get sequence_number from heartbeat
+	pls get sequence_number from heartbeat

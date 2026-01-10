@@ -1,29 +1,29 @@
 note testing file reading functionality and working directory
 
-do print
+pls do print
 	string "Current working directory:"
 
-do print
-	do cwd
+pls do print
+	pls do cwd
 
-do print
+pls do print
 	string "Reading sample.txt:"
 
 try
 	local content
-		do read_file
+		pls do read_file
 			string "sample.txt"
 	
-	do print
-		get content
+	pls do print
+		pls get content
 
 	catch error
-		do print
+		pls do print
 			string "Error reading file:"
-		do print
-			get error
+		pls do print
+			pls get error
 
-do print
+pls do print
 	string "File reading test complete"
 
 note the above is roughly equivalent to following JS

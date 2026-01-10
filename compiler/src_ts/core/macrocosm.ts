@@ -56,7 +56,7 @@ import {
 import { JSON_value } from "./meta_value.ts";
 import { Preprocessing_context } from "../pipeline/steps/processing.ts";
 import { Must_compile_error_context } from "../pipeline/steps/must_compile_error_step.ts";
-import { Solution_macro_provider } from "../macros/solution_macro.ts";
+import { Point_macro_provider, Solution_macro_provider } from "../macros/solution_macro.ts";
 import { Multi_provider } from "../macros/multi_provider.ts";
 import { _67lang_GET_LAST_PIPELINE_RESULT, _67lang_PIPELINE_RESULT, Get_last_pipeline_result_macro_provider, Pipeline_macro_provider, Pipeline_result_macro_provider } from "../macros/then_macro.ts";
 import { Noop_macro_provider } from "../macros/utility_macros.ts";
@@ -356,27 +356,12 @@ export function create_macrocosm(): Macrocosm {
     new Pipeline_result_macro_provider(),
     new Get_last_pipeline_result_macro_provider(),
     new Solution_macro_provider(),
+    new Point_macro_provider(),
     new Must_compile_error_macro_provider(),
     new Comment_macro_provider(),
-    new Multi_provider(
-      "do",
-      [
-        [has_arguments, new Pipeline_macro_provider()],
-        [null, new Scope_macro_provider()]
-      ],
-    ),
-    new Multi_provider(
-      "then",
-      [
-        [has_arguments, new Pipeline_macro_provider()],
-        [null, new Scope_macro_provider()]
-      ],
-    ),
-    new Multi_provider("get", [[null, new Pipeline_macro_provider()]]),
-    new Multi_provider("set", [[null, new Pipeline_macro_provider()]]),
-    new Multi_provider("67lang:file", [[null, new Scope_macro_provider()]]),
-    new Multi_provider("finally", [[null, new Scope_macro_provider()]]),    
-    new Noscope_macro_provider(),
+    new Pipeline_macro_provider(),
+    new Scope_macro_provider(),
+    new Noscope_macro_provider(), // TODO not needed nuke it
     new Return_macro_provider(),
     new Try_macro_provider(),
     new Throw_macro_provider()

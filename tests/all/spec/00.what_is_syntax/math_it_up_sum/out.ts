@@ -173,7 +173,7 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         const _0x49_sum = (67 + 0 + 6);
         const _0x4a__pipeline_result = _0x49_sum;
         let _0x46_small = _0x4a__pipeline_result;

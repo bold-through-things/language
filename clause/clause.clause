@@ -1,0 +1,37 @@
+note how ironic. way too meta!
+
+parser clause
+	clause clause fixed 1
+	clause varargs fixed 0
+	clause fixed fixed 1
+
+	rule has clause
+		ctx
+			focus clause
+			object
+				lit kind clause
+				set clause arg 0
+		merge
+			ctx
+				rule has fixed
+					focus fixed
+					object
+						lit kind fixed
+						set fixed arg 0
+				rule has varargs
+					focus varargs
+					object
+						lit kind varargs
+				exhaustive
+	exhaustive
+
+parser focus
+	clause focus fixed 1
+	
+	rule has focus
+		focus focus
+		object
+			lit kind focus
+			set focus arg 0
+	exhaustive
+

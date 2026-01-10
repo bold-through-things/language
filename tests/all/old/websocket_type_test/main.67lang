@@ -5,47 +5,45 @@ fn message_handler
 		type named 67lang:unknown
 	returns
 		type named void
-	do
-		note This function acts as an EventHandler
-		do print
-			string "Message received"
+	note This function acts as an EventHandler
+	pls do print
+		string "Message received"
 
 fn main_test
 	returns
 		type named void
-	do
-		note Create WebSocket instance
-		do WebSocket as ws
-			string "wss://example.com"
-		
-		note Test 1: WebSocket.send() with string (BufferSource | Blob | str union)
-		do send
-			get ws
-			string "Hello WebSocket"
-		
-		note Test 2: WebSocket.send() with string variable
-		local message
-			type named str
-			string "Another message"
-		do send
-			get ws
-			get message
-		
-		note Test 3: onmessage with bind construct (EventHandler compatibility)
-		do message_handler in ws
-			bind fn message_handler as callable
-				_
-		
-		note Test 4: onopen and onclose also use EventHandler
-		do open_handler in ws
-			bind fn message_handler as callable
-				_
-		
-		do close_handler in ws
-			bind fn message_handler as callable
-				_
-		
-		note If compilation succeeds, our WebSocket and EventHandler types work correctly
-		note TODO: Add runtime test using Deno's bundled WebSocket server once we have proper Deno bindings generation
+	note Create WebSocket instance
+	pls do WebSocket as ws
+		string "wss://example.com"
+	
+	note Test 1: WebSocket.send() with string (BufferSource | Blob | str union)
+	pls do send
+		pls get ws
+		string "Hello WebSocket"
+	
+	note Test 2: WebSocket.send() with string variable
+	local message
+		type named str
+		string "Another message"
+	pls do send
+		pls get ws
+		pls get message
+	
+	note Test 3: onmessage with bind construct (EventHandler compatibility)
+	pls do message_handler in ws
+		bind fn message_handler as callable
+			_
+	
+	note Test 4: onopen and onclose also use EventHandler
+	pls do open_handler in ws
+		bind fn message_handler as callable
+			_
+	
+	pls do close_handler in ws
+		bind fn message_handler as callable
+			_
+	
+	note If compilation succeeds, our WebSocket and EventHandler types work correctly
+	note TODO: Add runtime test using Deno's bundled WebSocket server once we have proper Deno bindings generation
 
 note Just test compilation, don't call main_test to avoid runtime issues

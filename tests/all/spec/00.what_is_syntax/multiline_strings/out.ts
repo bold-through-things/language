@@ -173,7 +173,7 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         console.log("this is an expression-level multiline string.\nit should produce a string value.\n						it can contain indented values.\ntrivially.");
         console.log("hello world");
     }

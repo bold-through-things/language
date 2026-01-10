@@ -1,8 +1,8 @@
 local input
-	do stdin
+	pls do stdin
 
 local words
-	do split the input
+	pls do split the input
 		string "\n"
 
 local count
@@ -10,31 +10,31 @@ local count
 		type named str for K
 		type named int for V
 
-for word in
-	get words
-	do
-		if
-			do none?
-				do has_keys the count
-					get word
-			then
-				do #
-					get count
-					get word
-					int 0
-		note and TODO following line must not be empty here...
-		
-		do #
-			get count
-			get word
-			do sum
-				int 1
-				do #
-					get count
-					get word
+solution
+	point loops each word
+		pls get words
+	if
+		pls do none?
+			pls do has_keys the count
+				pls get word
+		then
+			pls do #
+				pls get count
+				pls get word
+				int 0
+	note and TODO following line must not be empty here...
+	
+	pls do #
+		pls get count
+		pls get word
+		pls do sum
+			int 1
+			pls do #
+				pls get count
+				pls get word
 
-do print
-	get count
+pls do print
+	pls get count
 
 
 

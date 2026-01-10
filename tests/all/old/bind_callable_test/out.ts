@@ -171,18 +171,16 @@ class _0x46_URL {
 
 void (async () => {
     'use strict';
-    const _0x3f_handle_message = async function (    
+    const _0x3f_handle_message = async function (
         bot: string,
         message: string,
         is_trusted: boolean,
-    ) {    
-        {    
-            console.log("Bot: ", bot, ", Message: ", message, ", Trusted: ", is_trusted);
-        }
+    ) {
+        console.log("Bot: ", bot, ", Message: ", message, ", Trusted: ", is_trusted);
     }
     {
     }
-    {    
+    {
         console.log("=== Testing bind callable ===");
         let _0x47_bound_handler = ((arg0: string) => _0x3f_handle_message("MyBot", arg0, true));
         (await (_0x47_bound_handler("Hello from bind test!")));

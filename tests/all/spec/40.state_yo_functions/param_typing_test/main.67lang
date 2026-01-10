@@ -5,17 +5,16 @@ fn process_list
 	returns
 		type named list
 			type named str
-	do
-		# Test that we can call slice on a typed list parameter
-		# This should resolve the ambiguous overload issue
-		local copied_list
-			do slice the my_list
-		
-		# Test that we can call reverse on the list
-		do reverse the copied_list
-		
-		return
-			get copied_list
+	# Test that we can call slice on a typed list parameter
+	# This should resolve the ambiguous overload issue
+	local copied_list
+		pls do slice the my_list
+	
+	# Test that we can call reverse on the list
+	pls do reverse the copied_list
+	
+	return
+		pls get copied_list
 
 # Test the function with a list
 local test_list
@@ -26,8 +25,8 @@ local test_list
 		string "c"
 
 local result
-	do process_list
-		get test_list
+	pls do process_list
+		pls get test_list
 
-do print
-	get result
+pls do print
+	pls get result

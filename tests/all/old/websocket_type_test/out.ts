@@ -172,23 +172,19 @@ class _0x47_URL {
 void (async () => {
     'use strict';
     const _0x40_main_test = async function (
-    ) {    
-        {    
-            let _0x48_ws = (new WebSocket("wss://example.com"));
-            WebSocket.prototype.send.call(_0x48_ws, "Hello WebSocket");
-            let _0x49_message = "Another message";
-            WebSocket.prototype.send.call(_0x48_ws, _0x49_message);
-            (_0x48_ws.onmessage = (((arg0: unknown) => _0x3f_message_handler(arg0))));
-            (_0x48_ws.onopen = (((arg0: unknown) => _0x3f_message_handler(arg0))));
-            (_0x48_ws.onclose = (((arg0: unknown) => _0x3f_message_handler(arg0))));
-        }
+    ) {
+        let _0x48_ws = (new WebSocket("wss://example.com"));
+        WebSocket.prototype.send.call(_0x48_ws, "Hello WebSocket");
+        let _0x49_message = "Another message";
+        WebSocket.prototype.send.call(_0x48_ws, _0x49_message);
+        (_0x48_ws.onmessage = (((arg0: unknown) => _0x3f_message_handler(arg0))));
+        (_0x48_ws.onopen = (((arg0: unknown) => _0x3f_message_handler(arg0))));
+        (_0x48_ws.onclose = (((arg0: unknown) => _0x3f_message_handler(arg0))));
     }
-    const _0x3f_message_handler = async function (    
+    const _0x3f_message_handler = async function (
         event: unknown,
-    ) {    
-        {    
-            console.log("Message received");
-        }
+    ) {
+        console.log("Message received");
     }
     {
     }

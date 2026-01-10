@@ -381,7 +381,7 @@ export class Type_engine {
     }
 
     if (field_type instanceof TypeVariable) {
-      return false;
+      return true;
     }
 
     return false;

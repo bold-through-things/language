@@ -20,6 +20,14 @@ export function cut(line: string, sep: string): [string, string] {
   return [left, right];
 }
 
+export function prefix_removed(line: string, prefix: string): string | null {
+  if (line.startsWith(prefix)) {
+    return line.slice(prefix.length);
+  } else {
+    return null;
+  }
+}
+
 // extract_indent(line, max?) => [restOfLine, indentCount]
 export function extractIndent(
   line: string,
@@ -113,12 +121,7 @@ export class IndentedStringIO {
   }
 
   writeline(s: string = ""): void {
-    if (this.atLineStart) {
-      this.buf.push(this.indentStr.repeat(this.indentLevel));
-    }
-    this.buf.push(s);
-    this.buf.push("\n");
-    this.atLineStart = true;
+    this.write(s + "\n");
   }
 
   indent(levels: number = 1): void {
@@ -147,6 +150,16 @@ export class IndentedStringIO {
     this.indent();
     try {
       fn(this);
+    } finally {
+      this.dedent();
+    }
+  }
+
+  // so fucking stupid! fuck your language vro
+  async with_indent_a(fn: (io: IndentedStringIO) => Promise<void>): Promise<void> {
+    this.indent();
+    try {
+      await fn(this);
     } finally {
       this.dedent();
     }

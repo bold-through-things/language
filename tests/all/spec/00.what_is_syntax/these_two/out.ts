@@ -173,7 +173,7 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         console.log((true && true), "indeed");
         console.log((true && true && false), "indeed");
         console.log((false || false), "indeed");

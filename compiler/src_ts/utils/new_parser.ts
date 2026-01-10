@@ -24,22 +24,22 @@ class Cursor {
 
 export type Validator = (arg: string) => Error | null;
 
-export interface ParsedClause<T extends ClauseSpec> {
+export interface Parsed_clause<T extends Clause_spec> {
   value: string[];
   children: T["subParser"] extends Schema
   ? {
-      [K in keyof T["subParser"]]: ParsedClause<T["subParser"][K]>[]
+      [K in keyof T["subParser"]]: Parsed_clause<T["subParser"][K]>[]
     }
   : null;
 }
 
 export type Schema = { 
-    [keyword: string]: ClauseSpec & { subParser?: Schema }
+    [keyword: string]: Clause_spec & { subParser?: Schema }
 };
 
-type ClauseSpecAny = ClauseSpec & { subParser: Schema };
+type Clause_spec_any = Clause_spec & { subParser: Schema };
 
-abstract class ClauseSpec {
+abstract class Clause_spec {
   constructor(
     public argumentValidators: Validator[] = [],
     public subParser?: Schema
@@ -68,7 +68,7 @@ abstract class ClauseSpec {
   abstract parse(cursor: Cursor, keywordToken: string): string[];
 }
 
-export class Fixed extends ClauseSpec {
+export class Fixed extends Clause_spec {
   constructor(
     public count: number,
     validators?: Validator[],
@@ -89,7 +89,7 @@ export class Fixed extends ClauseSpec {
   }
 }
 
-export class VarOrTerminated extends ClauseSpec {
+export class VarOrTerminated extends Clause_spec {
   constructor(
     public setTerminatorString: string | null = null,
     validators?: Validator[],
@@ -129,10 +129,10 @@ export class VarOrTerminated extends ClauseSpec {
   }
 }
 
-export function parse_tokens<T extends Schema>(tokens: string[], schema: T): { [K in keyof T]: ParsedClause<T[K]>[] } {
+export function parse_tokens<T extends Schema>(tokens: string[], schema: T): { [K in keyof T]: Parsed_clause<T[K]>[] } {
   const cursor = new Cursor(tokens);
   const result = from_entries(
-    keys(schema).map((k) => [k, [] as ParsedClause<ClauseSpec>[]])
+    keys(schema).map((k) => [k, [] as Parsed_clause<Clause_spec>[]])
   );
 
   while (cursor.has()) {
@@ -161,7 +161,7 @@ export function parse_tokens<T extends Schema>(tokens: string[], schema: T): { [
     const args = spec.parse(cursor, token);
     spec.validateArgs(args);
 
-    const node: ParsedClause<ClauseSpec> | ParsedClause<ClauseSpecAny> = 
+    const node: Parsed_clause<Clause_spec> | Parsed_clause<Clause_spec_any> = 
       spec.subParser === undefined ? 
     {
       value: args,
@@ -188,7 +188,7 @@ type Rule<T_result, T_schema extends Schema> = (current: T_result, parsed: Parse
 type String_keys<T> = keyof T & string;
 
 type Parsed_tree<T extends Schema> = {
-  [K in String_keys<T>]: ParsedClause<T[K]>[]
+  [K in String_keys<T>]: Parsed_clause<T[K]>[]
 };
 
 type Has_field<K extends string, V> = { [P in K]: V };

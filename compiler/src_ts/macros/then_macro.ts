@@ -19,6 +19,7 @@ import { Emission_macro_context } from "../pipeline/steps/emission.ts";
 import { Type_checking_context } from "../pipeline/steps/typechecking.ts";
 import { Preprocessing_context } from "../pipeline/steps/processing.ts";
 import { Expression_return_type, Type_check_result } from "../compiler_types/proper_types.ts";
+import { Scope_macro_provider } from "./scope_macro.ts";
 
 // --------------------------------------------------------
 // Then-schema (new parser)
@@ -198,16 +199,15 @@ function create_call_chain(
   }
 }
 
-// --------------------------------------------------------
-// Provider
-// --------------------------------------------------------
+const scope_provider = new Scope_macro_provider(); // yeah TODO this is quite ugly though
 
 export class Pipeline_macro_provider implements Macro_provider {
   [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
-    via(Preprocessing_context, "then", this.preprocess.bind(this));
-    via(Preprocessing_context, "do", this.preprocess.bind(this));
-    via(Preprocessing_context, "get", this.preprocess.bind(this));
-    via(Preprocessing_context, "set", this.preprocess.bind(this));
+    for (const macro_name of ["then", "pls", "yo"]) {
+      via(Preprocessing_context, macro_name, this.preprocess.bind(this));
+      via(Type_checking_context, macro_name, this.typecheck.bind(this));
+      via(Emission_macro_context, macro_name, this.emission.bind(this));
+    }
   }
 
   preprocess(ctx: Preprocessing_context): void {
@@ -215,7 +215,6 @@ export class Pipeline_macro_provider implements Macro_provider {
     const content = ctx.node.content;
 
     const isContinuation = content.startsWith("then");
-    const parseContent = isContinuation ? args : content;
 
     const parent = ctx.node.parent;
     ctx.compiler.error_tracker.assert(
@@ -226,12 +225,9 @@ export class Pipeline_macro_provider implements Macro_provider {
         type: ErrorType.INVALID_STRUCTURE,
       }
     );
-    if (!parent) {
-      return;
-    }
 
     // tokenize for the new parser
-    const tokens = parseContent.split(/\s+/).filter(Boolean);
+    const tokens = args.split(/\s+/).filter(Boolean);
     const tree = try_catch(() => parse_tokens(tokens, thenSchema), (e) => {
       ctx.compiler.error_tracker.fail({
         node: ctx.node,
@@ -242,14 +238,22 @@ export class Pipeline_macro_provider implements Macro_provider {
 
     const view = new ThenView(tree);
     const op = view.op;
-    ctx.compiler.error_tracker.assert(
-      op !== null, 
-      {
-        node: ctx.node,
-        message: "pipeline requires an operation (do, get, set, chain)",
-        type: ErrorType.INVALID_STRUCTURE,
+
+    if (op === null) {
+      ctx.compiler.error_tracker.assert(
+        args.length === 0, // TODO
+        {
+          node: ctx.node,
+          message: "must have empty args",
+          type: ErrorType.INVALID_STRUCTURE,
+        }
+      );
+      for (const child of ctx.node.children) {
+        const cctx = ctx.clone_with({ node: child });
+        cctx.apply();
       }
-    );
+      return;
+    }
 
     let sourceValueName: string | typeof LAST_PIPELINE_RESULT | null = null;
 
@@ -321,6 +325,16 @@ export class Pipeline_macro_provider implements Macro_provider {
       const cctx = ctx.clone_with({ node: child });
       cctx.apply();
     }
+  }
+
+  // if we survive this long then we are doing blocks instead
+  // TODO
+  typecheck(ctx: Type_checking_context): Type_check_result {
+    return scope_provider.typecheck(ctx);
+  }
+
+  emission(ctx: Emission_macro_context): void {
+    return scope_provider.emission(ctx);
   }
 }
 

@@ -173,11 +173,11 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         let _0x46_fizz_divisor = 0;
         let _0x47_buzz_divisor = 0;
         let _0x48_n = 0;
-        {    
+        {
             let _0x49_input = (await (_67lang.stdin()));
             let _0x4a_input = _67lang.string_split(_0x49_input, "\n");
             const _0x54_input = _0x4a_input;
@@ -193,37 +193,41 @@ void (async () => {
             if (_0x63__pipeline_result[2] === undefined) { throw new Error("sparse array") }
             (_0x48_n = globalThis.parseInt(_0x63__pipeline_result[2]));
         }
-    
+
         let _0x4b_i = 0;
-        while(true) {    
-            if (!(_0x4b_i <= _0x48_n)) { break; }
-            {    
-                let _0x4c_out = "";
-                if (    
-                    ((_0x4b_i % _0x46_fizz_divisor) === 0)
-                ) {    
-                    (_0x4c_out = (_0x4c_out + "fizz"));
-                } else {
-                }
-    
-                if (    
-                    ((_0x4b_i % _0x47_buzz_divisor) === 0)
-                ) {    
-                    (_0x4c_out = (_0x4c_out + "buzz"));
-                } else {
-                }
-    
-                if (    
-                    (_0x4c_out === "")
-                ) {    
-                    (_0x4c_out = ("" + Number.prototype.toString.call(_0x4b_i)));
-                } else {
-                }
-    
-                console.log(_0x4c_out);
-                let _0x4d__fix_the_fucking_add_return_type = (_0x4b_i + 1);
-                (_0x4b_i = _0x4d__fix_the_fucking_add_return_type);
+        while (true) {
+            if (
+                (_0x4b_i > _0x48_n)
+            ) {
+                break;
+            } else {
             }
+
+            let _0x4c_out = "";
+            if (
+                ((_0x4b_i % _0x46_fizz_divisor) === 0)
+            ) {
+                (_0x4c_out = (_0x4c_out + "fizz"));
+            } else {
+            }
+
+            if (
+                ((_0x4b_i % _0x47_buzz_divisor) === 0)
+            ) {
+                (_0x4c_out = (_0x4c_out + "buzz"));
+            } else {
+            }
+
+            if (
+                (_0x4c_out === "")
+            ) {
+                (_0x4c_out = ("" + Number.prototype.toString.call(_0x4b_i)));
+            } else {
+            }
+
+            console.log(_0x4c_out);
+            let _0x4d__fix_the_fucking_add_return_type = (_0x4b_i + 1);
+            (_0x4b_i = _0x4d__fix_the_fucking_add_return_type);
         }
     }
 

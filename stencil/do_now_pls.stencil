@@ -1,5 +1,8 @@
 stencil
-	match_content regex do.+
+	match_content regex ^do.+
+	match_content regex ^get.+
+	match_content regex ^set.+
+	match_content regex ^chain.+
 	prepend_content
 		string "pls "
 

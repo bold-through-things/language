@@ -7,8 +7,8 @@ import {
   Macro_provider,
 } from "../core/macro_registry.ts";
 
-import { Args, SaneIdentifier } from "../core/node.ts";
-import { BRACES, PARENTHESIS, statement_block, statement_blocks } from "../utils/strutil.ts";
+import { Args, Node, SaneIdentifier } from "../core/node.ts";
+import { BRACES, cut, PARENTHESIS, statement_block, statement_blocks } from "../utils/strutil.ts";
 import {
   get_single_arg,
 } from "../utils/common_utils.ts";
@@ -61,10 +61,26 @@ export class Fn_macro_provider implements Macro_provider {
     });
   }
 
-  private get_param_demands(ctx: Type_registration_context): [string, Type][] {
+  private extract_special_nodes(ctx: Macro_context) {
+    const PARAM = "param";
+    const RETURNS = "returns";
+    const special = new Set<string>([
+      PARAM,
+      RETURNS,
+      "fn", "receiver", "constructor",
+      "field", "async", "sync",
+    ]);
+    const params = seek_all_child_macros(ctx.node, PARAM);
+    const returns = seek_all_child_macros(ctx.node, RETURNS);
+    const rest = ctx.node.children.filter((c) => !special.has(cut(c.content, " ")[0]));
+    return { params, returns, rest }
+  }
+
+  // TODO. what really we should do is have each child inform this parent. that would simplify
+  //  our code a lot here
+  private get_param_demands(ctx: Type_registration_context, param_nodes: Node[]): [string, Type][] {
     const demands: [string, Type][] = [];
 
-    const param_nodes = seek_all_child_macros(ctx.node, "param");
     for (const p of param_nodes) {
       const pname = get_single_arg(ctx.clone_with({ node: p }));
       const tnode = seek_child_macro(p, "type");
@@ -94,9 +110,9 @@ export class Fn_macro_provider implements Macro_provider {
     return demands;
   }
 
-  private get_return_type(ctx: Type_registration_context): Type {
-    const ret = seek_child_macro(ctx.node, "returns");
-    if (ret) {
+  private get_return_type(ctx: Type_registration_context, return_nodes: Node[]): Type {
+    const ret = return_nodes[0]; // uhm TODO
+    if (ret != undefined) {
       const tnode = seek_child_macro(ret, "type");
       if (tnode) {
         const r = ctx.clone_with({ node: tnode }).apply();
@@ -117,7 +133,6 @@ export class Fn_macro_provider implements Macro_provider {
       message: "no type provided for return",
       type: ErrorType.MISSING_TYPE,
     });
-    throw new Error("missing return type");
   }
 
   private build_convention(
@@ -133,8 +148,8 @@ export class Fn_macro_provider implements Macro_provider {
     }, () => actual_name);
 
     const async_mode = if_(is_binding, () => {
-      const amode = !!seek_child_macro(ctx.node, "async");
-      const smode = !!seek_child_macro(ctx.node, "sync");
+      const amode = seek_child_macro(ctx.node, "async") !== null;
+      const smode = seek_child_macro(ctx.node, "sync") !== null;
 
       ctx.compiler.error_tracker.assert(
         amode !== smode,
@@ -255,21 +270,10 @@ export class Fn_macro_provider implements Macro_provider {
     ctx.compiler.set_metadata(ctx.node, SaneIdentifier, new SaneIdentifier(actual_name));
     ctx.compiler.set_metadata(ctx.node, FnConventionName, new FnConventionName(conv_name));
 
-    const do_block = seek_child_macro(ctx.node, "do");
+    const { rest } = this.extract_special_nodes(ctx);
 
-    if (conv_name === null) {
-      ctx.compiler.error_tracker.assert(
-        do_block !== null,
-        {
-          node: ctx.node,
-          message: "function must have a do block",
-          type: ErrorType.INVALID_MACRO,
-        }
-      );
-    }
-
-    if (do_block) {
-      ctx.clone_with({ node: do_block }).apply();
+    for (const child of rest) {
+      ctx.clone_with({ node: child }).apply();
     }
   }
 
@@ -279,8 +283,9 @@ export class Fn_macro_provider implements Macro_provider {
     const [name, conv_name] = this.parse_header(ctx);
     const actual_name = ctx.compiler.maybe_metadata(ctx.node, SaneIdentifier)?.value || name;
 
-    const params = this.get_param_demands(ctx);
-    const ret = this.get_return_type(ctx);
+    const special = this.extract_special_nodes(ctx);
+    const params = this.get_param_demands(ctx, special.params);
+    const ret = this.get_return_type(ctx, special.returns);
 
     const convention = this.build_convention(
       ctx,
@@ -326,8 +331,9 @@ export class Fn_macro_provider implements Macro_provider {
   // ---------- emission ----------
 
   emission(ctx: Emission_macro_context): void {
-    const body = seek_child_macro(ctx.node, "do");
-    if (!body) {
+    const { rest } = this.extract_special_nodes(ctx);
+
+    if (rest.length === 0) {
       return;
     }
 
@@ -350,6 +356,9 @@ export class Fn_macro_provider implements Macro_provider {
     const params = ctx.compiler.get_metadata(ctx.node, Params) as Params;
     Object.entries(params.mapping).forEach(([pname, type]) => params_block.push(() => (`${pname}: ${type.to_typescript()},`)));
 
-    ctx.clone_with({ node: body, statement_out: body_block }).apply();
+    for (const child of rest) {
+      const childCtx = ctx.clone_with({ node: child, statement_out: body_block });
+      childCtx.apply();
+    }
   }
 }

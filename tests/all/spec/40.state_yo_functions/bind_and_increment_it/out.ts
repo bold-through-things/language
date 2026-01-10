@@ -171,18 +171,16 @@ class _0x46_URL {
 
 void (async () => {
     'use strict';
-    const _0x3f_increment = async function (    
+    const _0x3f_increment = async function (
         getter: () => number,
         setter: (arg0: number) => number,
-    ) {    
-        {    
-            let _0x47_new = ((await (getter())) + 1);
-            return (await (setter(_0x47_new)));
-        }
+    ) {
+        let _0x47_new = ((await (getter())) + 1);
+        return (await (setter(_0x47_new)));
     }
     {
     }
-    {    
+    {
         let _0x48_value = 0;
         console.log((await (_0x3f_increment((() => _0x48_value), ((arg0: number) => (_0x48_value = arg0))))));
     }

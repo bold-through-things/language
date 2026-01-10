@@ -7,7 +7,7 @@ import { Type_checking_context } from "../pipeline/steps/typechecking.ts";
 import { process_children_with_context } from "../utils/common_utils.ts";
 import { BRACES, statement_block, statement_blocks } from "../utils/strutil.ts";
 
-export const SCOPE_MACRO = ["else", "67lang:file", "finally", "do"];
+export const SCOPE_MACRO = ["67lang:file", "finally"];
 
 export class Scope_macro_provider implements Macro_provider {
   [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {

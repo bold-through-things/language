@@ -173,15 +173,15 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         let _0x46__67 = 67;
-        {    
+        {
             let _0x47__67 = 67.8;
             console.log(_0x47__67);
             let _0x48__67 = 2347;
             console.log(_0x48__67);
         }
-    
+
         console.log(_0x46__67);
     }
 

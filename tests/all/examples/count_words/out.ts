@@ -120,49 +120,49 @@ if (is_Deno) {
 }
 
 
-class _0x41_inside_dot_SPEC {
+class _0x3f_inside_dot_SPEC {
     constructor(
     ) {
     }
 }
 
 
-class _0x42_Interval_ID {
+class _0x40_Interval_ID {
     constructor(
     ) {
     }
 }
 
 
-class _0x43_Response {
+class _0x41_Response {
     constructor(
     ) {
     }
 }
 
 
-class _0x44_TextDecoder {
+class _0x42_TextDecoder {
     constructor(
     ) {
     }
 }
 
 
-class _0x45_Uint8Array {
+class _0x43_Uint8Array {
     constructor(
     ) {
     }
 }
 
 
-class _0x46_TextEncoder {
+class _0x44_TextEncoder {
     constructor(
     ) {
     }
 }
 
 
-class _0x47_URL {
+class _0x45_URL {
     constructor(
     ) {
     }
@@ -173,40 +173,28 @@ void (async () => {
     'use strict';
     {
     }
-    {    
-        let _0x48_input = (await (_67lang.stdin()));
-        let _0x49_words = _67lang.string_split(_0x48_input, "\n");
-        let _0x4a_count = {} as Record<string, number>;
-        {    
-            let _0x4b__0x3f_for_word__index = 0;
-            let _0x4c__0x40_for_word__list = _0x49_words;
-            while(true) {    
-                if (!(_0x4b__0x3f_for_word__index < _0x4c__0x40_for_word__list.length)) { break; }
-                {    
-                    const _0x5d__0x40_for_word__list = _0x4c__0x40_for_word__list;
-                    const _0x5e__0x3f_for_word__index = _0x4b__0x3f_for_word__index;
-                    const _0x5f__pipeline_result = _0x5e__0x3f_for_word__index;
-                    if (_0x5d__0x40_for_word__list[_0x5f__pipeline_result] === undefined) { throw new Error("sparse array") }
-                    let _0x4d_word = _0x5d__0x40_for_word__list[_0x5f__pipeline_result];
-                    (_0x4b__0x3f_for_word__index = (_0x4b__0x3f_for_word__index + 1));
-                    if (    
-                        !(_67lang.has_keys(_0x4a_count, _0x4d_word))
-                    ) {    
-                        (_0x4a_count[_0x4d_word] = 0);
-                    } else {
-                    }
-    
-                    const _0x7a_count = _0x4a_count;
-                    const _0x7b__pipeline_result = _0x7a_count;
-                    const _0x7c_word = _0x4d_word;
-                    const _0x7d__pipeline_result = _0x7c_word;
-                    if (_0x7b__pipeline_result[_0x7d__pipeline_result] === undefined) { throw new Error("sparse array") }
-                    (_0x4a_count[_0x4d_word] = (1 + _0x7b__pipeline_result[_0x7d__pipeline_result]));
-                }
+    {
+        let _0x46_input = (await (_67lang.stdin()));
+        let _0x47_words = _67lang.string_split(_0x46_input, "\n");
+        let _0x48_count = {} as Record<string, number>;
+        for (const _0x49_word of _0x47_words)
+        {
+            if (
+                !(_67lang.has_keys(_0x48_count, _0x49_word))
+            ) {
+                (_0x48_count[_0x49_word] = 0);
+            } else {
             }
+
+            const _0x63_count = _0x48_count;
+            const _0x64__pipeline_result = _0x63_count;
+            const _0x65_word = _0x49_word;
+            const _0x66__pipeline_result = _0x65_word;
+            if (_0x64__pipeline_result[_0x66__pipeline_result] === undefined) { throw new Error("sparse array") }
+            (_0x48_count[_0x49_word] = (1 + _0x64__pipeline_result[_0x66__pipeline_result]));
         }
-    
-        console.log(_0x4a_count);
+
+        console.log(_0x48_count);
     }
 
 })();

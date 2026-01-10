@@ -171,18 +171,16 @@ class _0x46_URL {
 
 void (async () => {
     'use strict';
-    const _0x3f_process_list = async function (    
+    const _0x3f_process_list = async function (
         my_list: Array<string>,
-    ) {    
-        {    
-            let _0x47_copied_list = Array.prototype.slice.call(my_list);
-            Array.prototype.reverse.call(_0x47_copied_list);
-            return _0x47_copied_list;
-        }
+    ) {
+        let _0x47_copied_list = Array.prototype.slice.call(my_list);
+        Array.prototype.reverse.call(_0x47_copied_list);
+        return _0x47_copied_list;
     }
     {
     }
-    {    
+    {
         let _0x48_test_list = ["a", "b", "c"] as Array<string>;
         let _0x49_result = (await (_0x3f_process_list(_0x48_test_list)));
         console.log(_0x49_result);

@@ -173,10 +173,10 @@ void (async () => {
     'use strict';
     {
     }
-    {    
+    {
         let _0x46_phrase = "hello world";
         let _0x47_final_count = "0";
-        {    
+        {
             const _0x4a_phrase = _0x46_phrase;
             const _0x4b__pipeline_result = _0x4a_phrase;
             const _0x4c_split = _67lang.string_split(_0x4b__pipeline_result, " ");
@@ -187,7 +187,7 @@ void (async () => {
             (_0x47_final_count = Number.prototype.toString.call(_0x4f__pipeline_result));
             let _0x49_test = _0x48_words;
         }
-    
+
         console.log(_0x47_final_count);
     }
 

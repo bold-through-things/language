@@ -6,7 +6,7 @@ import { build_midglob, discover_tests, Test_case } from "./discovery.ts";
 import { validateJsonSpec } from "./json_matcher.ts";
 import { createTestDiffReporter } from "./test_diff_reporter.ts";
 import { getTestArtifacts } from "./test_artifacts.ts";
-import { Fixed, ParsedClause, parse_tokens, Schema, VarOrTerminated, interpret_tree, Rules, with_guard } from "../compiler/src_ts/utils/new_parser.ts";
+import { Fixed, Parsed_clause, parse_tokens, Schema, VarOrTerminated, interpret_tree, Rules, with_guard } from "../compiler/src_ts/utils/new_parser.ts";
 import { proclaim } from "../compiler/src_ts/utils/utils.ts";
 
 const USAGE = `67lang test runner.
@@ -65,7 +65,7 @@ interface Named_test {
 
 function parse_args(args: string[]): Command {
     type Parsed_tree_node<T extends Schema> = {
-        [K in keyof T]: ParsedClause<Fixed | VarOrTerminated>[];
+        [K in keyof T]: Parsed_clause<Fixed | VarOrTerminated>[];
     }
 
     const HELP = Symbol("HELP");
