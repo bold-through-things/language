@@ -3,6 +3,8 @@
 import {
   configureLoggerFromArgs,
   default_logger,
+  Log_spec,
+  LOGGER_NO_CONTEXT,
 } from "./utils/logger.ts";
 
 import { Tree_parser } from "./core/tree_parser.ts";
@@ -13,10 +15,10 @@ import {
 import { JSON_value } from "./core/meta_value.ts";
 
 import "./compiler_types/type_hierarchy.ts";
-import { Fixed, interpret_tree, parse_tokens, with_guard, Rules } from "./utils/new_parser.ts";
 
 import bindings_code from "../../tests/all/bindings.67lang" with { type: "text" }
 import { proclaim } from "./utils/utils.ts";
+import { Arg_interpreter, Fixed, parse_tokens, VarOrTerminated } from "./utils/new_parser.ts";
 
 const USAGE = `67lang compiler. readable clause centric CLI.
 
@@ -63,81 +65,70 @@ function writeJson(inspections: unknown, output: { write(data: Uint8Array): void
   const text = JSON.stringify(inspections, null, 2) + "\n";
   output.write(encoder.encode(text));
 }
+  
+function parseArgsNew(args: string[]) {
+  const schema = {
+    "in": new Fixed(1, [] /* TODO */, undefined),
+    "out": new Fixed(1, [] /* TODO */, undefined),
+    "err": new Fixed(1, [] /* TODO */, undefined),
+    "log": new VarOrTerminated(null, [] /* TODO */, {
+      "tag": new Fixed(1, [] /* TODO */, undefined),
+      "line": new Fixed(1, [it => Number.isNaN(Number(it)) ? new Error(`${it} is not a number`) : null], undefined)
+    }),
+    "expand": new Fixed(0, [] /* TODO */, undefined),
+    "rte": new Fixed(0, [] /* TODO */, undefined),
+    "help": new Fixed(0, [] /* TODO */, undefined),
+    "--help": new Fixed(0, [] /* TODO */, undefined),
+  }
 
-const argsSchema = {
-  in: new Fixed(1),
-  out: new Fixed(1),
-  err: new Fixed(1),
-  log: new Fixed(1),
-  expand: new Fixed(0),
-  rte: new Fixed(0),
-  help: new Fixed(0),
-  "--help": new Fixed(0),
-}
+  const parsed = parse_tokens(args, schema);
 
+  const interpreter = new Arg_interpreter(parsed);
+  let interpreted;
 
-const HELP = Symbol("HELP");
-const UNIX_HELP = Symbol("UNIX_HELP");
+  if (interpreter.has("help")) {
+    interpreted = { kind: "help" as const };
+  } else if (interpreter.has("--help")) {
+    interpreted = { kind: "--help" as const };
+  } else {
+    const log_spec = interpreter.focus_each("log").map(log_focus => {
+      const rv = {
+        kind: "and" as const,
+        items: [] as Log_spec[],
+      }
+      log_focus.each("tag").forEach(tag => rv.items.push({ kind: "tags", tags: [tag] }));
+      log_focus.each("line").forEach(line => rv.items.push({ kind: "lines", lines: [Number(line)] }));
+      return rv;
+    }).reduce((acc, item) => {
+      acc.items.push(item);
+      return acc;
+    }, {
+      kind: "or" as const,
+      items: [] as Log_spec[],
+    });
+    interpreted = {
+      kind: "main" as const,
+      input_dir: interpreter.required("in"),
+      output_file: interpreter.required("out"),
+      errors_file: interpreter.optional("err"),
+      log_spec,
+      expand: interpreter.has("expand"),
+      rte: interpreter.has("rte"),      
+    };
+  }
 
-const PARSED_ARGS = Symbol("PARSED_ARGS");
-type Compile_command = {
-  kind: typeof PARSED_ARGS;
-  inputDir: string;
-  outputFile: string;
-  errorsFile: string | null;
-  logSpec: string | null;
-  expand: boolean;
-  rte: boolean;
-}
-
-function parseArgsNew(args: string[]): Compile_command {
-  const parsed = parse_tokens(args, argsSchema);
-
-  type Command = Compile_command | typeof HELP | typeof UNIX_HELP
-
-  const is_parsed_args = (v: Command): v is Compile_command => typeof v === "object" && v?.kind === PARSED_ARGS;
-
-  const pa_rules = new Rules<Compile_command>();
-  const rules = new Rules<Command>();
-
-  const interpreted = interpret_tree<typeof argsSchema, Command>(
-    {
-      initial: {
-        kind: PARSED_ARGS,
-        inputDir: "",
-        outputFile: "",
-        errorsFile: null,
-        logSpec: null,
-        expand: false,
-        rte: false,
-      },
-      tree: parsed,
-      rules: [
-        rules.mode_switch("help", () => HELP),
-        rules.mode_switch("--help", () => UNIX_HELP),
-        with_guard(is_parsed_args, pa_rules.required("in", "inputDir")),
-        with_guard(is_parsed_args, pa_rules.required("out", "outputFile")),
-        with_guard(is_parsed_args, pa_rules.optional("err", "errorsFile")),
-        with_guard(is_parsed_args, pa_rules.optional("log", "logSpec")),
-        with_guard(is_parsed_args, pa_rules.flag("expand", "expand", v => v)),
-        with_guard(is_parsed_args, pa_rules.flag("rte", "rte", v => v)),
-      ],
-    }
-  );
-
-  if (interpreted === HELP) {
+  if (interpreted.kind === "help") {
     proclaim("requested", USAGE);
     Deno.exit(0);
   }
 
-  if (interpreted === UNIX_HELP) {
+  if (interpreted.kind === "--help") {
       proclaim("requested (wrong)", "this isn't Unix flags. try 'help'?");
       Deno.exit(0);
   }
 
   return interpreted;
 }
-  
 
 function collect67Files(root: string, rte: boolean): string[] {
   const results: string[] = [];
@@ -162,38 +153,39 @@ function collect67Files(root: string, rte: boolean): string[] {
 
 function main(): void {
   const {
-    inputDir,
-    outputFile,
-    errorsFile,
-    logSpec,
+    input_dir,
+    output_file,
+    errors_file,
+    log_spec,
     expand,
     rte,
   } = parseArgsNew(Deno.args);
 
-  configureLoggerFromArgs(logSpec);
+  configureLoggerFromArgs(log_spec);
 
-  default_logger.compile("starting compilation process");
+  default_logger.log(LOGGER_NO_CONTEXT, "compile", "starting compilation process");
 
-  const inputPath = inputDir;
-  const files = collect67Files(inputPath, rte);
+  const inputPath = input_dir;
+  const files = collect67Files(inputPath, rte ?? false);
 
-  default_logger.compile(
+  default_logger.log(
+    LOGGER_NO_CONTEXT, "compile",
     `found ${files.length} .67lang files: ${files.join(", ")}`,
   );
 
   const itsJustMacros = create_macrocosm();
 
-  default_logger.registry("[registry] registering macro whatever"); // uhh TODO
+  default_logger.log(LOGGER_NO_CONTEXT, "registry", "[registry] registering macro whatever"); // uhh TODO
 
   const parserInst = new Tree_parser({top_level: "67lang:file"});
 
-  default_logger.indent("compile", "parsing files", () => {
+  default_logger.indent(LOGGER_NO_CONTEXT, "compile", "parsing files", () => {
     // TODO for now this works, in future we will need a macro that injects these bindings
     const bindingsNode = parserInst.parse_tree(bindings_code, itsJustMacros);
     itsJustMacros.register(bindingsNode);
 
     for (const filename of files) {
-      default_logger.compile(`parsing ${filename}`);
+      default_logger.log(LOGGER_NO_CONTEXT, "compile", `parsing ${filename}`);
       const src = Deno.readTextFileSync(filename);
       const node = parserInst.parse_tree(src, itsJustMacros);
       itsJustMacros.register(node);
@@ -203,13 +195,13 @@ function main(): void {
   let crash: string | null = null;
   let compiled: string | null = null;
 
-  default_logger.indent("compile", "single-step compilation", () => {
+  default_logger.indent(LOGGER_NO_CONTEXT, "compile", "single-step compilation", () => {
     try {
       compiled = itsJustMacros.compile();
     } catch (ex) {
       const e = ex as Error;
       crash = e.stack ?? e.message;
-      default_logger.compile(`compilation crashed: ${e.message}`);
+      default_logger.log(LOGGER_NO_CONTEXT, "compile", `compilation crashed: ${e.message}`);
     }
   });
 
@@ -218,11 +210,12 @@ function main(): void {
     itsJustMacros.compile_errors.length !== 0;
 
   if (expand) {
-    default_logger.compile(
-      `expand mode: writing expanded form to ${outputFile}`,
+    default_logger.log(
+      LOGGER_NO_CONTEXT, "compile",
+      `expand mode: writing expanded form to ${output_file}`,
     );
     const encoder = new TextEncoder();
-    const file = Deno.openSync(outputFile, {
+    const file = Deno.openSync(output_file, {
       write: true,
       create: true,
       truncate: true,
@@ -240,14 +233,15 @@ function main(): void {
     }
   } else {
     if (compiled && !hadErrors) {
-      default_logger.compile(
-        `compilation successful, writing output to ${outputFile}`,
+      default_logger.log(
+        LOGGER_NO_CONTEXT, "compile",
+        `compilation successful, writing output to ${output_file}`,
       );
-      Deno.writeTextFileSync(outputFile, compiled);
+      Deno.writeTextFileSync(output_file, compiled);
 
       // then `deno check` the file we generated
       const checkProcess = new Deno.Command(Deno.execPath(), { // TODO should check if this would work within a binary
-        args: ["check", outputFile],
+        args: ["check", output_file],
         stdout: "piped",
         stderr: "piped",
       });
@@ -269,8 +263,8 @@ function main(): void {
     proclaim("report amount of errors", `${itsJustMacros.compile_errors.length} compile errors.`);
 
     if (hadErrors) {
-      if (errorsFile) {
-        const file = Deno.openSync(errorsFile, {
+      if (errors_file) {
+        const file = Deno.openSync(errors_file, {
           write: true,
           create: true,
           truncate: true,
@@ -282,7 +276,7 @@ function main(): void {
           file.close();
         }
 
-        proclaim("tell user where to find them", `seek them in ${errorsFile}.`);
+        proclaim("tell user where to find them", `seek them in ${errors_file}.`);
       } else {
         humanReadable(itsJustMacros.compile_errors);
       }

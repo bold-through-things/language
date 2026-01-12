@@ -62,7 +62,7 @@ export class Type_registration_context implements Macro_context {
     const macroName = String(this.compiler.get_metadata(this.node, Macro));
     const allMacros = this.registry.all();
 
-    const rv = default_logger.indent("type registration", `node ${macroName}`, (): Type_check_result => {
+    const rv = default_logger.indent(this, "type registration", `node ${macroName}`, (): Type_check_result => {
       const macro_impl = allMacros[macroName];
       if (macro_impl !== undefined) {
         return this.compiler.error_tracker.safely(this, () => 
@@ -131,7 +131,7 @@ export class Type_checking_context implements Macro_context {
 
     const nodeDesc = `node ${macroName}: ${preview}`;
 
-    const rv = default_logger.indent("typecheck", nodeDesc, () => {
+    const rv = default_logger.indent(this, "typecheck", nodeDesc, () => {
       const macro_impl = allMacros[macroName]
       if (macro_impl !== undefined) {
         let result: Type_check_result = null;

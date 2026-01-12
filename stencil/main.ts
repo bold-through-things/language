@@ -4,7 +4,7 @@ import { read_file, walk_recursive } from "../certain/paths.ts";
 import { Node } from "../compiler/src_ts/core/node.ts";
 import { Tree_parser } from "../compiler/src_ts/core/tree_parser.ts";
 import { unroll_parent_chain } from "../compiler/src_ts/pipeline/steps/utils.ts";
-import { Fixed, interpret_tree, parse_tokens, Rules, with_guard } from "../compiler/src_ts/utils/new_parser.ts";
+import { Arg_interpreter, Fixed, parse_tokens } from "../compiler/src_ts/utils/new_parser.ts";
 import { cut } from "../compiler/src_ts/utils/strutil.ts";
 
 const schema = {
@@ -163,21 +163,14 @@ async function stencil(args: Args) {
                 "regex": new Fixed(1)
             }
             const tree = parse_tokens(opts.details.split(" "), schema);
-            type Regex_command = {
-                mode: "regex",
-                regex: string,
+
+            const interpreter = new Arg_interpreter(tree);
+            let interpreted;
+            if (interpreter.has("regex")) {
+                interpreted = {
+                    regex: interpreter.required("regex"),
+                };
             }
-            type Command = Regex_command | null;
-            const rules = new Rules<Command>();
-            const regex_rules = new Rules<Regex_command>();
-            const interpreted = interpret_tree<typeof schema, Command>({
-                initial: null,
-                tree: tree,
-                rules: [
-                    rules.mode_switch("regex", () => ({ mode: "regex", regex: "" })),
-                    with_guard((v) => v?.mode === "regex", regex_rules.required("regex", "regex")),
-                ]
-            });
 
             if (interpreted == null) {
                 throw new Error("no command provided for `match_content`");

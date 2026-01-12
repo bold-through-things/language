@@ -11,46 +11,22 @@ import { ErrorType } from "./error_types.ts";
 export function collect_child_expressions(ctx: Emission_macro_context): Emission_item[] {
   const expressions: Emission_item[] = [];
 
-  default_logger.debug(`collecting expressions from ${ctx.node.children.length} children`);
+  return default_logger.indent(ctx, "debug", `collect_child_expressions`, () => {
+    ctx.node.children.forEach((child, i) => {
+      default_logger.indent(ctx, "debug", `processing child ${i}: ${child.content}`, () => {
+        const out: Emission_item[] = [];
+        const cctx = ctx.clone_with({ node: child, expression_out: out });
+        cctx.apply();
 
-  ctx.node.children.forEach((child, i) => {
-    default_logger.indent("debug", `processing child ${i}: ${child.content}`, () => {
-      const out: Emission_item[] = [];
-      const cctx = ctx.clone_with({ node: child, expression_out: out });
-      cctx.apply();
-
-      expressions.push(...out);
+        expressions.push(...out);
+      });
     });
+
+    const result = expressions.filter((x) => x != null);
+    default_logger.log(ctx, "debug", `filtered ${expressions.length} -> ${result.length} non-empty expressions`);
+
+    return result;
   });
-
-  const result = expressions.filter((x) => x != null);
-  default_logger.debug(`filtered ${expressions.length} -> ${result.length} non-empty expressions`);
-
-  return result;
-}
-
-// Types from children
-export function collect_child_types(ctx: Macro_context): string[] {
-  const types: string[] = [];
-
-  default_logger.typecheck(`collecting types from ${ctx.node.content}`);
-
-  ctx.node.children.forEach((child, i) => {
-    default_logger.indent("typecheck", `type checking child ${i}: ${child.content}`, () => {
-      const cctx = ctx.clone_with({ node: child });
-      const t = cctx.apply();
-
-      if (t) {
-        types.push(String(t));
-        default_logger.typecheck(`child ${i} has type: '${t}'`);
-      } else {
-        default_logger.typecheck(`child ${i} has type: <nil>`);
-      }
-    });
-  });
-
-  default_logger.typecheck(`filtered ${types.length} non-empty types`);
-  return types;
 }
 
 // Run a processing step for children with safety wrapper
@@ -59,7 +35,7 @@ export function process_children_with_context(
 ): void {
 
   ctx.node.children.forEach((child, i) => {
-    default_logger.indent("debug", `processing child ${i}: ${child.content}`, () => {
+    default_logger.indent(ctx, "debug", `processing child ${i}: ${child.content}`, () => {
       ctx.compiler.error_tracker.safely(ctx, () => {
         const cctx = ctx.clone_with({ node: child });
         cctx.apply();
@@ -72,9 +48,7 @@ export function process_children_with_context(
 export function get_args_string(
   ctx: Macro_context,
 ): string {
-  const args = ctx.compiler.get_metadata(ctx.node, Args).toString();
-  default_logger.debug(`extracted args: '${args}'`);
-  return args;
+  return ctx.compiler.get_metadata(ctx.node, Args).toString();
 }
 
 // Require exactly one arg
@@ -93,7 +67,6 @@ export function get_single_arg(
       type: ErrorType.INVALID_MACRO,
     }
   );
-  default_logger.debug(`validated single arg: '${first}'`);
 
   return first;
 }
@@ -114,7 +87,6 @@ export function get_two_args(
       type: ErrorType.INVALID_MACRO,
     }
   );
-  default_logger.debug(`validated two args: '${parts[0]}', '${parts[1]}'`);
 
   return [parts[0], parts[1]];
 }

@@ -7,9 +7,9 @@ import { Upwalker } from "../pipeline/local_lookup.ts";
 import { Emission_macro_context } from "../pipeline/steps/emission.ts";
 import { Type_checking_context } from "../pipeline/steps/typechecking.ts";
 import { ErrorType } from "../utils/error_types.ts";
+import { Arg_interpreter, Fixed, parse_tokens, VarOrTerminated } from "../utils/new_parser.ts";
 import { BRACES, cut, Emission_item, statement_block, statement_blocks } from "../utils/strutil.ts";
 import { Provides_locals__metadata, Upwalker_visibility } from "./local_macro.ts";
-import { point } from "./solution_macro_clause.ts";
 
 export class Solution_macro_provider implements Macro_provider {
   [REGISTER_MACRO_PROVIDERS](via: Register_macro_providers): void {
@@ -92,7 +92,7 @@ export class Point_macro_provider implements Macro_provider {
   }
   typecheck(ctx: Type_checking_context): Type_check_result {
     const [_, args] = cut(ctx.node.content, " ");
-    const parsed = new point().parse(args.split(/\s+/));
+    const parsed = this.parse_point(args.split(/\s+/));
     const res = new Upwalker(rq => ctx.compiler.maybe_metadata(rq.ctx.node, Solution_config_metadata)).find(ctx);
     const solution_metadata = res?.found;
     const solution_node = res?.node;
@@ -104,11 +104,19 @@ export class Point_macro_provider implements Macro_provider {
         type: ErrorType.INVALID_STRUCTURE
       }
     );
-    if (parsed.kind === "forever") {
+    ctx.compiler.error_tracker.assert(
+      parsed !== undefined,
+      {
+        message: "clause was not provided for this `point`",
+        node: ctx.node,
+        type: ErrorType.INVALID_MACRO
+      }
+    );
+    if (parsed.kind === "loops forever") {
       solution_metadata.loops.push({ kind: "forever" });
       return null;
     }
-    if (parsed.kind === "each") { 
+    if (parsed.kind === "loops each") { 
       let last: Type_check_result = null;
       for (const child of ctx.node.children) {
         last = ctx.clone_with({ node: child }).apply();
@@ -158,5 +166,43 @@ export class Point_macro_provider implements Macro_provider {
 
   emission(_ctx: Emission_macro_context) {
     // handled by `solution` parent
+  }
+
+
+  private parse_point(args: string[]) {
+    // loops each var1
+    const schema = {
+      "loops": new VarOrTerminated(null, [], {
+        "forever": new Fixed(0, [], undefined),
+        "each": new Fixed(1, [], undefined),
+      })
+    }
+    const parsed = parse_tokens(args, schema);
+    
+    const interpreter = new Arg_interpreter(parsed);
+    let interpreted;
+
+    if (interpreter.has("loops")) {
+      const loop_focus = interpreter.focus("loops");
+      if (loop_focus.has("forever")) {
+        interpreted = {
+          kind: "loops forever" as const,
+        };
+      } else if (loop_focus.has("each")) {
+        interpreted = {
+          kind: "loops each" as const,
+          each: loop_focus.required("each"),
+        };
+      }
+    }
+    return interpreted;
+    /* 
+    let interpreted: {
+        kind: "loops forever";
+    } | {
+        kind: "loops each";
+        each: string;
+    } | undefined
+     */
   }
 }

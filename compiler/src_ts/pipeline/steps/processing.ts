@@ -30,46 +30,39 @@ export class Preprocessing_context implements Macro_context {
   }
 
   apply() {
-    default_logger.macro(`preprocessing node: ${this.node.content}`);
+    default_logger.indent(this, "macro", `preprocessing node: ${this.node.content}`, () => {
+      // Validate indentation: ensure content doesn't start with whitespace
+      if (this.node.content.length > 0 && /^\s/.test(this.node.content[0] ?? "")) {
+        this.compiler.error_tracker.fail({
+          node: this.node,
+          message: "oh spaces? yea? how many, two, or four, or maybe six?!",
+          type: ErrorType.INVALID_INDENTATION,
+        });
+      }
 
-    // Validate indentation: ensure content doesn't start with whitespace
-    if (this.node.content.length > 0 && /^\s/.test(this.node.content[0] ?? "")) {
-      this.compiler.error_tracker.fail({
-        node: this.node,
-        message: "oh spaces? yea? how many, two, or four, or maybe six?!",
-        type: ErrorType.INVALID_INDENTATION,
-      });
-    }
+      const macroName = String(this.compiler.get_metadata(this.node, Macro));
+      const all = this.registry.all();
 
-    const macroName = String(this.compiler.get_metadata(this.node, Macro));
-    const all = this.registry.all();
+      const fn = all[macroName];
 
-    default_logger.macro(`  -> Current node macro: ${macroName}`);
-    default_logger.macro(
-      `  -> Available preprocessors: [${Object.keys(all).join(", ")}]`,
-    );
-
-    const fn = all[macroName];
-
-    if (fn) {
-      default_logger.macro(`applying preprocessor for macro: ${macroName}`);
-      this.compiler.error_tracker.safely(this, () => {
-        fn(this);
-      });
-    } else {
-      default_logger.macro(`no preprocessor for macro: ${macroName}`);
-      default_logger.indent("macro", `preprocessing children of ${this.node.content}`, () => {
-        this.node.children.forEach((child, i) => {
-          default_logger.indent("macro", `child ${i}: ${child.content}`, () => {
-            this.compiler.error_tracker.safely(this, () => {
-              const childCtx = this.clone_with({ node: child });
-              childCtx.apply();
+      if (fn) {
+        default_logger.log(this, "macro", `applying preprocessor for macro: ${macroName}`);
+        this.compiler.error_tracker.safely(this, () => {
+          fn(this);
+        });
+      } else {
+        default_logger.log(this, "macro", `no preprocessor for macro: ${macroName}`);
+        default_logger.indent(this, "macro", `preprocessing children of ${this.node.content}`, () => {
+          this.node.children.forEach((child, i) => {
+            default_logger.indent(this, "macro", `child ${i}: ${child.content}`, () => {
+              this.compiler.error_tracker.safely(this, () => {
+                const childCtx = this.clone_with({ node: child });
+                childCtx.apply();
+              });
             });
           });
         });
-      });
-    }
-
-    return;
+      }
+    });
   }
 }

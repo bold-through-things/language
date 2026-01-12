@@ -28,9 +28,9 @@ export class Local_macro_provider implements Macro_provider {
   }
 
   preprocess(ctx: Macro_context): void {
-    default_logger.indent("macro", `preprocessing children of ${ctx.node.content}`, () => {
+    default_logger.indent(ctx, "macro", `preprocessing children of ${ctx.node.content}`, () => {
       ctx.node.children.forEach((child, i) => {
-        default_logger.indent("macro", `child ${i}: ${child.content}`, () => {
+        default_logger.indent(ctx, "macro", `child ${i}: ${child.content}`, () => {
           ctx.compiler.error_tracker.safely(ctx, () => {
             const cctx = ctx.clone_with({ node: child });
             cctx.apply();
@@ -105,7 +105,8 @@ export class Local_macro_provider implements Macro_provider {
         }
       );
 
-      default_logger.typecheck(
+      default_logger.log(
+        ctx, "typecheck",
         `${ctx.node.content} demanded ${demanded_type} and was given ${received_type}`
       );
 

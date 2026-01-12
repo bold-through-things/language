@@ -87,7 +87,6 @@ export class Must_compile_error_context implements Macro_context {
     node: Node,
   ): Map<number, string> | null {
     const args = String(ctx.compiler.get_metadata(node, Args) ?? "");
-    default_logger.macro(`must_compile_error with args: "${args}"`);
 
     if (args.trim() === "") {
       ctx.compiler.error_tracker.fail({

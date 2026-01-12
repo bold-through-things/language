@@ -18,3 +18,4 @@ a rough roadmap the way things stand.
 - begin bootstrapping. it is time.
 - i kind of fucking hate `discovery.ts` stop passing those JSONs around... do validation, types
 - cannot be arsed right now. we need a good refactor of our call resolver. need to make it track the reason of each matching failure as it happens, not "infer" these reasons afterwards. so fucking stupid, what the fuck!
+- generalize the fancy tests so that they furthertest a random passing test

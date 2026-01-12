@@ -2,7 +2,7 @@
 
 import { extractIndent } from "../utils/strutil.ts";
 import { Node, Position } from "./node.ts";
-import { default_logger } from "../utils/logger.ts";
+import { default_logger, LOGGER_NO_CONTEXT } from "../utils/logger.ts";
 
 class Trim_stack<T> {
   private data: T[] = [];
@@ -86,7 +86,6 @@ export class Tree_parser {
     let line_num = 0;
 
     const lines = code.split("\n");
-    default_logger.log("parse", `processing ${lines.length} lines`);
 
     for (const raw of lines) {
       line_num += 1;
@@ -101,6 +100,7 @@ export class Tree_parser {
       line = line.trimEnd();
 
       default_logger.log(
+        LOGGER_NO_CONTEXT, // but TODO contextualize by line
         "parse",
         `line ${line_num}: indent=${indent}, content='${line}'`,
       );

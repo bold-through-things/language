@@ -6,7 +6,7 @@ import { build_midglob, discover_tests, Test_case } from "./discovery.ts";
 import { validateJsonSpec } from "./json_matcher.ts";
 import { createTestDiffReporter } from "./test_diff_reporter.ts";
 import { getTestArtifacts } from "./test_artifacts.ts";
-import { Fixed, Parsed_clause, parse_tokens, Schema, VarOrTerminated, interpret_tree, Rules, with_guard } from "../compiler/src_ts/utils/new_parser.ts";
+import { Fixed, parse_tokens, VarOrTerminated, Arg_interpreter } from "../compiler/src_ts/utils/new_parser.ts";
 import { proclaim } from "../compiler/src_ts/utils/utils.ts";
 
 const USAGE = `67lang test runner.
@@ -64,70 +64,59 @@ interface Named_test {
 }
 
 function parse_args(args: string[]): Command {
-    type Parsed_tree_node<T extends Schema> = {
-        [K in keyof T]: Parsed_clause<Fixed | VarOrTerminated>[];
-    }
-
-    const HELP = Symbol("HELP");
-    const UNIX_HELP = Symbol("UNIX_HELP");
-    type Any_command = Command | typeof HELP | typeof UNIX_HELP
-
     const parsed = parse_tokens(args, argsSchema);
 
-    const rules = new Rules<Any_command>();
-    const c_new_rules = new Rules<Command_new>();
-    const c_present_rules = new Rules<Command_present>();
-    const c_default_rules = new Rules<Command_default>();
-
-    const is_command = (s: string) => (v: Any_command): v is Command => typeof v === "object" && v.command === s;
-
-    const interpreted = interpret_tree<typeof argsSchema, Any_command>({
-        initial: {
+    const interpreter = new Arg_interpreter(parsed);
+    let interpreted;
+    if (interpreter.has("help")) {
+        interpreted = { command: "help" as const };
+    }
+    if (interpreter.has("--help")) {
+        interpreted = { command: "--help" as const };
+    }
+    if (interpreter.has("new")) {
+        const new_focus = interpreter.focus("new");
+        let type;
+        if (new_focus.has("succeeds")) {
+            type = "succeeds" as const;
+        } else if(new_focus.has("fails")) {
+            type = "fails" as const;
+        }
+        if (type === undefined) {
+            throw new Error("specify exactly one `succeeds` or `fails`");
+        }
+        interpreted = {
+            command: "new" as const,
+            path: new_focus.required("path"),
+            type,
+        }
+    }
+    if (interpreter.has("present")) {
+        const present_focus = interpreter.focus("present");
+        interpreted = {
+            command: "present" as const,
+            glob: present_focus.required("glob"),
+        };
+    }
+    if (interpreted === undefined) {
+        interpreted = {
             command: "default" as const,
-            glob: null,
-            stdin: false,
-            compile: false,
-            debug: false,
-            run: false,
-            expand: false,
-            compilerArgs: [],
-        },
-        tree: parsed,
-        rules: [
-            rules.mode_switch("help", () => HELP),
-            rules.mode_switch("--help", () => UNIX_HELP),
-            rules.mode_switch("new", () => ({
-                command: "new",
-                path: "",
-                type: "succeeds",
-            })),
-            rules.mode_switch("present", () => ({
-                command: "present",
-                glob: "",
-            })),
-            with_guard(is_command("new"), c_new_rules.subtree("path", [
-                c_new_rules.required("path", "path"),
-                c_new_rules.flag("succeeds", "type", v => v ? "succeeds" : "fails"),
-                c_new_rules.flag("fails", "type", v => v ? "fails" : "succeeds"),
-                // TODO if (succeeds === fails) { throw new Error("specify exactly one `succeeds` or `fails`"); }
-            ])),
-            with_guard(is_command("present"), c_present_rules.required("glob", "glob")),
-            with_guard(is_command("default"), c_default_rules.optional("glob", "glob")),
-            with_guard(is_command("default"), c_default_rules.flag("stdin", "stdin", v => v)),
-            with_guard(is_command("default"), c_default_rules.flag("compile", "compile", v => v)),
-            with_guard(is_command("default"), c_default_rules.flag("debug", "debug", v => v)),
-            with_guard(is_command("default"), c_default_rules.flag("run", "run", v => v)),
-            with_guard(is_command("default"), c_default_rules.flag("expand", "expand", v => v)),
-            with_guard(is_command("default"), c_default_rules.optional_many("pass", "compilerArgs")),
-        ]
-    })
+            glob: interpreter.optional("glob"),
+            stdin: interpreter.has("stdin"),
+            compile: interpreter.has("compile"),
+            debug: interpreter.has("debug"),
+            run: interpreter.has("run"),
+            expand: interpreter.has("expand"),
+            compilerArgs: interpreter.each("pass").toArray(), // TODO this shit is broken
+        };
+    }
     
-    if (interpreted === HELP) {
+    if (interpreted.command === "help") {
         proclaim("requested", USAGE);
         Deno.exit(0);
     }
 
-    if (interpreted === UNIX_HELP) {
+    if (interpreted.command === "--help") {
         proclaim("requested (wrong)", "this isn't Unix flags. try 'help'?");
         Deno.exit(0);
     }
@@ -571,6 +560,7 @@ async function testVerboseCompilation(args: Command_default, log: TestLog): Prom
         "out",
         outFile,
         "log",
+        "tag",
         "registry"
     ];
 
@@ -594,6 +584,55 @@ async function testVerboseCompilation(args: Command_default, log: TestLog): Prom
     }
     if (!allOutput.includes("refactor confidently when the flame flickers.")) {
         throw new Error("Expected final flicker message");
+    }
+}
+
+async function test_line_tag_logging(args: Command_default, log: TestLog): Promise<void> {
+    const testDir = joinPath(Deno.cwd(), "tests", "all", "examples", "anagram_groups");
+
+    const tmpDir = await Deno.makeTempDir();
+    const outFile = joinPath(tmpDir, EXECUTABLE);
+
+    const compilerCmd = getCompilerCmd(args);
+
+    const cmd = [
+        ...compilerCmd,
+        "err",
+        "/dev/null", // not our concern
+        "in",
+        testDir,
+        "out",
+        outFile,
+        "log",
+        "tag",
+        "codegen",
+        "line",
+        "9" // `local groups`
+    ];
+
+    const result = await runWithInput(cmd, {
+        cwd: joinPath(Deno.cwd(), "compiler"),
+        stdin: ""
+    });
+    log.compilation.push({
+        code: result.code,
+        stdout: result.stdout,
+        stderr: result.stderr
+    });
+
+    if (result.code !== 0) {
+        throw new Error(`Compilation failed: ${result.stderr}`);
+    }
+
+    const allOutput = result.stdout + result.stderr;
+    const lines = allOutput.split(/\n/);
+    const codegen_lines = lines.filter(l => l.includes("[codegen] begin: emitting"));
+    const expected = 2; // is stupid it includes the binding logging (we should filter by the file as well)
+    if (codegen_lines.length !== expected) {
+        throw new Error(`log amount mismatch got ${codegen_lines.length} but need ${expected}`);
+    }
+    if (!codegen_lines.some /* TODO should `every` */(l => l.includes("local groups"))) {
+        throw new Error("not all lines are valid");
     }
 }
 
@@ -631,6 +670,15 @@ async function runAllTests(args: Command_default, stdinText: string | null): Pro
         });
     } else {
         console.log(`ignoring \`test_verbose_compilation\` per midglob \`${args.glob}\``);
+    }
+
+    if (globFilter("test_line_tag_logging")) {
+        tests.push({
+            name: "test_line_tag_logging",
+            fn: (log: TestLog) => test_line_tag_logging(args, log)
+        });
+    } else {
+        console.log(`ignoring \`test_line_tag_logging\` per midglob \`${args.glob}\``);
     }
 
     let failed = 0;

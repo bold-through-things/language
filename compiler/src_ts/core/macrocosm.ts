@@ -122,10 +122,6 @@ export class Macrocosm {
       this.metadata.set(node, m);
     }
     m.set(key, value);
-    default_logger.log(
-      "metadata",
-      `set metadata ${key} ${String(value)} for ${node} ${node.content}`,
-    );
   }
 
   maybe_metadata<T>(node: Node, t: MetaCtor<T>): T | null {
@@ -231,11 +227,9 @@ export class Macrocosm {
   }
 
   compile(): string {
-    default_logger.indent("compile", "discovering macros", () => {
-      for (const n of this.nodes) {
-        this.discover_macros(n);
-      }
-    });
+    for (const n of this.nodes) {
+      this.discover_macros(n);
+    }
 
     const solution_node = this.make_node(
       "67lang:solution",

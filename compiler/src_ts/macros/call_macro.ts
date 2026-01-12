@@ -85,7 +85,8 @@ export class Call_macro_provider implements Macro_provider {
         const unified = demands.map((d) => subst.apply({ ctx, type_expr: d, caused_by: Error_caused_by.USER }));
 
         for_each_pair(unified, args, (u, recv, i) => {
-          default_logger.typecheck(
+          default_logger.log(
+            ctx, "typecheck",
             `${ctx.node.content} demanded ${u} and was given ${recv}`,
           );
           const compatible = ctx.type_engine.can_assign({value_type: recv, field_type: u});
@@ -100,7 +101,8 @@ export class Call_macro_provider implements Macro_provider {
         });
       } else {
         for_each_pair(demands, args, (d, recv, i) => {
-          default_logger.typecheck(
+          default_logger.log(
+            ctx, "typecheck",
             `${ctx.node.content} demanded ${d} and was given ${recv}`,
           );
           const compatible = ctx.type_engine.can_assign({value_type: recv, field_type: d});
@@ -163,9 +165,6 @@ export class Call_macro_provider implements Macro_provider {
     let expr = () => `${FORCE_SYNTAX_ERROR} /* :call had emission error */`;
     try {
       if (ctx.compiler.maybe_metadata(ctx.node, Macro_previously_failed)) {
-        default_logger.codegen(
-          `skipping emission of call due to prior typecheck failure: ${ctx.node.content}`,
-        );
         return;
       }
 

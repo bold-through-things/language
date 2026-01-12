@@ -83,7 +83,6 @@ function matches_signature(
   actual: Type[],
   demanded: Type[] | null | undefined,
 ): [boolean, Record<string, Type>] {
-  default_logger.typecheck(`matches_signature(${fn}): actual=${actual}, demanded=${demanded}`);
   if (!demanded) {
     return [true, {}];
   }
@@ -171,8 +170,6 @@ export function resolve_function(
   }
 
   const candidates = resolve_candidates(ctx, fn);
-
-  default_logger.debug(`all_possible_conventions(${fn}): ${candidates}`);
 
   let selected: { fn_data: Function_67lang, subs: Record<string, Type> } | null = null;
 

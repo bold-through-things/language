@@ -59,7 +59,6 @@ export class Macro_registry<T extends Macro_context> {
   get(name: string): Ctx_proc<T> {
     const fn = this.registry[name];
     if (!fn) {
-      default_logger.macro(`ERROR: unknown macro "${name}"`);
       throw new Error(`Unknown macro: ${name}`);
     }
     return fn;

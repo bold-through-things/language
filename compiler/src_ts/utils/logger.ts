@@ -1,5 +1,7 @@
 // utils/logger.ts
 
+import { Macro_context } from "../core/macro_registry.ts";
+
 class SmartIndentContext {
   tag: string;
   message: string;
@@ -14,36 +16,23 @@ class SmartIndentContext {
   }
 }
 
+export const LOGGER_NO_CONTEXT = Symbol("LOGGER_NO_CONTEXT");
+
 export class Logger {
   private output: WritableStreamDefaultWriter<Uint8Array>;
-  // null => all tags enabled; empty set => all disabled
-  private enabledTags: Set<string> | null = new Set();
   private indentLevel: number = 0;
   private contextStack: SmartIndentContext[] = [];
 
   private encoder = new TextEncoder();
 
+  public log_spec: Log_spec = { kind: "and", items: [] };
+
   constructor(output = Deno.stderr.writable.getWriter()) {
     this.output = output;
   }
 
-  enableTags(tags: Set<string>): void {
-    this.enabledTags = tags;
-  }
-
-  enableAllTags(): void {
-    this.enabledTags = null;
-  }
-
-  isTagEnabled(tag: string): boolean {
-    if (this.enabledTags === null) {
-      return true;
-    }
-    return this.enabledTags.has(tag);
-  }
-
-  log(tag: string, message: string): void {
-    if (!this.isTagEnabled(tag)) {
+  log(ctx: Macro_context | typeof LOGGER_NO_CONTEXT, tag: string, message: string): void {
+    if (!this.should_log(ctx, tag)) {
       return;
     }
 
@@ -70,8 +59,8 @@ export class Logger {
     }
   }
 
-  indent<T>(tag: string, message: string, fn: () => T): T {
-    if (!this.isTagEnabled(tag)) {
+  indent<T>(ctx: Macro_context | typeof LOGGER_NO_CONTEXT, tag: string, message: string, fn: () => T): T {
+    if (!this.should_log(ctx, tag)) {
       return fn();
     }
 
@@ -97,52 +86,50 @@ export class Logger {
     }
   }
 
-  // Convenience tag methods
-  debug(message: string): void {
-    this.log("debug", message);
-  }
-
-  typecheck(message: string): void {
-    this.log("typecheck", message);
-  }
-
-  macro(message: string): void {
-    this.log("macro", message);
-  }
-
-  compile(message: string): void {
-    this.log("compile", message);
-  }
-
-  codegen(message: string): void {
-    this.log("codegen", message);
-  }
-
-  parse(message: string): void {
-    this.log("parse", message);
-  }
-
-  registry(message: string): void {
-    this.log("registry", message);
-  }
-
-  metadata_debug(message: string): void {
-    this.log("metadata_debug", message);
+  should_log(ctx: Macro_context | typeof LOGGER_NO_CONTEXT, tag: string): boolean {
+    function matches_spec(spec: Log_spec): boolean {
+      switch (spec.kind) {
+        case "and":
+          return spec.items.every(matches_spec);
+        case "or":
+          return spec.items.some(matches_spec);
+        case "tags":
+          return spec.tags.includes(tag);
+        case "lines": {
+          if (ctx === LOGGER_NO_CONTEXT) {
+            return false;
+          }
+          const line = ctx.node.pos?.line ?? 0;
+          return spec.lines.includes(line);
+        }
+      }
+    }
+    return matches_spec(this.log_spec);
   }
 }
 
 // global logger (constant + accessor)
 export const default_logger = new Logger();
 
-export function configureLoggerFromArgs(logTags: string | null): void {
-  if (logTags == null) {
-    // disable all logging by default (empty set)
-    default_logger.enableTags(new Set());
+export type Log_spec = {
+  kind: "and",
+  items: Log_spec[],
+} | {
+  kind: "or",
+  items: Log_spec[],
+} | {
+  kind: "tags",
+  tags: string[],
+} | {
+  kind: "lines",
+  lines: number[],
+};
+
+export function configureLoggerFromArgs(spec: Log_spec | null): void {
+  if (spec == null) {
+    // disable all logging by default
+    default_logger.log_spec = { kind: "and", items: [] };
   } else {
-    const tags = logTags
-      .split(",")
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0);
-    default_logger.enableTags(new Set(tags));
+    default_logger.log_spec = spec;
   }
 }

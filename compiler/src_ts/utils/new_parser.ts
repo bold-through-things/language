@@ -183,128 +183,97 @@ export function parse_tokens<T extends Schema>(tokens: string[], schema: T): { [
   return result as ReturnType<typeof parse_tokens<T>>;
 }
 
-type Rule<T_result, T_schema extends Schema> = (current: T_result, parsed: Parsed_tree<T_schema>) => T_result;
+type Has_subparsers<T extends Schema> = {
+  [K in keyof T]: T[K] extends { subParser: Schema } ? T[K]: never
+}
+  
+export class Arg_interpreter<T extends Schema> {
+  constructor(public parsed: Parsed_tree<T>) {
+    // ...
+  }
+
+  focus<T_subparsers extends Has_subparsers<T>>(clause: keyof Parsed_tree<T> & keyof T_subparsers): Arg_interpreter<T_subparsers[typeof clause]["subParser"]> {
+    const entries = this.parsed[clause];
+    if (entries === undefined || entries[0] === undefined) {
+      throw new Error(`clause expected \`${clause}\``);
+    }
+    if (entries.length > 1) {
+      throw new Error(`only one expected \`${clause}\``);
+    }
+    const subtree = entries[0].children;
+    if (subtree === null) {
+      // should never happen
+      throw new Error("never");
+    }
+    return new Arg_interpreter<T_subparsers[typeof clause]["subParser"]>(subtree);
+  }
+
+  *focus_each<T_subparsers extends Has_subparsers<T>>(clause: keyof Parsed_tree<T> & keyof T_subparsers): Generator<Arg_interpreter<T_subparsers[typeof clause]["subParser"]>> {
+    const entries = this.parsed[clause];
+    if (entries === undefined) {
+      return;
+    }
+    for (const entry of entries) {
+      const subtree = entry.children;
+      if (subtree === null) {
+        // should never happen
+        throw new Error("never");
+      }
+      yield new Arg_interpreter<T_subparsers[typeof clause]["subParser"]>(subtree);
+    }
+  }
+
+  *each(clause: keyof Parsed_tree<T>): Generator<string> {
+    const entries = this.parsed[clause];
+    if (entries === undefined) {
+      return;
+    }
+    for (const entry of entries) {
+      if (entry.value[0] === undefined) {
+        throw new Error(`${clause} is missing value`);
+      }
+      yield entry.value[0];
+    }
+  }
+
+  has(clause: keyof Parsed_tree<T>) {
+    return (this.parsed[clause]?.length ?? 0) > 0;
+  }
+
+  required(clause: keyof Parsed_tree<T>): string {
+    const entries = this.parsed[clause] ?? [];
+    if (entries[0] === undefined) {
+      throw new Error(`${clause} required here`);
+    }
+    if (entries.length > 1) {
+      throw new Error(`${clause} provided many times`);
+    }
+    const entry = entries[0];
+    if (entry.value[0] === undefined) {
+      // implies invalid schema, we should probably just validate the schema here then
+      throw new Error(`${clause} is missing value`);
+    }
+    return entry.value[0];
+  }
+
+  optional(clause: keyof Parsed_tree<T>): string | null {
+    const entries = this.parsed[clause] ?? [];
+    if (entries[0] === undefined) {
+      return null;
+    }
+    if (entries.length > 1) {
+      throw new Error(`clause ${clause} provided multiple times`);
+    }
+    const entry = entries[0];
+    return entry.value[0] ?? null;
+  }
+}
 
 type String_keys<T> = keyof T & string;
 
 type Parsed_tree<T extends Schema> = {
   [K in String_keys<T>]: Parsed_clause<T[K]>[]
 };
-
-type Has_field<K extends string, V> = { [P in K]: V };
-
-type Undefined_is_never<T> = T extends undefined ? never : T;
-
-export class Rules<T_result>{
-  required<T_key extends string, T_schema extends Schema>(clause: keyof Parsed_tree<T_schema>, field: T_key) {
-    return (current: T_result & Has_field<T_key, string>, parsed: Parsed_tree<T_schema>): T_result => {
-      const entries = parsed[clause];
-      if (entries === undefined || entries[0] === undefined) {
-        throw new Error(`clause expected \`${clause}\``);
-      }
-      if (entries.length > 1) {
-        throw new Error(`only one expected \`${clause}\``);
-      }
-      ;((current: Has_field<T_key, string>) => { // "TypeScript is a good language"
-        current[field] = entries[0].value.join("");
-      })(current);
-      return current;
-    }
-  }
-  optional<T_key extends string, T_schema extends Schema>(clause: keyof Parsed_tree<T_schema>, field: T_key) {
-    return (current: T_result & Has_field<T_key, string | null>, parsed: Parsed_tree<T_schema>): T_result => {
-      const entries = parsed[clause];
-      if (entries !== undefined && entries[0] !== undefined) {
-        if (entries.length > 1) {
-          throw new Error(`only one expected \`${clause}\``);
-        }
-        ;((current: Has_field<T_key, string | null>) => { // "TypeScript is a good language"
-          current[field] = entries[0].value.join("");
-        })(current);
-      }
-      return current;
-    }
-  }
-  optional_many<T_key extends string, T_schema extends Schema>(clause: keyof Parsed_tree<T_schema>, field: T_key) {
-    return (current: T_result & Has_field<T_key, string[]>, parsed: Parsed_tree<T_schema>): T_result => {
-      const entries = parsed[clause];
-      if (entries !== undefined) {
-        ;((current: Has_field<T_key, string[]>) => { // "TypeScript is a good language"
-          current[field] = entries.flatMap(e => e.value);
-        })(current);
-      }
-      return current;
-    }
-  }
-  flag<T_key extends string, T_schema extends Schema, T_flag>(clause: keyof Parsed_tree<T_schema>, field: T_key, remap: (v: boolean) => T_flag) {
-    return (current: T_result & Has_field<T_key, T_flag>, parsed: Parsed_tree<T_schema>): T_result => {
-      const entries = parsed[clause];
-      ;((current: Has_field<T_key, T_flag>) => { // "TypeScript is a good language"
-        current[field] = remap(entries !== undefined && entries.length > 0);
-      })(current);
-      return current;
-    }
-  }
-  subtree<T_key extends string, T_schema extends Schema & { [P in T_key]: { subParser: T_sub_schema } }, T_sub_schema extends Schema>(clause: T_key, rules: Rule<T_result, T_sub_schema>[]) {
-    return (current: T_result, parsed: Parsed_tree<T_schema>): T_result => {
-      const entries = parsed[clause];
-      if (entries === undefined || entries[0] === undefined) {
-        throw new Error(`clause expected \`${clause}\``);
-      }
-      if (entries.length > 1) {
-        throw new Error(`only one expected \`${clause}\``);
-      }
-      const subtree = entries[0].children;
-      if (subtree === null) {
-        // should never happen
-        throw new Error("never");
-      }
-      return interpret_tree({
-        initial: current,
-        tree: subtree,
-        rules
-      });
-    }
-  }
-  mode_switch<T_new_result, T_key extends string, T_schema extends Schema>(clause: T_key, new_v: () => T_new_result) {
-    return (current: T_result, parsed: Parsed_tree<T_schema>): T_result | T_new_result => {
-      const entries = parsed[clause];
-      if (entries === undefined || entries[0] === undefined) {
-        return current;
-      }
-      if (entries.length > 1) {
-        throw new Error(`only one expected \`${clause}\``);
-      }
-      return new_v();
-    }
-  }
-}
-
-export function with_guard<T_result_generic, T_result_specific extends T_result_generic, T_schema extends Schema>(
-  guard: (current: T_result_generic, tree: Parsed_tree<T_schema>) => boolean,
-  mapper: Rule<T_result_specific, T_schema>
-): Rule<T_result_generic, T_schema> {
-  return (current: T_result_generic, tree: Parsed_tree<T_schema>): T_result_generic => {
-    if (guard(current, tree)) {
-      return mapper(current as T_result_specific, tree);
-    }
-    return current;
-  };
-}
-
-export function interpret_tree<T_schema extends Schema, T_result extends unknown>(
-  opts: {
-    initial: T_result
-    tree: Parsed_tree<T_schema>,
-    rules: Rule<T_result, T_schema>[]
-  }
-): T_result {
-  let result = opts.initial;
-  for (const rule of opts.rules) {
-    result = rule(result, opts.tree);
-  }
-  return result;
-}
 
 // TODO this should be autotest yes?
 if (import.meta.main) {
